@@ -1,4 +1,4 @@
-cb4j
+CB4J
 ====
 
-A framework for batch processing of CSV files with Java
+CSV Batch 4 Java is a framework that aims at simplifying CSV files batch processing with java.
