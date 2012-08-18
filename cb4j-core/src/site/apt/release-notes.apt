@@ -1,0 +1,9 @@
+Version 1.0-SNAPSHOT
+
+  CB4J is currently at it's first snapshot version and is under development. The main features currently implemented are :
+
+  * Core CB4J API and Implementation
+
+  * Utilities module providing common validators and type conversion utilities
+
+

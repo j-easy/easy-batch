@@ -1,0 +1,21 @@
+Architecture
+
+  CB4J is designed to be simple, flexible and extensible at the same time.
+
+[../images/workflow.jpg] Overview
+
+Processing workflow
+
+  This section describe how does CB4J work internally. It follows the very common workflow of processing CSV records from flat file :
+
+  * Read a record
+
+  * Parse a record
+
+  * Validate a record
+
+  * Process a record
+
+  []
+
+  For each operation, CB4J use a separate interface and implementation

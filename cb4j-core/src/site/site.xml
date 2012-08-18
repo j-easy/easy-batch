@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="CB4J">
+
+    <publishDate position="left"/>
+    <version position="left"/>
+
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.2.2</version>
+    </skin>
+
+    <custom>
+        <fluidoSkin>
+            <sideBarEnabled>true</sideBarEnabled>
+            <topBarEnabled>false</topBarEnabled>
+            <sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
+            <gitHub>
+                <projectId>benas/cb4j</projectId>
+                <ribbonOrientation>right</ribbonOrientation>
+                <ribbonColor>black</ribbonColor>
+            </gitHub>
+        </fluidoSkin>
+    </custom>
+
+    <body>
+
+        <menu name="About CB4J">
+            <item name="Introduction" href="index.html"/>
+            <item name="Release Notes" href="release-notes.html" />
+        </menu>
+
+        <menu name="Documentation">
+            <item name="Getting started" href="documentation/getting-started.html"/>
+            <item name="Architecture" href="documentation/architecture.html"/>
+            <item name="User guide" href="documentation/user-guide.html"/>
+            <item name="Tutorial" href="documentation/tutorial.html"/>
+            <item name="API Javadoc" href="apidocs/index.html" />
+        </menu>
+
+        <menu ref="reports"/>
+
+    </body>
+
+</project>

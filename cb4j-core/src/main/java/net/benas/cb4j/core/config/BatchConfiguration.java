@@ -1,0 +1,363 @@
+/*
+ * The MIT License
+ *
+ *  Copyright (c) 2012, benas (md.benhassine@gmail.com)
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
+
+package net.benas.cb4j.core.config;
+
+import net.benas.cb4j.core.api.*;
+import net.benas.cb4j.core.impl.BatchReporterImpl;
+import net.benas.cb4j.core.impl.RecordParserImpl;
+import net.benas.cb4j.core.impl.RecordReaderImpl;
+import net.benas.cb4j.core.impl.RecordValidatorImpl;
+import net.benas.cb4j.core.util.BatchConstants;
+import net.benas.cb4j.core.util.LogFormatter;
+import net.benas.cb4j.core.util.ReportFormatter;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.*;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+
+/**
+ * Batch configuration class.<br/>
+ *
+ * This class should used to provide all configuration parameters and mandatory implementations to run CB4J engine.
+ *
+ * @author benas (md.benhassine@gmail.com)
+ */
+public class BatchConfiguration {
+
+    /**
+     * CB4J logger
+     */
+    final private Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
+
+    /*
+     * Configuration parameters
+     */
+    private Properties configurationProperties;
+
+    /*
+     * Validators and CB4J services that will be used by the engine
+     */
+	private Map<Integer, List<FieldValidator>> fieldValidators;
+
+	private RecordReader recordReader;
+
+	private RecordParser recordParser;
+
+	private RecordValidator recordValidator;
+
+	private RecordProcessor recordProcessor;
+	
+    private RecordMapper recordMapper;
+
+    private BatchReporter batchReporter;
+
+    /**
+     * Initialize configuration from a properties file
+     * @param configurationPath absolute path of the configuration file
+     * @throws BatchConfigurationException thrown if :
+     * <ul>
+     *     <li>The configuration file is not found</li>
+     *     <li>The configuration file cannot be read</li>
+     * </ul>
+     */
+	public BatchConfiguration(final String configurationPath) throws BatchConfigurationException {
+
+        if(configurationPath == null){
+            String error = "Configuration failed : configuration file not specified";
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+        logger.config("Configuration file used : " + configurationPath);
+
+        configurationProperties = BatchConfigurationUtil.loadParametersFromConfigurationFile(configurationPath);
+        fieldValidators = new HashMap<Integer, List<FieldValidator>>();
+	}
+
+    /**
+     *  Initialize configuration from a properties object
+     * @param properties the properties object to load
+     */
+    public BatchConfiguration(final Properties properties){
+        configurationProperties = properties;
+        fieldValidators = new HashMap<Integer, List<FieldValidator>>();
+    }
+
+    /**
+     * Configure the batch engine
+     * @throws BatchConfigurationException thrown if :
+     * <ul>
+     *     <li>One of the mandatory parameters is not specified, please refer to the reference documentation for all parameters details</li>
+     *     <li>Log files for ignored and rejected records cannot be used</li>
+     *     <li>One of the mandatory services is not specified, please refer to the reference documentation for all mandatory services implementations</li>
+     * </ul>
+     */
+	public void configure() throws BatchConfigurationException {
+
+        /*
+         * Configure CB4J logger
+         */
+        logger.setUseParentHandlers(false);
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new LogFormatter());
+        logger.addHandler(consoleHandler);
+
+		logger.info("Configuration started at : " + new Date());
+
+		/*
+		 * Configure record reader parameters
+		 */
+        String inputData = configurationProperties.getProperty(BatchConstants.INPUT_DATA_PATH);
+        String encoding = configurationProperties.getProperty(BatchConstants.INPUT_DATA_ENCODING);
+        final String skipHeaderProperty = configurationProperties.getProperty(BatchConstants.INPUT_DATA_SKIP_HEADER);
+
+        //check if input data file is specified
+        if (inputData == null) {
+            String error = "Configuration failed : input data file is mandatory but was not specified";
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+
+		try {
+
+            boolean skipHeader;
+            if (skipHeaderProperty != null){
+                skipHeader = Boolean.valueOf(skipHeaderProperty);
+            }else{
+                skipHeader = BatchConstants.DEFAULT_SKIP_HEADER;
+                logger.warning("Skip header property not specified, default to false");
+            }
+
+			if (encoding == null || (encoding != null && encoding.isEmpty() )){
+				encoding = System.getProperty("file.encoding");
+				logger.warning("No encoding specified for input data, using system default encoding : " + encoding);
+			}
+			else{
+                if (Charset.availableCharsets().get(encoding) != null && !Charset.isSupported(encoding)){
+                    logger.warning("Encoding '" + encoding + "' not supported, using system default encoding : " + System.getProperty("file.encoding"));
+                    encoding = System.getProperty("file.encoding");
+                }else{
+                    logger.config("Using '"+ encoding + "' encoding for input file reading");
+                }
+            }
+            recordReader = new RecordReaderImpl(inputData, encoding, skipHeader);
+            logger.config("Data input file : " + inputData);
+		} catch (FileNotFoundException e) {
+			String error = "Configuration failed : input data file '" + inputData + "' could not be opened";
+			logger.severe(error);
+			throw new BatchConfigurationException(error);
+		}
+
+		/*
+		 * Configure record parser parameters
+		 * Convention over configuration : default separator is ","
+		 */
+		String recordSizeProperty = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_SIZE);
+		try {
+
+            if(recordSizeProperty == null || ( recordSizeProperty != null && recordSizeProperty.isEmpty() )){
+                String error = "Record size property is not set";
+                logger.severe(error);
+                throw new BatchConfigurationException(error);
+            }
+
+            int recordSize = Integer.parseInt(recordSizeProperty);
+
+            String fieldsSeparator = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_SEPARATOR);
+			if(fieldsSeparator == null || ( fieldsSeparator != null && fieldsSeparator.isEmpty() )){
+				fieldsSeparator = BatchConstants.DEFAULT_RECORD_SEPARATOR;
+				logger.warning("No field separator specified, using default : '" + fieldsSeparator + "'");
+			}
+			
+			logger.config("Record size specified : " + recordSize);
+			logger.config("Fields separator specified : '" + fieldsSeparator + "'");
+			recordParser = new RecordParserImpl(recordSize, fieldsSeparator);
+		} catch (NumberFormatException e) {
+			String error = "Record size property is not recognized as a number : " + recordSizeProperty;
+			logger.severe(error);
+			throw new BatchConfigurationException(error);
+		}
+
+		/*
+		 * Configure loggers for ignored/rejected records
+		 */
+        ReportFormatter reportFormatter = new ReportFormatter();
+
+        String outputIgnored = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_IGNORED);
+		if (outputIgnored == null || (outputIgnored != null && outputIgnored.isEmpty())){
+			outputIgnored = BatchConfigurationUtil.removeExtension(inputData) + BatchConstants.DEFAULT_IGNORED_SUFFIX;
+			logger.warning("No log file specified for ignored records, using default : " + outputIgnored);
+		}
+        try {
+            FileHandler ignoredRecordsHandler = new FileHandler(outputIgnored);
+            ignoredRecordsHandler.setFormatter(reportFormatter);
+            Logger ignoredRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_IGNORED);
+            ignoredRecordsReporter.addHandler(ignoredRecordsHandler);
+        } catch (IOException e) {
+            String error = "Unable to use file for ignored records : " + outputIgnored;
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+
+        String outputRejected = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_REJECTED);
+		if (outputRejected == null || (outputRejected != null && outputRejected.isEmpty())){
+			outputRejected = BatchConfigurationUtil.removeExtension(inputData) + BatchConstants.DEFAULT_REJECTED_SUFFIX;
+			logger.warning("No log file specified for rejected records, using default : " + outputRejected);
+		}
+        try {
+            FileHandler rejectedRecordsHandler = new FileHandler(outputRejected);
+            rejectedRecordsHandler.setFormatter(reportFormatter);
+            Logger rejectedRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_REJECTED);
+            rejectedRecordsReporter.addHandler(rejectedRecordsHandler);
+        } catch (IOException e) {
+            String error = "Unable to use file for rejected records : " + outputRejected;
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+
+        /*
+         * Configure batch reporter : if no custom reporter registered, use default implementation
+         */
+        if (batchReporter == null)
+            batchReporter = new BatchReporterImpl();
+		
+		/*
+		 * Configure record validator with provided validators : : if no custom validator registered, use default implementation
+		 */
+        if (recordValidator == null)
+            recordValidator = new RecordValidatorImpl(fieldValidators);
+
+        /*
+           * Check record mapper
+           */
+        if(recordMapper == null){
+            String error = "Configuration failed : no record mapper registered";
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+
+		/*
+		 * Check record processor
+		 */
+		if(recordProcessor == null){
+            String error = "Configuration failed : no record processor registered";
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+
+        logger.info("Configuration successful");
+        logger.info("Configuration parameters details : " + configurationProperties.stringPropertyNames());
+
+	}
+
+    /*
+     * methods used to register mandatory implementations
+     */
+
+    /**
+     * Register one validator for a field
+     * @param index the field index
+     * @param validator the {@link FieldValidator} of the field
+     */
+    public void registerFieldValidator(int index,final FieldValidator validator){
+        List<FieldValidator> validators = fieldValidators.get(index);
+        if (validators == null)
+            validators = new ArrayList<FieldValidator>();
+        validators.add(validator);
+        fieldValidators.put(index,validators);
+    }
+
+    /**
+     * Register multiple validators for a field
+     * @param index the field index
+     * @param validators the list of validators used to validate the field
+     */
+    public void registerFieldValidators(int index,final List<FieldValidator> validators){
+        fieldValidators.put(index,validators);
+    }
+
+    /**
+     * Register an implementation of {@link RecordProcessor} that will be used to process records
+     * @param recordProcessor the record processor implementation
+     */
+	public void registerRecordProcessor(final RecordProcessor recordProcessor){
+		this.recordProcessor = recordProcessor;
+	}
+
+    /**
+     * Register a custom implementation of {@link RecordValidator} that will be used to validate records
+     * @param recordValidator the custom validator implementation
+     */
+    public void registerRecordValidator(RecordValidator recordValidator) {
+        this.recordValidator = recordValidator;
+    }
+
+    /**
+     * Register an implementation of {@link RecordMapper} that will be used to map records to objects
+     * @param recordMapper the record mapper implementation
+     */
+    public void registerRecordMapper(RecordMapper recordMapper) {
+        this.recordMapper = recordMapper;
+    }
+
+    /**
+     * Register a custom implementation of {@link BatchReporter} that will be used to ignore/reject records and generate batch report
+     * @param batchReporter the custom batch reporter implementation
+     */
+    public void registerBatchReporter(BatchReporter batchReporter) {
+        this.batchReporter = batchReporter;
+    }
+
+    /*
+    * Getters for CB4J services used by the engine
+    */
+    public RecordProcessor getRecordProcessor() {
+		return recordProcessor;
+	}
+
+	public RecordReader getRecordReader() {
+		return recordReader;
+	}
+
+	public RecordParser getRecordParser() {
+		return recordParser;
+	}
+
+	public RecordValidator getRecordValidator() {
+		return recordValidator;
+	}
+
+	public BatchReporter getBatchReporter() {
+		return batchReporter;
+	}
+
+    public RecordMapper getRecordMapper() {
+        return recordMapper;
+    }
+
+}

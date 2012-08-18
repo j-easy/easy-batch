@@ -1,0 +1,38 @@
+Overview
+
+* What is CB4J?
+
+  CB4J stands for CSV Batch For Java . It is a simple framework that aims to simplify CSV files batch processing with java.
+
+  CB4J addresses common tasks such as reading, parsing and validating CSV records and let you concentrate on your batch processing business logic.
+
+  It is a complete framework, yet still simple, that allows you to process CSV files in a clear workflow
+
+  With CB4J, you simply define CSV records validation rules and processing business logic and let the framework handle all the plumbing
+  code for reading, parsing, validating and processing records.
+
+* What CB4J is not?
+
+  CB4J is not just a tool to parse a CSV record.
+
+  CB4J is not a competitor of other batch framework such as Spring Batch which is definitely more generic framework.
+
+Features
+
+  CB4J is a lightweight framework providing the following features :
+
+  * Very simple model and API
+
+  * A small memory footprint (No dependencies)
+
+  * Built-in field validators and type conversion utilities for common requirements
+
+  * Simple reporting for common statistics including validation errors, processing time,etc
+
+  []
+
+  See the {{{./documentation/getting-started.html}Getting started page}} to get started, or the {{{./documentation/userguide.html}User Guide}} for more details about CB4J internals.
+
+License
+
+  CB4J is released under the {{{http://opensource.org/licenses/mit-license.php/}MIT license}}.

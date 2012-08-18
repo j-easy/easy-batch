@@ -1,0 +1,54 @@
+Requirement
+
+  CB4J requires at least java 1.5+ runtime to run. You simply have to include cb4j-core-\{version\}.jar in your application's classpath to use CB4J.
+
+Download CB4J
+
+    You can download the latest release and snapshot versions of CB4J here :
+
+Build CB4J
+
+* Get source code
+
+    CB4J uses Git as source control manager and is hosted on Github. To download CB4J source code, clone it's git repository as follow :
+
+---
+git clone https://github.com/benas/cb4j.git
+---
+
+ You can also get the source code in a zip file from the home page of the project at Github : {{{https://github.com/benas/cb4j}https://github.com/benas/cb4j}}
+
+* Build with Maven
+
+    To build CB4J with maven, use the following command from the root directory of the project :
+
+---
+mvn install
+---
+
+    If every thing is ok, you will have the cb4j-core-\{version\}.jar file added in you local maven repository in the following directory :
+    net/benas/cb4j/core/\{version\}/cb4j-core-\{version\}.jar
+
+* Build with ANT
+
+    To build CB4J with ANT, use the following command from the root directory of the project :
+
+---
+ant
+---
+
+    If every thing is ok, you will have the cb4j-core-\{version\}.jar file added in the dist directory
+
+Use CB4J
+
+ To use CB4J in your project, you have to include cb4j-core-\{version\}.jar in your application's classpath.
+
+ If you are using maven, note that CB4J jar is not published yet to the maven central repository, but you can add it's dependency to your pom after having installing in your local repository :
+
+---
+<dependency>
+    <groupId>net.benas.cb4j</groupId>
+    <artifactId>cb4j-core</artifactId>
+    <version>${version}</version>
+</dependency>
+---
