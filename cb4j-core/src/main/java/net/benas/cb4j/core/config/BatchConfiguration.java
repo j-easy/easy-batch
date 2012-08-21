@@ -271,7 +271,7 @@ public class BatchConfiguration {
         }
 
         logger.info("Configuration successful");
-        logger.info("Configuration parameters details : " + configurationProperties.stringPropertyNames());
+        logger.info("Configuration parameters details : " + configurationProperties);
 
 	}
 
