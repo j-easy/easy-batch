@@ -29,6 +29,13 @@
             <artifactId>cb4j-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.14</version>
+        </dependency>
+
     </dependencies>
 
 
@@ -60,6 +67,10 @@
                         <version>1.2.1</version>
                         <configuration>
                             <mainClass>net.benas.cb4j.tutorials.customers.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/customers.data</argument>
+                                <argument>6</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -75,7 +86,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>net.benas.cb4j.tutorials.orders.Launcher</mainClass>
+                            <mainClass>net.benas.cb4j.tutorials.products.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
