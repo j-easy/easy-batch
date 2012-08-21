@@ -78,8 +78,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
     public final void run() {//final : must not be overridden by framework users
 
         final long startTime = System.currentTimeMillis();
-        logger.info("Batch processing started at : " + new Date(startTime));
-        long currentRecordNumber = 0 ;
+        long currentRecordNumber = 0 ; //FIXME : if header is skipped, record numbers should start from 2
         batchReporter.setStartTime(startTime);
 
         while(recordReader.hasNextRecord()){
@@ -120,7 +119,6 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         recordReader.close();
 
         final long endTime = System.currentTimeMillis();
-        logger.info("Batch processing finished at : " + new Date(endTime));
         batchReporter.setEndTime(endTime);
         batchReporter.setTotalInputRecords(currentRecordNumber);
 
