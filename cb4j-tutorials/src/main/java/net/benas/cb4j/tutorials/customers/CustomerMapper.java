@@ -42,23 +42,23 @@ public class CustomerMapper implements RecordMapper<Customer> {
 
         Customer customer = new Customer();
 
-        customer.setFirstName(record.getFieldByIndex(0).getContent());
-        customer.setLastName(record.getFieldByIndex(1).getContent());
-        customer.setEmail(record.getFieldByIndex(2).getContent());
+        customer.setFirstName(record.getContentByIndex(0));
+        customer.setLastName(record.getContentByIndex(1));
+        customer.setEmail(record.getContentByIndex(2));
 
         //convert string date to java.util.Date object
         Date birthday;
         try {
-            birthday = TypeConverter.getDateTypedFieldContent(record.getFieldByIndex(3).getContent(), "dd/MM/yyyy");
+            birthday = TypeConverter.getDateTypedFieldContent(record.getContentByIndex(3), "dd/MM/yyyy");
         } catch (TypeConversionException e) {
             throw new RecordMappingException(e.getMessage(),e);
         }
         customer.setBirthday(birthday);
 
-        customer.setPhone(record.getFieldByIndex(4).getContent());
+        customer.setPhone(record.getContentByIndex(4));
 
         //custom mapping rule for transforming encoded data into a business value
-        String gender = record.getFieldByIndex(5).getContent();
+        String gender = record.getContentByIndex(5);
         if (gender.equals("0"))
             customer.setGender(Gender.MALE);
         else
