@@ -77,7 +77,7 @@
             </build>
         </profile>
         <profile>
-            <id>runOrdersTutorial</id>
+            <id>runProductsTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
                 <plugins>
@@ -87,6 +87,11 @@
                         <version>1.2.1</version>
                         <configuration>
                             <mainClass>net.benas.cb4j.tutorials.products.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/products.data</argument>
+                                <argument>4</argument>
+                                <argument>;</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
