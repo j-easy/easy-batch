@@ -66,6 +66,17 @@ public class Record {
     }
 
     /**
+     * Getter for a field's content by its index in the record
+     * @param index the field index
+     * @return The Field's content with index index
+     */
+    public String getContentByIndex(int index) {
+        if ( index < 0 || index > fields.size() )
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bound of fields list");
+        return fields.get(index).getContent();
+    }
+
+    /**
      * Getter for the field content as a String
      * @return The field content as String
      */
