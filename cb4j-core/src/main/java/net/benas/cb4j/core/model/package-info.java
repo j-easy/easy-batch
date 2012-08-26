@@ -22,8 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package net.benas.cb4j.core.model;
-
 /**
  * This package contains CB4J CSV model classes
  */
+package net.benas.cb4j.core.model;

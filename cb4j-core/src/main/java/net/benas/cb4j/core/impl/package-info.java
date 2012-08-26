@@ -22,8 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package net.benas.cb4j.core.impl;
-
 /**
  * This package contains CB4J core implementation
  */
+package net.benas.cb4j.core.impl;

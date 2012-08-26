@@ -22,8 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package net.benas.cb4j.core.converter;
-
 /**
  * This package contains CB4J built-in type conversion service
  */
+package net.benas.cb4j.core.converter;

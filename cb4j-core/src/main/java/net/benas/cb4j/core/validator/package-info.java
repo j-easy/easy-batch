@@ -22,8 +22,8 @@
  *  THE SOFTWARE.
  */
 
-package net.benas.cb4j.core.validator;
-
 /**
  * This package contains CB4J built-in filed validators implementation
  */
+package net.benas.cb4j.core.validator;
+

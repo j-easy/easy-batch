@@ -22,8 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package net.benas.cb4j.core.api;
-
 /**
  * This package contains main CB4J API
  */
+package net.benas.cb4j.core.api;
