@@ -29,7 +29,6 @@ import net.benas.cb4j.core.impl.RecordParserImpl;
 import net.benas.cb4j.core.model.Record;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -66,10 +65,9 @@ public class RecordParserImplTest {
         assertEquals(3, recordParser.getRecordSize(record));
     }
 
-    @Ignore( value = "ignored until empty field are correctly parsed")
     @Test
     public void testRecordSizeWithEmptyField() throws Exception {
-        record = "hello,cb4j,world,,";
+        record = "hello,cb4j,world,";
         assertEquals(4, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("",parsedRecord.getFieldByIndex(3).getContent());
@@ -84,6 +82,18 @@ public class RecordParserImplTest {
         assertEquals("world",parsedRecord.getFieldByIndex(2).getContent());
         assertEquals(1,parsedRecord.getNumber());
 
+    }
+
+    @Test
+    public void testRecordParsingWithPipeSeparator() throws Exception {
+        recordParser = new RecordParserImpl(3,"|");
+        record = "hello|cb4j|world";
+        assertTrue(recordParser.isWellFormed(record));
+        assertEquals(3, recordParser.getRecordSize(record));
+        Record parsedRecord = recordParser.parseRecord(record, 1);
+        assertEquals("hello",parsedRecord.getFieldByIndex(0).getContent());
+        assertEquals("cb4j",parsedRecord.getFieldByIndex(1).getContent());
+        assertEquals("world",parsedRecord.getFieldByIndex(2).getContent());
     }
 
     @After

@@ -36,28 +36,38 @@ import net.benas.cb4j.core.model.Record;
  */
 public class RecordParserImpl implements RecordParser {
 
+    /**
+     * The number of fields in the record
+     */
     private int fieldNumber;
 
+    /**
+     * The field separator
+     */
     private String fieldSeparator;
 
     public RecordParserImpl(int fieldNumber, String fieldSeparator) {
+
         this.fieldNumber = fieldNumber;
-        this.fieldSeparator = fieldSeparator;
+        String prefix = "";
+        if("|".equalsIgnoreCase(fieldSeparator)) //escape the "pipe" character used in regular expression of String.split method
+            prefix = "\\";
+        this.fieldSeparator = prefix + fieldSeparator;
     }
 
     public boolean isWellFormed(final String record) {
-        String[] tokens = record.split(fieldSeparator);
+        String[] tokens = record.split(fieldSeparator,-1);
         return (tokens.length == fieldNumber);
     }
 
     public int getRecordSize(final String record) {
-        String[] tokens = record.split(fieldSeparator);
+        String[] tokens = record.split(fieldSeparator,-1);
         return tokens.length;
     }
 
     public Record parseRecord(final String stringRecord,long currentRecordNumber) {
         Record record = new Record(currentRecordNumber,fieldSeparator);
-        String[] tokens = stringRecord.split(fieldSeparator);
+        String[] tokens = stringRecord.split(fieldSeparator,-1);
         int i = 1;
         for(String token : tokens){
             Field field = new Field(i++,token);
