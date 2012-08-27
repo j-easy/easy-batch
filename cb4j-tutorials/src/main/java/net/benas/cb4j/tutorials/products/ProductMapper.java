@@ -38,10 +38,10 @@ public class ProductMapper implements RecordMapper<Product> {
 
         Product product = new Product();
 
-        product.setProductId(Long.parseLong(record.getContentByIndex(0)));
-        product.setCategory_code(Long.parseLong(record.getContentByIndex(1)));
-        product.setName(record.getContentByIndex(2));
-        product.setPrice(Double.parseDouble(record.getContentByIndex(3)));
+        product.setProductId(Long.parseLong(record.getFieldContentByIndex(0)));
+        product.setCategory_code(Long.parseLong(record.getFieldContentByIndex(1)));
+        product.setName(record.getFieldContentByIndex(2));
+        product.setPrice(Double.parseDouble(record.getFieldContentByIndex(3)));
 
         return product;
     }

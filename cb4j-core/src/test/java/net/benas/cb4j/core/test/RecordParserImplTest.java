@@ -70,16 +70,16 @@ public class RecordParserImplTest {
         record = "hello,cb4j,world,";
         assertEquals(4, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
-        assertEquals("",parsedRecord.getFieldByIndex(3).getContent());
+        assertEquals("",parsedRecord.getFieldContentByIndex(3));
     }
 
     @Test
     public void testRecordParsing() throws Exception {
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals(3, parsedRecord.getFields().size());
-        assertEquals("hello",parsedRecord.getFieldByIndex(0).getContent());
-        assertEquals("cb4j",parsedRecord.getFieldByIndex(1).getContent());
-        assertEquals("world",parsedRecord.getFieldByIndex(2).getContent());
+        assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
+        assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
+        assertEquals("world",parsedRecord.getFieldContentByIndex(2));
         assertEquals(1,parsedRecord.getNumber());
 
     }
@@ -91,9 +91,9 @@ public class RecordParserImplTest {
         assertTrue(recordParser.isWellFormed(record));
         assertEquals(3, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
-        assertEquals("hello",parsedRecord.getFieldByIndex(0).getContent());
-        assertEquals("cb4j",parsedRecord.getFieldByIndex(1).getContent());
-        assertEquals("world",parsedRecord.getFieldByIndex(2).getContent());
+        assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
+        assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
+        assertEquals("world",parsedRecord.getFieldContentByIndex(2));
     }
 
     @After

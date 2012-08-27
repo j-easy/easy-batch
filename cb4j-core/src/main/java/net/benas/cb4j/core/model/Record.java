@@ -61,18 +61,18 @@ public class Record {
      */
     public Field getFieldByIndex(int index) {
         if ( index < 0 || index > fields.size() )
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bound of fields list");
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bound in fields list");
         return fields.get(index);
     }
 
     /**
-     * Getter for a field's content by its index in the record
+     * Getter for a field's content by its index in the record. This method is a shortcut for getFieldByIndex(index).getContent()
      * @param index the field index
-     * @return The Field's content with index index
+     * @return The Field's content with the given index. The method throws an IndexOutOfBoundsException if the given index is out of range in the fields list
      */
-    public String getContentByIndex(int index) {
+    public String getFieldContentByIndex(int index) {
         if ( index < 0 || index > fields.size() )
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bound of fields list");
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bound in fields list");
         return fields.get(index).getContent();
     }
 
