@@ -29,7 +29,6 @@ import net.benas.cb4j.core.config.BatchConfiguration;
 import net.benas.cb4j.core.model.Record;
 import net.benas.cb4j.core.util.BatchConstants;
 
-import java.util.Date;
 import java.util.logging.Logger;
 
 /**
