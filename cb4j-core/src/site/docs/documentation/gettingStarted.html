@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <title>CB4J</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="benas">
+
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style>
+    <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+
+</head>
+
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="brand" href="../index.html">CB4J</a>
+            <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">
+                    <a href="https://github.com/benas/cb4j" class="navbar-link">Fork me on Github</a>
+                </p>
+                <ul class="nav">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../about.html">About</a></li>
+                    <li class="dropdown active">
+                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Documentation<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
+                            <li><a href="gettingStarted.html">Getting started</a></li>
+                            <li><a href="architecture.html">Architecture</a></li>
+                            <li><a href="userGuide.html">User Guide</a></li>
+                            <li><a href="../javadoc/index.html">API Javadoc</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a id="tutorials" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="tutorials">
+                            <li><a href="../tutorials/hellocb4j.html">Hello CB4J!</a></li>
+                            <li><a href="../tutorials/customers.html">Customers ETL</a></li>
+                            <li><a href="../tutorials/products.html">Product Statistics</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+
+        <div class="span2">
+            <div class="well sidebar-nav">
+                <ul class="nav nav-list">
+                    <li class="nav-header">About CB4J</li>
+                    <li><a href="../about.html">Overview</a></li>
+                    <li><a href="../releaseNotes.html">Release notes</a></li>
+                    <li class="nav-header">Documentation</li>
+                    <li class="active"><a href="gettingStarted.html">Getting started</a></li>
+                    <li><a href="architecture.html">Architecture</a></li>
+                    <li><a href="userGuide.html">User Guide</a></li>
+                    <li><a href="../javadoc/index.html">API Javadoc</a></li>
+                    <li class="nav-header">Tutorials</li>
+                    <li><a href="../tutorials/hellocb4j.html">Hello CB4J!</a></li>
+                    <li><a href="../tutorials/customers.html">Customers ETL</a></li>
+                    <li><a href="../tutorials/products.html">Product Statistics</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="span10">
+
+            <div class="header">
+                <h1>Getting Started</h1>
+            </div>
+
+            <div class="row-fluid">
+
+                <h3>Requirement</h3>
+
+                <p>CB4J requires at least java 1.5+ runtime to run. </p>
+
+                <h3>Download CB4J</h3>
+
+                You can download the latest binary release and snapshot versions of CB4J here : <a href="https://github.com/benas/cb4j/downloads">https://github.com/benas/cb4j/downloads</a>
+
+                <h3>Build CB4J</h3>
+
+                <h4>Get source code</h4>
+
+                <p>CB4J uses <a href="http://git-scm.com/">Git</a> as source control manager and is hosted on Github. To download CB4J source code, clone it's git repository as follow :</p>
+
+                <p><code>git clone https://github.com/benas/cb4j.git</code></p>
+
+                <p>You can also get the source code in a zip file from the home page of the project at Github : <a href="https://github.com/benas/cb4j">https://github.com/benas/cb4j</a></p>
+
+                <h4>Build with Maven</h4>
+
+                <p>CB4J uses <a href="http://maven.apache.org/">maven</a> as build tool. To build CB4J with maven, use the following command from the root directory of the project :</p>
+
+            <p><code>mvn install</code></p>
+
+            <p>If every thing is ok, you will have the cb4j-core-{version}.jar file added in your local maven repository in the following directory :
+                net/benas/cb4j/core/{version}/cb4j-core-{version}.jar</p>
+
+            <h3>Use CB4J</h3>
+
+            <p>To use CB4J, you have to include cb4j-core-{version}.jar in your application's classpath.</p>
+
+            <p>If you are using maven, note that CB4J jar is not yet published to the maven central repository, but you can add it's dependency to your pom after having installing it in your local repository :</p>
+
+<pre>
+    &lt;dependency&gt;
+        &lt;groupId&gt;net.benas.cb4j&lt;/groupId&gt;
+        &lt;artifactId&gt;cb4j-core&lt;/artifactId&gt;
+        &lt;version&gt;${version}&lt;/version&gt;
+    &lt;/dependency&gt;
+</pre>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr>
+
+<footer>
+    <p>CB4J : CSV Batch For Java made easy!</p>
+    <p>Maintained by <a href="https://github.com/benas">benas</a> at <a href="https://github.com/benas/cb4j">Github</a></p>
+</footer>
+
+</div>
+
+<script src="../resources/js/jquery.js"></script>
+<script src="../resources/js/bootstrap.min.js"></script>
+
+</body></html>

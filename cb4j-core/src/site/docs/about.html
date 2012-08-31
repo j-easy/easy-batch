@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <title>CB4J</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="benas">
+
+    <link href="./resources/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style>
+    <link href="./resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+
+</head>
+
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="brand" href="./index.html">CB4J</a>
+            <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">
+                    <a href="https://github.com/benas/cb4j" class="navbar-link">Fork me on Github</a>
+                </p>
+                <ul class="nav">
+                    <li><a href="./index.html">Home</a></li>
+                    <li class="active"><a href="./about.html">About</a></li>
+                    <li class="dropdown">
+                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Documentation<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
+                            <li><a href="./documentation/gettingStarted.html">Getting started</a></li>
+                            <li><a href="./documentation/architecture.html">Architecture</a></li>
+                            <li><a href="./documentation/userGuide.html">User Guide</a></li>
+                            <li><a href="./javadoc/index.html">API Javadoc</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a id="tutorials" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="tutorials">
+                            <li><a href="./tutorials/hellocb4j.html">Hello CB4J!</a></li>
+                            <li><a href="./tutorials/customers.html">Customers ETL</a></li>
+                            <li><a href="./tutorials/products.html">Product Statistics</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+
+        <div class="span2">
+            <div class="well sidebar-nav">
+                <ul class="nav nav-list">
+                    <li class="nav-header">About CB4J</li>
+                    <li class="active"><a href="./about.html">Overview</a></li>
+                    <li><a href="./releaseNotes.html">Release notes</a></li>
+                    <li class="nav-header">Documentation</li>
+                    <li><a href="./documentation/gettingStarted.html">Getting started</a></li>
+                    <li><a href="./documentation/architecture.html">Architecture</a></li>
+                    <li><a href="./documentation/userGuide.html">User Guide</a></li>
+                    <li><a href="./javadoc/index.html">API Javadoc</a></li>
+                    <li class="nav-header">Tutorials</li>
+                    <li><a href="./tutorials/hellocb4j.html">Hello CB4J!</a></li>
+                    <li><a href="./tutorials/customers.html">Customers ETL</a></li>
+                    <li><a href="./tutorials/products.html">Product Statistics</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="span10">
+
+            <div class="header">
+                <h1>Overview</h1>
+            </div>
+
+            <div class="row-fluid">
+
+                <h3>What is CB4J?</h3>
+                <p>CB4J stands for CSV Batch For Java . It is a simple framework that aims at simplifying CSV files batch processing with java.</p>
+                <p>CB4J addresses common tasks such as reading, parsing and validating CSV records and let you concentrate on your batch processing business logic.</p>
+                <p>It is a complete, yet still simple and lightweight, framework that allows you to process CSV files in a clearly defined workflow</p>
+                <p>With CB4J, you simply define CSV records validation rules and processing business logic and let the framework handle all the plumbing code for reading, parsing, validating and processing records. </p>
+
+                <h3>What CB4J is not?</h3>
+                <ul>
+                    <li>CB4J is not just a tool to parse a CSV record.</li>
+                    <li>CB4J is not a competitor of other batch frameworks such as Spring Batch which is definitely more generic framework.</li>
+                </ul>
+
+                <h3>Features</h3>
+                <p> CB4J is a lightweight framework providing the following features :</p>
+                <ul>
+                    <li>Very simple model and API</li>
+                    <li>A small memory footprint (No single dependency): 40Ko !</li>
+                    <li>Built-in field validators and type conversion utilities for common requirements</li>
+                    <li>Simple reporting for common statistics including validation errors, processing time,etc</li>
+                </ul>
+
+                <h3>License</h3>
+                <p>CB4J is released under the <a href="http://opensource.org/licenses/mit-license.php/">MIT license</a></p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <footer>
+        <p>CB4J : CSV Batch For Java made easy!</p>
+        <p>Maintained by <a href="https://github.com/benas">benas</a> at <a href="https://github.com/benas/cb4j">Github</a></p>
+    </footer>
+
+</div>
+
+<script src="./resources/js/jquery.js"></script>
+<script src="./resources/js/bootstrap.min.js"></script>
+
+</body></html>
