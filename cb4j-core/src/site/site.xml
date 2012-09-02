@@ -25,19 +25,6 @@
 
     <body>
 
-        <menu name="About CB4J">
-            <item name="Introduction" href="index.html"/>
-            <item name="Release Notes" href="release-notes.html" />
-        </menu>
-
-        <menu name="Documentation">
-            <item name="Getting started" href="documentation/getting-started.html"/>
-            <item name="Architecture" href="documentation/architecture.html"/>
-            <item name="User guide" href="documentation/user-guide.html"/>
-            <item name="Tutorial" href="documentation/tutorial.html"/>
-            <item name="API Javadoc" href="apidocs/index.html" />
-        </menu>
-
         <menu ref="reports"/>
 
     </body>

@@ -6,10 +6,9 @@ Overview
 
   CB4J addresses common tasks such as reading, parsing and validating CSV records and let you concentrate on your batch processing business logic.
 
-  It is a complete framework, yet still simple, that allows you to process CSV files in a clear workflow
+  It is a complete, yet still simple and lightweight, framework that allows you to process CSV files in a clearly defined workflow.
 
-  With CB4J, you simply define CSV records validation rules and processing business logic and let the framework handle all the plumbing
-  code for reading, parsing, validating and processing records.
+  With CB4J, you simply define CSV records validation rules and processing business logic and let the framework handle all the plumbing code for reading, parsing, validating and processing records.
 
 * What CB4J is not?
 
@@ -23,15 +22,13 @@ Features
 
   * Very simple model and API
 
-  * A small memory footprint (No dependencies)
+  * A small memory footprint (No single dependency): 40Ko !
 
   * Built-in field validators and type conversion utilities for common requirements
 
-  * Simple reporting for common statistics including validation errors, processing time,etc
+  * Simple and customizable reporting for common statistics including validation errors, processing time,etc
 
   []
-
-  See the {{{./documentation/getting-started.html}Getting started page}} to get started, or the {{{./documentation/userguide.html}User Guide}} for more details about CB4J internals.
 
 License
 
