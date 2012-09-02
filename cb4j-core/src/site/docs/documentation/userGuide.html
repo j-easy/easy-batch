@@ -89,23 +89,106 @@
 
             <div class="row-fluid">
 
+            <h3>Introduction</h3>
+
+            <p>To work effectively with CB4J, you have to follow these steps :</p>
+            <ul>
+                <li>Provide configuration parameters : the input CSV file path, the file encoding,field separator,etc</li>
+                <li>Register field validation rules : filed size, data type format,etc</li>
+                <li>Register record mapper : CSV to Object mapping logic</li>
+                <li>Register record processor : record processing business logic</li>
+            </ul>
+            
+            <p>All these steps can be done through the <code>BatchConfiguration</code> class which is the main entry point to configure the engine.<br/>
+            The following table summarizes what you need to do and what CB4J does for you.</p>
+            
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>You</th>
+                        <th>CB4J</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Provides configuration parameters</td>
+                    <td><i class="icon-ok-circle"></i></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Provide filed validation logic</td>
+                    <td><i class="icon-ok-circle"></i></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Provide CSV/Object mapping logic</td>
+                    <td><i class="icon-ok-circle"></i></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Provide record processing logic</td>
+                    <td><i class="icon-ok-circle"></i></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Handle I/O for input/log files</td>
+                    <td></td>
+                    <td><i class="icon-ok-circle"></i></td>
+                </tr>
+                <tr>
+                    <td>Read input file line by line</td>
+                    <td></td>
+                    <td><i class="icon-ok-circle"></i></td>
+                </tr>
+                <tr>
+                    <td>Check CSV record well-formdness</td>
+                    <td></td>
+                    <td><i class="icon-ok-circle"></i></td>
+                </tr>
+                <tr>
+                    <td>Parse CSV record and split it to a list of fields</td>
+                    <td></td>
+                    <td><i class="icon-ok-circle"></i></td>
+                </tr>
+                <tr>
+                    <td>Apply validation logic to each field/record</td>
+                    <td></td>
+                    <td><i class="icon-ok-circle"></i></td>
+                </tr>
+                <tr>
+                    <td>Apply CSV/Object mapping logic</td>
+                    <td></td>
+                    <td><i class="icon-ok-circle"></i></td>
+                </tr>
+                <tr>
+                    <td>Apply business processing logic</td>
+                    <td></td>
+                    <td><i class="icon-ok-circle"></i></td>
+                </tr>
+                <tr>
+                    <td>Report batch statistics</td>
+                    <td></td>
+                    <td><i class="icon-ok-circle"></i></td>
+                </tr>
+                <tr>
+                    <td>Generate log files for ignored/rejected records</td>
+                    <td></td>
+                    <td><i class="icon-ok-circle"></i></td>
+                </tr>
+                </tbody>
+            </table>
+            
             <h3>Using CB4J</h3>
 
-            <p>To use CB4J, you have to :</p>
-
-            <ul>
-                <li>Supply configuration parameters</li>
-                <li>Register record validators, mapper and processor</li>
-            </ul>
-
-            <h4>Configuration parameters</h4>
+            <h4>Configuring the engine</h4>
 
             <p>To configure CB4J, you must supply a set of predefined parameters (see table below).
             You can configure CB4J in two ways :</p>
 
             <ul>
                 <li>With a configuration file (standard java properties file)</li>
-                <li>With a java.util.Properties when using configuration API</li>
+                <li>With a <code>java.util.Properties</code> when using configuration API</li>
             </ul>
 
             <p>Configuration parameters are defined in the following table :</p>
@@ -134,15 +217,15 @@
                 </tr>
                 <tr>
                     <td>input.data.skipHeader</td>
-                    <td>Specify if CB4J should skip the first record</td>
+                    <td>Specify if the first record should be skipped</td>
                     <td>false</td>
-                    <td>If not specified, default is set to false</td>
+                    <td>If not specified, default value is set to false</td>
                 </tr>
                 <tr>
                     <td>input.record.separator</td>
                     <td>The fields separator in a record</td>
                     <td>false</td>
-                    <td>If not specified, the default is set to ','</td>
+                    <td>If not specified, the default separator is set to ','</td>
                 </tr>
                 <tr>
                     <td>input.record.size</td>
@@ -165,27 +248,137 @@
                 </tbody>
             </table>
 
-            <h4>Registering fields validators</h4>
+            <p>The code sample below shows how to configure CB4J using <code>java.util.Properties</code> :</p>
 
-            CB4J API provides methods to register a single validator or multiple validators for a field.
+<pre>
+Properties configurationProperties = new Properties();
+configurationProperties.setProperty("input.data.path","/data/cb4j/myData.csv");
+configurationProperties.setProperty("input.record.size","7");
 
-            <h5>Registering a single validator</h5>
+BatchConfiguration batchConfiguration = new BatchConfiguration(configurationProperties);
+</pre>
 
-            To register a single validator, TODO
+            <p>You can also use a configuration file to externalize parameters. The following is an example of a configuration file ("/data/cb4j/myConfig.cfg"):</p>
+
+<pre>
+input.data.path=/data/cb4j/myData.csv
+input.record.size=7
+</pre>
+
+            <p>To use this configuration file with CB4J, you can the following snippet :</p>
+
+            <p><code>
+            BatchConfiguration batchConfiguration = new BatchConfiguration("/data/cb4j/myConfig.cfg");
+            </code></p>
+
+            <p>Once you have initialized CB4J with all parameters (and registered mandatory services, see next section ), you have to configure the engine as follows:</p>
+<pre>
+/*
+ * Configure the engine
+ */
+try {
+    batchConfiguration.configure();
+} catch (BatchConfigurationException e) {
+    System.err.println(e.getMessage());
+}
+</pre>
+
+            <div class="alert alert-info">
+                Note : CB4J throws a <code>BatchConfigurationException</code> in the following cases :
+                <ul>
+                    <li>One of the mandatory parameters is not specified</li>
+                    <li>An <code>java.io.FileNotFoundException</code> is thrown when trying to open the input CSV file</li>
+                    <li>Log files for ignored and rejected records cannot be used</li>
+                    <li>One of the mandatory services is not specified</li>
+                </ul>
+            </div>
+
+            <h4>Validating data</h4>
+
+            <h5>Using built-in validators</h5>
+
+            <p>CB4J validates field data with implementations of <code>FieldValidator</code> and comes with built-in validators which allow you to ensure that a field content has a valid format and type. These validators are located in the <code>net.benas.cb4j.core.validator</code> package.</p>
+
+            <p>For example, let's say that the first record must be a numeric value. With CB4J you simly declare this constraint using the <code>NumericFieldValidator</code> as follows:</p>
+
+            <code>batchConfiguration.registerFieldValidator(1, new NumericFieldValidator());</code>
 
             <h5>Registering multiple validators</h5>
 
-            To register multiples validators for a single field, TODO
+            <p>You may want to apply multiple validation rules to a single field. For example, the first field must not be empty and must be a date value having the <code>dd/MM/yyyy</code> format.
+            To register multiples validators for a this field, you have to declare a list containing all validators :</p>
+<pre>
+List&lt;FieldValidator&gt; filed1Validators = new ArrayList&lt;FieldValidator&gt;();
+filed1Validators.add(new NotEmptyFieldValidator());
+filed1Validators.add(new DateFormatFieldValidator("dd/MM/yyyy"));
 
-            <h4>Registering record/Object mapper</h4>
+batchConfiguration.registerFieldValidators(1,filed1Validators);
+</pre>
 
-            <h4>Registering record processor</h4>
+            <div class="alert alert-info">
+                Note : When using multiple validators, the validation order is the order in which validators are inserted in the list.
+            </div>
+
+            <h4>Mapping CSV records to java objects</h4>
+
+            <p>To map a CSV record to a business java object, you have to implement the <code>RecordMapper&lt;T&gt;</code> interface and register your implementation at configuration time as follows :</p>
+            <p><code>batchConfiguration.registerRecordMapper(new myRecordMapper());</code></p>
+            
+            <p>The <a href="../tutorials/customers.html">customers ETL tutorial</a> shows an example of record mapper implementation.</p>
+
+            <div class="alert">
+                Note : CB4J does not provide a default implementation of the <code>RecordMapper&lt;T&gt;</code> interface for performance reason. In fact, CB4J should use reflection to detect business object field types and this may impact the execution performance.
+            </div>
+            
+            <h4>Writing processing logic</h4>
+
+            When using CB4J, you process an object view of a CSV record. To define your record processing business logic, you have to implement the <code>RecordProcessor&lt;T&gt;</code> interface and register your implementation at configuration time as follows :</p>
+            <p><code>batchConfiguration.registerRecordProcessor(new myRecordProcessor());</code></p>
+
+            <div class="alert">
+                Note : You have to use the <strong>same</strong> type when implementing <code>RecordMapper&lt;T&gt;</code> and <code>RecordProcessor&lt;T&gt;</code> interfaces
+            </div>
+
+            <h4>Running the batch process</h4>
+
+            <p>Once you have configured CB4J using the configuration API, you can launch the batch execution as follows :</p>
+
+<pre>
+BatchEngine batchEngine = new DefaultBatchEngineImpl(batchConfiguration);
+BatchRunner batchRunner = new BatchRunner(batchEngine);
+batchRunner.run();
+</pre>
 
             <h3>Extending CB4J</h3>
 
-            Although CB4J comes with default implementation of commons requirements of field validation and data type conversion, it let you extend these defaults as you need.
-            In this section, we will show how you can extends CB4J to meet you custom requirements.
+            <p>Although CB4J comes with default implementation of commons requirements of field validation and data type conversion, it let you extend these defaults as you need.
+            In this section, we will show how you can extends CB4J to meet you custom requirements.</p>
 
+            <div class="alert alert-info">
+            Note : In this section, <code>batchConfiguration</code> is supposed to be a <code>BatchConfiguration</code> instance correctly configured with CB4J parameters.
+            </div>
+
+            <h4>Writing a custom batch engine</h4>
+
+            <p>The internal CB4J engine extends the <code>java.lang.Runnable</code> interface with two methods to initialize and shutdown the engine :</p>
+<pre>
+public interface BatchEngine extends Runnable{
+
+/**
+* initialize the engine
+*/
+public void init();
+
+/**
+* shutdown the engine
+*/
+public void shutdown();
+
+}
+</pre>
+            By default, the <code>DefaultBatchEngineImpl</code> logs a message to the console to signal batch starting and ending steps.<br/>
+            To override this default behavior, you can extends the <code>DefaultBatchEngineImpl</code> to provide a custom initializing and shutdown methods. For instance, this is where you can open/close a database connection.<br/>
+            The <a href="../tutorials/products.html">products statistics tutorial</a> shows an example of how to override the the <code>DefaultBatchEngineImpl</code>.
             <h4>Writing a custom field validator</h4>
 
             <p>CB4J comes with basic field validators for common requirements such as not empty field, numeric values, etc.
@@ -216,7 +409,6 @@ return "field content must start with XP";
             <p>To register this validator for the field at index 1, use the following CB4J API :</p>
 
 <pre>
-BatchConfiguration batchConfiguration = new BatchConfiguration("/data/cb4j/config/myCb4jBatch.properties");
 batchConfiguration.registerFieldValidator(1,new MyCustomFieldValidator());
 </pre>
 
@@ -247,7 +439,7 @@ foo;boobar
             <p>We should extend the default with a custom record validator. To do this, we will extend the <code>DefaultRecordValidator</code> and override the <code>validateRecord(Record record)</code> method :<p/>
 
 <pre>
-public class MyCustomRecordValidator extends RecordValidatorImpl {
+public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {
 
 public MyCustomRecordValidator(Map&lt;Integer, List&lt;FieldValidator&gt;&gt; fieldValidators) {
 super(fieldValidators);
@@ -273,7 +465,6 @@ return "";
             <p>Once the custom validator implemented, we should tell CB4J to use it instead of the default one. This is done with the following API :</p>
 
 <pre>
-BatchConfiguration batchConfiguration = new BatchConfiguration("/data/cb4j/config/myCb4jBatch.properties");
 Map&lt;Integer, List&lt;FieldValidator;&gt;;&gt; fieldValidators = new HashMap&lt;Integer, List&lt;FieldValidator;&gt;;&gt;();
 
 List&lt;FieldValidator> filed1Validators = new ArrayList&lt;FieldValidator;&gt;();
@@ -313,11 +504,7 @@ batchConfiguration.registerRecordValidator(myCustomRecordValidator);
                             To override the default reporter behavior, we have to extend the DefaultBatchReporter class and override the generateReport method. The following listing shows a custom implementation that generate a simple Pie Chart instead of reporting information to the console.</p>
 
 <pre>
-/**
-* A custom batch reporter which generate a graphic chart report
-* @author benas (md.benhassine@gmail.com)
-*/
-public class MyCustomBatchReporter extends BatchReporterImpl {
+public class MyCustomBatchReporter extends DefaultBatchReporterImpl {
 
 /**
 * The file in which render the chart
@@ -382,7 +569,6 @@ return chart;
                             CB4J API provides a method to register custom batch reporter :</p>
 
 <pre>
-BatchConfiguration batchConfiguration = new BatchConfiguration("/data/cb4j/config/myCb4jBatch.properties");
 batchConfiguration.registerBatchReporter(new MyCustomBatchReporter("/data/cb4j/chartReport.png"))
 </pre>
 

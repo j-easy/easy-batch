@@ -89,29 +89,16 @@
 
             <div class="row-fluid">
 
-                <h3>What is CB4J?</h3>
-                <p>CB4J stands for CSV Batch For Java . It is a simple framework that aims at simplifying CSV files batch processing with java.</p>
-                <p>CB4J addresses common tasks such as reading, parsing and validating CSV records and let you concentrate on your batch processing business logic.</p>
-                <p>It is a complete, yet still simple and lightweight, framework that allows you to process CSV files in a clearly defined workflow</p>
-                <p>With CB4J, you simply define CSV records validation rules and processing business logic and let the framework handle all the plumbing code for reading, parsing, validating and processing records. </p>
+                The next figure illustrates the main CB4J components and gives an overview of the framework architecture.<br/>
+                <p><img src="../resources/img/workflow.jpg"/></p>
 
-                <h3>What CB4J is not?</h3>
+                CB4J has a clearly defined workflow to process CSV flat files. The main components involved in this workflow are the following :
                 <ul>
-                    <li>CB4J is not just a tool to parse a CSV record.</li>
-                    <li>CB4J is not a competitor of other batch frameworks such as Spring Batch which is definitely more generic framework.</li>
+                    <li>Record Parser : responsible for record parsing</li>
+                    <li>Record Validator : responsible for record validation</li>
+                    <li>Record Mapper : responsible for mapping a record to a java object</li>
+                    <li>Record Processor : responsible for applying business processing logic</li>
                 </ul>
-
-                <h3>Features</h3>
-                <p> CB4J is a lightweight framework providing the following features :</p>
-                <ul>
-                    <li>Very simple model and API</li>
-                    <li>A small memory footprint (No single dependency): 40Ko !</li>
-                    <li>Built-in field validators and type conversion utilities for common requirements</li>
-                    <li>Simple reporting for common statistics including validation errors, processing time,etc</li>
-                </ul>
-
-                <h3>License</h3>
-                <p>CB4J is released under the <a href="http://opensource.org/licenses/mit-license.php/">MIT license</a></p>
 
             </div>
 
