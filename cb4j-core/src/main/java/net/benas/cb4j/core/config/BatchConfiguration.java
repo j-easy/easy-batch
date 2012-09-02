@@ -25,10 +25,10 @@
 package net.benas.cb4j.core.config;
 
 import net.benas.cb4j.core.api.*;
-import net.benas.cb4j.core.impl.BatchReporterImpl;
+import net.benas.cb4j.core.impl.DefaultBatchReporterImpl;
+import net.benas.cb4j.core.impl.DefaultRecordValidatorImpl;
 import net.benas.cb4j.core.impl.RecordParserImpl;
 import net.benas.cb4j.core.impl.RecordReaderImpl;
-import net.benas.cb4j.core.impl.RecordValidatorImpl;
 import net.benas.cb4j.core.util.BatchConstants;
 import net.benas.cb4j.core.util.LogFormatter;
 import net.benas.cb4j.core.util.ReportFormatter;
@@ -244,13 +244,13 @@ public class BatchConfiguration {
          * Configure batch reporter : if no custom reporter registered, use default implementation
          */
         if (batchReporter == null)
-            batchReporter = new BatchReporterImpl();
+            batchReporter = new DefaultBatchReporterImpl();
 		
 		/*
 		 * Configure record validator with provided validators : : if no custom validator registered, use default implementation
 		 */
         if (recordValidator == null)
-            recordValidator = new RecordValidatorImpl(fieldValidators);
+            recordValidator = new DefaultRecordValidatorImpl(fieldValidators);
 
         /*
            * Check record mapper

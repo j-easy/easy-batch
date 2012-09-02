@@ -38,7 +38,7 @@ import java.util.logging.Logger;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class BatchReporterImpl implements BatchReporter {
+public class DefaultBatchReporterImpl implements BatchReporter {
 
     /*
      * Loggers
@@ -74,7 +74,7 @@ public class BatchReporterImpl implements BatchReporter {
      */
     protected long endTime;
 
-    public BatchReporterImpl(){
+    public DefaultBatchReporterImpl(){
         rejectedRecordsNumber = 0;
         ignoredRecordsNumber = 0;
         ignoredRecordsReporter.setUseParentHandlers(false);

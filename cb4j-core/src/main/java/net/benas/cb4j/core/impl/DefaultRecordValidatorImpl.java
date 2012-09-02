@@ -39,7 +39,7 @@ import java.util.Map;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class RecordValidatorImpl implements RecordValidator {
+public class DefaultRecordValidatorImpl implements RecordValidator {
 
     /**
      * The field validators to use in the process of validation a record.
@@ -48,7 +48,7 @@ public class RecordValidatorImpl implements RecordValidator {
      */
     private Map<Integer,List<FieldValidator>> fieldValidators;
 
-    public RecordValidatorImpl(Map<Integer, List<FieldValidator>> fieldValidators) {
+    public DefaultRecordValidatorImpl(Map<Integer, List<FieldValidator>> fieldValidators) {
         this.fieldValidators = fieldValidators;
     }
 

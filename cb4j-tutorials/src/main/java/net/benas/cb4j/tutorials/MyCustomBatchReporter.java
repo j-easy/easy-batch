@@ -1,6 +1,6 @@
 package net.benas.cb4j.tutorials;
 
-import net.benas.cb4j.core.impl.BatchReporterImpl;
+import net.benas.cb4j.core.impl.DefaultBatchReporterImpl;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
@@ -17,7 +17,7 @@ import java.io.IOException;
  * A custom batch reporter which generate a graphic chart report
  * @author benas (md.benhassine@gmail.com)
  */
-public class MyCustomBatchReporter extends BatchReporterImpl {
+public class MyCustomBatchReporter extends DefaultBatchReporterImpl {
 
     /**
      * The file in which render the chart
