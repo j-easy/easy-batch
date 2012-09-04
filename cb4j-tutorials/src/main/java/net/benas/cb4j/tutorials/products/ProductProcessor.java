@@ -30,7 +30,7 @@ import java.util.*;
 
 /**
  * A processor that will gather data and split products by category according to business requirement
- *  * @author benas (md.benhassine@gmail.com)
+ * @author benas (md.benhassine@gmail.com)
  */
 public class ProductProcessor implements RecordProcessor<Product> {
 

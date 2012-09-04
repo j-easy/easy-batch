@@ -68,7 +68,7 @@
                         <configuration>
                             <mainClass>net.benas.cb4j.tutorials.customers.Launcher</mainClass>
                             <arguments>
-                                <argument>${project.basedir}/src/main/resources/customers.data</argument>
+                                <argument>${project.basedir}/src/main/resources/customers.csv</argument>
                                 <argument>6</argument>
                             </arguments>
                         </configuration>
@@ -88,7 +88,7 @@
                         <configuration>
                             <mainClass>net.benas.cb4j.tutorials.products.Launcher</mainClass>
                             <arguments>
-                                <argument>${project.basedir}/src/main/resources/products.data</argument>
+                                <argument>${project.basedir}/src/main/resources/products.csv</argument>
                                 <argument>4</argument>
                                 <argument>;</argument>
                             </arguments>
@@ -109,7 +109,7 @@
                         <configuration>
                             <mainClass>net.benas.cb4j.tutorials.helloworld.Launcher</mainClass>
                             <arguments>
-                                <argument>${project.basedir}/src/main/resources/persons.data</argument>
+                                <argument>${project.basedir}/src/main/resources/persons.csv</argument>
                                 <argument>2</argument>
                             </arguments>
                         </configuration>

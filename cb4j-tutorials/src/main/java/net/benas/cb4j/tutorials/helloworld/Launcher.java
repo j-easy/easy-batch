@@ -44,7 +44,7 @@ public class Launcher {
         if (args == null || args.length < 2){
             System.err.println("[CB4J] Configuration parameters not specified, usage : ");
             System.err.println("java net.benas.cb4j.tutorials.helloworld.Launcher path/to/data/file recordSize separator");
-            System.err.println("Example : java net.benas.cb4j.tutorials.helloworld.Launcher /data/cb4j/persons.data 2");
+            System.err.println("Example : java net.benas.cb4j.tutorials.helloworld.Launcher /data/cb4j/persons.csv 2");
             System.exit(1);
         }
 
