@@ -265,7 +265,7 @@ input.data.path=/data/cb4j/myData.csv
 input.record.size=7
 </pre>
 
-            <p>To use this configuration file with CB4J, you can the following snippet :</p>
+            <p>To use this configuration file with CB4J, you can use the following snippet :</p>
 
             <p><code>
             BatchConfiguration batchConfiguration = new BatchConfiguration("/data/cb4j/myConfig.cfg");
@@ -284,10 +284,10 @@ try {
 </pre>
 
             <div class="alert alert-info">
-                Note : CB4J throws a <code>BatchConfigurationException</code> in the following cases :
+                <span class="label label-info">Info</span> : CB4J throws a <code>BatchConfigurationException</code> in the following cases :
                 <ul>
                     <li>One of the mandatory parameters is not specified</li>
-                    <li>An <code>java.io.FileNotFoundException</code> is thrown when trying to open the input CSV file</li>
+                    <li>A <code>java.io.FileNotFoundException</code> is thrown when trying to open the input CSV file</li>
                     <li>Log files for ignored and rejected records cannot be used</li>
                     <li>One of the mandatory services is not specified</li>
                 </ul>
@@ -299,14 +299,14 @@ try {
 
             <p>CB4J validates field data with implementations of <code>FieldValidator</code> and comes with built-in validators which allow you to ensure that a field content has a valid format and type. These validators are located in the <code>net.benas.cb4j.core.validator</code> package.</p>
 
-            <p>For example, let's say that the first record must be a numeric value. With CB4J you simly declare this constraint using the <code>NumericFieldValidator</code> as follows:</p>
+            <p>For example, let's say that the first record must be a numeric value. With CB4J you simply declare this constraint using the <code>NumericFieldValidator</code> as follows:</p>
 
             <code>batchConfiguration.registerFieldValidator(1, new NumericFieldValidator());</code>
 
             <h5>Registering multiple validators</h5>
 
             <p>You may want to apply multiple validation rules to a single field. For example, the first field must not be empty and must be a date value having the <code>dd/MM/yyyy</code> format.
-            To register multiples validators for a this field, you have to declare a list containing all validators :</p>
+            To register multiples validators for this field, you have to declare a list containing all validators :</p>
 <pre>
 List&lt;FieldValidator&gt; filed1Validators = new ArrayList&lt;FieldValidator&gt;();
 filed1Validators.add(new NotEmptyFieldValidator());
@@ -316,7 +316,7 @@ batchConfiguration.registerFieldValidators(1,filed1Validators);
 </pre>
 
             <div class="alert alert-info">
-                Note : When using multiple validators, the validation order is the order in which validators are inserted in the list.
+                <span class="label label-info">Info</span> : When using multiple validators, the validation order is the order in which validators are inserted in the list.
             </div>
 
             <h4>Mapping CSV records to java objects</h4>
@@ -327,7 +327,7 @@ batchConfiguration.registerFieldValidators(1,filed1Validators);
             <p>The <a href="../tutorials/customers.html">customers ETL tutorial</a> shows an example of record mapper implementation.</p>
 
             <div class="alert">
-                Note : CB4J does not provide a default implementation of the <code>RecordMapper&lt;T&gt;</code> interface for performance reason. In fact, CB4J should use reflection to detect business object field types and this may impact the execution performance.
+                <span class="label label-warning">Warning</span> : CB4J does not provide a default implementation of the <code>RecordMapper&lt;T&gt;</code> interface for performance reason. In fact, CB4J should use reflection to detect business object field types and this may impact the execution performance.
             </div>
             
             <h4>Writing processing logic</h4>
@@ -336,7 +336,7 @@ batchConfiguration.registerFieldValidators(1,filed1Validators);
             <p><code>batchConfiguration.registerRecordProcessor(new myRecordProcessor());</code></p>
 
             <div class="alert">
-                Note : You have to use the <strong>same</strong> type when implementing <code>RecordMapper&lt;T&gt;</code> and <code>RecordProcessor&lt;T&gt;</code> interfaces
+                <span class="label label-warning">Warning</span> : You have to use the <strong>same</strong> type when implementing <code>RecordMapper&lt;T&gt;</code> and <code>RecordProcessor&lt;T&gt;</code> interfaces
             </div>
 
             <h4>Running the batch process</h4>
@@ -351,11 +351,11 @@ batchRunner.run();
 
             <h3>Extending CB4J</h3>
 
-            <p>Although CB4J comes with default implementation of commons requirements of field validation and data type conversion, it let you extend these defaults as you need.
-            In this section, we will show how you can extends CB4J to meet you custom requirements.</p>
+            <p>Although CB4J comes with default implementation of common requirements of field validation and data type conversion, it let you extend these defaults as you need.
+            In this section, we will show how you can extend CB4J to meet you custom requirements.</p>
 
             <div class="alert alert-info">
-            Note : In this section, <code>batchConfiguration</code> is supposed to be a <code>BatchConfiguration</code> instance correctly configured with CB4J parameters.
+                <span class="label label-info">Info</span> : In this section, <code>batchConfiguration</code> is supposed to be a <code>BatchConfiguration</code> instance correctly configured with CB4J parameters.
             </div>
 
             <h4>Writing a custom batch engine</h4>
@@ -382,12 +382,12 @@ public void shutdown();
             <h4>Writing a custom field validator</h4>
 
             <p>CB4J comes with basic field validators for common requirements such as not empty field, numeric values, etc.
-            Please refer to the javadoc of net.benas.cb4j.core.valiator package for more details.</p>
+            Please refer to the javadoc of <code>net.benas.cb4j.core.validator</code> package for more details.</p>
 
             <p>To write a custom field validator, you have to implement the <code>FieldValidator</code> interface. This interface contains the two following methods :</p>
             <ul>
                 <li><code>public boolean isValidField(final Field field)</code> : This method should contain the validation logic for a field</li>
-                <li><code>public String getValidationRuleDescription()</code> : This method should return a description of the validation rule implemented by the validator. this description will be used to report the cause of record rejection</li>
+                <li><code>public String getValidationRuleDescription()</code> : This method should return a description of the validation rule implemented by the validator. This description will be used to report the cause of record rejection</li>
             </ul>
 
             <p>In this section, we will show an example of custom validator which validates that a field value must start with 'XP'.</p>
@@ -431,12 +431,12 @@ foo;boobar
             <ul>
                 <li>All fields are required</li>
                 <li>filed1 should have a length of 3 characters</li>
-                <li>filed2 content must start with field1 content</li>
+                <li>filed2 content must start with field1's content</li>
             </ul>
 
             <p>As you can see, this requirement cannot be implemented using the default CB4J validation.
             Conditions 1 and 2 can be implemented by declaring regular field validators, but not Condition 3 which involves field1 and field2 at the same time. This validation requirement should be done at record level and not field level.</p>
-            <p>We should extend the default with a custom record validator. To do this, we will extend the <code>DefaultRecordValidator</code> and override the <code>validateRecord(Record record)</code> method :<p/>
+            <p>We should extend the default behavior with a custom record validator. To do this, we will extend the <code>DefaultRecordValidator</code> and override the <code>validateRecord(Record record)</code> method :<p/>
 
 <pre>
 public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {
@@ -452,8 +452,8 @@ String error = super.validateRecord(record);
 if (error.isEmpty()){//no errors after applying declared validators on each field => all fields are valid
 
 //add custom validation : field 2 content must starts with field 1 content
-final String content1 = record.getContentByIndex(1);
-final String content2 = record.getContentByIndex(2);
+final String content1 = record.getFieldContentByIndex(1);
+final String content2 = record.getFieldContentByIndex(2);
 if (!content2.startsWith(content1))
 return "field 2 content [" + content2 + "] must start with field 1 content [" + content1 + "]";
 }
@@ -497,11 +497,11 @@ batchConfiguration.registerRecordValidator(myCustomRecordValidator);
 [CB4J : INFO] Total processed records = 50
 </pre>
 
-                            <p>As you see, CB4J reports to the console the batch start time, end time , overall execution duration and other metrics about input records.
+                            <p>As you can see, CB4J reports to the console the batch start time, end time , overall execution duration and other metrics about input records.
                             This simple report may not correspond to your need, and CB4J lets you extend or override it as you need.</p>
 
-                            <p>In this section ,we will show how to override the default report with a chart report using the java free charting library jfreechart.
-                            To override the default reporter behavior, we have to extend the DefaultBatchReporter class and override the generateReport method. The following listing shows a custom implementation that generate a simple Pie Chart instead of reporting information to the console.</p>
+                            <p>In this section ,we will show how to override the default report with a chart report using the java free charting library <a href="http://www.jfree.org/jfreechart/">jfreechart</a>.
+                            To override the default reporter behavior, we have to extend the <code>DefaultBatchReporter</code> class and override the <code>generateReport</code> method. The following listing shows a custom implementation that generates a simple Pie Chart instead of reporting information to the console.</p>
 
 <pre>
 public class MyCustomBatchReporter extends DefaultBatchReporterImpl {
@@ -566,7 +566,7 @@ return chart;
 
                             <br/>
                             <p>At this point, we have implemented a custom report generator, but how to tell CB4J to use this custom implementation instead of the default one?
-                            CB4J API provides a method to register custom batch reporter :</p>
+                            CB4J API provides a method to register a custom batch reporter :</p>
 
 <pre>
 batchConfiguration.registerBatchReporter(new MyCustomBatchReporter("/data/cb4j/chartReport.png"))

@@ -89,16 +89,27 @@
 
             <div class="row-fluid">
 
-                The next figure illustrates the main CB4J components and gives an overview of the framework architecture.<br/>
+                <p>The next figure illustrates the main CB4J components and gives an overview of the framework architecture.</p>
                 <p><img src="../resources/img/workflow.jpg"/></p>
 
-                CB4J has a clearly defined workflow to process CSV flat files. The main components involved in this workflow are the following :
+                <p>CB4J has a clearly defined workflow to process CSV flat files. The main components involved in this workflow are the following :</p>
                 <ul>
                     <li>Record Parser : responsible for record parsing</li>
-                    <li>Record Validator : responsible for record validation</li>
+                    <li>Record Validator : responsible for applying the declared validation rules</li>
                     <li>Record Mapper : responsible for mapping a record to a java object</li>
-                    <li>Record Processor : responsible for applying business processing logic</li>
+                    <li>Record Processor : responsible for applying business processing logic for each record</li>
                 </ul>
+
+                <p>The workflow used internally by CB4J follows the next algorithm :</p>
+                <ol>
+                    <li>The record reader reads the input CSV file line by line until the end of file. If the end of file is reached, the engine instructs the batch reporter to generate the batch report and terminates the execution</li>
+                    <li>The next record is read as a string containing raw data</li>
+                    <li>The record parser checks the record for well formedness : If the record is not well formed (actual size not equal to expected size), then the record is ignored and the engine moves to next one. If the record is well formed, then it is passed to the next step to be parsed</li>
+                    <li>The record parser parses the current record to split it into fields ordered by the index and containing raw data</li>
+                    <li>The record validator applies validation rules for each field. If a validation rule is violated for one field, then the record is rejected. If all fields are valid, then the parsed record is passed to the next step to be mapped to an object</li>
+                    <li>At this point, the record mapper is supplied with a parsed record containing raw data that have passed the declared validation rules. The parsed record is mapped to the declared object . CB4J consider mapping exception as errors that should not pass the processing step. Hence, the engine rejects records that cannot be mapped to objects with typed fields. This is a design choice to minimize unexpected errors during record processing. NB : In a well designed batch, the record mapper should not have any problem in converting string values to typed values if all data was validated at validation step. </li>
+                    <li>This is where the business logic is (finally!) executed. At this point, the record processor is supplied with an object view of the CSV record with validated and typed data.</li>
+                </ol>
 
             </div>
 
