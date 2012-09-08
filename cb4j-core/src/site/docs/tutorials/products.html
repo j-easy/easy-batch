@@ -89,29 +89,42 @@
 
             <div class="row-fluid">
 
-                <h3>What is CB4J?</h3>
-                <p>CB4J stands for CSV Batch For Java . It is a simple framework that aims at simplifying CSV files batch processing with java.</p>
-                <p>CB4J addresses common tasks such as reading, parsing and validating CSV records and let you concentrate on your batch processing business logic.</p>
-                <p>It is a complete, yet still simple and lightweight, framework that allows you to process CSV files in a clearly defined workflow</p>
-                <p>With CB4J, you simply define CSV records validation rules and processing business logic and let the framework handle all the plumbing code for reading, parsing, validating and processing records. </p>
+                <h3>Description</h3>
+                <p>In this tutorial, the goal is to process a CSV flat file containing products data and calculate statistics about prices. The products are organized in categories and the batch should calculate the minimum/maximum product prices for each category. The input file named "<strong>products.csv</strong>" has the following content:</p>
+<pre>
+product_id;category_code;name;price
+1;1;product1;25
+2;2;product2;15
+3;1;product3;20
+4;2;product4;10
+5;1;product5
+6;2;product6;xx
+</pre>
 
-                <h3>What CB4J is not?</h3>
-                <ul>
-                    <li>CB4J is not just a tool to parse a CSV record.</li>
-                    <li>CB4J is not a competitor of other batch frameworks such as Spring Batch which is definitely more generic framework.</li>
-                </ul>
+                <p>In this tutorial , the business data validation rules are simple : Fields "product_id","category_code" and "price" must have numeric values.</p>
+                <p><span class="label label-info">Note :</span> Products prices should be converted to local currency before being processed. This is a good example of how to use the pre-processing method in <code>RecordProcessor&lt;T&gt;</code> interface</p>
+                <p>The batch processing logic should calculate the minimum/maximum product prices for each category and generate the following report :</p>
+<pre>
+******* Products Report *******
+Minimum prices by category :
+        Min price for category 1 = 10.0
+        Min price for category 2 = 5.0
+Maximum prices by category :
+        Max price for category 1 = 12.5
+        Max price for category 2 = 7.5
+</pre>
 
-                <h3>Features</h3>
-                <p> CB4J is a lightweight framework providing the following features :</p>
-                <ul>
-                    <li>Very simple model and API</li>
-                    <li>A small memory footprint (No single dependency): 40Ko !</li>
-                    <li>Built-in field validators and type conversion utilities for common requirements</li>
-                    <li>Simple reporting for common statistics including validation errors, processing time,etc</li>
-                </ul>
+                <p><span class="label label-info">Note :</span> The record <code>5;1;product5</code> must be ignored since it has an invalid size (the price is missing). The record <code>6;2;product6;xx</code> must be rejected since the product price is not numeric</p>
+                <h3>Running the tutorial</h3>
 
-                <h3>License</h3>
-                <p>CB4J is released under the <a href="http://opensource.org/licenses/mit-license.php/">MIT license</a></p>
+                <p>The complete source code of this tutorial is available <a href="https://github.com/benas/cb4j/tree/master/cb4j-tutorials/src/main/java/net/benas/cb4j/tutorials/products">here</a>.
+                    To run the tutorial with maven, launch the following command in the <code>cb4j/cb4j-tutorials</code> directory :</p>
+
+<pre>
+mvn clean install -PrunProductsTutorial
+</pre>
+
+                <p>After the execution is finished, you should see the report listed above.</p>
 
             </div>
 

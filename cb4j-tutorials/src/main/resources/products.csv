@@ -1,21 +1,7 @@
 product_id;category_code;name;price
-1;2;dui, in sodales;
-51;3;consectetuer;177
-xxx;1;neque sed;44
-151;3;laoreet posuere,;197
-201;1;consequat,;169
-251;5;Etiam ligula;67
-301;2;Nulla eget;65
-351;2;tristique;129
-401;1;neque.;113
-451;2;varius.;78
-501;4;convallis,;88
-551;5;lobortis quam;178
-601;4;nisi;117
-651;5;lacus. Quisque;49
-701;5;aliquet libero. Integer;56
-751;1;fermentum risus, at;43
-801;5;nascetur;66
-851;1;ante.;187
-901;2;porttitor;37
-951;3;mi. Duis;44
+1;1;product1;25
+2;2;product2;15
+3;1;product3;20
+4;2;product4;10
+5;1;product5
+6;2;product6;xx

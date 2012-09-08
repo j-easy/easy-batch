@@ -29,7 +29,7 @@ import net.benas.cb4j.core.api.RecordProcessor;
 import java.util.*;
 
 /**
- * A processor that will gather data and split products by category according to business requirement
+ * A product processor that calculate minimum/maximum product prices for each category
  * @author benas (md.benhassine@gmail.com)
  */
 public class ProductProcessor implements RecordProcessor<Product> {
@@ -37,13 +37,13 @@ public class ProductProcessor implements RecordProcessor<Product> {
     /**
      * Conversion rate of product price to local currency
      */
-    private final double CONVERSION_RATE = 0.6;
+    private final double CONVERSION_RATE = 0.5;
 
     /**
      * A map defined as follow :
      *  - key = category_code
      *  - value = list of prices of products belonging to that category
-     *  Min, Max and Avg prices will be computed on prices list for each category
+     *  Min and Max prices will be computed on prices list for each category
      */
     private Map<Long, List<Double>> pricesByCategory = new HashMap<Long, List<Double>>();
 
@@ -76,7 +76,7 @@ public class ProductProcessor implements RecordProcessor<Product> {
     }
 
     /**
-     * Return lower product price for each category
+     * Return lowest product price for each category
      * @return A map defined by :<br/>
      *  - key : category code<br/>
      *  - value : the lower product price for this category
