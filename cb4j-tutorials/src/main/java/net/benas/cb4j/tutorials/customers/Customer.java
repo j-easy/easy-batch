@@ -38,6 +38,7 @@ public class Customer {
     private Date birthday;
     private String phone;
     private Gender gender;
+    private Address address;
 
     public String getFirstName() {
         return firstName;
@@ -87,6 +88,14 @@ public class Customer {
         this.gender = gender;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -97,6 +106,7 @@ public class Customer {
         sb.append(", birthday=").append(birthday);
         sb.append(", phone=").append(phone);
         sb.append(", gender=").append(gender);
+        sb.append(", address=").append(address.toString());
         sb.append('}');
         return sb.toString();
     }

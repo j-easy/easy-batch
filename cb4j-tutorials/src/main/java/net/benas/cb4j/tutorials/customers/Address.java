@@ -24,27 +24,61 @@
 
 package net.benas.cb4j.tutorials.customers;
 
-import net.benas.cb4j.core.model.Field;
-import net.benas.cb4j.core.validator.FixedLengthNumericFieldValidator;
-
 /**
- * A validator of {@link Gender} type : must be 0 (MALE) or 1 (FEMALE)
+ * JavaBean representing a customer's address
  * @author benas (md.benhassine@gmail.com)
  */
-public class GenderValidator extends FixedLengthNumericFieldValidator {
+public class Address {
 
-    public GenderValidator(int length) {
-        super(length);
+    private String street;
+
+    private String zipCode;
+
+    private String city;
+
+    private String country;
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     @Override
-    public boolean isValidField(Field field) {
-
-        if (!super.isValidField(field))
-            return false;
-
-        Integer gender = Integer.parseInt(field.getContent());
-        return !(gender != 0 && gender != 1);
-
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Address");
+        sb.append("{street='").append(street).append('\'');
+        sb.append(", zipCode='").append(zipCode).append('\'');
+        sb.append(", city='").append(city).append('\'');
+        sb.append(", country='").append(country).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

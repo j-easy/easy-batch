@@ -59,10 +59,16 @@ public class CustomerMapper implements RecordMapper<Customer> {
 
         //custom mapping rule for transforming encoded data into a business value
         String gender = record.getFieldContentByIndex(5);
-        if (gender.equals("0"))
-            customer.setGender(Gender.MALE);
-        else
-            customer.setGender(Gender.FEMALE);
+        customer.setGender( gender.equals("0") ? Gender.MALE : Gender.FEMALE );
+
+        //encapsulate address data into a business address object
+        Address address = new Address();
+        address.setStreet(record.getFieldContentByIndex(6));
+        address.setZipCode(record.getFieldContentByIndex(7));
+        address.setCity(record.getFieldContentByIndex(8));
+        address.setCountry(record.getFieldContentByIndex(9));
+
+        customer.setAddress(address);
 
         return customer;
     }

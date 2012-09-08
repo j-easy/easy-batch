@@ -69,7 +69,7 @@
                             <mainClass>net.benas.cb4j.tutorials.customers.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/customers.csv</argument>
-                                <argument>6</argument>
+                                <argument>10</argument>
                             </arguments>
                         </configuration>
                     </plugin>
