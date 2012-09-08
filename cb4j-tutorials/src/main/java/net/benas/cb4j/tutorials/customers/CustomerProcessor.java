@@ -24,23 +24,30 @@
 
 package net.benas.cb4j.tutorials.customers;
 
+import com.thoughtworks.xstream.XStream;
 import net.benas.cb4j.core.api.RecordProcessor;
 
 /**
- * A dummy processor implementation that should load customers in the database
+ * A customer processor implementation that generates XML data
  * @author benas (md.benhassine@gmail.com)
  */
 public class CustomerProcessor implements RecordProcessor<Customer> {
 
-    public void preProcessRecord(Customer typedRecord) {
-        System.out.println("preProcessing customer = " + typedRecord);
+    private XStream xstream;
+
+    public CustomerProcessor() {
+        xstream = new XStream();
+        xstream.alias("customer", Customer.class);
+        xstream.alias("address", Address.class);
     }
 
-    public void processRecord(Customer typedRecord) {
-        System.out.println("Processing customer = " + typedRecord);
+    public void preProcessRecord(Customer customer) {
     }
 
-    public void postProcessRecord(Customer typedRecord) {
-        System.out.println("postProcessing customer = " + typedRecord);
+    public void processRecord(Customer customer) {
+        System.out.println(xstream.toXML(customer));
+    }
+
+    public void postProcessRecord(Customer customer) {
     }
 }

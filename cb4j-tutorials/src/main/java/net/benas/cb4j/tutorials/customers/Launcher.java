@@ -57,13 +57,7 @@ public class Launcher {
         BatchConfiguration batchConfiguration = new BatchConfiguration(configurationProperties);
 
         /*
-         * Register field validators :
-         *  - field #1 = first name : no validation required
-         *  - field #2 = last name : no validation required
-         *  - field #3 = email : should have a valid email format
-         *  - field #4 = birthday : should have a valid date format (dd/MM/yyyy)
-         *  - field #5 = phone : should be numeric and have a length of exactly 10 digits
-         *  - field #6 = gender : should be 0 or 1
+         * Register field validators
         */
         batchConfiguration.registerFieldValidator(3, new EmailFieldValidator());
         batchConfiguration.registerFieldValidator(4, new DateFormatFieldValidator("dd/MM/yyyy"));
@@ -76,7 +70,6 @@ public class Launcher {
         batchConfiguration.registerRecordMapper(new CustomerMapper());
         batchConfiguration.registerRecordProcessor(new CustomerProcessor());
         try {
-
             batchConfiguration.configure();
         } catch (BatchConfigurationException e) {
             System.err.println(e.getMessage());

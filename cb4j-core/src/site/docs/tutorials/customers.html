@@ -89,30 +89,78 @@
 
             <div class="row-fluid">
 
-                <h3>What is CB4J?</h3>
-                <p>CB4J stands for CSV Batch For Java . It is a simple framework that aims at simplifying CSV files batch processing with java.</p>
-                <p>CB4J addresses common tasks such as reading, parsing and validating CSV records and let you concentrate on your batch processing business logic.</p>
-                <p>It is a complete, yet still simple and lightweight, framework that allows you to process CSV files in a clearly defined workflow</p>
-                <p>With CB4J, you simply define CSV records validation rules and processing business logic and let the framework handle all the plumbing code for reading, parsing, validating and processing records. </p>
+                <h3>Description</h3>
+                <p>In this tutorial, the goal is to process customers data from a CSV flat file and generate an XML output. The input file named "<strong>customers.csv</strong>" has the following format:</p>
+<pre>
+firstname,lastname,email,birthday,phone,gender,street,zipcode,city,country
+Venus,Blake,at@luctus.edu,17/04/2012,0463599385,0,492-3228 Lobortis Avenue,22496,Barrow,Burkina Faso
+Lael,Carolyn,posuere@loremtristique.ca,10/01/2013,4147737012,0,Ap #598-4493 Eros. St.,87583,New Bedford,Uzbekistan
+Tiger,Raja,quis@pulvinar.com,19/01/2012,5283010032,2,P.O. Box 113 8377 Convallis Road,85768,Fredericksburg,Namibia
+</pre>
+                <p>The business data validation rules are listed in the following table :
+                <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Index</th>
+                    <th>Validation rule</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>email</td>
+                    <td>3</td>
+                    <td>Must have a valid email format</td>
+                </tr>
+                <tr>
+                    <td>birthday</td>
+                    <td>4</td>
+                    <td>Must have a valid date format with pattern "dd/MM/yyyy"</td>
+                </tr>
+                <tr>
+                    <td>phone</td>
+                    <td>5</td>
+                    <td>Must be numeric and have a length of 10 characters</td>
+                </tr>
+                <tr>
+                    <td>gender</td>
+                    <td>6</td>
+                    <td>Must be 0 (MALE) or 1 (FEMALE)</td>
+                </tr>
+                </tbody>
+                </table>
+                </p>
+                <p>The batch processing logic should generate an xml output containing customers data in the following format:
+<pre>
+&lt;customer>
+    &lt;firstName&gt;Venus&lt;/firstName&gt;
+    &lt;lastName&gt;Blake&lt;/lastName&gt;
+    &lt;email&gt;at@luctus.edu&lt;/email&gt;
+    &lt;birthday&gt;17/04/2012&lt;/birthday&gt;
+    &lt;phone&gt;0463599385&lt;/phone&gt;
+    &lt;gender&gt;MALE&lt;/gender&gt;
+    &lt;address&gt;
+        &lt;street&gt;492-3228 Lobortis Avenue&lt;/street&gt;
+        &lt;zipCode&gt;22496&lt;/zipCode&gt;
+        &lt;city&gt;Barrow&lt;/city&gt;
+        &lt;country&gt;Canada&lt;/country&gt;
+    &lt;/address&gt;
+&lt;/customer&gt;
+</pre>
 
-                <h3>What CB4J is not?</h3>
-                <ul>
-                    <li>CB4J is not just a tool to parse a CSV record.</li>
-                    <li>CB4J is not a competitor of other batch frameworks such as Spring Batch which is definitely more generic framework.</li>
-                </ul>
+                <h3>Running the tutorial</h3>
 
-                <h3>Features</h3>
-                <p> CB4J is a lightweight framework providing the following features :</p>
-                <ul>
-                    <li>Very simple model and API</li>
-                    <li>A small memory footprint (No single dependency): 40Ko !</li>
-                    <li>Built-in field validators and type conversion utilities for common requirements</li>
-                    <li>Simple reporting for common statistics including validation errors, processing time,etc</li>
-                </ul>
+                <p>The complete source code of this tutorial is available <a href="https://github.com/benas/cb4j/tree/master/cb4j-tutorials/src/main/java/net/benas/cb4j/tutorials/customers">here</a>.
+                    To run the tutorial with maven, launch the following commands in the <code>cb4j/cb4j-tutorials</code> directory :</p>
 
-                <h3>License</h3>
-                <p>CB4J is released under the <a href="http://opensource.org/licenses/mit-license.php/">MIT license</a></p>
+<pre>
+mvn clean install -PrunCustomersTutorial
+</pre>
 
+                <p>You should see the XML output for each customer record in the console.</p>
+                <p>You can modify input data with "monkey test" values and see the content of ignored/rejected records log files located in <code>cb4j/cb4j-tutorials/src/main/resources</code></p>
+
+                <p> <span class="label label-info">Info</span> : This tutorial uses <a href="http://xstream.codehaus.org/">xstream</a> to easily generate XML output of customer data.</p>
             </div>
 
         </div>
