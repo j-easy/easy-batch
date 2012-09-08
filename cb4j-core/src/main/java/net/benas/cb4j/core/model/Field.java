@@ -31,7 +31,7 @@ package net.benas.cb4j.core.model;
 public class Field {
 
     /**
-     * The filed index/rank in CSV record
+     * The field index in CSV record
      */
     private int index;
 
