@@ -8,6 +8,7 @@
     <meta name="author" content="benas">
 
     <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resources/css/prettify.css" rel="stylesheet">
     <style type="text/css">
         body {
             padding-top: 60px;
@@ -20,10 +21,11 @@
     <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
 
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script type="text/javascript" src="../resources/js/prettify.js"></script>
 
 </head>
 
-<body>
+<body onload="prettyPrint()">
 
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
@@ -121,7 +123,7 @@
 
                 <p>If you are using maven, add  the following dependency to your project pom :</p>
 
-<pre>
+<pre class="prettyprint">
     &lt;dependency&gt;
         &lt;groupId&gt;net.benas.cb4j&lt;/groupId&gt;
         &lt;artifactId&gt;cb4j-core&lt;/artifactId&gt;
