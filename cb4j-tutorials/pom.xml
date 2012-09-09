@@ -19,23 +19,21 @@
     <url>https://github.com/benas/cb4j</url>
 
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>net.benas.cb4j</groupId>
             <artifactId>cb4j-core</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
+        <!--JFreeChart is used to generate a custom batch chart report -->
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>
             <version>1.0.14</version>
         </dependency>
 
+        <!--Xstream is used to generate XML output in customers tutorial-->
         <dependency>
             <groupId>xstream</groupId>
             <artifactId>xstream</artifactId>
