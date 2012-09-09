@@ -32,11 +32,11 @@ import java.util.Scanner;
 
 /**
  * Implementation of {@link RecordReader}.<br/>
- * This class is not intended to be used by framework users
+ * This class is not intended to be used nor extended by framework users
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class RecordReaderImpl implements RecordReader {
+public final class RecordReaderImpl implements RecordReader {
 
     private Scanner scanner;
 

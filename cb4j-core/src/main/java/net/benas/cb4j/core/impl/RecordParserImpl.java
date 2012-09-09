@@ -30,11 +30,11 @@ import net.benas.cb4j.core.model.Record;
 
 /**
  * Implementation of {@link RecordParser}.<br/>
- * This class is not intended to be used by framework users
+ * This class is not intended to be used nor extended by framework users
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class RecordParserImpl implements RecordParser {
+public final class RecordParserImpl implements RecordParser {
 
     /**
      * The number of fields in the record

@@ -44,11 +44,11 @@ import java.util.logging.Logger;
 /**
  * Batch configuration class.<br/>
  *
- * This class should used to provide all configuration parameters and mandatory implementations to run CB4J engine.
+ * This class should be used to provide all configuration parameters and mandatory implementations to run CB4J engine.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class BatchConfiguration {
+public final class BatchConfiguration {
 
     /**
      * CB4J logger

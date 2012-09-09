@@ -28,7 +28,7 @@ package net.benas.cb4j.core.model;
  * A model class representing a CSV field
  * @author benas (md.benhassine@gmail.com)
  */
-public class Field {
+public final class Field {
 
     /**
      * The field index in CSV record

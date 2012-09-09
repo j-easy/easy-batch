@@ -31,7 +31,7 @@ import java.util.List;
  * A model class representing a CSV record
  * @author benas (md.benhassine@gmail.com)
  */
-public class Record {
+public final class Record {
 
     /**
      * The record number in the file
