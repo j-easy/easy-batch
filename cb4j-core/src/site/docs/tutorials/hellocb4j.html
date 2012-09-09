@@ -8,6 +8,7 @@
     <meta name="author" content="benas">
 
     <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resources/css/prettify.css" rel="stylesheet">
     <style type="text/css">
         body {
             padding-top: 60px;
@@ -19,11 +20,12 @@
     </style>
     <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
 
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script type="text/javascript" src="../resources/js/prettify.js"></script>
 
 </head>
 
-<body>
+<body onload="prettyPrint()">
 
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
@@ -89,7 +91,7 @@
 
             <div class="row-fluid">
 
-                <h3>Description</h3>
+                <h3>1. Description</h3>
                 <p>This tutorial is a Hello world example of using CB4J. We will process a simple CSV file containing persons records to generate greetings.
                    The input file named "<strong>persons.csv</strong>" has the following format:</p>
 <pre>
@@ -98,17 +100,17 @@ sequence,name
 2,Harry,Smith
 x,Ben
 </pre>
-                <p>Each record is composed of 2 fields :
+                <p>Each record is composed of 2 fields :</p>
                 <ul>
                     <li>a sequence number : must be a numeric value</li>
                     <li>a person name</li>
                 </ul>
-                </p>
+
                 <p>The processing logic should generate a greeting message for each record.
                    For example, for the record <code>1,John</code>, the batch should generate and print to the console the follwoing greeting message : <code>Hi John! your sequence number is 1.</code></p>
                 <p></p>
 
-                <h3>Expected results</h3>
+                <h3>2. Expected results</h3>
                 <p>For the sample file listed above, we expect the following results :</p>
                 <ul>
                     <li>Record #1 : this is a header record containing field names, it should be skipped</li>
@@ -116,87 +118,87 @@ x,Ben
                     <li>Record #3 : this record is not well formed. In fact, it has 3 fields instead of 2 as expected, it should be ignored</li>
                     <li>Record #4 : this record is well formed, but has an invalid value "x" for the first field which must be numeric. Hence, this record should be rejected</li>
                 </ul>
-                <h3>Implementation using CB4J</h3>
-                <h4>Configuration</h4>
+                <h3>3. Implementation using CB4J</h3>
+                <h4>3.1 Configuration</h4>
                 <p>First, we need to configure CB4J with CSV parameters. By default, CB4J uses the comma ',' character as separator which is fine for this tutorial, so no configuration is needed for field separator.</p>
                 <p>Nevertheless, we have to specify the path of input file, the record size and the skipHeader parameters. This is done as follows :</p>
-<pre>
+<pre class="prettyprint">
 Properties configurationProperties = new Properties();
 configurationProperties.setProperty("input.data.path","/data/cb4j/cb4j-tutorials/src/main/resources/persons.csv");
 configurationProperties.setProperty("input.record.size","2");
 configurationProperties.setProperty("input.data.skipHeader", "true");
 </pre>
-                <h4>Validation data</h4>
-                <p>In this tutorial, the first field should be numeric. To ensure this constraint, we have to register the built-in <code>NumericFieldValidator</code> for the first field. This can be done as follows:</p>
-<pre>
+                <h4>3.2 Validating data</h4>
+                <p>In this tutorial, the first field should be numeric. To ensure this constraint, we have to register the built-in <code class="prettyprint">NumericFieldValidator</code> for the first field. This can be done as follows:</p>
+<pre class="prettyprint">
 batchConfiguration.registerFieldValidator(1, new NumericFieldValidator());
 </pre>
 
-                <h4>Mapping records to java objects</h4>
-                <p>To work with an object view of CSV records, we will create a simple POJO representing a greeting. The <code>Greeting</code> class is defined as follows:</p>
-<pre>
+                <h4>3.3 Mapping records to java objects</h4>
+                <p>To work with an object view of CSV records, we will create a simple POJO representing a greeting. The <code class="prettyprint">Greeting</code> class is defined as follows:</p>
+<pre class="prettyprint">
 public class Greeting {
 
-private long sequence;
+    private long sequence;
 
-private String name;
+    private String name;
 
-// Getters and Setters
+    // Getters and Setters
 
-public String getGreetingMessage() {
-    return "Hi " + name + "! Your sequence number is " + sequence;
-}
+    public String getGreetingMessage() {
+        return "Hi " + name + "! Your sequence number is " + sequence;
+    }
 }
 </pre>
 
-                <p>To map CSV records to <code>Greeting</code> objects, we have to provide an implementation of the <code>RecordMapper&lt;T&gt;</code> interface as follow :</p>
-<pre>
+                <p>To map CSV records to <code class="prettyprint">Greeting</code> objects, we have to provide an implementation of the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface as follow :</p>
+<pre class="prettyprint">
 public class GreetingMapper implements RecordMapper&lt;Greeting&gt; {
 
     public Greeting mapRecord(Record record) throws RecordMappingException {
 
-    Greeting greeting = new Greeting();
+        Greeting greeting = new Greeting();
 
-    greeting.setSequence(Long.valueOf(record.getFieldContentByIndex(0)));
-    greeting.setName(record.getFieldContentByIndex(1));
+        greeting.setSequence(Long.valueOf(record.getFieldContentByIndex(0)));
+        greeting.setName(record.getFieldContentByIndex(1));
 
-    return greeting;
+        return greeting;
 
-    }
+        }
     }
 </pre>
 
                 <p>To register the record mapper implementation, use the following snippet :</p>
-<pre>
+<pre class="prettyprint">
 batchConfiguration.registerRecordMapper(new GreetingMapper());
 </pre>
 
-                <h4>Process records</h4>
-                <p>At this point, we have validated and mapped CSV records to <code>Greeting</code> objects. It is time to define the business processing logic which consists in this tutorial of printing to the console a greeting message for each person. For that to be done, we implement the <code>RecordProcessor&lt;T&gt;</code> as follows:</p>
-<pre>
+                <h4>3.4 Process records</h4>
+                <p>At this point, we have validated and mapped CSV records to <code class="prettyprint">Greeting</code> objects. It is time to define the business processing logic which consists in this tutorial of printing to the console a greeting message for each person. For that to be done, we implement the <code class="prettyprint">RecordProcessor&lt;T&gt;</code> as follows:</p>
+<pre class="prettyprint">
 public class GreetingProcessor implements RecordProcessor&lt;Greeting&gt; {
 
     public void preProcessRecord(Greeting greeting) {
-    //no-op
+        //no-op
     }
 
     public void processRecord(Greeting greeting) {
-    System.out.println(greeting.getGreetingMessage());
+        System.out.println(greeting.getGreetingMessage());
     }
 
     public void postProcessRecord(Greeting greeting) {
-    //no-op
+        //no-op
     }
-    }
+}
 </pre>
 
                 <p>Then, whe have to register this implementation to be used by CB4J to process records :</p>
-<pre>
+<pre class="prettyprint">
 batchConfiguration.registerRecordProcessor(new GreetingProcessor());
 </pre>
-                <h4>Running the batch</h4>
+                <h4>3.5 Running the batch</h4>
                 <p>Finally, we can initialize a batch engine instance and run the batch as follows:</p>
-<pre>
+<pre class="prettyprint">
 BatchEngine batchEngine = new DefaultBatchEngineImpl(batchConfiguration);
 BatchRunner batchRunner = new BatchRunner(batchEngine);
 batchRunner.run();
@@ -205,9 +207,8 @@ batchRunner.run();
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/cb4j/tree/master/cb4j-tutorials/src/main/java/net/benas/cb4j/tutorials/helloworld">here</a>.
                 To run the tutorial with maven, launch the following command in the <code>cb4j/cb4j-tutorials</code> directory :</p>
 
-<pre>
-mvn clean install -PrunHelloWorldTutorial
-</pre>
+                <p><code>mvn clean install -PrunHelloWorldTutorial</code></p>
+                
                 <p>If everything is ok, you should see the following output in the console :</p>
 
 <pre>

@@ -8,6 +8,7 @@
     <meta name="author" content="benas">
 
     <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resources/css/prettify.css" rel="stylesheet">
     <style type="text/css">
         body {
             padding-top: 60px;
@@ -20,10 +21,11 @@
     <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
 
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script type="text/javascript" src="../resources/js/prettify.js"></script>
 
 </head>
 
-<body>
+<body onload="prettyPrint()">
 
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
@@ -88,7 +90,7 @@
 
             <div class="row-fluid">
 
-                <h3>Description</h3>
+                <h3>1. Description</h3>
                 <p>In this tutorial, the goal is to process customers data from a CSV flat file and generate an XML output. The input file named "<strong>customers.csv</strong>" has the following format:</p>
 <pre>
 firstname,lastname,email,birthday,phone,gender,street,zipcode,city,country
@@ -129,8 +131,8 @@ Tiger,Raja,quis@pulvinar.com,19/01/2012,5283010032,2,P.O. Box 113 8377 Convallis
                 </tbody>
                 </table>
                 <p>The batch processing logic should generate an xml output containing customers data in the following format:
-<pre>
-&lt;customer>
+<pre class="prettyprint">
+&lt;customer&gt;
     &lt;firstName&gt;Venus&lt;/firstName&gt;
     &lt;lastName&gt;Blake&lt;/lastName&gt;
     &lt;email&gt;at@luctus.edu&lt;/email&gt;
@@ -146,14 +148,12 @@ Tiger,Raja,quis@pulvinar.com,19/01/2012,5283010032,2,P.O. Box 113 8377 Convallis
 &lt;/customer&gt;
 </pre>
 
-                <h3>Running the tutorial</h3>
+                <h3>2. Running the tutorial</h3>
 
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/cb4j/tree/master/cb4j-tutorials/src/main/java/net/benas/cb4j/tutorials/customers">here</a>.
                     To run the tutorial with maven, launch the following command in the <code>cb4j/cb4j-tutorials</code> directory :</p>
 
-<pre>
-mvn clean install -PrunCustomersTutorial
-</pre>
+                <p><code> mvn clean install -PrunCustomersTutorial</code></p>
 
                 <p>After the execution is finished, you should see the XML output for each customer record in the console.</p>
                 <p>You can modify input data with "monkey test" values and see the content of ignored/rejected records log files located in <code>cb4j/cb4j-tutorials/src/main/resources</code></p>

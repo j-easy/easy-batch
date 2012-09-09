@@ -34,7 +34,7 @@
                     <a href="https://github.com/benas/cb4j" class="navbar-link">Fork me on Github</a>
                 </p>
                 <ul class="nav">
-                    <li><a href="./index.html">Home</a></li>
+                    <li class="active"><a href="./index.html">Home</a></li>
                     <li class="dropdown">
                         <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Documentation<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
@@ -90,7 +90,7 @@
 
                 <h3>Current version</h3>
 
-                <p>CB4J is currently under development at its first snapshot version 1.0.0-SNAPSHOT. The main features currently implemented are : </p>
+                <p>CB4J is currently under development at its first snapshot version <strong>1.0.0-SNAPSHOT</strong>. The main features currently implemented are : </p>
 
                 <ul>
                     <li>CB4J core API and Implementation</li>
@@ -98,7 +98,21 @@
                 </ul>
 
                 <h3>Roadmap</h3>
-                <p>TODO</p>
+                <p>Many features are currently developed and will be available in next CB4J versions:</p>
+                <ul>
+                    <li>version 1.1 :
+                        <ol>
+                            <li>Add configuration parameter to remove enclosing data characters</li>
+                            <li>Provide a default CSV to Object mapper from an xml mapping file (without using reflection to not impact performance)</li>
+                        </ol>
+                    </li>
+                    <li>version 1.2 :
+                        <ol>
+                            <li>add a GUI module that will enable graphical configuration and execution of CB4J</li>
+                            <li>add a statistics module to report processing time for each record using AOP and the excellent <a href="http://perf4j.codehaus.org/">perf4j</a> library</li>
+                        </ol>
+                    </li>
+                </ul>
 
             </div>
 
