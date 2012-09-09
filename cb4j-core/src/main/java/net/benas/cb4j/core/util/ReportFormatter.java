@@ -28,7 +28,7 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
 /**
- * Formatter used by CB4J reporter
+ * Log formatter used by CB4J reporter
  *
  * @author benas (md.benhassine@gmail.com)
  */

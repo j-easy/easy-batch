@@ -27,7 +27,7 @@ package net.benas.cb4j.core.api;
 import net.benas.cb4j.core.model.Record;
 
 /**
- * Interface for record/object mapping
+ * Interface for record/object mapping<br/>
  * Implementation of this interface should use the same type T used in {@link RecordProcessor} to avoid type casting exception or any type safety warnings
  *
  * @author benas (md.benhassine@gmail.com)
