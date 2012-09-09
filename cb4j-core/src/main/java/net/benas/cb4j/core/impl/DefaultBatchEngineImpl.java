@@ -94,7 +94,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             //validate record
             Record currentParsedRecord = recordParser.parseRecord(currentRecord,currentRecordNumber);
             String error = recordValidator.validateRecord(currentParsedRecord);
-            if (!error.isEmpty()){
+            if ( error.length() > 0 ){
                 batchReporter.rejectRecord(currentParsedRecord,error);
                 continue;
             }

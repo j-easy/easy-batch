@@ -153,7 +153,7 @@ public final class BatchConfiguration {
                 logger.warning("Skip header property not specified, default to false");
             }
 
-			if (encoding == null || (encoding != null && encoding.isEmpty() )){
+			if (encoding == null || (encoding != null && encoding.length() == 0 )){
 				encoding = System.getProperty("file.encoding");
 				logger.warning("No encoding specified for input data, using system default encoding : " + encoding);
 			}
@@ -180,7 +180,7 @@ public final class BatchConfiguration {
 		String recordSizeProperty = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_SIZE);
 		try {
 
-            if(recordSizeProperty == null || ( recordSizeProperty != null && recordSizeProperty.isEmpty() )){
+            if(recordSizeProperty == null || ( recordSizeProperty != null && recordSizeProperty.length() == 0 )){
                 String error = "Record size property is not set";
                 logger.severe(error);
                 throw new BatchConfigurationException(error);
@@ -189,7 +189,7 @@ public final class BatchConfiguration {
             int recordSize = Integer.parseInt(recordSizeProperty);
 
             String fieldsSeparator = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_SEPARATOR);
-			if(fieldsSeparator == null || ( fieldsSeparator != null && fieldsSeparator.isEmpty() )){
+			if(fieldsSeparator == null || ( fieldsSeparator != null && fieldsSeparator.length() == 0 )){
 				fieldsSeparator = BatchConstants.DEFAULT_RECORD_SEPARATOR;
 				logger.warning("No field separator specified, using default : '" + fieldsSeparator + "'");
 			}
@@ -209,7 +209,7 @@ public final class BatchConfiguration {
         ReportFormatter reportFormatter = new ReportFormatter();
 
         String outputIgnored = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_IGNORED);
-		if (outputIgnored == null || (outputIgnored != null && outputIgnored.isEmpty())){
+		if (outputIgnored == null || (outputIgnored != null && outputIgnored.length() == 0)){
 			outputIgnored = BatchConfigurationUtil.removeExtension(inputData) + BatchConstants.DEFAULT_IGNORED_SUFFIX;
 			logger.warning("No log file specified for ignored records, using default : " + outputIgnored);
 		}
@@ -225,7 +225,7 @@ public final class BatchConfiguration {
         }
 
         String outputRejected = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_REJECTED);
-		if (outputRejected == null || (outputRejected != null && outputRejected.isEmpty())){
+		if (outputRejected == null || (outputRejected != null && outputRejected.length() == 0)){
 			outputRejected = BatchConfigurationUtil.removeExtension(inputData) + BatchConstants.DEFAULT_REJECTED_SUFFIX;
 			logger.warning("No log file specified for rejected records, using default : " + outputRejected);
 		}

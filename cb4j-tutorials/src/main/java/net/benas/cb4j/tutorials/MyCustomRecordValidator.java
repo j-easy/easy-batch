@@ -21,7 +21,7 @@ public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {
     public String validateRecord(Record record) {
 
         String error = super.validateRecord(record);
-        if (error.isEmpty()){//no errors after applying declared validators on each field => all fields are valid
+        if (error.length() == 0){//no errors after applying declared validators on each field => all fields are valid
 
             //add custom validation : field 2 content must starts with field 1 content
             final String content1 = record.getFieldContentByIndex(1);

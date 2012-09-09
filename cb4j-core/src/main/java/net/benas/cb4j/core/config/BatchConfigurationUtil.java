@@ -50,7 +50,7 @@ public class BatchConfigurationUtil {
      * @return the file name without extension
      */
 	public static String removeExtension(final String fileName){
-		if(fileName != null && !fileName.isEmpty()){
+		if(fileName != null && fileName.length() > 0){
 			if( fileName.indexOf('.') < 0 )
 				return fileName;
 			else{
