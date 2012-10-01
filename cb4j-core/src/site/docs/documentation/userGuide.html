@@ -95,7 +95,7 @@
             <p>To work effectively with CB4J, you have to follow these steps :</p>
             <ul>
                 <li>Provide configuration parameters : the input CSV file path, the file encoding,field separator,etc</li>
-                <li>Register field validation rules : filed size, data type format,etc</li>
+                <li>Register field validation rules : field size, data type format,etc</li>
                 <li>Register record mapper : CSV to Object mapping logic</li>
                 <li>Register record processor : record processing business logic</li>
             </ul>
@@ -118,7 +118,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td>Provide filed validation logic</td>
+                    <td>Provide field validation logic</td>
                     <td><i class="icon-ok-circle"></i></td>
                     <td></td>
                 </tr>
@@ -311,11 +311,11 @@ try {
             To register multiples validators for this field, you have to declare a list containing all validators :</p>
 
 <pre class="prettyprint">
-List&lt;FieldValidator&gt; filed1Validators = new ArrayList&lt;FieldValidator&gt;();
-filed1Validators.add(new NotEmptyFieldValidator());
-filed1Validators.add(new DateFormatFieldValidator("dd/MM/yyyy"));
+List&lt;FieldValidator&gt; field1Validators = new ArrayList&lt;FieldValidator&gt;();
+field1Validators.add(new NotEmptyFieldValidator());
+field1Validators.add(new DateFormatFieldValidator("dd/MM/yyyy"));
 
-batchConfiguration.registerFieldValidators(1,filed1Validators);
+batchConfiguration.registerFieldValidators(1,field1Validators);
 </pre>
 
             <div class="alert alert-info">
@@ -325,7 +325,7 @@ batchConfiguration.registerFieldValidators(1,filed1Validators);
             <h4>2.3 Mapping CSV records to java objects</h4>
 
             <p>To map a CSV record to a business java object, you have to implement the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface and register your implementation at configuration time as follows :</p>
-            <p><code class="prettyprint">batchConfiguration.registerRecordMapper(new myRecordMapper());</code></p>
+            <p><code class="prettyprint">batchConfiguration.registerRecordMapper(new MyRecordMapper());</code></p>
             
             <p>The <a href="../tutorials/customers.html">customers ETL tutorial</a> shows an example of record mapper implementation.</p>
 
@@ -336,7 +336,7 @@ batchConfiguration.registerFieldValidators(1,filed1Validators);
             <h4>2.4 Writing processing logic</h4>
 
             When using CB4J, you process an object view of a CSV record. To define your record processing business logic, you have to implement the <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interface and register your implementation at configuration time as follows :</p>
-            <p><code class="prettyprint">batchConfiguration.registerRecordProcessor(new myRecordProcessor());</code></p>
+            <p><code class="prettyprint">batchConfiguration.registerRecordProcessor(new MyRecordProcessor());</code></p>
 
             <div class="alert">
                 <span class="label label-warning">Warning</span> : You have to use the <strong>same</strong> type when implementing <code class="prettyprint">RecordMapper&lt;T&gt;</code> and <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interfaces
@@ -425,7 +425,7 @@ batchConfiguration.registerFieldValidator(1,new MyCustomFieldValidator());
            <p> In this section, we will use the following record format as example:</p>
 
 <pre>
-field1;filed2
+field1;field2
 foo;foobar
 foo;boobar
 </pre>
@@ -433,8 +433,8 @@ foo;boobar
             <p>The validations rules are the following :</p>
             <ul>
                 <li>All fields are required</li>
-                <li>filed1 should have a length of 3 characters</li>
-                <li>filed2 content must start with field1's content</li>
+                <li>field1 should have a length of 3 characters</li>
+                <li>field2 content must start with field1's content</li>
             </ul>
 
             <p>As you can see, this requirement cannot be implemented using the default CB4J validation.
@@ -470,16 +470,16 @@ public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {
 <pre class="prettyprint">
 Map&lt;Integer, List&lt;FieldValidator;&gt;;&gt; fieldValidators = new HashMap&lt;Integer, List&lt;FieldValidator;&gt;;&gt;();
 
-List&lt;FieldValidator> filed1Validators = new ArrayList&lt;FieldValidator;&gt;();
+List&lt;FieldValidator> field1Validators = new ArrayList&lt;FieldValidator;&gt;();
 final NotEmptyFieldValidator notEmptyFieldValidator = new NotEmptyFieldValidator();
-filed1Validators.add(notEmptyFieldValidator);
-filed1Validators.add(new FixedLengthFieldValidator(3));
+field1Validators.add(notEmptyFieldValidator);
+field1Validators.add(new FixedLengthFieldValidator(3));
 
-List&lt;FieldValidator> filed2Validators = new ArrayList&lt;FieldValidator;&gt;();
-filed1Validators.add(notEmptyFieldValidator);
+List&lt;FieldValidator> field2Validators = new ArrayList&lt;FieldValidator;&gt;();
+field1Validators.add(notEmptyFieldValidator);
 
-fieldValidators.put(1, filed1Validators);
-fieldValidators.put(2, filed2Validators);
+fieldValidators.put(1, field1Validators);
+fieldValidators.put(2, field2Validators);
 
 MyCustomRecordValidator myCustomRecordValidator = new MyCustomRecordValidator(fieldValidators);
 batchConfiguration.registerRecordValidator(myCustomRecordValidator);

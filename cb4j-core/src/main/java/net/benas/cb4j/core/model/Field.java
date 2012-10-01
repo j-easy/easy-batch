@@ -36,7 +36,7 @@ public final class Field {
     private int index;
 
     /**
-     * The filed text content
+     * The field text content
      */
     private String content;
 

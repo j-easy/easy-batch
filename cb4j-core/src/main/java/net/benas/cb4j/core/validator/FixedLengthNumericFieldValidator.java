@@ -35,7 +35,7 @@ import net.benas.cb4j.core.model.Field;
 public class FixedLengthNumericFieldValidator extends NumericFieldValidator implements FieldValidator {
 
     /**
-     * Filed content length
+     * Field content length
      */
     private int length;
 
