@@ -32,6 +32,10 @@ public class RecordMappingException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
+    public RecordMappingException(String message) {
+        super(message);
+    }
+
     public RecordMappingException(String message, Throwable cause) {
         super(message, cause);
     }
