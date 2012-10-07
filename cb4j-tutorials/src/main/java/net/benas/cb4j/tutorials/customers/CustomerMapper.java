@@ -26,10 +26,11 @@ package net.benas.cb4j.tutorials.customers;
 
 import net.benas.cb4j.core.api.RecordMapper;
 import net.benas.cb4j.core.api.RecordMappingException;
-import net.benas.cb4j.core.converter.TypeConversionException;
-import net.benas.cb4j.core.converter.TypeConverter;
 import net.benas.cb4j.core.model.Record;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -47,11 +48,14 @@ public class CustomerMapper implements RecordMapper<Customer> {
         customer.setEmail(record.getFieldContentByIndex(2));
 
         //convert string date to java.util.Date object
+        String datePattern = "dd/MM/yyyy";
+        DateFormat df = new SimpleDateFormat(datePattern);
+        String stringBirthday = record.getFieldContentByIndex(3);
         Date birthday;
         try {
-            birthday = TypeConverter.getDateTypedFieldContent(record.getFieldContentByIndex(3), "dd/MM/yyyy");
-        } catch (TypeConversionException e) {
-            throw new RecordMappingException(e.getMessage(),e);
+            birthday = df.parse(stringBirthday);
+        } catch (ParseException e) {
+            throw new RecordMappingException("Date value : '" + stringBirthday + "' cannot be parsed to date format : '" + datePattern + "'");
         }
         customer.setBirthday(birthday);
 
