@@ -76,6 +76,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
 
     public final void run() {//final : must not be overridden by framework users
 
+        logger.info("CB4J engine is running...");
         final long startTime = System.currentTimeMillis();
         long currentRecordNumber = 0 ; //FIXME : if header is skipped, record numbers should start from 2
         batchReporter.setStartTime(startTime);
