@@ -78,7 +78,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
 
         logger.info("CB4J engine is running...");
         final long startTime = System.currentTimeMillis();
-        long currentRecordNumber = 0 ; //FIXME : if header is skipped, record numbers should start from 2
+        long currentRecordNumber = 0 ;
         batchReporter.setStartTime(startTime);
 
         while(recordReader.hasNextRecord()){
