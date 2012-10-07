@@ -79,15 +79,18 @@ public final class Record {
     }
 
     /**
-     * Getter for the field content as a String
-     * @return The field content as String
+     * Getter for the record content as a String
+     * @return The record content as a String
      */
     public String getContentAsString() {
+        if (fields.size() == 0) return "";
         StringBuilder sb = new StringBuilder();
-        for (Field field : fields){
-            sb.append(field.getContent());
+        //for each field, append the field content + separator
+        for (int i = 0; i < fields.size() - 1; i++) {
+            sb.append(fields.get(i).getContent());
             sb.append(separator);
         }
+        sb.append(fields.get(fields.size()-1).getContent());//for the last field, append only field content, no separator
         return sb.toString();
     }
 
