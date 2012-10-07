@@ -68,7 +68,7 @@ public final class RecordParserImpl implements RecordParser {
     public Record parseRecord(final String stringRecord,long currentRecordNumber) {
         Record record = new Record(currentRecordNumber,fieldSeparator);
         String[] tokens = stringRecord.split(fieldSeparator,-1);
-        int i = 1;
+        int i = 0;
         for(String token : tokens){
             Field field = new Field(i++,token);
             record.getFields().add(field);

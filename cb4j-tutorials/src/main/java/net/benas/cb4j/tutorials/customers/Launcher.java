@@ -59,10 +59,10 @@ public class Launcher {
         /*
          * Register field validators
         */
-        batchConfiguration.registerFieldValidator(3, new EmailFieldValidator());
-        batchConfiguration.registerFieldValidator(4, new DateFormatFieldValidator("dd/MM/yyyy"));
-        batchConfiguration.registerFieldValidator(5, new FixedLengthNumericFieldValidator(10));
-        batchConfiguration.registerFieldValidator(6, new GenderValidator(1));
+        batchConfiguration.registerFieldValidator(2, new EmailFieldValidator());
+        batchConfiguration.registerFieldValidator(3, new DateFormatFieldValidator("dd/MM/yyyy"));
+        batchConfiguration.registerFieldValidator(4, new FixedLengthNumericFieldValidator(10));
+        batchConfiguration.registerFieldValidator(5, new GenderValidator(1));
 
         /*
          * Register record mapper and processor

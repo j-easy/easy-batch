@@ -58,7 +58,7 @@ public class Launcher {
         /*
         * Registering field validators
         */
-        batchConfiguration.registerFieldValidator(1, new NumericFieldValidator());
+        batchConfiguration.registerFieldValidator(0, new NumericFieldValidator());
 
         /*
         * Registering record mapper and processor
