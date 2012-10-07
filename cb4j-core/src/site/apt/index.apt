@@ -8,13 +8,13 @@ Overview
 
   With CB4J, you process CSV files with an object view of records in a clearly defined workflow : You define CSV records validation rules and processing business logic and let the framework handle all the plumbing code for reading, parsing, validating and processing records.
 
-* What CB4J is not?
+* CB4J is not ...
 
-  CB4J is not just an utility class to parse a CSV record.
+  just an utility class to parse a CSV record.
 
-  CB4J is not a tool to map CSV records to Java objects.
+  a tool to map CSV records to Java objects.
 
-  CB4J is not a competitor of other batch frameworks such as Spring Batch which is definitely more generic framework.
+  a competitor of other batch frameworks such as Spring Batch which is definitely more generic framework.
 
 Features
 
