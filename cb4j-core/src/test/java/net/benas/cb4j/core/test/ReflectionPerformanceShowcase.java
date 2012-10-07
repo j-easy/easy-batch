@@ -42,19 +42,19 @@ public class ReflectionPerformanceShowcase {
 
     public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException {
 
-        Greeting g1 = getGreetingUsingReflection();
-        System.out.println("g1 = " + g1);
+        Person p1 = getPersonUsingReflection();
+        System.out.println("p1 = " + p1);
 
-        Greeting g2 = getGreetingFromMapper();
-        System.out.println("g2 = " + g2);
+        Person p2 = getPersonFromMapper();
+        System.out.println("p2 = " + p2);
 
         /**
          * Creating objects using Java Reflection API
          */
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < 1000000; i++) {
-             Greeting g = getGreetingUsingReflection();
-            // process greeting object
+             Person person = getPersonUsingReflection();
+            // process person object
         }
         long reflectionEstimatedExecutionTime = System.currentTimeMillis() - startTime;
         System.out.println("Time elapsed using reflection = " + reflectionEstimatedExecutionTime + " ms");
@@ -64,8 +64,8 @@ public class ReflectionPerformanceShowcase {
          */
         startTime = System.currentTimeMillis();
         for (int i = 0; i < 1000000; i++) {
-            Greeting g = getGreetingFromMapper();
-            // process greeting object
+            Person person = getPersonFromMapper();
+            // process person object
         }
         long noReflectionEstimatedExecutionTime = System.currentTimeMillis() - startTime;
         System.out.println("Time elapsed without using reflection = " + noReflectionEstimatedExecutionTime + " ms");
@@ -76,40 +76,40 @@ public class ReflectionPerformanceShowcase {
     /*
     * This method does what would a DefaultRecordMapper do
     */
-    private static Greeting getGreetingUsingReflection() throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    private static Person getPersonUsingReflection() throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException {
 
-        Class c = Class.forName(Greeting.class.getName());
-        Greeting greeting = (Greeting) c.newInstance();
+        Class c = Class.forName(Person.class.getName());
+        Person person = (Person) c.newInstance();
 
         List<String> csvHeaders = new ArrayList<String>();
         csvHeaders.add("firstName"); csvHeaders.add("lastName");
 
         for(String header : csvHeaders){
             String setterName = "set" + header.substring(0,1).toUpperCase() + header.substring(1);//javabean naming convention
-            for( final Method method : Greeting.class.getMethods() ) {
+            for( final Method method : Person.class.getMethods() ) {
                 if (method.getName().equals(setterName)){
-                    method.invoke(greeting,"someData");
+                    method.invoke(person,"someData");
                 }
             }
         }
-        return greeting;
+        return person;
     }
 
     /*
-     * This method does what would a GreetingMapper do
+     * This method does what would a PersonMapper do
      */
-    private static Greeting getGreetingFromMapper() {
-        Greeting greeting = new Greeting();
+    private static Person getPersonFromMapper() {
+        Person person = new Person();
 
-        greeting.setFirstName("someData");
-        greeting.setLastName("someData");
+        person.setFirstName("someData");
+        person.setLastName("someData");
 
-        return greeting;
+        return person;
     }
 
 }
 
-class Greeting {
+class Person {
 
     private String firstName;
 
@@ -133,7 +133,7 @@ class Greeting {
 
     @Override
     public String toString() {
-        return "Greeting{" +
+        return "Person{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';
