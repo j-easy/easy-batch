@@ -96,7 +96,7 @@
                    The input file named "<strong>persons.csv</strong>" has the following format:</p>
 <pre>
 sequence,name
-1,John
+1,Tommy
 2,Harry,Smith
 x,Ben
 </pre>
@@ -107,7 +107,7 @@ x,Ben
                 </ul>
 
                 <p>The processing logic should generate a greeting message for each record.
-                   For example, for the record <code>1,John</code>, the batch should generate and print to the console the follwoing greeting message : <code>Hi John! your sequence number is 1.</code></p>
+                   For example, for the record <code>1,Tommy</code>, the batch should generate and print to the console the follwoing greeting message : <code>Hi Tommy! your sequence number is 1.</code></p>
                 <p></p>
 
                 <h3>2. Expected results</h3>
@@ -220,7 +220,7 @@ batchRunner.run();
 [CB4J : INFO] Configuration successful
 [CB4J : INFO] Configuration parameters details : {input.data.skipHeader=true, input.record.size=2, input.data.path=/data/cb4j/cb4j-tutorials/src/main/resources/persons.csv}
 [CB4J : INFO] Initializing batch
-Hi John! Your sequence number is 1
+Hi Tommy! Your sequence number is 1
 [CB4J : INFO] finalizing batch
 [CB4J : INFO] CB4J report :
 [CB4J : INFO] Start time = Mon Sep 03 22:29:07 CEST 2012
@@ -238,7 +238,7 @@ Hi John! Your sequence number is 1
 [INFO] Final Memory: 8M/19M
 [INFO] ------------------------------------------------------------------------
 </pre>
-                <p>As expected, CB4J has generated a greeting message only for the valid record <code>1,John</code>. </p>
+                <p>As expected, CB4J has generated a greeting message only for the valid record <code>1,Tommy</code>. </p>
 
                 <p>Moreover, CB4J has generated a simple report about the batch execution time, the total number of input records, ignored and rejected records.
                 In addition to that, CB4J has generated two log files containing the ignored and rejected records and indicating which validation rule was violated and caused the rejection of each record. </p>
