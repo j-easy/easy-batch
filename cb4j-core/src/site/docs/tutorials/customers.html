@@ -110,22 +110,22 @@ Tiger,Raja,quis@pulvinar.com,19/01/2012,5283010032,2,P.O. Box 113 8377 Convallis
                 <tbody>
                 <tr>
                     <td>email</td>
-                    <td>3</td>
+                    <td>2</td>
                     <td>Must have a valid email format</td>
                 </tr>
                 <tr>
                     <td>birthday</td>
-                    <td>4</td>
+                    <td>3</td>
                     <td>Must have a valid date format with pattern "dd/MM/yyyy"</td>
                 </tr>
                 <tr>
                     <td>phone</td>
-                    <td>5</td>
+                    <td>4</td>
                     <td>Must be numeric and have a length of 10 characters</td>
                 </tr>
                 <tr>
                     <td>gender</td>
-                    <td>6</td>
+                    <td>5</td>
                     <td>Must be 0 (MALE) or 1 (FEMALE)</td>
                 </tr>
                 </tbody>
@@ -153,7 +153,7 @@ Tiger,Raja,quis@pulvinar.com,19/01/2012,5283010032,2,P.O. Box 113 8377 Convallis
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/cb4j/tree/master/cb4j-tutorials/src/main/java/net/benas/cb4j/tutorials/customers">here</a>.
                     To run the tutorial with maven, launch the following command in the <code>cb4j/cb4j-tutorials</code> directory :</p>
 
-                <p><code> mvn clean install -PrunCustomersTutorial</code></p>
+                <p><code>mvn clean package exec:java -PrunCustomersTutorial</code></p>
 
                 <p>After the execution is finished, you should see the XML output for each customer record in the console.</p>
                 <p>You can modify input data with "monkey test" values and see the content of ignored/rejected records log files located in <code>cb4j/cb4j-tutorials/src/main/resources</code></p>

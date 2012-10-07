@@ -192,7 +192,7 @@ public class GreetingProcessor implements RecordProcessor&lt;Greeting&gt; {
 }
 </pre>
 
-                <p>Then, whe have to register this implementation to be used by CB4J to process records :</p>
+                <p>Then, we have to register this implementation to be used by CB4J to process records :</p>
 <pre class="prettyprint">
 batchConfiguration.registerRecordProcessor(new GreetingProcessor());
 </pre>
@@ -207,13 +207,13 @@ batchRunner.run();
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/cb4j/tree/master/cb4j-tutorials/src/main/java/net/benas/cb4j/tutorials/helloworld">here</a>.
                 To run the tutorial with maven, launch the following command in the <code>cb4j/cb4j-tutorials</code> directory :</p>
 
-                <p><code>mvn clean install -PrunHelloWorldTutorial</code></p>
+                <p><code>mvn clean package exec:java -PrunHelloWorldTutorial</code></p>
                 
                 <p>If everything is ok, you should see the following output in the console :</p>
 
 <pre>
 [CB4J : INFO] Configuration started at : Mon Sep 03 22:29:07 CEST 2012
-[CB4J : WARNING] No encoding specified for input data, using system default encoding : Cp1252
+[CB4J : WARNING] No encoding specified for input data, using system default encoding : UTF-8
 [CB4J : WARNING] No field separator specified, using default : ','
 [CB4J : WARNING] No log file specified for ignored records, using default : /data/cb4j/cb4j-tutorials/src/main/resources/persons-ignored.log
 [CB4J : WARNING] No log file specified for rejected records, using default : /data/cb4j/cb4j-tutorials/src/main/resources/persons-rejected.log
@@ -249,7 +249,7 @@ Record #2 [2,Harry,Smith] is ignored, Error : record size 3 not equal to expecte
 </pre>
                 <p>The following is the content of the rejected records log file <code>/data/cb4j/cb4j-tutorials/src/main/resources/persons-rejected.log</code> :</p>
 <pre>
-Record #3 [x,Ben,] is rejected, Error : The field Field[index=1, content='x'] is not valid according to validation rule : [The field content should be a numeric value]
+Record #3 [x,Ben] is rejected, Error : The field Field[index=1, content='x'] is not valid according to validation rule : [The field content should be a numeric value]
 </pre>
 
             </div>

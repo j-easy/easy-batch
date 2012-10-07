@@ -94,7 +94,7 @@
 
             <p>To work effectively with CB4J, you have to follow these steps :</p>
             <ul>
-                <li>Provide configuration parameters : the input CSV file path, the file encoding,field separator,etc</li>
+                <li>Provide configuration parameters : Input CSV file path, file encoding,field separator,etc</li>
                 <li>Register field validation rules : field size, data type format,etc</li>
                 <li>Register record mapper : CSV to Object mapping logic</li>
                 <li>Register record processor : record processing business logic</li>
@@ -113,7 +113,7 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td>Provides configuration parameters</td>
+                    <td>Provide configuration parameters</td>
                     <td><i class="icon-ok-circle"></i></td>
                     <td></td>
                 </tr>
@@ -224,13 +224,13 @@
                 </tr>
                 <tr>
                     <td>input.record.separator</td>
-                    <td>The fields separator in a record</td>
+                    <td>Fields separator in a record</td>
                     <td>false</td>
                     <td>If not specified, the default separator is set to ','</td>
                 </tr>
                 <tr>
                     <td>input.record.size</td>
-                    <td>he record size (number of fields)</td>
+                    <td>Record size (number of fields)</td>
                     <td>true</td>
                     <td>N/A</td>
                 </tr>
@@ -249,7 +249,7 @@
                 </tbody>
             </table>
 
-            <p>The code sample below shows how to configure CB4J using <code class="prettyprint">java.util.Properties</code> :</p>
+            <p>The code sample below shows how to configure CB4J using a <code class="prettyprint">java.util.Properties</code> object:</p>
 
 <pre class="prettyprint">
 Properties configurationProperties = new Properties();
@@ -301,7 +301,7 @@ try {
 
             <p>CB4J validates field data with implementations of <code class="prettyprint">FieldValidator</code> and comes with built-in validators which allow you to ensure that a field content has a valid format and type. These validators are located in the <code class="prettyprint">net.benas.cb4j.core.validator</code> package.</p>
 
-            <p>For example, let's say that the first record must be a numeric value. With CB4J you simply declare this constraint using the <code class="prettyprint">NumericFieldValidator</code> as follows:</p>
+            <p>For example, let's say that the first field's value must be numeric. With CB4J you simply declare this constraint using the <code class="prettyprint">NumericFieldValidator</code> as follows:</p>
 
             <code class="prettyprint">batchConfiguration.registerFieldValidator(1, new NumericFieldValidator());</code>
 
@@ -330,12 +330,12 @@ batchConfiguration.registerFieldValidators(1,field1Validators);
             <p>The <a href="../tutorials/customers.html">customers ETL tutorial</a> shows an example of record mapper implementation.</p>
 
             <div class="alert">
-                <span class="label label-warning">Warning</span> : CB4J does not provide a default implementation of the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface for performance reason. In fact, CB4J should use reflection to detect business object field types and this may impact the execution performance.
+                <span class="label label-warning">Warning</span> : CB4J does not provide a default implementation of the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface for performance reason. In fact, CB4J may use Java Reflection API to introspect business object field types which may impact the execution performance.
             </div>
             
             <h4>2.4 Writing processing logic</h4>
 
-            When using CB4J, you process an object view of a CSV record. To define your record processing business logic, you have to implement the <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interface and register your implementation at configuration time as follows :</p>
+            <p>When using CB4J, you process an object view of a CSV record. To define your record processing business logic, you have to implement the <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interface and register your implementation at configuration time as follows :</p>
             <p><code class="prettyprint">batchConfiguration.registerRecordProcessor(new MyRecordProcessor());</code></p>
 
             <div class="alert">
@@ -354,7 +354,7 @@ batchRunner.run();
 
             <h3>3. Extending CB4J</h3>
 
-            <p>Although CB4J comes with default implementation of common requirements of field validation and data type conversion, it let you extend these defaults as you need.
+            <p>Although CB4J comes with default implementation of common requirements, it lets you extend these defaults as you need.
             In this section, we will show how you can extend CB4J to meet you custom requirements.</p>
 
             <div class="alert alert-info">
@@ -380,14 +380,14 @@ public interface BatchEngine extends Runnable{
 }
 </pre>
             By default, the <code class="prettyprint">DefaultBatchEngineImpl</code> logs a message to the console to signal batch starting and ending steps.<br/>
-            To override this default behavior, you can extends the <code class="prettyprint">DefaultBatchEngineImpl</code> to provide a custom initializing and shutdown methods. For instance, this is where you can open/close a database connection.<br/>
+            To override this default behavior, you have to extend the <code class="prettyprint">DefaultBatchEngineImpl</code> and override <code class="prettyprint">init()</code> and/or <code class="prettyprint">shutdown()</code> methods to provide a custom initializing and/or shutdown code. For instance, this is where you can open/close a database connection.<br/>
             The <a href="../tutorials/products.html">products statistics tutorial</a> shows an example of how to override the the <code class="prettyprint">DefaultBatchEngineImpl</code>.
             <h4>3.2 Writing a custom field validator</h4>
 
             <p>CB4J comes with basic field validators for common requirements such as not empty field, numeric values, etc.
             Please refer to the javadoc of <code class="prettyprint">net.benas.cb4j.core.validator</code> package for more details.</p>
 
-            <p>To write a custom field validator, you have to implement the <code class="prettyprint">FieldValidator</code> interface. This interface contains the two following methods :</p>
+            <p>To write a custom field validator, you have to implement the <code class="prettyprint">FieldValidator</code> interface. This interface contains the following methods :</p>
             <ul>
                 <li><code class="prettyprint">public boolean isValidField(final Field field)</code> : This method should contain the validation logic for a field</li>
                 <li><code class="prettyprint">public String getValidationRuleDescription()</code> : This method should return a description of the validation rule implemented by the validator. This description will be used to report the cause of record rejection</li>
@@ -430,7 +430,7 @@ foo;foobar
 foo;boobar
 </pre>
 
-            <p>The validations rules are the following :</p>
+            <p>The validation rules are the following :</p>
             <ul>
                 <li>All fields are required</li>
                 <li>field1 should have a length of 3 characters</li>
@@ -439,7 +439,7 @@ foo;boobar
 
             <p>As you can see, this requirement cannot be implemented using the default CB4J validation.
             Conditions 1 and 2 can be implemented by declaring regular field validators, but not Condition 3 which involves field1 and field2 at the same time. This validation requirement should be done at record level and not field level.</p>
-            <p>We should extend the default behavior with a custom record validator. To do this, we will extend the <code class="prettyprint">DefaultRecordValidator</code> and override the <code class="prettyprint">validateRecord(Record record)</code> method :<p/>
+            <p>We should extend the default behavior with a custom record validator. To do this, we will extend the <code class="prettyprint">DefaultRecordValidatorImpl</code> class and override the <code class="prettyprint">validateRecord(Record record)</code> method :<p/>
 
 <pre class="prettyprint">
 public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {
@@ -452,7 +452,7 @@ public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {
     public String validateRecord(Record record) {
 
         String error = super.validateRecord(record);
-        if (error.isEmpty()){//no errors after applying declared validators on each field => all fields are valid
+        if (error.isEmpty()){//no errors after applying declared validators on each field
 
             //add custom validation : field 2 content must starts with field 1 content
             final String content1 = record.getFieldContentByIndex(1);
@@ -460,7 +460,7 @@ public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {
             if (!content2.startsWith(content1))
                 return "field 2 content [" + content2 + "] must start with field 1 content [" + content1 + "]";
         }
-        return "";
+        return "";//empty value means no error
     }
 }
 </pre>
@@ -476,7 +476,7 @@ field1Validators.add(notEmptyFieldValidator);
 field1Validators.add(new FixedLengthFieldValidator(3));
 
 List&lt;FieldValidator> field2Validators = new ArrayList&lt;FieldValidator;&gt;();
-field1Validators.add(notEmptyFieldValidator);
+field2Validators.add(notEmptyFieldValidator);
 
 fieldValidators.put(1, field1Validators);
 fieldValidators.put(2, field2Validators);
@@ -501,7 +501,7 @@ batchConfiguration.registerRecordValidator(myCustomRecordValidator);
 </pre>
 
             <p>As you can see, CB4J reports to the console the batch start time, end time , overall execution duration and other metrics about input records.
-                This simple report may not correspond to your need, and CB4J lets you extend or override it as you need.</p>
+                This simple report may not correspond to your requirement, and CB4J lets you extend or override it as you need.</p>
 
             <p>In this section ,we will show how to override the default report with a chart report using the java free charting library <a href="http://www.jfree.org/jfreechart/">jfreechart</a>.
                 To override the default reporter behavior, we have to extend the <code class="prettyprint">DefaultBatchReporter</code> class and override the <code class="prettyprint">generateReport</code> method. The following listing shows a custom implementation that generates a simple Pie Chart instead of reporting information to the console.</p>

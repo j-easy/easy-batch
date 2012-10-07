@@ -88,7 +88,7 @@
 
             <div class="row-fluid">
 
-                <h3>1. CSV Data Model</h3>
+                <h3>1. CSV Data model</h3>
 
                 <p>CB4J uses a very simple and natural data model for dealing with CSV files. The main classes are :</p>
 
@@ -96,6 +96,8 @@
                     <li><code>Field</code> : representing a field in the CSV record. A field has a content and an index</li>
                     <li><code>Record</code> : representing a CSV record as an ordered list of fields</li>
                 </ul>
+                
+                These classes are defined in <code>net.benas.cb4j.core.model</code> package.
 
                 <h3>2. Processing workflow</h3>
 
@@ -104,10 +106,10 @@
 
                 <p>CB4J has a clearly defined workflow to process CSV flat files. The main components involved in this workflow are the following :</p>
                 <ul>
-                    <li>Record Parser : responsible for record parsing</li>
-                    <li>Record Validator : responsible for applying the declared validation rules</li>
-                    <li>Record Mapper : responsible for mapping a record to a java object</li>
-                    <li>Record Processor : responsible for applying business processing logic for each record</li>
+                    <li>Record Parser : parses a record and splits it into a list of fields</li>
+                    <li>Record Validator : applies declared validation rules for each record</li>
+                    <li>Record Mapper : maps a record to a java object</li>
+                    <li>Record Processor : applies business processing logic for each record</li>
                 </ul>
 
                 <p>The workflow used internally by CB4J implements the algorithm described below :</p>
