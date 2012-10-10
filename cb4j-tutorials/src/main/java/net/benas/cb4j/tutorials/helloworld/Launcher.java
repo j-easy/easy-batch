@@ -67,20 +67,16 @@ public class Launcher {
         batchConfiguration.registerRecordProcessor(new GreetingProcessor());
 
         /*
-         * Configure the engine
+         * Configure and run the engine
          */
         try {
             batchConfiguration.configure();
+            BatchEngine batchEngine = new DefaultBatchEngineImpl(batchConfiguration);
+            BatchRunner batchRunner = new BatchRunner(batchEngine);
+            batchRunner.run();
         } catch (BatchConfigurationException e) {
             System.err.println(e.getMessage());
         }
-
-        /*
-         * Create a default batch engine and start the batch
-        */
-        BatchEngine batchEngine = new DefaultBatchEngineImpl(batchConfiguration);
-        BatchRunner batchRunner = new BatchRunner(batchEngine);
-        batchRunner.run();
 
     }
 
