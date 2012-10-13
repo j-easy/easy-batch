@@ -1,0 +1,10 @@
+CB4J FRAMEWORK CHANGELOG
+========================
+https://github.com/benas/cb4j
+
+
+Changes in version 1.0.0 (2012-10-14)
+-------------------------------------
+
+* Initial core API and Implementation
+* Common data type validators
