@@ -92,92 +92,14 @@
 
             <p>To work effectively with CB4J, you have to follow these steps :</p>
             <ul>
-                <li>Provide configuration parameters : Input CSV file path, file encoding,field separator,etc</li>
-                <li>Register field validation rules : field size, data type format,etc</li>
-                <li>Register record mapper : CSV to Object mapping logic</li>
-                <li>Register record processor : record processing business logic</li>
+                <li>Provide CSV configuration parameters (Input file path, file encoding,field separator,etc)</li>
+                <li>Register field validation rules (field size, data type and format,etc) that will be used by the record validator to validate data</li>
+                <li>Register CSV to Object mapping logic that will be used by the record mapper</li>
+                <li>Register record processing business logic that will be applied by record processor</li>
             </ul>
             
-            <p>All these steps can be done through the <code class="prettyprint">BatchConfiguration</code> class which is the main entry point to configure the engine.<br/>
-            The following table summarizes what you need to do and what CB4J does for you.</p>
-            
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Task</th>
-                        <th>You</th>
-                        <th>CB4J</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Provide configuration parameters</td>
-                    <td><i class="icon-ok-circle"></i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Provide field validation logic</td>
-                    <td><i class="icon-ok-circle"></i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Provide CSV/Object mapping logic</td>
-                    <td><i class="icon-ok-circle"></i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Provide record processing logic</td>
-                    <td><i class="icon-ok-circle"></i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Handle I/O for input/log files</td>
-                    <td></td>
-                    <td><i class="icon-ok-circle"></i></td>
-                </tr>
-                <tr>
-                    <td>Read input file line by line</td>
-                    <td></td>
-                    <td><i class="icon-ok-circle"></i></td>
-                </tr>
-                <tr>
-                    <td>Check CSV record well-formedness</td>
-                    <td></td>
-                    <td><i class="icon-ok-circle"></i></td>
-                </tr>
-                <tr>
-                    <td>Parse CSV record and split it into a list of fields</td>
-                    <td></td>
-                    <td><i class="icon-ok-circle"></i></td>
-                </tr>
-                <tr>
-                    <td>Apply validation logic to each field/record</td>
-                    <td></td>
-                    <td><i class="icon-ok-circle"></i></td>
-                </tr>
-                <tr>
-                    <td>Apply CSV/Object mapping logic</td>
-                    <td></td>
-                    <td><i class="icon-ok-circle"></i></td>
-                </tr>
-                <tr>
-                    <td>Apply business processing logic</td>
-                    <td></td>
-                    <td><i class="icon-ok-circle"></i></td>
-                </tr>
-                <tr>
-                    <td>Report batch statistics</td>
-                    <td></td>
-                    <td><i class="icon-ok-circle"></i></td>
-                </tr>
-                <tr>
-                    <td>Generate log files for ignored/rejected records</td>
-                    <td></td>
-                    <td><i class="icon-ok-circle"></i></td>
-                </tr>
-                </tbody>
-            </table>
-            
+            <p>All these steps can be done through the <code class="prettyprint">BatchConfiguration</code> class which is the main entry point to configure the engine.</p>
+
             <h3>2. Using CB4J</h3>
 
             <h4>2.1 Configuring the engine</h4>
@@ -204,7 +126,7 @@
                 <tbody>
                 <tr>
                     <td>input.data.path</td>
-                    <td>absolute path of input data file to process</td>
+                    <td>absolute path of input data file</td>
                     <td>true</td>
                     <td>N/A</td>
                 </tr>
@@ -212,19 +134,19 @@
                     <td>input.data.encoding</td>
                     <td>input data file encoding</td>
                     <td>false</td>
-                    <td>If not specified, the system's default encoding will be used to read data</td>
+                    <td>System default encoding</td>
                 </tr>
                 <tr>
                     <td>input.data.skipHeader</td>
                     <td>Specify if the first record should be skipped. If set to true, the header record is escaped from record numbering</td>
                     <td>false</td>
-                    <td>If not specified, default value is set to false</td>
+                    <td>false</td>
                 </tr>
                 <tr>
                     <td>input.record.separator</td>
                     <td>Fields separator in a record</td>
                     <td>false</td>
-                    <td>If not specified, the default separator is set to ','</td>
+                    <td>comma ','</td>
                 </tr>
                 <tr>
                     <td>input.record.size</td>
@@ -236,13 +158,13 @@
                     <td>output.data.ignored</td>
                     <td>Absolute path to the log file of ignored records</td>
                     <td>false</td>
-                    <td>${input.data}-ignored.log. The extension of the input data file (if any) will be removed</td>
+                    <td>${input.data.path}-ignored.log. The extension of the input data file (if any) will be removed</td>
                 </tr>
                 <tr>
                     <td>output.data.rejected</td>
                     <td>Absolute path to the log file of rejected records</td>
                     <td>false</td>
-                    <td>${input.data}-rejected.log. The extension of the input data file (if any) will be removed</td>
+                    <td>${input.data.path}-rejected.log. The extension of the input data file (if any) will be removed</td>
                 </tr>
                 </tbody>
             </table>
@@ -297,7 +219,7 @@ try {
 
             <h5>2.2.1 Using built-in validators</h5>
 
-            <p>CB4J validates field data with implementations of <code class="prettyprint">FieldValidator</code> and comes with built-in validators which allow you to ensure that a field content has a valid format and type. These validators are located in the <code class="prettyprint">net.benas.cb4j.core.validator</code> package.</p>
+            <p>CB4J validates field data with implementations of <code class="prettyprint">FieldValidator</code> interface and comes with built-in validators which allow you to ensure that a field content has a valid format and type. These validators are located in the <code class="prettyprint">net.benas.cb4j.core.validator</code> package.</p>
 
             <p>For example, let's say that the first field's value must be numeric. With CB4J you simply declare this constraint using the <code class="prettyprint">NumericFieldValidator</code> as follows:</p>
 
@@ -317,7 +239,7 @@ batchConfiguration.registerFieldValidators(1,field1Validators);
 </pre>
 
             <div class="alert alert-info">
-                <span class="label label-info">Info</span> : When using multiple validators, the validation order is the order in which validators are inserted in the list.
+                <span class="label label-info">Info</span> : When using multiple validators, the validation order applied by CB4J is the insertion order of validators in the list.
             </div>
 
             <h4>2.3 Mapping CSV records to java objects</h4>
@@ -396,7 +318,7 @@ public interface BatchEngine extends Runnable{
 <pre class="prettyprint">
 public class MyCustomFieldValidator implements FieldValidator{
 
-    public boolean isValidField(Field field) {
+    public boolean isValidField(final Field field) {
         return field.getContent().startsWith("XP");
     }
 
@@ -447,18 +369,19 @@ public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {
     }
 
     @Override
-    public String validateRecord(Record record) {
+    public String validateRecord(final Record record) {
 
         String error = super.validateRecord(record);
-        if (error.isEmpty()){//no errors after applying declared validators on each field
+        if (error.isEmpty()) { //no errors after applying declared validators on each field
 
             //add custom validation : field 2 content must starts with field 1 content
-            final String content1 = record.getFieldContentByIndex(1);
-            final String content2 = record.getFieldContentByIndex(2);
-            if (!content2.startsWith(content1))
-                return "field 2 content [" + content2 + "] must start with field 1 content [" + content1 + "]";
+            final String content1 = record.getFieldContentByIndex(0);
+            final String content2 = record.getFieldContentByIndex(1);
+            if (!content2.startsWith(content1)) {
+             return "field 2 content [" + content2 + "] must start with field 1 content [" + content1 + "]";
+            }
         }
-        return "";//empty value means no error
+        return ""; //empty value means no error
     }
 }
 </pre>
@@ -466,22 +389,26 @@ public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {
             <p>Once the custom validator implemented, we should tell CB4J to use it instead of the default one. This is done with the following API :</p>
 
 <pre class="prettyprint">
-Map&lt;Integer, List&lt;FieldValidator;&gt;;&gt; fieldValidators = new HashMap&lt;Integer, List&lt;FieldValidator;&gt;;&gt;();
+Map&lt;Integer, List&lt;FieldValidator&gt;&gt; fieldValidators = new HashMap&lt;Integer, List&lt;FieldValidator&gt;&gt;();
 
-List&lt;FieldValidator> field1Validators = new ArrayList&lt;FieldValidator;&gt;();
+List&lt;FieldValidator> field1Validators = new ArrayList&lt;FieldValidator&gt;();
 final NotEmptyFieldValidator notEmptyFieldValidator = new NotEmptyFieldValidator();
 field1Validators.add(notEmptyFieldValidator);
 field1Validators.add(new FixedLengthFieldValidator(3));
 
-List&lt;FieldValidator> field2Validators = new ArrayList&lt;FieldValidator;&gt;();
+List&lt;FieldValidator> field2Validators = new ArrayList&lt;FieldValidator&gt;();
 field2Validators.add(notEmptyFieldValidator);
 
-fieldValidators.put(1, field1Validators);
-fieldValidators.put(2, field2Validators);
+fieldValidators.put(0, field1Validators);
+fieldValidators.put(1, field2Validators);
 
 MyCustomRecordValidator myCustomRecordValidator = new MyCustomRecordValidator(fieldValidators);
 batchConfiguration.registerRecordValidator(myCustomRecordValidator);
 </pre>
+
+            <div class="alert alert-info">
+                <span class="label label-info">Info</span> : field indexes in CSV records are zero-based.
+            </div>
 
             <h4>3.4 Writing a custom reporter</h4>
 

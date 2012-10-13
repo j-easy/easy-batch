@@ -90,7 +90,7 @@
             <div class="row-fluid">
 
                 <h3>1. Description</h3>
-                <p>This tutorial is a Hello world example of using CB4J. We will process a simple CSV file containing persons records to generate greetings.
+                <p>This tutorial is a Hello world example of using CB4J. We will process a simple CSV file containing persons records and generate greetings.
                    The input file named "<strong>persons.csv</strong>" has the following format:</p>
 <pre>
 sequence,name
@@ -119,7 +119,7 @@ x,Ben
                 <h3>3. Implementation using CB4J</h3>
                 <h4>3.1 Configuration</h4>
                 <p>First, we need to configure CB4J with CSV parameters. By default, CB4J uses the comma ',' character as separator which is fine for this tutorial, so no configuration is needed for field separator.</p>
-                <p>Nevertheless, we have to specify the path of input file, the record size and the skipHeader parameters. This is done as follows :</p>
+                <p>Nevertheless, we have to specify the path of input file, the record size and the <strong>skipHeader</strong> parameters. This is done as follows :</p>
 <pre class="prettyprint">
 Properties configurationProperties = new Properties();
 configurationProperties.setProperty("input.data.path","/data/cb4j/cb4j-tutorials/src/main/resources/persons.csv");
@@ -149,7 +149,7 @@ public class Greeting {
 }
 </pre>
 
-                <p>To map CSV records to <code class="prettyprint">Greeting</code> objects, we have to provide an implementation of the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface as follow :</p>
+                <p>To map CSV records to <code class="prettyprint">Greeting</code> objects, we have to provide an implementation of the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface as follows :</p>
 <pre class="prettyprint">
 public class GreetingMapper implements RecordMapper&lt;Greeting&gt; {
 
@@ -171,8 +171,8 @@ public class GreetingMapper implements RecordMapper&lt;Greeting&gt; {
 batchConfiguration.registerRecordMapper(new GreetingMapper());
 </pre>
 
-                <h4>3.4 Process records</h4>
-                <p>At this point, we have validated and mapped CSV records to <code class="prettyprint">Greeting</code> objects. It is time to define the business processing logic which consists in this tutorial of printing to the console a greeting message for each person. For that to be done, we implement the <code class="prettyprint">RecordProcessor&lt;T&gt;</code> as follows:</p>
+                <h4>3.4 Processing records</h4>
+                <p>At this point, we have validated and mapped CSV records to <code class="prettyprint">Greeting</code> objects. It is time to define the business processing logic which consists in this tutorial of printing to the console a greeting message for each person. For that to be done, we implement the <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interface as follows:</p>
 <pre class="prettyprint">
 public class GreetingProcessor implements RecordProcessor&lt;Greeting&gt; {
 
@@ -218,6 +218,7 @@ batchRunner.run();
 [CB4J : INFO] Configuration successful
 [CB4J : INFO] Configuration parameters details : {input.data.skipHeader=true, input.record.size=2, input.data.path=/data/cb4j/cb4j-tutorials/src/main/resources/persons.csv}
 [CB4J : INFO] Initializing batch
+[CB4J : INFO] CB4J engine is running...
 Hi Tommy! Your sequence number is 1
 [CB4J : INFO] finalizing batch
 [CB4J : INFO] CB4J report :

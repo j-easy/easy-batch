@@ -43,10 +43,10 @@ The distribution contains a set of ready to use CB4J examples :
 
     - Products statistics : An example of how to use CB4J to read a CSV file containing products data and calculate statistics about prices
 
-1- Build CB4J tutorials:
+1- Build examples:
 ------------------------
 
-To build examples, run the following commands from the distribution's root directory:
+To build CB4J examples, run the following commands from the distribution's root directory:
 
  $>cd src
  $>mvn install

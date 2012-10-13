@@ -16,6 +16,12 @@
         .sidebar-nav {
             padding: 9px 0;
         }
+        .table td.center-td{
+            text-align: center;
+        }
+        .table th.center-td{
+            text-align: center;
+        }
     </style>
     <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
 
@@ -86,25 +92,25 @@
 
             <div class="row-fluid">
 
-                <h3>1. CSV Data model</h3>
+                <h3>1. CSV data model</h3>
 
                 <p>CB4J uses a very simple and natural data model for dealing with CSV files. The main classes are :</p>
 
                 <ul>
-                    <li><code>Field</code> : representing a field in the CSV record. A field has a content and an index</li>
-                    <li><code>Record</code> : representing a CSV record as an ordered list of fields</li>
+                    <li><code>Field</code> : represents a field in a CSV record. A field has a content and an index</li>
+                    <li><code>Record</code> : represents a CSV record as an ordered list of fields</li>
                 </ul>
 
-                <p><img src="../resources/img/csv.png"/></p>
+                <p align="center"><img src="../resources/img/csv.png"/></p>
                 
                 These classes are defined in <code>net.benas.cb4j.core.model</code> package.
 
-                <h3>2. Processing workflow</h3>
+                <h3>2. Main components</h3>
 
-                <p>The next figure illustrates the main CB4J components and gives an overview of the framework architecture.</p>
-                <p><img src="../resources/img/workflow.jpg"/></p>
+                <p>The next figure illustrates the main CB4J components and gives an overview of the framework architecture:</p>
+                <p align="center"><img src="../resources/img/architecture.jpg"/></p>
 
-                <p>CB4J has a clearly defined workflow to process CSV flat files. The main components involved in this workflow are the following :</p>
+                <p>The main CB4J components are the following :</p>
                 <ul>
                     <li>Record Parser : parses a record and splits it into a list of fields</li>
                     <li>Record Validator : applies declared validation rules for each record</li>
@@ -112,15 +118,109 @@
                     <li>Record Processor : applies business processing logic for each record</li>
                 </ul>
 
-                <p>The workflow used internally by CB4J implements the algorithm described below :</p>
+                <p>Each of these components needs to be configured to work properly and as expected. CB4J uses a declarative approach to register configuration parameters. A typical use case of configuring CB4J is to :</p>
+                <ul>
+                    <li>Provide CSV configuration parameters (Input file path, file encoding,field separator,etc)</li>
+                    <li>Register field validation rules (field size, data type and format,etc) that will be used by the record validator to validate data</li>
+                    <li>Register CSV to Object mapping logic that will be used by the record mapper</li>
+                    <li>Register record processing business logic that will be applied by the record processor</li>
+                </ul>
+
+                <p>All details about these steps can be found in the <a href="userGuide.html">user guide section</a>.</p>
+
+                <p>The following table summarizes what you need to do and what CB4J does for you :</p>
+
+                <table class="table table-bordered table-striped table-center">
+                    <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th class="center-td">You</th>
+                        <th class="center-td">CB4J</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Provide configuration parameters</td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Provide data validation logic</td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Provide CSV/Object mapping logic</td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Provide record processing logic</td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Handle I/O for input/log files</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Read input file line by line</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Check CSV record well-formedness</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Parse CSV record and split it into a list of fields</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Apply validation logic to each field/record</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Apply CSV/Object mapping logic</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Apply business processing logic</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Report batch statistics</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Generate log files for ignored/rejected records</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <h3>3. Processing workflow</h3>
+
+                <p>The workflow used internally by CB4J is illustrated by the next figure and described below :</p>
+
+                <p align="center"><img src="../resources/img/workflow.png"/></p>
+
                 <ol>
-                    <li>The record reader reads the input CSV file line by line until the end of file. If the end of file is reached, the engine instructs the batch reporter to generate the batch report and terminates the execution</li>
+                    <li>The engine reads the input CSV file line by line until the end of file. If the end of file is reached, the engine generates the batch report and terminates the execution</li>
                     <li>The next record is read as a string containing raw data</li>
                     <li>The record parser checks the record for well-formedness : If the record is not well formed (actual size not equal to expected size), then the record is ignored and the engine moves to the next one. If the record is well formed, then it is passed to the next step to be parsed</li>
                     <li>The record parser parses the current record to split it into fields ordered by index and containing raw data</li>
                     <li>The record validator applies validation rules for each field. If a validation rule is violated for one field, then the record is rejected. If all fields are valid, then the parsed record is passed to the next step to be mapped to a java object</li>
-                    <li>At this point, the record mapper is supplied with a parsed record containing raw data that have passed the declared validation rules. The parsed record is mapped to the declared java object . CB4J consider mapping exception as errors that should not pass the processing step. Hence, the engine rejects records that cannot be mapped to objects with typed fields. This is a design choice to minimize unexpected errors during record processing. <p><span class="label label-info">NB</span> : In a well designed batch, the record mapper should not have any problem in converting string values to typed values if all data was validated correctly at validation step.</p> </li>
-                    <li>This is where the business logic is (finally!) executed. At this point, the record processor is supplied with an object view of the CSV record with validated and typed data.</li>
+                    <li>At this point, the record mapper is supplied with a parsed record containing raw data that have passed the declared validation rules. The parsed record is mapped to the declared java object type. CB4J considers mapping exception as errors that should not pass the processing step. Hence, the engine rejects records that cannot be mapped to objects with typed fields. This is a design choice to minimize unexpected errors during record processing. <p><span class="label label-info">NB</span> : In a well designed batch, the record mapper should not have any problem in converting string values to typed values if all data is validated correctly at validation step.</p> </li>
+                    <li>Finally, the business logic is executed by the record processor. At this point, the record processor is supplied with a java object populated with validated and typed data.</li>
                 </ol>
 
             </div>
