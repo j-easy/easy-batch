@@ -25,16 +25,16 @@
 package net.benas.cb4j.core.config;
 
 /**
- * Exception class used by {@link BatchConfiguration} for any configuration exception
+ * Exception class used by {@link BatchConfiguration} for any configuration exception.
  *
  * @author benas (md.benhassine@gmail.com)
  */
 public class BatchConfigurationException extends Exception {
 
-	private static final long serialVersionUID = 1L;
-	
-	public BatchConfigurationException(String message) {
-		super(message);
-	}
+    private static final long serialVersionUID = 1L;
+
+    public BatchConfigurationException(final String message) {
+        super(message);
+    }
 
 }

@@ -37,43 +37,53 @@ import net.benas.cb4j.core.model.Record;
 public final class RecordParserImpl implements RecordParser {
 
     /**
-     * The number of fields in the record
+     * The number of fields in the record.
      */
     private int fieldNumber;
 
     /**
-     * The field separator
+     * The field separator.
      */
     private String fieldSeparator;
 
-    public RecordParserImpl(int fieldNumber, String fieldSeparator) {
+    public RecordParserImpl(final int fieldNumber, final String fieldSeparator) {
 
         this.fieldNumber = fieldNumber;
         String prefix = "";
-        if("|".equalsIgnoreCase(fieldSeparator)) //escape the "pipe" character used in regular expression of String.split method
+        if ("|".equalsIgnoreCase(fieldSeparator)) { //escape the "pipe" character used in regular expression of String.split method
             prefix = "\\";
+        }
         this.fieldSeparator = prefix + fieldSeparator;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isWellFormed(final String record) {
-        String[] tokens = record.split(fieldSeparator,-1);
+        String[] tokens = record.split(fieldSeparator, -1);
         return (tokens.length == fieldNumber);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getRecordSize(final String record) {
-        String[] tokens = record.split(fieldSeparator,-1);
+        String[] tokens = record.split(fieldSeparator, -1);
         return tokens.length;
     }
 
-    public Record parseRecord(final String stringRecord,long currentRecordNumber) {
-        Record record = new Record(currentRecordNumber,fieldSeparator);
-        String[] tokens = stringRecord.split(fieldSeparator,-1);
+    /**
+     * {@inheritDoc}
+     */
+    public Record parseRecord(final String stringRecord, final long currentRecordNumber) {
+        Record record = new Record(currentRecordNumber, fieldSeparator);
+        String[] tokens = stringRecord.split(fieldSeparator, -1);
         int i = 0;
-        for(String token : tokens){
-            Field field = new Field(i++,token);
+        for (String token : tokens) {
+            Field field = new Field(i++, token);
             record.getFields().add(field);
         }
         return record;
     }
-    
+
 }

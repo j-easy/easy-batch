@@ -28,18 +28,18 @@ import net.benas.cb4j.core.api.FieldValidator;
 import net.benas.cb4j.core.model.Field;
 
 /**
- * Fixed length validator implementation<br/>
+ * Fixed length validator implementation.<br/>
  * This validator should be used to validate that field content have a specified length
  * @author benas (md.benhassine@gmail.com)
  */
 public class FixedLengthFieldValidator implements FieldValidator {
 
     /**
-     * Field content length
+     * Field content length.
      */
     private int length;
 
-    public FixedLengthFieldValidator(int length){
+    public FixedLengthFieldValidator(int length) {
         this.length = length;
     }
 

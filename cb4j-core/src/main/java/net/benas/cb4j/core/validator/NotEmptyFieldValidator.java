@@ -28,7 +28,7 @@ import net.benas.cb4j.core.api.FieldValidator;
 import net.benas.cb4j.core.model.Field;
 
 /**
- * Not empty value validator implementation<br/>
+ * Not empty value validator implementation.<br/>
  * This validator should be used to validate that field content is not empty
  * @author benas (md.benhassine@gmail.com)
  */
@@ -37,7 +37,7 @@ public class NotEmptyFieldValidator implements FieldValidator {
     /**
      * {@inheritDoc}
      */
-    public boolean isValidField(Field field) {
+    public boolean isValidField(final Field field) {
         return field.getContent() != null && field.getContent().length() != 0;
     }
 

@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 public class RegExpFieldValidator implements FieldValidator {
 
     /**
-     * The regular expression to check the value against
+     * The regular expression to check the value against.
      */
     private String regexp;
 
@@ -49,9 +49,9 @@ public class RegExpFieldValidator implements FieldValidator {
     /**
      * {@inheritDoc}
      */
-    public boolean isValidField(Field field) {
+    public boolean isValidField(final Field field) {
         CharSequence inputStr = field.getContent();
-        Pattern pattern = Pattern.compile(regexp,Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(inputStr);
         return matcher.matches();
     }

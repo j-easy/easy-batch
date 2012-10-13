@@ -31,7 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Numeric field validator implementation<br/>
+ * Numeric field validator implementation.<br/>
  * This validator should be used to validate that a field content is a numeric value
  * @author benas (md.benhassine@gmail.com)
  */
@@ -40,7 +40,7 @@ public class NumericFieldValidator implements FieldValidator {
     /**
      * {@inheritDoc}
      */
-    public boolean isValidField(Field field) {
+    public boolean isValidField(final Field field) {
         String expression = "^[-+]?[0-9]*\\.?[0-9]+$";
         CharSequence inputStr = field.getContent();
         Pattern pattern = Pattern.compile(expression);

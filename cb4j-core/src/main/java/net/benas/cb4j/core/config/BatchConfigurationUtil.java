@@ -33,13 +33,13 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * Utility class used by {@link BatchConfiguration} to facilitate configuration process
+ * Utility class used by {@link BatchConfiguration} to facilitate configuration process.
  *
  * @author benas (md.benhassine@gmail.com)
  */
 public class BatchConfigurationUtil {
 
-    private final static Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
+    private static final Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
 
     /**
      * Remove file extension if any.<br/>
@@ -49,48 +49,49 @@ public class BatchConfigurationUtil {
      * @param fileName the file name
      * @return the file name without extension
      */
-	public static String removeExtension(final String fileName){
-		if(fileName != null && fileName.length() > 0){
-			if( fileName.indexOf('.') < 0 )
-				return fileName;
-			else{
-				int lastDotIndex = fileName.lastIndexOf('.');
-				return fileName.substring(0, lastDotIndex);
-			}
-		}
-		return fileName;//null
-	}
+    public static String removeExtension(final String fileName) {
+        if (fileName != null && fileName.length() > 0) {
+            if (fileName.indexOf('.') < 0) {
+                return fileName;
+            } else {
+                int lastDotIndex = fileName.lastIndexOf('.');
+                return fileName.substring(0, lastDotIndex);
+            }
+        }
+        return fileName; //null
+    }
 
     /**
-     * Loads properties from a configuration file
+     * Loads properties from a configuration file.
      * @param configurationFile the absolute path of the configuration file
      * @return Configuration properties
      * @throws BatchConfigurationException throw if configuration file is not found or cannot be read
      */
-	public static Properties loadParametersFromConfigurationFile(final String configurationFile)
-			throws BatchConfigurationException {
-		Properties properties = new Properties();
-		FileInputStream fileInputStream = null;
-		try {
-			fileInputStream = new FileInputStream(configurationFile);
-			properties.load(fileInputStream);
-		} catch (FileNotFoundException e) {
-			String error = "Configuration failed : configuration file not found : " + configurationFile;
+    public static Properties loadParametersFromConfigurationFile(final String configurationFile)
+            throws BatchConfigurationException {
+        Properties properties = new Properties();
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(configurationFile);
+            properties.load(fileInputStream);
+        } catch (FileNotFoundException e) {
+            String error = "Configuration failed : configuration file not found : " + configurationFile;
             logger.severe(error);
             throw new BatchConfigurationException(error);
-		} catch (IOException e) {
-			String error = "Configuration failed : exception in reading configuration file : " + configurationFile;
+        } catch (IOException e) {
+            String error = "Configuration failed : exception in reading configuration file : " + configurationFile;
             logger.severe(error);
             throw new BatchConfigurationException(error);
-		}finally{
-			try {
-				if (fileInputStream!=null)
+        } finally {
+            try {
+                if (fileInputStream != null) {
                     fileInputStream.close();
-			} catch (IOException e) {
-				logger.warning("Configuration failed : exception in closing configuration file : " + configurationFile);
-			}
-		}
-		return properties;
-	}
-	
+                }
+            } catch (IOException e) {
+                logger.warning("Configuration failed : exception in closing configuration file : " + configurationFile);
+            }
+        }
+        return properties;
+    }
+
 }

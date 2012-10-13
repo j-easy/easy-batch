@@ -32,14 +32,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 /**
- * Date Format Validator implementation<br/>
+ * Date Format Validator implementation.<br/>
  * This validator should be used to validate that field content has a valid date format
  * @author benas (md.benhassine@gmail.com)
  */
 public class DateFormatFieldValidator implements FieldValidator {
 
     /**
-     * The date format to use
+     * The date format to use.
      */
     protected String dateFormat;
 
@@ -50,7 +50,7 @@ public class DateFormatFieldValidator implements FieldValidator {
     /**
      * {@inheritDoc}
      */
-    public boolean isValidField(Field field) {
+    public boolean isValidField(final Field field) {
         DateFormat df = new SimpleDateFormat(dateFormat);
         try {
             df.parse(field.getContent());
@@ -64,7 +64,7 @@ public class DateFormatFieldValidator implements FieldValidator {
      * {@inheritDoc}
      */
     public String getValidationRuleDescription() {
-        return "The field content should be a date with format :" + dateFormat;
+        return "The field content should be a date with format : " + dateFormat;
     }
 
 }

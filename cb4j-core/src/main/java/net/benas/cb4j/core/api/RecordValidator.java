@@ -34,10 +34,10 @@ import net.benas.cb4j.core.model.Record;
 public interface RecordValidator {
 
     /**
-     * Validate a record
+     * Validate a record.
      * @param record the record to validate
      * @return validation error if any or empty string if the record is valid
      */
-    public String validateRecord(final Record record);
+    String validateRecord(final Record record);
 
 }

@@ -25,7 +25,7 @@
 package net.benas.cb4j.core.util;
 
 /**
- * Constants class
+ * CB4J constants class.
  *
  * @author benas (md.benhassine@gmail.com)
  */

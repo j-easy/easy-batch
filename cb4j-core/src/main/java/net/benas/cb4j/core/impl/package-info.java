@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains CB4J core implementation
+ * This package contains CB4J core implementation.
  */
 package net.benas.cb4j.core.impl;

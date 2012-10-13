@@ -38,20 +38,20 @@ package net.benas.cb4j.core.api;
 public interface RecordProcessor<T> {
 
     /**
-     * PreProcess a record : this is the best place to implement any record pre processing logic
+     * PreProcess a record : this is the best place to implement any record pre processing logic.
      * @param typedRecord the record to pre process
      */
-    public void preProcessRecord(T typedRecord);
+    void preProcessRecord(T typedRecord);
 
     /**
-     * Process a record
-     * @param typedRecord the record to process
+     * Process a record.
+     * @param typedRecord the record to process.
      */
-    public void processRecord(T typedRecord);
+    void processRecord(T typedRecord);
 
     /**
-     * PostProcess a record : This is the best place to implement any record post processing logic
+     * PostProcess a record : This is the best place to implement any record post processing logic.
      * @param typedRecord the record to post process
      */
-    public void postProcessRecord(T typedRecord);
+    void postProcessRecord(T typedRecord);
 }

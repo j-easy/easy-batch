@@ -40,7 +40,7 @@ import java.util.logging.Logger;
  */
 public class DefaultBatchEngineImpl implements BatchEngine {
 
-    final protected Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
+    protected final Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
 
     /*
      * CB4J services
@@ -74,29 +74,29 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         logger.info("Initializing batch");
     }
 
-    public final void run() {//final : must not be overridden by framework users
+    public final void run() { //final : must not be overridden by framework users
 
         logger.info("CB4J engine is running...");
         final long startTime = System.currentTimeMillis();
-        long currentRecordNumber = 0 ;
+        long currentRecordNumber = 0;
         batchReporter.setStartTime(startTime);
 
-        while(recordReader.hasNextRecord()){
+        while (recordReader.hasNextRecord()) {
 
             currentRecordNumber++;
 
             //parse record
             String currentRecord = recordReader.readNextRecord();
-            if (!recordParser.isWellFormed(currentRecord)){
-                batchReporter.ignoreRecord(currentRecord,currentRecordNumber,recordParser.getRecordSize(currentRecord));
+            if (!recordParser.isWellFormed(currentRecord)) {
+                batchReporter.ignoreRecord(currentRecord, currentRecordNumber, recordParser.getRecordSize(currentRecord));
                 continue;
             }
 
             //validate record
-            Record currentParsedRecord = recordParser.parseRecord(currentRecord,currentRecordNumber);
+            Record currentParsedRecord = recordParser.parseRecord(currentRecord, currentRecordNumber);
             String error = recordValidator.validateRecord(currentParsedRecord);
-            if ( error.length() > 0 ){
-                batchReporter.rejectRecord(currentParsedRecord,error);
+            if (error.length() > 0) {
+                batchReporter.rejectRecord(currentParsedRecord, error);
                 continue;
             }
 
@@ -105,7 +105,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             try {
                 typedRecord = recordMapper.mapRecord(currentParsedRecord);
             } catch (RecordMappingException e) {
-                batchReporter.rejectRecord(currentParsedRecord,e.getMessage());
+                batchReporter.rejectRecord(currentParsedRecord, e.getMessage());
                 continue;
             }
 

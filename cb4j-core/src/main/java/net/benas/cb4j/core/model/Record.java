@@ -28,23 +28,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A model class representing a CSV record
+ * A model class representing a CSV record.
  * @author benas (md.benhassine@gmail.com)
  */
 public final class Record {
 
     /**
-     * The record number in the file
+     * The record number in the file.
      */
     private long number;
 
     /**
-     * The fields separator
+     * The fields separator.
      */
     private String separator;
 
     /**
-     * The record fields
+     * The record fields.
      */
     private List<Field> fields;
 
@@ -55,42 +55,47 @@ public final class Record {
     }
 
     /**
-     * Getter for a field by its index in the record. The first field is at index 0
+     * Getter for a field by its index in the record. The first field is at index 0.
      * @param index the field index
      * @return The Field with index index
      * @throws IndexOutOfBoundsException if the given index is out of range in the fields list
      */
     public Field getFieldByIndex(int index) {
-        if ( index < 0 || index > fields.size() )
+        if (index < 0 || index > fields.size()) {
             throw new IndexOutOfBoundsException("Index " + index + " is out of bound in fields list");
+        }
         return fields.get(index);
     }
 
     /**
-     * Getter for a field's content by its index in the record. This method is a shortcut for getFieldByIndex(index).getContent() . The first field is at index 0
+     * Getter for a field's content by its index in the record.<br/>
+     * This method is a shortcut for getFieldByIndex(index).getContent() . The first field is at index 0
      * @param index the field index
      * @return The Field's content with the given index.
      * @throws IndexOutOfBoundsException if the given index is out of range in the fields list
      */
     public String getFieldContentByIndex(int index) {
-        if ( index < 0 || index > fields.size() )
+        if (index < 0 || index > fields.size()) {
             throw new IndexOutOfBoundsException("Index " + index + " is out of bound in fields list");
+        }
         return fields.get(index).getContent();
     }
 
     /**
-     * Getter for the record content as a String
+     * Getter for the record content as a String.
      * @return The record content as a String
      */
     public String getContentAsString() {
-        if (fields.size() == 0) return "";
+        if (fields.size() == 0) {
+            return "";
+        }
         StringBuilder sb = new StringBuilder();
         //for each field, append the field content + separator
         for (int i = 0; i < fields.size() - 1; i++) {
             sb.append(fields.get(i).getContent());
             sb.append(separator);
         }
-        sb.append(fields.get(fields.size()-1).getContent());//for the last field, append only field content, no separator
+        sb.append(fields.get(fields.size() - 1).getContent()); //for the last field, append only field content, no separator
         return sb.toString();
     }
 

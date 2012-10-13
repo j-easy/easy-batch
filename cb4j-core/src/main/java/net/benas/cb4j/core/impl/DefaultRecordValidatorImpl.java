@@ -46,7 +46,7 @@ public class DefaultRecordValidatorImpl implements RecordValidator {
      * The map key is the field index. The map value is the list of validators to apply for this field.
      *
      */
-    private Map<Integer,List<FieldValidator>> fieldValidators;
+    private Map<Integer, List<FieldValidator>> fieldValidators;
 
     public DefaultRecordValidatorImpl(Map<Integer, List<FieldValidator>> fieldValidators) {
         this.fieldValidators = fieldValidators;
@@ -59,15 +59,17 @@ public class DefaultRecordValidatorImpl implements RecordValidator {
      *
      */
     public String validateRecord(Record record) {
-        if(fieldValidators.isEmpty())//if no validators are registered, all fields are supposed to be valid
+        if (fieldValidators.isEmpty()) { //if no validators are registered, all fields are supposed to be valid
             return "";
+        }
 
-        for(Field field : record.getFields()){
+        for (Field field : record.getFields()) {
             List<FieldValidator> validators = fieldValidators.get(field.getIndex());
-            if(validators != null && validators.size() > 0){
-                for(FieldValidator validator : validators)
-                if ( !validator.isValidField(field) ){
-                    return "The field " + field + " is not valid according to validation rule : [" + validator.getValidationRuleDescription() + "]";
+            if (validators != null && validators.size() > 0) {
+                for (FieldValidator validator : validators) {
+                    if (!validator.isValidField(field)) {
+                        return "The field " + field + " is not valid according to validation rule : [" + validator.getValidationRuleDescription() + "]";
+                    }
                 }
             }
         }

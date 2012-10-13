@@ -25,18 +25,18 @@
 package net.benas.cb4j.core.api;
 
 /**
- * Exception class used by {@link RecordMapper} for any record/object mapping exception
+ * Exception class used by {@link RecordMapper} for any record/object mapping exception.
  * @author benas (md.benhassine@gmail.com)
  */
 public class RecordMappingException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    public RecordMappingException(String message) {
+    public RecordMappingException(final String message) {
         super(message);
     }
 
-    public RecordMappingException(String message, Throwable cause) {
+    public RecordMappingException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

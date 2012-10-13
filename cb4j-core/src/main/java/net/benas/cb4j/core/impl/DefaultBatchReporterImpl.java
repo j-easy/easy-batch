@@ -43,38 +43,38 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     /*
      * Loggers
      */
-    final protected Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
+    protected final Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
 
-    final protected Logger ignoredRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_IGNORED);
+    protected final Logger ignoredRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_IGNORED);
 
-    final protected Logger rejectedRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_REJECTED);
+    protected final Logger rejectedRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_REJECTED);
 
     /**
-     * Total input records
+     * Total input records.
      */
     protected long inputRecordsNumber;
 
     /**
-     * Rejected records number
+     * Rejected records number.
      */
     protected long rejectedRecordsNumber;
 
     /**
-     * Ignored records number
+     * Ignored records number.
      */
     protected long ignoredRecordsNumber;
 
     /**
-     * Batch execution start time
+     * Batch execution start time.
      */
     protected long startTime;
 
     /**
-     * Batch execution end time
+     * Batch execution end time.
      */
     protected long endTime;
 
-    public DefaultBatchReporterImpl(){
+    public DefaultBatchReporterImpl() {
         rejectedRecordsNumber = 0;
         ignoredRecordsNumber = 0;
         ignoredRecordsReporter.setUseParentHandlers(false);
@@ -84,11 +84,11 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     /**
      * {@inheritDoc}
      */
-    public void generateReport(){
+    public void generateReport() {
         logger.info("CB4J report : ");
         logger.info("Start time = " + new Date(startTime));
         logger.info("End time = " + new Date(endTime));
-        logger.info("Batch duration = " + (endTime - startTime) + "ms" );
+        logger.info("Batch duration = " + (endTime - startTime) + "ms");
         logger.info("Total input records = " + inputRecordsNumber);
         logger.info("Total ignored records = " + ignoredRecordsNumber);
         logger.info("Total rejected records = " + rejectedRecordsNumber);
@@ -98,7 +98,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     /**
      * {@inheritDoc}
      */
-    public void rejectRecord(final Record record, final String error){
+    public void rejectRecord(final Record record, final String error) {
         rejectedRecordsNumber++;
 
         rejectedRecordsReporter.info("Record #" + record.getNumber() + " [" + record.getContentAsString() + "] is rejected, Error : " + error);
@@ -107,7 +107,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     /**
      * {@inheritDoc}
      */
-    public void ignoreRecord(final String record, long recordNumber, int recordSize){
+    public void ignoreRecord(final String record, final long recordNumber, final int recordSize) {
         ignoredRecordsNumber++;
 
         ignoredRecordsReporter.info("Record #" + recordNumber + " [" + record + "] is ignored, Error : record size " + recordSize + " not equal to expected size.");
@@ -116,21 +116,21 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     /**
      * {@inheritDoc}
      */
-    public void setEndTime(long endTime) {
+    public void setEndTime(final long endTime) {
         this.endTime = endTime;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setStartTime(long startTime) {
+    public void setStartTime(final long startTime) {
         this.startTime = startTime;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setTotalInputRecords(long totalInputRecords) {
+    public void setTotalInputRecords(final long totalInputRecords) {
         this.inputRecordsNumber = totalInputRecords;
     }
 

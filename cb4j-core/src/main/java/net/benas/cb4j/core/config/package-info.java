@@ -23,7 +23,7 @@
  */
 
 /**
- * This package contains CB4J core configuration classes
+ * This package contains CB4J core configuration classes.
  */
 package net.benas.cb4j.core.config;
 

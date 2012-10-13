@@ -27,7 +27,7 @@ package net.benas.cb4j.core.api;
 import net.benas.cb4j.core.model.Record;
 
 /**
- * Interface for record/object mapping<br/>
+ * Interface for record/object mapping.<br/>
  * Implementation of this interface should use the same type T used in {@link RecordProcessor} to avoid type casting exception or any type safety warnings
  *
  * @author benas (md.benhassine@gmail.com)
@@ -35,11 +35,11 @@ import net.benas.cb4j.core.model.Record;
 public interface RecordMapper<T> {
 
     /**
-     * Maps a CSV record to an Object of type T
+     * Maps a CSV record to an Object of type T.
      * @param record The record to map
      * @return The mapped object
      * @throws RecordMappingException thrown if any mapping exception occurs. Implementation should wrap any exception to a {@link RecordMappingException} in order to let CB4J reject the record in the rejected log file
      */
-    public T mapRecord(final Record record) throws RecordMappingException;
+    T mapRecord(final Record record) throws RecordMappingException;
 
 }

@@ -25,22 +25,22 @@
 package net.benas.cb4j.core.model;
 
 /**
- * A model class representing a CSV field
+ * A model class representing a CSV field.
  * @author benas (md.benhassine@gmail.com)
  */
 public final class Field {
 
     /**
-     * The field index in CSV record
+     * The field's index in CSV record.
      */
     private int index;
 
     /**
-     * The field text content
+     * The field's raw content.
      */
     private String content;
 
-    public Field(int index,String content){
+    public Field(int index, String content) {
         this.index = index;
         this.content = content;
     }

@@ -34,20 +34,20 @@ package net.benas.cb4j.core.api;
 public interface RecordReader {
 
     /**
-     * Read the next record from the CSV input file if available
+     * Read the next record from the CSV input file if available.
      * @return the next record from the CSV input file
      */
-    public String readNextRecord();
+    String readNextRecord();
 
     /**
-     * Check if a next record is available from the CSV input file
+     * Check if a next record is available from the CSV input file.
      * @return true if there is a next available record from the CSV input file, false else
      */
-    public boolean hasNextRecord();
+    boolean hasNextRecord();
 
     /**
-     * Close the reader
+     * Close the reader.
      */
-    public void close();
+    void close();
 
 }

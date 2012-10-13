@@ -27,23 +27,24 @@ package net.benas.cb4j.core.api;
 import net.benas.cb4j.core.model.Field;
 
 /**
- * Interface for field validator
+ * Interface for field validator.
  * @author benas (md.benhassine@gmail.com)
  */
 public interface FieldValidator {
 
     /**
-     * Checks if a field is valid. A field is valid if it's content satisfies a validation rule provided by the implementation of this interface
+     * Checks if a field is valid.<br/>
+     * A field is valid if it's content satisfies a validation rule provided by the implementation of this interface
      * @param field the field to validate
      * @return true if the field is valid, false else
      */
-    public boolean isValidField(final Field field);
+    boolean isValidField(final Field field);
 
     /**
      * Getter for the validation rule description.<br/>
      * This description will be used in rejected records log file to report which validation rule was violated
      * @return a human readable validation rule description
      */
-    public String getValidationRuleDescription();
+    String getValidationRuleDescription();
 
 }

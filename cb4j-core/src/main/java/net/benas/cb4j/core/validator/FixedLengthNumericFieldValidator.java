@@ -28,18 +28,18 @@ import net.benas.cb4j.core.api.FieldValidator;
 import net.benas.cb4j.core.model.Field;
 
 /**
- * Fixed length numeric validator implementation<br/>
+ * Fixed length numeric validator implementation.<br/>
  * This validator should be used to validate that field content is a numeric value and have a specified length
  * @author benas (md.benhassine@gmail.com)
  */
 public class FixedLengthNumericFieldValidator extends NumericFieldValidator implements FieldValidator {
 
     /**
-     * Field content length
+     * Field content length.
      */
     private int length;
 
-    public FixedLengthNumericFieldValidator(int length){
+    public FixedLengthNumericFieldValidator(int length) {
         this.length = length;
     }
 
@@ -47,7 +47,7 @@ public class FixedLengthNumericFieldValidator extends NumericFieldValidator impl
      * {@inheritDoc}
      */
     @Override
-    public boolean isValidField(Field field) {
+    public boolean isValidField(final Field field) {
         return super.isValidField(field) && field.getContent().length() == length;
     }
 

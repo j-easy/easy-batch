@@ -27,21 +27,21 @@ package net.benas.cb4j.core.api;
 import net.benas.cb4j.core.model.Record;
 
 /**
- * Utility service used to ignore/reject records and generate batch report
+ * Utility service used to ignore/reject records and generate batch report.
  *
  * @author benas (md.benhassine@gmail.com)
  */
 public interface BatchReporter {
 
     /**
-     * reject a record
+     * reject a record.
      * @param record the record to reject
      * @param error the error that causes the record to be rejected
      */
     void rejectRecord(Record record, String error);
 
     /**
-     * ignore a record
+     * ignore a record.
      * @param record the record to ignore
      * @param recordNumber the record number
      * @param recordSize the record size
@@ -49,25 +49,25 @@ public interface BatchReporter {
     void ignoreRecord(String record, long recordNumber, int recordSize);
 
     /**
-     * generate a batch execution report
+     * generate a batch execution report.
      */
     void generateReport();
 
     /**
-     * Set the total input records
+     * Set the total input records.
      * @param totalInputRecords the total input records
      */
     void setTotalInputRecords(long totalInputRecords);
 
     /**
-     * set the batch execution start time
+     * set the batch execution start time.
      * @param startTime the batch execution start time
      */
-    public void setStartTime(long startTime);
+    void setStartTime(long startTime);
 
     /**
-     * set the batch execution end time
+     * set the batch execution end time.
      * @param endTime the batch execution end time
      */
-    public void setEndTime(long endTime);
+    void setEndTime(long endTime);
 }

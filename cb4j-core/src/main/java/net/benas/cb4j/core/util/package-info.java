@@ -23,7 +23,7 @@
  */
 
 /**
- * This package contains CB4J core utilities
+ * This package contains CB4J core utilities.
  */
 package net.benas.cb4j.core.util;
 

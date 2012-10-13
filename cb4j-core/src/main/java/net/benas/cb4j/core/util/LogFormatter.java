@@ -28,17 +28,20 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
 /**
- * Log formatter used by main CB4J logger
+ * Log formatter used by main CB4J logger.
  *
  * @author benas (md.benhassine@gmail.com)
  */
 public class LogFormatter extends Formatter {
 
-	private String lineSeparator = System.getProperty("line.separator");
+    /**
+     * Line separator between log records.
+     */
+    private String lineSeparator = System.getProperty("line.separator");
 
-	@Override
-	public String format(LogRecord record) {
-		return "[CB4J : " + record.getLevel() +  "] " + record.getMessage() + lineSeparator;
-	}
+    @Override
+    public String format(final LogRecord record) {
+        return "[CB4J : " + record.getLevel() +  "] " + record.getMessage() + lineSeparator;
+    }
 
 }

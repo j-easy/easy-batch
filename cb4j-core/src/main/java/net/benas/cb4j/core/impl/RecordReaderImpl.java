@@ -40,24 +40,31 @@ public final class RecordReaderImpl implements RecordReader {
 
     private Scanner scanner;
 
-    public RecordReaderImpl(String input,String charset,boolean skipHeader) throws FileNotFoundException {
-    	File file = new File(input);
-        scanner = new Scanner(file,charset);
-        if (skipHeader){
-            if (hasNextRecord()){
-                scanner.nextLine();
-            }
+    public RecordReaderImpl(final String input, final String charset, final boolean skipHeader) throws FileNotFoundException {
+        File file = new File(input);
+        scanner = new Scanner(file, charset);
+        if (skipHeader && hasNextRecord()) {
+            scanner.nextLine();
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String readNextRecord() {
         return scanner.nextLine();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasNextRecord() {
         return scanner.hasNextLine();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void close() {
         scanner.close();
     }

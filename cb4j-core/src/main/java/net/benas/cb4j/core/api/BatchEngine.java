@@ -31,16 +31,16 @@ package net.benas.cb4j.core.api;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public interface BatchEngine extends Runnable{
+public interface BatchEngine extends Runnable {
 
     /**
-     * initialize the engine
+     * initialize the engine.
      */
-    public void init();
+    void init();
 
     /**
-     * shutdown the engine
+     * shutdown the engine.
      */
-    public void shutdown();
+    void shutdown();
 
 }

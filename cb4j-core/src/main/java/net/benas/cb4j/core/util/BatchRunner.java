@@ -27,13 +27,13 @@ package net.benas.cb4j.core.util;
 import net.benas.cb4j.core.api.BatchEngine;
 
 /**
- * Utility class to launch a batch engine
+ * Utility class to launch a batch engine.
  * @author benas (md.benhassine@gmail.com)
  */
 public final class BatchRunner {
 
     /**
-     * The batch engine to use
+     * The batch engine to use.
      */
     private BatchEngine batchEngine;
 
@@ -42,9 +42,9 @@ public final class BatchRunner {
     }
 
     /**
-     * Run the batch engine
+     * Run the batch engine.
      */
-    public void run(){
+    public void run() {
         batchEngine.init();
         batchEngine.run();
         batchEngine.shutdown();
