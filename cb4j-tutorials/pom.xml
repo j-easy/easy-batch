@@ -35,7 +35,7 @@
 
         <!--Xstream is used to generate XML output in customers tutorial-->
         <dependency>
-            <groupId>xstream</groupId>
+            <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
             <version>1.2.2</version>
         </dependency>
