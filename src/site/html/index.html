@@ -41,7 +41,6 @@
                             <li><a href="./documentation/gettingStarted.html">Getting started</a></li>
                             <li><a href="./documentation/architecture.html">Architecture</a></li>
                             <li><a href="./documentation/userGuide.html">User Guide</a></li>
-                            <li><a href="./javadoc/index.html">API Javadoc</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -65,13 +64,12 @@
             <div class="well sidebar-nav">
                 <ul class="nav nav-list">
                     <li class="nav-header">About CB4J</li>
-                    <li><a href="./index.html">Overview</a></li>
-                    <li class="active"><a href="./releaseNotes.html">Release notes</a></li>
+                    <li class="active"><a href="./about.html">Overview</a></li>
+                    <li><a href="./releaseNotes.html">Release notes</a></li>
                     <li class="nav-header">Documentation</li>
                     <li><a href="./documentation/gettingStarted.html">Getting started</a></li>
                     <li><a href="./documentation/architecture.html">Architecture</a></li>
                     <li><a href="./documentation/userGuide.html">User Guide</a></li>
-                    <li><a href="./javadoc/index.html">API Javadoc</a></li>
                     <li class="nav-header">Tutorials</li>
                     <li><a href="./tutorials/hellocb4j.html">Hello CB4J!</a></li>
                     <li><a href="./tutorials/customers.html">Customers ETL</a></li>
@@ -83,36 +81,33 @@
         <div class="span9">
 
             <div class="header">
-                <h1>Release notes</h1>
+                <h1>Overview</h1>
             </div>
 
             <div class="row-fluid">
 
-                <h3>Current version</h3>
+                <h3>What is CB4J?</h3>
+                <p>CSV Batch 4or Java is a framework that aims at simplifying CSV files batch processing with Java.</p>
+                <p>CB4J has a POJO-based development approach which lets you process CSV files with an object view of records</p>
+                <p>CB4J addresses common tasks such as reading, parsing and validating CSV records and let you concentrate on your data validation and batch processing business logic.</p>
 
-                <p>CB4J is currently under development at its first snapshot version <strong>1.0.0-SNAPSHOT</strong>. The main features currently implemented are : </p>
-
+                <h3>CB4J is not...</h3>
                 <ul>
-                    <li>CB4J core API and Implementation</li>
-                    <li>Common data type validators</li>
+                    <li>just an utility class to parse a CSV record.</li>
+                    <li>a tool to map CSV records to Java objects.</li>
                 </ul>
 
-                <h3>Roadmap</h3>
-                <p>Many features are currently developed and will be available in next CB4J versions:</p>
+                <h3>Features</h3>
+                <p> CB4J is a lightweight framework providing the following features :</p>
                 <ul>
-                    <li>version 1.1 :
-                        <ol>
-                            <li>Add configuration parameter to support data enclosing characters</li>
-                            <li>Add JMX MBeans to support monitoring of batch execution</li>
-                        </ol>
-                    </li>
-                    <li>version 1.2 :
-                        <ol>
-                            <li>Add GUI module that will enable graphical configuration and execution of CB4J</li>
-                            <li>Add statistics module to report processing time for each record using AOP and the excellent <a href="http://perf4j.codehaus.org/">perf4j</a> library</li>
-                        </ol>
-                    </li>
+                    <li>Easy to learn : CB4J uses a very simple CSV model and API</li>
+                    <li>A small memory footprint (No single dependency): only a 40 Ko jar file !</li>
+                    <li>Built-in extensible field validators for common requirements</li>
+                    <li>Simple and customizable reporting for common statistics including validation errors and processing time</li>
                 </ul>
+
+                <h3>License</h3>
+                <p>CB4J is released under the <a href="http://opensource.org/licenses/mit-license.php/">MIT license</a></p>
 
             </div>
 

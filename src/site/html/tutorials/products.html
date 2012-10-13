@@ -8,7 +8,6 @@
     <meta name="author" content="benas">
 
     <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../resources/css/prettify.css" rel="stylesheet">
     <style type="text/css">
         body {
             padding-top: 60px;
@@ -21,11 +20,10 @@
     <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
 
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <script type="text/javascript" src="../resources/js/prettify.js"></script>
 
 </head>
 
-<body onload="prettyPrint()">
+<body>
 
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
@@ -43,7 +41,6 @@
                             <li><a href="../documentation/gettingStarted.html">Getting started</a></li>
                             <li><a href="../documentation/architecture.html">Architecture</a></li>
                             <li><a href="../documentation/userGuide.html">User Guide</a></li>
-                            <li><a href="../javadoc/index.html">API Javadoc</a></li>
                         </ul>
                     </li>
                     <li class="dropdown active">
@@ -73,11 +70,10 @@
                     <li><a href="../documentation/gettingStarted.html">Getting started</a></li>
                     <li><a href="../documentation/architecture.html">Architecture</a></li>
                     <li><a href="../documentation/userGuide.html">User Guide</a></li>
-                    <li><a href="../javadoc/index.html">API Javadoc</a></li>
                     <li class="nav-header">Tutorials</li>
                     <li><a href="hellocb4j.html">Hello CB4J!</a></li>
-                    <li class="active"><a href="customers.html">Customers ETL</a></li>
-                    <li><a href="products.html">Product Statistics</a></li>
+                    <li><a href="customers.html">Customers ETL</a></li>
+                    <li class="active"><a href="products.html">Product Statistics</a></li>
                 </ul>
             </div>
         </div>
@@ -85,80 +81,46 @@
         <div class="span9">
 
             <div class="header">
-                <h1>Customers ETL Tutorial</h1>
+                <h1>Products Statistics Tutorial</h1>
             </div>
 
             <div class="row-fluid">
 
                 <h3>1. Description</h3>
-                <p>In this tutorial, the goal is to process customers data from a CSV flat file and generate an XML output. The input file named "<strong>customers.csv</strong>" has the following format:</p>
+                <p>In this tutorial, the goal is to process a CSV flat file containing products data and calculate statistics about prices. The products are organized in categories and the batch should calculate the minimum/maximum product prices for each category. The input file named "<strong>products.csv</strong>" has the following content:</p>
 <pre>
-firstname,lastname,email,birthday,phone,gender,street,zipcode,city,country
-Venus,Blake,at@luctus.edu,17/04/2012,0463599385,0,492-3228 Lobortis Avenue,22496,Barrow,Burkina Faso
-Lael,Carolyn,posuere@loremtristique.ca,10/01/2013,4147737012,0,Ap #598-4493 Eros. St.,87583,New Bedford,Uzbekistan
-Tiger,Raja,quis@pulvinar.com,19/01/2012,5283010032,2,P.O. Box 113 8377 Convallis Road,85768,Fredericksburg,Namibia
-</pre>
-                <p>The business data validation rules are listed in the following table :</p>
-                <table class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                    <th>Field</th>
-                    <th>Index</th>
-                    <th>Validation rule</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>email</td>
-                    <td>2</td>
-                    <td>Must have a valid email format</td>
-                </tr>
-                <tr>
-                    <td>birthday</td>
-                    <td>3</td>
-                    <td>Must have a valid date format with pattern "dd/MM/yyyy"</td>
-                </tr>
-                <tr>
-                    <td>phone</td>
-                    <td>4</td>
-                    <td>Must be numeric and have a length of 10 characters</td>
-                </tr>
-                <tr>
-                    <td>gender</td>
-                    <td>5</td>
-                    <td>Must be 0 (MALE) or 1 (FEMALE)</td>
-                </tr>
-                </tbody>
-                </table>
-                <p>The batch processing logic should generate an xml output containing customers data in the following format:
-<pre class="prettyprint">
-&lt;customer&gt;
-    &lt;firstName&gt;Venus&lt;/firstName&gt;
-    &lt;lastName&gt;Blake&lt;/lastName&gt;
-    &lt;email&gt;at@luctus.edu&lt;/email&gt;
-    &lt;birthday&gt;17/04/2012&lt;/birthday&gt;
-    &lt;phone&gt;0463599385&lt;/phone&gt;
-    &lt;gender&gt;MALE&lt;/gender&gt;
-    &lt;address&gt;
-        &lt;street&gt;492-3228 Lobortis Avenue&lt;/street&gt;
-        &lt;zipCode&gt;22496&lt;/zipCode&gt;
-        &lt;city&gt;Barrow&lt;/city&gt;
-        &lt;country&gt;Canada&lt;/country&gt;
-    &lt;/address&gt;
-&lt;/customer&gt;
+product_id;category_code;name;price
+1;1;product1;25
+2;2;product2;15
+3;1;product3;20
+4;2;product4;10
+5;1;product5
+6;2;product6;xx
 </pre>
 
+                <p>In this tutorial , the business data validation rules are simple : Fields "product_id","category_code" and "price" must have numeric values.</p>
+                <p><span class="label label-info">Note :</span> Products prices should be converted to local currency before being processed. This is a good example of how to use the <code>preProcessRecord(T typedRecord)</code> method in <code>RecordProcessor&lt;T&gt;</code> interface.</p>
+                <p>The batch processing logic should calculate the minimum/maximum product prices for each category and generate the following report :</p>
+<pre>
+******* Products Report *******
+Minimum prices by category :
+        Min price for category 1 = 10.0
+        Min price for category 2 = 5.0
+Maximum prices by category :
+        Max price for category 1 = 12.5
+        Max price for category 2 = 7.5
+</pre>
+
+                <p><span class="label label-info">Note :</span> The record <code>5;1;product5</code> must be ignored since it has an invalid size (the price is missing).<br/>The record <code>6;2;product6;xx</code> must be rejected since the product price is not numeric.</p>
                 <h3>2. Running the tutorial</h3>
 
-                <p>The complete source code of this tutorial is available <a href="https://github.com/benas/cb4j/tree/master/cb4j-tutorials/src/main/java/net/benas/cb4j/tutorials/customers">here</a>.
+                <p>The complete source code of this tutorial is available <a href="https://github.com/benas/cb4j/tree/master/cb4j-tutorials/src/main/java/net/benas/cb4j/tutorials/products">here</a>.
                     To run the tutorial with maven, launch the following command in the <code>cb4j/cb4j-tutorials</code> directory :</p>
 
-                <p><code>mvn clean package exec:java -PrunCustomersTutorial</code></p>
+                <p><code>mvn clean package exec:java -PrunProductsTutorial</code></p>
 
-                <p>After the execution is finished, you should see the XML output for each customer record in the console.</p>
-                <p>You can modify input data with "monkey test" values and see the content of ignored/rejected records log files located in <code>cb4j/cb4j-tutorials/src/main/resources</code></p>
+                <p>After the execution is finished, you should see in the console the report listed above.</p>
 
-                <p> <span class="label label-info">Info</span> : This tutorial uses <a href="http://xstream.codehaus.org/">xstream</a> to easily generate XML output of customer data.</p>
             </div>
 
         </div>
