@@ -88,7 +88,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             //parse record
             String currentRecord = recordReader.readNextRecord();
             if (!recordParser.isWellFormed(currentRecord)){
-                batchReporter.ignoreRecord(currentRecord,currentRecordNumber,recordParser.getRecordSize(currentRecord));//TODO performance to review
+                batchReporter.ignoreRecord(currentRecord,currentRecordNumber,recordParser.getRecordSize(currentRecord));
                 continue;
             }
 
@@ -109,7 +109,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                 continue;
             }
 
-            //process record : TODO type safety check
+            //process record
             recordProcessor.preProcessRecord(typedRecord);
             recordProcessor.processRecord(typedRecord);
             recordProcessor.postProcessRecord(typedRecord);
