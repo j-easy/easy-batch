@@ -29,7 +29,7 @@ package net.benas.cb4j.core.api;
  *
  * Implementation of this interface should provide the business logic of record processing.<br/>
  *
- * Implementation of this interface should use the same type T used in {@link RecordMapper} to avoid type casting exception or any type safety warnings
+ * Implementation of this interface should use the same type T used in {@link RecordMapper} to avoid type casting exception or any type safety warnings.<br/>
  *
  * In a well designed batch, records used by the implementation should be correctly validated and mapped to domain objects of type T
  *
