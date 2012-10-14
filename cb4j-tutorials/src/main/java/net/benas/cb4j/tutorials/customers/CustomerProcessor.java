@@ -25,6 +25,7 @@
 package net.benas.cb4j.tutorials.customers;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.basic.DateConverter;
 import net.benas.cb4j.core.api.RecordProcessor;
 
 /**
@@ -37,6 +38,7 @@ public class CustomerProcessor implements RecordProcessor<Customer> {
 
     public CustomerProcessor() {
         xstream = new XStream();
+        xstream.registerConverter(new DateConverter("dd/MM/yyyy", new String[]{"dd/MM/yyyy"}));
         xstream.alias("customer", Customer.class);
         xstream.alias("address", Address.class);
     }
