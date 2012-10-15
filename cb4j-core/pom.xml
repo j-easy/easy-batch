@@ -7,12 +7,12 @@
     <parent>
         <groupId>net.benas.cb4j</groupId>
         <artifactId>cb4j</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </parent>
 
     <groupId>net.benas.cb4j</groupId>
     <artifactId>cb4j-core</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
     <name>CB4J Core Module</name>
     <description>CSV Batch 4 Java core module</description>
