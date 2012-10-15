@@ -99,11 +99,31 @@ public final class Record {
         return sb.toString();
     }
 
+    /**
+     * Get the record fields as list.
+     * @return record fields
+     */
     public List<Field> getFields() {
         return fields;
     }
 
+    /**
+     * Get the record number in the file.
+     * @return record number in the file such as :<br/>
+     *  <ul>
+     *      <li>first record number is = 1</li>
+     *      <li>if configuration parameter input.data.skipHeader = true, the header record is skipped from record numbering. Hence, the second record number is = 1.</li>
+     *  </ul>
+     */
     public long getNumber() {
         return number;
+    }
+
+    /**
+     * Get field separator
+     * @return field separator in the record
+     */
+    public String getSeparator() {
+        return separator;
     }
 }
