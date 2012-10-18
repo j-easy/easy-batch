@@ -25,16 +25,17 @@
 package net.benas.cb4j.core.config;
 
 import net.benas.cb4j.core.api.*;
-import net.benas.cb4j.core.impl.DefaultBatchReporterImpl;
-import net.benas.cb4j.core.impl.DefaultRecordValidatorImpl;
-import net.benas.cb4j.core.impl.RecordParserImpl;
-import net.benas.cb4j.core.impl.RecordReaderImpl;
+import net.benas.cb4j.core.impl.*;
+import net.benas.cb4j.core.jmx.BatchMonitor;
+import net.benas.cb4j.core.jmx.BatchMonitorMBean;
 import net.benas.cb4j.core.util.BatchConstants;
 import net.benas.cb4j.core.util.LogFormatter;
 import net.benas.cb4j.core.util.ReportFormatter;
 
+import javax.management.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.logging.ConsoleHandler;
@@ -269,6 +270,21 @@ public final class BatchConfiguration {
             String error = "Configuration failed : no record processor registered";
             logger.severe(error);
             throw new BatchConfigurationException(error);
+        }
+
+        /*
+         * Configure JMX MBean
+         */
+        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+        ObjectName name;
+        try {
+            name = new ObjectName("net.benas.cb4j.jmx:type=BatchMonitorMBean");
+            BatchMonitorMBean batchMonitorMBean = new BatchMonitor(batchReporter);
+            mbs.registerMBean(batchMonitorMBean, name);
+            logger.info("CB4J JMX MBean registered successfully as: " + name.getCanonicalName());
+        } catch (Exception e) {
+            String error = "Unable to register CB4J JMX MBean. Root exception is :" + e.getMessage();
+            logger.warning(error);
         }
 
         logger.info("Configuration successful");
