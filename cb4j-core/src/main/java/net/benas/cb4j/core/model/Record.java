@@ -60,9 +60,9 @@ public final class Record {
      * @return The Field with index index
      * @throws IndexOutOfBoundsException if the given index is out of range in the fields list
      */
-    public Field getFieldByIndex(int index) {
-        if (index < 0 || index > fields.size()) {
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bound in fields list");
+    public Field getFieldByIndex(int index) throws IndexOutOfBoundsException {
+        if (index < 0 || index >= fields.size()) {
+            throw new IndexOutOfBoundsException("Trying to get field content by index " + index + " which is out of bounds in fields list");
         }
         return fields.get(index);
     }
@@ -74,9 +74,9 @@ public final class Record {
      * @return The Field's content with the given index.
      * @throws IndexOutOfBoundsException if the given index is out of range in the fields list
      */
-    public String getFieldContentByIndex(int index) {
-        if (index < 0 || index > fields.size()) {
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bound in fields list");
+    public String getFieldContentByIndex(int index) throws IndexOutOfBoundsException {
+        if (index < 0 || index >= fields.size()) {
+            throw new IndexOutOfBoundsException("Trying to get field content by index " + index + " which is out of bounds in fields list");
         }
         return fields.get(index).getContent();
     }
@@ -99,11 +99,31 @@ public final class Record {
         return sb.toString();
     }
 
+    /**
+     * Get the record fields as list.
+     * @return record fields
+     */
     public List<Field> getFields() {
         return fields;
     }
 
+    /**
+     * Get the record number in the file.
+     * @return record number in the file such as :<br/>
+     *  <ul>
+     *      <li>first record number is = 1</li>
+     *      <li>if configuration parameter input.data.skipHeader = true, the header record is skipped from record numbering. Hence, the second record number is = 1.</li>
+     *  </ul>
+     */
     public long getNumber() {
         return number;
+    }
+
+    /**
+     * Get field separator
+     * @return field separator in the record
+     */
+    public String getSeparator() {
+        return separator;
     }
 }

@@ -40,7 +40,7 @@ import java.util.List;
  */
 public class ReflectionPerformanceShowcase {
 
-    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
 
         Person p1 = getPersonUsingReflection();
         System.out.println("p1 = " + p1);
@@ -76,12 +76,22 @@ public class ReflectionPerformanceShowcase {
     /*
     * This method does what would a DefaultRecordMapper do
     */
-    private static Person getPersonUsingReflection() throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    private static Person getPersonUsingReflection() throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
 
         Class c = Class.forName(Person.class.getName());
+
+        Method setFirstNameMethod = Person.class.getMethod("setFirstName", String.class);
+        Method setLastNameMethod = Person.class.getMethod("setLastName", String.class);
+
         Person person = (Person) c.newInstance();
 
-        List<String> csvHeaders = new ArrayList<String>();
+        setFirstNameMethod.invoke(person,"someData");
+        setLastNameMethod.invoke(person, "someData");
+
+        /*
+         * Suppose mapping csv header names to bean properties with the same name
+         */
+        /*List<String> csvHeaders = new ArrayList<String>();
         csvHeaders.add("firstName"); csvHeaders.add("lastName");
 
         for(String header : csvHeaders){
@@ -91,7 +101,7 @@ public class ReflectionPerformanceShowcase {
                     method.invoke(person,"someData");
                 }
             }
-        }
+        }*/
         return person;
     }
 

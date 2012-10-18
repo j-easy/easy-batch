@@ -104,8 +104,11 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             Object typedRecord;
             try {
                 typedRecord = recordMapper.mapRecord(currentParsedRecord);
-            } catch (RecordMappingException e) {
+            } catch (RecordMappingException e) { //thrown by the user deliberately to reject the record
                 batchReporter.rejectRecord(currentParsedRecord, e.getMessage());
+                continue;
+            } catch (IndexOutOfBoundsException e){ // thrown unexpectedly if trying to get field content with an invalid index in the record
+                batchReporter.rejectRecord(currentParsedRecord, "Record mapping exception : " + e.getMessage());
                 continue;
             }
 

@@ -45,18 +45,34 @@ public final class Field {
         this.content = content;
     }
 
+    /**
+     * Get the field's raw content.
+     * @return raw content of the field
+     */
     public String getContent() {
         return content;
     }
 
+    /**
+     * Setter for content
+     * @param content the content to set
+     */
     public void setContent(String content) {
         this.content = content;
     }
 
+    /**
+     * Get the field's index in CSV record. Indexes are zero-based.
+     * @return the index of the field in the CSV record
+     */
     public int getIndex() {
         return index;
     }
 
+    /**
+     * Setter for field index
+     * @param index field index to set
+     */
     public void setIndex(int index) {
         this.index = index;
     }
