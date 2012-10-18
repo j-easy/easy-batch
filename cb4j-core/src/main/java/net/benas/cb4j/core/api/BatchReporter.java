@@ -25,6 +25,7 @@
 package net.benas.cb4j.core.api;
 
 import net.benas.cb4j.core.model.Record;
+import net.benas.cb4j.core.util.BatchStatus;
 
 /**
  * Utility service used to ignore/reject records and generate batch report.
@@ -54,10 +55,16 @@ public interface BatchReporter {
     void generateReport();
 
     /**
-     * Set the total input records.
-     * @param totalInputRecords the total input records
+     * Set the total input records number.
+     * @param totalInputRecordsNumber the total input records number
      */
-    void setTotalInputRecords(long totalInputRecords);
+    void setTotalInputRecordsNumber(long totalInputRecordsNumber);
+
+    /**
+     * Set input records number.
+     * @param inputRecordsNumber input records number
+     */
+    public void setInputRecordsNumber(long inputRecordsNumber);
 
     /**
      * set the batch execution start time.
@@ -70,4 +77,53 @@ public interface BatchReporter {
      * @param endTime the batch execution end time
      */
     void setEndTime(long endTime);
+
+    /**
+     * set the batch execution status.
+     * @param batchStatus the batch status
+     */
+    void setBatchStatus(BatchStatus batchStatus);
+
+    /**
+     * set total input records number.
+     * @return total input records number
+     */
+    public long getTotalInputRecordsNumber();
+
+    /**
+     * get input records number.
+     * @return input records number
+     */
+    public long getInputRecordsNumber();
+
+    /**
+     * get rejected records number.
+     * @return rejected records number
+     */
+    public long getRejectedRecordsNumber();
+
+    /**
+     * get ignored records number.
+     * @return ignored records number
+     */
+    public long getIgnoredRecordsNumber();
+
+    /**
+     * get the batch execution start time.
+     * @return batch execution start time.
+     */
+    public long getStartTime();
+
+    /**
+     * get the batch execution end time.
+     * @return batch execution end time.
+     */
+    public long getEndTime();
+
+    /**
+     * get the batch execution status.
+     * @return batch execution status
+     */
+    public BatchStatus getBatchStatus();
+
 }
