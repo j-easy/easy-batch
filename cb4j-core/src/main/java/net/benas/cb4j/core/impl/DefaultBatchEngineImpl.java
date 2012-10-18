@@ -28,6 +28,7 @@ import net.benas.cb4j.core.api.*;
 import net.benas.cb4j.core.config.BatchConfiguration;
 import net.benas.cb4j.core.model.Record;
 import net.benas.cb4j.core.util.BatchConstants;
+import net.benas.cb4j.core.util.BatchStatus;
 
 import java.util.logging.Logger;
 
@@ -71,12 +72,17 @@ public class DefaultBatchEngineImpl implements BatchEngine {
      * May be overridden with custom initialization code
      */
     public void init() {
-        logger.info("Initializing batch");
+        logger.info("Initializing batch...");
+        batchReporter.setBatchStatus(BatchStatus.INITIALIZING);
+        long totalRecordsNumber = recordReader.getTotalRecordsNumber();
+        batchReporter.setTotalInputRecordsNumber(totalRecordsNumber);
+        logger.info("Total input records to process = " + totalRecordsNumber);
     }
 
     public final void run() { //final : must not be overridden by framework users
 
         logger.info("CB4J engine is running...");
+        batchReporter.setBatchStatus(BatchStatus.RUNNING);
         final long startTime = System.currentTimeMillis();
         long currentRecordNumber = 0;
         batchReporter.setStartTime(startTime);
@@ -84,6 +90,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         while (recordReader.hasNextRecord()) {
 
             currentRecordNumber++;
+            batchReporter.setInputRecordsNumber(currentRecordNumber);
 
             //parse record
             String currentRecord = recordReader.readNextRecord();
@@ -123,7 +130,6 @@ public class DefaultBatchEngineImpl implements BatchEngine {
 
         final long endTime = System.currentTimeMillis();
         batchReporter.setEndTime(endTime);
-        batchReporter.setTotalInputRecords(currentRecordNumber);
 
     }
 
@@ -132,7 +138,8 @@ public class DefaultBatchEngineImpl implements BatchEngine {
      * May be overridden with custom shutdown code
      */
     public void shutdown() {
-        logger.info("finalizing batch");
+        logger.info("finalizing batch...");
+        batchReporter.setBatchStatus(BatchStatus.FINALIZING);
 
         //generate batch report
         batchReporter.generateReport();
