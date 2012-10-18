@@ -46,6 +46,13 @@ public interface RecordReader {
     boolean hasNextRecord();
 
     /**
+     * Calculate and return total records number in the input CSV file.<br/>
+     * This method is used especially to calculate execution progress exposed as JMX attribute.
+     * @return total records number
+     */
+    long getTotalRecordsNumber();
+
+    /**
      * Close the reader.
      */
     void close();

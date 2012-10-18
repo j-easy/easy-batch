@@ -38,13 +38,30 @@ import java.util.Scanner;
  */
 public final class RecordReaderImpl implements RecordReader {
 
+    /**
+     * Scanner to read input file
+     */
     private Scanner scanner;
 
+    /**
+     * A second scanner used to calculate the number of records in the input file.
+     * The main scanner may be used instead but since the {@link Scanner} class does not have a method to rewind it to the
+     * beginning of the file ( {@link java.util.Scanner#reset()} does not rewind the scanner), another scanner instance is needed.
+     */
+    private Scanner recordCounterScanner;
+
     public RecordReaderImpl(final String input, final String charset, final boolean skipHeader) throws FileNotFoundException {
+
         File file = new File(input);
+
         scanner = new Scanner(file, charset);
         if (skipHeader && hasNextRecord()) {
             scanner.nextLine();
+        }
+
+        recordCounterScanner = new Scanner(file, charset);
+        if (skipHeader && hasNextRecord()) {
+            recordCounterScanner.nextLine();
         }
     }
 
@@ -60,6 +77,19 @@ public final class RecordReaderImpl implements RecordReader {
      */
     public boolean hasNextRecord() {
         return scanner.hasNextLine();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public long getTotalRecordsNumber() {
+        long totalRecordsNumber = 0 ;
+        while (recordCounterScanner.hasNextLine()) {
+            totalRecordsNumber++;
+            recordCounterScanner.nextLine();
+        }
+        recordCounterScanner.close();
+        return totalRecordsNumber;
     }
 
     /**
