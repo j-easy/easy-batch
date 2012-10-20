@@ -72,7 +72,13 @@
                     <li><a href="../documentation/userGuide.html">User Guide</a></li>
                     <li class="nav-header">Tutorials</li>
                     <li><a href="hellocb4j.html">Hello CB4J!</a></li>
-                    <li class="active"><a href="customers.html">Customers ETL</a></li>
+                    <li class="active">
+                        <a href="customers.html">Customers ETL</a>
+                        <ul>
+                            <li><a href="customers.html#1">1. Description</a></li>
+                            <li><a href="customers.html#2">2. Running the tutorial</a></li>
+                        </ul>
+                    </li>
                     <li><a href="products.html">Product Statistics</a></li>
                 </ul>
             </div>
@@ -86,7 +92,7 @@
 
             <div class="row-fluid">
 
-                <h3>1. Description</h3>
+                <h3 id="1">1. Description</h3>
                 <p>In this tutorial, the goal is to process customers data from a CSV flat file and generate an XML output. The input file named "<strong>customers.csv</strong>" has the following format:</p>
 <pre>
 firstname,lastname,email,birthday,phone,gender,street,zipcode,city,country
@@ -144,7 +150,7 @@ Tiger,Raja,quis@pulvinar.com,19/01/2012,5283010032,2,P.O. Box 113 8377 Convallis
 &lt;/customer&gt;
 </pre>
 
-                <h3>2. Running the tutorial</h3>
+                <h3 id="2">2. Running the tutorial</h3>
 
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/cb4j/tree/master/cb4j-tutorials/src/main/java/net/benas/cb4j/tutorials/customers">here</a>.
                     To run the tutorial with maven, launch the following command in the <code>cb4j/cb4j-tutorials</code> directory :</p>

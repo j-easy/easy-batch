@@ -71,7 +71,13 @@
                     <li class="nav-header">Tutorials</li>
                     <li><a href="hellocb4j.html">Hello CB4J!</a></li>
                     <li><a href="customers.html">Customers ETL</a></li>
-                    <li class="active"><a href="products.html">Product Statistics</a></li>
+                    <li class="active">
+                        <a href="products.html">Product Statistics</a>
+                        <ul>
+                            <li><a href="products.html#1">1. Description</a></li>
+                            <li><a href="products.html#2">2. Running the tutorial</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -84,7 +90,7 @@
 
             <div class="row-fluid">
 
-                <h3>1. Description</h3>
+                <h3 id="1">1. Description</h3>
                 <p>In this tutorial, the goal is to process a CSV flat file containing products data and calculate statistics about prices. The products are organized in categories and the batch should calculate the minimum/maximum product prices for each category. The input file named "<strong>products.csv</strong>" has the following content:</p>
 <pre>
 product_id;category_code;name;price
@@ -110,7 +116,7 @@ Maximum prices by category :
 </pre>
 
                 <p><span class="label label-info">Note :</span> The record <code>5;1;product5</code> must be ignored since it has an invalid size (the price is missing).<br/>The record <code>6;2;product6;xx</code> must be rejected since the product price is not numeric.</p>
-                <h3>2. Running the tutorial</h3>
+                <h3 id="2">2. Running the tutorial</h3>
 
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/cb4j/tree/master/cb4j-tutorials/src/main/java/net/benas/cb4j/tutorials/products">here</a>.
                     To run the tutorial with maven, launch the following command in the <code>cb4j/cb4j-tutorials</code> directory :</p>

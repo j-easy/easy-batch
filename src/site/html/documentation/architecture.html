@@ -72,7 +72,14 @@
                     <li><a href="../releaseNotes.html">Release notes</a></li>
                     <li class="nav-header">Documentation</li>
                     <li><a href="gettingStarted.html">Getting started</a></li>
-                    <li class="active"><a href="architecture.html">Architecture</a></li>
+                    <li class="active">
+                        <a href="architecture.html">Architecture</a>
+                        <ul>
+                            <li><a href="architecture.html#1">1. CSV data model</a></li>
+                            <li><a href="architecture.html#2">2. Main components</a></li>
+                            <li><a href="architecture.html#3">3. Processing workflow</a></li>
+                        </ul>
+                    </li>
                     <li><a href="userGuide.html">User Guide</a></li>
                     <li class="nav-header">Tutorials</li>
                     <li><a href="../tutorials/hellocb4j.html">Hello CB4J!</a></li>
@@ -90,7 +97,7 @@
 
             <div class="row-fluid">
 
-                <h3>1. CSV data model</h3>
+                <h3 id="1">1. CSV data model</h3>
 
                 <p>CB4J uses a very simple and natural data model for dealing with CSV files. The main classes are :</p>
 
@@ -103,7 +110,7 @@
                 
                 These classes are defined in <code>net.benas.cb4j.core.model</code> package.
 
-                <h3>2. Main components</h3>
+                <h3 id="2">2. Main components</h3>
 
                 <p>The next figure illustrates the main CB4J components and gives an overview of the framework architecture:</p>
                 <p align="center"><img src="../resources/img/architecture.jpg"/></p>
@@ -205,7 +212,7 @@
                     </tbody>
                 </table>
 
-                <h3>3. Processing workflow</h3>
+                <h3 id="3">3. Processing workflow</h3>
 
                 <p>The workflow used internally by CB4J is illustrated by the next figure and described below :</p>
 
