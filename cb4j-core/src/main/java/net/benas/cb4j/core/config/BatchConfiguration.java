@@ -122,122 +122,24 @@ public final class BatchConfiguration {
         /*
          * Configure CB4J logger
          */
-        logger.setUseParentHandlers(false);
-        ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setFormatter(new LogFormatter());
-        logger.addHandler(consoleHandler);
+        configureCB4JLogger();
 
         logger.info("Configuration started at : " + new Date());
 
         /*
-         * Configure record reader parameters
+         * Configure record reader
          */
-        String inputData = configurationProperties.getProperty(BatchConstants.INPUT_DATA_PATH);
-        String encoding = configurationProperties.getProperty(BatchConstants.INPUT_DATA_ENCODING);
-        final String skipHeaderProperty = configurationProperties.getProperty(BatchConstants.INPUT_DATA_SKIP_HEADER);
-
-        //check if input data file is specified
-        if (inputData == null) {
-            String error = "Configuration failed : input data file is mandatory but was not specified";
-            logger.severe(error);
-            throw new BatchConfigurationException(error);
-        }
-
-        try {
-
-            boolean skipHeader;
-            if (skipHeaderProperty != null) {
-                skipHeader = Boolean.valueOf(skipHeaderProperty);
-            } else {
-                skipHeader = BatchConstants.DEFAULT_SKIP_HEADER;
-                logger.warning("Skip header property not specified, default to false");
-            }
-
-            if (encoding == null || (encoding != null && encoding.length() == 0)) {
-                encoding = System.getProperty("file.encoding");
-                logger.warning("No encoding specified for input data, using system default encoding : " + encoding);
-            } else {
-                if (Charset.availableCharsets().get(encoding) != null && !Charset.isSupported(encoding)) {
-                    logger.warning("Encoding '" + encoding + "' not supported, using system default encoding : " + System.getProperty("file.encoding"));
-                    encoding = System.getProperty("file.encoding");
-                } else {
-                    logger.config("Using '" + encoding + "' encoding for input file reading");
-                }
-            }
-            recordReader = new RecordReaderImpl(inputData, encoding, skipHeader);
-            logger.config("Data input file : " + inputData);
-        } catch (FileNotFoundException e) {
-            String error = "Configuration failed : input data file '" + inputData + "' could not be opened";
-            logger.severe(error);
-            throw new BatchConfigurationException(error);
-        }
+        configureRecordReader();
 
         /*
-         * Configure record parser parameters
-         * Convention over configuration : default separator is ","
-         */
-        String recordSizeProperty = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_SIZE);
-        try {
-
-            if (recordSizeProperty == null || (recordSizeProperty != null && recordSizeProperty.length() == 0)) {
-                String error = "Record size property is not set";
-                logger.severe(error);
-                throw new BatchConfigurationException(error);
-            }
-
-            int recordSize = Integer.parseInt(recordSizeProperty);
-
-            String fieldsSeparator = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_SEPARATOR);
-            if (fieldsSeparator == null || (fieldsSeparator != null && fieldsSeparator.length() == 0)) {
-                fieldsSeparator = BatchConstants.DEFAULT_FIELD_SEPARATOR;
-                logger.warning("No field separator specified, using default : '" + fieldsSeparator + "'");
-            }
-
-            logger.config("Record size specified : " + recordSize);
-            logger.config("Fields separator specified : '" + fieldsSeparator + "'");
-            recordParser = new RecordParserImpl(recordSize, fieldsSeparator);
-        } catch (NumberFormatException e) {
-            String error = "Record size property is not recognized as a number : " + recordSizeProperty;
-            logger.severe(error);
-            throw new BatchConfigurationException(error);
-        }
+        * Configure record parser
+        */
+        configureRecordParser();
 
         /*
          * Configure loggers for ignored/rejected records
          */
-        ReportFormatter reportFormatter = new ReportFormatter();
-
-        String outputIgnored = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_IGNORED);
-        if (outputIgnored == null || (outputIgnored != null && outputIgnored.length() == 0)) {
-            outputIgnored = BatchConfigurationUtil.removeExtension(inputData) + BatchConstants.DEFAULT_IGNORED_SUFFIX;
-            logger.warning("No log file specified for ignored records, using default : " + outputIgnored);
-        }
-        try {
-            FileHandler ignoredRecordsHandler = new FileHandler(outputIgnored);
-            ignoredRecordsHandler.setFormatter(reportFormatter);
-            Logger ignoredRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_IGNORED);
-            ignoredRecordsReporter.addHandler(ignoredRecordsHandler);
-        } catch (IOException e) {
-            String error = "Unable to use file for ignored records : " + outputIgnored;
-            logger.severe(error);
-            throw new BatchConfigurationException(error);
-        }
-
-        String outputRejected = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_REJECTED);
-        if (outputRejected == null || (outputRejected != null && outputRejected.length() == 0)) {
-            outputRejected = BatchConfigurationUtil.removeExtension(inputData) + BatchConstants.DEFAULT_REJECTED_SUFFIX;
-            logger.warning("No log file specified for rejected records, using default : " + outputRejected);
-        }
-        try {
-            FileHandler rejectedRecordsHandler = new FileHandler(outputRejected);
-            rejectedRecordsHandler.setFormatter(reportFormatter);
-            Logger rejectedRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_REJECTED);
-            rejectedRecordsReporter.addHandler(rejectedRecordsHandler);
-        } catch (IOException e) {
-            String error = "Unable to use file for rejected records : " + outputRejected;
-            logger.severe(error);
-            throw new BatchConfigurationException(error);
-        }
+        configureIgnoredAndRejectedRecordsLoggers();
 
         /*
          * Configure batch reporter : if no custom reporter registered, use default implementation
@@ -247,15 +149,15 @@ public final class BatchConfiguration {
         }
 
         /*
-         * Configure record validator with provided validators : : if no custom validator registered, use default implementation
+         * Configure record validator with provided validators : if no custom validator registered, use default implementation
          */
         if (recordValidator == null) {
             recordValidator = new DefaultRecordValidatorImpl(fieldValidators);
         }
 
         /*
-           * Check record mapper
-           */
+         * Check record mapper
+         */
         if (recordMapper == null) {
             String error = "Configuration failed : no record mapper registered";
             logger.severe(error);
@@ -274,6 +176,143 @@ public final class BatchConfiguration {
         logger.info("Configuration successful");
         logger.info("Configuration parameters details : " + configurationProperties);
 
+    }
+
+    /**
+     * Configure loggers for ignored/rejected records.
+     * @throws BatchConfigurationException thrown if loggers for ignored/rejected records are not correctly configured
+     */
+    private void configureIgnoredAndRejectedRecordsLoggers() throws BatchConfigurationException {
+
+        String inputDataProperty = configurationProperties.getProperty(BatchConstants.INPUT_DATA_PATH);
+
+        ReportFormatter reportFormatter = new ReportFormatter();
+
+        String outputIgnored = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_IGNORED);
+        if (outputIgnored == null || (outputIgnored != null && outputIgnored.length() == 0)) {
+            outputIgnored = BatchConfigurationUtil.removeExtension(inputDataProperty) + BatchConstants.DEFAULT_IGNORED_SUFFIX;
+            logger.warning("No log file specified for ignored records, using default : " + outputIgnored);
+        }
+        try {
+            FileHandler ignoredRecordsHandler = new FileHandler(outputIgnored);
+            ignoredRecordsHandler.setFormatter(reportFormatter);
+            Logger ignoredRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_IGNORED);
+            ignoredRecordsReporter.addHandler(ignoredRecordsHandler);
+        } catch (IOException e) {
+            String error = "Unable to use file for ignored records : " + outputIgnored;
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+
+        String outputRejected = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_REJECTED);
+        if (outputRejected == null || (outputRejected != null && outputRejected.length() == 0)) {
+            outputRejected = BatchConfigurationUtil.removeExtension(inputDataProperty) + BatchConstants.DEFAULT_REJECTED_SUFFIX;
+            logger.warning("No log file specified for rejected records, using default : " + outputRejected);
+        }
+        try {
+            FileHandler rejectedRecordsHandler = new FileHandler(outputRejected);
+            rejectedRecordsHandler.setFormatter(reportFormatter);
+            Logger rejectedRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_REJECTED);
+            rejectedRecordsReporter.addHandler(rejectedRecordsHandler);
+        } catch (IOException e) {
+            String error = "Unable to use file for rejected records : " + outputRejected;
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+    }
+
+    /**
+     * Configure CB4J record parser.
+     * @throws BatchConfigurationException thrown if record parser is not correctly configured
+     */
+    private void configureRecordParser() throws BatchConfigurationException {
+
+        String recordSizeProperty = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_SIZE);
+
+        try {
+
+            if (recordSizeProperty == null || (recordSizeProperty != null && recordSizeProperty.length() == 0)) {
+                String error = "Record size property is mandatory but was not specified";
+                logger.severe(error);
+                throw new BatchConfigurationException(error);
+            }
+
+            int recordSize = Integer.parseInt(recordSizeProperty);
+
+            String fieldsSeparator = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_SEPARATOR);
+            if (fieldsSeparator == null || (fieldsSeparator != null && fieldsSeparator.length() == 0)) {
+                fieldsSeparator = BatchConstants.DEFAULT_FIELD_SEPARATOR;
+                logger.warning("No field separator specified, using default : '" + fieldsSeparator + "'");
+            }
+
+            logger.config("Record size specified : " + recordSize);
+            logger.config("Fields separator specified : '" + fieldsSeparator + "'");
+            recordParser = new RecordParserImpl(recordSize, fieldsSeparator);
+
+        } catch (NumberFormatException e) {
+            String error = "Record size property is not recognized as a number : " + recordSizeProperty;
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+    }
+
+    /**
+     * Configure CB4J record reader.
+     * @throws BatchConfigurationException thrown if record reader is not correctly configured
+     */
+    private void configureRecordReader() throws BatchConfigurationException {
+
+        String inputDataProperty = configurationProperties.getProperty(BatchConstants.INPUT_DATA_PATH);
+        String encodingProperty = configurationProperties.getProperty(BatchConstants.INPUT_DATA_ENCODING);
+        String skipHeaderProperty = configurationProperties.getProperty(BatchConstants.INPUT_DATA_SKIP_HEADER);
+
+        //check if input data file is specified
+        if (inputDataProperty == null) {
+            String error = "Configuration failed : input data file is mandatory but was not specified";
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+
+        try {
+
+            boolean skipHeader;
+            if (skipHeaderProperty != null) {
+                skipHeader = Boolean.valueOf(skipHeaderProperty);
+            } else {
+                skipHeader = BatchConstants.DEFAULT_SKIP_HEADER;
+                logger.warning("Skip header property not specified, default to false");
+            }
+
+            String encoding;
+            if (encodingProperty == null || (encodingProperty.length() == 0)) {
+                encoding = BatchConstants.DEFAULT_FILE_ENCODING;
+                logger.warning("No encoding specified for input data, using system default encoding : " + encoding);
+            } else {
+                if (Charset.availableCharsets().get(encodingProperty) == null || !Charset.isSupported(encodingProperty)) {
+                    encoding = BatchConstants.DEFAULT_FILE_ENCODING;
+                    logger.warning("Encoding '" + encodingProperty + "' not supported, using system default encoding : " + encoding);
+                } else {
+                    encoding = encodingProperty;
+                    logger.config("Using '" + encoding + "' encoding for input file reading");
+                }
+            }
+            recordReader = new RecordReaderImpl(inputDataProperty, encoding, skipHeader);
+            logger.config("Data input file : " + inputDataProperty);
+        } catch (FileNotFoundException e) {
+            String error = "Configuration failed : input data file '" + inputDataProperty + "' could not be opened";
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+    }
+
+    /**
+     * Configure CB4J logger.
+     */
+    private void configureCB4JLogger() {
+        logger.setUseParentHandlers(false);
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new LogFormatter());
+        logger.addHandler(consoleHandler);
     }
 
     /*
