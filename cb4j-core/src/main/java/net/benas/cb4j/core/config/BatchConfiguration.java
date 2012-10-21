@@ -187,9 +187,9 @@ public final class BatchConfiguration {
 
             int recordSize = Integer.parseInt(recordSizeProperty);
 
-            String fieldsSeparator = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_SEPARATOR);
+            String fieldsSeparator = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_SEPARATOR);
             if (fieldsSeparator == null || (fieldsSeparator != null && fieldsSeparator.length() == 0)) {
-                fieldsSeparator = BatchConstants.DEFAULT_RECORD_SEPARATOR;
+                fieldsSeparator = BatchConstants.DEFAULT_FIELD_SEPARATOR;
                 logger.warning("No field separator specified, using default : '" + fieldsSeparator + "'");
             }
 

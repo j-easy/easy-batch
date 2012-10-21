@@ -55,7 +55,7 @@ public class Launcher {
         Properties configurationProperties = new Properties();
         configurationProperties.setProperty("input.data.path",args[0]);
         configurationProperties.setProperty("input.record.size",args[1]);
-        configurationProperties.setProperty("input.record.separator", args[2]);
+        configurationProperties.setProperty("input.field.separator", args[2]);
         configurationProperties.setProperty("input.data.skipHeader", "true");
 
         BatchConfiguration batchConfiguration = new BatchConfiguration(configurationProperties);

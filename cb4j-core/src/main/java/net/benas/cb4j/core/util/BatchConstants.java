@@ -40,7 +40,7 @@ public class BatchConstants {
 
     public static final String INPUT_DATA_SKIP_HEADER = "input.data.skipHeader";
 
-    public static final String INPUT_RECORD_SEPARATOR = "input.record.separator";
+    public static final String INPUT_FIELD_SEPARATOR = "input.field.separator";
 
     public static final String INPUT_RECORD_SIZE = "input.record.size";
 
@@ -55,7 +55,7 @@ public class BatchConstants {
 
     public static final String DEFAULT_IGNORED_SUFFIX = "-ignored.log";
 
-    public static final String DEFAULT_RECORD_SEPARATOR = ",";
+    public static final String DEFAULT_FIELD_SEPARATOR = ",";
 
     public static final boolean DEFAULT_SKIP_HEADER = false;
 
