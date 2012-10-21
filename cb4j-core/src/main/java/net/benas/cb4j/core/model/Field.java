@@ -33,13 +33,18 @@ public final class Field {
     /**
      * The field's index in CSV record.
      */
-    private int index;
+    private final int index;
 
     /**
      * The field's raw content.
      */
-    private String content;
+    private final String content;
 
+    /**
+     * Constructor with an index and content
+     * @param index field index in CSV record (indexes are zero-based)
+     * @param content field content as raw data
+     */
     public Field(int index, String content) {
         this.index = index;
         this.content = content;
@@ -54,27 +59,11 @@ public final class Field {
     }
 
     /**
-     * Setter for content
-     * @param content the content to set
-     */
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    /**
      * Get the field's index in CSV record. Indexes are zero-based.
      * @return the index of the field in the CSV record
      */
     public int getIndex() {
         return index;
-    }
-
-    /**
-     * Setter for field index
-     * @param index field index to set
-     */
-    public void setIndex(int index) {
-        this.index = index;
     }
 
     @Override

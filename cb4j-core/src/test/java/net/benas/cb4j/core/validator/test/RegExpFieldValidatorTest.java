@@ -57,13 +57,13 @@ public class RegExpFieldValidatorTest {
 
     @Test
     public void testValidField() throws Exception {
-        field.setContent("aaab");
+        field = new Field(1,"aaab");
         assertTrue(regExpFieldValidator.isValidField(field));
     }
 
     @Test
     public void testInvalidField() throws Exception {
-        field.setContent("cccb");
+        field = new Field(1,"cccb");
         assertFalse(regExpFieldValidator.isValidField(field));
     }
 }

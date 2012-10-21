@@ -57,13 +57,13 @@ public class FixedLengthNumericFieldValidatorTest {
 
     @Test
     public void testInvalidField() throws Exception {
-        field.setContent("21c");//length = 3 but not numeric
+        field = new Field(1,"21c");//length = 3 but not numeric
         assertFalse(fixedLengthNumericFieldValidator.isValidField(field));
     }
 
     @Test
     public void testValidField() throws Exception {
-        field.setContent("333");
+        field = new Field(1,"333");
         assertTrue(fixedLengthNumericFieldValidator.isValidField(field));
     }
 }

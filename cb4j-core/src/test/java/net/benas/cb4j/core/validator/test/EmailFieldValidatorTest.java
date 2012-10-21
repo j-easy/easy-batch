@@ -57,13 +57,13 @@ public class EmailFieldValidatorTest {
 
     @Test
     public void testValidEmail() throws Exception {
-        field.setContent("email@server.com");
+        field = new Field(1,"email@server.com");
         assertTrue(emailFieldValidator.isValidField(field));
     }
 
     @Test
     public void testInvalidEmail() throws Exception {
-        field.setContent("email.server.com");
+        field = new Field(1,"email.server.com");
         assertFalse(emailFieldValidator.isValidField(field));
     }
 }

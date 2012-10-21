@@ -46,7 +46,6 @@ public class DateFieldValidatorTest {
     @Before
     public void setUp() throws Exception {
         dateFieldValidator = new DateFieldValidator("yyyy/MM/dd");
-        field = new Field(1,null);
     }
 
     @After
@@ -58,26 +57,26 @@ public class DateFieldValidatorTest {
 
     @Test
     public void testValidDateFormatAndValue() throws Exception {
-        field.setContent("2011/08/24"); //format and value ok
+        field = new Field(1,"2011/08/24"); //format and value ok
         assertTrue(dateFieldValidator.isValidField(field));
     }
 
     @Test
     public void testValidDateValueButInvalidFormat() throws Exception {
-        field.setContent("2011-08-24"); //value ok but not expected format
+        field = new Field(1,"2011-08-24"); //value ok but not expected format
         assertFalse(dateFieldValidator.isValidField(field));
     }
 
     @Test
     public void testValidDateFormatButInvalidValue() throws Exception {
-        field.setContent("2011/13/32"); //format ok but invalid value
+        field = new Field(1,"2011/13/32"); //format ok but invalid value
         assertFalse(dateFieldValidator.isValidField(field));
     }
 
     @Test
     public void testInvalidDateFieldValidatorConstruction() throws Exception {
         dateFieldValidator = new DateFieldValidator("blah!"); //invalid format, should use the default one
-        field.setContent("24/08/2011"); //format and value ok
+        field = new Field(1,"24/08/2011"); //format and value ok
         assertTrue(dateFieldValidator.isValidField(field));
 
     }
