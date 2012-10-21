@@ -59,6 +59,8 @@ public class BatchConstants {
 
     public static final boolean DEFAULT_SKIP_HEADER = false;
 
+    public static final String DEFAULT_FILE_ENCODING = System.getProperty("file.encoding");
+
     /*
      * Loggers names
      */
