@@ -26,34 +26,58 @@ package net.benas.cb4j.core.validator;
 
 import net.benas.cb4j.core.api.FieldValidator;
 import net.benas.cb4j.core.model.Field;
+import net.benas.cb4j.core.util.BatchConstants;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Logger;
 
 /**
- * Date Format Validator implementation.<br/>
- * This validator should be used to validate that field content has a valid date format
+ * Date Validator implementation.<br/>
+ * This validator should be used to validate that field content has a valid date
  * @author benas (md.benhassine@gmail.com)
  */
-public class DateFormatFieldValidator implements FieldValidator {
+public class DateFieldValidator implements FieldValidator {
 
     /**
-     * The date format to use.
+     * Default date format to use
+     */
+    public static final String DEFAULT_DATE_FORMAT = "dd/MM/yyyy";
+
+    protected final Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
+
+    /**
+     * The date format.
      */
     protected String dateFormat;
 
-    public DateFormatFieldValidator(String dateFormat) {
+    /**
+     * The date formatter
+     */
+    protected DateFormat simpleDateFormat;
+
+    /**
+     * Construct a date field validator with a {@link DateFormat}.<br/>
+     * @param dateFormat the format used to validate date
+     */
+    public DateFieldValidator(String dateFormat) {
         this.dateFormat = dateFormat;
+        try {
+            simpleDateFormat = new SimpleDateFormat(dateFormat);
+            simpleDateFormat.setLenient(false);
+        } catch (Exception e) {
+            logger.severe("Date format " + dateFormat + " is invalid, using default format " + DEFAULT_DATE_FORMAT);
+            simpleDateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean isValidField(final Field field) {
-        DateFormat df = new SimpleDateFormat(dateFormat);
         try {
-            df.parse(field.getContent());
+            simpleDateFormat.parse(field.getContent());
         } catch (ParseException e) {
             return false;
         }
@@ -64,7 +88,7 @@ public class DateFormatFieldValidator implements FieldValidator {
      * {@inheritDoc}
      */
     public String getValidationRuleDescription() {
-        return "The field content should be a date with format : " + dateFormat;
+        return "The field content should be a valid date with format: " + dateFormat;
     }
 
 }

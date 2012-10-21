@@ -254,7 +254,7 @@ try {
 <pre class="prettyprint">
 List&lt;FieldValidator&gt; field1Validators = new ArrayList&lt;FieldValidator&gt;();
 field1Validators.add(new NotEmptyFieldValidator());
-field1Validators.add(new DateFormatFieldValidator("dd/MM/yyyy"));
+field1Validators.add(new DateFieldValidator("dd/MM/yyyy"));
 
 batchConfiguration.registerFieldValidators(1,field1Validators);
 </pre>
