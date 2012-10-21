@@ -36,18 +36,23 @@ public final class Record {
     /**
      * The record number in the file.
      */
-    private long number;
+    private final long number;
 
     /**
      * The fields separator.
      */
-    private String separator;
+    private final String separator;
 
     /**
      * The record fields.
      */
-    private List<Field> fields;
+    private final List<Field> fields;
 
+    /**
+     * Constructor with a number and separator
+     * @param number the record number in the file
+     * @param separator the field separator
+     */
     public Record(long number, String separator) {
         this.number = number;
         this.separator = separator;
@@ -120,7 +125,7 @@ public final class Record {
     }
 
     /**
-     * Get field separator
+     * Get field separator.
      * @return field separator in the record
      */
     public String getSeparator() {

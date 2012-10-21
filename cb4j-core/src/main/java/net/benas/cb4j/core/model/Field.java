@@ -41,7 +41,7 @@ public final class Field {
     private final String content;
 
     /**
-     * Constructor with an index and content
+     * Constructor with an index and content.
      * @param index field index in CSV record (indexes are zero-based)
      * @param content field content as raw data
      */
