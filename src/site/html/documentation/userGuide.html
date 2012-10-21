@@ -279,8 +279,8 @@ batchConfiguration.registerFieldValidators(1,field1Validators);
             <p>When using CB4J, you process an object view of a CSV record. To define your record processing business logic, you have to implement the <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interface and register your implementation at configuration time as follows :</p>
             <p><code class="prettyprint">batchConfiguration.registerRecordProcessor(new MyRecordProcessor());</code></p>
 
-            <div class="alert">
-                <span class="label label-warning">Warning</span> : You have to use the <strong>same</strong> type when implementing <code class="prettyprint">RecordMapper&lt;T&gt;</code> and <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interfaces
+            <div class="alert alert-error">
+                <span class="label label-important">Important</span> : You have to use the <strong>same</strong> type T when implementing <code class="prettyprint">RecordMapper&lt;T&gt;</code> and <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interfaces
             </div>
 
             <h3 id="2.5">2.5 Running the batch</h3>
@@ -306,7 +306,7 @@ batchRunner.run();
 
             <p>The internal CB4J engine extends the <code class="prettyprint">java.lang.Runnable</code> interface with two methods to initialize and shutdown the engine :</p>
 <pre class="prettyprint">
-public interface BatchEngine extends Runnable{
+public interface BatchEngine extends Runnable {
 
     /**
     * initialize the engine
@@ -337,7 +337,7 @@ public interface BatchEngine extends Runnable{
             <p>In this section, we will show an example of custom validator which validates that a field value must start with 'XP'.</p>
 
 <pre class="prettyprint">
-public class MyCustomFieldValidator implements FieldValidator{
+public class MyCustomFieldValidator implements FieldValidator {
 
     public boolean isValidField(final Field field) {
         return field.getContent().startsWith("XP");
@@ -447,7 +447,7 @@ batchConfiguration.registerRecordValidator(myCustomRecordValidator);
 </pre>
 
             <p>As you can see, CB4J reports to the console the batch start time, end time , overall execution duration and other metrics about input records.
-                This simple report may not correspond to your requirement, and CB4J lets you extend or override it as you need.</p>
+                This simple report may not correspond to your requirement. Hence, CB4J lets you extend or override it as you need.</p>
 
             <p>In this section ,we will show how to override the default report with a chart report using the java free charting library <a href="http://www.jfree.org/jfreechart/">jfreechart</a>.
                 To override the default reporter behavior, we have to extend the <code class="prettyprint">DefaultBatchReporter</code> class and override the <code class="prettyprint">generateReport</code> method. The following listing shows a custom implementation that generates a simple Pie Chart instead of reporting information to the console.</p>
