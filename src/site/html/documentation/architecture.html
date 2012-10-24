@@ -19,7 +19,7 @@
         .table td.center-td{
             text-align: center;
         }
-        .table th.center-td{
+        .table th.center-th{
             text-align: center;
         }
         .section {
@@ -28,6 +28,7 @@
     </style>
     <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../resources/css/font-awesome.css" rel="stylesheet">
+    <link href="../resources/css/sidebar.css" rel="stylesheet">
 
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 
@@ -66,10 +67,10 @@
 </div>
 
 <div class="container">
-    <div class="row">
+    <div class="row-fluid">
 
         <div class="span3">
-            <div class="well sidebar-nav">
+            <div class="well sidebar-nav bs-docs-sidenav" data-spy="affix">
                 <ul class="nav nav-list">
                     <li class="nav-header">About CB4J</li>
                     <li><a href="../index.html">Overview</a></li>
@@ -143,8 +144,8 @@
                     <thead>
                     <tr>
                         <th>Task</th>
-                        <th class="center-td">You</th>
-                        <th class="center-td">CB4J</th>
+                        <th class="center-th">You</th>
+                        <th class="center-th">CB4J</th>
                     </tr>
                     </thead>
                     <tbody>
