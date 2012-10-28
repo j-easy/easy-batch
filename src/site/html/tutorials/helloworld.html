@@ -181,21 +181,15 @@ batchConfiguration.registerRecordMapper(new GreetingMapper());
 </pre>
 
                 <h3 id="3.4">3.4 Processing records</h3>
-                <p>At this point, we have validated and mapped CSV records to <code class="prettyprint">Greeting</code> objects. It is time to define the business processing logic which consists in this tutorial of printing to the console a greeting message for each person. For that to be done, we implement the <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interface as follows:</p>
+                <p>At this point, we have validated and mapped CSV records to <code class="prettyprint">Greeting</code> objects. It is time to define the business processing logic which consists in this tutorial of printing to the console a greeting message for each person. For that to be done, we can implement the <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interface or extend the <code class="prettyprint">DefaultRecordProcessorImpl&lt;T&gt;</code> class as follows:</p>
 <pre class="prettyprint">
-public class GreetingProcessor implements RecordProcessor&lt;Greeting&gt; {
+public class GreetingProcessor extends DefaultRecordProcessorImpl&lt;Greeting&gt; {
 
-    public void preProcessRecord(Greeting greeting) {
-        //no-op
-    }
-
+    @Override
     public void processRecord(Greeting greeting) {
         System.out.println(greeting.getGreetingMessage());
     }
 
-    public void postProcessRecord(Greeting greeting) {
-        //no-op
-    }
 }
 </pre>
 

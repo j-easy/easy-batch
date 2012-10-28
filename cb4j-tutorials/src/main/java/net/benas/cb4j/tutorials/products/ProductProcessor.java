@@ -24,15 +24,15 @@
 
 package net.benas.cb4j.tutorials.products;
 
-import net.benas.cb4j.core.api.RecordProcessor;
+import net.benas.cb4j.core.impl.DefaultRecordProcessorImpl;
 
 import java.util.*;
 
 /**
- * A product processor that calculate minimum/maximum product prices for each category
+ * A product processor that calculate minimum/maximum product prices for each category.
  * @author benas (md.benhassine@gmail.com)
  */
-public class ProductProcessor implements RecordProcessor<Product> {
+public class ProductProcessor extends DefaultRecordProcessorImpl<Product> {
 
     /**
      * Conversion rate of product price to local currency
@@ -47,6 +47,7 @@ public class ProductProcessor implements RecordProcessor<Product> {
      */
     private Map<Long, List<Double>> pricesByCategory = new HashMap<Long, List<Double>>();
 
+    @Override
     public void preProcessRecord(Product product) {
         /*
          * Before processing any product, the price should be converted to local currency
@@ -55,6 +56,7 @@ public class ProductProcessor implements RecordProcessor<Product> {
         product.setPrice(price * CONVERSION_RATE);
     }
 
+    @Override
     public void processRecord(Product product) {
         /*
          * gather data according to product category
@@ -69,10 +71,6 @@ public class ProductProcessor implements RecordProcessor<Product> {
             pricesByCategory.put(category_code, prices);
         }
 
-    }
-
-    public void postProcessRecord(Product typedRecord) {
-        //no-op
     }
 
     /**

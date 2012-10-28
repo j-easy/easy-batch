@@ -24,23 +24,17 @@
 
 package net.benas.cb4j.tutorials.helloworld;
 
-import net.benas.cb4j.core.api.RecordProcessor;
+import net.benas.cb4j.core.impl.DefaultRecordProcessorImpl;
 
 /**
  * A processor that will generate a greeting message for each person
  * @author benas (md.benhassine@gmail.com)
  */
-public class GreetingProcessor implements RecordProcessor<Greeting> {
+public class GreetingProcessor extends DefaultRecordProcessorImpl<Greeting> {
 
-    public void preProcessRecord(Greeting greeting) {
-        //no-op
-    }
-
+    @Override
     public void processRecord(Greeting greeting) {
         System.out.println(greeting.getGreetingMessage());
     }
 
-    public void postProcessRecord(Greeting greeting) {
-        //no-op
-    }
 }
