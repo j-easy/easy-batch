@@ -25,16 +25,11 @@
 package net.benas.cb4j.tutorials.products;
 
 import net.benas.cb4j.core.api.BatchEngine;
-import net.benas.cb4j.core.api.FieldValidator;
 import net.benas.cb4j.core.config.BatchConfiguration;
 import net.benas.cb4j.core.config.BatchConfigurationException;
 import net.benas.cb4j.core.util.BatchRunner;
-import net.benas.cb4j.core.validator.FixedLengthFieldValidator;
-import net.benas.cb4j.core.validator.FixedLengthNumericFieldValidator;
 import net.benas.cb4j.core.validator.NumericFieldValidator;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 /**
