@@ -46,6 +46,7 @@
                             <li><a href="gettingStarted.html">Getting started</a></li>
                             <li><a href="architecture.html">Architecture</a></li>
                             <li><a href="userGuide.html">User Guide</a></li>
+                            <li><a href="faq.html">CB4J FAQ</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -82,6 +83,7 @@
                             <li><a href="userGuide.html#3">3. Extending CB4J</a></li>
                         </ul>
                     </li>
+                    <li><a href="faq.html">CB4J FAQ</a></li>
                     <li class="nav-header">Tutorials</li>
                     <li><a href="../tutorials/helloworld.html">Hello World!</a></li>
                     <li><a href="../tutorials/customers.html">Customers ETL</a></li>
@@ -260,7 +262,7 @@ batchConfiguration.registerFieldValidators(1,field1Validators);
             <p>The <a href="../tutorials/customers.html">customers ETL tutorial</a> shows an example of record mapper implementation.</p>
 
             <div class="alert">
-                <span class="label label-warning">Warning</span> : CB4J does not provide a default implementation of the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface for performance reason. In fact, CB4J may use Java Reflection API to introspect domain object field types which may impact the execution performance.
+                <span class="label label-warning">Warning</span> : CB4J does not provide a default implementation of the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface for performance reason. Please refer to the <a href="faq.html#2">question N°2 in FAQ section</a> for more details.
             </div>
             
             <h3 id="2.4">2.4 Writing processing logic</h3>
