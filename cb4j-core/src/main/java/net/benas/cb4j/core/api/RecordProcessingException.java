@@ -22,31 +22,21 @@
  *  THE SOFTWARE.
  */
 
-package net.benas.cb4j.tutorials.customers;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.basic.DateConverter;
-import net.benas.cb4j.core.api.RecordProcessingException;
-import net.benas.cb4j.core.impl.DefaultRecordProcessorImpl;
+package net.benas.cb4j.core.api;
 
 /**
- * A customer processor implementation that generates XML data.
+ * Exception class used by {@link net.benas.cb4j.core.api.RecordProcessor} for any record processing exception.
  * @author benas (md.benhassine@gmail.com)
  */
-public class CustomerProcessor extends DefaultRecordProcessorImpl<Customer> {
+public class RecordProcessingException extends Exception {
 
-    private XStream xstream;
+    private static final long serialVersionUID = 1L;
 
-    public CustomerProcessor() {
-        xstream = new XStream();
-        xstream.registerConverter(new DateConverter("dd/MM/yyyy", new String[]{"dd/MM/yyyy"}));
-        xstream.alias("customer", Customer.class);
-        xstream.alias("address", Address.class);
+    public RecordProcessingException(final String message) {
+        super(message);
     }
 
-    @Override
-    public void processRecord(Customer customer) throws RecordProcessingException {
-        System.out.println(xstream.toXML(customer));
+    public RecordProcessingException(final String message, final Throwable cause) {
+        super(message, cause);
     }
-
 }

@@ -24,6 +24,7 @@
 
 package net.benas.cb4j.tutorials.helloworld;
 
+import net.benas.cb4j.core.api.RecordProcessingException;
 import net.benas.cb4j.core.impl.DefaultRecordProcessorImpl;
 
 /**
@@ -33,7 +34,7 @@ import net.benas.cb4j.core.impl.DefaultRecordProcessorImpl;
 public class GreetingProcessor extends DefaultRecordProcessorImpl<Greeting> {
 
     @Override
-    public void processRecord(Greeting greeting) {
+    public void processRecord(Greeting greeting) throws RecordProcessingException {
         System.out.println(greeting.getGreetingMessage());
     }
 

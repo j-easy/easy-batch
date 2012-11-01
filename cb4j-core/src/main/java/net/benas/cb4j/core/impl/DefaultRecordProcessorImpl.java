@@ -24,6 +24,7 @@
 
 package net.benas.cb4j.core.impl;
 
+import net.benas.cb4j.core.api.RecordProcessingException;
 import net.benas.cb4j.core.api.RecordProcessor;
 
 /**
@@ -39,22 +40,25 @@ public abstract class DefaultRecordProcessorImpl<T> implements RecordProcessor<T
     /**
      * No-op implementation.
      * @param typedRecord the record to pre process
+     * @throws RecordProcessingException thrown if an exception occurs during record pre-processing
      */
-    public void preProcessRecord(T typedRecord) {
+    public void preProcessRecord(T typedRecord) throws RecordProcessingException {
     }
 
     /**
      * No-op implementation.
      * @param typedRecord the record to process.
+     * @throws RecordProcessingException thrown if an exception occurs during record processing
      */
-    public void processRecord(T typedRecord) {
+    public void processRecord(T typedRecord) throws RecordProcessingException {
     }
 
     /**
      * No-op implementation.
      * @param typedRecord the record to post process
+     * @throws RecordProcessingException thrown if an exception occurs during record post-processing
      */
-    public void postProcessRecord(T typedRecord) {
+    public void postProcessRecord(T typedRecord) throws RecordProcessingException {
     }
 
 }

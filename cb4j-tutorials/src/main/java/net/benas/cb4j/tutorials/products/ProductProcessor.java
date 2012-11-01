@@ -24,6 +24,7 @@
 
 package net.benas.cb4j.tutorials.products;
 
+import net.benas.cb4j.core.api.RecordProcessingException;
 import net.benas.cb4j.core.impl.DefaultRecordProcessorImpl;
 
 import java.util.*;
@@ -48,7 +49,7 @@ public class ProductProcessor extends DefaultRecordProcessorImpl<Product> {
     private Map<Long, List<Double>> pricesByCategory = new HashMap<Long, List<Double>>();
 
     @Override
-    public void preProcessRecord(Product product) {
+    public void preProcessRecord(Product product) throws RecordProcessingException {
         /*
          * Before processing any product, the price should be converted to local currency
          */
@@ -57,7 +58,7 @@ public class ProductProcessor extends DefaultRecordProcessorImpl<Product> {
     }
 
     @Override
-    public void processRecord(Product product) {
+    public void processRecord(Product product) throws RecordProcessingException {
         /*
          * gather data according to product category
          */
