@@ -3,6 +3,21 @@ CB4J FRAMEWORK CHANGELOG
 https://github.com/benas/cb4j
 
 
+Changes in version 1.0.1 (2012-11-01)
+-------------------------------------
+
+* Fixed IndexOutOfBoundsException in RecordMapper
+* Fixed IllegalCharsetNameException in BatchConfiguration
+* Fixed CB4J crash if an exception occurs during records processing
+* Added RecordProcessingException exception to be thrown if an exception occurs during record processing
+* Added DefaultRecordProcessorImpl class to simplify implementation of RecordProcessor interface
+* Added date value validation support in DateFieldValidator
+* Performance enhancement in DateFieldValidator
+* Renamed parameter input.record.separator to input.field.separator
+* Added FAQ section in documentation
+* Fixed typos in documentation
+* Updated Javadoc
+
 Changes in version 1.0.0 (2012-10-14)
 -------------------------------------
 
