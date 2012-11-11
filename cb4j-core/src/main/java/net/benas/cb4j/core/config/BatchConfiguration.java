@@ -25,14 +25,18 @@
 package net.benas.cb4j.core.config;
 
 import net.benas.cb4j.core.api.*;
-import net.benas.cb4j.core.impl.*;
+import net.benas.cb4j.core.impl.DefaultBatchReporterImpl;
+import net.benas.cb4j.core.impl.DefaultRecordValidatorImpl;
+import net.benas.cb4j.core.impl.RecordParserImpl;
+import net.benas.cb4j.core.impl.RecordReaderImpl;
 import net.benas.cb4j.core.jmx.BatchMonitor;
 import net.benas.cb4j.core.jmx.BatchMonitorMBean;
 import net.benas.cb4j.core.util.BatchConstants;
 import net.benas.cb4j.core.util.LogFormatter;
 import net.benas.cb4j.core.util.ReportFormatter;
 
-import javax.management.*;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -188,9 +192,9 @@ public final class BatchConfiguration {
 
             int recordSize = Integer.parseInt(recordSizeProperty);
 
-            String fieldsSeparator = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_SEPARATOR);
+            String fieldsSeparator = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_SEPARATOR);
             if (fieldsSeparator == null || (fieldsSeparator != null && fieldsSeparator.length() == 0)) {
-                fieldsSeparator = BatchConstants.DEFAULT_RECORD_SEPARATOR;
+                fieldsSeparator = BatchConstants.DEFAULT_FIELD_SEPARATOR;
                 logger.warning("No field separator specified, using default : '" + fieldsSeparator + "'");
             }
 

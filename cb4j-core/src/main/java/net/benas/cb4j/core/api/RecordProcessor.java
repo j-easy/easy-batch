@@ -40,18 +40,22 @@ public interface RecordProcessor<T> {
     /**
      * PreProcess a record : this is the best place to implement any record pre processing logic.
      * @param typedRecord the record to pre process
+     * @throws RecordProcessingException thrown if an exception occurs during record pre-processing
      */
-    void preProcessRecord(T typedRecord);
+    void preProcessRecord(T typedRecord) throws RecordProcessingException;
 
     /**
      * Process a record.
      * @param typedRecord the record to process.
+     * @throws RecordProcessingException thrown if an exception occurs during record processing
      */
-    void processRecord(T typedRecord);
+    void processRecord(T typedRecord) throws RecordProcessingException;
 
     /**
      * PostProcess a record : This is the best place to implement any record post processing logic.
      * @param typedRecord the record to post process
+     * @throws RecordProcessingException thrown if an exception occurs during record post-processing
      */
-    void postProcessRecord(T typedRecord);
+    void postProcessRecord(T typedRecord) throws RecordProcessingException;
+
 }

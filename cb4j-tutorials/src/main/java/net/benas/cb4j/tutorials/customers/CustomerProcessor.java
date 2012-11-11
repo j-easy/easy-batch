@@ -26,13 +26,14 @@ package net.benas.cb4j.tutorials.customers;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
-import net.benas.cb4j.core.api.RecordProcessor;
+import net.benas.cb4j.core.api.RecordProcessingException;
+import net.benas.cb4j.core.impl.DefaultRecordProcessorImpl;
 
 /**
- * A customer processor implementation that generates XML data
+ * A customer processor implementation that generates XML data.
  * @author benas (md.benhassine@gmail.com)
  */
-public class CustomerProcessor implements RecordProcessor<Customer> {
+public class CustomerProcessor extends DefaultRecordProcessorImpl<Customer> {
 
     private XStream xstream;
 
@@ -43,13 +44,9 @@ public class CustomerProcessor implements RecordProcessor<Customer> {
         xstream.alias("address", Address.class);
     }
 
-    public void preProcessRecord(Customer customer) {
-    }
-
-    public void processRecord(Customer customer) {
+    @Override
+    public void processRecord(Customer customer) throws RecordProcessingException {
         System.out.println(xstream.toXML(customer));
     }
 
-    public void postProcessRecord(Customer customer) {
-    }
 }

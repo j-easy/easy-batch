@@ -57,7 +57,7 @@ public class NotEmptyFieldValidatorTest {
 
     @Test
     public void testValidField() throws Exception {
-        field.setContent("x");
+        field = new Field(1,"x");
         assertTrue(notEmptyFieldValidator.isValidField(field));
     }
 
@@ -68,7 +68,7 @@ public class NotEmptyFieldValidatorTest {
 
     @Test
     public void testInvalidField() throws Exception {
-        field.setContent("");
+        field = new Field(1,"");
         assertFalse(notEmptyFieldValidator.isValidField(field));
     }
 

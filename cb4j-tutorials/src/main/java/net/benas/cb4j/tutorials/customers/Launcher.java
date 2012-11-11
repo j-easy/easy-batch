@@ -29,7 +29,7 @@ import net.benas.cb4j.core.config.BatchConfiguration;
 import net.benas.cb4j.core.config.BatchConfigurationException;
 import net.benas.cb4j.core.impl.DefaultBatchEngineImpl;
 import net.benas.cb4j.core.util.BatchRunner;
-import net.benas.cb4j.core.validator.DateFormatFieldValidator;
+import net.benas.cb4j.core.validator.DateFieldValidator;
 import net.benas.cb4j.core.validator.EmailFieldValidator;
 import net.benas.cb4j.core.validator.FixedLengthNumericFieldValidator;
 
@@ -60,7 +60,7 @@ public class Launcher {
          * Register field validators
         */
         batchConfiguration.registerFieldValidator(2, new EmailFieldValidator());
-        batchConfiguration.registerFieldValidator(3, new DateFormatFieldValidator("dd/MM/yyyy"));
+        batchConfiguration.registerFieldValidator(3, new DateFieldValidator("dd/MM/yyyy"));
         batchConfiguration.registerFieldValidator(4, new FixedLengthNumericFieldValidator(10));
         batchConfiguration.registerFieldValidator(5, new GenderValidator(1));
 

@@ -120,9 +120,13 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             }
 
             //process record
-            recordProcessor.preProcessRecord(typedRecord);
-            recordProcessor.processRecord(typedRecord);
-            recordProcessor.postProcessRecord(typedRecord);
+            try{
+                recordProcessor.preProcessRecord(typedRecord);
+                recordProcessor.processRecord(typedRecord);
+                recordProcessor.postProcessRecord(typedRecord);
+            } catch (Exception e) {
+                logger.severe("Record No " + currentRecordNumber + " processing exception, root cause = " + e.getMessage());
+            }
         }
 
         //close record reader

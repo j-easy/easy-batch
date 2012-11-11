@@ -29,7 +29,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses( {
-        DateFormatFieldValidatorTest.class,
+        DateFieldValidatorTest.class,
         EmailFieldValidatorTest.class,
         FixedLengthFieldValidatorTest.class,
         FixedLengthNumericFieldValidatorTest.class,

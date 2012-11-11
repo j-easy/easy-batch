@@ -22,49 +22,21 @@
  *  THE SOFTWARE.
  */
 
-package net.benas.cb4j.core.validator;
-
-import net.benas.cb4j.core.api.FieldValidator;
-import net.benas.cb4j.core.model.Field;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+package net.benas.cb4j.core.api;
 
 /**
- * Date Format Validator implementation.<br/>
- * This validator should be used to validate that field content has a valid date format
+ * Exception class used by {@link net.benas.cb4j.core.api.RecordProcessor} for any record processing exception.
  * @author benas (md.benhassine@gmail.com)
  */
-public class DateFormatFieldValidator implements FieldValidator {
+public class RecordProcessingException extends Exception {
 
-    /**
-     * The date format to use.
-     */
-    protected String dateFormat;
+    private static final long serialVersionUID = 1L;
 
-    public DateFormatFieldValidator(String dateFormat) {
-        this.dateFormat = dateFormat;
+    public RecordProcessingException(final String message) {
+        super(message);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isValidField(final Field field) {
-        DateFormat df = new SimpleDateFormat(dateFormat);
-        try {
-            df.parse(field.getContent());
-        } catch (ParseException e) {
-            return false;
-        }
-        return true;
+    public RecordProcessingException(final String message, final Throwable cause) {
+        super(message, cause);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getValidationRuleDescription() {
-        return "The field content should be a date with format : " + dateFormat;
-    }
-
 }

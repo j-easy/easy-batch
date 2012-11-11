@@ -24,8 +24,11 @@
 
 package net.benas.cb4j.core.test;
 
+import net.benas.cb4j.core.api.RecordMapper;
+import net.benas.cb4j.core.api.RecordMappingException;
 import net.benas.cb4j.core.config.BatchConfiguration;
 import net.benas.cb4j.core.config.BatchConfigurationException;
+import net.benas.cb4j.core.model.Record;
 import net.benas.cb4j.core.util.BatchConstants;
 import org.junit.After;
 import org.junit.Before;
@@ -40,24 +43,55 @@ import java.util.Properties;
 public class BatchConfigurationTest {
 
     private Properties configurationProperties;
+
     private BatchConfiguration batchConfiguration;
+
+    private String filePath;
 
     @Before
     public void setUp() throws Exception {
         configurationProperties = new Properties();
+        filePath = this.getClass().getClassLoader().getResource("test.csv").getPath();
     }
 
     @Test(expected = BatchConfigurationException.class)
-    public void testInvalidEncoding() throws Exception{
-        configurationProperties.setProperty(BatchConstants.INPUT_DATA_ENCODING,"bla bla");
+    public void testNotSpecifiedInputDataFile() throws Exception {
         batchConfiguration = new BatchConfiguration(configurationProperties);
         batchConfiguration.configure();
     }
 
     @Test(expected = BatchConfigurationException.class)
-    public void testInvalidInputDataFile() throws Exception{
-        configurationProperties.setProperty(BatchConstants.INPUT_DATA_PATH,"Bla bla");
+    public void testInvalidInputDataFile() throws Exception {
+        configurationProperties.setProperty(BatchConstants.INPUT_DATA_PATH, "Blah!");
         batchConfiguration = new BatchConfiguration(configurationProperties);
+        batchConfiguration.configure();
+    }
+
+    @Test(expected = BatchConfigurationException.class)
+    public void testNotSpecifiedRecordSize() throws Exception {
+        configurationProperties.setProperty(BatchConstants.INPUT_DATA_PATH, filePath);
+        batchConfiguration = new BatchConfiguration(configurationProperties);
+        batchConfiguration.configure();
+    }
+
+    @Test(expected = BatchConfigurationException.class)
+    public void testNoRecordMapperRegistered() throws Exception {
+        configurationProperties.setProperty(BatchConstants.INPUT_DATA_PATH, filePath);
+        configurationProperties.setProperty(BatchConstants.INPUT_RECORD_SIZE, "2");
+        batchConfiguration = new BatchConfiguration(configurationProperties);
+        batchConfiguration.configure();
+    }
+
+    @Test(expected = BatchConfigurationException.class)
+    public void testNoRecordProcessorRegistered() throws Exception {
+        configurationProperties.setProperty(BatchConstants.INPUT_DATA_PATH, filePath);
+        configurationProperties.setProperty(BatchConstants.INPUT_RECORD_SIZE, "2");
+        batchConfiguration = new BatchConfiguration(configurationProperties);
+        batchConfiguration.registerRecordMapper(new RecordMapper() {
+            public Object mapRecord(Record record) throws RecordMappingException {
+                return null;
+            }
+        });
         batchConfiguration.configure();
     }
 

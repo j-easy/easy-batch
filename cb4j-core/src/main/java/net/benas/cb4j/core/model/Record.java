@@ -36,18 +36,23 @@ public final class Record {
     /**
      * The record number in the file.
      */
-    private long number;
+    private final long number;
 
     /**
      * The fields separator.
      */
-    private String separator;
+    private final String separator;
 
     /**
      * The record fields.
      */
-    private List<Field> fields;
+    private final List<Field> fields;
 
+    /**
+     * Constructor with a number and separator
+     * @param number the record number in the file
+     * @param separator the field separator
+     */
     public Record(long number, String separator) {
         this.number = number;
         this.separator = separator;
@@ -60,7 +65,7 @@ public final class Record {
      * @return The Field with index index
      * @throws IndexOutOfBoundsException if the given index is out of range in the fields list
      */
-    public Field getFieldByIndex(int index) throws IndexOutOfBoundsException {
+    public Field getFieldByIndex(int index) {
         if (index < 0 || index >= fields.size()) {
             throw new IndexOutOfBoundsException("Trying to get field content by index " + index + " which is out of bounds in fields list");
         }
@@ -74,7 +79,7 @@ public final class Record {
      * @return The Field's content with the given index.
      * @throws IndexOutOfBoundsException if the given index is out of range in the fields list
      */
-    public String getFieldContentByIndex(int index) throws IndexOutOfBoundsException {
+    public String getFieldContentByIndex(int index) {
         if (index < 0 || index >= fields.size()) {
             throw new IndexOutOfBoundsException("Trying to get field content by index " + index + " which is out of bounds in fields list");
         }
@@ -120,7 +125,7 @@ public final class Record {
     }
 
     /**
-     * Get field separator
+     * Get field separator.
      * @return field separator in the record
      */
     public String getSeparator() {

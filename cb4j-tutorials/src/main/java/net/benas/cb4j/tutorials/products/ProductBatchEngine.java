@@ -27,7 +27,6 @@ package net.benas.cb4j.tutorials.products;
 import net.benas.cb4j.core.config.BatchConfiguration;
 import net.benas.cb4j.core.impl.DefaultBatchEngineImpl;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,13 +34,13 @@ import java.util.Map;
  * @author benas (md.benhassine@gmail.com)
  */
 public class ProductBatchEngine extends DefaultBatchEngineImpl {
-	
-	public ProductBatchEngine(BatchConfiguration batchConfiguration) {
-		super(batchConfiguration);
-	}
-	
-	@Override
-	public void shutdown(){
+
+    public ProductBatchEngine(BatchConfiguration batchConfiguration) {
+        super(batchConfiguration);
+    }
+
+    @Override
+    public void shutdown(){
 
         super.shutdown();// generate default report
 
@@ -61,6 +60,6 @@ public class ProductBatchEngine extends DefaultBatchEngineImpl {
             System.out.println("\tMax price for category " + entry.getKey() + " = " + entry.getValue());
         }
 
-	}
+    }
 
 }

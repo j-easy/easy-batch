@@ -18,6 +18,8 @@
         }
     </style>
     <link href="./resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="./resources/css/font-awesome.css" rel="stylesheet">
+    <link href="./resources/css/sidebar.css" rel="stylesheet">
 
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 
@@ -30,21 +32,22 @@
         <div class="container">
             <a class="brand" href="./index.html">CB4J</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 1.0.0</p>
+                <p class="navbar-text pull-right">Version: 1.0.1</p>
                 <ul class="nav">
-                    <li class="active"><a href="./index.html">Home</a></li>
+                    <li class="active"><a href="./index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
-                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Documentation<b class="caret"></b></a>
+                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
                             <li><a href="./documentation/gettingStarted.html">Getting started</a></li>
                             <li><a href="./documentation/architecture.html">Architecture</a></li>
                             <li><a href="./documentation/userGuide.html">User Guide</a></li>
+                            <li><a href="./documentation/faq.html">CB4J FAQ</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a id="tutorials" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+                        <a id="tutorials" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-folder-open"></i> Tutorials<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="tutorials">
-                            <li><a href="./tutorials/hellocb4j.html">Hello CB4J!</a></li>
+                            <li><a href="./tutorials/helloworld.html">Hello World!</a></li>
                             <li><a href="./tutorials/customers.html">Customers ETL</a></li>
                             <li><a href="./tutorials/products.html">Product Statistics</a></li>
                         </ul>
@@ -56,10 +59,10 @@
 </div>
 
 <div class="container">
-    <div class="row">
+    <div class="row-fluid">
 
         <div class="span3">
-            <div class="well sidebar-nav">
+            <div class="well sidebar-nav bs-docs-sidenav" data-spy="affix">
                 <ul class="nav nav-list">
                     <li class="nav-header">About CB4J</li>
                     <li><a href="./index.html">Overview</a></li>
@@ -68,8 +71,9 @@
                     <li><a href="./documentation/gettingStarted.html">Getting started</a></li>
                     <li><a href="./documentation/architecture.html">Architecture</a></li>
                     <li><a href="./documentation/userGuide.html">User Guide</a></li>
+                    <li><a href="./documentation/faq.html">CB4J FAQ</a></li>
                     <li class="nav-header">Tutorials</li>
-                    <li><a href="./tutorials/hellocb4j.html">Hello CB4J!</a></li>
+                    <li><a href="./tutorials/helloworld.html">Hello World!</a></li>
                     <li><a href="./tutorials/customers.html">Customers ETL</a></li>
                     <li><a href="./tutorials/products.html">Product Statistics</a></li>
                 </ul>
@@ -78,36 +82,45 @@
 
         <div class="span9">
 
-            <div class="header">
+            <div class="page-header">
                 <h1>Release notes</h1>
             </div>
 
             <div class="row-fluid">
 
-                <h3>Current stable release</h3>
+                <h2>Version 1.0.1 (2012-11-01)</h2>
 
-                <p>The current CB4J stable release version is <strong>1.0.0</strong>. The main features of this release are : </p>
+                <p>This is the first CB4J maintenance release in the 1.0.x branch. The release includes multiple performance optimizations, bugfixes and documentation updates.
+                   The full list of changes may be found in <a href="https://github.com/benas/cb4j/blob/master/src/main/resources/CHANGELOG.txt">change log</a>.</p>
+
+                <h2>Version 1.0.0 (2012-10-14)</h2>
+
+                <p>This is the first CB4J release. The main features of this release are :</p>
 
                 <ul>
                     <li>Initial core API and Implementation</li>
                     <li>Common data type validators</li>
                 </ul>
 
-                <a class="btn btn-primary btn-large" href="https://github.com/benas/cb4j/downloads">Download CB4J</a>
-
-                <h3>Roadmap</h3>
-                <p>Many features are currently developed and will be available in next CB4J versions:</p>
+                <h2>Roadmap</h2>
+                <p>Many features are currently under development and will be available in next CB4J versions:</p>
                 <ul>
                     <li>version 1.1 :
                         <ol>
-                            <li>Add configuration parameter to support data enclosing characters</li>
+                            <li>Add configuration parameters to support data enclosing characters and surrounding white spaces</li>
                             <li>Add JMX MBeans to support monitoring of batch execution</li>
                         </ol>
                     </li>
                     <li>version 1.2 :
                         <ol>
-                            <li>Add GUI module that will enable graphical configuration and execution of CB4J</li>
+                            <li>Add CB4J-Spring integration module</li>
                             <li>Add statistics module to report processing time for each record</li>
+                        </ol>
+                    </li>
+                    <li>version 2.0 :
+                        <ol>
+                            <li>Add GUI module that will enable graphical configuration, execution and monitoring of CB4J</li>
+                            <li>Add parallelizer module to split input file into multiple partitions, run parallel CB4J instances and then merge results</li>
                         </ol>
                     </li>
                 </ul>
@@ -121,9 +134,9 @@
     <hr>
 
     <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p class="pull-right"><a href="#"><i class="icon-circle-arrow-up"></i> Back to top</a></p>
         <p>CB4J : CSV Batch processing with Java made easy!</p>
-        <p>Maintained by <a href="https://github.com/benas">benas</a> at <a href="https://github.com/benas/cb4j">Github</a></p>
+        <p>Maintained by <a href="mailto:md.benhassine@gmail.com?subject=[CB4J]"><i class="icon-envelope"></i> benas</a> at <a href="https://github.com/benas/cb4j"><i class="icon-github"></i> Github</a></p>
     </footer>
 
 </div>

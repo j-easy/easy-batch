@@ -37,7 +37,7 @@ public class FixedLengthFieldValidator implements FieldValidator {
     /**
      * Field content length.
      */
-    private int length;
+    protected int length;
 
     public FixedLengthFieldValidator(int length) {
         this.length = length;

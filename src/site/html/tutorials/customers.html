@@ -17,8 +17,13 @@
         .sidebar-nav {
             padding: 9px 0;
         }
+        .section {
+            padding-top: 40px;
+        }
     </style>
     <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../resources/css/font-awesome.css" rel="stylesheet">
+    <link href="../resources/css/sidebar.css" rel="stylesheet">
 
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <script type="text/javascript" src="../resources/js/prettify.js"></script>
@@ -32,21 +37,22 @@
         <div class="container">
             <a class="brand" href="../index.html">CB4J</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 1.0.0</p>
+                <p class="navbar-text pull-right">Version: 1.0.1</p>
                 <ul class="nav">
-                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
-                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Documentation<b class="caret"></b></a>
+                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
                             <li><a href="../documentation/gettingStarted.html">Getting started</a></li>
                             <li><a href="../documentation/architecture.html">Architecture</a></li>
                             <li><a href="../documentation/userGuide.html">User Guide</a></li>
+                            <li><a href="../documentation/faq.html">CB4J FAQ</a></li>
                         </ul>
                     </li>
                     <li class="dropdown active">
-                        <a id="tutorials" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+                        <a id="tutorials" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-folder-open"></i> Tutorials<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="tutorials">
-                            <li><a href="hellocb4j.html">Hello CB4J!</a></li>
+                            <li><a href="helloworld.html">Hello World!</a></li>
                             <li><a href="customers.html">Customers ETL</a></li>
                             <li><a href="products.html">Product Statistics</a></li>
                         </ul>
@@ -58,10 +64,10 @@
 </div>
 
 <div class="container">
-    <div class="row">
+    <div class="row-fluid">
 
         <div class="span3">
-            <div class="well sidebar-nav">
+            <div class="well sidebar-nav bs-docs-sidenav" data-spy="affix">
                 <ul class="nav nav-list">
                     <li class="nav-header">About CB4J</li>
                     <li><a href="../index.html">Overview</a></li>
@@ -70,9 +76,16 @@
                     <li><a href="../documentation/gettingStarted.html">Getting started</a></li>
                     <li><a href="../documentation/architecture.html">Architecture</a></li>
                     <li><a href="../documentation/userGuide.html">User Guide</a></li>
+                    <li><a href="../documentation/faq.html">CB4J FAQ</a></li>
                     <li class="nav-header">Tutorials</li>
-                    <li><a href="hellocb4j.html">Hello CB4J!</a></li>
-                    <li class="active"><a href="customers.html">Customers ETL</a></li>
+                    <li><a href="helloworld.html">Hello World!</a></li>
+                    <li class="active">
+                        <a href="customers.html">Customers ETL</a>
+                        <ul>
+                            <li><a href="customers.html#1">1. Description</a></li>
+                            <li><a href="customers.html#2">2. Running the tutorial</a></li>
+                        </ul>
+                    </li>
                     <li><a href="products.html">Product Statistics</a></li>
                 </ul>
             </div>
@@ -80,13 +93,13 @@
 
         <div class="span9">
 
-            <div class="header">
+            <div class="page-header">
                 <h1>Customers ETL Tutorial</h1>
             </div>
 
             <div class="row-fluid">
 
-                <h3>1. Description</h3>
+                <h2 id="1">1. Description</h2>
                 <p>In this tutorial, the goal is to process customers data from a CSV flat file and generate an XML output. The input file named "<strong>customers.csv</strong>" has the following format:</p>
 <pre>
 firstname,lastname,email,birthday,phone,gender,street,zipcode,city,country
@@ -144,7 +157,7 @@ Tiger,Raja,quis@pulvinar.com,19/01/2012,5283010032,2,P.O. Box 113 8377 Convallis
 &lt;/customer&gt;
 </pre>
 
-                <h3>2. Running the tutorial</h3>
+                <h2 id="2" class="section">2. Running the tutorial</h2>
 
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/cb4j/tree/master/cb4j-tutorials/src/main/java/net/benas/cb4j/tutorials/customers">here</a>.
                     To run the tutorial with maven, launch the following command in the <code>cb4j/cb4j-tutorials</code> directory :</p>
@@ -164,9 +177,9 @@ Tiger,Raja,quis@pulvinar.com,19/01/2012,5283010032,2,P.O. Box 113 8377 Convallis
     <hr>
 
     <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p class="pull-right"><a href="#"><i class="icon-circle-arrow-up"></i> Back to top</a></p>
         <p>CB4J : CSV Batch processing with Java made easy!</p>
-        <p>Maintained by <a href="https://github.com/benas">benas</a> at <a href="https://github.com/benas/cb4j">Github</a></p>
+        <p>Maintained by <a href="mailto:md.benhassine@gmail.com?subject=[CB4J]"><i class="icon-envelope"></i> benas</a> at <a href="https://github.com/benas/cb4j"><i class="icon-github"></i> Github</a></p>
     </footer>
 
 </div>
