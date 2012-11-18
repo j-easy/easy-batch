@@ -44,6 +44,8 @@ public class BatchConstants {
 
     public static final String INPUT_FIELD_TRIM = "input.field.trim";
 
+    public static final String INPUT_FIELD_ENCLOSING_CHAR = "input.field.enclosingCharacter";
+
     public static final String INPUT_RECORD_SIZE = "input.record.size";
 
     public static final String OUTPUT_DATA_IGNORED = "output.data.ignored";
@@ -58,6 +60,8 @@ public class BatchConstants {
     public static final String DEFAULT_IGNORED_SUFFIX = "-ignored.log";
 
     public static final String DEFAULT_FIELD_SEPARATOR = ",";
+
+    public static final String DEFAULT_FIELD_ENCLOSING_CHAR = "";
 
     public static final boolean DEFAULT_FIELD_TRIM = true;
 

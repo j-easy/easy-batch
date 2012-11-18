@@ -43,7 +43,7 @@ public class RecordTest {
 
     @Before
     public void setUp() throws Exception {
-        RecordParserImpl recordParser = new RecordParserImpl(2, ",",false);
+        RecordParserImpl recordParser = new RecordParserImpl(2, ",",false,"");
         record = recordParser.parseRecord("Hello,World", 1);
     }
 
@@ -72,6 +72,14 @@ public class RecordTest {
     @Test(expected = IndexOutOfBoundsException.class)
     public void testGetFieldContentByIndexKo() throws Exception {
         assertEquals("World", record.getFieldContentByIndex(2));
+    }
+
+    @Test
+    public void testGetRecordContentAsStringWithDataEnclosingCharacter() throws Exception{
+        RecordParserImpl recordParser = new RecordParserImpl(2, ",",false,"'");
+        String originalRecord = "'Hello','World'";
+        record = recordParser.parseRecord(originalRecord, 1);
+        assertEquals(originalRecord, record.getContentAsString());
     }
 
     @After
