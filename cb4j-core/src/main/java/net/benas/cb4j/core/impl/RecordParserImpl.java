@@ -71,19 +71,23 @@ public final class RecordParserImpl implements RecordParser {
     /**
      * {@inheritDoc}
      */
-    public boolean isWellFormed(final String record) {
+    public String analyseRecord(final String record) {
+
         String[] tokens = record.split(fieldSeparator, -1);
-        boolean enclosingCharacterCondition = true;
+
+        if (tokens.length != fieldNumber) {
+            return "record size " + tokens.length + " not equal to expected size of " + fieldNumber;
+        }
+
         if (enclosingCharacter.length() > 0) {
             for (String token : tokens) {
                 if ( !token.startsWith(enclosingCharacter) || !token.endsWith(enclosingCharacter)) {
-                    enclosingCharacterCondition = false;
-                    break;
+                    return "field [" + token + "] is not enclosed as expected with '" + enclosingCharacter + "'";
                 }
             }
         }
-        boolean recordLengthCondition = tokens.length == fieldNumber;
-        return (enclosingCharacterCondition && recordLengthCondition);
+
+        return "";
     }
 
     /**

@@ -36,11 +36,15 @@ import net.benas.cb4j.core.model.Record;
 public interface RecordParser {
 
     /**
-     * Checks if a record is well formed (fields number as expected).
+     * Checks if a record is well formed : <br/>
+     * <ul>
+     *     <li>Fields number equal to expected record size</li>
+     *     <li>If data is enclosed with a character (quote, double quote,etc..), all fields must be enclosed with the same character</li>
+     * </ul>
      * @param record the record to check
-     * @return true if the record is well formed, false else
+     * @return Error message if any or empty string if the record is well formed.
      */
-    boolean isWellFormed(final String record);
+    String analyseRecord(final String record);
 
     /**
      * Getter for the actual record size.<br/>
