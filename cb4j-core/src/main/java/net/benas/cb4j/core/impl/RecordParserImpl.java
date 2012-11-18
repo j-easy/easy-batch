@@ -46,7 +46,12 @@ public final class RecordParserImpl implements RecordParser {
      */
     private String fieldSeparator;
 
-    public RecordParserImpl(final int fieldNumber, final String fieldSeparator) {
+    /**
+     * Parameter to trim whitespaces.
+     */
+    private boolean trimWhitespaces;
+
+    public RecordParserImpl(final int fieldNumber, final String fieldSeparator, final boolean trimWhitespaces) {
 
         this.fieldNumber = fieldNumber;
         String prefix = "";
@@ -54,6 +59,7 @@ public final class RecordParserImpl implements RecordParser {
             prefix = "\\";
         }
         this.fieldSeparator = prefix + fieldSeparator;
+        this.trimWhitespaces = trimWhitespaces;
     }
 
     /**
@@ -80,6 +86,9 @@ public final class RecordParserImpl implements RecordParser {
         String[] tokens = stringRecord.split(fieldSeparator, -1);
         int i = 0;
         for (String token : tokens) {
+            if (trimWhitespaces) {
+                token = token.trim();
+            }
             Field field = new Field(i++, token);
             record.getFields().add(field);
         }

@@ -43,7 +43,7 @@ public class RecordTest {
 
     @Before
     public void setUp() throws Exception {
-        RecordParserImpl recordParser = new RecordParserImpl(2, ",");
+        RecordParserImpl recordParser = new RecordParserImpl(2, ",",false);
         record = recordParser.parseRecord("Hello,World", 1);
     }
 

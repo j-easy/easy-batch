@@ -45,7 +45,7 @@ public class RecordParserImplTest {
 
     @Before
     public void setUp() throws Exception {
-        recordParser = new RecordParserImpl(3,",");
+        recordParser = new RecordParserImpl(3,",",false);
         record = "hello,cb4j,world";
     }
 
@@ -81,12 +81,23 @@ public class RecordParserImplTest {
         assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
         assertEquals("world",parsedRecord.getFieldContentByIndex(2));
         assertEquals(1,parsedRecord.getNumber());
+    }
 
+    @Test
+    public void testRecordParsingWithTrimmedWhitespaces() throws Exception {
+        recordParser = new RecordParserImpl(3,",",true);
+        record = "   hello,  cb4j  ,  world   ";
+        Record parsedRecord = recordParser.parseRecord(record, 1);
+        assertEquals(3, parsedRecord.getFields().size());
+        assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
+        assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
+        assertEquals("world",parsedRecord.getFieldContentByIndex(2));
+        assertEquals(1,parsedRecord.getNumber());
     }
 
     @Test
     public void testRecordParsingWithPipeSeparator() throws Exception {
-        recordParser = new RecordParserImpl(3,"|");
+        recordParser = new RecordParserImpl(3,"|",false);
         record = "hello|cb4j|world";
         assertTrue(recordParser.isWellFormed(record));
         assertEquals(3, recordParser.getRecordSize(record));

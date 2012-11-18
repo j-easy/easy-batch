@@ -255,9 +255,18 @@ public final class BatchConfiguration {
                 logger.warning("No field separator specified, using default : '" + fieldsSeparator + "'");
             }
 
+            String trimWhitespacesProperty = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_TRIM);
+            boolean trimWhitespaces;
+            if (trimWhitespacesProperty != null) {
+                trimWhitespaces = Boolean.valueOf(trimWhitespacesProperty);
+            } else {
+                trimWhitespaces = BatchConstants.DEFAULT_FIELD_TRIM;
+                logger.warning("Trim whitespaces property not specified, default to false");
+            }
+
             logger.config("Record size specified : " + recordSize);
             logger.config("Fields separator specified : '" + fieldsSeparator + "'");
-            recordParser = new RecordParserImpl(recordSize, fieldsSeparator);
+            recordParser = new RecordParserImpl(recordSize, fieldsSeparator,trimWhitespaces);
 
         } catch (NumberFormatException e) {
             String error = "Record size property is not recognized as a number : " + recordSizeProperty;
