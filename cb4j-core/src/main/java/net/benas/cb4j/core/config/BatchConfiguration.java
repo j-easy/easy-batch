@@ -261,7 +261,7 @@ public final class BatchConfiguration {
                 trimWhitespaces = Boolean.valueOf(trimWhitespacesProperty);
             } else {
                 trimWhitespaces = BatchConstants.DEFAULT_FIELD_TRIM;
-                logger.warning("Trim whitespaces property not specified, default to false");
+                logger.warning("Trim whitespaces property not specified, default to true");
             }
 
             logger.config("Record size specified : " + recordSize);

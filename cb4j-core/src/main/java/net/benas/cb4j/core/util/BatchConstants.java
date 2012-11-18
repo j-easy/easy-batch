@@ -59,7 +59,7 @@ public class BatchConstants {
 
     public static final String DEFAULT_FIELD_SEPARATOR = ",";
 
-    public static final boolean DEFAULT_FIELD_TRIM = false;
+    public static final boolean DEFAULT_FIELD_TRIM = true;
 
     public static final boolean DEFAULT_SKIP_HEADER = false;
 
