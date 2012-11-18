@@ -95,7 +95,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             //parse record
             String currentRecord = recordReader.readNextRecord();
             String error = recordParser.analyseRecord(currentRecord);
-            if (error.length() > 0) {
+            if (error != null) {
                 batchReporter.ignoreRecord(currentRecord, currentRecordNumber, error);
                 continue;
             }
@@ -103,7 +103,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             //validate record
             Record currentParsedRecord = recordParser.parseRecord(currentRecord, currentRecordNumber);
             error = recordValidator.validateRecord(currentParsedRecord);
-            if (error.length() > 0) {
+            if (error != null) {
                 batchReporter.rejectRecord(currentParsedRecord, error);
                 continue;
             }

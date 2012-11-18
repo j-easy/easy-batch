@@ -42,7 +42,7 @@ public interface RecordParser {
      *     <li>If data is enclosed with a character (quote, double quote,etc..), all fields must be enclosed with the same character</li>
      * </ul>
      * @param record the record to check
-     * @return Error message if any or empty string if the record is well formed.
+     * @return Error message or null if the record is well formed.
      */
     String analyseRecord(final String record);
 

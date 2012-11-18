@@ -87,7 +87,7 @@ public final class RecordParserImpl implements RecordParser {
             }
         }
 
-        return "";
+        return null;
     }
 
     /**
