@@ -3,7 +3,7 @@
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <meta charset="utf-8">
-    <title>CB4J</title>
+    <title>CB4J - User guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="benas">
 
@@ -81,6 +81,7 @@
                             <li><a href="userGuide.html#1">1. Introduction</a></li>
                             <li><a href="userGuide.html#2">2. Using CB4J</a></li>
                             <li><a href="userGuide.html#3">3. Extending CB4J</a></li>
+                            <li><a href="userGuide.html#4">4. Monitoring CB4J</a></li>
                         </ul>
                     </li>
                     <li><a href="faq.html">CB4J FAQ</a></li>
@@ -523,6 +524,23 @@ public class MyCustomBatchReporter extends DefaultBatchReporterImpl {
 <pre class="prettyprint">
 batchConfiguration.registerBatchReporter(new MyCustomBatchReporter("/data/cb4j/chartReport.png"))
 </pre>
+
+            <h2 id="4" class="section">4. Monitoring CB4J</h2>
+
+            <p>CB4J provides a nice feature to monitor batch execution and progress using JMX. By default, CB4J enables a JMX MBean at startup.</p>
+            <p>You can use any standard JMX compliant tool to monitor CB4J attributes such as :
+            <ul>
+                <li>Batch execution status (initializing, running or finalizing)</li>
+                <li>Execution start time and progress</li>
+                <li>The number of ignored, rejected and processed records</li>
+                <li>etc</li>
+            </ul>
+            </p>
+
+            <p>The screenshot below shows an example of monitoring CB4J using <a href="http://visualvm.java.net/">VisualVM</a> :</p>
+
+            <div align="center"><img src="../resources/img/cb4j-jmx.png"/></div>
+
 
             </div>
 
