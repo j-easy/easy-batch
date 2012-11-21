@@ -419,7 +419,7 @@ public final class BatchConfiguration {
     }
 
     /*
-    * Getters for CB4J services used by the engine
+    * Getters for CB4J services and parameters used by the engine
     */
     public RecordProcessor getRecordProcessor() {
         return recordProcessor;
@@ -443,6 +443,10 @@ public final class BatchConfiguration {
 
     public RecordMapper getRecordMapper() {
         return recordMapper;
+    }
+
+    public boolean getAbortOnFirstReject(){
+        return Boolean.valueOf(configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_REJECT));
     }
 
 }

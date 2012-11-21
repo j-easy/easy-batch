@@ -71,6 +71,11 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     protected long ignoredRecordsNumber;
 
     /**
+     * Processed records number.
+     */
+    protected long processedRecordsNumber;
+
+    /**
      * Batch execution start time.
      */
     protected long startTime;
@@ -104,7 +109,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
         logger.info("Total input records = " + totalInputRecordsNumber);
         logger.info("Total ignored records = " + ignoredRecordsNumber);
         logger.info("Total rejected records = " + rejectedRecordsNumber);
-        logger.info("Total processed records = " + (totalInputRecordsNumber - (rejectedRecordsNumber + ignoredRecordsNumber)));
+        logger.info("Total processed records = " + processedRecordsNumber);
     }
 
     /**
@@ -146,8 +151,18 @@ public class DefaultBatchReporterImpl implements BatchReporter {
         this.totalInputRecordsNumber = totalInputRecords;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setInputRecordsNumber(long inputRecordsNumber) {
         InputRecordsNumber = inputRecordsNumber;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setProcessedRecordsNumber(long processedRecordsNumber) {
+        this.processedRecordsNumber = processedRecordsNumber;
     }
 
     /**
@@ -167,6 +182,10 @@ public class DefaultBatchReporterImpl implements BatchReporter {
 
     public long getIgnoredRecordsNumber() {
         return ignoredRecordsNumber;
+    }
+
+    public long getProcessedRecordsNumber() {
+        return processedRecordsNumber;
     }
 
     public long getStartTime() {

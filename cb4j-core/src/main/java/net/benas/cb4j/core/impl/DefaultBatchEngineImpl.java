@@ -58,6 +58,11 @@ public class DefaultBatchEngineImpl implements BatchEngine {
 
     protected RecordProcessor recordProcessor;
 
+    /*
+     * User defined parameters used by the engine
+     */
+    private boolean abortOnFirstReject;
+
     public DefaultBatchEngineImpl(BatchConfiguration batchConfiguration) {
         this.recordReader = batchConfiguration.getRecordReader();
         this.recordParser = batchConfiguration.getRecordParser();
@@ -65,6 +70,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         this.recordProcessor = batchConfiguration.getRecordProcessor();
         this.batchReporter = batchConfiguration.getBatchReporter();
         this.recordMapper = batchConfiguration.getRecordMapper();
+        this.abortOnFirstReject = batchConfiguration.getAbortOnFirstReject();
     }
 
     /**
@@ -105,7 +111,11 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             error = recordValidator.validateRecord(currentParsedRecord);
             if (error != null) {
                 batchReporter.rejectRecord(currentParsedRecord, error);
-                continue;
+                if (abortOnFirstReject){
+                    break;
+                } else {
+                    continue;
+                }
             }
 
             //map record to expected type
@@ -135,6 +145,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
 
         final long endTime = System.currentTimeMillis();
         batchReporter.setEndTime(endTime);
+        batchReporter.setProcessedRecordsNumber(abortOnFirstReject ? currentRecordNumber - 1 : currentRecordNumber);
 
     }
 

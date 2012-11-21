@@ -67,6 +67,12 @@ public interface BatchReporter {
     public void setInputRecordsNumber(long inputRecordsNumber);
 
     /**
+     * Set processed records number.
+     * @param processedRecordsNumber processed records number
+     */
+    public void setProcessedRecordsNumber(long processedRecordsNumber);
+
+    /**
      * set the batch execution start time.
      * @param startTime the batch execution start time
      */
@@ -107,6 +113,12 @@ public interface BatchReporter {
      * @return ignored records number
      */
     public long getIgnoredRecordsNumber();
+
+    /**
+     * get processed records number.
+     * @return processed records number
+     */
+    public long getProcessedRecordsNumber();
 
     /**
      * get the batch execution start time.

@@ -52,6 +52,7 @@ public class BatchConstants {
 
     public static final String OUTPUT_DATA_REJECTED = "output.data.rejected";
 
+    public static final String OUTPUT_DATA_ABORT_ON_FIRST_REJECT = "output.data.abortOnFirstReject";
     /*
      * Default values for optional parameters
      */
