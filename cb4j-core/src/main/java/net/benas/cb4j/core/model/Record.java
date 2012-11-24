@@ -46,7 +46,7 @@ public final class Record {
     /**
      * Character(s) enclosing raw data in fields
      */
-    private final String enclosingCharacter;
+    private final String qualifier;
 
     /**
      * The record fields.
@@ -58,10 +58,10 @@ public final class Record {
      * @param number the record number in the file
      * @param separator the field separator
      */
-    public Record(long number, String separator, String enclosingCharacter) {
+    public Record(long number, String separator, String qualifier) {
         this.number = number;
         this.separator = separator;
-        this.enclosingCharacter = enclosingCharacter;
+        this.qualifier = qualifier;
         this.fields = new ArrayList<Field>();
     }
 
@@ -103,12 +103,12 @@ public final class Record {
         StringBuilder sb = new StringBuilder();
         //for each field, append the field content + separator
         for (int i = 0; i < fields.size() - 1; i++) {
-            sb.append(enclosingCharacter);
+            sb.append(qualifier);
             sb.append(fields.get(i).getContent());
-            sb.append(enclosingCharacter);
+            sb.append(qualifier);
             sb.append(separator);
         }
-        sb.append(enclosingCharacter).append(fields.get(fields.size() - 1).getContent()).append(enclosingCharacter); //for the last field, append only field content, no separator
+        sb.append(qualifier).append(fields.get(fields.size() - 1).getContent()).append(qualifier); //for the last field, append only field content, no separator
         return sb.toString();
     }
 
@@ -144,8 +144,8 @@ public final class Record {
      * Get data enclosure character
      * @return data enclosure character
      */
-    public String getEnclosingCharacter() {
-        return enclosingCharacter;
+    public String getQualifier() {
+        return qualifier;
     }
 
 }

@@ -144,7 +144,7 @@ public class RecordParserImplTest {
     }
 
     @Test
-    public void testRecordParsingWithDataEnclosingCharacter() throws Exception {
+    public void testRecordParsingWithDataQualifierCharacter() throws Exception {
         recordParser = new RecordParserImpl(3,",",false,"'");
         record = "'hello','cb4j','world'";
         assertNull(recordParser.analyseRecord(record));

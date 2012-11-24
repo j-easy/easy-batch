@@ -75,7 +75,7 @@ public class RecordTest {
     }
 
     @Test
-    public void testGetRecordContentAsStringWithDataEnclosingCharacter() throws Exception{
+    public void testGetRecordContentAsStringWithDataQualifierCharacter() throws Exception{
         RecordParserImpl recordParser = new RecordParserImpl(2, ",",false,"'");
         String originalRecord = "'Hello','World'";
         record = recordParser.parseRecord(originalRecord, 1);

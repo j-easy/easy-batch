@@ -54,9 +54,9 @@ public final class RecordParserImpl implements RecordParser {
     /**
      * Character(s) enclosing raw data in fields
      */
-    private String enclosingCharacter;
+    private String qualifier;
 
-    public RecordParserImpl(final int fieldNumber, final String fieldSeparator, final boolean trimWhitespaces, final String enclosingCharacter) {
+    public RecordParserImpl(final int fieldNumber, final String fieldSeparator, final boolean trimWhitespaces, final String qualifier) {
 
         this.fieldNumber = fieldNumber;
         String prefix = "";
@@ -65,7 +65,7 @@ public final class RecordParserImpl implements RecordParser {
         }
         this.fieldSeparator = prefix + fieldSeparator;
         this.trimWhitespaces = trimWhitespaces;
-        this.enclosingCharacter = enclosingCharacter;
+        this.qualifier = qualifier;
     }
 
     /**
@@ -79,10 +79,10 @@ public final class RecordParserImpl implements RecordParser {
             return "record size " + tokens.length + " not equal to expected size of " + fieldNumber;
         }
 
-        if (enclosingCharacter.length() > 0) {
+        if (qualifier.length() > 0) {
             for (String token : tokens) {
-                if ( !token.startsWith(enclosingCharacter) || !token.endsWith(enclosingCharacter)) {
-                    return "field [" + token + "] is not enclosed as expected with '" + enclosingCharacter + "'";
+                if ( !token.startsWith(qualifier) || !token.endsWith(qualifier)) {
+                    return "field [" + token + "] is not enclosed as expected with '" + qualifier + "'";
                 }
             }
         }
@@ -102,15 +102,15 @@ public final class RecordParserImpl implements RecordParser {
      * {@inheritDoc}
      */
     public Record parseRecord(final String stringRecord, final long currentRecordNumber) {
-        Record record = new Record(currentRecordNumber, fieldSeparator, enclosingCharacter);
+        Record record = new Record(currentRecordNumber, fieldSeparator, qualifier);
         String[] tokens = stringRecord.split(fieldSeparator, -1);
         int i = 0;
         for (String token : tokens) {
             if (trimWhitespaces) {
                 token = token.trim();
             }
-            if (enclosingCharacter.length() > 0) {
-                token = token.substring(enclosingCharacter.length(), token.length() - enclosingCharacter.length());
+            if (qualifier.length() > 0) {
+                token = token.substring(qualifier.length(), token.length() - qualifier.length());
             }
             Field field = new Field(i++, token);
             record.getFields().add(field);

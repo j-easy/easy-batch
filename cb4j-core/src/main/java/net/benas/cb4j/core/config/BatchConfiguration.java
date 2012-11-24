@@ -264,16 +264,16 @@ public final class BatchConfiguration {
                 logger.warning("Trim whitespaces property not specified, default to true");
             }
 
-            String dataEnclosingCharacterProperty = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_ENCLOSING_CHAR);
-            String dataEnclosingCharacter = BatchConstants.DEFAULT_FIELD_ENCLOSING_CHAR;
-            if ( dataEnclosingCharacterProperty != null && dataEnclosingCharacterProperty.length() > 0) {
-                dataEnclosingCharacter = dataEnclosingCharacterProperty;
+            String dataQualifierCharacterProperty = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_QUALIFIER_CHAR);
+            String dataQualifierCharacter = BatchConstants.DEFAULT_FIELD_QUALIFIER_CHAR;
+            if ( dataQualifierCharacterProperty != null && dataQualifierCharacterProperty.length() > 0) {
+                dataQualifierCharacter = dataQualifierCharacterProperty;
             }
 
             logger.config("Record size specified : " + recordSize);
             logger.config("Fields separator specified : '" + fieldsSeparator + "'");
-            logger.config("Data enclosing character specified : '" + dataEnclosingCharacter + "'");
-            recordParser = new RecordParserImpl(recordSize, fieldsSeparator, trimWhitespaces, dataEnclosingCharacter);
+            logger.config("Data qualifier character specified : '" + dataQualifierCharacter + "'");
+            recordParser = new RecordParserImpl(recordSize, fieldsSeparator, trimWhitespaces, dataQualifierCharacter);
 
         } catch (NumberFormatException e) {
             String error = "Record size property is not recognized as a number : " + recordSizeProperty;
