@@ -203,7 +203,7 @@ public class GreetingProcessor extends DefaultRecordProcessorImpl&lt;Greeting&gt
                     <p>Because reflection involves types that are dynamically resolved, certain Java virtual machine optimizations can not be performed. Consequently, reflective operations have slower performance than their non-reflective counterparts, and should be avoided in sections of code which are called frequently in performance-sensitive applications.</p>
                 </blockquote>
 
-                <p>Writing the mapping logic explicitly by the user (by implementing the <code class="prettyprint">net.benas.cb4j.core.api.RecordMapper</code> interface) is not costly even for POJOs with many properties and results in about <strong>500x</strong> faster code than using reflection as demonstrated in <a href="https://github.com/benas/cb4j/blob/master/cb4j-core/src/test/java/net/benas/cb4j/core/test/ReflectionPerformanceShowcase.java">the benchmark here</a>.</p>
+                <p>Writing the mapping logic explicitly by the user (by implementing the <code class="prettyprint">net.benas.cb4j.core.api.RecordMapper</code> interface) is not costly even for POJOs with many properties and this results in about <strong>100x</strong> faster code than using reflection as demonstrated in <a href="https://github.com/benas/cb4j/blob/master/cb4j-core/src/test/java/net/benas/cb4j/core/test/ReflectionPerformanceShowcase.java">the benchmark here</a>.</p>
 
                 <h2 id="3" class="section">3. CB4J does not provide built-in type conversion utilities, why?</h2>
 

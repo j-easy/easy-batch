@@ -42,7 +42,14 @@ public class ReflectionPerformanceShowcase {
 
     public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
 
-        Person p1 = getPersonUsingReflection();
+        /*
+         * Introspect Person type (code executed only once)
+         */
+        Class c = Class.forName(Person.class.getName());
+        Method setFirstNameMethod = Person.class.getMethod("setFirstName", String.class);
+        Method setLastNameMethod = Person.class.getMethod("setLastName", String.class);
+
+        Person p1 = getPersonUsingReflection(c,setFirstNameMethod,setLastNameMethod);
         System.out.println("p1 = " + p1);
 
         Person p2 = getPersonFromMapper();
@@ -53,7 +60,7 @@ public class ReflectionPerformanceShowcase {
          */
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < 1000000; i++) {
-             Person person = getPersonUsingReflection();
+            Person person = getPersonUsingReflection(c,setFirstNameMethod,setLastNameMethod);
             // process person object
         }
         long reflectionEstimatedExecutionTime = System.currentTimeMillis() - startTime;
@@ -76,12 +83,7 @@ public class ReflectionPerformanceShowcase {
     /*
     * This method does what would a DefaultRecordMapper do
     */
-    private static Person getPersonUsingReflection() throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
-
-        Class c = Class.forName(Person.class.getName());
-
-        Method setFirstNameMethod = Person.class.getMethod("setFirstName", String.class);
-        Method setLastNameMethod = Person.class.getMethod("setLastName", String.class);
+    private static Person getPersonUsingReflection(Class c,Method setFirstNameMethod,Method setLastNameMethod) throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
 
         Person person = (Person) c.newInstance();
 
