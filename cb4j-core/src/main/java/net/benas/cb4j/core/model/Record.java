@@ -39,9 +39,9 @@ public final class Record {
     private final long number;
 
     /**
-     * The fields separator.
+     * The fields delimiter.
      */
-    private final String separator;
+    private final String delimiter;
 
     /**
      * The record fields.
@@ -49,13 +49,13 @@ public final class Record {
     private final List<Field> fields;
 
     /**
-     * Constructor with a number and separator
+     * Constructor with a record number and field delimiter
      * @param number the record number in the file
-     * @param separator the field separator
+     * @param delimiter the field delimiter
      */
-    public Record(long number, String separator) {
+    public Record(long number, String delimiter) {
         this.number = number;
-        this.separator = separator;
+        this.delimiter = delimiter;
         this.fields = new ArrayList<Field>();
     }
 
@@ -95,12 +95,12 @@ public final class Record {
             return "";
         }
         StringBuilder sb = new StringBuilder();
-        //for each field, append the field content + separator
+        //for each field, append the field content + delimiter
         for (int i = 0; i < fields.size() - 1; i++) {
             sb.append(fields.get(i).getContent());
-            sb.append(separator);
+            sb.append(delimiter);
         }
-        sb.append(fields.get(fields.size() - 1).getContent()); //for the last field, append only field content, no separator
+        sb.append(fields.get(fields.size() - 1).getContent()); //for the last field, append only field content, no delimiter
         return sb.toString();
     }
 
@@ -125,10 +125,10 @@ public final class Record {
     }
 
     /**
-     * Get field separator.
-     * @return field separator in the record
+     * Get field delimiter.
+     * @return field delimiter in the record
      */
-    public String getSeparator() {
-        return separator;
+    public String getDelimiter() {
+        return delimiter;
     }
 }

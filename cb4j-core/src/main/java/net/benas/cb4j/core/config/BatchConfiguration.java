@@ -239,15 +239,15 @@ public final class BatchConfiguration {
 
             int recordSize = Integer.parseInt(recordSizeProperty);
 
-            String fieldsSeparator = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_SEPARATOR);
-            if (fieldsSeparator == null || (fieldsSeparator != null && fieldsSeparator.length() == 0)) {
-                fieldsSeparator = BatchConstants.DEFAULT_FIELD_SEPARATOR;
-                logger.warning("No field separator specified, using default : '" + fieldsSeparator + "'");
+            String fieldsDelimiter = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_DELIMITER);
+            if (fieldsDelimiter == null || (fieldsDelimiter != null && fieldsDelimiter.length() == 0)) {
+                fieldsDelimiter = BatchConstants.DEFAULT_FIELD_DELIMITER;
+                logger.warning("No field delimiter specified, using default : '" + fieldsDelimiter + "'");
             }
 
             logger.config("Record size specified : " + recordSize);
-            logger.config("Fields separator specified : '" + fieldsSeparator + "'");
-            recordParser = new RecordParserImpl(recordSize, fieldsSeparator);
+            logger.config("Fields delimiter specified : '" + fieldsDelimiter + "'");
+            recordParser = new RecordParserImpl(recordSize, fieldsDelimiter);
 
         } catch (NumberFormatException e) {
             String error = "Record size property is not recognized as a number : " + recordSizeProperty;

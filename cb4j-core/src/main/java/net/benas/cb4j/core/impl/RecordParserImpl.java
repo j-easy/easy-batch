@@ -42,18 +42,18 @@ public final class RecordParserImpl implements RecordParser {
     private int fieldNumber;
 
     /**
-     * The field separator.
+     * The field delimiter.
      */
-    private String fieldSeparator;
+    private String fieldDelimiter;
 
-    public RecordParserImpl(final int fieldNumber, final String fieldSeparator) {
+    public RecordParserImpl(final int fieldNumber, final String fieldDelimiter) {
 
         this.fieldNumber = fieldNumber;
         String prefix = "";
-        if ("|".equalsIgnoreCase(fieldSeparator)) { //escape the "pipe" character used in regular expression of String.split method
+        if ("|".equalsIgnoreCase(fieldDelimiter)) { //escape the "pipe" character used in regular expression of String.split method
             prefix = "\\";
         }
-        this.fieldSeparator = prefix + fieldSeparator;
+        this.fieldDelimiter = prefix + fieldDelimiter;
     }
 
     /**
@@ -61,7 +61,7 @@ public final class RecordParserImpl implements RecordParser {
      */
     public String analyseRecord(final String record) {
 
-        String[] tokens = record.split(fieldSeparator, -1);
+        String[] tokens = record.split(fieldDelimiter, -1);
 
         if (tokens.length != fieldNumber) {
             return "record size " + tokens.length + " not equal to expected size of " + fieldNumber;
@@ -74,7 +74,7 @@ public final class RecordParserImpl implements RecordParser {
      * {@inheritDoc}
      */
     public int getRecordSize(final String record) {
-        String[] tokens = record.split(fieldSeparator, -1);
+        String[] tokens = record.split(fieldDelimiter, -1);
         return tokens.length;
     }
 
@@ -82,8 +82,8 @@ public final class RecordParserImpl implements RecordParser {
      * {@inheritDoc}
      */
     public Record parseRecord(final String stringRecord, final long currentRecordNumber) {
-        Record record = new Record(currentRecordNumber, fieldSeparator);
-        String[] tokens = stringRecord.split(fieldSeparator, -1);
+        Record record = new Record(currentRecordNumber, fieldDelimiter);
+        String[] tokens = stringRecord.split(fieldDelimiter, -1);
         int i = 0;
         for (String token : tokens) {
             Field field = new Field(i++, token);

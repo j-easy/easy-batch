@@ -42,7 +42,7 @@ public class Launcher {
 
         if (args == null || args.length < 3){
             System.err.println("[CB4J] Configuration parameters not specified, usage : ");
-            System.err.println("java net.benas.cb4j.tutorials.products.Launcher path/to/data/file recordSize separator");
+            System.err.println("java net.benas.cb4j.tutorials.products.Launcher path/to/data/file recordSize delimiter");
             System.err.println("Example : java net.benas.cb4j.tutorials.products.Launcher /data/cb4j/products.csv 4 ;");
             System.exit(1);
         }
@@ -50,7 +50,7 @@ public class Launcher {
         Properties configurationProperties = new Properties();
         configurationProperties.setProperty("input.data.path",args[0]);
         configurationProperties.setProperty("input.record.size",args[1]);
-        configurationProperties.setProperty("input.field.separator", args[2]);
+        configurationProperties.setProperty("input.field.delimiter", args[2]);
         configurationProperties.setProperty("input.data.skipHeader", "true");
 
         BatchConfiguration batchConfiguration = new BatchConfiguration(configurationProperties);

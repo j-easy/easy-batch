@@ -85,7 +85,7 @@ public class RecordParserImplTest {
     }
 
     @Test
-    public void testRecordParsingWithPipeSeparator() throws Exception {
+    public void testRecordParsingWithPipeDelimiter() throws Exception {
         recordParser = new RecordParserImpl(3,"|");
         record = "hello|cb4j|world";
         assertNull(recordParser.analyseRecord(record));
@@ -97,7 +97,7 @@ public class RecordParserImplTest {
     }
 
     @Test
-    public void testRecordParsingWithSpaceSeparator() throws Exception {
+    public void testRecordParsingWithSpaceDelimiter() throws Exception {
         recordParser = new RecordParserImpl(3," ");
         record = "hello cb4j world";
         assertNull(recordParser.analyseRecord(record));
@@ -109,7 +109,7 @@ public class RecordParserImplTest {
     }
 
     @Test
-    public void testRecordParsingWithTabSeparator() throws Exception {
+    public void testRecordParsingWithTabDelimiter() throws Exception {
         recordParser = new RecordParserImpl(3,"\t");
         record = "hello\tcb4j\tworld";
         assertNull(recordParser.analyseRecord(record));
@@ -121,7 +121,7 @@ public class RecordParserImplTest {
     }
 
     @Test
-    public void testRecordParsingWithMultipleCharacterSeparator() throws Exception {
+    public void testRecordParsingWithMultipleCharacterDelimiter() throws Exception {
         recordParser = new RecordParserImpl(3,"###");
         record = "hello###cb4j###world";
         assertNull(recordParser.analyseRecord(record));
