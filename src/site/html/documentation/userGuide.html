@@ -3,7 +3,7 @@
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <meta charset="utf-8">
-    <title>CB4J</title>
+    <title>CB4J - User guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="benas">
 
@@ -386,11 +386,11 @@ public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {
         String error = super.validateRecord(record);
         if (error.isEmpty()) { //no errors after applying declared validators on each field
 
-            //add custom validation : field 2 content must starts with field 1 content
+            //add custom validation : field 2 content must start with field's 1 content
             final String content1 = record.getFieldContentByIndex(0);
             final String content2 = record.getFieldContentByIndex(1);
             if (!content2.startsWith(content1)) {
-             return "field 2 content [" + content2 + "] must start with field 1 content [" + content1 + "]";
+             return "field 2 content [" + content2 + "] must start with field's 1 content [" + content1 + "]";
             }
         }
         return ""; //empty value means no error
