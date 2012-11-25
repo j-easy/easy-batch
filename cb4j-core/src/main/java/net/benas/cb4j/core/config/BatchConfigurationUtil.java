@@ -29,6 +29,7 @@ import net.benas.cb4j.core.util.BatchConstants;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -62,18 +63,23 @@ public class BatchConfigurationUtil {
     }
 
     /**
-     * Loads properties from a configuration file.
+     * Load properties from a configuration file in the file system.
      * @param configurationFile the absolute path of the configuration file
+     * @param xmlFormat true if the properties file has an xml format
      * @return Configuration properties
      * @throws BatchConfigurationException throw if configuration file is not found or cannot be read
      */
-    public static Properties loadParametersFromConfigurationFile(final String configurationFile)
+    public static Properties loadParametersFromConfigurationFile(final String configurationFile, final boolean xmlFormat)
             throws BatchConfigurationException {
         Properties properties = new Properties();
         FileInputStream fileInputStream = null;
         try {
             fileInputStream = new FileInputStream(configurationFile);
-            properties.load(fileInputStream);
+            if (xmlFormat) {
+                properties.loadFromXML(fileInputStream);
+            } else {
+                properties.load(fileInputStream);
+            }
         } catch (FileNotFoundException e) {
             String error = "Configuration failed : configuration file not found : " + configurationFile;
             logger.severe(error);
@@ -92,6 +98,38 @@ public class BatchConfigurationUtil {
             }
         }
         return properties;
+    }
+
+
+    /**
+     * Load properties from a configuration file in the classpath.
+     * @param configurationFile the configuration file name
+     * @param xmlFormat true if the properties file has an xml format
+     * @return Configuration properties
+     * @throws BatchConfigurationException throw if configuration file is not found in classpath or cannot be read
+     */
+    public static Properties loadParametersFromConfigurationFileInClasspath(final String configurationFile, final boolean xmlFormat) throws BatchConfigurationException {
+        Properties props = new Properties();
+        final ClassLoader classLoader = BatchConfigurationUtil.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(configurationFile);
+        String error;
+        if (inputStream == null) {
+            error = "Configuration failed : configuration file '" + configurationFile + "' could not be loaded from classpath " + classLoader;
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+        try {
+            if (xmlFormat) {
+                props.loadFromXML(inputStream);
+            } else {
+                props.load(inputStream);
+            }
+        } catch (IOException e) {
+            error = "Configuration failed : exception in reading configuration file '" + configurationFile + "' from classpath " + classLoader;
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+        return props;
     }
 
 }

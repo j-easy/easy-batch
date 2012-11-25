@@ -48,22 +48,22 @@ import java.util.logging.Logger;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public final class BatchConfiguration {
+public class BatchConfiguration {
 
     /**
      * CB4J logger.
      */
-    private final Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
+    protected final Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
 
     /*
      * Configuration parameters.
      */
-    private Properties configurationProperties;
+    protected Properties configurationProperties;
 
     /*
      * Validators and CB4J services that will be used by the engine.
      */
-    private Map<Integer, List<FieldValidator>> fieldValidators;
+    protected Map<Integer, List<FieldValidator>> fieldValidators;
 
     private RecordReader recordReader;
 
@@ -79,23 +79,22 @@ public final class BatchConfiguration {
 
     /**
      * Initialize configuration from a properties file.
-     * @param configurationPath absolute path of the configuration file
+     * @param configurationFile the configuration file name
      * @throws BatchConfigurationException thrown if :
      * <ul>
      *     <li>The configuration file is not found</li>
      *     <li>The configuration file cannot be read</li>
      * </ul>
+     * This constructor is used only by subclasses to check if configuration file is specified.
      */
-    public BatchConfiguration(final String configurationPath) throws BatchConfigurationException {
-
-        if (configurationPath == null) {
+    protected BatchConfiguration(final String configurationFile) throws BatchConfigurationException {
+        if (configurationFile == null) {
             String error = "Configuration failed : configuration file not specified";
             logger.severe(error);
             throw new BatchConfigurationException(error);
         }
-        logger.config("Configuration file used : " + configurationPath);
+        logger.config("Configuration file specified : " + configurationFile);
 
-        configurationProperties = BatchConfigurationUtil.loadParametersFromConfigurationFile(configurationPath);
         fieldValidators = new HashMap<Integer, List<FieldValidator>>();
     }
 

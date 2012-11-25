@@ -116,12 +116,11 @@
 
             <h3 id="2.1">2.1 Configuring the engine</h3>
 
-            <p>To configure CB4J, you must supply a set of predefined parameters (see table below).
-            You can configure CB4J in two ways :</p>
+            <p>To configure CB4J, you must supply a set of predefined parameters (see table below). You can configure CB4J in two ways :</p>
 
             <ul>
-                <li>With a configuration file (standard java properties file)</li>
-                <li>With a <code class="prettyprint">java.util.Properties</code></li>
+                <li>With a <code class="prettyprint">java.util.Properties</code> object instance</li>
+                <li>With a standard java (key,value or xml) properties file</li>
             </ul>
 
             <p>Configuration parameters are defined in the following table :</p>
@@ -181,7 +180,8 @@
                 </tbody>
             </table>
 
-            <p>The code sample below shows how to configure CB4J using a <code class="prettyprint">java.util.Properties</code> object:</p>
+            <h4>Loading parameters from a Java Properties object instance</h4>
+            <p>To load configuration parameters from a <code class="prettyprint">java.util.Properties</code> instance, use the following snippet:</p>
 
 <pre class="prettyprint">
 Properties configurationProperties = new Properties();
@@ -191,7 +191,8 @@ configurationProperties.setProperty("input.record.size","7");
 BatchConfiguration batchConfiguration = new BatchConfiguration(configurationProperties);
 </pre>
 
-            <p>You can also use a configuration file to externalize parameters. The following is an example of a configuration file ("/data/cb4j/myConfig.cfg"):</p>
+            <h4>Loading parameters from a Java Properties file</h4>
+            <p>You can load parameters from a configuration file in the file system or the classpath. The following is an example of a configuration file named <code class="prettyprint">"/data/cb4j/myConfig.cfg"</code>:</p>
 
 <pre>
 input.data.path=/data/cb4j/myData.csv
@@ -201,15 +202,34 @@ input.record.size=7
             <p>To use this configuration file with CB4J, you can use the following snippet :</p>
 
 <pre class="prettyprint">
-BatchConfiguration batchConfiguration = new BatchConfiguration("/data/cb4j/myConfig.cfg");
+BatchConfiguration batchConfiguration = new FileSystemBatchConfiguration("/data/cb4j/myConfig.cfg");
 </pre>
+            <span class="label label-info">Info</span> : If the configuration file is in the classpath, you can use the <code class="prettyprint">ClassPathBatchConfiguration</code> class instead and supply the file name to its constructor.
 
-            <p>Once you have initialized CB4J with all parameters (and registered mandatory services, see next section ), you have to configure the engine as follows:</p>
+            <h4>Loading parameters from a Java Properties xml file</h4>
+            <p>You can load parameters from an xml configuration file in the file system or the classpath. The following is an example of a configuration file named <code class="prettyprint">"/data/cb4j/myConfig.xml"</code>:</p>
 
 <pre class="prettyprint">
-/*
- * Configure the engine
- */
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd"&gt;
+&lt;properties&gt;
+    &lt;comment&gt;my batch configuration&lt;/comment&gt;
+    &lt;entry key="input.data.path"&gt;/data/cb4j/myData.csv&lt;/entry&gt;
+    &lt;entry key="input.record.size"&gt;7&lt;/entry&gt;
+&lt;/properties&gt;
+</pre>
+
+            <p>To use this configuration file with CB4J, you can use the following snippet :</p>
+
+<pre class="prettyprint">
+BatchConfiguration batchConfiguration = new FileSystemXmlBatchConfiguration("/data/cb4j/myConfig.xml");
+</pre>
+            <span class="label label-info">Info</span> : If the configuration file is in the classpath, you can use the <code class="prettyprint">ClassPathXmlBatchConfiguration</code> class instead and supply the file name to its constructor.
+
+            <h4>Configuring CB4J engine</h4>
+            <p>Once you have initialized CB4J with all parameters (and registered mandatory services, see next section ), you can configure the engine as follows:</p>
+
+<pre class="prettyprint">
 try {
     batchConfiguration.configure();
 } catch (BatchConfigurationException e) {
