@@ -51,13 +51,13 @@ public class RecordParserImplTest {
 
     @Test
     public void testRecordWellFormedness() throws Exception {
-        assertTrue(recordParser.isWellFormed(record));
+        assertNull(recordParser.analyseRecord(record));
     }
 
     @Test
     public void testRecordWellFormednessKO() throws Exception {
         record = "hello,world";
-        assertFalse(recordParser.isWellFormed(record));
+        assertNotNull(recordParser.analyseRecord(record));
     }
 
     @Test
@@ -88,7 +88,43 @@ public class RecordParserImplTest {
     public void testRecordParsingWithPipeSeparator() throws Exception {
         recordParser = new RecordParserImpl(3,"|");
         record = "hello|cb4j|world";
-        assertTrue(recordParser.isWellFormed(record));
+        assertNull(recordParser.analyseRecord(record));
+        assertEquals(3, recordParser.getRecordSize(record));
+        Record parsedRecord = recordParser.parseRecord(record, 1);
+        assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
+        assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
+        assertEquals("world",parsedRecord.getFieldContentByIndex(2));
+    }
+
+    @Test
+    public void testRecordParsingWithSpaceSeparator() throws Exception {
+        recordParser = new RecordParserImpl(3," ");
+        record = "hello cb4j world";
+        assertNull(recordParser.analyseRecord(record));
+        assertEquals(3, recordParser.getRecordSize(record));
+        Record parsedRecord = recordParser.parseRecord(record, 1);
+        assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
+        assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
+        assertEquals("world",parsedRecord.getFieldContentByIndex(2));
+    }
+
+    @Test
+    public void testRecordParsingWithTabSeparator() throws Exception {
+        recordParser = new RecordParserImpl(3,"\t");
+        record = "hello\tcb4j\tworld";
+        assertNull(recordParser.analyseRecord(record));
+        assertEquals(3, recordParser.getRecordSize(record));
+        Record parsedRecord = recordParser.parseRecord(record, 1);
+        assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
+        assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
+        assertEquals("world",parsedRecord.getFieldContentByIndex(2));
+    }
+
+    @Test
+    public void testRecordParsingWithMultipleCharacterSeparator() throws Exception {
+        recordParser = new RecordParserImpl(3,"###");
+        record = "hello###cb4j###world";
+        assertNull(recordParser.analyseRecord(record));
         assertEquals(3, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("hello",parsedRecord.getFieldContentByIndex(0));

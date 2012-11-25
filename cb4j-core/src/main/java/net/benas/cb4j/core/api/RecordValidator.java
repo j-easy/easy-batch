@@ -36,7 +36,7 @@ public interface RecordValidator {
     /**
      * Validate a record.
      * @param record the record to validate
-     * @return validation error if any or empty string if the record is valid
+     * @return validation error or null if the record is valid
      */
     String validateRecord(final Record record);
 

@@ -107,10 +107,10 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     /**
      * {@inheritDoc}
      */
-    public void ignoreRecord(final String record, final long recordNumber, final int recordSize) {
+    public void ignoreRecord(final String record, final long recordNumber, final String error) {
         ignoredRecordsNumber++;
 
-        ignoredRecordsReporter.info("Record #" + recordNumber + " [" + record + "] is ignored, Error : record size " + recordSize + " not equal to expected size.");
+        ignoredRecordsReporter.info("Record #" + recordNumber + " [" + record + "] is ignored, Error : " + error);
     }
 
     /**

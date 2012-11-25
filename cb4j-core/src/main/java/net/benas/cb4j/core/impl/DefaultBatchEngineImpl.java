@@ -87,15 +87,16 @@ public class DefaultBatchEngineImpl implements BatchEngine {
 
             //parse record
             String currentRecord = recordReader.readNextRecord();
-            if (!recordParser.isWellFormed(currentRecord)) {
-                batchReporter.ignoreRecord(currentRecord, currentRecordNumber, recordParser.getRecordSize(currentRecord));
+            String error = recordParser.analyseRecord(currentRecord);
+            if (error != null) {
+                batchReporter.ignoreRecord(currentRecord, currentRecordNumber, error);
                 continue;
             }
 
             //validate record
             Record currentParsedRecord = recordParser.parseRecord(currentRecord, currentRecordNumber);
-            String error = recordValidator.validateRecord(currentParsedRecord);
-            if (error.length() > 0) {
+            error = recordValidator.validateRecord(currentParsedRecord);
+            if (error != null) {
                 batchReporter.rejectRecord(currentParsedRecord, error);
                 continue;
             }

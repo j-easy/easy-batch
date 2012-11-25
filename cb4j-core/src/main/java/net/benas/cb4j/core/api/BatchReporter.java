@@ -44,9 +44,9 @@ public interface BatchReporter {
      * ignore a record.
      * @param record the record to ignore
      * @param recordNumber the record number
-     * @param recordSize the record size
+     * @param error the error that causes the record to be ignored
      */
-    void ignoreRecord(String record, long recordNumber, int recordSize);
+    void ignoreRecord(String record, long recordNumber, String error);
 
     /**
      * generate a batch execution report.

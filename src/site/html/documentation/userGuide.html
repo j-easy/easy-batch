@@ -384,7 +384,7 @@ public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {
     public String validateRecord(final Record record) {
 
         String error = super.validateRecord(record);
-        if (error.isEmpty()) { //no errors after applying declared validators on each field
+        if (error == null) { //no errors after applying declared validators on each field
 
             //add custom validation : field 2 content must start with field's 1 content
             final String content1 = record.getFieldContentByIndex(0);
@@ -393,7 +393,7 @@ public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {
              return "field 2 content [" + content2 + "] must start with field's 1 content [" + content1 + "]";
             }
         }
-        return ""; //empty value means no error
+        return null; //null means no error
     }
 }
 </pre>

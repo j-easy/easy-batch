@@ -55,12 +55,12 @@ public class DefaultRecordValidatorImpl implements RecordValidator {
     /**
      * Validate a record. Validation order is the insertion order of validators in the list. if the validators list is empty, all fields are supposed to be valid
      * @param record the record to validate
-     * @return validation error if any or empty string if the record is valid
+     * @return validation error if any or null if the record is valid
      *
      */
     public String validateRecord(Record record) {
         if (fieldValidators.isEmpty()) { //if no validators are registered, all fields are supposed to be valid
-            return "";
+            return null;
         }
 
         for (Field field : record.getFields()) {
@@ -73,6 +73,7 @@ public class DefaultRecordValidatorImpl implements RecordValidator {
                 }
             }
         }
-        return "";
+        return null;
     }
+
 }

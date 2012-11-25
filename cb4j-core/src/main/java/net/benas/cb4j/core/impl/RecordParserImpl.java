@@ -59,9 +59,15 @@ public final class RecordParserImpl implements RecordParser {
     /**
      * {@inheritDoc}
      */
-    public boolean isWellFormed(final String record) {
+    public String analyseRecord(final String record) {
+
         String[] tokens = record.split(fieldSeparator, -1);
-        return (tokens.length == fieldNumber);
+
+        if (tokens.length != fieldNumber) {
+            return "record size " + tokens.length + " not equal to expected size of " + fieldNumber;
+        }
+
+        return null;
     }
 
     /**
