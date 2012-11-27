@@ -30,6 +30,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -114,7 +116,7 @@ public class BatchConfigurationUtil {
         InputStream inputStream = classLoader.getResourceAsStream(configurationFile);
         String error;
         if (inputStream == null) {
-            error = "Configuration failed : configuration file '" + configurationFile + "' could not be loaded from classpath " + classLoader;
+            error = "Configuration failed : configuration file '" + configurationFile + "' could not be loaded from classpath " + printClasspath(classLoader);
             logger.severe(error);
             throw new BatchConfigurationException(error);
         }
@@ -125,11 +127,25 @@ public class BatchConfigurationUtil {
                 props.load(inputStream);
             }
         } catch (IOException e) {
-            error = "Configuration failed : exception in reading configuration file '" + configurationFile + "' from classpath " + classLoader;
+            error = "Configuration failed : exception in reading configuration file '" + configurationFile + "' from classpath " + printClasspath(classLoader);
             logger.severe(error);
             throw new BatchConfigurationException(error);
         }
         return props;
+    }
+
+    /**
+     * Utility method to print classpath entries
+     * @param classLoader the class loader to dump
+     * @return a string representation of classpath entries
+     */
+    private static String printClasspath(final ClassLoader classLoader) {
+        StringBuilder classpath = new StringBuilder();
+        URL[] urls = ((URLClassLoader)classLoader).getURLs();
+        for (URL url : urls) {
+            classpath.append(url.getFile()).append(":");
+        }
+        return classpath.toString();
     }
 
 }
