@@ -56,7 +56,7 @@ public final class RecordParserImpl implements RecordParser {
      */
     private String qualifier;
 
-    public RecordParserImpl(final int fieldNumber, final String fieldSeparator, final boolean trimWhitespaces, final String qualifier) {
+    public RecordParserImpl(final int fieldNumber, final String fieldDelimiter, final boolean trimWhitespaces, final String qualifier) {
 
         this.fieldNumber = fieldNumber;
         String prefix = "";
