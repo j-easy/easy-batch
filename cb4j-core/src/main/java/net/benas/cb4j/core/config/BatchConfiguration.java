@@ -53,22 +53,22 @@ import java.util.logging.Logger;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public final class BatchConfiguration {
+public class BatchConfiguration {
 
     /**
      * CB4J logger.
      */
-    private final Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
+    protected final Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
 
     /*
      * Configuration parameters.
      */
-    private Properties configurationProperties;
+    protected Properties configurationProperties;
 
     /*
      * Validators and CB4J services that will be used by the engine.
      */
-    private Map<Integer, List<FieldValidator>> fieldValidators;
+    protected Map<Integer, List<FieldValidator>> fieldValidators;
 
     private RecordReader recordReader;
 
@@ -84,23 +84,22 @@ public final class BatchConfiguration {
 
     /**
      * Initialize configuration from a properties file.
-     * @param configurationPath absolute path of the configuration file
+     * @param configurationFile the configuration file name
      * @throws BatchConfigurationException thrown if :
      * <ul>
      *     <li>The configuration file is not found</li>
      *     <li>The configuration file cannot be read</li>
      * </ul>
+     * This constructor is used only by subclasses to check if configuration file is specified.
      */
-    public BatchConfiguration(final String configurationPath) throws BatchConfigurationException {
-
-        if (configurationPath == null) {
+    protected BatchConfiguration(final String configurationFile) throws BatchConfigurationException {
+        if (configurationFile == null) {
             String error = "Configuration failed : configuration file not specified";
             logger.severe(error);
             throw new BatchConfigurationException(error);
         }
-        logger.config("Configuration file used : " + configurationPath);
+        logger.config("Configuration file specified : " + configurationFile);
 
-        configurationProperties = BatchConfigurationUtil.loadParametersFromConfigurationFile(configurationPath);
         fieldValidators = new HashMap<Integer, List<FieldValidator>>();
     }
 
@@ -249,10 +248,10 @@ public final class BatchConfiguration {
 
             int recordSize = Integer.parseInt(recordSizeProperty);
 
-            String fieldsSeparator = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_SEPARATOR);
-            if (fieldsSeparator == null || (fieldsSeparator != null && fieldsSeparator.length() == 0)) {
-                fieldsSeparator = BatchConstants.DEFAULT_FIELD_SEPARATOR;
-                logger.warning("No field separator specified, using default : '" + fieldsSeparator + "'");
+            String fieldsDelimiter = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_DELIMITER);
+            if (fieldsDelimiter == null || (fieldsDelimiter != null && fieldsDelimiter.length() == 0)) {
+                fieldsDelimiter = BatchConstants.DEFAULT_FIELD_DELIMITER;
+                logger.warning("No field delimiter specified, using default : '" + fieldsDelimiter + "'");
             }
 
             String trimWhitespacesProperty = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_TRIM);
@@ -271,9 +270,9 @@ public final class BatchConfiguration {
             }
 
             logger.config("Record size specified : " + recordSize);
-            logger.config("Fields separator specified : '" + fieldsSeparator + "'");
+            logger.config("Fields delimiter specified : '" + fieldsDelimiter + "'");
             logger.config("Data qualifier character specified : '" + dataQualifierCharacter + "'");
-            recordParser = new RecordParserImpl(recordSize, fieldsSeparator, trimWhitespaces, dataQualifierCharacter);
+            recordParser = new RecordParserImpl(recordSize, fieldsDelimiter, trimWhitespaces, dataQualifierCharacter);
 
         } catch (NumberFormatException e) {
             String error = "Record size property is not recognized as a number : " + recordSizeProperty;

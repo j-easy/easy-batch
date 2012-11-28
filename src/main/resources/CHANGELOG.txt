@@ -2,6 +2,17 @@ CB4J FRAMEWORK CHANGELOG
 ========================
 https://github.com/benas/cb4j
 
+Changes in version 1.0.2 (2012-12-01)
+-------------------------------------
+
+* Added support for loading configuration parameters file from the classpath
+* Added support for loading parameters from XML properties file
+* Added test cases for record parsing with common CSV delimiters
+* Enhanced batch reporter performance by about 15% : use StringBuilder instead of String concatenation
+* Record parser and validator now return null instead of empty string if no error occurs
+* Renamed parameter input.field.separator to input.field.delimiter
+* Updated Java Reflection API performance showcase to execute introspection code only once
+* Updated documentation and Javadoc
 
 Changes in version 1.0.1 (2012-11-01)
 -------------------------------------

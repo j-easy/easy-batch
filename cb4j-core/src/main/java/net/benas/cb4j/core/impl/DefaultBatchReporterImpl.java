@@ -117,8 +117,13 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      */
     public void rejectRecord(final Record record, final String error) {
         rejectedRecordsNumber++;
-
-        rejectedRecordsReporter.info("Record #" + record.getNumber() + " [" + record.getContentAsString() + "] is rejected, Error : " + error);
+        StringBuilder stringBuilder = new StringBuilder();
+        rejectedRecordsReporter.info(stringBuilder.append("Record #")
+                .append(record.getNumber())
+                .append(" [")
+                .append(record.getContentAsString())
+                .append("] is rejected, Error : ")
+                .append(error).toString());
     }
 
     /**
@@ -126,8 +131,13 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      */
     public void ignoreRecord(final String record, final long recordNumber, final String error) {
         ignoredRecordsNumber++;
-
-        ignoredRecordsReporter.info("Record #" + recordNumber + " [" + record + "] is ignored, Error : " + error);
+        StringBuilder stringBuilder = new StringBuilder();
+        ignoredRecordsReporter.info(stringBuilder.append("Record #")
+                .append(recordNumber)
+                .append(" [")
+                .append(record)
+                .append("] is ignored, Error : ")
+                .append(error).toString());
     }
 
     /**

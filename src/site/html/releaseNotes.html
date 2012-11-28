@@ -12,6 +12,7 @@
         body {
             padding-top: 60px;
             padding-bottom: 40px;
+            background-image: url('resources/img/background.png');
         }
         .sidebar-nav {
             padding: 9px 0;
@@ -32,7 +33,7 @@
         <div class="container">
             <a class="brand" href="./index.html">CB4J</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 1.0.1</p>
+                <p class="navbar-text pull-right">Version: 1.0.2</p>
                 <ul class="nav">
                     <li class="active"><a href="./index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -88,9 +89,14 @@
 
             <div class="row-fluid">
 
+                <h2>Version 1.0.2 (2012-12-01)</h2>
+
+                <p>This is the second maintenance release in the 1.0.x branch. This release adds some minor changes to support loading configuration parameters file from the classpath.
+                    It also fixes a performance issue due to String concatenation. For all details about changes in this release, please refer to the <a href="https://github.com/benas/cb4j/blob/master/src/main/resources/CHANGELOG.txt">change log</a>.</p>
+
                 <h2>Version 1.0.1 (2012-11-01)</h2>
 
-                <p>This is the first CB4J maintenance release in the 1.0.x branch. The release includes multiple performance optimizations, bugfixes and documentation updates.
+                <p>This is the first maintenance release in the 1.0.x branch. The release includes multiple performance optimizations, bugfixes and documentation updates.
                    The full list of changes may be found in <a href="https://github.com/benas/cb4j/blob/master/src/main/resources/CHANGELOG.txt">change log</a>.</p>
 
                 <h2>Version 1.0.0 (2012-10-14)</h2>
@@ -105,22 +111,33 @@
                 <h2>Roadmap</h2>
                 <p>Many features are currently under development and will be available in next CB4J versions:</p>
                 <ul>
-                    <li>version 1.1 :
+                    <li><h5>version 1.1:</h5>
                         <ol>
-                            <li>Add configuration parameters to support data qualifier character and whitespaces trimming</li>
-                            <li>Add JMX MBeans to support monitoring of batch execution</li>
+                            <li>Add configuration parameter to support data qualifier character</li>
+                            <li>Add configuration parameter to support whitespaces trimming</li>
+                            <li>Add configuration parameter to support execution abort on first reject</li>
+                            <li>Add JMX monitoring support</li>
+                            <li>Add a log file for records processed with error</li>
                         </ol>
                     </li>
-                    <li>version 1.2 :
+                    <li><h5>version 1.2 :</h5>
+                        <ol>
+                            <li>Add Fixed-Length Record parsing support</li>
+                            <li>Add annotation-based configuration support</li>
+                            <li>Add xml-based configuration support</li>
+                        </ol>
+                    </li>
+                    <li><h5>version 1.3 :</h5>
                         <ol>
                             <li>Add CB4J-Spring integration module</li>
                             <li>Add statistics module to report processing time for each record</li>
+                            <li>Add transaction support</li>
                         </ol>
                     </li>
-                    <li>version 2.0 :
+                    <li><h5>version 2.0 :</h5>
                         <ol>
                             <li>Add GUI module that will enable graphical configuration, execution and monitoring of CB4J</li>
-                            <li>Add parallelizer module to split input file into multiple partitions, run parallel CB4J instances and then merge results</li>
+                            <li>Add parallelism support to split input file into multiple partitions, run parallel CB4J instances and then merge results</li>
                         </ol>
                     </li>
                 </ul>
@@ -135,8 +152,7 @@
 
     <footer>
         <p class="pull-right"><a href="#"><i class="icon-circle-arrow-up"></i> Back to top</a></p>
-        <p>CB4J : CSV Batch processing with Java made easy!</p>
-        <p>Maintained by <a href="mailto:md.benhassine@gmail.com?subject=[CB4J]"><i class="icon-envelope"></i> benas</a> at <a href="https://github.com/benas/cb4j"><i class="icon-github"></i> Github</a></p>
+        <p>CB4J is maintained by <a href="mailto:md.benhassine@gmail.com?subject=[CB4J]"><i class="icon-envelope"></i> benas</a> at <a href="https://github.com/benas/cb4j"><i class="icon-github"></i> Github</a></p>
     </footer>
 
 </div>
