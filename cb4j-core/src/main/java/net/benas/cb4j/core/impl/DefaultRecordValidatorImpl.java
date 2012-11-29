@@ -42,8 +42,9 @@ import java.util.Map;
 public class DefaultRecordValidatorImpl implements RecordValidator {
 
     /**
-     * The field validators to use in the process of validation a record.
-     * The map key is the field index. The map value is the list of validators to apply for this field.
+     * Field validators used to validate a record.<br/>
+     * The map key is the field index.<br/>
+     * The map value is the list of validators to apply for this field. Validation order is the insertion order of validators in the list. If validators list is empty, all fields are supposed to be valid
      *
      */
     private Map<Integer, List<FieldValidator>> fieldValidators;
@@ -53,7 +54,7 @@ public class DefaultRecordValidatorImpl implements RecordValidator {
     }
 
     /**
-     * Validate a record. Validation order is the insertion order of validators in the list. if the validators list is empty, all fields are supposed to be valid
+     * Validate a record.
      * @param record the record to validate
      * @return validation error if any or null if the record is valid
      *
