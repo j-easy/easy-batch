@@ -121,7 +121,7 @@
 
             <ul>
                 <li>With a <code class="prettyprint">java.util.Properties</code> object instance</li>
-                <li>With a standard java (key,value or xml) properties file</li>
+                <li>With a standard Java (key,value or xml) properties file</li>
             </ul>
 
             <p>Configuration parameters are defined in the following table :</p>
@@ -275,9 +275,9 @@ batchConfiguration.registerFieldValidators(1,field1Validators);
                 <span class="label label-info">Info</span> : When using multiple validators, the validation order applied by CB4J is the insertion order of validators in the list.
             </div>
 
-            <h3 id="2.3">2.3 Mapping CSV records to java objects</h3>
+            <h3 id="2.3">2.3 Mapping CSV records to Java objects</h3>
 
-            <p>To map a CSV record to a domain java object, you have to implement the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface and register your implementation at configuration time as follows :</p>
+            <p>To map a CSV record to a domain Java object, you have to implement the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface and register your implementation at configuration time as follows :</p>
             <p><code class="prettyprint">batchConfiguration.registerRecordMapper(new MyRecordMapper());</code></p>
             
             <p>The <a href="../tutorials/customers.html">customers ETL tutorial</a> shows an example of record mapper implementation.</p>
@@ -461,7 +461,7 @@ batchConfiguration.registerRecordValidator(myCustomRecordValidator);
             <p>As you can see, CB4J reports to the console the batch start time, end time , overall execution duration and other metrics about input records.
                 This simple report may not correspond to your requirement. Hence, CB4J lets you extend or override it as you need.</p>
 
-            <p>In this section ,we will show how to override the default report with a chart report using the java free charting library <a href="http://www.jfree.org/jfreechart/">jfreechart</a>.
+            <p>In this section ,we will show how to override the default report with a chart report using the Java free charting library <a href="http://www.jfree.org/jfreechart/">jfreechart</a>.
                 To override the default reporter behavior, we have to extend the <code class="prettyprint">DefaultBatchReporter</code> class and override the <code class="prettyprint">generateReport</code> method. The following listing shows a custom implementation that generates a simple Pie Chart instead of reporting information to the console.</p>
 
 <pre class="prettyprint">
