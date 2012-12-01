@@ -127,7 +127,7 @@
                 <ul>
                     <li>Record Parser : parses a record and splits it into a list of fields</li>
                     <li>Record Validator : applies declared validation rules for each record</li>
-                    <li>Record Mapper : maps a record to a java object</li>
+                    <li>Record Mapper : maps a record to a Java object</li>
                     <li>Record Processor : applies business processing logic for each record</li>
                 </ul>
 
@@ -229,11 +229,11 @@
                 <ol>
                     <li>The engine reads the input CSV file line by line until the end of file. If the end of file is reached, the engine generates the batch report and terminates the execution</li>
                     <li>The next record is read as a string containing raw data</li>
-                    <li>The record parser checks the record for well-formedness : If the record is not well formed (actual size not equal to expected size), then the record is ignored and the engine moves to the next one. If the record is well formed, then it is passed to the next step to be parsed</li>
+                    <li>The record parser checks the record for well-formedness : If the record is not well formed, then it is ignored and the engine moves to the next one. If the record is well formed, then it is passed to the next step to be parsed</li>
                     <li>The record parser parses the current record to split it into fields ordered by index and containing raw data</li>
-                    <li>The record validator applies validation rules for each field. If a validation rule is violated for one field, then the record is rejected. If all fields are valid, then the parsed record is passed to the next step to be mapped to a java object</li>
-                    <li>At this point, the record mapper is supplied with a parsed record containing raw data that have passed the declared validation rules. The parsed record is mapped to the declared java object type. CB4J considers mapping exception as errors that should not pass the processing step. Hence, the engine rejects records that cannot be mapped to objects with typed fields. This is a design choice to minimize unexpected errors during record processing. <p><span class="label label-info">NB</span> : In a well designed batch, the record mapper should not have any problem in converting string values to typed values if all data is validated correctly at validation step.</p> </li>
-                    <li>Finally, the business logic is executed by the record processor. At this point, the record processor is supplied with a java object populated with validated and typed data.</li>
+                    <li>The record validator applies validation rules for each field. If a validation rule is violated for one field, then the record is rejected. If all fields are valid, then the parsed record is passed to the next step to be mapped to a Java object</li>
+                    <li>At this point, the record mapper is supplied with a parsed record containing raw data that have passed the declared validation rules. The parsed record is mapped to the declared Java object type. CB4J considers mapping exception as errors that should not pass the processing step. Hence, the engine rejects records that cannot be mapped to objects with typed fields. This is a design choice to minimize unexpected errors during record processing. <p><span class="label label-info">NB</span> : In a well designed batch, the record mapper should not have any problem in converting string values to typed values if all data is validated correctly at validation step.</p> </li>
+                    <li>Finally, the business logic is executed by the record processor. At this point, the record processor is supplied with a Java object populated with validated and typed data.</li>
                 </ol>
 
             </div>

@@ -135,13 +135,13 @@ public class BatchConfigurationUtil {
     }
 
     /**
-     * Utility method to print classpath entries
+     * Utility method to print classpath entries.
      * @param classLoader the class loader to dump
      * @return a string representation of classpath entries
      */
     private static String printClasspath(final ClassLoader classLoader) {
         StringBuilder classpath = new StringBuilder();
-        URL[] urls = ((URLClassLoader)classLoader).getURLs();
+        URL[] urls = ((URLClassLoader) classLoader).getURLs();
         for (URL url : urls) {
             classpath.append(url.getFile()).append(":");
         }

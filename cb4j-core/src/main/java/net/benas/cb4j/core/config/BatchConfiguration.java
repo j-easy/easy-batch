@@ -198,7 +198,7 @@ public class BatchConfiguration {
         ReportFormatter reportFormatter = new ReportFormatter();
 
         String outputIgnored = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_IGNORED);
-        if (outputIgnored == null || (outputIgnored != null && outputIgnored.length() == 0)) {
+        if (outputIgnored == null || (outputIgnored.length() == 0)) {
             outputIgnored = BatchConfigurationUtil.removeExtension(inputDataProperty) + BatchConstants.DEFAULT_IGNORED_SUFFIX;
             logger.warning("No log file specified for ignored records, using default : " + outputIgnored);
         }
@@ -214,7 +214,7 @@ public class BatchConfiguration {
         }
 
         String outputRejected = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_REJECTED);
-        if (outputRejected == null || (outputRejected != null && outputRejected.length() == 0)) {
+        if (outputRejected == null || (outputRejected.length() == 0)) {
             outputRejected = BatchConfigurationUtil.removeExtension(inputDataProperty) + BatchConstants.DEFAULT_REJECTED_SUFFIX;
             logger.warning("No log file specified for rejected records, using default : " + outputRejected);
         }
