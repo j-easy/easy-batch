@@ -113,8 +113,8 @@ public class DefaultBatchReporterImpl implements BatchReporter {
         logger.info("Total input records = " + totalInputRecordsNumber);
         logger.info("Total ignored records = " + ignoredRecordsNumber);
         logger.info("Total rejected records = " + rejectedRecordsNumber);
-        logger.info("Total processed records = " + processedRecordsNumber);
-        logger.info("Total error records = " + errorRecordsNumber);
+        logger.info("Total records processed successfully = " + (processedRecordsNumber - errorRecordsNumber - ignoredRecordsNumber - rejectedRecordsNumber));
+        logger.info("Total records processed with error = " + errorRecordsNumber);
     }
 
     /**
