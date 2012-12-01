@@ -98,10 +98,6 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     protected BatchStatus batchStatus;
 
     public DefaultBatchReporterImpl() {
-        rejectedRecordsNumber = 0;
-        ignoredRecordsNumber = 0;
-        InputRecordsNumber = 0;
-        errorRecordsNumber = 0;
         ignoredRecordsReporter.setUseParentHandlers(false);
         rejectedRecordsReporter.setUseParentHandlers(false);
     }
