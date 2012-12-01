@@ -100,6 +100,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     public DefaultBatchReporterImpl() {
         ignoredRecordsReporter.setUseParentHandlers(false);
         rejectedRecordsReporter.setUseParentHandlers(false);
+        errorRecordsReporter.setUseParentHandlers(false);
     }
 
     /**
