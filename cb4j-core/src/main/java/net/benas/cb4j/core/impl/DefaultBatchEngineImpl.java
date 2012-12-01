@@ -130,14 +130,29 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                 continue;
             }
 
-            //process record
+            //pre process record
             try {
                 recordProcessor.preProcessRecord(typedRecord);
+            } catch (Exception e) {
+                batchReporter.reportErrorRecord(currentParsedRecord, "an exception  occurred during record pre-processing, root cause = " + e.getMessage());
+                continue;
+            }
+
+            //process record
+            try {
                 recordProcessor.processRecord(typedRecord);
+            } catch (Exception e) {
+                batchReporter.reportErrorRecord(currentParsedRecord, "an exception  occurred during record processing, root cause = " + e.getMessage());
+                continue;
+            }
+
+            //post process record
+            try {
                 recordProcessor.postProcessRecord(typedRecord);
             } catch (Exception e) {
-                logger.severe("Record No " + currentRecordNumber + " processing exception, root cause = " + e.getMessage());
+                batchReporter.reportErrorRecord(currentParsedRecord, "an exception  occurred during record post-processing, root cause = " + e.getMessage());
             }
+
         }
 
         //close record reader

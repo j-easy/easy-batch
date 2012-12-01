@@ -74,6 +74,20 @@ public class BatchMonitor implements BatchMonitorMBean {
     /**
      * {@inheritDoc}
      */
+    public long getErrorRecordsNumber() {
+        return batchReporter.getErrorRecordsNumber();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public long getProcessedRecordsNumber() {
+        return batchReporter.getProcessedRecordsNumber();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getStartTime() {
         return new Date(batchReporter.getStartTime()).toString();
     }

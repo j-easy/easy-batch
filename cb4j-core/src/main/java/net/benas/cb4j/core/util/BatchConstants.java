@@ -52,13 +52,18 @@ public class BatchConstants {
 
     public static final String OUTPUT_DATA_REJECTED = "output.data.rejected";
 
+    public static final String OUTPUT_DATA_ERRORS = "output.data.errors";
+
     public static final String OUTPUT_DATA_ABORT_ON_FIRST_REJECT = "output.data.abortOnFirstReject";
+
     /*
      * Default values for optional parameters
      */
     public static final String DEFAULT_REJECTED_SUFFIX = "-rejected.log";
 
     public static final String DEFAULT_IGNORED_SUFFIX = "-ignored.log";
+
+    public static final String DEFAULT_ERRORS_SUFFIX = "-errors.log";
 
     public static final String DEFAULT_FIELD_DELIMITER = ",";
 
@@ -79,4 +84,5 @@ public class BatchConstants {
 
     public static final String LOGGER_CB4J_REJECTED = "cb4j-rejected";
 
+    public static final String LOGGER_CB4J_ERRORS = "cb4j-errors";
 }

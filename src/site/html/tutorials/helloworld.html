@@ -216,11 +216,14 @@ batchRunner.run();
                 <p>If everything is ok, you should see the something like the following output in the console :</p>
 
 <pre>
-[CB4J : INFO] Configuration started at : Mon Sep 03 22:29:07 CEST 2012
+[CB4J : INFO] Configuration started at : Sat Dec 01 21:21:17 CET 2012
 [CB4J : WARNING] No encoding specified for input data, using system default encoding : UTF-8
 [CB4J : WARNING] No field delimiter specified, using default : ','
+[CB4J : WARNING] Trim whitespaces property not specified, default to true
 [CB4J : WARNING] No log file specified for ignored records, using default : /data/cb4j/cb4j-tutorials/src/main/resources/persons-ignored.log
 [CB4J : WARNING] No log file specified for rejected records, using default : /data/cb4j/cb4j-tutorials/src/main/resources/persons-rejected.log
+[CB4J : WARNING] No log file specified for error records, using default : /home/benas/dev/github/cb4j/cb4j-tutorials/src/main/resources/persons-errors.log
+[CB4J : INFO] CB4J JMX MBean registered successfully as: net.benas.cb4j.jmx:type=BatchMonitorMBean
 [CB4J : INFO] Configuration successful
 [CB4J : INFO] Configuration parameters details : {input.data.skipHeader=true, input.record.size=2, input.data.path=/data/cb4j/cb4j-tutorials/src/main/resources/persons.csv}
 [CB4J : INFO] Initializing batch
@@ -228,13 +231,14 @@ batchRunner.run();
 Hi Tommy! Your sequence number is 1
 [CB4J : INFO] finalizing batch
 [CB4J : INFO] CB4J report :
-[CB4J : INFO] Start time = Mon Sep 03 22:29:07 CEST 2012
-[CB4J : INFO] End time = Mon Sep 03 22:29:07 CEST 2012
+[CB4J : INFO] Start time = Sat Dec 01 21:21:17 CET 2012
+[CB4J : INFO] End time = Sat Dec 01 21:21:17 CET 2012
 [CB4J : INFO] Batch duration = 2ms
 [CB4J : INFO] Total input records = 3
 [CB4J : INFO] Total ignored records = 1
 [CB4J : INFO] Total rejected records = 1
 [CB4J : INFO] Total processed records = 1
+[CB4J : INFO] Total error records = 0
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------

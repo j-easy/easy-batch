@@ -50,6 +50,8 @@ public class DefaultBatchReporterImpl implements BatchReporter {
 
     protected final Logger rejectedRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_REJECTED);
 
+    protected final Logger errorRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_ERRORS);
+
     /**
      * Total input records number.
      */
@@ -76,6 +78,11 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     protected long processedRecordsNumber;
 
     /**
+     * Error records number.
+     */
+    protected long errorRecordsNumber;
+
+    /**
      * Batch execution start time.
      */
     protected long startTime;
@@ -94,6 +101,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
         rejectedRecordsNumber = 0;
         ignoredRecordsNumber = 0;
         InputRecordsNumber = 0;
+        errorRecordsNumber = 0;
         ignoredRecordsReporter.setUseParentHandlers(false);
         rejectedRecordsReporter.setUseParentHandlers(false);
     }
@@ -110,6 +118,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
         logger.info("Total ignored records = " + ignoredRecordsNumber);
         logger.info("Total rejected records = " + rejectedRecordsNumber);
         logger.info("Total processed records = " + processedRecordsNumber);
+        logger.info("Total error records = " + errorRecordsNumber);
     }
 
     /**
@@ -137,6 +146,20 @@ public class DefaultBatchReporterImpl implements BatchReporter {
                 .append(" [")
                 .append(record)
                 .append("] is ignored, Error : ")
+                .append(error).toString());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void reportErrorRecord(Record record, String error) {
+        errorRecordsNumber++;
+        StringBuilder stringBuilder = new StringBuilder();
+        errorRecordsReporter.info(stringBuilder.append("Record #")
+                .append(record.getNumber())
+                .append(" [")
+                .append(record.getContentAsString())
+                .append("] processed with error, ")
                 .append(error).toString());
     }
 
@@ -196,6 +219,10 @@ public class DefaultBatchReporterImpl implements BatchReporter {
 
     public long getProcessedRecordsNumber() {
         return processedRecordsNumber;
+    }
+
+    public long getErrorRecordsNumber() {
+        return errorRecordsNumber;
     }
 
     public long getStartTime() {

@@ -141,9 +141,9 @@ public class BatchConfiguration {
         configureRecordParser();
 
         /*
-         * Configure loggers for ignored/rejected records
+         * Configure loggers for ignored/rejected/error records
          */
-        configureIgnoredAndRejectedRecordsLoggers();
+        configureRecordsLoggers();
 
         /*
          * Configure batch reporter : if no custom reporter registered, use default implementation
@@ -188,15 +188,16 @@ public class BatchConfiguration {
     }
 
     /**
-     * Configure loggers for ignored/rejected records.
-     * @throws BatchConfigurationException thrown if loggers for ignored/rejected records are not correctly configured
+     * Configure loggers for ignored/rejected/errors records.
+     * @throws BatchConfigurationException thrown if loggers for ignored/rejected/errors records are not correctly configured
      */
-    private void configureIgnoredAndRejectedRecordsLoggers() throws BatchConfigurationException {
+    private void configureRecordsLoggers() throws BatchConfigurationException {
 
         String inputDataProperty = configurationProperties.getProperty(BatchConstants.INPUT_DATA_PATH);
 
         ReportFormatter reportFormatter = new ReportFormatter();
 
+        //ignored records logger
         String outputIgnored = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_IGNORED);
         if (outputIgnored == null || (outputIgnored.length() == 0)) {
             outputIgnored = BatchConfigurationUtil.removeExtension(inputDataProperty) + BatchConstants.DEFAULT_IGNORED_SUFFIX;
@@ -213,6 +214,7 @@ public class BatchConfiguration {
             throw new BatchConfigurationException(error);
         }
 
+        //rejected errors logger
         String outputRejected = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_REJECTED);
         if (outputRejected == null || (outputRejected.length() == 0)) {
             outputRejected = BatchConfigurationUtil.removeExtension(inputDataProperty) + BatchConstants.DEFAULT_REJECTED_SUFFIX;
@@ -228,6 +230,24 @@ public class BatchConfiguration {
             logger.severe(error);
             throw new BatchConfigurationException(error);
         }
+
+        //errors record logger
+        String outputErrors = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_ERRORS);
+        if (outputErrors == null || (outputErrors.length() == 0)) {
+            outputErrors = BatchConfigurationUtil.removeExtension(inputDataProperty) + BatchConstants.DEFAULT_ERRORS_SUFFIX;
+            logger.warning("No log file specified for error records, using default : " + outputErrors);
+        }
+        try {
+            FileHandler errorRecordsHandler = new FileHandler(outputErrors);
+            errorRecordsHandler.setFormatter(reportFormatter);
+            Logger errorRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_ERRORS);
+            errorRecordsReporter.addHandler(errorRecordsHandler);
+        } catch (IOException e) {
+            String error = "Unable to use file for error records : " + outputErrors;
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+
     }
 
     /**

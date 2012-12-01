@@ -28,7 +28,7 @@ import net.benas.cb4j.core.model.Record;
 import net.benas.cb4j.core.util.BatchStatus;
 
 /**
- * Utility service used to ignore/reject records and generate batch report.
+ * Utility service used to report ignored/rejected/error records and generate batch report.
  *
  * @author benas (md.benhassine@gmail.com)
  */
@@ -48,6 +48,13 @@ public interface BatchReporter {
      * @param error the error that causes the record to be ignored
      */
     void ignoreRecord(String record, long recordNumber, String error);
+
+    /**
+     * report processing error.
+     * @param record the record processed with error
+     * @param error the cause error
+     */
+    void reportErrorRecord(Record record, String error);
 
     /**
      * generate a batch execution report.
@@ -119,6 +126,12 @@ public interface BatchReporter {
      * @return processed records number
      */
     public long getProcessedRecordsNumber();
+
+    /**
+     * get error records number.
+     * @return error records number
+     */
+    public long getErrorRecordsNumber();
 
     /**
      * get the batch execution start time.

@@ -55,6 +55,18 @@ public interface BatchMonitorMBean {
     long getRejectedRecordsNumber();
 
     /**
+     * Get error records number.
+     * @return error records number
+     */
+    public long getErrorRecordsNumber();
+
+    /**
+     * Get processed records number.
+     * @return processed records number
+     */
+    public long getProcessedRecordsNumber();
+
+    /**
      * Get batch execution start time.
      * @return batch execution start time
      */

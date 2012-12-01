@@ -122,7 +122,7 @@
 
             <ul>
                 <li>With a <code class="prettyprint">java.util.Properties</code> object instance</li>
-                <li>With a standard Java (key,value or xml) properties file</li>
+                <li>With a standard Java (key,value pairs or xml) properties file</li>
             </ul>
 
             <p>Configuration parameters are defined in the following table :</p>
@@ -190,6 +190,12 @@
                     <td>Absolute path to the log file of rejected records</td>
                     <td>false</td>
                     <td>${input.data.path}-rejected.log. The extension of the input data file (if any) will be removed</td>
+                </tr>
+                <tr>
+                    <td>output.data.errors</td>
+                    <td>Absolute path to the log file of error records</td>
+                    <td>false</td>
+                    <td>${input.data.path}-errors.log. The extension of the input data file (if any) will be removed</td>
                 </tr>
                 <tr>
                     <td>output.data.abortOnFirstReject</td>
