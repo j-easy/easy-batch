@@ -134,7 +134,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             try {
                 recordProcessor.preProcessRecord(typedRecord);
             } catch (Exception e) {
-                batchReporter.reportErrorRecord(currentParsedRecord, "an exception  occurred during record pre-processing, root cause = " + e.getMessage());
+                batchReporter.reportErrorRecord(currentParsedRecord, "an exception occurred during record pre-processing, root cause = " + e.getMessage());
                 continue;
             }
 
@@ -142,7 +142,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             try {
                 recordProcessor.processRecord(typedRecord);
             } catch (Exception e) {
-                batchReporter.reportErrorRecord(currentParsedRecord, "an exception  occurred during record processing, root cause = " + e.getMessage());
+                batchReporter.reportErrorRecord(currentParsedRecord, "an exception occurred during record processing, root cause = " + e.getMessage());
                 continue;
             }
 
@@ -150,7 +150,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             try {
                 recordProcessor.postProcessRecord(typedRecord);
             } catch (Exception e) {
-                batchReporter.reportErrorRecord(currentParsedRecord, "an exception  occurred during record post-processing, root cause = " + e.getMessage());
+                batchReporter.reportErrorRecord(currentParsedRecord, "an exception occurred during record post-processing, root cause = " + e.getMessage());
             }
 
         }
