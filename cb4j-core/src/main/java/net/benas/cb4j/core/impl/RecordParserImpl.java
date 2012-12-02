@@ -109,8 +109,9 @@ public final class RecordParserImpl implements RecordParser {
             if (trimWhitespaces) {
                 token = token.trim();
             }
-            if (qualifier.length() > 0) {
-                token = token.substring(qualifier.length(), token.length() - qualifier.length());
+            final int qualifierLength = qualifier.length();
+            if (qualifierLength > 0) {
+                token = token.substring(qualifierLength, token.length() - qualifierLength);
             }
             Field field = new Field(i++, token);
             record.getFields().add(field);
