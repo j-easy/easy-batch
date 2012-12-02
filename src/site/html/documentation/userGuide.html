@@ -360,6 +360,7 @@ public interface BatchEngine extends Runnable {
             By default, the <code class="prettyprint">DefaultBatchEngineImpl</code> logs a message to the console to signal batch starting and ending steps.<br/>
             To override this default behavior, you have to extend the <code class="prettyprint">DefaultBatchEngineImpl</code> and override <code class="prettyprint">init()</code> and/or <code class="prettyprint">shutdown()</code> methods to provide a custom initializing and/or shutdown code. For instance, this is where you can open/close a database connection.<br/>
             The <a href="../tutorials/products.html">products statistics tutorial</a> shows an example of how to override the the <code class="prettyprint">DefaultBatchEngineImpl</code>.
+            <p><span class="label label-warning">Warning</span> : When you override init() and shutdown() methods, consider calling the super methods because CB4J sets JMX attributes in these methods such as batch status and record statistics. Not calling super methods may introduce incorrect statistics reported by CB4J's JMX MBean.</p>
             <h3 id="3.2">3.2 Writing a custom field validator</h3>
 
             <p>CB4J comes with basic field validators for common requirements such as not empty field, numeric values, etc.
