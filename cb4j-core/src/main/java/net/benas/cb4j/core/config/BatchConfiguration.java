@@ -285,7 +285,7 @@ public class BatchConfiguration {
 
             String dataQualifierCharacterProperty = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_QUALIFIER_CHAR);
             String dataQualifierCharacter = BatchConstants.DEFAULT_FIELD_QUALIFIER_CHAR;
-            if ( dataQualifierCharacterProperty != null && dataQualifierCharacterProperty.length() > 0) {
+            if (dataQualifierCharacterProperty != null && dataQualifierCharacterProperty.length() > 0) {
                 dataQualifierCharacter = dataQualifierCharacterProperty;
             }
 
@@ -353,7 +353,7 @@ public class BatchConfiguration {
     /*
     * Configure JMX MBean
     */
-    private void configureJmxMBean(){
+    private void configureJmxMBean() {
 
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
@@ -464,7 +464,7 @@ public class BatchConfiguration {
         return recordMapper;
     }
 
-    public boolean getAbortOnFirstReject(){
+    public boolean getAbortOnFirstReject() {
         return Boolean.valueOf(configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_REJECT));
     }
 

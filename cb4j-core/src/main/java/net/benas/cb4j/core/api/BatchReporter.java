@@ -71,13 +71,13 @@ public interface BatchReporter {
      * Set input records number.
      * @param inputRecordsNumber input records number
      */
-    public void setInputRecordsNumber(long inputRecordsNumber);
+    void setInputRecordsNumber(long inputRecordsNumber);
 
     /**
      * Set processed records number.
      * @param processedRecordsNumber processed records number
      */
-    public void setProcessedRecordsNumber(long processedRecordsNumber);
+    void setProcessedRecordsNumber(long processedRecordsNumber);
 
     /**
      * set the batch execution start time.
@@ -101,54 +101,54 @@ public interface BatchReporter {
      * set total input records number.
      * @return total input records number
      */
-    public long getTotalInputRecordsNumber();
+    long getTotalInputRecordsNumber();
 
     /**
      * get input records number.
      * @return input records number
      */
-    public long getInputRecordsNumber();
+    long getInputRecordsNumber();
 
     /**
      * get rejected records number.
      * @return rejected records number
      */
-    public long getRejectedRecordsNumber();
+    long getRejectedRecordsNumber();
 
     /**
      * get ignored records number.
      * @return ignored records number
      */
-    public long getIgnoredRecordsNumber();
+    long getIgnoredRecordsNumber();
 
     /**
      * get processed records number.
      * @return processed records number
      */
-    public long getProcessedRecordsNumber();
+    long getProcessedRecordsNumber();
 
     /**
      * get error records number.
      * @return error records number
      */
-    public long getErrorRecordsNumber();
+    long getErrorRecordsNumber();
 
     /**
      * get the batch execution start time.
      * @return batch execution start time.
      */
-    public long getStartTime();
+    long getStartTime();
 
     /**
      * get the batch execution end time.
      * @return batch execution end time.
      */
-    public long getEndTime();
+    long getEndTime();
 
     /**
      * get the batch execution status.
      * @return batch execution status
      */
-    public BatchStatus getBatchStatus();
+    BatchStatus getBatchStatus();
 
 }

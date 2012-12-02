@@ -52,7 +52,7 @@ public final class RecordParserImpl implements RecordParser {
     private boolean trimWhitespaces;
 
     /**
-     * Character(s) enclosing raw data in fields
+     * Character(s) enclosing raw data in fields.
      */
     private String qualifier;
 
@@ -81,7 +81,7 @@ public final class RecordParserImpl implements RecordParser {
 
         if (qualifier.length() > 0) {
             for (String token : tokens) {
-                if ( !token.startsWith(qualifier) || !token.endsWith(qualifier)) {
+                if (!token.startsWith(qualifier) || !token.endsWith(qualifier)) {
                     return "field [" + token + "] is not enclosed as expected with '" + qualifier + "'";
                 }
             }

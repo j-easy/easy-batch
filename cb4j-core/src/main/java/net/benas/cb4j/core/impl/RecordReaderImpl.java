@@ -83,7 +83,7 @@ public final class RecordReaderImpl implements RecordReader {
      * {@inheritDoc}
      */
     public long getTotalRecordsNumber() {
-        long totalRecordsNumber = 0 ;
+        long totalRecordsNumber = 0;
         while (recordCounterScanner.hasNextLine()) {
             totalRecordsNumber++;
             recordCounterScanner.nextLine();

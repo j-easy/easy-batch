@@ -58,13 +58,13 @@ public interface BatchMonitorMBean {
      * Get error records number.
      * @return error records number
      */
-    public long getErrorRecordsNumber();
+    long getErrorRecordsNumber();
 
     /**
      * Get processed records number.
      * @return processed records number
      */
-    public long getProcessedRecordsNumber();
+    long getProcessedRecordsNumber();
 
     /**
      * Get batch execution start time.

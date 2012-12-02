@@ -114,7 +114,7 @@ public class BatchMonitor implements BatchMonitorMBean {
         long inputRecordsNumber = getInputRecordsNumber();
         long totalInputRecordsNumber = getTotalInputRecordsNumber();
         String ratio = inputRecordsNumber + "/" + totalInputRecordsNumber;
-        String percent = " (" + ( (int) (( (float) inputRecordsNumber / (float) totalInputRecordsNumber ) * 100) ) + "%)";
+        String percent = " (" + ((int) (((float) inputRecordsNumber / (float) totalInputRecordsNumber) * 100)) + "%)";
         return ratio + percent;
     }
 }

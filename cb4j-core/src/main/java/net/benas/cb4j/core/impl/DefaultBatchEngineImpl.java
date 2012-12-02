@@ -111,7 +111,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             error = recordValidator.validateRecord(currentParsedRecord);
             if (error != null) {
                 batchReporter.rejectRecord(currentParsedRecord, error);
-                if (abortOnFirstReject){
+                if (abortOnFirstReject) {
                     break;
                 } else {
                     continue;
