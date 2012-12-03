@@ -27,7 +27,7 @@ public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {
             final String content1 = record.getFieldContentByIndex(1);
             final String content2 = record.getFieldContentByIndex(2);
             if (!content2.startsWith(content1))
-                return "field 2 content [" + content2 + "] must start with field's 1 content [" + content1 + "]";
+                return "field 2 [" + content2 + "] must start with field 1 [" + content1 + "]";
         }
         return null;
     }

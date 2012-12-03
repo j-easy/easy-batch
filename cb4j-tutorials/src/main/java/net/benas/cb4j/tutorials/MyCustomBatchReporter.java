@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * A custom batch reporter which generate a graphic chart report
+ * A custom batch reporter that generates a graphic chart report
  * @author benas (md.benhassine@gmail.com)
  */
 public class MyCustomBatchReporter extends DefaultBatchReporterImpl {
