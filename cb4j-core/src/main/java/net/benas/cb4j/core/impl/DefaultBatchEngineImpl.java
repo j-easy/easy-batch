@@ -102,7 +102,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             String currentRecord = recordReader.readNextRecord();
             String error = recordParser.analyseRecord(currentRecord);
             if (error != null) {
-                batchReporter.ignoreRecord(currentRecord, currentRecordNumber, error);
+                batchReporter.reportIgnoredRecord(currentRecord, currentRecordNumber, error);
                 continue;
             }
 
@@ -110,7 +110,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             Record currentParsedRecord = recordParser.parseRecord(currentRecord, currentRecordNumber);
             error = recordValidator.validateRecord(currentParsedRecord);
             if (error != null) {
-                batchReporter.rejectRecord(currentParsedRecord, error);
+                batchReporter.reportRejectedRecord(currentParsedRecord, error);
                 if (abortOnFirstReject) {
                     break;
                 } else {
@@ -123,10 +123,10 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             try {
                 typedRecord = recordMapper.mapRecord(currentParsedRecord);
             } catch (RecordMappingException e) { //thrown by the user deliberately to reject the record
-                batchReporter.rejectRecord(currentParsedRecord, e.getMessage());
+                batchReporter.reportRejectedRecord(currentParsedRecord, e.getMessage());
                 continue;
             } catch (IndexOutOfBoundsException e) { // thrown unexpectedly if trying to get field content with an invalid index in the record
-                batchReporter.rejectRecord(currentParsedRecord, "Record mapping exception : " + e.getMessage());
+                batchReporter.reportRejectedRecord(currentParsedRecord, "Record mapping exception : " + e.getMessage());
                 continue;
             }
 

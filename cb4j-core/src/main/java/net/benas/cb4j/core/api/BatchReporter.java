@@ -35,22 +35,22 @@ import net.benas.cb4j.core.util.BatchStatus;
 public interface BatchReporter {
 
     /**
-     * reject a record.
+     * report a rejected record.
      * @param record the record to reject
      * @param error the error that causes the record to be rejected
      */
-    void rejectRecord(Record record, String error);
+    void reportRejectedRecord(Record record, String error);
 
     /**
-     * ignore a record.
+     * report an ignored record.
      * @param record the record to ignore
      * @param recordNumber the record number
      * @param error the error that causes the record to be ignored
      */
-    void ignoreRecord(String record, long recordNumber, String error);
+    void reportIgnoredRecord(String record, long recordNumber, String error);
 
     /**
-     * report processing error.
+     * report a record processed with error.
      * @param record the record processed with error
      * @param error the cause error
      */

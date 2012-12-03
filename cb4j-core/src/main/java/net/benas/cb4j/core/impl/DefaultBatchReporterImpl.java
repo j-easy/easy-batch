@@ -121,7 +121,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     /**
      * {@inheritDoc}
      */
-    public void rejectRecord(final Record record, final String error) {
+    public void reportRejectedRecord(final Record record, final String error) {
         rejectedRecordsNumber++;
         StringBuilder stringBuilder = new StringBuilder();
         rejectedRecordsReporter.info(stringBuilder.append("Record #")
@@ -135,7 +135,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     /**
      * {@inheritDoc}
      */
-    public void ignoreRecord(final String record, final long recordNumber, final String error) {
+    public void reportIgnoredRecord(final String record, final long recordNumber, final String error) {
         ignoredRecordsNumber++;
         StringBuilder stringBuilder = new StringBuilder();
         ignoredRecordsReporter.info(stringBuilder.append("Record #")
