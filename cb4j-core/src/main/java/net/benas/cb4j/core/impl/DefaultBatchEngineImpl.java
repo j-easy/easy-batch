@@ -125,8 +125,8 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             } catch (RecordMappingException e) { //thrown by the user deliberately to reject the record
                 batchReporter.reportRejectedRecord(currentParsedRecord, e.getMessage());
                 continue;
-            } catch (IndexOutOfBoundsException e) { // thrown unexpectedly if trying to get field content with an invalid index in the record
-                batchReporter.reportRejectedRecord(currentParsedRecord, "Record mapping exception : " + e.getMessage());
+            } catch (Exception e) { // thrown unexpectedly
+                batchReporter.reportRejectedRecord(currentParsedRecord, "an unexpected mapping exception occurred, root cause = " , e);
                 continue;
             }
 
@@ -134,7 +134,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             try {
                 recordProcessor.preProcessRecord(typedRecord);
             } catch (Exception e) {
-                batchReporter.reportErrorRecord(currentParsedRecord, "an exception occurred during record pre-processing, root cause = " + e.getMessage());
+                batchReporter.reportErrorRecord(currentParsedRecord, "an exception occurred during record pre-processing, root cause = ", e);
                 continue;
             }
 
@@ -142,7 +142,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             try {
                 recordProcessor.processRecord(typedRecord);
             } catch (Exception e) {
-                batchReporter.reportErrorRecord(currentParsedRecord, "an exception occurred during record processing, root cause = " + e.getMessage());
+                batchReporter.reportErrorRecord(currentParsedRecord, "an exception occurred during record processing, root cause = ", e);
                 continue;
             }
 
@@ -150,7 +150,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             try {
                 recordProcessor.postProcessRecord(typedRecord);
             } catch (Exception e) {
-                batchReporter.reportErrorRecord(currentParsedRecord, "an exception occurred during record post-processing, root cause = " + e.getMessage());
+                batchReporter.reportErrorRecord(currentParsedRecord, "an exception occurred during record post-processing, root cause = ", e);
             }
 
         }

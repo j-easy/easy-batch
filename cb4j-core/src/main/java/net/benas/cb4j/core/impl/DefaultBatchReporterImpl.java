@@ -29,6 +29,8 @@ import net.benas.cb4j.core.model.Record;
 import net.benas.cb4j.core.util.BatchConstants;
 import net.benas.cb4j.core.util.BatchStatus;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -123,13 +125,15 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      */
     public void reportRejectedRecord(final Record record, final String error) {
         rejectedRecordsNumber++;
-        StringBuilder stringBuilder = new StringBuilder();
-        rejectedRecordsReporter.info(stringBuilder.append("Record #")
-                .append(record.getNumber())
-                .append(" [")
-                .append(record.getContentAsString())
-                .append("] is rejected, Error : ")
-                .append(error).toString());
+        rejectedRecordsReporter.info(formatError(record, error, null, "is rejected, Error : "));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void reportRejectedRecord(final Record record, final String error, final Throwable throwable) {
+        rejectedRecordsNumber++;
+        rejectedRecordsReporter.info(formatError(record, error, throwable, "is rejected, Error : "));
     }
 
     /**
@@ -149,15 +153,9 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     /**
      * {@inheritDoc}
      */
-    public void reportErrorRecord(Record record, String error) {
+    public void reportErrorRecord(final Record record, final String error, final Throwable throwable) {
         errorRecordsNumber++;
-        StringBuilder stringBuilder = new StringBuilder();
-        errorRecordsReporter.info(stringBuilder.append("Record #")
-                .append(record.getNumber())
-                .append(" [")
-                .append(record.getContentAsString())
-                .append("] processed with error, ")
-                .append(error).toString());
+        errorRecordsReporter.info(formatError(record, error, throwable, "processed with error, "));
     }
 
     /**
@@ -202,39 +200,91 @@ public class DefaultBatchReporterImpl implements BatchReporter {
         this.batchStatus = batchStatus;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public long getTotalInputRecordsNumber() {
         return totalInputRecordsNumber;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public long getRejectedRecordsNumber() {
         return rejectedRecordsNumber;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public long getIgnoredRecordsNumber() {
         return ignoredRecordsNumber;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public long getProcessedRecordsNumber() {
         return processedRecordsNumber;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public long getErrorRecordsNumber() {
         return errorRecordsNumber;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public long getStartTime() {
         return startTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public long getEndTime() {
         return endTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public BatchStatus getBatchStatus() {
         return batchStatus;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public long getInputRecordsNumber() {
         return InputRecordsNumber;
+    }
+
+    /**
+     * utility method to format error message
+     * @param record the record in error
+     * @param error the error returned by the engine
+     * @param throwable the exception thrown
+     * @param message the message to print
+     * @return a formatted error message
+     */
+    private String formatError(final Record record, final String error, final Throwable throwable, final String message) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Record #")
+                .append(record.getNumber())
+                .append(" [")
+                .append(record.getContentAsString())
+                .append("] ")
+                .append(message)
+                .append(error);
+        if (throwable != null) {
+            StringWriter errors = new StringWriter();
+            throwable.printStackTrace(new PrintWriter(errors));
+            stringBuilder.append(errors.toString());
+        }
+        return stringBuilder.toString();
     }
 }

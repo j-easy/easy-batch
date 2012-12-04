@@ -42,6 +42,14 @@ public interface BatchReporter {
     void reportRejectedRecord(Record record, String error);
 
     /**
+     * report a rejected record.
+     * @param record the record to reject
+     * @param error the error message
+     * @param throwable the thrown exception that causes the record to be rejected
+     */
+    void reportRejectedRecord(Record record, String error, Throwable throwable);
+
+    /**
      * report an ignored record.
      * @param record the record to ignore
      * @param recordNumber the record number
@@ -53,8 +61,9 @@ public interface BatchReporter {
      * report a record processed with error.
      * @param record the record processed with error
      * @param error the cause error
+     * @param throwable the thrown exception that causes the record to be rejected
      */
-    void reportErrorRecord(Record record, String error);
+    void reportErrorRecord(Record record, String error, Throwable throwable);
 
     /**
      * generate a batch execution report.
