@@ -106,16 +106,22 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                 continue;
             }
 
-            //validate record
-            Record currentParsedRecord = recordParser.parseRecord(currentRecord, currentRecordNumber);
-            error = recordValidator.validateRecord(currentParsedRecord);
-            if (error != null) {
-                batchReporter.reportRejectedRecord(currentParsedRecord, error);
-                if (abortOnFirstReject) {
-                    break;
-                } else {
-                    continue;
+            Record currentParsedRecord = null;
+            try {
+                //validate record
+                currentParsedRecord = recordParser.parseRecord(currentRecord, currentRecordNumber);
+                error = recordValidator.validateRecord(currentParsedRecord);
+                if (error != null) {
+                    batchReporter.reportRejectedRecord(currentParsedRecord, error);
+                    if (abortOnFirstReject) {
+                        break;
+                    } else {
+                        continue;
+                    }
                 }
+            } catch (Exception e) {
+                batchReporter.reportRejectedRecord(currentParsedRecord, "an unexpected validation exception occurred, root cause = " , e);
+                continue;
             }
 
             //map record to expected type
