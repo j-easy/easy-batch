@@ -372,7 +372,7 @@ public interface BatchEngine extends Runnable {
                 <li><code class="prettyprint">public String getValidationRuleDescription()</code> : This method should return a description of the validation rule implemented by the validator. This description will be used to report the cause of record rejection</li>
             </ul>
 
-            <p>In this section, we will show an example of custom validator which validates that a field value must start with 'XP'.</p>
+            <p>In this section, we will show an example of custom validator which validates that a field value must start with the string 'XP'.</p>
 
 <pre class="prettyprint">
 public class MyCustomFieldValidator implements FieldValidator {
@@ -475,13 +475,14 @@ batchConfiguration.registerRecordValidator(myCustomRecordValidator);
 
 <pre>
 [CB4J : INFO] CB4J report :
-[CB4J : INFO] Start time = Sun Aug 26 17:21:54 CEST 2012
-[CB4J : INFO] End time = Sun Aug 26 17:21:54 CEST 2012
-[CB4J : INFO] Batch duration = 181ms
-[CB4J : INFO] Total input records = 51
-[CB4J : INFO] Total ignored records = 0
+[CB4J : INFO] Start time = Sat Dec 01 21:21:17 CET 2012
+[CB4J : INFO] End time = Sat Dec 01 21:21:17 CET 2012
+[CB4J : INFO] Batch duration = 2ms
+[CB4J : INFO] Total input records = 3
+[CB4J : INFO] Total ignored records = 1
 [CB4J : INFO] Total rejected records = 1
-[CB4J : INFO] Total processed records = 50
+[CB4J : INFO] Total records processed successfully = 1
+[CB4J : INFO] Total records processed with error = 0
 </pre>
 
             <p>As you can see, CB4J reports to the console the batch start time, end time , overall execution duration and other metrics about input records.
@@ -562,7 +563,7 @@ batchConfiguration.registerBatchReporter(new MyCustomBatchReporter("/data/cb4j/c
 
             <h2 id="4" class="section">4. Monitoring CB4J</h2>
 
-            <p>CB4J provides a nice feature to monitor batch execution and progress using JMX. By default, CB4J enables at startup a JMX MBean named <code>net.benas.cb4j.core.jmx.BatchMonitorMBean</code>.</p>
+            <p>CB4J allows you to monitor batch execution and progress using JMX. By default, CB4J enables at startup a JMX MBean named <code>net.benas.cb4j.core.jmx.BatchMonitorMBean</code>.</p>
             <p>You can use any standard JMX compliant tool to monitor CB4J's JMX MBean attributes such as :
             <ul>
                 <li>Batch execution status (initializing, running or finalizing)</li>

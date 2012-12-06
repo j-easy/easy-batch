@@ -2,7 +2,7 @@ CB4J FRAMEWORK CHANGELOG
 ========================
 https://github.com/benas/cb4j
 
-Changes in version 1.1.0 (2012-12-02)
+Changes in version 1.1.0 (2012-12-09)
 -------------------------------------
 
 * Added parameter to support data qualifier character
@@ -10,6 +10,8 @@ Changes in version 1.1.0 (2012-12-02)
 * Added parameter to support execution abort on first reject
 * Added support for JMX monitoring
 * Added a log file for records processed with error
+* Fixed reporting issue : CB4J hides the root cause when an exception occurs during record processing
+* Fixed CB4J crash if an exception occurs during record validation
 * Updated documentation and Javadoc
 
 Changes in version 1.0.2 (2012-12-01)
