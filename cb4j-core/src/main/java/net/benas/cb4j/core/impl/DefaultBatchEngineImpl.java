@@ -106,9 +106,9 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                 continue;
             }
 
+            //validate record
             Record currentParsedRecord = null;
             try {
-                //validate record
                 currentParsedRecord = recordParser.parseRecord(currentRecord, currentRecordNumber);
                 error = recordValidator.validateRecord(currentParsedRecord);
                 if (error != null) {
@@ -128,10 +128,10 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             Object typedRecord;
             try {
                 typedRecord = recordMapper.mapRecord(currentParsedRecord);
-            } catch (RecordMappingException e) { //thrown by the user deliberately to reject the record
+            } catch (RecordMappingException e) { //thrown by the user deliberately
                 batchReporter.reportRejectedRecord(currentParsedRecord, e.getMessage());
                 continue;
-            } catch (Exception e) { // thrown unexpectedly
+            } catch (Exception e) { //thrown unexpectedly
                 batchReporter.reportRejectedRecord(currentParsedRecord, "an unexpected mapping exception occurred, root cause = " , e);
                 continue;
             }
@@ -139,24 +139,32 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             //pre process record
             try {
                 recordProcessor.preProcessRecord(typedRecord);
-            } catch (Exception e) {
-                batchReporter.reportErrorRecord(currentParsedRecord, "an exception occurred during record pre-processing, root cause = ", e);
+            } catch (RecordProcessingException e) { //thrown by the user deliberately
+                batchReporter.reportErrorRecord(currentParsedRecord, "a record pre-processing exception occurred, root cause = ", e);
+                continue;
+            } catch (Exception e) { //thrown unexpectedly
+                batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected record pre-processing exception occurred, root cause = ", e);
                 continue;
             }
 
             //process record
             try {
                 recordProcessor.processRecord(typedRecord);
-            } catch (Exception e) {
-                batchReporter.reportErrorRecord(currentParsedRecord, "an exception occurred during record processing, root cause = ", e);
+            } catch (RecordProcessingException e) { //thrown by the user deliberately
+                batchReporter.reportErrorRecord(currentParsedRecord, "a record processing exception occurred, root cause = ", e);
+                continue;
+            } catch (Exception e) { //thrown unexpectedly
+                batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected record processing exception occurred, root cause = ", e);
                 continue;
             }
 
             //post process record
             try {
                 recordProcessor.postProcessRecord(typedRecord);
-            } catch (Exception e) {
-                batchReporter.reportErrorRecord(currentParsedRecord, "an exception occurred during record post-processing, root cause = ", e);
+            } catch (RecordProcessingException e) { //thrown by the user deliberately
+                batchReporter.reportErrorRecord(currentParsedRecord, "a record post-processing exception occurred, root cause = ", e);
+            } catch (Exception e) { //thrown unexpectedly
+                batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected exception occurred during record post-processing, root cause = ", e);
             }
 
         }
