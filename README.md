@@ -1,5 +1,7 @@
 ## CB4J
 CSV Batch 4 Java is a framework that aims at simplifying CSV files batch processing with Java.
+CB4J uses a POJO-based development approach which lets you process CSV files with an object oriented view of records.
+The framework addresses common tedious tasks such as reading, parsing and validating CSV records and lets you concentrate on your batch processing business logic.
 
 ## Documentation
 All CB4J documentation can be found at [http://benas.github.com/cb4j/][cb4j-doc]
