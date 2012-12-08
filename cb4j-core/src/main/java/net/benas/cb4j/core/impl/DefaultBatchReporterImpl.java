@@ -62,7 +62,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     /**
      * Input records number.
      */
-    protected long InputRecordsNumber;
+    protected long inputRecordsNumber;
 
     /**
      * Rejected records number.
@@ -183,7 +183,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      * {@inheritDoc}
      */
     public void setInputRecordsNumber(long inputRecordsNumber) {
-        InputRecordsNumber = inputRecordsNumber;
+        this.inputRecordsNumber = inputRecordsNumber;
     }
 
     /**
@@ -260,7 +260,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      * {@inheritDoc}
      */
     public long getInputRecordsNumber() {
-        return InputRecordsNumber;
+        return inputRecordsNumber;
     }
 
     /**

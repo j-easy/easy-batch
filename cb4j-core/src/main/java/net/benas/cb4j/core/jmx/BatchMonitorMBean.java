@@ -25,7 +25,7 @@
 package net.benas.cb4j.core.jmx;
 
 /**
- *  CB4J JMX MBean interface
+ *  CB4J JMX MBean interface.
  *  @author benas (md.benhassine@gmail.com)
  */
 public interface BatchMonitorMBean {
