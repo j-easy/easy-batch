@@ -99,7 +99,7 @@
             <div class="row-fluid">
 
                 <h2 id="1">1. Description</h2>
-                <p>In this tutorial, the goal is to process a CSV flat file containing products data and calculate statistics about prices. The products are organized in categories and the batch should calculate the minimum/maximum product prices for each category. The input file named "<strong>products.csv</strong>" has the following content:</p>
+                <p>In this tutorial, the goal is to process a CSV flat file containing products data and calculate statistics about prices. Products are organized in categories and the batch should calculate the minimum/maximum product price for each category. The input file named "<strong>products.csv</strong>" has the following content:</p>
 <pre>
 product_id;category_code;name;price
 1;1;product1;25
@@ -111,8 +111,8 @@ product_id;category_code;name;price
 </pre>
 
                 <p>In this tutorial , the business data validation rules are simple : Fields "product_id","category_code" and "price" must have numeric values.</p>
-                <p><span class="label label-info">Note :</span> Products prices should be converted to local currency before being processed. This is a good example of how to use the <code>preProcessRecord(T typedRecord)</code> method in <code>RecordProcessor&lt;T&gt;</code> interface.</p>
-                <p>The batch processing logic should calculate the minimum/maximum product prices for each category and generate the following report :</p>
+                <p><span class="label label-info">Note :</span> Prices should be converted to local currency before being processed. This is a good example of how to use the <code>preProcessRecord(T typedRecord)</code> method in <code>RecordProcessor&lt;T&gt;</code> interface.</p>
+                <p>The batch processing logic should calculate the minimum/maximum product price for each category and generate the following report:</p>
 <pre>
 ******* Products Report *******
 Minimum prices by category :

@@ -101,9 +101,9 @@
             <div class="row-fluid">
 
                 <h2 id="1">1. Description</h2>
-                <p>In this tutorial, the goal is to process customers data from a CSV flat file and generate an XML output. The input file named "<strong>customers.csv</strong>" has the following format:</p>
+                <p>In this tutorial, the goal is to transform customers data from a CSV flat file to an XML format. The input file named "<strong>customers.csv</strong>" has the following format:</p>
 <pre>
-firstname,lastname,email,birthday,phone,gender,street,zipcode,city,country
+firstname,lastname,email,birthdate,phone,gender,street,zipcode,city,country
 Venus,Blake,at@luctus.edu,17/04/2012,0463599385,0,492-3228 Lobortis Avenue,22496,Barrow,Burkina Faso
 Lael,Carolyn,posuere@loremtristique.ca,10/01/2013,4147737012,0,Ap #598-4493 Eros. St.,87583,New Bedford,Uzbekistan
 Tiger,Raja,quis@pulvinar.com,19/01/2012,5283010032,2,P.O. Box 113 8377 Convallis Road,85768,Fredericksburg,Namibia
@@ -166,9 +166,8 @@ Tiger,Raja,quis@pulvinar.com,19/01/2012,5283010032,2,P.O. Box 113 8377 Convallis
                 <p><code>mvn clean package exec:java -PrunCustomersTutorial</code></p>
 
                 <p>After the execution is finished, you should see the XML output for each customer record in the console.</p>
-                <p>You can modify input data with "monkey test" values and see the content of ignored/rejected/error records log files located in <code>cb4j/cb4j-tutorials/src/main/resources</code></p>
 
-                <p> <span class="label label-info">Info</span> : This tutorial uses <a href="http://xstream.codehaus.org/">xstream</a> to easily generate XML output of customer data.</p>
+                <p> <span class="label label-info">Info</span> : This tutorial uses <a href="http://xstream.codehaus.org/">xstream</a> to easily generate XML output for customer data.</p>
             </div>
 
         </div>
