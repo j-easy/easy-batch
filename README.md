@@ -6,7 +6,7 @@ CB4J addresses common tedious tasks such as reading, parsing and validating CSV 
 
 ## Key features
 
- * Lightweight framework : CB4J has no dependencies and hence a small memory footprint : a 30Ko jar file with a lot of features!
+ * Lightweight framework : CB4J has no dependencies and hence a small memory footprint : a 40Ko jar file with a lot of features!
 
  * POJO-based development : Map CSV records to your domain objects so you can still work with the Object Oriented aspect of Java.</p>
 
@@ -14,7 +14,7 @@ CB4J addresses common tedious tasks such as reading, parsing and validating CSV 
 
  * Easy to learn and use : CB4J uses a simple and natural CSV model and API. You can learn it easily and start using it quickly.
 
- * Statistics reporting : CB4J provides a simple and customizable reporting for common statistics including validation errors and processing time.
+ * Statistics reporting : CB4J provides a customizable reporting for common statistics including validation errors and processing time.
 
  * JMX monitoring : Monitor your batch execution and progress using JMX at runtime and in real time.
 
