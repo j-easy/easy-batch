@@ -24,7 +24,7 @@
 
 package net.benas.cb4j.core.test;
 
-import net.benas.cb4j.core.impl.RecordParserImpl;
+import net.benas.cb4j.core.impl.DsvRecordParserImpl;
 import net.benas.cb4j.core.model.Field;
 import net.benas.cb4j.core.model.Record;
 import org.junit.After;
@@ -43,7 +43,7 @@ public class RecordTest {
 
     @Before
     public void setUp() throws Exception {
-        RecordParserImpl recordParser = new RecordParserImpl(2, ",",false,"");
+        DsvRecordParserImpl recordParser = new DsvRecordParserImpl(2, ",",false,"");
         record = recordParser.parseRecord("Hello,World", 1);
     }
 
@@ -76,7 +76,7 @@ public class RecordTest {
 
     @Test
     public void testGetRecordContentAsStringWithDataQualifierCharacter() throws Exception{
-        RecordParserImpl recordParser = new RecordParserImpl(2, ",",false,"'");
+        DsvRecordParserImpl recordParser = new DsvRecordParserImpl(2, ",",false,"'");
         String originalRecord = "'Hello','World'";
         record = recordParser.parseRecord(originalRecord, 1);
         assertEquals(originalRecord, record.getContentAsString());

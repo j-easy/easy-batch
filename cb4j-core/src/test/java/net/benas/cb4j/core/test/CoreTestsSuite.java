@@ -31,7 +31,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses( {
         BatchConfigurationTest.class,
         BatchConfigurationUtilTest.class,
-        RecordParserImplTest.class,
+        DsvRecordParserImplTest.class,
         RecordTest.class})
 public class CoreTestsSuite {
 }

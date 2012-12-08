@@ -27,7 +27,7 @@ package net.benas.cb4j.core.config;
 import net.benas.cb4j.core.api.*;
 import net.benas.cb4j.core.impl.DefaultBatchReporterImpl;
 import net.benas.cb4j.core.impl.DefaultRecordValidatorImpl;
-import net.benas.cb4j.core.impl.RecordParserImpl;
+import net.benas.cb4j.core.impl.DsvRecordParserImpl;
 import net.benas.cb4j.core.impl.RecordReaderImpl;
 import net.benas.cb4j.core.jmx.BatchMonitor;
 import net.benas.cb4j.core.jmx.BatchMonitorMBean;
@@ -292,7 +292,7 @@ public class BatchConfiguration {
             logger.config("Record size specified : " + recordSize);
             logger.config("Fields delimiter specified : '" + fieldsDelimiter + "'");
             logger.config("Data qualifier character specified : '" + dataQualifierCharacter + "'");
-            recordParser = new RecordParserImpl(recordSize, fieldsDelimiter, trimWhitespaces, dataQualifierCharacter);
+            recordParser = new DsvRecordParserImpl(recordSize, fieldsDelimiter, trimWhitespaces, dataQualifierCharacter);
 
         } catch (NumberFormatException e) {
             String error = "Record size property is not recognized as a number : " + recordSizeProperty;
