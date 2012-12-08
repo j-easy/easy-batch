@@ -35,7 +35,7 @@ import net.benas.cb4j.core.model.Record;
 public interface RecordMapper<T> {
 
     /**
-     * Maps a CSV record to an Object of type T.
+     * Maps a record to an Object of type T.
      * @param record The record to map
      * @return The mapped object
      * @throws RecordMappingException thrown if any mapping exception occurs. Implementation should wrap any exception to a {@link RecordMappingException} in order to let CB4J reject the record in the rejected log file

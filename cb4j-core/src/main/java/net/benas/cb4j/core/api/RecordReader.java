@@ -34,19 +34,19 @@ package net.benas.cb4j.core.api;
 public interface RecordReader {
 
     /**
-     * Read the next record from the CSV input file if available.
-     * @return the next record from the CSV input file
+     * Read the next record from input file if available.
+     * @return the next record from input file
      */
     String readNextRecord();
 
     /**
-     * Check if a next record is available from the CSV input file.
-     * @return true if there is a next available record from the CSV input file, false else
+     * Check if a next record is available from input file.
+     * @return true if there is a next available record from input file, false else
      */
     boolean hasNextRecord();
 
     /**
-     * Calculate and return total records number in the input CSV file.<br/>
+     * Calculate and return total records number in the input file.<br/>
      * This method is used especially to calculate execution progress exposed as JMX attribute.
      * @return total records number
      */

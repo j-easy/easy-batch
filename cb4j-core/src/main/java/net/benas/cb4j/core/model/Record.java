@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A model class representing a CSV record.
+ * A model class representing a record.
  * @author benas (md.benhassine@gmail.com)
  */
 public final class Record {

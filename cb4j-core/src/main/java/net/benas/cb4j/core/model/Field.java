@@ -25,13 +25,13 @@
 package net.benas.cb4j.core.model;
 
 /**
- * A model class representing a CSV field.
+ * A model class representing a field.
  * @author benas (md.benhassine@gmail.com)
  */
 public final class Field {
 
     /**
-     * The field's index in CSV record.
+     * The field's index in record.
      */
     private final int index;
 
@@ -42,7 +42,7 @@ public final class Field {
 
     /**
      * Constructor with an index and content.
-     * @param index field index in CSV record (indexes are zero-based)
+     * @param index field index in record (indexes are zero-based)
      * @param content field content as raw data
      */
     public Field(int index, String content) {
@@ -59,8 +59,8 @@ public final class Field {
     }
 
     /**
-     * Get the field's index in CSV record. Indexes are zero-based.
-     * @return the index of the field in the CSV record
+     * Get the field's index in record. Indexes are zero-based.
+     * @return the index of the field in the record
      */
     public int getIndex() {
         return index;
