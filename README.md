@@ -1,7 +1,22 @@
-## CB4J
-CSV Batch 4 Java is a framework that aims at simplifying CSV files batch processing with Java.
-CB4J uses a POJO-based development approach which lets you process CSV files with an object oriented view of records.
-The framework addresses common tedious tasks such as reading, parsing and validating CSV records and lets you concentrate on your batch processing business logic.
+## What is CB4J?
+
+CSV Batch 4 Java is a framework that aims to simplify CSV files batch processing with Java.
+
+CB4J addresses common tedious tasks such as reading, parsing and validating CSV records and lets you concentrate on your batch processing business logic.
+
+## Key features
+
+ * Lightweight framework : CB4J has no dependencies and hence a small memory footprint : a 30Ko jar file with a lot of features!
+
+ * POJO-based development : Map CSV records to your domain objects so you can still work with the Object Oriented aspect of Java.</p>
+
+ * Declarative data validation : CB4J lets you declare data validation rules with extensible built-in validators for common requirements.
+
+ * Easy to learn and use : CB4J uses a simple and natural CSV model and API. You can learn it easily and start using it quickly.
+
+ * Statistics reporting : CB4J provides a simple and customizable reporting for common statistics including validation errors and processing time.
+
+ * JMX monitoring : Monitor your batch execution and progress using JMX at runtime and in real time.
 
 ## Documentation
 All CB4J documentation can be found at [http://benas.github.com/cb4j/][cb4j-doc]
@@ -9,5 +24,14 @@ All CB4J documentation can be found at [http://benas.github.com/cb4j/][cb4j-doc]
 ## License
 CB4J is released under the [MIT License][].
 
+## Contribution
+Your feedback is highly appreciated! For any issue, please use the [issue tracker][].
+
+You can also contribute with pull requests on github or by contacting the author directly [by mail][].
+
+Many thanks upfront!
+
 [cb4j-doc]: http://benas.github.com/cb4j/
 [MIT License]: http://opensource.org/licenses/mit-license.php/
+[issue tracker]: https://github.com/benas/cb4j/issues
+[by mail]: mailto:md.benhassine@gmail.com?subject=[CB4J]
