@@ -40,6 +40,25 @@
             <version>1.2.2</version>
         </dependency>
 
+        <!--Dependencies for book library tutorial-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>3.6.10.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.12.1.GA</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.2.8</version>
+        </dependency>
+
     </dependencies>
 
 
@@ -129,6 +148,27 @@
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/persons.csv</argument>
                                 <argument>2</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>runLibraryTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>net.benas.cb4j.tutorials.library.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/books.csv</argument>
+                                <argument>4</argument>
+                                <argument>'</argument>
                             </arguments>
                         </configuration>
                     </plugin>
