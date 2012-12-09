@@ -95,6 +95,23 @@ public class BatchConfigurationTest {
         batchConfiguration.configure();
     }
 
+    @Test(expected = BatchConfigurationException.class)
+    public void testNotSpecifiedFieldsLength() throws Exception {
+        configurationProperties.setProperty(BatchConstants.INPUT_DATA_PATH, filePath);
+        configurationProperties.setProperty(BatchConstants.INPUT_RECORD_TYPE, "flr");
+        batchConfiguration = new BatchConfiguration(configurationProperties);
+        batchConfiguration.configure();
+    }
+
+    @Test(expected = BatchConfigurationException.class)
+    public void testInvalidFieldsLength() throws Exception {
+        configurationProperties.setProperty(BatchConstants.INPUT_DATA_PATH, filePath);
+        configurationProperties.setProperty(BatchConstants.INPUT_RECORD_TYPE, "flr");
+        configurationProperties.setProperty(BatchConstants.INPUT_FIELD_LENGTHS, "5,3,x");
+        batchConfiguration = new BatchConfiguration(configurationProperties);
+        batchConfiguration.configure();
+    }
+
     @After
     public void tearDown() throws Exception {
         configurationProperties = null;

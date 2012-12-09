@@ -25,14 +25,12 @@
 package net.benas.cb4j.core.config;
 
 import net.benas.cb4j.core.api.*;
-import net.benas.cb4j.core.impl.DefaultBatchReporterImpl;
-import net.benas.cb4j.core.impl.DefaultRecordValidatorImpl;
-import net.benas.cb4j.core.impl.DsvRecordParserImpl;
-import net.benas.cb4j.core.impl.RecordReaderImpl;
+import net.benas.cb4j.core.impl.*;
 import net.benas.cb4j.core.jmx.BatchMonitor;
 import net.benas.cb4j.core.jmx.BatchMonitorMBean;
 import net.benas.cb4j.core.util.BatchConstants;
 import net.benas.cb4j.core.util.LogFormatter;
+import net.benas.cb4j.core.util.RecordType;
 import net.benas.cb4j.core.util.ReportFormatter;
 
 import javax.management.MBeanServer;
@@ -256,6 +254,47 @@ public class BatchConfiguration {
      */
     private void configureRecordParser() throws BatchConfigurationException {
 
+        //read record type property and set default value if invalid input
+        String recordTypeProperty = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_TYPE);
+        String recordType;
+        if (recordTypeProperty == null || recordTypeProperty.length() == 0) {
+            recordType = BatchConstants.DEFAULT_RECORD_TYPE;
+            logger.warning("Record type property not specified, records will be considered as delimiter-separated values");
+        } else if (!RecordType.DSV.toString().equalsIgnoreCase(recordTypeProperty) && !RecordType.FLR.toString().equalsIgnoreCase(recordTypeProperty)) {
+            recordType = BatchConstants.DEFAULT_RECORD_TYPE;
+            logger.warning("Record type property '" + recordTypeProperty +"' is invalid, records will be considered as delimiter-separated values");
+        } else {
+            recordType = recordTypeProperty;
+        }
+
+        // fixed length record configuration
+        if (RecordType.FLR.toString().equalsIgnoreCase(recordType)) {
+            String fieldsLengthProperties = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_LENGTHS);
+            if ( fieldsLengthProperties == null || fieldsLengthProperties.length() == 0) {
+                String error = "Configuration failed : when using fixed length records, fields length values property '" + BatchConstants.INPUT_FIELD_LENGTHS + "' is mandatory but was not specified.";
+                logger.severe(error);
+                throw new BatchConfigurationException(error);
+            } else {
+                //parse fields length property and extract numeric values
+                StringTokenizer stringTokenizer = new StringTokenizer(fieldsLengthProperties,",");
+                int[] fieldsLength = new int[stringTokenizer.countTokens()];
+                int index = 0;
+                while(stringTokenizer.hasMoreTokens()) {
+                    String length = stringTokenizer.nextToken();
+                    try {
+                        fieldsLength[index] = Integer.parseInt(length);
+                        index++;
+                    } catch (NumberFormatException e) {
+                        String error = "Configuration failed : field length '" + length + "' in property " + BatchConstants.INPUT_FIELD_LENGTHS + "=" + fieldsLengthProperties + " is not numeric.";
+                        logger.severe(error);
+                        throw new BatchConfigurationException(error);
+                    }
+                }
+                recordParser = new FlrRecordParserImpl(fieldsLength);
+            }
+        }
+        else { //delimited values configuration
+
         String recordSizeProperty = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_SIZE);
 
         try {
@@ -298,6 +337,7 @@ public class BatchConfiguration {
             String error = "Record size property is not recognized as a number : " + recordSizeProperty;
             logger.severe(error);
             throw new BatchConfigurationException(error);
+        }
         }
     }
 

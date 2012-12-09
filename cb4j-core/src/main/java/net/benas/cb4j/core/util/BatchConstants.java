@@ -46,7 +46,11 @@ public class BatchConstants {
 
     public static final String INPUT_FIELD_QUALIFIER_CHAR = "input.field.qualifier";
 
+    public static final String INPUT_FIELD_LENGTHS = "input.field.lengths";
+
     public static final String INPUT_RECORD_SIZE = "input.record.size";
+
+    public static final String INPUT_RECORD_TYPE = "input.record.type";
 
     public static final String OUTPUT_DATA_IGNORED = "output.data.ignored";
 
@@ -66,6 +70,8 @@ public class BatchConstants {
     public static final String DEFAULT_ERRORS_SUFFIX = "-errors.log";
 
     public static final String DEFAULT_FIELD_DELIMITER = ",";
+
+    public static final String DEFAULT_RECORD_TYPE = RecordType.DSV.toString();
 
     public static final String DEFAULT_FIELD_QUALIFIER_CHAR = "";
 
