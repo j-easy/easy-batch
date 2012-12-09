@@ -60,15 +60,10 @@ public class DsvRecordParserImplTest {
         assertNotNull(recordParser.analyseRecord(record));
     }
 
-    @Test
-    public void testRecordSize() throws Exception {
-        assertEquals(3, recordParser.getRecordSize(record));
-    }
 
     @Test
     public void testRecordSizeWithEmptyField() throws Exception {
         record = "hello,cb4j,world,";
-        assertEquals(4, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("",parsedRecord.getFieldContentByIndex(3));
     }
@@ -100,7 +95,6 @@ public class DsvRecordParserImplTest {
         recordParser = new DsvRecordParserImpl(3,"|",false,"");
         record = "hello|cb4j|world";
         assertNull(recordParser.analyseRecord(record));
-        assertEquals(3, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
         assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
@@ -112,7 +106,6 @@ public class DsvRecordParserImplTest {
         recordParser = new DsvRecordParserImpl(3," ",false,"");
         record = "hello cb4j world";
         assertNull(recordParser.analyseRecord(record));
-        assertEquals(3, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
         assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
@@ -124,7 +117,6 @@ public class DsvRecordParserImplTest {
         recordParser = new DsvRecordParserImpl(3,"\t",false,"");
         record = "hello\tcb4j\tworld";
         assertNull(recordParser.analyseRecord(record));
-        assertEquals(3, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
         assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
@@ -136,7 +128,6 @@ public class DsvRecordParserImplTest {
         recordParser = new DsvRecordParserImpl(3,"###",false,"");
         record = "hello###cb4j###world";
         assertNull(recordParser.analyseRecord(record));
-        assertEquals(3, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
         assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
@@ -148,7 +139,6 @@ public class DsvRecordParserImplTest {
         recordParser = new DsvRecordParserImpl(3,",",false,"'");
         record = "'hello','cb4j','world'";
         assertNull(recordParser.analyseRecord(record));
-        assertEquals(3, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
         assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));

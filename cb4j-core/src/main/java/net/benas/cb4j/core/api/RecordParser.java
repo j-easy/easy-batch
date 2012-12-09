@@ -43,14 +43,6 @@ public interface RecordParser {
     String analyseRecord(final String record);
 
     /**
-     * Getter for the record size.<br/>
-     * This method is used to report the cause of ignoring a record when it's actual size is not equal to the expected record size
-     * @param record the record as string
-     * @return record size
-     */
-    int getRecordSize(final String record);
-
-    /**
      * Parses a string and return a parsed {@link Record}.
      * @param record the record as string
      * @param recordNumber the record number in the input file

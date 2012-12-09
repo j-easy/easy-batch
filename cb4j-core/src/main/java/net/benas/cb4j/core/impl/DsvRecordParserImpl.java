@@ -25,6 +25,7 @@
 package net.benas.cb4j.core.impl;
 
 import net.benas.cb4j.core.api.RecordParser;
+import net.benas.cb4j.core.model.DsvRecord;
 import net.benas.cb4j.core.model.Field;
 import net.benas.cb4j.core.model.Record;
 
@@ -93,16 +94,8 @@ public final class DsvRecordParserImpl implements RecordParser {
     /**
      * {@inheritDoc}
      */
-    public int getRecordSize(final String record) {
-        String[] tokens = record.split(fieldDelimiter, -1);
-        return tokens.length;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public Record parseRecord(final String stringRecord, final long currentRecordNumber) {
-        Record record = new Record(currentRecordNumber, fieldDelimiter, qualifier);
+        Record record = new DsvRecord(currentRecordNumber, fieldDelimiter, qualifier);
         String[] tokens = stringRecord.split(fieldDelimiter, -1);
         int i = 0;
         for (String token : tokens) {
