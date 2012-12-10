@@ -26,11 +26,16 @@ package net.benas.cb4j.core.util;
 
 import net.benas.cb4j.core.api.BatchEngine;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Utility class to launch a batch engine.
  * @author benas (md.benhassine@gmail.com)
  */
 public final class BatchRunner {
+
+    private Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
 
     /**
      * The batch engine to use.
@@ -45,8 +50,18 @@ public final class BatchRunner {
      * Run the batch engine.
      */
     public void run() {
-        batchEngine.init();
+        try {
+            batchEngine.init();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "An exception occurred during engine initialization. " +
+                    "In order to avoid any unexpected behavior during batch execution due to this exception, execution is aborted. Root error : ", e);
+            return;// for security reason, abort execution
+        }
         batchEngine.run();
-        batchEngine.shutdown();
+        try {
+            batchEngine.shutdown();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "An unexpected exception occurred during engine finalization, root error : ", e);
+        }
     }
 }
