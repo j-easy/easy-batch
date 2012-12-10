@@ -41,11 +41,9 @@ public class EmailFieldValidator implements FieldValidator {
      * {@inheritDoc}
      */
     public boolean isValidField(final Field field) {
-        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        CharSequence inputStr = field.getContent();
-        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(inputStr);
-        return matcher.matches();
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Za-z]{2,4}$";
+        String inputStr = field.getContent();
+        return inputStr.matches(expression);
     }
 
     /**
