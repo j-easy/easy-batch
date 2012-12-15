@@ -20,6 +20,7 @@
     <modules>
         <module>cb4j-core</module>
         <module>cb4j-tutorials</module>
+        <module>cb4j-quartz</module>
     </modules>
 
     <developers>
