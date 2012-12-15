@@ -415,7 +415,9 @@ public class BatchConfiguration {
         logger.setUseParentHandlers(false);
         ConsoleHandler consoleHandler = new ConsoleHandler();
         consoleHandler.setFormatter(new LogFormatter());
-        logger.addHandler(consoleHandler);
+        if (logger.getHandlers().length == 0) {
+            logger.addHandler(consoleHandler);
+        }
     }
 
     /*
