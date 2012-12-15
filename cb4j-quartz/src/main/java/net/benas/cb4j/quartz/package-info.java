@@ -22,17 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package net.benas.cb4j.core.test;
-
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-
-@RunWith(Suite.class)
-@Suite.SuiteClasses( {
-        BatchConfigurationTest.class,
-        BatchConfigurationUtilTest.class,
-        DsvRecordParserImplTest.class,
-        FlrRecordParserImplTest.class,
-        RecordTest.class})
-public class CoreTestsSuite {
-}
+/**
+ * This package contains CB4J-Quartz integration module classes.
+ */
+package net.benas.cb4j.quartz;

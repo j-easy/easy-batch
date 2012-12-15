@@ -25,7 +25,7 @@
 package net.benas.cb4j.core.test;
 
 import net.benas.cb4j.core.api.RecordParser;
-import net.benas.cb4j.core.impl.RecordParserImpl;
+import net.benas.cb4j.core.impl.DsvRecordParserImpl;
 import net.benas.cb4j.core.model.Record;
 import org.junit.After;
 import org.junit.Before;
@@ -34,10 +34,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Unit test class for {@link RecordParserImpl}
+ * Unit test class for {@link net.benas.cb4j.core.impl.DsvRecordParserImpl}
  * @author benas (md.benhassine@gmail.com)
  */
-public class RecordParserImplTest {
+public class DsvRecordParserImplTest {
 
     private RecordParser recordParser;
 
@@ -45,7 +45,7 @@ public class RecordParserImplTest {
 
     @Before
     public void setUp() throws Exception {
-        recordParser = new RecordParserImpl(3,",",false,"");
+        recordParser = new DsvRecordParserImpl(3,",",false,"");
         record = "hello,cb4j,world";
     }
 
@@ -60,15 +60,10 @@ public class RecordParserImplTest {
         assertNotNull(recordParser.analyseRecord(record));
     }
 
-    @Test
-    public void testRecordSize() throws Exception {
-        assertEquals(3, recordParser.getRecordSize(record));
-    }
 
     @Test
     public void testRecordSizeWithEmptyField() throws Exception {
         record = "hello,cb4j,world,";
-        assertEquals(4, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("",parsedRecord.getFieldContentByIndex(3));
     }
@@ -85,7 +80,7 @@ public class RecordParserImplTest {
 
     @Test
     public void testRecordParsingWithTrimmedWhitespaces() throws Exception {
-        recordParser = new RecordParserImpl(3,",",true,"");
+        recordParser = new DsvRecordParserImpl(3,",",true,"");
         record = "   hello,  cb4j  ,  world   ";
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals(3, parsedRecord.getFields().size());
@@ -97,10 +92,9 @@ public class RecordParserImplTest {
 
     @Test
     public void testRecordParsingWithPipeDelimiter() throws Exception {
-        recordParser = new RecordParserImpl(3,"|",false,"");
+        recordParser = new DsvRecordParserImpl(3,"|",false,"");
         record = "hello|cb4j|world";
         assertNull(recordParser.analyseRecord(record));
-        assertEquals(3, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
         assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
@@ -109,10 +103,9 @@ public class RecordParserImplTest {
 
     @Test
     public void testRecordParsingWithSpaceDelimiter() throws Exception {
-        recordParser = new RecordParserImpl(3," ",false,"");
+        recordParser = new DsvRecordParserImpl(3," ",false,"");
         record = "hello cb4j world";
         assertNull(recordParser.analyseRecord(record));
-        assertEquals(3, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
         assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
@@ -121,10 +114,9 @@ public class RecordParserImplTest {
 
     @Test
     public void testRecordParsingWithTabDelimiter() throws Exception {
-        recordParser = new RecordParserImpl(3,"\t",false,"");
+        recordParser = new DsvRecordParserImpl(3,"\t",false,"");
         record = "hello\tcb4j\tworld";
         assertNull(recordParser.analyseRecord(record));
-        assertEquals(3, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
         assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
@@ -133,10 +125,9 @@ public class RecordParserImplTest {
 
     @Test
     public void testRecordParsingWithMultipleCharacterDelimiter() throws Exception {
-        recordParser = new RecordParserImpl(3,"###",false,"");
+        recordParser = new DsvRecordParserImpl(3,"###",false,"");
         record = "hello###cb4j###world";
         assertNull(recordParser.analyseRecord(record));
-        assertEquals(3, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
         assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));
@@ -145,10 +136,9 @@ public class RecordParserImplTest {
 
     @Test
     public void testRecordParsingWithDataQualifierCharacter() throws Exception {
-        recordParser = new RecordParserImpl(3,",",false,"'");
+        recordParser = new DsvRecordParserImpl(3,",",false,"'");
         record = "'hello','cb4j','world'";
         assertNull(recordParser.analyseRecord(record));
-        assertEquals(3, recordParser.getRecordSize(record));
         Record parsedRecord = recordParser.parseRecord(record, 1);
         assertEquals("hello",parsedRecord.getFieldContentByIndex(0));
         assertEquals("cb4j",parsedRecord.getFieldContentByIndex(1));

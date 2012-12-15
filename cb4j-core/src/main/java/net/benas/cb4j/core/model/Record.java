@@ -28,40 +28,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A model class representing a CSV record.
+ * A model class representing a record.
  * @author benas (md.benhassine@gmail.com)
  */
-public final class Record {
+public abstract class Record {
 
     /**
      * The record number in the file.
      */
-    private final long number;
-
-    /**
-     * The fields delimiter.
-     */
-    private final String delimiter;
-
-    /**
-     * Character(s) enclosing raw data in fields
-     */
-    private final String qualifier;
+    protected final long number;
 
     /**
      * The record fields.
      */
-    private final List<Field> fields;
+    protected final List<Field> fields;
 
     /**
-     * Constructor with a record number and field delimiter
+     * Constructor with a record number.
      * @param number the record number in the file
-     * @param delimiter the field delimiter
      */
-    public Record(long number, String delimiter, String qualifier) {
+    public Record(long number) {
         this.number = number;
-        this.delimiter = delimiter;
-        this.qualifier = qualifier;
         this.fields = new ArrayList<Field>();
     }
 
@@ -96,21 +83,7 @@ public final class Record {
      * Getter for the record content as a String.
      * @return The record content as a String
      */
-    public String getContentAsString() {
-        if (fields.size() == 0) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        //for each field, append the field content + delimiter
-        for (int i = 0; i < fields.size() - 1; i++) {
-            sb.append(qualifier);
-            sb.append(fields.get(i).getContent());
-            sb.append(qualifier);
-            sb.append(delimiter);
-        }
-        sb.append(qualifier).append(fields.get(fields.size() - 1).getContent()).append(qualifier); //for the last field, append only field content, no separator
-        return sb.toString();
-    }
+    public abstract String getContentAsString();
 
     /**
      * Get the record fields as list.
@@ -130,22 +103,6 @@ public final class Record {
      */
     public long getNumber() {
         return number;
-    }
-
-    /**
-     * Get field delimiter.
-     * @return field delimiter in the record
-     */
-    public String getDelimiter() {
-        return delimiter;
-    }
-
-    /**
-     * Get data enclosure character
-     * @return data enclosure character
-     */
-    public String getQualifier() {
-        return qualifier;
     }
 
 }

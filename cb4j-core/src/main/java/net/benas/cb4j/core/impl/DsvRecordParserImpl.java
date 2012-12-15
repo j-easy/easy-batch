@@ -25,16 +25,17 @@
 package net.benas.cb4j.core.impl;
 
 import net.benas.cb4j.core.api.RecordParser;
+import net.benas.cb4j.core.model.DsvRecord;
 import net.benas.cb4j.core.model.Field;
 import net.benas.cb4j.core.model.Record;
 
 /**
- * Implementation of {@link RecordParser}.<br/>
+ * Implementation of {@link RecordParser} to parse Delimiter-separated values.<br/>
  * This class is not intended to be used nor extended by framework users
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public final class RecordParserImpl implements RecordParser {
+public final class DsvRecordParserImpl implements RecordParser {
 
     /**
      * The number of fields in the record.
@@ -56,7 +57,7 @@ public final class RecordParserImpl implements RecordParser {
      */
     private String qualifier;
 
-    public RecordParserImpl(final int fieldNumber, final String fieldDelimiter, final boolean trimWhitespaces, final String qualifier) {
+    public DsvRecordParserImpl(final int fieldNumber, final String fieldDelimiter, final boolean trimWhitespaces, final String qualifier) {
 
         this.fieldNumber = fieldNumber;
         String prefix = "";
@@ -93,16 +94,8 @@ public final class RecordParserImpl implements RecordParser {
     /**
      * {@inheritDoc}
      */
-    public int getRecordSize(final String record) {
-        String[] tokens = record.split(fieldDelimiter, -1);
-        return tokens.length;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public Record parseRecord(final String stringRecord, final long currentRecordNumber) {
-        Record record = new Record(currentRecordNumber, fieldDelimiter, qualifier);
+        Record record = new DsvRecord(currentRecordNumber, fieldDelimiter, qualifier);
         String[] tokens = stringRecord.split(fieldDelimiter, -1);
         int i = 0;
         for (String token : tokens) {

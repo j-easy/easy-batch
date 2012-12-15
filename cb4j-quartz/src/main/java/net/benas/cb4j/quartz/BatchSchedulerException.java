@@ -22,17 +22,18 @@
  *  THE SOFTWARE.
  */
 
-package net.benas.cb4j.core.test;
+package net.benas.cb4j.quartz;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import org.quartz.SchedulerException;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses( {
-        BatchConfigurationTest.class,
-        BatchConfigurationUtilTest.class,
-        DsvRecordParserImplTest.class,
-        FlrRecordParserImplTest.class,
-        RecordTest.class})
-public class CoreTestsSuite {
+/**
+ * Batch scheduler exception used to signal any scheduler setup or startup failure.
+ * @author benas (md.benhassine@gmail.com)
+ */
+public class BatchSchedulerException extends Exception {
+
+    public BatchSchedulerException(String message, SchedulerException e) {
+        super(message,e);
+    }
+
 }

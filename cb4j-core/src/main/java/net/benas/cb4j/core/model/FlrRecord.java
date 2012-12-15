@@ -22,39 +22,44 @@
  *  THE SOFTWARE.
  */
 
-package net.benas.cb4j.core.api;
+package net.benas.cb4j.core.model;
 
 /**
- * Interface for record reader.
- *
- * This interface is not intended to be implemented nor used by framework users
- *
+ * A model class representing a fixed length record.
  * @author benas (md.benhassine@gmail.com)
  */
-public interface RecordReader {
+public final class FlrRecord extends Record {
 
     /**
-     * Read the next record from input file if available.
-     * @return the next record from input file
+     * Fields length array.
      */
-    String readNextRecord();
+    private int[] fieldsLength;
+
+    public FlrRecord(long number, int[] fieldsLength) {
+        super(number);
+        this.fieldsLength = fieldsLength;
+    }
 
     /**
-     * Check if a next record is available from input file.
-     * @return true if there is a next available record from input file, false else
+     * {@inheritDoc}
      */
-    boolean hasNextRecord();
+    public String getContentAsString() {
+        if (fields.size() == 0) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        //for each field, append the field content
+        for (int i = 0; i < fields.size() - 1; i++) {
+            sb.append(fields.get(i).getContent());
+        }
+        return sb.toString();
+    }
 
     /**
-     * Calculate and return total records number in the input file.<br/>
-     * This method is used especially to calculate execution progress exposed as JMX attribute.
-     * @return total records number
+     * Get fields length array.
+     * @return fields length array
      */
-    long getTotalRecordsNumber();
-
-    /**
-     * Close the reader.
-     */
-    void close();
-
+    public int[] getFieldsLength() {
+        return fieldsLength;
+    }
 }

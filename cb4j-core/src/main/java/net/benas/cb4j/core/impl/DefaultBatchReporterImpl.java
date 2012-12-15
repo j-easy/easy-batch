@@ -108,6 +108,17 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     /**
      * {@inheritDoc}
      */
+    public void init() {
+        totalInputRecordsNumber = 0;
+        ignoredRecordsNumber = 0;
+        rejectedRecordsNumber = 0;
+        processedRecordsNumber = 0;
+        errorRecordsNumber = 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void generateReport() {
         logger.info("CB4J report : ");
         logger.info("Start time = " + new Date(startTime));

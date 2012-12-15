@@ -25,54 +25,60 @@
 package net.benas.cb4j.core.model;
 
 /**
- * A model class representing a field.
+ * A model class representing a delimiter-separated values record.
  * @author benas (md.benhassine@gmail.com)
  */
-public final class Field {
+public final class DsvRecord extends Record {
 
     /**
-     * The field's index in record.
+     * Fields delimiter.
      */
-    private final int index;
+    private final String delimiter;
 
     /**
-     * The field's raw content.
+     * Qualifier Character(s) enclosing raw data in fields
      */
-    private final String content;
+    private final String qualifier;
 
-    /**
-     * Constructor with an index and content.
-     * @param index field index in record (indexes are zero-based)
-     * @param content field content as raw data
-     */
-    public Field(int index, String content) {
-        this.index = index;
-        this.content = content;
+    public DsvRecord(long number, String delimiter, String qualifier) {
+        super(number);
+        this.delimiter = delimiter;
+        this.qualifier = qualifier;
     }
 
     /**
-     * Get the field's raw content.
-     * @return raw content of the field
+     * {@inheritDoc}
      */
-    public String getContent() {
-        return content;
-    }
-
-    /**
-     * Get the field's index in record. Indexes are zero-based.
-     * @return the index of the field in the record
-     */
-    public int getIndex() {
-        return index;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Field");
-        sb.append("[index=").append(index);
-        sb.append(", content='").append(content).append('\'');
-        sb.append(']');
+    public String getContentAsString() {
+        if (fields.size() == 0) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        //for each field, append the field content + delimiter
+        for (int i = 0; i < fields.size() - 1; i++) {
+            sb.append(qualifier);
+            sb.append(fields.get(i).getContent());
+            sb.append(qualifier);
+            sb.append(delimiter);
+        }
+        sb.append(qualifier).append(fields.get(fields.size() - 1).getContent()).append(qualifier); //for the last field, append only field content, no separator
         return sb.toString();
     }
+
+    /**
+     * Get field delimiter.
+     * @return field delimiter in the record
+     */
+    public String getDelimiter() {
+        return delimiter;
+    }
+
+    /**
+     * Get qualifier character.
+     * @return data qualifier
+     */
+    public String getQualifier() {
+        return qualifier;
+    }
+
 }

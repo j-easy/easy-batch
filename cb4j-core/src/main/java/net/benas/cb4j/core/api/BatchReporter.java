@@ -66,6 +66,11 @@ public interface BatchReporter {
     void reportErrorRecord(Record record, String error, Throwable throwable);
 
     /**
+     * Initialize the batch reporter.
+     */
+    void init();
+
+    /**
      * generate a batch execution report.
      */
     void generateReport();

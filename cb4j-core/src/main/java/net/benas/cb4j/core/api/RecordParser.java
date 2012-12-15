@@ -36,28 +36,16 @@ import net.benas.cb4j.core.model.Record;
 public interface RecordParser {
 
     /**
-     * Checks if a record is well formed : <br/>
-     * <ul>
-     *     <li>Fields number equal to expected record size</li>
-     *     <li>If data is enclosed with a character (quote, double quote,etc..), all fields must be enclosed with the same character</li>
-     * </ul>
-     * @param record the record to check
+     * Checks if a record is well formed.<br/>
+     * @param record the record to analyse
      * @return Error message or null if the record is well formed.
      */
     String analyseRecord(final String record);
 
     /**
-     * Getter for the actual record size.<br/>
-     * This method is used to report the cause of ignoring a record when it's actual size is not equal to the expected record size
-     * @param record the record to use
-     * @return record size
-     */
-    int getRecordSize(final String record);
-
-    /**
      * Parses a string and return a parsed {@link Record}.
-     * @param record a string containing the CSV record
-     * @param recordNumber the record number
+     * @param record the record as string
+     * @param recordNumber the record number in the input file
      * @return a parsed {@link Record}
      */
     Record parseRecord(final String record, long recordNumber);

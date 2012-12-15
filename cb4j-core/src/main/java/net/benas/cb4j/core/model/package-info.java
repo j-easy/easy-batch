@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains CB4J CSV model classes.
+ * This package contains CB4J model classes.
  */
 package net.benas.cb4j.core.model;

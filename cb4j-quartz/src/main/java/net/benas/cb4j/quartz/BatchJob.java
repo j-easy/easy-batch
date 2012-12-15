@@ -22,39 +22,26 @@
  *  THE SOFTWARE.
  */
 
-package net.benas.cb4j.core.api;
+package net.benas.cb4j.quartz;
+
+import net.benas.cb4j.core.api.BatchEngine;
+import net.benas.cb4j.core.util.BatchRunner;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 /**
- * Interface for record reader.
- *
- * This interface is not intended to be implemented nor used by framework users
- *
+ * Quartz Job implementation to launch CB4J batch instances.
  * @author benas (md.benhassine@gmail.com)
  */
-public interface RecordReader {
+public class BatchJob extends BatchRunner implements Job {
 
-    /**
-     * Read the next record from input file if available.
-     * @return the next record from input file
-     */
-    String readNextRecord();
+    public BatchJob(BatchEngine batchEngine) {
+        super(batchEngine);
+    }
 
-    /**
-     * Check if a next record is available from input file.
-     * @return true if there is a next available record from input file, false else
-     */
-    boolean hasNextRecord();
-
-    /**
-     * Calculate and return total records number in the input file.<br/>
-     * This method is used especially to calculate execution progress exposed as JMX attribute.
-     * @return total records number
-     */
-    long getTotalRecordsNumber();
-
-    /**
-     * Close the reader.
-     */
-    void close();
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        run();
+    }
 
 }

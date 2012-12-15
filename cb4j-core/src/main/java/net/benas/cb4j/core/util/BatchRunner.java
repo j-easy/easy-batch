@@ -33,7 +33,7 @@ import java.util.logging.Logger;
  * Utility class to launch a batch engine.
  * @author benas (md.benhassine@gmail.com)
  */
-public final class BatchRunner {
+public class BatchRunner {
 
     private Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
 
