@@ -400,9 +400,11 @@ public class BatchConfiguration {
         ObjectName name;
         try {
             name = new ObjectName("net.benas.cb4j.jmx:type=BatchMonitorMBean");
-            BatchMonitorMBean batchMonitorMBean = new BatchMonitor(batchReporter);
-            mbs.registerMBean(batchMonitorMBean, name);
-            logger.info("CB4J JMX MBean registered successfully as: " + name.getCanonicalName());
+            if (!mbs.isRegistered(name)) {
+                BatchMonitorMBean batchMonitorMBean = new BatchMonitor(batchReporter);
+                mbs.registerMBean(batchMonitorMBean, name);
+                logger.info("CB4J JMX MBean registered successfully as: " + name.getCanonicalName());
+            }
         } catch (Exception e) {
             String error = "Unable to register CB4J JMX MBean. Root exception is :" + e.getMessage();
             logger.warning(error);
