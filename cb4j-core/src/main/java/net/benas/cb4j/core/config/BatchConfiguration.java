@@ -149,6 +149,7 @@ public class BatchConfiguration {
         if (batchReporter == null) {
             batchReporter = new DefaultBatchReporterImpl();
         }
+        batchReporter.init();
 
         /*
          * Configure record validator with provided validators : if no custom validator registered, use default implementation
