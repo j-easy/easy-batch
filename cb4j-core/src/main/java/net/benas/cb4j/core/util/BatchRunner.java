@@ -30,7 +30,7 @@ import net.benas.cb4j.core.api.BatchEngine;
  * Utility class to launch a batch engine.
  * @author benas (md.benhassine@gmail.com)
  */
-public final class BatchRunner {
+public class BatchRunner {
 
     /**
      * The batch engine to use.
