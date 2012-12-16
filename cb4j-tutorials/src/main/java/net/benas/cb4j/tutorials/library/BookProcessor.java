@@ -6,7 +6,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.Transaction;
 
 /**
- * A book processor that inserts Book objects in database.
+ * A book processor that inserts Book objects in database.<br/>
+ *
+ * <strong>This implementation is kept simple for demonstration purpose. In production environment, one may define a
+ * commit interval to avoid performance issues of committing the transaction after each record insertion.</strong>
+ *
  * @author benas (md.benhassine@gmail.com)
  */
 public class BookProcessor implements RecordProcessor<Book> {

@@ -27,6 +27,7 @@
     <link href="../resources/css/sidebar.css" rel="stylesheet">
 
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script type="text/javascript" src="../resources/js/prettify.js"></script>
 
 </head>
 
@@ -104,30 +105,30 @@
                 <h2 id="1">1. Description</h2>
                 <p>In this tutorial, the goal is to process a CSV flat file containing books data and to load them in a library database using <a href="http://www.hibernate.org/">Hibernate</a>.
                     CB4J is easily integrated with hibernate thanks to it POJO-based development style. The input file named "<strong>books.csv</strong>" has the following content:</p>
-<pre class="prettyprint linenums">
-'9781430216407','Pro Spring dm Server','Gary Mak','2009-05-25'
-'9781430218418456','Expert Shell scripting','Ron Peters','2009-01-06'
-'9781430218517','Cisco Routers','Jason Neumann','2009-01-02'
-'9781430218890','Linux command line','Sander van Vugt','2009-04-22'
-'9781430219088','','Harley Stagner','2009-05-11'
-'9781430224259','Silverlight 4 lab','Andrew Troelsen','2009-09-14'
-'9781430224693','Windows Azure','Henry Li','2009-12-08'
-'9781430224976','Spring Enterprise recipes','Gary Mak','2009-11-20'
-'9781430225539','Java Google App Engine','Kyle Roche','2009-12-31'
-'9781430228028','Beginning Google Maps API 3','Gabriel Svennerberg','2010-07-27','203'
-'9781430228509','Beginning Hibernate','Jeff Linwood','2010-05-31'
-'9781430228899','JavaEE6 with Glassfish','Antonio Goncalves','2010-08-31'
-'9781430232889','Pro CSS','Antony Kennedy','2011-04-20'
-'9781430233213','Windows Power Shell','Hristo Deshev','2011-01-25'
-'9781430268727','Java FX 2','Weiqi Gao','2010-01-11'
-'9781430272151','Adobe Cold Fusion','Michael Deshev','2010-04-30'
-'9781590592779','Definitive Guide to Samba','Richard Sharpe','2004-01-12'
-'9781590593578','WiMax Operators Manual','Daniel Sweeney','2004-06-28'
-'9781590596746','Beginning Suse Linux','Keir Thomas','2006-11-10'
-'9781590597415','Expert MySql','Charles A. Bell','2007-01-22'
-'9781590598276','Pro Oracle Application Express','John Scott','2008-09-19'
-'9781590599686','Oracle Database 11g','Darl Kuhn','02/20/2009'
-</pre>
+<pre class="prettyprint lang-html">
+    '9781430216407','Pro Spring dm Server','Gary Mak','2009-05-25'
+    '9781430218418456','Expert Shell scripting','Ron Peters','2009-01-06'
+    '9781430218517','Cisco Routers','Jason Neumann','2009-01-02'
+    '9781430218890','Linux command line','Sander van Vugt','2009-04-22'
+5.  '9781430219088','','Harley Stagner','2009-05-11'
+    '9781430224259','Silverlight 4 lab','Andrew Troelsen','2009-09-14'
+    '9781430224693','Windows Azure','Henry Li','2009-12-08'
+    '9781430224976','Spring Enterprise recipes','Gary Mak','2009-11-20'
+    '9781430225539','Java Google App Engine','Kyle Roche','2009-12-31'
+10. '9781430228028','Beginning Google Maps API 3','Gabriel Svennerberg','2010-07-27','203'
+    '9781430228509','Beginning Hibernate','Jeff Linwood','2010-05-31'
+    '9781430228899','JavaEE6 with Glassfish','Antonio Goncalves','2010-08-31'
+    '9781430232889','Pro CSS','Antony Kennedy','2011-04-20'
+    '9781430233213','Windows Power Shell','Hristo Deshev','2011-01-25'
+15. '9781430268727','Java FX 2','Weiqi Gao','2010-01-11'
+    '9781430272151','Adobe Cold Fusion','Michael Deshev','2010-04-30'
+    '9781590592779','Definitive Guide to Samba','Richard Sharpe','2004-01-12'
+    '9781590593578','WiMax Operators Manual','Daniel Sweeney','2004-06-28'
+    '9781590596746','Beginning Suse Linux','Keir Thomas','2006-11-10'
+20. '9781590597415','Expert MySql','Charles A. Bell','2007-01-22'
+    '9781590598276','Pro Oracle Application Express','John Scott','2008-09-19'
+    '9781590599686','Oracle Database 11g','Darl Kuhn','02/20/2009'
+</pre><!--issue with linenums class:line numbering done manually-->
 
                 <p>Each record is composed of 4 fields:</p>
                 <ul>
@@ -221,6 +222,8 @@ Record #2 ['9781430218418456','Expert Shell scripting','Ron Peters','2009-01-06'
 Record #5 ['9781430219088','','Harley Stagner','2009-05-11'] is rejected, Error : The field Field[index=1, content=''] is not valid according to validation rule : [The field content should not be empty]
 Record #22 ['9781590599686','Oracle Database 11g','Darl Kuhn','02/20/2009'] is rejected, Error : Date <br/> value : '02/20/2009' cannot be parsed to date format : 'yyyy-MM-dd'
 </pre>
+
+                <p> <span class="label label-info">Note</span> To keep it simple, this tutorial uses an in-memory embedded <a href="http://hsqldb.org/">hsqldb</a> database.</p>
 
             </div>
 

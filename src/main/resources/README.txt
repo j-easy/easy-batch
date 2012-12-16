@@ -43,6 +43,8 @@ The distribution contains a set of ready to use CB4J examples :
 
     - Products statistics : An example of how to use CB4J to read a CSV file containing products data and calculate statistics about prices
 
+    - Book library : A use case of CB4J batch to load books data from a CSV file into a library database using Hibernate
+
 1- Build examples:
 ------------------------
 
@@ -70,5 +72,10 @@ To build CB4J examples, run the following commands from the distribution's root 
 -----------------------
  $>cd cb4j-tutorials
  $>mvn exec:java -PrunProductsTutorial
+
+ 2.4 Book library
+ -----------------------
+ $>cd cb4j-tutorials
+ $>mvn exec:java -PrunLibraryTutorial
 
 More details about these examples can be found in CB4J documentation.
