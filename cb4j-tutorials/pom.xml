@@ -52,6 +52,13 @@
             <version>3.0.7.RELEASE</version>
         </dependency>
 
+        <!-- Bean Validation provider -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.3.0.Final</version>
+        </dependency>
+
         <!--JFreeChart is used to generate a custom batch chart report -->
         <dependency>
             <groupId>org.jfree</groupId>
@@ -195,6 +202,26 @@
                                 <argument>${project.basedir}/src/main/resources/books.csv</argument>
                                 <argument>4</argument>
                                 <argument>'</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>runBeanValidationTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>net.benas.cb4j.integration.beanValidation.BeanValidationLauncher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/persons-jsr303.csv</argument>
+                                <argument>2</argument>
                             </arguments>
                         </configuration>
                     </plugin>
