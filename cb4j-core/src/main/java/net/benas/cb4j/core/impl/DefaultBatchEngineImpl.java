@@ -140,7 +140,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             try {
                 recordProcessor.preProcessRecord(typedRecord);
             } catch (RecordProcessingException e) { //thrown by the user deliberately
-                batchReporter.reportErrorRecord(currentParsedRecord, "a record pre-processing exception occurred, root cause = ", e);
+                batchReporter.reportErrorRecord(currentParsedRecord, "a record pre-processing exception occurred, root cause = " + e.getMessage());
                 continue;
             } catch (Exception e) { //thrown unexpectedly
                 batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected record pre-processing exception occurred, root cause = ", e);
@@ -151,7 +151,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             try {
                 recordProcessor.processRecord(typedRecord);
             } catch (RecordProcessingException e) { //thrown by the user deliberately
-                batchReporter.reportErrorRecord(currentParsedRecord, "a record processing exception occurred, root cause = ", e);
+                batchReporter.reportErrorRecord(currentParsedRecord, "a record processing exception occurred, root cause = " + e.getMessage());
                 continue;
             } catch (Exception e) { //thrown unexpectedly
                 batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected record processing exception occurred, root cause = ", e);
@@ -162,7 +162,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             try {
                 recordProcessor.postProcessRecord(typedRecord);
             } catch (RecordProcessingException e) { //thrown by the user deliberately
-                batchReporter.reportErrorRecord(currentParsedRecord, "a record post-processing exception occurred, root cause = ", e);
+                batchReporter.reportErrorRecord(currentParsedRecord, "a record post-processing exception occurred, root cause = " + e.getMessage());
             } catch (Exception e) { //thrown unexpectedly
                 batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected exception occurred during record post-processing, root cause = ", e);
             }
