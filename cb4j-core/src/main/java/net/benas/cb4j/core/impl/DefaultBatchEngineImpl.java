@@ -85,7 +85,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         logger.info("Total input records to process = " + totalRecordsNumber);
     }
 
-    public final void run() { //final : must not be overridden by framework users
+    public final BatchReport call() { //final : must not be overridden by framework users
 
         logger.info("CB4J engine is running...");
         batchReporter.setBatchStatus(BatchStatus.RUNNING);
@@ -176,6 +176,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         batchReporter.setEndTime(endTime);
         batchReporter.setProcessedRecordsNumber(abortOnFirstReject ? currentRecordNumber - 1 : currentRecordNumber);
 
+        return batchReporter.getBatchReport();
     }
 
     /**

@@ -24,6 +24,7 @@
 
 package net.benas.cb4j.core.impl;
 
+import net.benas.cb4j.core.api.BatchReport;
 import net.benas.cb4j.core.api.BatchReporter;
 import net.benas.cb4j.core.model.Record;
 import net.benas.cb4j.core.util.BatchConstants;
@@ -55,47 +56,12 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     protected final Logger errorRecordsReporter = Logger.getLogger(BatchConstants.LOGGER_CB4J_ERRORS);
 
     /**
-     * Total input records number.
+     * Batch report instance.
      */
-    protected long totalInputRecordsNumber;
+    protected BatchReport batchReport;
 
     /**
-     * Input records number.
-     */
-    protected long inputRecordsNumber;
-
-    /**
-     * Rejected records number.
-     */
-    protected long rejectedRecordsNumber;
-
-    /**
-     * Ignored records number.
-     */
-    protected long ignoredRecordsNumber;
-
-    /**
-     * Processed records number.
-     */
-    protected long processedRecordsNumber;
-
-    /**
-     * Error records number.
-     */
-    protected long errorRecordsNumber;
-
-    /**
-     * Batch execution start time.
-     */
-    protected long startTime;
-
-    /**
-     * Batch execution end time.
-     */
-    protected long endTime;
-
-    /**
-     * Batch execution status
+     * Batch execution status.
      */
     protected BatchStatus batchStatus;
 
@@ -109,11 +75,12 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      * {@inheritDoc}
      */
     public void init() {
-        totalInputRecordsNumber = 0;
-        ignoredRecordsNumber = 0;
-        rejectedRecordsNumber = 0;
-        processedRecordsNumber = 0;
-        errorRecordsNumber = 0;
+        batchReport = new BatchReport();
+        batchReport.setTotalInputRecordsNumber(0);
+        batchReport.setIgnoredRecordsNumber(0);
+        batchReport.setRejectedRecordsNumber(0);
+        batchReport.setProcessedRecordsNumber(0);
+        batchReport.setErrorRecordsNumber(0);
     }
 
     /**
@@ -121,21 +88,23 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      */
     public void generateReport() {
         logger.info("CB4J report : ");
+        long startTime = batchReport.getStartTime();
+        long endTime = batchReport.getEndTime();
         logger.info("Start time = " + new Date(startTime));
         logger.info("End time = " + new Date(endTime));
         logger.info("Batch duration = " + (endTime - startTime) + "ms");
-        logger.info("Total input records = " + totalInputRecordsNumber);
-        logger.info("Total ignored records = " + ignoredRecordsNumber);
-        logger.info("Total rejected records = " + rejectedRecordsNumber);
-        logger.info("Total records processed successfully = " + (processedRecordsNumber - errorRecordsNumber - ignoredRecordsNumber - rejectedRecordsNumber));
-        logger.info("Total records processed with error = " + errorRecordsNumber);
+        logger.info("Total input records = " + batchReport.getTotalInputRecordsNumber());
+        logger.info("Total ignored records = " + batchReport.getIgnoredRecordsNumber());
+        logger.info("Total rejected records = " + batchReport.getRejectedRecordsNumber());
+        logger.info("Total records processed successfully = " + (batchReport.getProcessedRecordsNumber() - batchReport.getErrorRecordsNumber() - batchReport.getIgnoredRecordsNumber() - batchReport.getRejectedRecordsNumber()));
+        logger.info("Total records processed with error = " + batchReport.getErrorRecordsNumber());
     }
 
     /**
      * {@inheritDoc}
      */
     public void reportRejectedRecord(final Record record, final String error) {
-        rejectedRecordsNumber++;
+        batchReport.setRejectedRecordsNumber(batchReport.getRejectedRecordsNumber() + 1);
         rejectedRecordsReporter.info(formatError(record, error, null, "is rejected, Error : "));
     }
 
@@ -143,7 +112,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      * {@inheritDoc}
      */
     public void reportRejectedRecord(final Record record, final String error, final Throwable throwable) {
-        rejectedRecordsNumber++;
+        batchReport.setRejectedRecordsNumber(batchReport.getRejectedRecordsNumber() + 1);
         rejectedRecordsReporter.info(formatError(record, error, throwable, "is rejected, Error : "));
     }
 
@@ -151,7 +120,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      * {@inheritDoc}
      */
     public void reportIgnoredRecord(final String record, final long recordNumber, final String error) {
-        ignoredRecordsNumber++;
+        batchReport.setIgnoredRecordsNumber(batchReport.getIgnoredRecordsNumber() + 1);
         StringBuilder stringBuilder = new StringBuilder();
         ignoredRecordsReporter.info(stringBuilder.append("Record #")
                 .append(recordNumber)
@@ -165,7 +134,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      * {@inheritDoc}
      */
     public void reportErrorRecord(final Record record, final String error, final Throwable throwable) {
-        errorRecordsNumber++;
+        batchReport.setErrorRecordsNumber(batchReport.getErrorRecordsNumber() + 1);
         errorRecordsReporter.info(formatError(record, error, throwable, "processed with error, "));
     }
 
@@ -173,7 +142,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      * {@inheritDoc}
      */
     public void reportErrorRecord(final Record record, final String error) {
-        errorRecordsNumber++;
+        batchReport.setErrorRecordsNumber(batchReport.getErrorRecordsNumber() + 1);
         errorRecordsReporter.info(formatError(record, error, null, "processed with error, "));
     }
 
@@ -181,35 +150,35 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      * {@inheritDoc}
      */
     public void setEndTime(final long endTime) {
-        this.endTime = endTime;
+        batchReport.setEndTime(endTime);
     }
 
     /**
      * {@inheritDoc}
      */
     public void setStartTime(final long startTime) {
-        this.startTime = startTime;
+        batchReport.setStartTime(startTime);
     }
 
     /**
      * {@inheritDoc}
      */
     public void setTotalInputRecordsNumber(final long totalInputRecords) {
-        this.totalInputRecordsNumber = totalInputRecords;
+        batchReport.setTotalInputRecordsNumber(totalInputRecords);
     }
 
     /**
      * {@inheritDoc}
      */
     public void setInputRecordsNumber(long inputRecordsNumber) {
-        this.inputRecordsNumber = inputRecordsNumber;
+        batchReport.setInputRecordsNumber(inputRecordsNumber);
     }
 
     /**
      * {@inheritDoc}
      */
     public void setProcessedRecordsNumber(long processedRecordsNumber) {
-        this.processedRecordsNumber = processedRecordsNumber;
+        batchReport.setProcessedRecordsNumber(processedRecordsNumber);
     }
 
     /**
@@ -223,49 +192,49 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      * {@inheritDoc}
      */
     public long getTotalInputRecordsNumber() {
-        return totalInputRecordsNumber;
+        return batchReport.getTotalInputRecordsNumber();
     }
 
     /**
      * {@inheritDoc}
      */
     public long getRejectedRecordsNumber() {
-        return rejectedRecordsNumber;
+        return batchReport.getRejectedRecordsNumber();
     }
 
     /**
      * {@inheritDoc}
      */
     public long getIgnoredRecordsNumber() {
-        return ignoredRecordsNumber;
+        return batchReport.getIgnoredRecordsNumber();
     }
 
     /**
      * {@inheritDoc}
      */
     public long getProcessedRecordsNumber() {
-        return processedRecordsNumber;
+        return batchReport.getProcessedRecordsNumber();
     }
 
     /**
      * {@inheritDoc}
      */
     public long getErrorRecordsNumber() {
-        return errorRecordsNumber;
+        return batchReport.getErrorRecordsNumber();
     }
 
     /**
      * {@inheritDoc}
      */
     public long getStartTime() {
-        return startTime;
+        return batchReport.getStartTime();
     }
 
     /**
      * {@inheritDoc}
      */
     public long getEndTime() {
-        return endTime;
+        return batchReport.getEndTime();
     }
 
     /**
@@ -279,7 +248,14 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      * {@inheritDoc}
      */
     public long getInputRecordsNumber() {
-        return inputRecordsNumber;
+        return batchReport.getInputRecordsNumber();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public BatchReport getBatchReport() {
+        return batchReport;
     }
 
     /**

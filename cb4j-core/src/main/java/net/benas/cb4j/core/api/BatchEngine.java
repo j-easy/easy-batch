@@ -24,6 +24,8 @@
 
 package net.benas.cb4j.core.api;
 
+import java.util.concurrent.Callable;
+
 /**
  * Interface for batch engine.<br/>
  *
@@ -31,7 +33,7 @@ package net.benas.cb4j.core.api;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public interface BatchEngine extends Runnable {
+public interface BatchEngine extends Callable<BatchReport> {
 
     /**
      * initialize the engine.

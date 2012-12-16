@@ -46,9 +46,9 @@ public class MyCustomBatchReporter extends DefaultBatchReporterImpl {
      */
     private PieDataset createDataset() {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("Total ignored records",ignoredRecordsNumber);
-        dataset.setValue("Total rejected records", rejectedRecordsNumber);
-        dataset.setValue("Total processed records", totalInputRecordsNumber - (rejectedRecordsNumber + ignoredRecordsNumber));
+        dataset.setValue("Total ignored records", batchReport.getIgnoredRecordsNumber());
+        dataset.setValue("Total rejected records", batchReport.getRejectedRecordsNumber());
+        dataset.setValue("Total processed records", batchReport.getTotalInputRecordsNumber() - (batchReport.getRejectedRecordsNumber() + batchReport.getIgnoredRecordsNumber()));
         return dataset;
     }
 

@@ -25,7 +25,10 @@
 package net.benas.cb4j.core.util;
 
 import net.benas.cb4j.core.api.BatchEngine;
+import net.benas.cb4j.core.api.BatchReport;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,26 +45,46 @@ public class BatchRunner {
      */
     private BatchEngine batchEngine;
 
+    /**
+     * The executor service used to submit batch task and get result.
+     */
+    ExecutorService executorService;
+
     public BatchRunner(BatchEngine batchEngine) {
         this.batchEngine = batchEngine;
+        executorService = Executors.newSingleThreadExecutor();
     }
 
     /**
      * Run the batch engine.
      */
-    public void run() {
+    public BatchReport run() {
+
         try {
             batchEngine.init();
         } catch (Exception e) {
             logger.log(Level.SEVERE, "An exception occurred during engine initialization. " +
                     "In order to avoid any unexpected behavior during batch execution due to this exception, execution is aborted. Root error : ", e);
-            return;// for security reason, abort execution
+            return null;// for security reason, abort execution
         }
-        batchEngine.run();
+
+        BatchReport batchReport = null;
+        try {
+            batchReport = executorService.submit(batchEngine).get();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "An unexpected exception occurred during engine execution, root error : ", e);
+            return null;
+        }
+
         try {
             batchEngine.shutdown();
         } catch (Exception e) {
             logger.log(Level.SEVERE, "An unexpected exception occurred during engine finalization, root error : ", e);
+            return batchReport;
         }
+
+        executorService.shutdown();
+        return batchReport;
+
     }
 }

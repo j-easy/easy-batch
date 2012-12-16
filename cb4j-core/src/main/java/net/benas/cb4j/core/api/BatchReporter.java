@@ -172,4 +172,10 @@ public interface BatchReporter {
      */
     BatchStatus getBatchStatus();
 
+    /**
+     * get the batch execution report.
+     * @return the batch execution report
+     */
+    BatchReport getBatchReport();
+
 }
