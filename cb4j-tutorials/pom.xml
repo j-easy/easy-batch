@@ -26,6 +26,19 @@
             <version>1.2.0-SNAPSHOT</version>
         </dependency>
 
+        <!-- Dependencies for quartz integration showcase-->
+        <dependency>
+            <groupId>net.benas.cb4j</groupId>
+            <artifactId>cb4j-quartz</artifactId>
+            <version>1.2.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+
         <!--JFreeChart is used to generate a custom batch chart report -->
         <dependency>
             <groupId>org.jfree</groupId>
