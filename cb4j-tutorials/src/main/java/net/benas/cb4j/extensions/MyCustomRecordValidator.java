@@ -1,4 +1,4 @@
-package net.benas.cb4j.tutorials;
+package net.benas.cb4j.extensions;
 
 import net.benas.cb4j.core.api.FieldValidator;
 import net.benas.cb4j.core.impl.DefaultRecordValidatorImpl;
