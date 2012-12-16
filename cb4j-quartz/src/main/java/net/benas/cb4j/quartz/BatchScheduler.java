@@ -33,7 +33,6 @@ import org.quartz.spi.JobFactory;
 
 import java.util.Date;
 
-import static org.quartz.CalendarIntervalScheduleBuilder.calendarIntervalSchedule;
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
@@ -46,12 +45,12 @@ import static org.quartz.TriggerBuilder.newTrigger;
 public class BatchScheduler {
 
     /**
-     * The name of CB4J job trigger
+     * The name of CB4J job trigger.
      */
     public static final String CB4J_BATCH_JOB_TRIGGER = "cb4j-batch-job-trigger";
 
     /**
-     * The name of CB4J batch job
+     * The name of CB4J batch job.
      */
     public static final String CB4J_BATCH_JOB = "cb4j-batch-job";
 
