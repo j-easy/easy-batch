@@ -172,6 +172,14 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     /**
      * {@inheritDoc}
      */
+    public void reportErrorRecord(final Record record, final String error) {
+        errorRecordsNumber++;
+        errorRecordsReporter.info(formatError(record, error, null, "processed with error, "));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void setEndTime(final long endTime) {
         this.endTime = endTime;
     }

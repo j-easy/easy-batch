@@ -61,6 +61,13 @@ public interface BatchReporter {
      * report a record processed with error.
      * @param record the record processed with error
      * @param error the cause error
+     */
+    void reportErrorRecord(Record record, String error);
+
+    /**
+     * report a record processed with error.
+     * @param record the record processed with error
+     * @param error the cause error
      * @param throwable the thrown exception that causes the record to be rejected
      */
     void reportErrorRecord(Record record, String error, Throwable throwable);
