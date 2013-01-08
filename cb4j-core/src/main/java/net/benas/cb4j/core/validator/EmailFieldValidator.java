@@ -25,10 +25,6 @@
 package net.benas.cb4j.core.validator;
 
 import net.benas.cb4j.core.api.FieldValidator;
-import net.benas.cb4j.core.model.Field;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Email validator implementation.<br/>
@@ -36,9 +32,13 @@ import java.util.regex.Pattern;
  * @author benas (md.benhassine@gmail.com)
  */
 public class EmailFieldValidator extends RegExpFieldValidator implements FieldValidator {
+
+    /**
+     * Regular expression for email format.
+     */
     public static final String REGULAR_EXPRESSION = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Za-z]{2,4}$";
     
-    public EmailFieldValidator(){
+    public EmailFieldValidator() {
         super(REGULAR_EXPRESSION);
     }
 

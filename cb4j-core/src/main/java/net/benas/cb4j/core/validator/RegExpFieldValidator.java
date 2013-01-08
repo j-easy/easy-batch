@@ -27,9 +27,6 @@ package net.benas.cb4j.core.validator;
 import net.benas.cb4j.core.api.FieldValidator;
 import net.benas.cb4j.core.model.Field;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Regular expression validator implementation.<br/>
  * This validator should be used to validate field content against a regular expression

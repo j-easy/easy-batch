@@ -25,10 +25,6 @@
 package net.benas.cb4j.core.validator;
 
 import net.benas.cb4j.core.api.FieldValidator;
-import net.benas.cb4j.core.model.Field;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Numeric field validator implementation.<br/>
@@ -36,12 +32,13 @@ import java.util.regex.Pattern;
  * @author benas (md.benhassine@gmail.com)
  */
 public class NumericFieldValidator extends RegExpFieldValidator implements FieldValidator {
-    public static final String REGULAR_EXPRESSION = "^[-+]?[0-9]*\\.?[0-9]+$";
 
     /**
-     * {@inheritDoc}
+     * Regular expression for numeric values.
      */
-    public NumericFieldValidator(){
+    public static final String REGULAR_EXPRESSION = "^[-+]?[0-9]*\\.?[0-9]+$";
+
+    public NumericFieldValidator() {
         super(REGULAR_EXPRESSION);
     }
     
