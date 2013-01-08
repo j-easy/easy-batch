@@ -35,19 +35,16 @@ import java.util.regex.Pattern;
  * This validator should be used to validate that a field content is a numeric value
  * @author benas (md.benhassine@gmail.com)
  */
-public class NumericFieldValidator implements FieldValidator {
+public class NumericFieldValidator extends RegExpFieldValidator implements FieldValidator {
+    public static final String REGULAR_EXPRESSION = "^[-+]?[0-9]*\\.?[0-9]+$";
 
     /**
      * {@inheritDoc}
      */
-    public boolean isValidField(final Field field) {
-        String expression = "^[-+]?[0-9]*\\.?[0-9]+$";
-        CharSequence inputStr = field.getContent();
-        Pattern pattern = Pattern.compile(expression);
-        Matcher matcher = pattern.matcher(inputStr);
-        return matcher.matches();
+    public NumericFieldValidator(){
+        super(REGULAR_EXPRESSION);
     }
-
+    
     /**
      * {@inheritDoc}
      */

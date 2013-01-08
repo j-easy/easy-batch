@@ -50,10 +50,8 @@ public class RegExpFieldValidator implements FieldValidator {
      * {@inheritDoc}
      */
     public boolean isValidField(final Field field) {
-        CharSequence inputStr = field.getContent();
-        Pattern pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(inputStr);
-        return matcher.matches();
+        String inputStr = field.getContent();
+        return inputStr.matches(regexp);
     }
 
     /**
