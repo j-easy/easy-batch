@@ -66,6 +66,15 @@
                             <li><a href="../tutorials/library.html">Book Library</a></li>
                         </ul>
                     </li>
+                    <li class="dropdown">
+                        <a id="miscellaneous" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-asterisk"></i> Miscellaneous<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="miscellaneous">
+                            <li><a href="../miscellaneous/spring.html">Using Spring with CB4J</a></li>
+                            <li><a href="../miscellaneous/quartz.html">Scheduling CB4J with Quartz</a></li>
+                            <li><a href="../miscellaneous/jmx.html">Monitoring CB4J with JMX</a></li>
+                            <li><a href="../miscellaneous/beanValidation.html">Using Bean Validation</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -91,6 +100,11 @@
                     <li><a href="../tutorials/customers.html">Customers ETL</a></li>
                     <li><a href="../tutorials/products.html">Product Statistics</a></li>
                     <li><a href="../tutorials/library.html">Book Library</a></li>
+                    <li class="nav-header">Miscellaneous</li>
+                    <li><a href="../miscellaneous/spring.html">Using Spring with CB4J</a></li>
+                    <li><a href="../miscellaneous/quartz.html">Scheduling CB4J with Quartz</a></li>
+                    <li><a href="../miscellaneous/jmx.html">Monitoring CB4J with JMX</a></li>
+                    <li><a href="../miscellaneous/beanValidation.html">Using Bean Validation</a></li>
                 </ul>
             </div>
         </div>
@@ -117,75 +131,7 @@
                     <li>Throw a <code class="prettyprint">net.benas.cb4j.core.api.RecordProcessingException</code> to not process invalid records</li>
                 </ul>
 
-                <p>The following is an example of using Bean Validation with the <a href="../tutorials/helloworld.html">Hello World tutorial</a>.</p>
-
-                <p>The Greeting POJO is annotated with Bean Validation Annotations :</p>
-
-<pre class="prettyprint">
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-public class Greeting {
-
-    @NotNull
-    @Min(value = 1, message = "sequence number should be at least = 1")
-    private long sequence;
-
-    @NotNull
-    private String name;
-
-    //getters and setters omitted
-}
-</pre>
-
-                <p>The record processor pre-validates Greeting POJO before processing it :</p>
-
-<pre class="prettyprint">
-import net.benas.cb4j.core.api.RecordProcessingException;
-import net.benas.cb4j.core.impl.DefaultRecordProcessorImpl;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import java.util.Set;
-
-/**
- * A processor that pre-validate Greeting POJO using Bean Validation API.
- */
-public class GreetingProcessor extends DefaultRecordProcessorImpl&lt;Greeting&gt; {
-
-    private Validator validator ;
-
-    public GreetingProcessor() {
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
-    }
-
-    @Override
-    public void preProcessRecord(Greeting greeting) throws RecordProcessingException {
-
-    Set&lt;ConstraintViolation&lt;Greeting&gt;&gt; constraintViolations = validator.validate(greeting);
-        if (constraintViolations.size() > 0) {
-            String error  = "";
-            for (ConstraintViolation&lt;Greeting&gt; constraintViolation : constraintViolations) {
-                error += constraintViolation.getMessage();
-            }
-            throw new RecordProcessingException(error);
-        }
-     }
-
-     @Override
-     public void processRecord(Greeting greeting) throws RecordProcessingException {
-        System.out.println(greeting.getGreetingMessage());
-     }
-
-}
-</pre>
-
-                <p>In the typical <a href="architecture.html#3">CB4J workflow</a>, it is not the record processor role to validate records, but this is the most "natural" way to use Bean Validation with CB4J.</p>
-
-                <div class="alert alert-info">
-                    <span class="label label-info">Note</span> To use Bean Validation with CB4J, you have to add a JSR 303 provider such as <a href="http://www.hibernate.org/subprojects/validator.html">Hibernate validator</a> in your classpath.
-                </div>
+                <p>You can find a complete example of using Bean Validation with CB4J <a href="../miscellaneous/beanValidation.html">here</a>.</p>
 
                 <h2 id="2" class="section">2. Does CB4J provide any implementation of CSV to Object mapping?</h2>
 
@@ -228,12 +174,10 @@ public class GreetingProcessor extends DefaultRecordProcessorImpl&lt;Greeting&gt
 
                 <h2 id="4" class="section">4. Can I monitor CB4J execution with JMX?</h2>
 
-                <p>Yes. By default, CB4J enables a JMX MBean at startup. You can use any standard JMX compliant tool to monitor CB4J attributes. For more details about this feature, please refer to the <a href="userGuide.html#4">user guide</a>.</p>
-
+                <p>Yes. By default, CB4J enables a JMX MBean at startup. You can use any standard JMX compliant tool to monitor CB4J attributes. For more details about this feature, please refer to the <a href="../miscellaneous/jmx.html">JMX section</a>.</p>
 
                 <h2 id="5" class="section">5. Can I use Spring with CB4J?</h2>
-
-                <p>Not for the moment. This is planned to be implemented in version 1.2 as mentioned in the <a href="../releaseNotes.html#roadmap">roadmap</a>. Stay tuned!</p>
+                <p>Yes. You do not have to write any specific code to use Spring along with CB4J. You can find a complete example of using Spring with CB4J <a href="../miscellaneous/spring.html">here</a>.</p>
 
             </div>
 

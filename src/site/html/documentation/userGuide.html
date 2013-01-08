@@ -59,6 +59,15 @@
                             <li><a href="../tutorials/library.html">Book Library</a></li>
                         </ul>
                     </li>
+                    <li class="dropdown">
+                        <a id="miscellaneous" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-asterisk"></i> Miscellaneous<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="miscellaneous">
+                            <li><a href="../miscellaneous/spring.html">Using Spring with CB4J</a></li>
+                            <li><a href="../miscellaneous/quartz.html">Scheduling CB4J with Quartz</a></li>
+                            <li><a href="../miscellaneous/jmx.html">Monitoring CB4J with JMX</a></li>
+                            <li><a href="../miscellaneous/beanValidation.html">Using Bean Validation</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -83,7 +92,6 @@
                             <li><a href="userGuide.html#1">1. Introduction</a></li>
                             <li><a href="userGuide.html#2">2. Using CB4J</a></li>
                             <li><a href="userGuide.html#3">3. Extending CB4J</a></li>
-                            <li><a href="userGuide.html#4">4. Monitoring CB4J</a></li>
                         </ul>
                     </li>
                     <li><a href="faq.html">CB4J FAQ</a></li>
@@ -92,6 +100,11 @@
                     <li><a href="../tutorials/customers.html">Customers ETL</a></li>
                     <li><a href="../tutorials/products.html">Product Statistics</a></li>
                     <li><a href="../tutorials/library.html">Book Library</a></li>
+                    <li class="nav-header">Miscellaneous</li>
+                    <li><a href="../miscellaneous/spring.html">Using Spring with CB4J</a></li>
+                    <li><a href="../miscellaneous/quartz.html">Scheduling CB4J with Quartz</a></li>
+                    <li><a href="../miscellaneous/jmx.html">Monitoring CB4J with JMX</a></li>
+                    <li><a href="../miscellaneous/beanValidation.html">Using Bean Validation</a></li>
                 </ul>
             </div>
         </div>
@@ -343,9 +356,9 @@ batchRunner.run();
 
             <h3 id="3.1">3.1 Writing a custom batch engine</h3>
 
-            <p>The internal CB4J engine extends the <code class="prettyprint">java.lang.Runnable</code> interface with two methods to initialize and shutdown the engine:</p>
+            <p>The internal CB4J engine extends the <code class="prettyprint">java.util.concurrent.Callable</code> interface with two methods to initialize and shutdown the engine:</p>
 <pre class="prettyprint">
-public interface BatchEngine extends Runnable {
+public interface BatchEngine extends Callable&lt;BatchReport&gt; {
 
     /**
     * initialize the engine
@@ -526,10 +539,12 @@ public class MyCustomBatchReporter extends DefaultBatchReporterImpl {
     */
     private PieDataset createDataset() {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("Total ignored records",ignoredRecordsNumber);
-        dataset.setValue("Total rejected records", rejectedRecordsNumber);
+        dataset.setValue("Total ignored records", batchReport.getIgnoredRecordsNumber());
+        dataset.setValue("Total rejected records", batchReport.getRejectedRecordsNumber());
         dataset.setValue("Total processed records",
-                            inputRecordsNumber - (rejectedRecordsNumber + ignoredRecordsNumber));
+                batchReport.getTotalInputRecordsNumber() - (
+                batchReport.getRejectedRecordsNumber() + batchReport.getIgnoredRecordsNumber()
+                ));
         return dataset;
     }
 
@@ -565,23 +580,6 @@ public class MyCustomBatchReporter extends DefaultBatchReporterImpl {
 <pre class="prettyprint">
 batchConfiguration.registerBatchReporter(new MyCustomBatchReporter("/data/cb4j/chartReport.png"))
 </pre>
-
-            <h2 id="4" class="section">4. Monitoring CB4J</h2>
-
-            <p>CB4J allows you to monitor batch execution and progress using JMX. By default, CB4J enables at startup a JMX MBean named <code>net.benas.cb4j.core.jmx.BatchMonitorMBean</code>.</p>
-            <p>You can use any standard JMX compliant tool to monitor CB4J's JMX MBean attributes such as:
-            <ul>
-                <li>Batch execution status (initializing, running or finalizing)</li>
-                <li>Execution start time and progress</li>
-                <li>The number of ignored, rejected and processed records</li>
-                <li>etc</li>
-            </ul>
-            </p>
-
-            <p>The screenshot below shows an example of monitoring CB4J using <a href="http://visualvm.java.net/">VisualVM</a>:</p>
-
-            <div align="center"><img src="../resources/img/cb4j-jmx.png"/></div>
-
 
             </div>
 
