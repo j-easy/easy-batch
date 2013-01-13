@@ -92,15 +92,15 @@ public class BatchScheduler {
     }
 
     /**
-     * Setup a trigger to start now and repeat with interval period.
+     * Setup a trigger to start at a fixed point of time and repeat with interval period.
      * @param interval the repeat interval in minutes
      */
-    public void scheduleNowWithInterval(int interval) {
+    public void scheduleAtWithInterval(Date startTime, int interval) {
         SimpleScheduleBuilder simpleScheduleBuilder = simpleSchedule().withIntervalInMinutes(interval);
         simpleScheduleBuilder = simpleScheduleBuilder.repeatForever();
         trigger = newTrigger()
                 .withIdentity(CB4J_BATCH_JOB_TRIGGER)
-                .startNow()
+                .startAt(startTime)
                 .withSchedule(simpleScheduleBuilder)
                 .forJob(CB4J_BATCH_JOB)
                 .build();

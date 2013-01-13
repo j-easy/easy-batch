@@ -29,6 +29,7 @@ import net.benas.cb4j.core.validator.NumericFieldValidator;
 import net.benas.cb4j.tutorials.helloworld.GreetingMapper;
 import net.benas.cb4j.tutorials.helloworld.GreetingProcessor;
 
+import java.util.Date;
 import java.util.Properties;
 
 import net.benas.cb4j.quartz.BatchScheduler;
@@ -40,7 +41,7 @@ import net.benas.cb4j.quartz.BatchSchedulerException;
  * The {@link BatchScheduler} API lets you schedule CB4J executions as follows :
  * <ul>
  *     <li>At a fixed point of time using {@link BatchScheduler#scheduleAt(java.util.Date)}</li>
- *     <li>Repeatedly with predefined interval using {@link BatchScheduler#scheduleNowWithInterval(int)}</li>
+ *     <li>Repeatedly with predefined interval using {@link BatchScheduler#scheduleAtWithInterval(java.util.Date, int)}</li>
  *     <li>Using unix cron-like expression with {@link BatchScheduler#scheduleCron(String)}</li>
  * </ul>
  *
@@ -76,11 +77,11 @@ public class QuartzLauncher {
         batchConfiguration.registerRecordProcessor(new GreetingProcessor());
 
         /*
-         * Configure the engine and schedule it to run every hour
+         * Configure the engine and schedule it to start now and run every hour
          */
         try {
             BatchScheduler batchScheduler = new BatchScheduler(batchConfiguration);
-            batchScheduler.scheduleNowWithInterval(60);
+            batchScheduler.scheduleAtWithInterval(new Date(), 60);
             batchScheduler.start();
         } catch (BatchSchedulerException e) {
             System.err.println(e.getMessage());
