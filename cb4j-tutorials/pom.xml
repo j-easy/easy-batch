@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.benas.cb4j</groupId>
         <artifactId>cb4j</artifactId>
-        <version>1.2.0-SNAPSHOT</version>
+        <version>1.2.0</version>
     </parent>
 
     <groupId>net.benas.cb4j</groupId>
@@ -23,14 +23,14 @@
         <dependency>
             <groupId>net.benas.cb4j</groupId>
             <artifactId>cb4j-core</artifactId>
-            <version>1.2.0-SNAPSHOT</version>
+            <version>1.2.0</version>
         </dependency>
 
         <!-- Dependencies for quartz integration showcase-->
         <dependency>
             <groupId>net.benas.cb4j</groupId>
             <artifactId>cb4j-quartz</artifactId>
-            <version>1.2.0-SNAPSHOT</version>
+            <version>1.2.0</version>
         </dependency>
 
         <dependency>
