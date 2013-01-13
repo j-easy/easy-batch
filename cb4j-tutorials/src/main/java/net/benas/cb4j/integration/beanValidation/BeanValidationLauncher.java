@@ -44,8 +44,8 @@ public class BeanValidationLauncher {
 
         if (args == null || args.length < 2){
             System.err.println("[CB4J] Configuration parameters not specified, usage : ");
-            System.err.println("java net.benas.cb4j.tutorials.helloworld.Launcher path/to/data/file recordSize delimiter");
-            System.err.println("Example : java net.benas.cb4j.tutorials.helloworld.Launcher /data/cb4j/persons.csv 2 ,");
+            System.err.println("java net.benas.cb4j.integration.beanValidation.BeanValidationLauncher path/to/data/file recordSize delimiter");
+            System.err.println("Example : java net.benas.cb4j.integration.beanValidation.BeanValidationLauncher /data/cb4j/persons-jsr303.csv 2 ,");
             System.exit(1);
         }
 
