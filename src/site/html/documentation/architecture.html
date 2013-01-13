@@ -92,7 +92,7 @@
                     <li class="active">
                         <a href="architecture.html">Architecture</a>
                         <ul>
-                            <li><a href="architecture.html#1">1. CSV data model</a></li>
+                            <li><a href="architecture.html#1">1. Data model</a></li>
                             <li><a href="architecture.html#2">2. Main components</a></li>
                             <li><a href="architecture.html#3">3. Processing workflow</a></li>
                         </ul>
@@ -121,18 +121,18 @@
 
             <div class="row-fluid">
 
-                <h2 id="1">1. CSV data model</h2>
+                <h2 id="1">1. Data model</h2>
 
                 <p>CB4J uses a very simple and natural data model for dealing with CSV files. The main classes are :</p>
 
                 <ul>
-                    <li><code>Field</code> : represents a field in a CSV record. A field has a content and an index</li>
+                    <li><code>Field</code> : represents a field in a record. A field has a content and an index</li>
                     <li><code>Record</code> : represents a CSV record as an ordered list of fields</li>
                 </ul>
 
                 <p align="center"><img src="../resources/img/csv.png"/></p>
                 
-                These classes are defined in <code>net.benas.cb4j.core.model</code> package.
+                <p>These classes are defined in <code>net.benas.cb4j.core.model</code> package.</p>
 
                 <h2 id="2" class="section">2. Main components</h2>
 
@@ -149,9 +149,9 @@
 
                 <p>Each of these components needs to be configured to work properly and as expected. CB4J uses a declarative approach to register configuration parameters. A typical use case of configuring CB4J is to :</p>
                 <ul>
-                    <li>Provide CSV configuration parameters (Input file path, file encoding,field delimiter,etc)</li>
+                    <li>Provide configuration parameters (Input file path, file encoding,field delimiter,etc)</li>
                     <li>Register field validation rules (field size, data type and format,etc) that will be used by the record validator to validate data</li>
-                    <li>Register CSV to Object mapping logic that will be used by the record mapper</li>
+                    <li>Register Record to Object mapping logic that will be used by the record mapper</li>
                     <li>Register record processing business logic that will be applied by the record processor</li>
                 </ul>
 
@@ -179,7 +179,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td>Provide CSV/Object mapping logic</td>
+                        <td>Provide Record/Object mapping logic</td>
                         <td class="center-td"><i class="icon-ok-circle"></i></td>
                         <td></td>
                     </tr>
@@ -199,12 +199,12 @@
                         <td class="center-td"><i class="icon-ok-circle"></i></td>
                     </tr>
                     <tr>
-                        <td>Check CSV record well-formedness</td>
+                        <td>Check record well-formedness</td>
                         <td></td>
                         <td class="center-td"><i class="icon-ok-circle"></i></td>
                     </tr>
                     <tr>
-                        <td>Parse CSV record and split it into a list of fields</td>
+                        <td>Parse record and split it into a list of fields</td>
                         <td></td>
                         <td class="center-td"><i class="icon-ok-circle"></i></td>
                     </tr>
@@ -214,7 +214,7 @@
                         <td class="center-td"><i class="icon-ok-circle"></i></td>
                     </tr>
                     <tr>
-                        <td>Apply CSV/Object mapping logic</td>
+                        <td>Apply Record/Object mapping logic</td>
                         <td></td>
                         <td class="center-td"><i class="icon-ok-circle"></i></td>
                     </tr>
@@ -243,7 +243,7 @@
                 <p align="center"><img src="../resources/img/workflow.png"/></p>
 
                 <ol>
-                    <li>The engine reads the input CSV file line by line until the end of file. If the end of file is reached, the engine generates the batch report and terminates the execution</li>
+                    <li>The engine reads the input file line by line until the end of file. If the end of file is reached, the engine generates the batch report and terminates the execution</li>
                     <li>The next record is read as a string containing raw data</li>
                     <li>The record parser checks the record for well-formedness : If the record is not well formed, then it is ignored and the engine moves to the next one. If the record is well formed, then it is passed to the next step to be parsed</li>
                     <li>The record parser parses the current record to split it into fields ordered by index and containing raw data</li>

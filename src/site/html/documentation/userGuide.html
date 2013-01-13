@@ -121,9 +121,9 @@
 
             <p>To work effectively with CB4J, you have to follow these steps:</p>
             <ul>
-                <li>Provide CSV configuration parameters (Input file path, file encoding,field delimiter,etc)</li>
+                <li>Provide configuration parameters (Input file path, file encoding,field delimiter,etc)</li>
                 <li>Provide data validation rules (field size, data type and format,etc) that will be used by the record validator to validate data</li>
-                <li>Register CSV to Object mapping logic that will be used by the record mapper</li>
+                <li>Register Record to Object mapping logic that will be used by the record mapper</li>
                 <li>Register record processing business logic that will be applied by the record processor</li>
             </ul>
             
@@ -171,10 +171,22 @@
                     <td>false</td>
                 </tr>
                 <tr>
+                    <td>input.record.type</td>
+                    <td>Specify the record type : Delimiter-Separated Values (DSV) or Fixed-Length Record (FLR)</td>
+                    <td>false</td>
+                    <td>DSV</td>
+                </tr>
+                <tr>
                     <td>input.field.delimiter</td>
-                    <td>Fields delimiter in a record</td>
+                    <td>When using DSV record type, this parameter is used to specify the delimiter</td>
                     <td>false</td>
                     <td>comma ','</td>
+                </tr>
+                <tr>
+                    <td>input.field.lengths</td>
+                    <td>When using FRL record type, this parameter is used to specify fields lengths as a comma separated values. Example: 3,5,4,10</td>
+                    <td>true (only for FLR)</td>
+                    <td>N/A</td>
                 </tr>
                 <tr>
                     <td>input.field.trim</td>
@@ -282,7 +294,7 @@ try {
                 <span class="label label-info">Info</span> CB4J throws a <code class="prettyprint">BatchConfigurationException</code> in the following cases:
                 <ul>
                     <li>One of the mandatory parameters is not specified</li>
-                    <li>A <code class="prettyprint">java.io.FileNotFoundException</code> is thrown when trying to open the input CSV file</li>
+                    <li>A <code class="prettyprint">java.io.FileNotFoundException</code> is thrown when trying to open the input file</li>
                     <li>Log files for ignored and rejected records cannot be used</li>
                     <li>One of the mandatory services is not specified</li>
                 </ul>
@@ -315,9 +327,9 @@ batchConfiguration.registerFieldValidators(1,field1Validators);
                 <span class="label label-info">Info</span> When using multiple validators, the validation order applied by CB4J is the insertion order of validators in the list.
             </div>
 
-            <h3 id="2.3">2.3 Mapping CSV records to Java objects</h3>
+            <h3 id="2.3">2.3 Mapping records to Java objects</h3>
 
-            <p>To map a CSV record to a domain Java object, you have to implement the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface and register your implementation at configuration time as follows:</p>
+            <p>To map a record to a domain Java object, you have to implement the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface and register your implementation at configuration time as follows:</p>
             <p><code class="prettyprint">batchConfiguration.registerRecordMapper(new MyRecordMapper());</code></p>
             
             <p>The <a href="../tutorials/customers.html">customers ETL tutorial</a> shows an example of record mapper implementation.</p>
@@ -328,7 +340,7 @@ batchConfiguration.registerFieldValidators(1,field1Validators);
             
             <h3 id="2.4">2.4 Writing processing logic</h3>
 
-            <p>When using CB4J, you process an object view of a CSV record. To define your record processing business logic, you have to implement the <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interface and register your implementation at configuration time as follows:</p>
+            <p>When using CB4J, you process an object view of a record. To define your record processing business logic, you have to implement the <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interface and register your implementation at configuration time as follows:</p>
             <p><code class="prettyprint">batchConfiguration.registerRecordProcessor(new MyRecordProcessor());</code></p>
 
             <div class="alert alert-error">
@@ -484,7 +496,7 @@ batchConfiguration.registerRecordValidator(myCustomRecordValidator);
 </pre>
 
             <div class="alert alert-info">
-                <span class="label label-info">Info</span> field indexes in CSV records are zero-based.
+                <span class="label label-info">Info</span> field indexes in records are zero-based.
             </div>
 
             <h3 id="3.4">3.4 Writing a custom reporter</h3>
