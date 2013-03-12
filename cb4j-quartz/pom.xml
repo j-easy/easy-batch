@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.benas.cb4j</groupId>
         <artifactId>cb4j</artifactId>
-        <version>1.2.0</version>
+        <version>1.3.0-SNAPSHOT</version>
     </parent>
 
     <groupId>net.benas.cb4j</groupId>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>net.benas.cb4j</groupId>
             <artifactId>cb4j-core</artifactId>
-            <version>1.2.0</version>
+            <version>1.3.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>

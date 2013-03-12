@@ -6,7 +6,7 @@
 
     <groupId>net.benas.cb4j</groupId>
     <artifactId>cb4j</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>CB4J Parent Module</name>
     <description>CSV Batch 4 Java parent project</description>
