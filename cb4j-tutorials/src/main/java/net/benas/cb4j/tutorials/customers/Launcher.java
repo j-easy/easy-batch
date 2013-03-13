@@ -26,14 +26,13 @@ package net.benas.cb4j.tutorials.customers;
 
 import net.benas.cb4j.core.api.BatchEngine;
 import net.benas.cb4j.core.config.BatchConfiguration;
+import net.benas.cb4j.core.config.BatchConfigurationBuilder;
 import net.benas.cb4j.core.config.BatchConfigurationException;
 import net.benas.cb4j.core.impl.DefaultBatchEngineImpl;
 import net.benas.cb4j.core.util.BatchRunner;
 import net.benas.cb4j.core.validator.DateFieldValidator;
 import net.benas.cb4j.core.validator.EmailFieldValidator;
 import net.benas.cb4j.core.validator.FixedLengthNumericFieldValidator;
-
-import java.util.Properties;
 
 /**
  * Main class to run the customers tutorial
@@ -50,11 +49,13 @@ public class Launcher {
             System.exit(1);
         }
 
-        Properties configurationProperties = new Properties();
-        configurationProperties.setProperty("input.data.path",args[0]);
-        configurationProperties.setProperty("input.record.size",args[1]);
-
-        BatchConfiguration batchConfiguration = new BatchConfiguration(configurationProperties);
+        /*
+         * Create a batch configuration instance
+         */
+        BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
+                .inputDataFile(args[0])
+                .recordSize(Integer.parseInt(args[1]))
+                .build();
 
         /*
          * Register field validators
