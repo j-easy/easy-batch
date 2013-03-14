@@ -147,12 +147,13 @@ x,Ben
                 <h2 id="3" class="section">3. Implementation using CB4J</h2>
                 <h3 id="3.1">3.1 Configuration</h3>
                 <p>First, we need to configure CB4J with CSV parameters. By default, CB4J uses the comma ',' character as delimiter which is fine for this tutorial, so no configuration is needed for field delimiter.</p>
-                <p>Nevertheless, we have to specify the path of input file, the record expected size and the <strong>skipHeader</strong> parameters. This is can be done as follows :</p>
+                <p>Nevertheless, we have to specify the path of input file, the record expected size and the <strong>skipHeader</strong> parameters. This is can be done using the <code class="prettyprint">BatchConfigurationBuilder</code> as follows :</p>
 <pre class="prettyprint">
-Properties configurationProperties = new Properties();
-configurationProperties.setProperty("input.data.path","/data/cb4j/cb4j-tutorials/src/main/resources/persons.csv");
-configurationProperties.setProperty("input.record.size","2");
-configurationProperties.setProperty("input.data.skipHeader", "true");
+BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
+        .inputDataFile("/data/cb4j/cb4j-tutorials/src/main/resources/persons.csv")
+        .recordSize(2)
+        .skipHeader(true)
+        .build();
 </pre>
                 <h3 id="3.2">3.2 Validating data</h3>
                 <p>In this tutorial, the first field should be numeric. To ensure this constraint, we have to register the built-in <code class="prettyprint">NumericFieldValidator</code> for the first field. This can be done as follows:</p>
