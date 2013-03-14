@@ -133,11 +133,12 @@
 
             <h3 id="2.1">2.1 Configuring the engine</h3>
 
-            <p>To configure CB4J, you must supply a set of predefined parameters (see table below). You can configure CB4J in two ways:</p>
+            <p>To configure CB4J, you must supply a set of predefined parameters (see table below). You can configure CB4J in 3 ways:</p>
 
             <ul>
                 <li>With a <code class="prettyprint">java.util.Properties</code> object instance</li>
                 <li>With a standard Java (key,value pairs or xml) properties file</li>
+                <li>With a <code class="prettyprint">BatchConfigurationBuilder</code> object instance</li>
             </ul>
 
             <p>Configuration parameters are defined in the following table:</p>
@@ -278,6 +279,21 @@ BatchConfiguration batchConfiguration = new FileSystemBatchConfiguration("/data/
 BatchConfiguration batchConfiguration = new FileSystemXmlBatchConfiguration("/data/cb4j/myConfig.xml");
 </pre>
             <span class="label label-info">Info</span> If the configuration file is in the classpath, you can use the <code class="prettyprint">ClassPathXmlBatchConfiguration</code> class instead and supply the file name to its constructor.
+
+            <h4>Using a BatchConfigurationBuilder object instance</h4>
+            <p>The <code class="prettyprint">BatchConfigurationBuilder</code> class is an implementation of the builder pattern that allows you to set configuration parameters programmatically without worrying about parameters names.</p>
+            <p>This class provides convenient methods to set each parameter with an appropriate method name. The following snippet shows how to user this builder to configure CB4J:</p>
+
+<pre class="prettyprint">
+BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
+        .inputDataFile("/data/cb4j/myData.csv")
+        .recordSize(7)
+        .delimiter(";")
+        .skipHeader(true)
+        .build();
+</pre>
+
+            <p>For all details about available methods, please refer to the javadoc of <code class="prettyprint">BatchConfigurationBuilder</code> class.</p>
 
             <h4>Configuring CB4J engine</h4>
             <p>Once you have initialized CB4J with all parameters (and registered mandatory services, see next section ), you can configure the engine as follows:</p>
