@@ -10,7 +10,7 @@ CB4J addresses common tedious tasks such as reading, parsing and validating CSV 
 
  * POJO-based development : Map CSV records to your domain objects so you can still work with the Object Oriented aspect of Java.</p>
 
- * Declarative data validation : CB4J lets you declare data validation rules with extensible built-in validators for common requirements.
+ * Declarative data validation : CB4J lets you declare data validation constraints with extensible built-in validators for common requirements.
 
  * Easy to learn and use : CB4J uses a simple and natural CSV model and API. You can learn it easily and start using it quickly.
 

@@ -37,7 +37,7 @@ public class MyCustomFieldValidator implements FieldValidator{
         return field.getContent().startsWith("XP");
     }
 
-    public String getValidationRuleDescription() {
+    public String getValidationConstraintDescription() {
         return "field content must start with XP";
     }
 

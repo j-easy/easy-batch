@@ -54,7 +54,7 @@ public class RegExpFieldValidator implements FieldValidator {
     /**
      * {@inheritDoc}
      */
-    public String getValidationRuleDescription() {
+    public String getValidationConstraintDescription() {
         return "The field content should match the regular expression = '" + regexp + "'";
     }
 

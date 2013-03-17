@@ -268,7 +268,7 @@ Hi Tommy! Your sequence number is 1
                 <p>As expected, CB4J has generated a greeting message only for the valid record <code>1,Tommy</code>. </p>
 
                 <p>Moreover, CB4J has generated a simple report about the batch execution time, the total number of input records, ignored and rejected records.
-                In addition to that, CB4J has generated two log files containing the ignored and rejected records and indicating which validation rule was violated and caused the rejection of each record. </p>
+                In addition to that, CB4J has generated two log files containing the ignored and rejected records and indicating which validation constraint was violated and caused the rejection of each record. </p>
 
                 <p>The following is the content of the ignored records log file <code>/data/cb4j/cb4j-tutorials/src/main/resources/persons-ignored.log</code> :</p>
 <pre>
@@ -276,7 +276,7 @@ Record #2 [2,Harry,Smith] is ignored, Error : record size 3 not equal to expecte
 </pre>
                 <p>The following is the content of the rejected records log file <code>/data/cb4j/cb4j-tutorials/src/main/resources/persons-rejected.log</code> :</p>
 <pre>
-Record #3 [x,Ben] is rejected, Error : The field Field[index=0, content='x'] is not valid according to <br/>validation rule : [The field content should be a numeric value]
+Record #3 [x,Ben] is rejected, Error : The field Field[index=0, content='x'] is not valid according to <br/>validation constraint : [The field content should be a numeric value]
 </pre>
 
             </div>

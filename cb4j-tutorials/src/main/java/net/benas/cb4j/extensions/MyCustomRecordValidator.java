@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A custom validator to implement validation rule that involves multiple fields at the same time
+ * A custom validator to implement validation constraint that involves multiple fields at the same time
  * @author benas (md.benhassine@gmail.com)
  */
 public class MyCustomRecordValidator extends DefaultRecordValidatorImpl {

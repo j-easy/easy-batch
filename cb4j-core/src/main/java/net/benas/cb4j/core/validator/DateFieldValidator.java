@@ -87,7 +87,7 @@ public class DateFieldValidator implements FieldValidator {
     /**
      * {@inheritDoc}
      */
-    public String getValidationRuleDescription() {
+    public String getValidationConstraintDescription() {
         return "The field content should be a valid date with format: " + dateFormat;
     }
 

@@ -122,7 +122,7 @@
             <p>To work effectively with CB4J, you have to follow these steps:</p>
             <ul>
                 <li>Provide configuration parameters (Input file path, file encoding,field delimiter,etc)</li>
-                <li>Provide data validation rules (field size, data type and format,etc) that will be used by the record validator to validate data</li>
+                <li>Provide data validation constraints (field size, data type and format,etc) that will be used by the record validator to validate data</li>
                 <li>Register Record to Object mapping logic that will be used by the record mapper</li>
                 <li>Register record processing business logic that will be applied by the record processor</li>
             </ul>
@@ -328,7 +328,7 @@ try {
 
             <h4>2.2.2 Registering multiple validators</h4>
 
-            <p>You may want to apply multiple validation rules to a single field. For example, the first field must not be empty and must be a date value having the <code class="prettyprint">dd/MM/yyyy</code> format.
+            <p>You may want to apply multiple validation constraints to a single field. For example, the first field must not be empty and must be a date value having the <code class="prettyprint">dd/MM/yyyy</code> format.
             To register multiples validators for this field, you have to declare a list containing all validators:</p>
 
 <pre class="prettyprint">
@@ -415,7 +415,7 @@ public interface BatchEngine extends Callable&lt;BatchReport&gt; {
             <p>To write a custom field validator, you have to implement the <code class="prettyprint">FieldValidator</code> interface. This interface contains the following methods:</p>
             <ul>
                 <li><code class="prettyprint">public boolean isValidField(final Field field)</code>: This method should contain the validation logic for a field</li>
-                <li><code class="prettyprint">public String getValidationRuleDescription()</code>: This method should return a description of the validation rule implemented by the validator. This description will be used to report the cause of record rejection</li>
+                <li><code class="prettyprint">public String getValidationConstraintDescription()</code>: This method should return a description of the validation constraint implemented by the validator. This description will be used to report the cause of record rejection</li>
             </ul>
 
             <p>In this section, we will show an example of custom validator which validates that a field value must start with the string 'XP'.</p>
@@ -427,7 +427,7 @@ public class MyCustomFieldValidator implements FieldValidator {
         return field.getContent().startsWith("XP");
     }
 
-    public String getValidationRuleDescription() {
+    public String getValidationConstraintDescription() {
         return "field content must start with XP";
     }
 
@@ -443,9 +443,9 @@ batchConfiguration.registerFieldValidator(1,new MyCustomFieldValidator());
 
             <h3 id="3.3">3.3 Writing a custom record validator</h3>
 
-<p>            By default, CB4J considers a record as valid if all its fields are valid according to declared validation rules. But this default behavior works only if validation logic for each field is independent form other fields.
+<p>            By default, CB4J considers a record as valid if all its fields are valid according to declared validation constraints. But this default behavior works only if validation logic for each field is independent form other fields.
 
-            CB4J provides a simple way to extend this default behavior if validation rules involve multiple fields at the same time.</p>
+            CB4J provides a simple way to extend this default behavior if validation constraints involve multiple fields at the same time.</p>
 
            <p> In this section, we will use the following record format as example:</p>
 
@@ -455,7 +455,7 @@ foo;foobar
 foo;boobar
 </pre>
 
-            <p>The validation rules are the following:</p>
+            <p>The validation constraints are the following:</p>
             <ul>
                 <li>All fields are required</li>
                 <li>field1 should have a length of 3 characters</li>

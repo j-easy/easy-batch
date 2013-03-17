@@ -34,17 +34,17 @@ public interface FieldValidator {
 
     /**
      * Checks if a field is valid.<br/>
-     * A field is valid if it's content satisfies a validation rule provided by the implementation of this interface
+     * A field is valid if it's content satisfies a validation constraint provided by the implementation of this interface
      * @param field the field to validate
      * @return true if the field is valid, false else
      */
     boolean isValidField(final Field field);
 
     /**
-     * Getter for the validation rule description.<br/>
-     * This description will be used in rejected records log file to report which validation rule was violated
-     * @return a human readable validation rule description
+     * Getter for the validation constraint description.<br/>
+     * This description will be used in rejected records log file to report which validation constraint was violated
+     * @return a human readable validation constraint description
      */
-    String getValidationRuleDescription();
+    String getValidationConstraintDescription();
 
 }
