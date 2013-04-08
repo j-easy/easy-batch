@@ -19,7 +19,7 @@ CB4J addresses common tedious tasks such as reading, parsing and validating CSV 
  * JMX monitoring : Monitor your batch execution and progress using JMX at runtime and in real time.
 
 ## Documentation
-All CB4J documentation can be found at [http://benas.github.com/cb4j/][cb4j-doc].
+All CB4J documentation can be found at [http://benas.github.io/cb4j/][cb4j-doc].
 
 You can also find some slides about CB4J at [speaker deck][].
 
@@ -34,7 +34,7 @@ You can also contribute with pull requests on github or by contacting the author
 Many thanks upfront!
 
 [speaker deck]: https://speakerdeck.com/benas/cb4j
-[cb4j-doc]: http://benas.github.com/cb4j/
+[cb4j-doc]: http://benas.github.io/cb4j/
 [MIT License]: http://opensource.org/licenses/mit-license.php/
 [issue tracker]: https://github.com/benas/cb4j/issues
 [by mail]: mailto:md.benhassine@gmail.com?subject=[CB4J]
