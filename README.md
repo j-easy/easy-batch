@@ -19,7 +19,10 @@ CB4J addresses common tedious tasks such as reading, parsing and validating CSV 
  * JMX monitoring : Monitor your batch execution and progress using JMX at runtime and in real time.
 
 ## Documentation
-All CB4J documentation can be found at [http://benas.github.com/cb4j/][cb4j-doc]
+
+The current stable version of CB4J is 1.2.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/cb4j/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/cb4j/).
+
+All documentation about this version can be found at [http://benas.github.com/cb4j/][cb4j-doc]
 
 ## License
 CB4J is released under the [MIT License][].
