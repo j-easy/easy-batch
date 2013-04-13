@@ -31,6 +31,7 @@ import net.benas.cb4j.core.model.Record;
 import net.benas.cb4j.core.util.BatchConstants;
 import net.benas.cb4j.core.util.BatchStatus;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -61,6 +62,8 @@ public class DefaultBatchEngineImpl implements BatchEngine {
 
     protected BatchMonitor batchMonitor;
 
+    protected RollbackHandler rollbackHandler;
+
     /*
      * User defined parameters used by the engine
      */
@@ -74,6 +77,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         this.batchReporter = batchConfiguration.getBatchReporter();
         this.recordMapper = batchConfiguration.getRecordMapper();
         this.batchMonitor = batchConfiguration.getBatchMonitor();
+        this.rollbackHandler = batchConfiguration.getRollbackHandler();
         this.abortOnFirstReject = batchConfiguration.getAbortOnFirstReject();
     }
 
@@ -159,6 +163,14 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                 continue;
             } catch (Exception e) { //thrown unexpectedly
                 batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected record processing exception occurred, root cause = ", e);
+                if (rollbackHandler != null) {
+                    try {
+                        rollbackHandler.rollback(typedRecord);
+                        logger.warning("Due to unexpected exception, the processing of record " + typedRecord + " was rolled back.");
+                    } catch (Exception rollbackException) {
+                        logger.log(Level.SEVERE, "an exception occurred during record " + typedRecord + " rolling back.", rollbackException);
+                    }
+                }
                 continue;
             }
 

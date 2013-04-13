@@ -363,7 +363,28 @@ batchConfiguration.registerFieldValidators(1,field1Validators);
                 <span class="label label-important">Important</span> You have to use the <strong>same</strong> type T when implementing <code class="prettyprint">RecordMapper&lt;T&gt;</code> and <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interfaces
             </div>
 
-            <h3 id="2.5">2.5 Running the batch</h3>
+            <h3 id="2.5">2.5 Writing rollback logic</h3>
+
+            <p>CB4J provides basic transaction support through the <code class="prettyprint">net.benas.cb4j.core.api.RollbackHandler</code> interface:</p>
+<pre class="prettyprint">
+public interface RollbackHandler&lt;T&gt; {
+
+    public void rollback(T typedRecord) throws Exception;
+
+}
+</pre>
+            <p>This interface is a callback interface that allows you to define the rollback code to execute whenever an unexpected exception occurs during record processing.</p>
+            <p>To register you rollback handler, use the method <code class="prettyprint">registerRollbackHandler</code> of <code class="prettyprint">BatchConfiguration</code> class as follows:</p>
+
+<pre class="prettyprint">
+batchConfiguration.registerRollbackHandler(myRollbackHandler());
+</pre>
+
+            <div class="alert alert-info">
+                <span class="label label-info">Note</span> Your roll back handler will not be called if you throw <strong>deliberately</strong> a <code class="prettyprint">RecordProcessingException</code> during record processing. It is executed only when an unexpected exception occurs.
+            </div>
+
+            <h3 id="2.6">2.6 Running the batch</h3>
 
             <p>Once you have configured CB4J using the configuration API, you can launch the batch execution as follows:</p>
 

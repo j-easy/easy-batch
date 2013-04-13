@@ -81,6 +81,8 @@ public class BatchConfiguration {
 
     private BatchMonitor batchMonitor;
 
+    private RollbackHandler rollbackHandler;
+
     /**
      * Initialize configuration from a properties file.
      * @param configurationFile the configuration file name
@@ -483,6 +485,14 @@ public class BatchConfiguration {
         this.batchReporter = batchReporter;
     }
 
+    /**
+     * Register a rollback handler for record processing.
+     * @param rollbackHandler the rollback handler to register
+     */
+    public void registerRollbackHandler(RollbackHandler rollbackHandler) {
+        this.rollbackHandler = rollbackHandler;
+    }
+
     /*
     * Getters for CB4J services and parameters used by the engine
     */
@@ -516,5 +526,9 @@ public class BatchConfiguration {
 
     public BatchMonitor getBatchMonitor() {
         return batchMonitor;
+    }
+
+    public RollbackHandler getRollbackHandler() {
+        return rollbackHandler;
     }
 }
