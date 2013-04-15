@@ -21,6 +21,7 @@
         <module>cb4j-core</module>
         <module>cb4j-tutorials</module>
         <module>cb4j-quartz</module>
+        <module>cb4j-tools</module>
     </modules>
 
     <developers>
