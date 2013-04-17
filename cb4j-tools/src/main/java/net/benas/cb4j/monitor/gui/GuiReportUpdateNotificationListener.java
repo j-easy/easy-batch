@@ -36,8 +36,14 @@ import javax.management.NotificationListener;
  */
 public class GuiReportUpdateNotificationListener implements NotificationListener {
 
+    /**
+     * The batch report instance that handles the current execution progress.
+     */
     private BatchReport batchReport;
 
+    /**
+     * The GUI to update when an execution progress notification is received via JMX.
+     */
     private CB4JMonitor cb4JMonitor;
 
     public GuiReportUpdateNotificationListener(CB4JMonitor cb4JMonitor) {

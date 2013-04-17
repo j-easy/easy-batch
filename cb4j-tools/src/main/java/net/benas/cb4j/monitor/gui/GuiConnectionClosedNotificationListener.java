@@ -35,8 +35,14 @@ import javax.management.NotificationListener;
  */
 public class GuiConnectionClosedNotificationListener implements NotificationListener {
 
+    /**
+     * The report update notification listener used to get the last update when the connection to JMX server is closed.
+     */
     private GuiReportUpdateNotificationListener guiReportUpdateNotificationListener;
 
+    /**
+     * The GUI to update when a connection-closed event is received via JMX.
+     */
     private CB4JMonitor cb4JMonitor;
 
     public GuiConnectionClosedNotificationListener(GuiReportUpdateNotificationListener guiReportUpdateNotificationListener, CB4JMonitor cb4JMonitor) {

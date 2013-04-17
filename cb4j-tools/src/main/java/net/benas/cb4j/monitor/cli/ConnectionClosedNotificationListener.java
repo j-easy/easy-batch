@@ -36,6 +36,9 @@ import java.util.Date;
  */
 public class ConnectionClosedNotificationListener implements NotificationListener {
 
+    /**
+     * The report update handler that handles execution progress report.
+     */
     private ReportUpdateNotificationListener reportUpdateNotificationListener;
 
     public ConnectionClosedNotificationListener(ReportUpdateNotificationListener reportUpdateNotificationListener) {

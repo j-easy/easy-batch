@@ -36,6 +36,9 @@ import javax.management.NotificationListener;
  */
 public class ReportUpdateNotificationListener implements NotificationListener {
 
+    /**
+     * The batch report instance that handles the current execution progress.
+     */
     private BatchReport batchReport;
 
     /**
