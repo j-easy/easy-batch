@@ -105,23 +105,66 @@
 
             <div class="row-fluid">
 
-                <h2>Description</h2>
+                <h2>Introduction</h2>
 
-                <p>CB4J allows you to monitor batch execution and progress using JMX. By default, CB4J enables at startup a JMX MBean named <code>net.benas.cb4j.core.jmx.BatchMonitorMBean</code>.</p>
-                <p>You can use any standard JMX compliant tool to monitor CB4J's JMX MBean attributes such as:
+                <p>CB4J allows you to monitor batch execution and progress at runtime using JMX. By default, CB4J enables at startup a JMX MBean named <code>net.benas.cb4j.jmx.BatchMonitorMBean</code>
+                    exposing the following attributes:
+
                 <ul>
                     <li>Batch execution status (initializing, running or finalizing)</li>
+                    <li>Batch execution start and end time</li>
+                    <li>The total number of records to process</li>
+                    <li>The current record being processed</li>
+                    <li>The number of ignored, rejected, processed and error records</li>
                     <li>Execution progress</li>
-                    <li>The number of ignored, rejected and processed records</li>
-                    <li>etc</li>
                 </ul>
                 </p>
+                <p>To monitor CB4J's JMX MBean attributes, you can use any standard JMX compliant tool such as <a href="http://visualvm.java.net/">VisualVM</a>.</p>
 
-                <h2>Sample usage</h2>
-
-                <p>The screenshot below shows an example of monitoring CB4J using <a href="http://visualvm.java.net/">VisualVM</a>:</p>
+                <p>The screenshot below shows an example of monitoring CB4J using VisualVM :</p>
 
                 <div align="center"><img src="../resources/img/cb4j-jmx.png"/></div>
+                <br/>
+
+                <h2>CB4J custom JMX clients</h2>
+                <p>CB4J comes with custom JMX clients that allow you to monitor <strong>asynchronously</strong> the execution progress in <strong>real time</strong>.</p>
+                <p>For the moment, CB4J provides two clients:</p>
+                <ul>
+                    <li>A command line client</li>
+                    <li>A graphical client</li>
+                </ul>
+                <p>To use these clients, you need to start your batch and activate remote JMX monitoring with the following system properties:</p>
+                <p><code>-Dcom.sun.management.jmxremote.port=9999</code></p>
+                <p><code>-Dcom.sun.management.jmxremote.authenticate=false</code></p>
+                <p><code>-Dcom.sun.management.jmxremote.ssl=false</code></p>
+                <p>This will allow CB4J custom clients to listen remotely to JMX notifications on the port you specified (9999 in this case).</p>
+                <p>On the client side, you need to add <code>cb4j-tools</code> module to your classpath as follow:</p>
+<pre class="prettyprint">
+    &lt;dependency&gt;
+        &lt;groupId&gt;net.benas.cb4j&lt;/groupId&gt;
+        &lt;artifactId&gt;cb4j-tools&lt;/artifactId&gt;
+        &lt;version&gt;${version}&lt;/version&gt;
+    &lt;/dependency&gt;
+</pre>
+                <p>to be able to launch clients as described in sections below.</p>
+
+                <h3>Command line client</h3>
+
+                <p>To launch the command line client, run the following command:</p>
+                <p><code>java net.benas.cb4j.monitor.cli.Launcher localhost 9999</code></p>
+                <p>This will launch the command line client to listen to JMX notifications sent by CB4J batch running on localhost on port 9999.</p>
+                <p>The following screenshot captures the command line client monitoring the batch execution progress in real time:</p>
+                <div align="center"><img src="../resources/img/cli-jmx-client.png"/></div>
+                <p>When the batch execution is finished, the client will be updated with a last notification about the batch end time and duration:</p>
+                <div align="center"><img src="../resources/img/cli-jmx-client-finished.png"/></div>
+
+                <h3>Graphical client</h3>
+
+                <p>To launch the graphical client, run the following command:</p>
+                <p><code>java net.benas.cb4j.monitor.gui.GUILauncher localhost 9999</code></p>
+                <p>This will launch the graphical client to listen to JMX notifications sent by CB4J batch running on localhost on port 9999.</p>
+                <p>The following screenshot captures the graphical client monitoring the batch execution progress in real time:</p>
+                <div align="center"><img src="../resources/img/gui-jmx-client.png"/></div>
 
             </div>
 
