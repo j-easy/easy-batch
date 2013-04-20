@@ -489,7 +489,7 @@ public class BatchConfiguration {
      * Register a rollback handler for record processing.
      * @param rollBackHandler the rollback handler to register
      */
-    public void registerRollbackHandler(RollBackHandler rollBackHandler) {
+    public void registerRollBackHandler(RollBackHandler rollBackHandler) {
         this.rollBackHandler = rollBackHandler;
     }
 

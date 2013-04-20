@@ -367,17 +367,17 @@ batchConfiguration.registerFieldValidators(1,field1Validators);
 
             <p>CB4J provides basic transaction support through the <code class="prettyprint">net.benas.cb4j.core.api.RollBackHandler</code> interface:</p>
 <pre class="prettyprint">
-public interface RollbackHandler&lt;T&gt; {
+public interface RollBackHandler&lt;T&gt; {
 
     public void rollback(T typedRecord) throws Exception;
 
 }
 </pre>
             <p>This interface is a callback interface that allows you to define the rollback code to execute whenever an unexpected exception occurs during record processing.</p>
-            <p>To register you rollback handler, use the method <code class="prettyprint">registerRollbackHandler</code> of <code class="prettyprint">BatchConfiguration</code> class as follows:</p>
+            <p>To register you rollback handler, use the method <code class="prettyprint">registerRollBackHandler</code> of <code class="prettyprint">BatchConfiguration</code> class as follows:</p>
 
 <pre class="prettyprint">
-batchConfiguration.registerRollbackHandler(myRollbackHandler());
+batchConfiguration.registerRollBackHandler(myRollBackHandler());
 </pre>
 
             <div class="alert alert-info">
