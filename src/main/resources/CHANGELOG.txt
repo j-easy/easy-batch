@@ -2,6 +2,14 @@ CB4J FRAMEWORK CHANGELOG
 ========================
 https://github.com/benas/cb4j
 
+Changes in version 1.3.0 (2013-04-21)
+-------------------------------------
+
+* Added basic record processing transaction support
+* Added new JMX custom clients : command line and graphical asynchronous real time monitors
+* Added batch configuration builder
+* Updated documentation and Javadoc
+
 Changes in version 1.2.0 (2013-01-13)
 -------------------------------------
 
