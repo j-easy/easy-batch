@@ -29,7 +29,7 @@ package net.benas.cb4j.core.api;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public interface RollbackHandler<T> {
+public interface RollBackHandler<T> {
 
     /**
      * Rollback the processing of a record. This method is called when an unexpected exception occurs during record processing.<br/>

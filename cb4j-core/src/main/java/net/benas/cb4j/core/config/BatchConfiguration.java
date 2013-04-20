@@ -81,7 +81,7 @@ public class BatchConfiguration {
 
     private BatchMonitor batchMonitor;
 
-    private RollbackHandler rollbackHandler;
+    private RollBackHandler rollBackHandler;
 
     /**
      * Initialize configuration from a properties file.
@@ -487,10 +487,10 @@ public class BatchConfiguration {
 
     /**
      * Register a rollback handler for record processing.
-     * @param rollbackHandler the rollback handler to register
+     * @param rollBackHandler the rollback handler to register
      */
-    public void registerRollbackHandler(RollbackHandler rollbackHandler) {
-        this.rollbackHandler = rollbackHandler;
+    public void registerRollbackHandler(RollBackHandler rollBackHandler) {
+        this.rollBackHandler = rollBackHandler;
     }
 
     /*
@@ -528,7 +528,7 @@ public class BatchConfiguration {
         return batchMonitor;
     }
 
-    public RollbackHandler getRollbackHandler() {
-        return rollbackHandler;
+    public RollBackHandler getRollBackHandler() {
+        return rollBackHandler;
     }
 }
