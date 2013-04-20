@@ -249,7 +249,7 @@
                     <li>The record parser parses the current record to split it into fields ordered by index and containing raw data</li>
                     <li>The record validator applies validation constraints for each field. If a validation constraint is violated for one field, then the record is rejected. If all fields are valid, then the parsed record is passed to the next step to be mapped to a Java object</li>
                     <li>At this point, the record mapper is supplied with a parsed record containing raw data that have passed the declared validation constraints. The parsed record is mapped to the declared Java object type. CB4J considers mapping exception as errors that should not pass the processing step. Hence, the engine rejects records that cannot be mapped to objects with typed fields. This is a design choice to minimize unexpected errors during record processing.</li>
-                    <li>Finally, the business logic is executed by the record processor. At this point, the record processor is supplied with a Java object populated with validated and typed data. If an exception occurs during record processing, the error is reported. Otherwise, the engine moves to the next record.</li>
+                    <li>Finally, the business logic is executed by the record processor. At this point, the record processor is supplied with a Java object populated with validated and typed data. If an exception occurs during record processing, a rollback is performed (if a rollback handler callback is registered) and the error is reported. Otherwise, the engine moves to the next record.</li>
                 </ol>
 
             </div>
