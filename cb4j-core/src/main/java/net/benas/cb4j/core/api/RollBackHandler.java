@@ -31,6 +31,12 @@ package net.benas.cb4j.core.api;
  */
 public interface RollbackHandler<T> {
 
-    public void rollback(T typedRecord) throws Exception;
+    /**
+     * Rollback the processing of a record. This method is called when an unexpected exception occurs during record processing.<br/>
+     * <strong>Warning :</strong> this method is not called if you throw a {@link RecordProcessingException} deliberately during record processing.
+     * @param record the record to rollback
+     * @throws Exception thrown if a an exception occurs during rollback
+     */
+    public void rollback(T record) throws Exception;
 
 }
