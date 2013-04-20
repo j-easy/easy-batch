@@ -24,12 +24,14 @@
 
 package net.benas.cb4j.core.api;
 
+import java.io.Serializable;
+
 /**
  * Class holding batch execution report.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class BatchReport {
+public class BatchReport implements Serializable {
 
     /**
      * Total input records number.

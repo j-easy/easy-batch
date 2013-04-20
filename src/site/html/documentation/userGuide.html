@@ -122,7 +122,7 @@
             <p>To work effectively with CB4J, you have to follow these steps:</p>
             <ul>
                 <li>Provide configuration parameters (Input file path, file encoding,field delimiter,etc)</li>
-                <li>Provide data validation rules (field size, data type and format,etc) that will be used by the record validator to validate data</li>
+                <li>Provide data validation constraints (field size, data type and format,etc) that will be used by the record validator to validate data</li>
                 <li>Register Record to Object mapping logic that will be used by the record mapper</li>
                 <li>Register record processing business logic that will be applied by the record processor</li>
             </ul>
@@ -133,11 +133,12 @@
 
             <h3 id="2.1">2.1 Configuring the engine</h3>
 
-            <p>To configure CB4J, you must supply a set of predefined parameters (see table below). You can configure CB4J in two ways:</p>
+            <p>To configure CB4J, you must supply a set of predefined parameters (see table below). You can configure CB4J in 3 ways:</p>
 
             <ul>
                 <li>With a <code class="prettyprint">java.util.Properties</code> object instance</li>
                 <li>With a standard Java (key,value pairs or xml) properties file</li>
+                <li>With a <code class="prettyprint">BatchConfigurationBuilder</code> object instance</li>
             </ul>
 
             <p>Configuration parameters are defined in the following table:</p>
@@ -279,6 +280,21 @@ BatchConfiguration batchConfiguration = new FileSystemXmlBatchConfiguration("/da
 </pre>
             <span class="label label-info">Info</span> If the configuration file is in the classpath, you can use the <code class="prettyprint">ClassPathXmlBatchConfiguration</code> class instead and supply the file name to its constructor.
 
+            <h4>Using a BatchConfigurationBuilder object instance</h4>
+            <p>The <code class="prettyprint">BatchConfigurationBuilder</code> class is an implementation of the builder pattern that allows you to set configuration parameters programmatically without worrying about parameters names.</p>
+            <p>This class provides convenient methods to set each parameter with an appropriate method name. The following snippet shows how to user this builder to configure CB4J:</p>
+
+<pre class="prettyprint">
+BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
+        .inputDataFile("/data/cb4j/myData.csv")
+        .recordSize(7)
+        .delimiter(";")
+        .skipHeader(true)
+        .build();
+</pre>
+
+            <p>For all details about available methods, please refer to the javadoc of <code class="prettyprint">BatchConfigurationBuilder</code> class.</p>
+
             <h4>Configuring CB4J engine</h4>
             <p>Once you have initialized CB4J with all parameters (and registered mandatory services, see next section ), you can configure the engine as follows:</p>
 
@@ -312,7 +328,7 @@ try {
 
             <h4>2.2.2 Registering multiple validators</h4>
 
-            <p>You may want to apply multiple validation rules to a single field. For example, the first field must not be empty and must be a date value having the <code class="prettyprint">dd/MM/yyyy</code> format.
+            <p>You may want to apply multiple validation constraints to a single field. For example, the first field must not be empty and must be a date value having the <code class="prettyprint">dd/MM/yyyy</code> format.
             To register multiples validators for this field, you have to declare a list containing all validators:</p>
 
 <pre class="prettyprint">
@@ -347,7 +363,28 @@ batchConfiguration.registerFieldValidators(1,field1Validators);
                 <span class="label label-important">Important</span> You have to use the <strong>same</strong> type T when implementing <code class="prettyprint">RecordMapper&lt;T&gt;</code> and <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interfaces
             </div>
 
-            <h3 id="2.5">2.5 Running the batch</h3>
+            <h3 id="2.5">2.5 Writing rollback logic</h3>
+
+            <p>CB4J provides basic transaction support through the <code class="prettyprint">net.benas.cb4j.core.api.RollbackHandler</code> interface:</p>
+<pre class="prettyprint">
+public interface RollbackHandler&lt;T&gt; {
+
+    public void rollback(T typedRecord) throws Exception;
+
+}
+</pre>
+            <p>This interface is a callback interface that allows you to define the rollback code to execute whenever an unexpected exception occurs during record processing.</p>
+            <p>To register you rollback handler, use the method <code class="prettyprint">registerRollbackHandler</code> of <code class="prettyprint">BatchConfiguration</code> class as follows:</p>
+
+<pre class="prettyprint">
+batchConfiguration.registerRollbackHandler(myRollbackHandler());
+</pre>
+
+            <div class="alert alert-info">
+                <span class="label label-info">Note</span> Your roll back handler will not be called if you throw <strong>deliberately</strong> a <code class="prettyprint">RecordProcessingException</code> during record processing. It is executed only when an unexpected exception occurs.
+            </div>
+
+            <h3 id="2.6">2.6 Running the batch</h3>
 
             <p>Once you have configured CB4J using the configuration API, you can launch the batch execution as follows:</p>
 
@@ -399,7 +436,7 @@ public interface BatchEngine extends Callable&lt;BatchReport&gt; {
             <p>To write a custom field validator, you have to implement the <code class="prettyprint">FieldValidator</code> interface. This interface contains the following methods:</p>
             <ul>
                 <li><code class="prettyprint">public boolean isValidField(final Field field)</code>: This method should contain the validation logic for a field</li>
-                <li><code class="prettyprint">public String getValidationRuleDescription()</code>: This method should return a description of the validation rule implemented by the validator. This description will be used to report the cause of record rejection</li>
+                <li><code class="prettyprint">public String getValidationConstraintDescription()</code>: This method should return a description of the validation constraint implemented by the validator. This description will be used to report the cause of record rejection</li>
             </ul>
 
             <p>In this section, we will show an example of custom validator which validates that a field value must start with the string 'XP'.</p>
@@ -411,7 +448,7 @@ public class MyCustomFieldValidator implements FieldValidator {
         return field.getContent().startsWith("XP");
     }
 
-    public String getValidationRuleDescription() {
+    public String getValidationConstraintDescription() {
         return "field content must start with XP";
     }
 
@@ -427,9 +464,9 @@ batchConfiguration.registerFieldValidator(1,new MyCustomFieldValidator());
 
             <h3 id="3.3">3.3 Writing a custom record validator</h3>
 
-<p>            By default, CB4J considers a record as valid if all its fields are valid according to declared validation rules. But this default behavior works only if validation logic for each field is independent form other fields.
+<p>            By default, CB4J considers a record as valid if all its fields are valid according to declared validation constraints. But this default behavior works only if validation logic for each field is independent form other fields.
 
-            CB4J provides a simple way to extend this default behavior if validation rules involve multiple fields at the same time.</p>
+            CB4J provides a simple way to extend this default behavior if validation constraints involve multiple fields at the same time.</p>
 
            <p> In this section, we will use the following record format as example:</p>
 
@@ -439,7 +476,7 @@ foo;foobar
 foo;boobar
 </pre>
 
-            <p>The validation rules are the following:</p>
+            <p>The validation constraints are the following:</p>
             <ul>
                 <li>All fields are required</li>
                 <li>field1 should have a length of 3 characters</li>

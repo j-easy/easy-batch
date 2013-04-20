@@ -44,7 +44,7 @@ public class NotEmptyFieldValidator implements FieldValidator {
     /**
      * {@inheritDoc}
      */
-    public String getValidationRuleDescription() {
+    public String getValidationConstraintDescription() {
         return "The field content should not be empty";
     }
 }

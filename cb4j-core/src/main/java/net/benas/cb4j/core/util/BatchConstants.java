@@ -79,6 +79,8 @@ public class BatchConstants {
 
     public static final boolean DEFAULT_SKIP_HEADER = false;
 
+    public static final boolean DEFAULT_ABORT_ON_FIRST_REJECT = false;
+
     public static final String DEFAULT_FILE_ENCODING = System.getProperty("file.encoding");
 
     /*

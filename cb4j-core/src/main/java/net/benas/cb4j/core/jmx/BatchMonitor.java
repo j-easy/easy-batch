@@ -24,20 +24,27 @@
 
 package net.benas.cb4j.core.jmx;
 
+import net.benas.cb4j.core.api.BatchReport;
 import net.benas.cb4j.core.api.BatchReporter;
 
+import javax.management.*;
 import java.util.Date;
 
 /**
  *  CB4J JMX MBean implementation of {@link BatchMonitorMBean}
  *  @author benas (md.benhassine@gmail.com)
  */
-public class BatchMonitor implements BatchMonitorMBean {
+public class BatchMonitor extends NotificationBroadcasterSupport implements BatchMonitorMBean {
 
     /**
      * The batch reporter holding data exposed as JMX attributes
      */
     private BatchReporter batchReporter;
+
+    /**
+     * JMX notification sequence number.
+     */
+    private long sequenceNumber = 1;
 
     public BatchMonitor(BatchReporter batchReporter) {
         this.batchReporter = batchReporter;
@@ -116,5 +123,19 @@ public class BatchMonitor implements BatchMonitorMBean {
         String ratio = inputRecordsNumber + "/" + totalInputRecordsNumber;
         String percent = " (" + ((int) (((float) inputRecordsNumber / (float) totalInputRecordsNumber) * 100)) + "%)";
         return ratio + percent;
+    }
+
+    public void notifyBatchReportUpdate(BatchReport batchReport) {
+        Notification n =
+                new AttributeChangeNotification(this,
+                        sequenceNumber++,
+                        System.currentTimeMillis(),
+                        "batch report updated",
+                        "BatchReport",
+                        BatchReport.class.getName(),
+                        null,//no need for old value
+                        batchReport);
+        //send asynchronous jmx notification for clients
+        sendNotification(n);
     }
 }

@@ -27,7 +27,6 @@ package net.benas.cb4j.core.config;
 import net.benas.cb4j.core.api.*;
 import net.benas.cb4j.core.impl.*;
 import net.benas.cb4j.core.jmx.BatchMonitor;
-import net.benas.cb4j.core.jmx.BatchMonitorMBean;
 import net.benas.cb4j.core.util.BatchConstants;
 import net.benas.cb4j.core.util.LogFormatter;
 import net.benas.cb4j.core.util.RecordType;
@@ -79,6 +78,10 @@ public class BatchConfiguration {
     private RecordMapper recordMapper;
 
     private BatchReporter batchReporter;
+
+    private BatchMonitor batchMonitor;
+
+    private RollbackHandler rollbackHandler;
 
     /**
      * Initialize configuration from a properties file.
@@ -401,8 +404,8 @@ public class BatchConfiguration {
         try {
             name = new ObjectName("net.benas.cb4j.jmx:type=BatchMonitorMBean");
             if (!mbs.isRegistered(name)) {
-                BatchMonitorMBean batchMonitorMBean = new BatchMonitor(batchReporter);
-                mbs.registerMBean(batchMonitorMBean, name);
+                batchMonitor = new BatchMonitor(batchReporter);
+                mbs.registerMBean(batchMonitor, name);
                 logger.info("CB4J JMX MBean registered successfully as: " + name.getCanonicalName());
             }
         } catch (Exception e) {
@@ -482,6 +485,14 @@ public class BatchConfiguration {
         this.batchReporter = batchReporter;
     }
 
+    /**
+     * Register a rollback handler for record processing.
+     * @param rollbackHandler the rollback handler to register
+     */
+    public void registerRollbackHandler(RollbackHandler rollbackHandler) {
+        this.rollbackHandler = rollbackHandler;
+    }
+
     /*
     * Getters for CB4J services and parameters used by the engine
     */
@@ -513,4 +524,11 @@ public class BatchConfiguration {
         return Boolean.valueOf(configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_REJECT));
     }
 
+    public BatchMonitor getBatchMonitor() {
+        return batchMonitor;
+    }
+
+    public RollbackHandler getRollbackHandler() {
+        return rollbackHandler;
+    }
 }

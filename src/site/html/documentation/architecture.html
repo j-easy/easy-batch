@@ -142,7 +142,7 @@
                 <p>The main CB4J components are the following :</p>
                 <ul>
                     <li>Record Parser : parses a record and splits it into a list of fields</li>
-                    <li>Record Validator : applies declared validation rules for each record</li>
+                    <li>Record Validator : applies declared validation constraints for each record</li>
                     <li>Record Mapper : maps a record to a Java object</li>
                     <li>Record Processor : applies business processing logic for each record</li>
                 </ul>
@@ -150,7 +150,7 @@
                 <p>Each of these components needs to be configured to work properly and as expected. CB4J uses a declarative approach to register configuration parameters. A typical use case of configuring CB4J is to :</p>
                 <ul>
                     <li>Provide configuration parameters (Input file path, file encoding,field delimiter,etc)</li>
-                    <li>Register field validation rules (field size, data type and format,etc) that will be used by the record validator to validate data</li>
+                    <li>Register field validation constraints (field size, data type and format,etc) that will be used by the record validator to validate data</li>
                     <li>Register Record to Object mapping logic that will be used by the record mapper</li>
                     <li>Register record processing business logic that will be applied by the record processor</li>
                 </ul>
@@ -247,8 +247,8 @@
                     <li>The next record is read as a string containing raw data</li>
                     <li>The record parser checks the record for well-formedness : If the record is not well formed, then it is ignored and the engine moves to the next one. If the record is well formed, then it is passed to the next step to be parsed</li>
                     <li>The record parser parses the current record to split it into fields ordered by index and containing raw data</li>
-                    <li>The record validator applies validation rules for each field. If a validation rule is violated for one field, then the record is rejected. If all fields are valid, then the parsed record is passed to the next step to be mapped to a Java object</li>
-                    <li>At this point, the record mapper is supplied with a parsed record containing raw data that have passed the declared validation rules. The parsed record is mapped to the declared Java object type. CB4J considers mapping exception as errors that should not pass the processing step. Hence, the engine rejects records that cannot be mapped to objects with typed fields. This is a design choice to minimize unexpected errors during record processing.</li>
+                    <li>The record validator applies validation constraints for each field. If a validation constraint is violated for one field, then the record is rejected. If all fields are valid, then the parsed record is passed to the next step to be mapped to a Java object</li>
+                    <li>At this point, the record mapper is supplied with a parsed record containing raw data that have passed the declared validation constraints. The parsed record is mapped to the declared Java object type. CB4J considers mapping exception as errors that should not pass the processing step. Hence, the engine rejects records that cannot be mapped to objects with typed fields. This is a design choice to minimize unexpected errors during record processing.</li>
                     <li>Finally, the business logic is executed by the record processor. At this point, the record processor is supplied with a Java object populated with validated and typed data. If an exception occurs during record processing, the error is reported. Otherwise, the engine moves to the next record.</li>
                 </ol>
 

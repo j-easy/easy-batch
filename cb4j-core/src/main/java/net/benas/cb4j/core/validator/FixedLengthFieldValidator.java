@@ -53,7 +53,7 @@ public class FixedLengthFieldValidator implements FieldValidator {
     /**
      * {@inheritDoc}
      */
-    public String getValidationRuleDescription() {
+    public String getValidationConstraintDescription() {
         return "The field content should have a length = " + length;
     }
 }

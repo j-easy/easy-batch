@@ -10,7 +10,7 @@ CB4J addresses common tedious tasks such as reading, parsing and validating CSV 
 
  * POJO-based development : Map CSV records to your domain objects so you can still work with the Object Oriented aspect of Java.</p>
 
- * Declarative data validation : CB4J lets you declare data validation rules with extensible built-in validators for common requirements.
+ * Declarative data validation : CB4J lets you declare data validation constraints with extensible built-in validators for common requirements.
 
  * Easy to learn and use : CB4J uses a simple and natural CSV model and API. You can learn it easily and start using it quickly.
 
@@ -19,7 +19,10 @@ CB4J addresses common tedious tasks such as reading, parsing and validating CSV 
  * JMX monitoring : Monitor your batch execution and progress using JMX at runtime and in real time.
 
 ## Documentation
-All CB4J documentation can be found at [http://benas.github.io/cb4j/][cb4j-doc].
+
+The current stable version of CB4J is 1.2.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/cb4j/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/cb4j/).
+
+All documentation about this version can be found at [http://benas.github.com/cb4j/][cb4j-doc]
 
 You can also find some slides about CB4J at [speaker deck][].
 

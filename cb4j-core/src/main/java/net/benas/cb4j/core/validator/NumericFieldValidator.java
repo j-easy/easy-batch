@@ -45,7 +45,7 @@ public class NumericFieldValidator extends RegExpFieldValidator implements Field
     /**
      * {@inheritDoc}
      */
-    public String getValidationRuleDescription() {
+    public String getValidationConstraintDescription() {
         return "The field content should be a numeric value";
     }
 

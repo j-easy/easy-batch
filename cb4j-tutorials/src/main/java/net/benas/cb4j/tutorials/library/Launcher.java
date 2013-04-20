@@ -27,6 +27,7 @@ package net.benas.cb4j.tutorials.library;
 import net.benas.cb4j.core.api.BatchEngine;
 import net.benas.cb4j.core.api.FieldValidator;
 import net.benas.cb4j.core.config.BatchConfiguration;
+import net.benas.cb4j.core.config.BatchConfigurationBuilder;
 import net.benas.cb4j.core.config.BatchConfigurationException;
 import net.benas.cb4j.core.util.BatchRunner;
 import net.benas.cb4j.core.validator.FixedLengthNumericFieldValidator;
@@ -34,7 +35,6 @@ import net.benas.cb4j.core.validator.NotEmptyFieldValidator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Main class to run the library tutorial
@@ -59,12 +59,11 @@ public class Launcher {
         /*
          * Set configuration parameters
          */
-        Properties configurationProperties = new Properties();
-        configurationProperties.setProperty("input.data.path",args[0]);
-        configurationProperties.setProperty("input.record.size",args[1]);
-        configurationProperties.setProperty("input.field.qualifier",args[2]);
-
-        BatchConfiguration batchConfiguration = new BatchConfiguration(configurationProperties);
+        BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
+                .inputDataFile(args[0])
+                .recordSize(Integer.parseInt(args[1]))
+                .qualifier(args[2])
+                .build();
 
         /*
          * Register field validators

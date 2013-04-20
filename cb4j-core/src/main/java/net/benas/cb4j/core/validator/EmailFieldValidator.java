@@ -45,7 +45,7 @@ public class EmailFieldValidator extends RegExpFieldValidator implements FieldVa
     /**
      * {@inheritDoc}
      */
-    public String getValidationRuleDescription() {
+    public String getValidationConstraintDescription() {
         return "The field content should be a valid email address format";
     }
 

@@ -38,7 +38,7 @@ public enum BatchStatus {
     INITIALIZING,
 
     /**
-     * Engine is running (execution of {@link net.benas.cb4j.core.api.BatchEngine#run()} )
+     * Engine is running (execution of {@link net.benas.cb4j.core.api.BatchEngine#call()} ()} )
      */
     RUNNING,
 

@@ -26,10 +26,12 @@ package net.benas.cb4j.core.impl;
 
 import net.benas.cb4j.core.api.*;
 import net.benas.cb4j.core.config.BatchConfiguration;
+import net.benas.cb4j.core.jmx.BatchMonitor;
 import net.benas.cb4j.core.model.Record;
 import net.benas.cb4j.core.util.BatchConstants;
 import net.benas.cb4j.core.util.BatchStatus;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -58,6 +60,10 @@ public class DefaultBatchEngineImpl implements BatchEngine {
 
     protected RecordProcessor recordProcessor;
 
+    protected BatchMonitor batchMonitor;
+
+    protected RollbackHandler rollbackHandler;
+
     /*
      * User defined parameters used by the engine
      */
@@ -70,6 +76,8 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         this.recordProcessor = batchConfiguration.getRecordProcessor();
         this.batchReporter = batchConfiguration.getBatchReporter();
         this.recordMapper = batchConfiguration.getRecordMapper();
+        this.batchMonitor = batchConfiguration.getBatchMonitor();
+        this.rollbackHandler = batchConfiguration.getRollbackHandler();
         this.abortOnFirstReject = batchConfiguration.getAbortOnFirstReject();
     }
 
@@ -155,6 +163,14 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                 continue;
             } catch (Exception e) { //thrown unexpectedly
                 batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected record processing exception occurred, root cause = ", e);
+                if (rollbackHandler != null) {
+                    try {
+                        rollbackHandler.rollback(typedRecord);
+                        logger.warning("Due to unexpected exception, the processing of record " + typedRecord + " was rolled back.");
+                    } catch (Exception rollbackException) {
+                        logger.log(Level.SEVERE, "an exception occurred during record " + typedRecord + " rolling back.", rollbackException);
+                    }
+                }
                 continue;
             }
 
@@ -167,6 +183,8 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                 batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected exception occurred during record post-processing, root cause = ", e);
             }
 
+            //send asynchronous jmx notification about progress
+            batchMonitor.notifyBatchReportUpdate(batchReporter.getBatchReport());
         }
 
         //close record reader
@@ -176,6 +194,8 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         batchReporter.setEndTime(endTime);
         batchReporter.setProcessedRecordsNumber(abortOnFirstReject ? currentRecordNumber - 1 : currentRecordNumber);
 
+        //send final asynchronous jmx notification about execution end
+        batchMonitor.notifyBatchReportUpdate(batchReporter.getBatchReport());
         return batchReporter.getBatchReport();
     }
 

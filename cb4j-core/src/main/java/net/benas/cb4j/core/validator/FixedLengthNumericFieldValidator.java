@@ -55,7 +55,7 @@ public class FixedLengthNumericFieldValidator extends NumericFieldValidator impl
      * {@inheritDoc}
      */
     @Override
-    public String getValidationRuleDescription() {
+    public String getValidationConstraintDescription() {
         return "The field content should be a numeric value having a length = " + length;
     }
 }

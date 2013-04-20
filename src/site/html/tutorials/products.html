@@ -126,7 +126,7 @@ product_id;category_code;name;price
 6;2;product6;xx
 </pre>
 
-                <p>In this tutorial , the business data validation rules are simple : Fields "product_id","category_code" and "price" must have numeric values.</p>
+                <p>In this tutorial , the business data validation constraints are simple : Fields "product_id","category_code" and "price" must have numeric values.</p>
                 <p><span class="label label-info">Note :</span> Prices should be converted to local currency before being processed. This is a good example of how to use the <code>preProcessRecord(T typedRecord)</code> method in <code>RecordProcessor&lt;T&gt;</code> interface.</p>
                 <p>The batch processing logic should calculate the minimum/maximum product price for each category and generate the following report:</p>
 <pre>
