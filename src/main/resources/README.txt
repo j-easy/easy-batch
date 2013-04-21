@@ -51,6 +51,8 @@ The distribution contains a set of ready to use CB4J examples :
 
     - Bean Validation tutorial : A tutorial showing how to use Bean Validation (JSR303) to validate data in a CB4J batch
 
+    - JMX tutorial : A tutorial showing how to use JMX to monitor CB4J at runtime
+
 1- Build examples:
 ------------------------
 
@@ -98,5 +100,19 @@ To build CB4J examples, run the following commands from the distribution's root 
 -----------------------
  $>cd cb4j-tutorials
  $>mvn exec:java -PrunBeanValidationTutorial
+
+2.8 JMX tutorial
+-----------------------
+Run the core batch:
+ $>cd cb4j-tutorials
+ $>mvn exec:exec -PrunJmxTutorial
+
+Launch the command line client in a separate console:
+ $>cd cb4j-tutorials
+ $>mvn exec:java -PrunJmxCliClient
+
+Launch the graphical client in a separate console:
+ $>cd cb4j-tutorials
+ $>mvn exec:java -PrunJmxGuiClient
 
 More details about these examples can be found in CB4J documentation.
