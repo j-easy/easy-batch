@@ -53,8 +53,8 @@ public class QuartzLauncher {
 
         if (args == null || args.length < 2){
             System.err.println("[CB4J] Configuration parameters not specified, usage : ");
-            System.err.println("java java net.benas.cb4j.integration.quartz.QuartzLauncher path/to/data/file recordSize delimiter");
-            System.err.println("Example : java net.benas.cb4j.integration.quartz.QuartzLauncher /data/cb4j/persons.csv 2 ,");
+            System.err.println("java java net.benas.cb4j.integration.quartz.QuartzLauncher path/to/data/file recordSize");
+            System.err.println("Example : java net.benas.cb4j.integration.quartz.QuartzLauncher /data/cb4j/persons.csv 2");
             System.exit(1);
         }
 
