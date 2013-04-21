@@ -28,6 +28,7 @@
                 <include>cb4j-core/**</include>
                 <include>cb4j-tutorials/**</include>
                 <include>cb4j-quartz/**</include>
+                <include>cb4j-tools/**</include>
                 <include>pom.xml</include>
             </includes>
             <excludes>
