@@ -45,6 +45,12 @@ The distribution contains a set of ready to use CB4J examples :
 
     - Book library : A use case of CB4J batch to load books data from a CSV file into a library database using Hibernate
 
+    - Spring tutorial : A tutorial showing how to integrate CB4J with Spring framework
+
+    - Quartz tutorial : A tutorial showing how to schedule a CB4J batch using the Quartz scheduler
+
+    - Bean Validation tutorial : A tutorial showing how to use Bean Validation (JSR303) to validate data in a CB4J batch
+
 1- Build examples:
 ------------------------
 
@@ -73,9 +79,24 @@ To build CB4J examples, run the following commands from the distribution's root 
  $>cd cb4j-tutorials
  $>mvn exec:java -PrunProductsTutorial
 
- 2.4 Book library
- -----------------------
+2.4 Book library
+-----------------------
  $>cd cb4j-tutorials
  $>mvn exec:java -PrunLibraryTutorial
+
+2.5 Spring tutorial
+-----------------------
+ $>cd cb4j-tutorials
+ $>mvn exec:java -PrunSpringTutorial
+
+2.6 Quartz tutorial
+-----------------------
+ $>cd cb4j-tutorials
+ $>mvn exec:java -PrunQuartzTutorial
+
+2.7 Bean Validation tutorial
+-----------------------
+ $>cd cb4j-tutorials
+ $>mvn exec:java -PrunBeanValidationTutorial
 
 More details about these examples can be found in CB4J documentation.
