@@ -26,12 +26,11 @@ package net.benas.cb4j.integration.beanValidation;
 
 import net.benas.cb4j.core.api.BatchEngine;
 import net.benas.cb4j.core.config.BatchConfiguration;
+import net.benas.cb4j.core.config.BatchConfigurationBuilder;
 import net.benas.cb4j.core.config.BatchConfigurationException;
 import net.benas.cb4j.core.impl.DefaultBatchEngineImpl;
 import net.benas.cb4j.core.util.BatchRunner;
 import net.benas.cb4j.core.validator.NumericFieldValidator;
-
-import java.util.Properties;
 
 /**
  * Main class to run the Hello World tutorial with Bean Validation API integration.
@@ -49,12 +48,14 @@ public class BeanValidationLauncher {
             System.exit(1);
         }
 
-        Properties configurationProperties = new Properties();
-        configurationProperties.setProperty("input.data.path",args[0]);
-        configurationProperties.setProperty("input.record.size",args[1]);
-        configurationProperties.setProperty("input.data.skipHeader", "true");
-
-        BatchConfiguration batchConfiguration = new BatchConfiguration(configurationProperties);
+        /*
+         * Create a batch configuration instance
+         */
+        BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
+                .inputDataFile(args[0])
+                .recordSize(Integer.parseInt(args[1]))
+                .skipHeader(true)
+                .build();
 
         /*
         * Registering field validators

@@ -26,6 +26,7 @@ package net.benas.cb4j.integration.spring;
 
 import net.benas.cb4j.core.api.BatchEngine;
 import net.benas.cb4j.core.config.BatchConfiguration;
+import net.benas.cb4j.core.config.BatchConfigurationBuilder;
 import net.benas.cb4j.core.config.BatchConfigurationException;
 import net.benas.cb4j.core.impl.DefaultBatchEngineImpl;
 import net.benas.cb4j.core.util.BatchRunner;
@@ -35,8 +36,6 @@ import net.benas.cb4j.tutorials.helloworld.GreetingProcessor;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.util.Properties;
 
 /**
  * Main class to run the Hello World tutorial with Spring framework integration.
@@ -54,12 +53,14 @@ public class SpringLauncher {
             System.exit(1);
         }
 
-        Properties configurationProperties = new Properties();
-        configurationProperties.setProperty("input.data.path",args[0]);
-        configurationProperties.setProperty("input.record.size",args[1]);
-        configurationProperties.setProperty("input.data.skipHeader", "true");
-
-        BatchConfiguration batchConfiguration = new BatchConfiguration(configurationProperties);
+        /*
+         * Create a batch configuration instance
+         */
+        BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
+                .inputDataFile(args[0])
+                .recordSize(Integer.parseInt(args[1]))
+                .skipHeader(true)
+                .build();
 
         /*
         * Registering field validators
