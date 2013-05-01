@@ -20,11 +20,15 @@ CB4J addresses common tedious tasks such as reading, parsing and validating CSV 
 
 ## Documentation
 
+All documentation about CB4J can be found at [http://benas.github.io/cb4j/][cb4j-doc]
+
+You can also find some slides at [speaker deck][].
+
+## Current version
+
 The current stable version of CB4J is 1.3.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/cb4j/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/cb4j/).
-
-All documentation about this version can be found at [http://benas.github.io/cb4j/][cb4j-doc]
-
-You can also find some slides about CB4J at [speaker deck][].
+<br/>
+<a href="https://buildhive.cloudbees.com/job/benas/job/cb4j/"><img src="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/></a>
 
 ## License
 CB4J is released under the [MIT License][].
