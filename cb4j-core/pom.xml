@@ -16,6 +16,26 @@
     <description>CSV Batch 4 Java core module</description>
     <url>https://github.com/benas/cb4j</url>
 
+    <developers>
+        <developer>
+            <id>benas</id>
+            <email>md.benhassine@gmail.com</email>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>git@github.com:benas/cb4j.git</url>
+        <connection>scm:git:git@github.com:benas/cb4j.git</connection>
+        <developerConnection>scm:git:git@github.com:benas/cb4j.git</developerConnection>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -66,6 +86,19 @@
                         <phase>install</phase>
                         <goals>
                             <goal>javadoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
                         </goals>
                     </execution>
                 </executions>
