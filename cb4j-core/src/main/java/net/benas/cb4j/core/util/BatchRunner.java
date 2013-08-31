@@ -74,6 +74,8 @@ public class BatchRunner {
         } catch (Exception e) {
             logger.log(Level.SEVERE, "An unexpected exception occurred during engine execution, root error : ", e);
             return null;
+        } finally {
+            executorService.shutdown();
         }
 
         try {
@@ -83,7 +85,6 @@ public class BatchRunner {
             return batchReport;
         }
 
-        executorService.shutdown();
         return batchReport;
 
     }
