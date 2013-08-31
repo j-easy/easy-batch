@@ -68,7 +68,7 @@ public class BatchRunner {
             return null;// for security reason, abort execution
         }
 
-        BatchReport batchReport = null;
+        BatchReport batchReport;
         try {
             batchReport = executorService.submit(batchEngine).get();
         } catch (Exception e) {
