@@ -48,14 +48,15 @@ public class ProductBatchEngine extends DefaultBatchEngineImpl {
 
         //show min prices by category
         System.out.println("Minimum prices by category : ");
-        Map<Long, Double> minPrices = ((ProductProcessor) recordProcessor).getMinPricesByCategory();
+        ProductBatchResultHolder batchResultHolder = (ProductBatchResultHolder) recordProcessor.getBatchResultHolder();
+        Map<Long, Double> minPrices = batchResultHolder.getMinPricesByCategory();
         for (Map.Entry<Long, Double> entry : minPrices.entrySet()) {
             System.out.println("\tMin price for category " + entry.getKey() + " = " + entry.getValue());
         }
 
         //show max prices by category
         System.out.println("Maximum prices by category : ");
-        Map<Long, Double> maxPrices = ((ProductProcessor) recordProcessor).getMaxPricesByCategory();
+        Map<Long, Double> maxPrices = batchResultHolder.getMaxPricesByCategory();
         for (Map.Entry<Long, Double> entry : maxPrices.entrySet()) {
             System.out.println("\tMax price for category " + entry.getKey() + " = " + entry.getValue());
         }
