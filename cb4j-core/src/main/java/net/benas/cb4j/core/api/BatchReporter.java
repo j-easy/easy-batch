@@ -119,6 +119,12 @@ public interface BatchReporter {
     void setBatchStatus(BatchStatus batchStatus);
 
     /**
+     * set the batch execution result holder.
+     * @param batchResultHolder batch execution result holder
+     */
+    void setBatchResultHolder(BatchResultHolder<?> batchResultHolder);
+
+    /**
      * set total input records number.
      * @return total input records number
      */
@@ -171,6 +177,12 @@ public interface BatchReporter {
      * @return batch execution status
      */
     BatchStatus getBatchStatus();
+
+    /**
+     * get batch execution result holder.
+     * @return batch execution result holder
+     */
+    BatchResultHolder<?> getBatchResultHolder();
 
     /**
      * get the batch execution report.

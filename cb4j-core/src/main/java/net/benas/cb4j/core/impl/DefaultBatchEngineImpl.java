@@ -193,6 +193,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         final long endTime = System.currentTimeMillis();
         batchReporter.setEndTime(endTime);
         batchReporter.setProcessedRecordsNumber(abortOnFirstReject ? currentRecordNumber - 1 : currentRecordNumber);
+        batchReporter.setBatchResultHolder(recordProcessor.getBatchResultHolder());
 
         //send final asynchronous jmx notification about execution end
         batchMonitor.notifyBatchReportUpdate(batchReporter.getBatchReport());

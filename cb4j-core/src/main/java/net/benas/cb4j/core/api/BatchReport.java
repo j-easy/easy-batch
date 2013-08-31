@@ -73,6 +73,11 @@ public class BatchReport implements Serializable {
      */
     private long endTime;
 
+    /**
+     * Batch execution result holder.
+     */
+    private BatchResultHolder<?> batchResultHolder;
+
     /*
      * Getters and setters
      */
@@ -141,6 +146,14 @@ public class BatchReport implements Serializable {
         this.endTime = endTime;
     }
 
+    public BatchResultHolder<?> getBatchResultHolder() {
+        return batchResultHolder;
+    }
+
+    public void setBatchResultHolder(BatchResultHolder<?> batchResultHolder) {
+        this.batchResultHolder = batchResultHolder;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -153,6 +166,7 @@ public class BatchReport implements Serializable {
         sb.append(", ignoredRecordsNumber=").append(ignoredRecordsNumber);
         sb.append(", processedRecordsNumber=").append(processedRecordsNumber);
         sb.append(", errorRecordsNumber=").append(errorRecordsNumber);
+        sb.append(", batchResultHolder=").append(batchResultHolder);
         sb.append('}');
         return sb.toString();
     }

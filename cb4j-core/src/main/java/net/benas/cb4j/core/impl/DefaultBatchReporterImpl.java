@@ -26,6 +26,7 @@ package net.benas.cb4j.core.impl;
 
 import net.benas.cb4j.core.api.BatchReport;
 import net.benas.cb4j.core.api.BatchReporter;
+import net.benas.cb4j.core.api.BatchResultHolder;
 import net.benas.cb4j.core.model.Record;
 import net.benas.cb4j.core.util.BatchConstants;
 import net.benas.cb4j.core.util.BatchStatus;
@@ -191,6 +192,13 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     /**
      * {@inheritDoc}
      */
+    public void setBatchResultHolder(BatchResultHolder batchResultHolder) {
+        batchReport.setBatchResultHolder(batchResultHolder);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public long getTotalInputRecordsNumber() {
         return batchReport.getTotalInputRecordsNumber();
     }
@@ -242,6 +250,13 @@ public class DefaultBatchReporterImpl implements BatchReporter {
      */
     public BatchStatus getBatchStatus() {
         return batchStatus;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public BatchResultHolder getBatchResultHolder() {
+        return batchReport.getBatchResultHolder();
     }
 
     /**

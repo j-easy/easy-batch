@@ -58,4 +58,10 @@ public interface RecordProcessor<T> {
      */
     void postProcessRecord(T typedRecord) throws RecordProcessingException;
 
+    /**
+     * Returns batch execution result. This is useful when you need to return some computation results at the end of batch execution.
+     * @return batch execution result
+     */
+    BatchResultHolder<?> getBatchResultHolder();
+
 }
