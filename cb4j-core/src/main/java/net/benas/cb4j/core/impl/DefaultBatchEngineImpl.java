@@ -69,6 +69,8 @@ public class DefaultBatchEngineImpl implements BatchEngine {
      */
     private boolean abortOnFirstReject;
 
+    private boolean skipHeader;
+
     public DefaultBatchEngineImpl(BatchConfiguration batchConfiguration) {
         this.recordReader = batchConfiguration.getRecordReader();
         this.recordParser = batchConfiguration.getRecordParser();
@@ -79,6 +81,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         this.batchMonitor = batchConfiguration.getBatchMonitor();
         this.rollBackHandler = batchConfiguration.getRollBackHandler();
         this.abortOnFirstReject = batchConfiguration.getAbortOnFirstReject();
+        this.skipHeader = batchConfiguration.getSkipHeader();
     }
 
     /**
@@ -98,7 +101,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         logger.info("CB4J engine is running...");
         batchReporter.setBatchStatus(BatchStatus.RUNNING);
         final long startTime = System.currentTimeMillis();
-        long currentRecordNumber = 0;
+        long currentRecordNumber = skipHeader ? 1 : 0 ;
         batchReporter.setStartTime(startTime);
 
         while (recordReader.hasNextRecord()) {
@@ -192,7 +195,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
 
         final long endTime = System.currentTimeMillis();
         batchReporter.setEndTime(endTime);
-        batchReporter.setProcessedRecordsNumber(abortOnFirstReject ? currentRecordNumber - 1 : currentRecordNumber);
+        batchReporter.setProcessedRecordsNumber( abortOnFirstReject || skipHeader ? currentRecordNumber - 1 : currentRecordNumber);
         batchReporter.setBatchResultHolder(recordProcessor.getBatchResultHolder());
 
         //send final asynchronous jmx notification about execution end
