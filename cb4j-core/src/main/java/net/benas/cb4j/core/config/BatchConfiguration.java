@@ -182,7 +182,9 @@ public class BatchConfiguration {
         /*
         * register JMX MBean
         */
-        configureJmxMBean();
+        if (Boolean.valueOf(configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_JMX_ENABLED))) {
+            configureJmxMBean();
+        }
 
         logger.info("Configuration successful");
         logger.info("Configuration parameters details : " + configurationProperties);
@@ -530,6 +532,10 @@ public class BatchConfiguration {
 
     public boolean getSkipHeader(){
         return Boolean.valueOf(configurationProperties.getProperty(BatchConstants.INPUT_DATA_SKIP_HEADER));
+    }
+
+    public boolean getJmxEnabled() {
+        return Boolean.valueOf(configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_JMX_ENABLED));
     }
 
     public BatchMonitor getBatchMonitor() {

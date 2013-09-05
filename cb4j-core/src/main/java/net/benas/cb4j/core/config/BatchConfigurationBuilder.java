@@ -27,6 +27,7 @@ public class BatchConfigurationBuilder {
         properties.setProperty(BatchConstants.INPUT_FIELD_QUALIFIER_CHAR, BatchConstants.DEFAULT_FIELD_QUALIFIER_CHAR);
         properties.setProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_REJECT, String.valueOf(BatchConstants.DEFAULT_ABORT_ON_FIRST_REJECT));
         properties.setProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_ERROR, String.valueOf(BatchConstants.DEFAULT_ABORT_ON_FIRST_ERROR));
+        properties.setProperty(BatchConstants.OUTPUT_DATA_JMX_ENABLED, String.valueOf(BatchConstants.DEFAULT_OUTPUT_DATA_JMX_ENABLED));
     }
 
     /**
@@ -177,6 +178,16 @@ public class BatchConfigurationBuilder {
      */
     public BatchConfigurationBuilder abortOnFirstError(Boolean abortOnFirstError) {
         properties.setProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_ERROR, String.valueOf(abortOnFirstError));
+        return this;
+    }
+
+    /**
+     * Specify if jmx monitoring feature should be enabled. When enabled, CB4J will register a JMX MBean to get statistics about execution progress in real time.
+     * @param enableJmx true if jmx monitoring feature should be enabled, false else. Default to true
+     * @return a pre configured batch configuration builder instance with default values for unset optional parameters
+     */
+    public BatchConfigurationBuilder enableJmx(Boolean enableJmx) {
+        properties.setProperty(BatchConstants.OUTPUT_DATA_JMX_ENABLED, String.valueOf(enableJmx));
         return this;
     }
 

@@ -73,6 +73,8 @@ public class DefaultBatchEngineImpl implements BatchEngine {
 
     private boolean skipHeader;
 
+    private boolean jmxEnabled;
+
     public DefaultBatchEngineImpl(BatchConfiguration batchConfiguration) {
         this.recordReader = batchConfiguration.getRecordReader();
         this.recordParser = batchConfiguration.getRecordParser();
@@ -85,6 +87,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         this.abortOnFirstReject = batchConfiguration.getAbortOnFirstReject();
         this.abortOnFirstError = batchConfiguration.getAbortOnFirstError();
         this.skipHeader = batchConfiguration.getSkipHeader();
+        this.jmxEnabled = batchConfiguration.getJmxEnabled();
     }
 
     /**
@@ -211,7 +214,9 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             }
 
             //send asynchronous jmx notification about progress
-            batchMonitor.notifyBatchReportUpdate(batchReporter.getBatchReport());
+            if (jmxEnabled) {
+                batchMonitor.notifyBatchReportUpdate(batchReporter.getBatchReport());
+            }
         }
 
         //close record reader
@@ -222,7 +227,9 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         batchReporter.setBatchResultHolder(recordProcessor.getBatchResultHolder());
 
         //send final asynchronous jmx notification about execution end
-        batchMonitor.notifyBatchReportUpdate(batchReporter.getBatchReport());
+        if (jmxEnabled) {
+            batchMonitor.notifyBatchReportUpdate(batchReporter.getBatchReport());
+        }
         return batchReporter.getBatchReport();
     }
 
