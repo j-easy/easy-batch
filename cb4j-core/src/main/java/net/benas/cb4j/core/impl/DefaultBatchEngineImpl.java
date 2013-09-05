@@ -103,9 +103,8 @@ public class DefaultBatchEngineImpl implements BatchEngine {
 
         logger.info("CB4J engine is running...");
         batchReporter.setBatchStatus(BatchStatus.RUNNING);
-        final long startTime = System.currentTimeMillis();
         long currentRecordNumber = skipHeader ? 1 : 0 ;
-        batchReporter.setStartTime(startTime);
+        batchReporter.setStartTime(System.currentTimeMillis());
 
         while (recordReader.hasNextRecord()) {
 
@@ -218,8 +217,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         //close record reader
         recordReader.close();
 
-        final long endTime = System.currentTimeMillis();
-        batchReporter.setEndTime(endTime);
+        batchReporter.setEndTime(System.currentTimeMillis());
         batchReporter.setProcessedRecordsNumber( abortOnFirstError || abortOnFirstReject || skipHeader ? currentRecordNumber - 1 : currentRecordNumber);
         batchReporter.setBatchResultHolder(recordProcessor.getBatchResultHolder());
 
