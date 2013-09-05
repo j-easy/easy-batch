@@ -130,6 +130,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                 if (error != null) {
                     batchReporter.reportRejectedRecord(currentParsedRecord, error);
                     if (abortOnFirstReject) {
+                        logger.info("Aborting execution on first reject.");
                         break;
                     } else {
                         continue;
@@ -158,6 +159,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             } catch (RecordProcessingException e) { //thrown by the user deliberately
                 batchReporter.reportErrorRecord(currentParsedRecord, "a record pre-processing exception occurred, root cause = " + e.getMessage());
                 if (abortOnFirstError) {
+                    logger.info("Aborting execution on first error.");
                     break;
                 } else {
                     continue;
@@ -165,6 +167,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             } catch (Exception e) { //thrown unexpectedly
                 batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected record pre-processing exception occurred, root cause = ", e);
                 if (abortOnFirstError) {
+                    logger.info("Aborting execution on first error.");
                     break;
                 } else {
                     continue;
@@ -177,6 +180,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             } catch (RecordProcessingException e) { //thrown by the user deliberately
                 batchReporter.reportErrorRecord(currentParsedRecord, "a record processing exception occurred, root cause = " + e.getMessage());
                 if (abortOnFirstError) {
+                    logger.info("Aborting execution on first error.");
                     break;
                 } else {
                     continue;
@@ -192,6 +196,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                     }
                 }
                 if (abortOnFirstError) {
+                    logger.info("Aborting execution on first error.");
                     break;
                 } else {
                     continue;
@@ -204,11 +209,13 @@ public class DefaultBatchEngineImpl implements BatchEngine {
             } catch (RecordProcessingException e) { //thrown by the user deliberately
                 batchReporter.reportErrorRecord(currentParsedRecord, "a record post-processing exception occurred, root cause = " + e.getMessage());
                 if (abortOnFirstError) {
+                    logger.info("Aborting execution on first error.");
                     break;
                 }
             } catch (Exception e) { //thrown unexpectedly
                 batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected exception occurred during record post-processing, root cause = ", e);
                 if (abortOnFirstError) {
+                    logger.info("Aborting execution on first error.");
                     break;
                 }
             }
