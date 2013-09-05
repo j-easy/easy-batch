@@ -138,7 +138,12 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                 }
             } catch (Exception e) {
                 batchReporter.reportRejectedRecord(currentParsedRecord, "an unexpected validation exception occurred, root cause = " , e);
-                continue;
+                if (abortOnFirstReject) {
+                    logger.info("Aborting execution on first reject.");
+                    break;
+                } else {
+                    continue;
+                }
             }
 
             //map record to expected type
