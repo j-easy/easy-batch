@@ -26,6 +26,7 @@ public class BatchConfigurationBuilder {
         properties.setProperty(BatchConstants.INPUT_FIELD_TRIM, String.valueOf(BatchConstants.DEFAULT_FIELD_TRIM));
         properties.setProperty(BatchConstants.INPUT_FIELD_QUALIFIER_CHAR, BatchConstants.DEFAULT_FIELD_QUALIFIER_CHAR);
         properties.setProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_REJECT, String.valueOf(BatchConstants.DEFAULT_ABORT_ON_FIRST_REJECT));
+        properties.setProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_ERROR, String.valueOf(BatchConstants.DEFAULT_ABORT_ON_FIRST_ERROR));
     }
 
     /**
@@ -165,6 +166,17 @@ public class BatchConfigurationBuilder {
      */
     public BatchConfigurationBuilder abortOnFirstReject(Boolean abortOnFirstReject) {
         properties.setProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_REJECT, String.valueOf(abortOnFirstReject));
+        return this;
+    }
+
+    /**
+     * Specify if the engine should abort batch execution on first record processed with error.
+     * @param abortOnFirstError true if the engine should abort batch execution on first error, false else.
+     *                           Default to false.
+     * @return a pre configured batch configuration builder instance with default values for unset optional parameters
+     */
+    public BatchConfigurationBuilder abortOnFirstError(Boolean abortOnFirstError) {
+        properties.setProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_ERROR, String.valueOf(abortOnFirstError));
         return this;
     }
 

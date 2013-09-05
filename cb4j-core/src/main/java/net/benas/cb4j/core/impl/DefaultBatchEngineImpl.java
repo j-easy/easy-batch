@@ -69,6 +69,8 @@ public class DefaultBatchEngineImpl implements BatchEngine {
      */
     private boolean abortOnFirstReject;
 
+    private boolean abortOnFirstError;
+
     private boolean skipHeader;
 
     public DefaultBatchEngineImpl(BatchConfiguration batchConfiguration) {
@@ -81,6 +83,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         this.batchMonitor = batchConfiguration.getBatchMonitor();
         this.rollBackHandler = batchConfiguration.getRollBackHandler();
         this.abortOnFirstReject = batchConfiguration.getAbortOnFirstReject();
+        this.abortOnFirstError = batchConfiguration.getAbortOnFirstError();
         this.skipHeader = batchConfiguration.getSkipHeader();
     }
 
@@ -152,10 +155,18 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                 recordProcessor.preProcessRecord(typedRecord);
             } catch (RecordProcessingException e) { //thrown by the user deliberately
                 batchReporter.reportErrorRecord(currentParsedRecord, "a record pre-processing exception occurred, root cause = " + e.getMessage());
-                continue;
+                if (abortOnFirstError) {
+                    break;
+                } else {
+                    continue;
+                }
             } catch (Exception e) { //thrown unexpectedly
                 batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected record pre-processing exception occurred, root cause = ", e);
-                continue;
+                if (abortOnFirstError) {
+                    break;
+                } else {
+                    continue;
+                }
             }
 
             //process record
@@ -163,7 +174,11 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                 recordProcessor.processRecord(typedRecord);
             } catch (RecordProcessingException e) { //thrown by the user deliberately
                 batchReporter.reportErrorRecord(currentParsedRecord, "a record processing exception occurred, root cause = " + e.getMessage());
-                continue;
+                if (abortOnFirstError) {
+                    break;
+                } else {
+                    continue;
+                }
             } catch (Exception e) { //thrown unexpectedly
                 batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected record processing exception occurred, root cause = ", e);
                 if (rollBackHandler != null) {
@@ -174,7 +189,11 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                         logger.log(Level.SEVERE, "an exception occurred during record " + typedRecord + " rolling back.", rollbackException);
                     }
                 }
-                continue;
+                if (abortOnFirstError) {
+                    break;
+                } else {
+                    continue;
+                }
             }
 
             //post process record
@@ -182,8 +201,14 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                 recordProcessor.postProcessRecord(typedRecord);
             } catch (RecordProcessingException e) { //thrown by the user deliberately
                 batchReporter.reportErrorRecord(currentParsedRecord, "a record post-processing exception occurred, root cause = " + e.getMessage());
+                if (abortOnFirstError) {
+                    break;
+                }
             } catch (Exception e) { //thrown unexpectedly
                 batchReporter.reportErrorRecord(currentParsedRecord, "an unexpected exception occurred during record post-processing, root cause = ", e);
+                if (abortOnFirstError) {
+                    break;
+                }
             }
 
             //send asynchronous jmx notification about progress
@@ -195,7 +220,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
 
         final long endTime = System.currentTimeMillis();
         batchReporter.setEndTime(endTime);
-        batchReporter.setProcessedRecordsNumber( abortOnFirstReject || skipHeader ? currentRecordNumber - 1 : currentRecordNumber);
+        batchReporter.setProcessedRecordsNumber( abortOnFirstError || abortOnFirstReject || skipHeader ? currentRecordNumber - 1 : currentRecordNumber);
         batchReporter.setBatchResultHolder(recordProcessor.getBatchResultHolder());
 
         //send final asynchronous jmx notification about execution end
