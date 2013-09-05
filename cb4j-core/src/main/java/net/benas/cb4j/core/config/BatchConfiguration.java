@@ -377,7 +377,7 @@ public class BatchConfiguration {
                 encoding = BatchConstants.DEFAULT_FILE_ENCODING;
                 logger.warning("No encoding specified for input data, using system default encoding : " + encoding);
             } else {
-                if (Charset.availableCharsets().get(encodingProperty) == null || !Charset.isSupported(encodingProperty)) {
+                if (Charset.availableCharsets().get(Charset.forName(encodingProperty).name()) == null || !Charset.isSupported(encodingProperty)) {
                     encoding = BatchConstants.DEFAULT_FILE_ENCODING;
                     logger.warning("Encoding '" + encodingProperty + "' not supported, using system default encoding : " + encoding);
                 } else {
