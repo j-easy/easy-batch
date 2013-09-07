@@ -196,9 +196,12 @@
                         <configuration>
                             <mainClass>net.benas.cb4j.tutorials.products.Launcher</mainClass>
                             <arguments>
-                                <argument>${project.basedir}/src/main/resources/products.csv</argument>
+                                <argument>${project.basedir}/src/main/resources/products.flr</argument>
+                                <argument>3</argument>
+                                <argument>FLR</argument>
+                                <argument>8</argument>
+                                <argument>3</argument>
                                 <argument>4</argument>
-                                <argument>;</argument>
                             </arguments>
                         </configuration>
                     </plugin>

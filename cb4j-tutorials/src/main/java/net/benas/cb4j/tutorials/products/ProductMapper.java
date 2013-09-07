@@ -29,7 +29,7 @@ import net.benas.cb4j.core.api.RecordMappingException;
 import net.benas.cb4j.core.model.Record;
 
 /**
- * A mapper implementation to map a CSV record to a {@link Product} bean
+ * A mapper implementation to map a FLR record to a {@link Product} bean
  * @author benas (md.benhassine@gmail.com)
  */
 public class ProductMapper implements RecordMapper<Product> {
@@ -39,9 +39,8 @@ public class ProductMapper implements RecordMapper<Product> {
         Product product = new Product();
 
         product.setProductId(Long.parseLong(record.getFieldContentByIndex(0)));
-        product.setCategory_code(Long.parseLong(record.getFieldContentByIndex(1)));
-        product.setName(record.getFieldContentByIndex(2));
-        product.setPrice(Double.parseDouble(record.getFieldContentByIndex(3)));
+        product.setCategoryCode(Long.parseLong(record.getFieldContentByIndex(1)));
+        product.setPrice(Double.parseDouble(record.getFieldContentByIndex(2)));
 
         return product;
     }

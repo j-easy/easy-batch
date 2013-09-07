@@ -59,14 +59,14 @@ public class ProductProcessor extends DefaultRecordProcessorImpl<Product> {
         /*
          * gather data according to product category
          */
-        long category_code = product.getCategory_code();
+        long categoryCode = product.getCategoryCode();
 
-        if (productBatchResultHolder.getResult().containsKey(category_code)) {
-            productBatchResultHolder.getResult().get(category_code).add(product.getPrice());
+        if (productBatchResultHolder.getResult().containsKey(categoryCode)) {
+            productBatchResultHolder.getResult().get(categoryCode).add(product.getPrice());
         } else {
             List<Double> prices = new ArrayList<Double>();
             prices.add(product.getPrice());
-            productBatchResultHolder.getResult().put(category_code, prices);
+            productBatchResultHolder.getResult().put(categoryCode, prices);
         }
 
     }

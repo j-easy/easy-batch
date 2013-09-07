@@ -32,9 +32,7 @@ public class Product {
 
     private long productId;
 
-    private long category_code;
-
-    private String name;
+    private long categoryCode;
 
     private double price;
 
@@ -46,20 +44,12 @@ public class Product {
         this.productId = productId;
     }
 
-    public long getCategory_code() {
-        return category_code;
+    public long getCategoryCode() {
+        return categoryCode;
     }
 
-    public void setCategory_code(long category_code) {
-        this.category_code = category_code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setCategoryCode(long categoryCode) {
+        this.categoryCode = categoryCode;
     }
 
     public double getPrice() {
@@ -75,8 +65,7 @@ public class Product {
         final StringBuilder sb = new StringBuilder();
         sb.append("Product");
         sb.append("{productId=").append(productId);
-        sb.append(", category_code=").append(category_code);
-        sb.append(", name='").append(name).append('\'');
+        sb.append(", categoryCode=").append(categoryCode);
         sb.append(", price=").append(price);
         sb.append('}');
         return sb.toString();

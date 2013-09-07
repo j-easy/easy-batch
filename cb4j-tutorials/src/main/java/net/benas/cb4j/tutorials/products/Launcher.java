@@ -29,6 +29,7 @@ import net.benas.cb4j.core.config.BatchConfiguration;
 import net.benas.cb4j.core.config.BatchConfigurationBuilder;
 import net.benas.cb4j.core.config.BatchConfigurationException;
 import net.benas.cb4j.core.util.BatchRunner;
+import net.benas.cb4j.core.util.RecordType;
 import net.benas.cb4j.core.validator.NumericFieldValidator;
 
 /**
@@ -41,8 +42,8 @@ public class Launcher {
 
         if (args == null || args.length < 3){
             System.err.println("[CB4J] Configuration parameters not specified, usage : ");
-            System.err.println("java net.benas.cb4j.tutorials.products.Launcher path/to/data/file recordSize delimiter");
-            System.err.println("Example : java net.benas.cb4j.tutorials.products.Launcher /data/cb4j/products.csv 4 ;");
+            System.err.println("java net.benas.cb4j.tutorials.products.Launcher path/to/data/file recordSize recordType fieldsLength");
+            System.err.println("Example : java net.benas.cb4j.tutorials.products.Launcher /data/cb4j/products.flr 3 FLR 8 3 4");
             System.exit(1);
         }
 
@@ -52,8 +53,8 @@ public class Launcher {
         BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
                 .inputDataFile(args[0])
                 .recordSize(Integer.parseInt(args[1]))
-                .delimiter(args[2])
-                .skipHeader(true)
+                .recordType(RecordType.valueOf(args[2]))
+                .fieldsLength(new int[]{Integer.parseInt(args[3]),Integer.parseInt(args[4]),Integer.parseInt(args[5])})
                 .build();
 
         /*
@@ -62,7 +63,7 @@ public class Launcher {
         NumericFieldValidator numericFieldValidator = new NumericFieldValidator();
         batchConfiguration.registerFieldValidator(0, numericFieldValidator);
         batchConfiguration.registerFieldValidator(1, numericFieldValidator);
-        batchConfiguration.registerFieldValidator(3, numericFieldValidator);
+        batchConfiguration.registerFieldValidator(2, numericFieldValidator);
 
         /*
         * Registering record mapper and processor

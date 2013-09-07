@@ -16,7 +16,7 @@ public class ProductBatchResultHolder implements BatchResultHolder<Map<Long, Lis
 
     /**
      * A map defined as follow :
-     *  - key = category_code
+     *  - key = categoryCode
      *  - value = list of prices of products belonging to that category
      *  Min and Max prices will be computed on prices list for each category
      */
