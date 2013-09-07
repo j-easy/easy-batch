@@ -71,6 +71,8 @@ public class DefaultBatchEngineImpl implements BatchEngine {
 
     private boolean abortOnFirstError;
 
+    private boolean abortOnFirstMappingException;
+
     private boolean skipHeader;
 
     private boolean jmxEnabled;
@@ -86,6 +88,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         this.rollBackHandler = batchConfiguration.getRollBackHandler();
         this.abortOnFirstReject = batchConfiguration.getAbortOnFirstReject();
         this.abortOnFirstError = batchConfiguration.getAbortOnFirstError();
+        this.abortOnFirstMappingException = batchConfiguration.getAbortOnFirstMappingException();
         this.skipHeader = batchConfiguration.getSkipHeader();
         this.jmxEnabled = batchConfiguration.getJmxEnabled();
     }
@@ -152,10 +155,20 @@ public class DefaultBatchEngineImpl implements BatchEngine {
                 typedRecord = recordMapper.mapRecord(currentParsedRecord);
             } catch (RecordMappingException e) { //thrown by the user deliberately
                 batchReporter.reportRejectedRecord(currentParsedRecord, e.getMessage());
-                continue;
+                if (abortOnFirstMappingException) {
+                    logger.info("Aborting execution on first mapping exception.");
+                    break;
+                } else {
+                    continue;
+                }
             } catch (Exception e) { //thrown unexpectedly
                 batchReporter.reportRejectedRecord(currentParsedRecord, "an unexpected mapping exception occurred, root cause = " , e);
-                continue;
+                if (abortOnFirstMappingException) {
+                    logger.info("Aborting execution on first mapping exception.");
+                    break;
+                } else {
+                    continue;
+                }
             }
 
             //pre process record
@@ -235,7 +248,7 @@ public class DefaultBatchEngineImpl implements BatchEngine {
         recordReader.close();
 
         batchReporter.setEndTime(System.currentTimeMillis());
-        batchReporter.setProcessedRecordsNumber( abortOnFirstError || abortOnFirstReject || skipHeader ? currentRecordNumber - 1 : currentRecordNumber);
+        batchReporter.setProcessedRecordsNumber( abortOnFirstMappingException || abortOnFirstError || abortOnFirstReject || skipHeader ? currentRecordNumber - 1 : currentRecordNumber);
         batchReporter.setBatchResultHolder(recordProcessor.getBatchResultHolder());
 
         //send final asynchronous jmx notification about execution end

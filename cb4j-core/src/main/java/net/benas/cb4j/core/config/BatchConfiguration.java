@@ -530,6 +530,10 @@ public class BatchConfiguration {
         return Boolean.valueOf(configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_ERROR));
     }
 
+    public boolean getAbortOnFirstMappingException() {
+        return Boolean.valueOf(configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_MAPPING_EXCEPTION));
+    }
+
     public boolean getSkipHeader(){
         return Boolean.valueOf(configurationProperties.getProperty(BatchConstants.INPUT_DATA_SKIP_HEADER));
     }

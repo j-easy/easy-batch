@@ -27,6 +27,7 @@ public class BatchConfigurationBuilder {
         properties.setProperty(BatchConstants.INPUT_FIELD_QUALIFIER_CHAR, BatchConstants.DEFAULT_FIELD_QUALIFIER_CHAR);
         properties.setProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_REJECT, String.valueOf(BatchConstants.DEFAULT_ABORT_ON_FIRST_REJECT));
         properties.setProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_ERROR, String.valueOf(BatchConstants.DEFAULT_ABORT_ON_FIRST_ERROR));
+        properties.setProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_MAPPING_EXCEPTION, String.valueOf(BatchConstants.DEFAULT_ABORT_ON_FIRST_MAPPING_EXCEPTION));
         properties.setProperty(BatchConstants.OUTPUT_DATA_JMX_ENABLED, String.valueOf(BatchConstants.DEFAULT_OUTPUT_DATA_JMX_ENABLED));
     }
 
@@ -178,6 +179,17 @@ public class BatchConfigurationBuilder {
      */
     public BatchConfigurationBuilder abortOnFirstError(Boolean abortOnFirstError) {
         properties.setProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_ERROR, String.valueOf(abortOnFirstError));
+        return this;
+    }
+
+    /**
+     * Specify if the engine should abort batch execution on first record mapping exception.
+     * @param abortOnFirstMappingException true if the engine should abort batch execution on first mapping exception, false else.
+     *                           Default to false.
+     * @return a pre configured batch configuration builder instance with default values for unset optional parameters
+     */
+    public BatchConfigurationBuilder abortOnFirstMappingException(Boolean abortOnFirstMappingException) {
+        properties.setProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_MAPPING_EXCEPTION, String.valueOf(abortOnFirstMappingException));
         return this;
     }
 
