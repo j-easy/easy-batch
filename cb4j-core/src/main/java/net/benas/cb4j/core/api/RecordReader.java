@@ -53,6 +53,12 @@ public interface RecordReader {
     long getTotalRecordsNumber();
 
     /**
+     * Return header record.
+     * @return header record
+     */
+    String getHeaderRecord();
+
+    /**
      * Close the reader.
      */
     void close();

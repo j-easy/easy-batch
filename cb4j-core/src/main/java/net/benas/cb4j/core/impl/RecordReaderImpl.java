@@ -50,6 +50,11 @@ public final class RecordReaderImpl implements RecordReader {
      */
     private Scanner recordCounterScanner;
 
+    /**
+     * Header record.
+     */
+    private String headerRecord;
+
     public RecordReaderImpl(final String input, final String charset, final boolean skipHeader) throws FileNotFoundException {
 
         File file = new File(input);
@@ -61,7 +66,7 @@ public final class RecordReaderImpl implements RecordReader {
 
         recordCounterScanner = new Scanner(file, charset);
         if (skipHeader && hasNextRecord()) {
-            recordCounterScanner.nextLine();
+            headerRecord = recordCounterScanner.nextLine();
         }
     }
 
@@ -90,6 +95,13 @@ public final class RecordReaderImpl implements RecordReader {
         }
         recordCounterScanner.close();
         return totalRecordsNumber;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getHeaderRecord() {
+        return headerRecord;
     }
 
     /**
