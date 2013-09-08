@@ -42,8 +42,8 @@ public class Launcher {
 
         if (args == null || args.length < 2){
             System.err.println("[CB4J] Configuration parameters not specified, usage : ");
-            System.err.println("java net.benas.cb4j.tutorials.helloworld.Launcher path/to/data/file recordSize delimiter");
-            System.err.println("Example : java net.benas.cb4j.tutorials.helloworld.Launcher /data/cb4j/persons.csv 2 ,");
+            System.err.println("java net.benas.cb4j.tutorials.helloworld.Launcher path/to/data/file recordSize delimiter recordClass");
+            System.err.println("Example : java net.benas.cb4j.tutorials.helloworld.Launcher /data/cb4j/persons.csv 2 , net.benas.cb4j.tutorials.helloworld.Greeting");
             System.exit(1);
         }
 
@@ -53,6 +53,7 @@ public class Launcher {
         BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
                 .inputDataFile(args[0])
                 .recordSize(Integer.parseInt(args[1]))
+                .recordClass(args[2])
                 .skipHeader(true)
                 .build();
 
@@ -62,9 +63,8 @@ public class Launcher {
         batchConfiguration.registerFieldValidator(0, new NumericFieldValidator());
 
         /*
-        * Registering record mapper and processor
+        * Registering record processor
         */
-        batchConfiguration.registerRecordMapper(new GreetingMapper());
         batchConfiguration.registerRecordProcessor(new GreetingProcessor());
 
         /*

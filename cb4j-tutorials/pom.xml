@@ -222,6 +222,7 @@
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/persons.csv</argument>
                                 <argument>2</argument>
+                                <argument>net.benas.cb4j.tutorials.helloworld.Greeting</argument>
                             </arguments>
                         </configuration>
                     </plugin>
