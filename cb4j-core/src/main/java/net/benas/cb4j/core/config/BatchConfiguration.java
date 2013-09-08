@@ -27,6 +27,8 @@ package net.benas.cb4j.core.config;
 import net.benas.cb4j.core.api.*;
 import net.benas.cb4j.core.impl.*;
 import net.benas.cb4j.core.jmx.BatchMonitor;
+import net.benas.cb4j.core.model.Field;
+import net.benas.cb4j.core.model.Record;
 import net.benas.cb4j.core.util.BatchConstants;
 import net.benas.cb4j.core.util.LogFormatter;
 import net.benas.cb4j.core.util.RecordType;
@@ -162,12 +164,37 @@ public class BatchConfiguration {
         }
 
         /*
-         * Check record mapper
+         * Check record mapper : if no custom mapper registered, use default implementation
          */
         if (recordMapper == null) {
-            String error = "Configuration failed : no record mapper registered";
-            logger.severe(error);
-            throw new BatchConfigurationException(error);
+            String recordClassName = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_CLASS);
+            if (recordClassName == null || recordClassName.length() == 0) {
+                String error = "Configuration failed : no record mapper registered, please provide the record fully qualified class name which is mandatory to use the default mapper.";
+                logger.severe(error);
+                throw new BatchConfigurationException(error);
+            }
+
+            String[] headers;
+            String headersProperty = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_HEADERS);
+            if( headersProperty == null) { // if no headers specified, use field names declared in the header record
+                String headerRecord = recordReader.getHeaderRecord();
+                Record record = recordParser.parseRecord(headerRecord,0); //use the record parser to parse the header record using he right delimiter
+                List<Field> fields = record.getFields();
+                headers = new String[fields.size()];
+                for (int i = 0; i < fields.size(); i++) {
+                    headers[i] = fields.get(i).getContent();
+                }
+            } else { // headers specified, split the comma separated list
+                headers = headersProperty.split(",");
+            }
+
+            try {
+                recordMapper = new DefaultRecordMapperImpl(recordClassName, headers);
+            } catch (ClassNotFoundException e) {
+                String error = "Configuration failed : Class " + recordClassName + " not found.";
+                logger.severe(error);
+                throw new BatchConfigurationException(error, e);
+            }
         }
 
         /*

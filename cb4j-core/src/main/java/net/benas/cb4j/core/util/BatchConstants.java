@@ -52,6 +52,10 @@ public class BatchConstants {
 
     public static final String INPUT_RECORD_TYPE = "input.record.type";
 
+    public static final String INPUT_RECORD_CLASS = "input.record.class";
+
+    public static final String INPUT_RECORD_HEADERS = "input.record.headers";
+
     public static final String OUTPUT_DATA_IGNORED = "output.data.ignored";
 
     public static final String OUTPUT_DATA_REJECTED = "output.data.rejected";

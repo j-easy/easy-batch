@@ -161,6 +161,28 @@ public class BatchConfigurationBuilder {
     }
 
     /**
+     * Specify the fully qualified name of the domain object class. This is mandatory if you use the default record mapper.
+     * @param recordClass fully qualified name of the domain object class
+     * @return a pre configured batch configuration builder instance with default values for unset optional parameters
+     */
+    public BatchConfigurationBuilder recordClass(String recordClass) {
+        properties.setProperty(BatchConstants.INPUT_RECORD_CLASS, recordClass);
+        return this;
+    }
+
+    /**
+     * Specify headers (comma separated) to be mapped to domain object fields in declaration order.
+     * This will be used by default mapper to map record values to domain object fields.
+     * This parameter is optional, if not specified, the default mapper will use the header record as basis for field mapping.
+     * @param recordHeaders comma separated list of headers names.
+     * @return a pre configured batch configuration builder instance with default values for unset optional parameters
+     */
+    public BatchConfigurationBuilder recordHeaders(String recordHeaders) {
+        properties.setProperty(BatchConstants.INPUT_RECORD_HEADERS, recordHeaders);
+        return this;
+    }
+
+    /**
      * Specify if the engine should abort batch execution on first rejected record.
      * @param abortOnFirstReject true if the engine should abort batch execution on first reject, false else.
      *                           Default to false.
