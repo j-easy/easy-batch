@@ -31,6 +31,8 @@ import net.benas.cb4j.core.config.BatchConfigurationException;
 import net.benas.cb4j.core.impl.DefaultBatchEngineImpl;
 import net.benas.cb4j.core.util.BatchRunner;
 import net.benas.cb4j.core.validator.NumericFieldValidator;
+import net.benas.cb4j.integration.common.GreetingMapper;
+import net.benas.cb4j.integration.common.GreetingProcessor;
 
 /**
  * Main class to run the Hello World tutorial with Bean Validation API integration.

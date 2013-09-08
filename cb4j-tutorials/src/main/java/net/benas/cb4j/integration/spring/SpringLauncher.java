@@ -31,7 +31,7 @@ import net.benas.cb4j.core.config.BatchConfigurationException;
 import net.benas.cb4j.core.impl.DefaultBatchEngineImpl;
 import net.benas.cb4j.core.util.BatchRunner;
 import net.benas.cb4j.core.validator.NumericFieldValidator;
-import net.benas.cb4j.tutorials.helloworld.GreetingMapper;
+import net.benas.cb4j.integration.common.GreetingMapper;
 import net.benas.cb4j.tutorials.helloworld.GreetingProcessor;
 
 import org.springframework.context.ApplicationContext;

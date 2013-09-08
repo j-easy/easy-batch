@@ -27,7 +27,7 @@ package net.benas.cb4j.integration.quartz;
 import net.benas.cb4j.core.config.BatchConfiguration;
 import net.benas.cb4j.core.config.BatchConfigurationBuilder;
 import net.benas.cb4j.core.validator.NumericFieldValidator;
-import net.benas.cb4j.tutorials.helloworld.GreetingMapper;
+import net.benas.cb4j.integration.common.GreetingMapper;
 import net.benas.cb4j.tutorials.helloworld.GreetingProcessor;
 
 import java.util.Date;
