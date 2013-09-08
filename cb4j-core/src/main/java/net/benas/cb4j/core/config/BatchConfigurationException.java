@@ -37,4 +37,8 @@ public class BatchConfigurationException extends Exception {
         super(message);
     }
 
+    public BatchConfigurationException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
+
 }
