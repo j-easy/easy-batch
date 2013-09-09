@@ -54,13 +54,16 @@ public class DefaultRecordMapperTest {
     @Test
     public void testMapHelloWorldType() throws Exception {
 
+        // prepare mock record
         Field firstNameField = new Field(0, "hello");
         Field lastNameField = new Field(1, "world");
         record.getFields().add(firstNameField);
         record.getFields().add(lastNameField);
 
+        // map record to Person bean
         Person person = (Person) recordMapper.mapRecord(record);
 
+        // person bean must be not null and correctly populated
         assertNotNull(person);
         assertEquals(person.getFirstName(), "hello");
         assertEquals(person.getLastName(), "world");

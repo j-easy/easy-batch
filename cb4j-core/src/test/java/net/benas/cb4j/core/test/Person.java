@@ -1,11 +1,19 @@
 package net.benas.cb4j.core.test;
 
+/**
+ * A person Java bean used for tests.
+ *
+ * @author benas (md.benhassine@gmail.Com)
+ */
 public class Person {
 
     private String firstName;
 
     private String lastName;
 
+    /**
+     * Default constructor needed by default mapper
+     */
     void Person() {
     }
 
