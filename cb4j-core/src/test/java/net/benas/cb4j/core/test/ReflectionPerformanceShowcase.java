@@ -30,10 +30,9 @@ import java.lang.reflect.Method;
 
 /**
  * This class is a show case of performance issues when using Java Reflection API to create objects.<br/>
- * Many techniques exist to map CSV records to java objects : Mapping CSV headers to POJO properties, using annotation on POJO properties, using XML mapping metadata, etc. But all these techniques require Java Reflection API to dynamically introspect bean properties at runtime and populate them.<br/>
- * CB4J does not provide any default CSV to Object mapping code for performance reason.<br/>
- * Writing the mapping logic explicitly by the user (by implementing {@link net.benas.cb4j.core.api.RecordMapper}) is not costly (seriously!) and results in about 500x faster code as demonstrated in this show case!<br/>
+ *
  * See "Drawbacks of Reflection" section in Java's official documentation : <a href="http://docs.oracle.com/javase/tutorial/reflect/index.html">Java Trail: The Reflection API</a>
+ *
  * @author benas (md.benhassine@gmail.com)
  */
 public class ReflectionPerformanceShowcase {
@@ -88,20 +87,6 @@ public class ReflectionPerformanceShowcase {
         setFirstNameMethod.invoke(person,"someData");
         setLastNameMethod.invoke(person, "someData");
 
-        /*
-         * Suppose mapping csv header names to bean properties with the same name
-         */
-        /*List<String> csvHeaders = new ArrayList<String>();
-        csvHeaders.add("firstName"); csvHeaders.add("lastName");
-
-        for(String header : csvHeaders){
-            String setterName = "set" + header.substring(0,1).toUpperCase() + header.substring(1);//javabean naming convention
-            for( final Method method : Person.class.getMethods() ) {
-                if (method.getName().equals(setterName)){
-                    method.invoke(person,"someData");
-                }
-            }
-        }*/
         return person;
     }
 
