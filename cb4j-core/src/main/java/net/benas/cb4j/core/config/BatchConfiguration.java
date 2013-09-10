@@ -101,7 +101,7 @@ public class BatchConfiguration {
             logger.severe(error);
             throw new BatchConfigurationException(error);
         }
-        logger.config("Configuration file specified : " + configurationFile);
+        logger.info("Configuration file specified : " + configurationFile);
 
         fieldValidators = new HashMap<Integer, List<FieldValidator>>();
     }
@@ -232,7 +232,7 @@ public class BatchConfiguration {
         String outputIgnored = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_IGNORED);
         if (outputIgnored == null || (outputIgnored.length() == 0)) {
             outputIgnored = BatchConfigurationUtil.removeExtension(inputDataProperty) + BatchConstants.DEFAULT_IGNORED_SUFFIX;
-            logger.warning("No log file specified for ignored records, using default : " + outputIgnored);
+            logger.info("No log file specified for ignored records, using default : " + outputIgnored);
         }
         try {
             FileHandler ignoredRecordsHandler = new FileHandler(outputIgnored);
@@ -249,7 +249,7 @@ public class BatchConfiguration {
         String outputRejected = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_REJECTED);
         if (outputRejected == null || (outputRejected.length() == 0)) {
             outputRejected = BatchConfigurationUtil.removeExtension(inputDataProperty) + BatchConstants.DEFAULT_REJECTED_SUFFIX;
-            logger.warning("No log file specified for rejected records, using default : " + outputRejected);
+            logger.info("No log file specified for rejected records, using default : " + outputRejected);
         }
         try {
             FileHandler rejectedRecordsHandler = new FileHandler(outputRejected);
@@ -266,7 +266,7 @@ public class BatchConfiguration {
         String outputErrors = configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_ERRORS);
         if (outputErrors == null || (outputErrors.length() == 0)) {
             outputErrors = BatchConfigurationUtil.removeExtension(inputDataProperty) + BatchConstants.DEFAULT_ERRORS_SUFFIX;
-            logger.warning("No log file specified for error records, using default : " + outputErrors);
+            logger.info("No log file specified for error records, using default : " + outputErrors);
         }
         try {
             FileHandler errorRecordsHandler = new FileHandler(outputErrors);
@@ -292,7 +292,7 @@ public class BatchConfiguration {
         String recordType;
         if (recordTypeProperty == null || recordTypeProperty.length() == 0) {
             recordType = BatchConstants.DEFAULT_RECORD_TYPE;
-            logger.warning("Record type property not specified, records will be considered as delimiter-separated values");
+            logger.info("Record type property not specified, records will be considered as delimiter-separated values");
         } else if (!RecordType.DSV.toString().equalsIgnoreCase(recordTypeProperty) && !RecordType.FLR.toString().equalsIgnoreCase(recordTypeProperty)) {
             recordType = BatchConstants.DEFAULT_RECORD_TYPE;
             logger.warning("Record type property '" + recordTypeProperty +"' is invalid, records will be considered as delimiter-separated values");
@@ -343,7 +343,7 @@ public class BatchConfiguration {
             String fieldsDelimiter = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_DELIMITER);
             if (fieldsDelimiter == null || fieldsDelimiter.length() == 0) {
                 fieldsDelimiter = BatchConstants.DEFAULT_FIELD_DELIMITER;
-                logger.warning("No field delimiter specified, using default : '" + fieldsDelimiter + "'");
+                logger.info("No field delimiter specified, using default : '" + fieldsDelimiter + "'");
             }
 
             String trimWhitespacesProperty = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_TRIM);
@@ -352,7 +352,7 @@ public class BatchConfiguration {
                 trimWhitespaces = Boolean.valueOf(trimWhitespacesProperty);
             } else {
                 trimWhitespaces = BatchConstants.DEFAULT_FIELD_TRIM;
-                logger.warning("Trim whitespaces property not specified, default to true");
+                logger.info("Trim whitespaces property not specified, default to true");
             }
 
             String dataQualifierCharacterProperty = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_QUALIFIER_CHAR);
@@ -361,9 +361,9 @@ public class BatchConfiguration {
                 dataQualifierCharacter = dataQualifierCharacterProperty;
             }
 
-            logger.config("Record size specified : " + recordSize);
-            logger.config("Fields delimiter specified : '" + fieldsDelimiter + "'");
-            logger.config("Data qualifier character specified : '" + dataQualifierCharacter + "'");
+            logger.info("Record size : " + recordSize);
+            logger.info("Fields delimiter : '" + fieldsDelimiter + "'");
+            logger.info("Data qualifier character : '" + dataQualifierCharacter + "'");
             recordParser = new DsvRecordParserImpl(recordSize, fieldsDelimiter, trimWhitespaces, dataQualifierCharacter);
 
         } catch (NumberFormatException e) {
@@ -398,24 +398,24 @@ public class BatchConfiguration {
                 skipHeader = Boolean.valueOf(skipHeaderProperty);
             } else {
                 skipHeader = BatchConstants.DEFAULT_SKIP_HEADER;
-                logger.warning("Skip header property not specified, default to false");
+                logger.info("Skip header property not specified, default to false");
             }
 
             String encoding;
             if (encodingProperty == null || (encodingProperty.length() == 0)) {
                 encoding = BatchConstants.DEFAULT_FILE_ENCODING;
-                logger.warning("No encoding specified for input data, using system default encoding : " + encoding);
+                logger.info("No encoding specified for input data, using system default encoding : " + encoding);
             } else {
                 if (Charset.availableCharsets().get(Charset.forName(encodingProperty).name()) == null || !Charset.isSupported(encodingProperty)) {
                     encoding = BatchConstants.DEFAULT_FILE_ENCODING;
                     logger.warning("Encoding '" + encodingProperty + "' not supported, using system default encoding : " + encoding);
                 } else {
                     encoding = encodingProperty;
-                    logger.config("Using '" + encoding + "' encoding for input file reading");
+                    logger.info("Using '" + encoding + "' encoding for input file reading");
                 }
             }
             recordReader = new RecordReaderImpl(inputDataProperty, encoding, skipHeader);
-            logger.config("Data input file : " + inputDataProperty);
+            logger.info("Data input file : " + inputDataProperty);
         } catch (FileNotFoundException e) {
             String error = "Configuration failed : input data file '" + inputDataProperty + "' could not be opened";
             logger.severe(error);
