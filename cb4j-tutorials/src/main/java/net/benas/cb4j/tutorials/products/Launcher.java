@@ -25,12 +25,16 @@
 package net.benas.cb4j.tutorials.products;
 
 import net.benas.cb4j.core.api.BatchEngine;
+import net.benas.cb4j.core.api.BatchReport;
 import net.benas.cb4j.core.config.BatchConfiguration;
 import net.benas.cb4j.core.config.BatchConfigurationBuilder;
 import net.benas.cb4j.core.config.BatchConfigurationException;
+import net.benas.cb4j.core.impl.DefaultBatchEngineImpl;
 import net.benas.cb4j.core.util.BatchRunner;
 import net.benas.cb4j.core.util.RecordType;
 import net.benas.cb4j.core.validator.NumericFieldValidator;
+
+import java.util.Map;
 
 /**
  * Main class to run the products tutorial
@@ -76,9 +80,27 @@ public class Launcher {
          */
         try {
             batchConfiguration.configure();
-            BatchEngine batchEngine = new ProductBatchEngine(batchConfiguration);
+            BatchEngine batchEngine = new DefaultBatchEngineImpl(batchConfiguration);
             BatchRunner batchRunner = new BatchRunner(batchEngine);
-            batchRunner.run();
+            BatchReport batchReport = batchRunner.run();
+            ProductBatchResultHolder batchResultHolder = (ProductBatchResultHolder) batchReport.getBatchResultHolder();
+
+            System.out.println("******* Products Report ******* ");
+
+            //show min prices by category
+            System.out.println("Minimum prices by category : ");
+
+            Map<Long, Double> minPrices = batchResultHolder.getMinPricesByCategory();
+            for (Map.Entry<Long, Double> entry : minPrices.entrySet()) {
+                System.out.println("\tMin price for category " + entry.getKey() + " = " + entry.getValue());
+            }
+
+            //show max prices by category
+            System.out.println("Maximum prices by category : ");
+            Map<Long, Double> maxPrices = batchResultHolder.getMaxPricesByCategory();
+            for (Map.Entry<Long, Double> entry : maxPrices.entrySet()) {
+                System.out.println("\tMax price for category " + entry.getKey() + " = " + entry.getValue());
+            }
         } catch (BatchConfigurationException e) {
             System.err.println(e.getMessage());
         }
