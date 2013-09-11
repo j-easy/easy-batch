@@ -38,7 +38,7 @@
         <div class="container">
             <a class="brand" href="../index.html">CB4J</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 1.3.0</p>
+                <p class="navbar-text pull-right">Version: 1.4.0</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -147,11 +147,12 @@ x,Ben
                 <h2 id="3" class="section">3. Implementation using CB4J</h2>
                 <h3 id="3.1">3.1 Configuration</h3>
                 <p>First, we need to configure CB4J with CSV parameters. By default, CB4J uses the comma ',' character as delimiter which is fine for this tutorial, so no configuration is needed for field delimiter.</p>
-                <p>Nevertheless, we have to specify the path of input file, the record expected size and the <strong>skipHeader</strong> parameters. This is can be done using the <code class="prettyprint">BatchConfigurationBuilder</code> as follows :</p>
+                <p>Nevertheless, we have to specify the path of input file, the record expected size, the class name of our domain object and the <strong>skipHeader</strong> parameters. This can be done using the <code class="prettyprint">BatchConfigurationBuilder</code> as follows :</p>
 <pre class="prettyprint">
 BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
         .inputDataFile("/data/cb4j/cb4j-tutorials/src/main/resources/persons.csv")
         .recordSize(2)
+        .recordClass("net.benas.cb4j.tutorials.helloworld.Greeting")
         .skipHeader(true)
         .build();
 </pre>
@@ -178,27 +179,11 @@ public class Greeting {
 }
 </pre>
 
-                <p>To map CSV records to <code class="prettyprint">Greeting</code> objects, we have to provide an implementation of the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface as follows :</p>
-<pre class="prettyprint">
-public class GreetingMapper implements RecordMapper&lt;Greeting&gt; {
-
-    public Greeting mapRecord(Record record) throws RecordMappingException {
-
-        Greeting greeting = new Greeting();
-
-        greeting.setSequence(Long.valueOf(record.getFieldContentByIndex(0)));
-        greeting.setName(record.getFieldContentByIndex(1));
-
-        return greeting;
-
-        }
-    }
-</pre>
-
-                <p>To register the record mapper implementation, use the following snippet :</p>
-<pre class="prettyprint">
-batchConfiguration.registerRecordMapper(new GreetingMapper());
-</pre>
+                <p>To map CSV records to <code class="prettyprint">Greeting</code> objects, CB4J will use field names in header record to map data to fields in <code class="prettyprint">Greeting</code> class with the same name.</p>
+                <p>In this example, the first field <code class="prettyprint">sequence</code> in CSV record will be mapped to the field <code class="prettyprint">sequence</code> in <code class="prettyprint">Greeting</code> Object. This is the same for the <code class="prettyprint">name</code> field.</p>
+                <p>CB4J will also convert raw data in the CSV file to typed data according to field type of the domain object. For instance, <code class="prettyprint">sequence</code> values in CSV records will be converted to the type <code class="prettyprint">long</code> as defined in <code class="prettyprint">Greeting</code> Object.</p>
+                <p>By default, CB4J uses field names in header record to map data to fields in our domain object <code class="prettyprint">Greeting</code>, so no configuration is needed for this.</p>
+                <p>Nevertheless, we must provide the class name of our domain object so that CB4J can map records to. This can be done using the <code class="prettyprint">input.record.class</code> parameter.</p>
 
                 <h3 id="3.4">3.4 Processing records</h3>
                 <p>At this point, we have validated and mapped CSV records to <code class="prettyprint">Greeting</code> objects. It is time to define the business processing logic which consists in this tutorial of printing to the console a greeting message for each person. For that to be done, we can implement the <code class="prettyprint">RecordProcessor&lt;T&gt;</code> interface or extend the <code class="prettyprint">DefaultRecordProcessorImpl&lt;T&gt;</code> class as follows:</p>
@@ -234,15 +219,16 @@ batchRunner.run();
 
 <pre>
 [CB4J : INFO] Configuration started at : Sat Dec 01 21:21:17 CET 2012
-[CB4J : WARNING] No encoding specified for input data, using system default encoding : UTF-8
-[CB4J : WARNING] No field delimiter specified, using default : ','
-[CB4J : WARNING] Trim whitespaces property not specified, default to true
-[CB4J : WARNING] No log file specified for ignored records, using default : /data/cb4j/cb4j-tutorials/src/main/resources/persons-ignored.log
-[CB4J : WARNING] No log file specified for rejected records, using default : /data/cb4j/cb4j-tutorials/src/main/resources/persons-rejected.log
-[CB4J : WARNING] No log file specified for error records, using default : /home/benas/dev/github/cb4j/cb4j-tutorials/src/main/resources/persons-errors.log
+[CB4J : INFO] Using 'UTF-8' encoding for input file reading
+[CB4J : INFO] Data input file : /data/cb4j/cb4j-tutorials/persons.csv
+[CB4J : INFO] Record size : 2
+[CB4J : INFO] Fields delimiter : ','
+[CB4J : INFO] Data qualifier character : ''
+[CB4J : INFO] No log file specified for ignored records, using default : /data/cb4j/cb4j-tutorials/persons-ignored.log
+[CB4J : INFO] No log file specified for rejected records, using default : /data/cb4j/cb4j-tutorials/persons-rejected.log
+[CB4J : INFO] No log file specified for error records, using default : /data/cb4j/cb4j-tutorials/persons-errors.log
 [CB4J : INFO] CB4J JMX MBean registered successfully as: net.benas.cb4j.jmx:type=BatchMonitorMBean
 [CB4J : INFO] Configuration successful
-[CB4J : INFO] Configuration parameters details : {input.data.skipHeader=true, input.record.size=2, input.data.path=/data/cb4j/cb4j-tutorials/src/main/resources/persons.csv}
 [CB4J : INFO] Initializing batch
 [CB4J : INFO] Total input records to process = 3
 [CB4J : INFO] CB4J engine is running...
@@ -272,11 +258,11 @@ Hi Tommy! Your sequence number is 1
 
                 <p>The following is the content of the ignored records log file <code>/data/cb4j/cb4j-tutorials/src/main/resources/persons-ignored.log</code> :</p>
 <pre>
-Record #2 [2,Harry,Smith] is ignored, Error : record size 3 not equal to expected size of 2.
+Record #3 [2,Harry,Smith] is ignored, Error : record size 3 not equal to expected size of 2.
 </pre>
                 <p>The following is the content of the rejected records log file <code>/data/cb4j/cb4j-tutorials/src/main/resources/persons-rejected.log</code> :</p>
 <pre>
-Record #3 [x,Ben] is rejected, Error : The field Field[index=0, content='x'] is not valid according to <br/>validation constraint : [The field content should be a numeric value]
+Record #4 [x,Ben] is rejected, Error : The field Field[index=0, content='x'] is not valid according to <br/>validation constraint : [The field content should be a numeric value]
 </pre>
 
             </div>

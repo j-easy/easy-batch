@@ -33,7 +33,7 @@
         <div class="container">
             <a class="brand" href="./index.html">CB4J</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 1.3.0</p>
+                <p class="navbar-text pull-right">Version: 1.4.0</p>
                 <ul class="nav">
                     <li class="active"><a href="./index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -105,18 +105,29 @@
 
             <div class="row-fluid">
 
-                <h2>Current stable version : 1.3.0 (2013-04-21)</h2>
+                <h2>Current stable version : 1.4.0 (2013-09-15)</h2>
 
                 <p>This is the latest stable version of CB4J. This release adds many new features such as:</p>
+                <ul>
+                    <li>New BatchResultHolder API to be able to get computation result at the end of batch execution</li>
+                    <li>New CSV/Object mapper implementation to map records to domain objects based on field names declared in header record</li>
+                    <li>New parameter to abort execution on first record processing error / record mapping exception</li>
+                    <li>New validators to validate that date value is before/after a given date</li>
+                    <li>New validators to validate that field field content size has a min/max length</li>
+                </ul>
+
+                <p>This release also fixes many issues reported in previous version. Please check the <a href="https://github.com/benas/cb4j/blob/master/src/main/resources/CHANGELOG.txt">change log</a> for all details about changes.</p>
+
+                <h2>Prior versions</h2>
+
+                <h3>Version 1.3.0 (2013-04-21)</h3>
+
+                <p>This release adds the following new features:</p>
                 <ul>
                     <li>Basic record processing transaction support</li>
                     <li>New JMX custom clients : command line and graphical asynchronous real time monitors</li>
                     <li>New batch configuration builder API</li>
                 </ul>
-
-                <p>Please check the <a href="https://github.com/benas/cb4j/blob/master/src/main/resources/CHANGELOG.txt">change log</a> for all details about changes.</p>
-
-                <h2>Prior versions</h2>
 
                 <h3>Version 1.2.0 (2013-01-13)</h3>
 
@@ -166,17 +177,13 @@
                     <h1><i class="icon-road"></i> Roadmap</h1>
                 </div>
 
-                <p>Many features are currently under development and will be available in next versions:</p>
+                <p>Many features are currently under development and will be available in next version:</p>
 
-                    <h3>Version 1.4 :</h3>
+                    <h3>Version 1.5 :</h3>
                         <ul>
                             <li>Add annotation-based configuration support</li>
                             <li>Add xml-based configuration support</li>
                             <li>Add statistics module to report processing time for each record</li>
-                        </ul>
-
-                    <h3>Version 1.5 :</h3>
-                        <ul>
                             <li>Add graphical configuration utility for all CB4J parameters</li>
                             <li>Add parallelism support to split input file into multiple partitions, run parallel CB4J instances and then merge results</li>
                         </ul>
