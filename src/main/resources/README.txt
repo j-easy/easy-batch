@@ -41,7 +41,7 @@ The distribution contains a set of ready to use CB4J examples :
 
     - Customers ETL : An example of how to use CB4J to process customers data from a CSV flat file and generate XML output
 
-    - Products statistics : An example of how to use CB4J to read a CSV file containing products data and calculate statistics about prices
+    - Products statistics : An example of how to use CB4J to read a fixed length records file containing products data and calculate statistics about prices
 
     - Book library : A use case of CB4J batch to load books data from a CSV file into a library database using Hibernate
 

@@ -45,7 +45,7 @@
         <div class="container">
             <a class="brand" href="../index.html">CB4J</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 1.3.0</p>
+                <p class="navbar-text pull-right">Version: 1.4.0</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown active">
@@ -135,16 +135,10 @@
 
                 <h2 id="2" class="section">2. Does CB4J provide any implementation of CSV to Object mapping?</h2>
 
-                <p>No. CB4J does not provide any implementation of CSV to POJO mapping for performance reason. There are many techniques to map CSV records to java objects like : </p>
+                <p>Yes. CB4J provides a default CSV to Object mapper which uses field names in header record to map data to fields in domain object with the same name.</p>
 
-                <ul>
-                    <li>Mapping CSV headers names to POJO properties</li>
-                    <li>Using annotations on POJO properties</li>
-                    <li>Using XML mapping metadata</li>
-                    <li>etc</li>
-                </ul>
-
-                <p>Unfortunately, all these techniques require the use of <a href="http://docs.oracle.com/javase/tutorial/reflect/index.html">Java Reflection API</a> to introspect dynamically POJO properties and populate them with CSV data. This is actually a performance killer in batch mode!</p>
+                <p>The default mapper uses the <a href="http://docs.oracle.com/javase/tutorial/reflect/index.html">Java Reflection API</a> to dynamically introspect your domain object properties and populate them with CSV data. This actually adds a performance overhead that you should pay attention to if your application is performance sensitive.</p>
+                <p>To avoid this performance overhead due to the use of reflection, you should consider writing you own mapper (by implementing the <code class="prettyprint">net.benas.cb4j.core.api.RecordMapper</code> interface) without using reflection for performance reasons.</p>
                 <p>The listing below is an extract from <a href="http://docs.oracle.com/javase/tutorial/reflect/index.html">Java official documentation on reflection API</a>:</p>
 
                 <blockquote>
@@ -152,11 +146,12 @@
                     <p>Because reflection involves types that are dynamically resolved, certain Java virtual machine optimizations can not be performed. Consequently, reflective operations have slower performance than their non-reflective counterparts, and should be avoided in sections of code which are called frequently in performance-sensitive applications.</p>
                 </blockquote>
 
-                <p>Writing the mapping logic explicitly by the user (by implementing the <code class="prettyprint">net.benas.cb4j.core.api.RecordMapper</code> interface) is not costly even for POJOs with many properties and this results in about <strong>100x</strong> faster code than using reflection as demonstrated in <a href="https://github.com/benas/cb4j/blob/master/cb4j-core/src/test/java/net/benas/cb4j/core/test/ReflectionPerformanceShowcase.java">the benchmark here</a>.</p>
+                <p>Writing the mapping logic explicitly is not costly even for POJOs with many properties and this results in about <strong>10x</strong> faster code than using reflection as demonstrated in <a href="https://github.com/benas/cb4j/blob/master/cb4j-core/src/test/java/net/benas/cb4j/core/test/ReflectionPerformanceShowcase.java">the benchmark here</a>.</p>
 
-                <h2 id="3" class="section">3. CB4J does not provide built-in type conversion utilities, why?</h2>
+                <h2 id="3" class="section">3. Does CB4J provide built-in type conversion utilities ?</h2>
 
-                <p>There are already built-in data conversion utilities in the JDK that can be used for that purpose :</p>
+                <p>Yes. The default record mapper converts raw data in CSV/FL records to typed data in your domain objects.</p>
+                <p>If you decided to implement your own mapper, you can use the public utility class <code class="prettyprint">net.benas.cb4j.core.util.TypeConversionUtil</code> which provides basic type conversion or use the built-in data conversion utilities in the JDK which are sufficient in most cases :</p>
                 <ul>
                     <li><code class="prettyprint">Integer.parseInt(String)</code>, <code class="prettyprint">Double.parseDouble(String),</code> etc</li>
                     <li><code class="prettyprint">java.text</code> and <code class="prettyprint">java.text.spi</code> packages (Date,Number,Currency)</li>
@@ -169,8 +164,6 @@
                     <li><a href="http://static.springsource.org/spring/docs/3.0.x/reference/validation.html">Spring 3 Type conversion</a></li>
                     <li><a href="http://dozer.sourceforge.net/">Dozer</a></li>
                 </ul>
-
-                <p>CB4J does not provide data conversion utilities simply to not reinvent the wheel!</p>
 
                 <h2 id="4" class="section">4. Can I monitor CB4J execution with JMX?</h2>
 
@@ -188,8 +181,9 @@
                 <p>For all details about Fixed-Length Record parsing support, please refer to the <a href="userGuide.html">user guide</a>.</p>
 
                 <h2 id="7" class="section">7. Does CB4J provide transaction support?</h2>
-                <p>Yes. CB4J version 1.3 adds basic record processing transaction support through the <code class="prettyprint">net.benas.cb4j.core.api.RollBackHandler</code> interface.</p>
+                <p>Yes. CB4J provides basic record processing transaction support through the <code class="prettyprint">net.benas.cb4j.core.api.RollBackHandler</code> interface.</p>
                 <p>This interface is a callback interface that allows you to define the rollback code to execute whenever an unexpected exception occurs during record processing.</p>
+                <p>The term transaction here does not refer to database transactions! It is a simple way to rollback record processing when things go wrong.</p>
                 <p>For all details about CB4J transaction support, please refer to the <a href="userGuide.html#2.5">user guide</a>.</p>
 
             </div>

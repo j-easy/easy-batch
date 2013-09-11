@@ -36,7 +36,7 @@
         <div class="container">
             <a class="brand" href="../index.html">CB4J</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 1.3.0</p>
+                <p class="navbar-text pull-right">Version: 1.4.0</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -115,31 +115,32 @@
             <div class="row-fluid">
 
                 <h2 id="1">1. Description</h2>
-                <p>In this tutorial, the goal is to process a CSV flat file containing products data and calculate statistics about prices. Products are organized in categories and the batch should calculate the minimum/maximum product price for each category. The input file named "<strong>products.csv</strong>" has the following content:</p>
+                <p>In this tutorial, the goal is to process a fixed length record flat file containing products data and calculate statistics about prices. Products are organized in categories and the batch should calculate the minimum/maximum product price for each category. The input file named "<strong>products.flr</strong>" has the following content:</p>
 <pre>
-product_id;category_code;name;price
-1;1;product1;25
-2;2;product2;15
-3;1;product3;20
-4;2;product4;10
-5;1;product5
-6;2;product6;xx
+816589652232500
+7165896522X2400
+616589652232300
+516589652242200
+X96589652242100
+916589652242000
 </pre>
 
-                <p>In this tutorial , the business data validation constraints are simple : Fields "product_id","category_code" and "price" must have numeric values.</p>
+                <p>The first 8 digits represent the product id. Then, the next 3 digits correspond to the product category. Finally, the last 4 digits represent the product price.</p>
+                <p>In this tutorial , data validation constraints are simple : all fields must have numeric values.</p>
                 <p><span class="label label-info">Note :</span> Prices should be converted to local currency before being processed. This is a good example of how to use the <code>preProcessRecord(T typedRecord)</code> method in <code>RecordProcessor&lt;T&gt;</code> interface.</p>
                 <p>The batch processing logic should calculate the minimum/maximum product price for each category and generate the following report:</p>
 <pre>
 ******* Products Report *******
 Minimum prices by category :
-        Min price for category 1 = 10.0
-        Min price for category 2 = 5.0
+	Min price for category 223 = 1150.0
+	Min price for category 224 = 1000.0
 Maximum prices by category :
-        Max price for category 1 = 12.5
-        Max price for category 2 = 7.5
+	Max price for category 223 = 1250.0
+	Max price for category 224 = 1100.0
 </pre>
 
-                <p><span class="label label-info">Note :</span> The record <code>5;1;product5</code> must be ignored since it has an invalid size (the price is missing).<br/>The record <code>6;2;product6;xx</code> must be rejected since the product price is not numeric.</p>
+                <p><span class="label label-info">Note :</span> The record #2 <code>7165896522X2400</code> must be rejected since category id (22x) is not numeric.
+                    <br/>The record #5 <code>X96589652242100</code> must be rejected since the product id (X9658965) is not numeric.</p>
                 <h2 id="2" class="section">2. Running the tutorial</h2>
 
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/cb4j/tree/master/cb4j-tutorials/src/main/java/net/benas/cb4j/tutorials/products">here</a>.

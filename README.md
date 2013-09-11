@@ -26,7 +26,7 @@ You can also find some slides at [speaker deck][].
 
 ## Current version
 
-The current stable version of CB4J is 1.3.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/cb4j/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/cb4j/).
+The current stable version of CB4J is 1.4.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/cb4j/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/cb4j/).
 <br/>
 <a href="https://buildhive.cloudbees.com/job/benas/job/cb4j/"><img src="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/></a>
 
