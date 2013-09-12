@@ -29,6 +29,7 @@
                 <include>cb4j-tutorials/**</include>
                 <include>cb4j-quartz/**</include>
                 <include>cb4j-tools/**</include>
+                <include>src/**</include>
                 <include>pom.xml</include>
             </includes>
             <excludes>
@@ -53,6 +54,27 @@
         </fileSet>
         <fileSet>
             <directory>${project.basedir}/cb4j-core/target</directory>
+            <outputDirectory>/dist</outputDirectory>
+            <includes>
+                <include>**/*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/cb4j-quartz/target</directory>
+            <outputDirectory>/dist</outputDirectory>
+            <includes>
+                <include>**/*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/cb4j-tools/target</directory>
+            <outputDirectory>/dist</outputDirectory>
+            <includes>
+                <include>**/*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/cb4j-tutorials/target</directory>
             <outputDirectory>/dist</outputDirectory>
             <includes>
                 <include>**/*.jar</include>
