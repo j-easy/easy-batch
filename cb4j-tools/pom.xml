@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>cb4j</artifactId>
-        <groupId>net.benas.cb4j</groupId>
+        <groupId>io.github.benas.cb4j</groupId>
         <version>1.3.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -36,7 +36,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>net.benas.cb4j</groupId>
+            <groupId>io.github.benas.cb4j</groupId>
             <artifactId>cb4j-core</artifactId>
             <version>1.3.1-SNAPSHOT</version>
         </dependency>

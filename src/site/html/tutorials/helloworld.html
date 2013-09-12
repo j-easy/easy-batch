@@ -152,7 +152,7 @@ x,Ben
 BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
         .inputDataFile("/data/cb4j/cb4j-tutorials/src/main/resources/persons.csv")
         .recordSize(2)
-        .recordClass("net.benas.cb4j.tutorials.helloworld.Greeting")
+        .recordClass("io.github.benas.cb4j.tutorials.helloworld.Greeting")
         .skipHeader(true)
         .build();
 </pre>
@@ -227,7 +227,7 @@ batchRunner.run();
 [CB4J : INFO] No log file specified for ignored records, using default : /data/cb4j/cb4j-tutorials/persons-ignored.log
 [CB4J : INFO] No log file specified for rejected records, using default : /data/cb4j/cb4j-tutorials/persons-rejected.log
 [CB4J : INFO] No log file specified for error records, using default : /data/cb4j/cb4j-tutorials/persons-errors.log
-[CB4J : INFO] CB4J JMX MBean registered successfully as: net.benas.cb4j.jmx:type=BatchMonitorMBean
+[CB4J : INFO] CB4J JMX MBean registered successfully as: io.github.benas.cb4j.jmx:type=BatchMonitorMBean
 [CB4J : INFO] Configuration successful
 [CB4J : INFO] Initializing batch
 [CB4J : INFO] Total input records to process = 3

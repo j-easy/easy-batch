@@ -4,7 +4,7 @@
 
 <hibernate-mapping>
 
-    <class name="net.benas.cb4j.tutorials.library.Book" table="book">
+    <class name="io.github.benas.cb4j.tutorials.library.Book" table="book">
         <id column="isbn" name="isbn">
             <generator class="assigned"/>
         </id>

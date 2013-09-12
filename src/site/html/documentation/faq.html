@@ -127,8 +127,8 @@
 
                 <ul>
                     <li>Annotate your POJO with Bean Validation API annotations</li>
-                    <li>Apply bean validation in the <code class="prettyprint">preProcessRecord(T typedRecord)</code> method of the <code class="prettyprint">net.benas.cb4j.core.api.RecordProcessor</code> interface</li>
-                    <li>Throw a <code class="prettyprint">net.benas.cb4j.core.api.RecordProcessingException</code> to not process invalid records</li>
+                    <li>Apply bean validation in the <code class="prettyprint">preProcessRecord(T typedRecord)</code> method of the <code class="prettyprint">io.github.benas.cb4j.core.api.RecordProcessor</code> interface</li>
+                    <li>Throw a <code class="prettyprint">io.github.benas.cb4j.core.api.RecordProcessingException</code> to not process invalid records</li>
                 </ul>
 
                 <p>You can find a complete example of using Bean Validation with CB4J <a href="../miscellaneous/beanValidation.html">here</a>.</p>
@@ -138,7 +138,7 @@
                 <p>Yes. CB4J provides a default CSV to Object mapper which uses field names in header record to map data to fields in domain object with the same name.</p>
 
                 <p>The default mapper uses the <a href="http://docs.oracle.com/javase/tutorial/reflect/index.html">Java Reflection API</a> to dynamically introspect your domain object properties and populate them with CSV data. This actually adds a performance overhead that you should pay attention to if your application is performance sensitive.</p>
-                <p>To avoid this performance overhead due to the use of reflection, you should consider writing you own mapper (by implementing the <code class="prettyprint">net.benas.cb4j.core.api.RecordMapper</code> interface) without using reflection for performance reasons.</p>
+                <p>To avoid this performance overhead due to the use of reflection, you should consider writing you own mapper (by implementing the <code class="prettyprint">io.github.benas.cb4j.core.api.RecordMapper</code> interface) without using reflection for performance reasons.</p>
                 <p>The listing below is an extract from <a href="http://docs.oracle.com/javase/tutorial/reflect/index.html">Java official documentation on reflection API</a>:</p>
 
                 <blockquote>
@@ -151,7 +151,7 @@
                 <h2 id="3" class="section">3. Does CB4J provide built-in type conversion utilities ?</h2>
 
                 <p>Yes. The default record mapper converts raw data in CSV/FL records to typed data in your domain objects.</p>
-                <p>If you decided to implement your own mapper, you can use the public utility class <code class="prettyprint">net.benas.cb4j.core.util.TypeConversionUtil</code> which provides basic type conversion or use the built-in data conversion utilities in the JDK which are sufficient in most cases :</p>
+                <p>If you decided to implement your own mapper, you can use the public utility class <code class="prettyprint">io.github.benas.cb4j.core.util.TypeConversionUtil</code> which provides basic type conversion or use the built-in data conversion utilities in the JDK which are sufficient in most cases :</p>
                 <ul>
                     <li><code class="prettyprint">Integer.parseInt(String)</code>, <code class="prettyprint">Double.parseDouble(String),</code> etc</li>
                     <li><code class="prettyprint">java.text</code> and <code class="prettyprint">java.text.spi</code> packages (Date,Number,Currency)</li>
@@ -181,7 +181,7 @@
                 <p>For all details about Fixed-Length Record parsing support, please refer to the <a href="userGuide.html">user guide</a>.</p>
 
                 <h2 id="7" class="section">7. Does CB4J provide transaction support?</h2>
-                <p>Yes. CB4J provides basic record processing transaction support through the <code class="prettyprint">net.benas.cb4j.core.api.RollBackHandler</code> interface.</p>
+                <p>Yes. CB4J provides basic record processing transaction support through the <code class="prettyprint">io.github.benas.cb4j.core.api.RollBackHandler</code> interface.</p>
                 <p>This interface is a callback interface that allows you to define the rollback code to execute whenever an unexpected exception occurs during record processing.</p>
                 <p>The term transaction here does not refer to database transactions! It is a simple way to rollback record processing when things go wrong.</p>
                 <p>For all details about CB4J transaction support, please refer to the <a href="userGuide.html#2.5">user guide</a>.</p>

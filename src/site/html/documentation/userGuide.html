@@ -140,7 +140,7 @@
                 <li>With a <code class="prettyprint">BatchConfigurationBuilder</code> object instance</li>
             </ul>
 
-            <p>All configuration parameters are defined in the <code class="prettyprint">net.benas.cb4j.core.util.BatchConstants</code> class and described in the following table:</p>
+            <p>All configuration parameters are defined in the <code class="prettyprint">io.github.benas.cb4j.core.util.BatchConstants</code> class and described in the following table:</p>
 
             <table class="table table-bordered table-striped">
                 <thead>
@@ -349,7 +349,7 @@ try {
 
             <h4>2.2.1 Using built-in validators</h4>
 
-            <p>CB4J validates field data with implementations of <code class="prettyprint">FieldValidator</code> interface and comes with built-in validators which allow you to ensure that a field content has a valid format and type. These validators are located in the <code class="prettyprint">net.benas.cb4j.core.validator</code> package.</p>
+            <p>CB4J validates field data with implementations of <code class="prettyprint">FieldValidator</code> interface and comes with built-in validators which allow you to ensure that a field content has a valid format and type. These validators are located in the <code class="prettyprint">io.github.benas.cb4j.core.validator</code> package.</p>
 
             <p>For example, let's say that the first field's value must be numeric. With CB4J you simply declare this constraint using the <code class="prettyprint">NumericFieldValidator</code> as follows:</p>
 
@@ -434,7 +434,7 @@ public class Greeting {
 
             <h3 id="2.5">2.5 Writing rollback logic</h3>
 
-            <p>CB4J provides basic transaction support through the <code class="prettyprint">net.benas.cb4j.core.api.RollBackHandler</code> interface:</p>
+            <p>CB4J provides basic transaction support through the <code class="prettyprint">io.github.benas.cb4j.core.api.RollBackHandler</code> interface:</p>
 <pre class="prettyprint">
 public interface RollBackHandler&lt;T&gt; {
 
@@ -520,7 +520,7 @@ public interface BatchEngine extends Callable&lt;BatchReport&gt; {
             <h3 id="3.2">3.2 Writing a custom field validator</h3>
 
             <p>CB4J comes with basic field validators for common requirements such as not empty field, numeric values, etc.
-            Please refer to the javadoc of <code class="prettyprint">net.benas.cb4j.core.validator</code> package for more details.</p>
+            Please refer to the javadoc of <code class="prettyprint">io.github.benas.cb4j.core.validator</code> package for more details.</p>
 
             <p>To write a custom field validator, you have to implement the <code class="prettyprint">FieldValidator</code> interface. This interface contains the following methods:</p>
             <ul>
@@ -631,8 +631,8 @@ batchConfiguration.registerRecordValidator(myCustomRecordValidator);
 
 <pre>
 [CB4J: INFO] CB4J report:
-[CB4J: INFO] Start time = Sat Dec 01 21:21:17 CET 2012
-[CB4J: INFO] End time = Sat Dec 01 21:21:17 CET 2012
+[CB4J: INFO] Start time = Sat Dec 01 21:21:17 CET 2013
+[CB4J: INFO] End time = Sat Dec 01 21:21:17 CET 2013
 [CB4J: INFO] Batch duration = 2ms
 [CB4J: INFO] Total input records = 3
 [CB4J: INFO] Total ignored records = 1

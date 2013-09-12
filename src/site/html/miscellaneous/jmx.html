@@ -107,7 +107,7 @@
 
                 <h2>Introduction</h2>
 
-                <p>CB4J allows you to monitor batch execution and progress at runtime using JMX. By default, CB4J enables at startup a JMX MBean named <code>net.benas.cb4j.jmx.BatchMonitorMBean</code>
+                <p>CB4J allows you to monitor batch execution and progress at runtime using JMX. By default, CB4J enables at startup a JMX MBean named <code>io.github.benas.cb4j.jmx.BatchMonitorMBean</code>
                     exposing the following attributes:
 
                 <ul>
@@ -151,7 +151,7 @@
                 <h3>Command line client</h3>
 
                 <p>To launch the command line client, run the following command:</p>
-                <p><code>java net.benas.cb4j.monitor.cli.Launcher localhost 9999</code></p>
+                <p><code>java io.github.benas.cb4j.monitor.cli.Launcher localhost 9999</code></p>
                 <p>This will launch the command line client to listen to JMX notifications sent by CB4J batch running on localhost on port 9999.</p>
                 <p>The following screenshot captures the command line client monitoring the batch execution progress in real time:</p>
                 <div align="center"><img src="../resources/img/cli-jmx-client.png"/></div>
@@ -161,7 +161,7 @@
                 <h3>Graphical client</h3>
 
                 <p>To launch the graphical client, run the following command:</p>
-                <p><code>java net.benas.cb4j.monitor.gui.GUILauncher localhost 9999</code></p>
+                <p><code>java io.github.benas.cb4j.monitor.gui.GUILauncher localhost 9999</code></p>
                 <p>This will launch the graphical client to listen to JMX notifications sent by CB4J batch running on localhost on port 9999.</p>
                 <p>The following screenshot captures the graphical client monitoring the batch execution progress in real time:</p>
                 <div align="center"><img src="../resources/img/gui-jmx-client.png"/></div>

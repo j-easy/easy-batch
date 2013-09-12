@@ -117,8 +117,8 @@
 
                 <ul>
                     <li>Annotate your POJO with Bean Validation API annotations</li>
-                    <li>Apply bean validation in the <code class="prettyprint">preProcessRecord(T typedRecord)</code> method of the <code class="prettyprint">net.benas.cb4j.core.api.RecordProcessor</code> interface</li>
-                    <li>Throw a <code class="prettyprint">net.benas.cb4j.core.api.RecordProcessingException</code> to not process invalid records</li>
+                    <li>Apply bean validation in the <code class="prettyprint">preProcessRecord(T typedRecord)</code> method of the <code class="prettyprint">io.github.benas.cb4j.core.api.RecordProcessor</code> interface</li>
+                    <li>Throw a <code class="prettyprint">io.github.benas.cb4j.core.api.RecordProcessingException</code> to not process invalid records</li>
                 </ul>
 
                 <p>The following section shows an example of using Bean Validation with the <a href="../tutorials/helloworld.html">Hello World tutorial</a>.</p>
@@ -149,8 +149,8 @@ public class Greeting {
                 <p>The record processor pre-validates Greeting POJO before processing it :</p>
 
 <pre class="prettyprint">
-import net.benas.cb4j.core.api.RecordProcessingException;
-import net.benas.cb4j.core.impl.DefaultRecordProcessorImpl;
+import io.github.benas.cb4j.core.api.RecordProcessingException;
+import io.github.benas.cb4j.core.impl.DefaultRecordProcessorImpl;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
