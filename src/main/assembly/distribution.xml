@@ -59,27 +59,6 @@
                 <include>**/*.jar</include>
             </includes>
         </fileSet>
-        <fileSet>
-            <directory>${project.basedir}/cb4j-quartz/target</directory>
-            <outputDirectory>/dist</outputDirectory>
-            <includes>
-                <include>**/*.jar</include>
-            </includes>
-        </fileSet>
-        <fileSet>
-            <directory>${project.basedir}/cb4j-tools/target</directory>
-            <outputDirectory>/dist</outputDirectory>
-            <includes>
-                <include>**/*.jar</include>
-            </includes>
-        </fileSet>
-        <fileSet>
-            <directory>${project.basedir}/cb4j-tutorials/target</directory>
-            <outputDirectory>/dist</outputDirectory>
-            <includes>
-                <include>**/*.jar</include>
-            </includes>
-        </fileSet>
     </fileSets>
 
 </assembly>
