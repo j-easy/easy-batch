@@ -68,13 +68,6 @@ public class BatchConfigurationTest {
     }
 
     @Test(expected = BatchConfigurationException.class)
-    public void testNotSpecifiedRecordSize() throws Exception {
-        configurationProperties.setProperty(BatchConstants.INPUT_DATA_PATH, filePath);
-        batchConfiguration = new BatchConfiguration(configurationProperties);
-        batchConfiguration.configure();
-    }
-
-    @Test(expected = BatchConfigurationException.class)
     public void testNoRecordProcessorRegistered() throws Exception {
         configurationProperties.setProperty(BatchConstants.INPUT_DATA_PATH, filePath);
         configurationProperties.setProperty(BatchConstants.INPUT_RECORD_SIZE, "2");

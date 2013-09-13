@@ -336,14 +336,6 @@ public class BatchConfiguration {
 
         try {
 
-            if (recordSizeProperty == null || recordSizeProperty.length() == 0) {
-                String error = "Record size property is mandatory but was not specified";
-                logger.severe(error);
-                throw new BatchConfigurationException(error);
-            }
-
-            int recordSize = Integer.parseInt(recordSizeProperty);
-
             String fieldsDelimiter = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_DELIMITER);
             if (fieldsDelimiter == null || fieldsDelimiter.length() == 0) {
                 fieldsDelimiter = BatchConstants.DEFAULT_FIELD_DELIMITER;
@@ -365,10 +357,22 @@ public class BatchConfiguration {
                 dataQualifierCharacter = dataQualifierCharacterProperty;
             }
 
+            recordParser = new DsvRecordParserImpl(fieldsDelimiter, trimWhitespaces, dataQualifierCharacter);
+
+            if (recordSizeProperty == null || recordSizeProperty.length() == 0) {
+                logger.info("Record size property not specified, it will be calculated from the header record");
+                String headerRecord = recordReader.getHeaderRecord();
+                Record record = recordParser.parseRecord(headerRecord, 0); //use the record parser to parse the header record using the right delimiter
+                recordSizeProperty = String.valueOf(record.getFields().size());
+            }
+
+            int recordSize = Integer.parseInt(recordSizeProperty);
+
+            recordParser = new DsvRecordParserImpl(recordSize, fieldsDelimiter, trimWhitespaces, dataQualifierCharacter);
+
             logger.info("Record size : " + recordSize);
             logger.info("Fields delimiter : '" + fieldsDelimiter + "'");
             logger.info("Data qualifier character : '" + dataQualifierCharacter + "'");
-            recordParser = new DsvRecordParserImpl(recordSize, fieldsDelimiter, trimWhitespaces, dataQualifierCharacter);
 
         } catch (NumberFormatException e) {
             String error = "Record size property is not recognized as a number : " + recordSizeProperty;
