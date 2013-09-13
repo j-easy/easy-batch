@@ -208,8 +208,6 @@
                             <mainClass>io.github.benas.cb4j.tutorials.helloworld.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/persons.csv</argument>
-                                <argument>2</argument>
-                                <argument>io.github.benas.cb4j.tutorials.helloworld.Greeting</argument>
                             </arguments>
                         </configuration>
                     </plugin>
