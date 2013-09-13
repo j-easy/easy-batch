@@ -213,6 +213,7 @@ public class BatchConfiguration {
                 for (Method declaredMethod : declaredMethods) {
                     if (declaredMethod.getName().equals("processRecord")) {
                         recordClassName = declaredMethod.getParameterTypes()[0].getName();
+                        break;
                     }
                 }
             } catch (ClassNotFoundException e) {
