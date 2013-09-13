@@ -75,14 +75,6 @@ public class BatchConfigurationTest {
     }
 
     @Test(expected = BatchConfigurationException.class)
-    public void testNoRecordMapperRegistered() throws Exception {
-        configurationProperties.setProperty(BatchConstants.INPUT_DATA_PATH, filePath);
-        configurationProperties.setProperty(BatchConstants.INPUT_RECORD_SIZE, "2");
-        batchConfiguration = new BatchConfiguration(configurationProperties);
-        batchConfiguration.configure();
-    }
-
-    @Test(expected = BatchConfigurationException.class)
     public void testNoRecordProcessorRegistered() throws Exception {
         configurationProperties.setProperty(BatchConstants.INPUT_DATA_PATH, filePath);
         configurationProperties.setProperty(BatchConstants.INPUT_RECORD_SIZE, "2");
