@@ -24,15 +24,16 @@
 
 package io.github.benas.cb4j.core.impl;
 
+import io.github.benas.cb4j.core.api.TypeConverter;
 import io.github.benas.cb4j.core.api.RecordMapper;
 import io.github.benas.cb4j.core.api.RecordMappingException;
 import io.github.benas.cb4j.core.model.Field;
 import io.github.benas.cb4j.core.model.Record;
-import io.github.benas.cb4j.core.util.TypeConversionUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A default mapper implementation which uses headers to map values to record field.
@@ -47,12 +48,18 @@ public class DefaultRecordMapperImpl implements RecordMapper {
     private Class recordClass;
 
     /**
+     * Type converters map.
+     */
+    private Map<Class, TypeConverter> typeConverters;
+
+    /**
      * An array of methods holding setters that will be used to populate the returned instance.
      */
     private Method[] recordClassSetters;
 
-    public DefaultRecordMapperImpl(String recordClassName, String[] headersMapping) throws ClassNotFoundException {
+    public DefaultRecordMapperImpl(String recordClassName, String[] headersMapping, Map<Class, TypeConverter> typeConverters) throws ClassNotFoundException {
 
+        this.typeConverters = typeConverters;
         recordClass = Class.forName(recordClassName);
         recordClassSetters = new Method[headersMapping.length];
         Method[] methods = recordClass.getDeclaredMethods();
@@ -91,7 +98,12 @@ public class DefaultRecordMapperImpl implements RecordMapper {
                 int index = field.getIndex();
 
                 //convert the String raw value to field type
-                Object typedValue = TypeConversionUtil.convertValue(content, recordClassSetters[index].getParameterTypes()[0]);
+                Object typedValue = null;
+                Class<?> type = recordClassSetters[index].getParameterTypes()[0];
+                TypeConverter typeConverter = typeConverters.get(type);
+                if (typeConverter != null) {
+                    typedValue = typeConverter.convert(content);
+                }
 
                 //set the typed value to the object field
                 recordClassSetters[index].invoke(instance, typedValue);

@@ -25,6 +25,7 @@
 package io.github.benas.cb4j.core.config;
 
 import io.github.benas.cb4j.core.api.*;
+import io.github.benas.cb4j.core.converter.*;
 import io.github.benas.cb4j.core.impl.*;
 import io.github.benas.cb4j.core.jmx.BatchMonitor;
 import io.github.benas.cb4j.core.model.Field;
@@ -39,8 +40,12 @@ import javax.management.ObjectName;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -65,9 +70,11 @@ public class BatchConfiguration {
     protected Properties configurationProperties;
 
     /*
-     * Validators and CB4J services that will be used by the engine.
+     * Field validators, type converters and CB4J services that will be used by the engine.
      */
     protected Map<Integer, List<FieldValidator>> fieldValidators;
+
+    protected Map<Class, TypeConverter> typeConverters;
 
     private RecordReader recordReader;
 
@@ -104,6 +111,7 @@ public class BatchConfiguration {
         logger.info("Configuration file specified : " + configurationFile);
 
         fieldValidators = new HashMap<Integer, List<FieldValidator>>();
+        initTypeConverters();
     }
 
     /**
@@ -113,6 +121,7 @@ public class BatchConfiguration {
     public BatchConfiguration(final Properties properties) {
         configurationProperties = properties;
         fieldValidators = new HashMap<Integer, List<FieldValidator>>();
+        initTypeConverters();
     }
 
     /**
@@ -189,7 +198,7 @@ public class BatchConfiguration {
             }
 
             try {
-                recordMapper = new DefaultRecordMapperImpl(recordClassName, headers);
+                recordMapper = new DefaultRecordMapperImpl(recordClassName, headers, typeConverters);
             } catch (ClassNotFoundException e) {
                 String error = "Configuration failed : Class " + recordClassName + " not found.";
                 logger.severe(error);
@@ -455,6 +464,31 @@ public class BatchConfiguration {
         }
     }
 
+    /**
+     * Initialize default type converters.
+     */
+    private void initTypeConverters() {
+        typeConverters = new HashMap<Class, TypeConverter>();
+        typeConverters.put(AtomicInteger.class, new AtomicIntegerTypeConverter());
+        typeConverters.put(AtomicLong.class, new AtomicLongTypeConverter());
+        typeConverters.put(BigDecimal.class, new BigDecimalTypeConverter());
+        typeConverters.put(BigInteger.class, new BigIntegerTypeConverter());
+        typeConverters.put(Boolean.class, new BooleanTypeConverter());
+        typeConverters.put(Byte.class, new ByteTypeConverter());
+        typeConverters.put(Calendar.class, new CalendarTypeConverter());
+        typeConverters.put(Character.class, new CharacterTypeConverter());
+        typeConverters.put(Double.class, new DoubleTypeConverter());
+        typeConverters.put(Float.class, new FloatTypeConverter());
+        typeConverters.put(Integer.class, new IntegerTypeConverter());
+        typeConverters.put(Long.class, new LongTypeConverter());
+        typeConverters.put(Short.class, new ShortTypeConverter());
+        typeConverters.put(java.util.Date.class, new DateTypeConverter());
+        typeConverters.put(java.sql.Date.class, new SqlDateTypeConverter());
+        typeConverters.put(java.sql.Time.class, new SqlTimeTypeConverter());
+        typeConverters.put(java.sql.Timestamp.class, new SqlTimestampTypeConverter());
+        typeConverters.put(String.class, new AtomicIntegerTypeConverter());
+    }
+
     /*
      * methods used to register mandatory implementations
      */
@@ -480,6 +514,15 @@ public class BatchConfiguration {
      */
     public void registerFieldValidators(int index, final List<FieldValidator> validators) {
         fieldValidators.put(index, validators);
+    }
+
+    /**
+     * Register a custom type converter.
+     * @param type the target type
+     * @param converter the converter instance
+     */
+    public void registerTypeConverter(Class<?> type, TypeConverter converter) {
+        typeConverters.put(type, converter);
     }
 
     /**
