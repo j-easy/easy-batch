@@ -27,13 +27,20 @@ package io.github.benas.cb4j.core.impl;
 import io.github.benas.cb4j.core.api.TypeConverter;
 import io.github.benas.cb4j.core.api.RecordMapper;
 import io.github.benas.cb4j.core.api.RecordMappingException;
+import io.github.benas.cb4j.core.converter.*;
 import io.github.benas.cb4j.core.model.Field;
 import io.github.benas.cb4j.core.model.Record;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A default mapper implementation which uses headers to map values to record field.
@@ -57,9 +64,9 @@ public class DefaultRecordMapperImpl implements RecordMapper {
      */
     private Method[] recordClassSetters;
 
-    public DefaultRecordMapperImpl(String recordClassName, String[] headersMapping, Map<Class, TypeConverter> typeConverters) throws ClassNotFoundException {
+    public DefaultRecordMapperImpl(String recordClassName, String[] headersMapping) throws ClassNotFoundException {
 
-        this.typeConverters = typeConverters;
+        initTypeConverters();
         recordClass = Class.forName(recordClassName);
         recordClassSetters = new Method[headersMapping.length];
         Method[] methods = recordClass.getDeclaredMethods();
@@ -76,6 +83,13 @@ public class DefaultRecordMapperImpl implements RecordMapper {
                 }
             }
         }
+    }
+
+    public DefaultRecordMapperImpl(String recordClassName, String[] headersMapping, Map<Class, TypeConverter> typeConverters) throws ClassNotFoundException {
+
+        this(recordClassName, headersMapping);
+        this.typeConverters.putAll(typeConverters);
+
     }
 
     /**
@@ -123,6 +137,31 @@ public class DefaultRecordMapperImpl implements RecordMapper {
         }
 
         return instance;
+    }
+
+    /**
+     * Initialize default type converters.
+     */
+    private void initTypeConverters() {
+        typeConverters = new HashMap<Class, TypeConverter>();
+        typeConverters.put(AtomicInteger.class, new AtomicIntegerTypeConverter());
+        typeConverters.put(AtomicLong.class, new AtomicLongTypeConverter());
+        typeConverters.put(BigDecimal.class, new BigDecimalTypeConverter());
+        typeConverters.put(BigInteger.class, new BigIntegerTypeConverter());
+        typeConverters.put(Boolean.class, new BooleanTypeConverter());
+        typeConverters.put(Byte.class, new ByteTypeConverter());
+        typeConverters.put(Calendar.class, new CalendarTypeConverter());
+        typeConverters.put(Character.class, new CharacterTypeConverter());
+        typeConverters.put(Double.class, new DoubleTypeConverter());
+        typeConverters.put(Float.class, new FloatTypeConverter());
+        typeConverters.put(Integer.class, new IntegerTypeConverter());
+        typeConverters.put(Long.class, new LongTypeConverter());
+        typeConverters.put(Short.class, new ShortTypeConverter());
+        typeConverters.put(java.util.Date.class, new DateTypeConverter());
+        typeConverters.put(java.sql.Date.class, new SqlDateTypeConverter());
+        typeConverters.put(java.sql.Time.class, new SqlTimeTypeConverter());
+        typeConverters.put(java.sql.Timestamp.class, new SqlTimestampTypeConverter());
+        typeConverters.put(String.class, new StringTypeConverter());
     }
 
 }
