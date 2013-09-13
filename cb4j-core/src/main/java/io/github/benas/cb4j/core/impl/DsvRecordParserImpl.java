@@ -69,6 +69,10 @@ public final class DsvRecordParserImpl implements RecordParser {
         this.qualifier = qualifier;
     }
 
+    public DsvRecordParserImpl(final String fieldDelimiter, final boolean trimWhitespaces, final String qualifier) {
+        this(0, fieldDelimiter, trimWhitespaces, qualifier);
+    }
+
     /**
      * {@inheritDoc}
      */
