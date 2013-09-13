@@ -374,13 +374,15 @@ public class BatchConfiguration {
                 trimWhitespaces = Boolean.valueOf(trimWhitespacesProperty);
             } else {
                 trimWhitespaces = BatchConstants.DEFAULT_FIELD_TRIM;
-                logger.info("Trim whitespaces property not specified, default to true");
+                logger.info("Trim whitespaces property not specified, default to " + trimWhitespaces);
             }
 
             String dataQualifierCharacterProperty = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_QUALIFIER_CHAR);
             String dataQualifierCharacter = BatchConstants.DEFAULT_FIELD_QUALIFIER_CHAR;
             if (dataQualifierCharacterProperty != null && dataQualifierCharacterProperty.length() > 0) {
                 dataQualifierCharacter = dataQualifierCharacterProperty;
+            } else {
+                logger.info("Data qualifier character not specified, default to " + dataQualifierCharacter);
             }
 
             recordParser = new DsvRecordParserImpl(fieldsDelimiter, trimWhitespaces, dataQualifierCharacter);
