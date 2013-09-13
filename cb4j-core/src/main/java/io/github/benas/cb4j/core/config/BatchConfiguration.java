@@ -171,34 +171,7 @@ public class BatchConfiguration {
          * Check record mapper : if no custom mapper registered, use default implementation
          */
         if (recordMapper == null) {
-            String recordClassName = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_CLASS);
-            if (recordClassName == null || recordClassName.length() == 0) {
-                String error = "Configuration failed : no record mapper registered, please provide the record fully qualified class name which is mandatory to use the default mapper.";
-                logger.severe(error);
-                throw new BatchConfigurationException(error);
-            }
-
-            String[] headers;
-            String headersProperty = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_HEADERS);
-            if( headersProperty == null) { // if no headers specified, use field names declared in the header record
-                String headerRecord = recordReader.getHeaderRecord();
-                Record record = recordParser.parseRecord(headerRecord,0); //use the record parser to parse the header record using the right delimiter
-                List<Field> fields = record.getFields();
-                headers = new String[fields.size()];
-                for (int i = 0; i < fields.size(); i++) {
-                    headers[i] = fields.get(i).getContent();
-                }
-            } else { // headers specified, split the comma separated list
-                headers = headersProperty.split(",");
-            }
-
-            try {
-                recordMapper = new DefaultRecordMapperImpl(recordClassName, headers, typeConverters);
-            } catch (ClassNotFoundException e) {
-                String error = "Configuration failed : Class " + recordClassName + " not found.";
-                logger.severe(error);
-                throw new BatchConfigurationException(error, e);
-            }
+            recordMapper = configureDefaultRecordMapper();
         }
 
         /*
@@ -220,6 +193,47 @@ public class BatchConfiguration {
         logger.info("Configuration successful");
         logger.info("Configuration parameters details : " + configurationProperties);
 
+    }
+
+    /**
+     * Configure the default record mapper.
+     * @return the default implementation of record mapper
+     * @throws BatchConfigurationException if the target type class is not found
+     */
+    private RecordMapper configureDefaultRecordMapper() throws BatchConfigurationException {
+
+        RecordMapper recordMapper;
+
+        String recordClassName = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_CLASS);
+        if (recordClassName == null || recordClassName.length() == 0) {
+            String error = "Configuration failed : no record mapper registered, please provide the record fully qualified class name which is mandatory to use the default mapper.";
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+
+        String[] headers;
+        String headersProperty = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_HEADERS);
+        if( headersProperty == null) { // if no headers specified, use field names declared in the header record
+            String headerRecord = recordReader.getHeaderRecord();
+            Record record = recordParser.parseRecord(headerRecord,0); //use the record parser to parse the header record using the right delimiter
+            List<Field> fields = record.getFields();
+            headers = new String[fields.size()];
+            for (int i = 0; i < fields.size(); i++) {
+                headers[i] = fields.get(i).getContent();
+            }
+        } else { // headers specified, split the comma separated list
+            headers = headersProperty.split(",");
+        }
+
+        try {
+            recordMapper = new DefaultRecordMapperImpl(recordClassName, headers, typeConverters);
+        } catch (ClassNotFoundException e) {
+            String error = "Configuration failed : Class " + recordClassName + " not found.";
+            logger.severe(error);
+            throw new BatchConfigurationException(error, e);
+        }
+
+        return recordMapper;
     }
 
     /**
