@@ -39,6 +39,7 @@ import javax.management.ObjectName;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.logging.ConsoleHandler;
@@ -138,6 +139,15 @@ public class BatchConfiguration {
         logger.info("Configuration started at : " + new Date());
 
         /*
+         * Check record processor
+         */
+        if (recordProcessor == null) {
+            String error = "Configuration failed : no record processor registered";
+            logger.severe(error);
+            throw new BatchConfigurationException(error);
+        }
+
+        /*
          * Configure record reader
          */
         configureRecordReader();
@@ -175,15 +185,6 @@ public class BatchConfiguration {
         }
 
         /*
-         * Check record processor
-         */
-        if (recordProcessor == null) {
-            String error = "Configuration failed : no record processor registered";
-            logger.severe(error);
-            throw new BatchConfigurationException(error);
-        }
-
-        /*
         * register JMX MBean
         */
         if (Boolean.valueOf(configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_JMX_ENABLED))) {
@@ -206,9 +207,19 @@ public class BatchConfiguration {
 
         String recordClassName = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_CLASS);
         if (recordClassName == null || recordClassName.length() == 0) {
-            String error = "Configuration failed : no record mapper registered, please provide the record fully qualified class name which is mandatory to use the default mapper.";
-            logger.severe(error);
-            throw new BatchConfigurationException(error);
+            try {
+                Class recordProcessorClass = Class.forName(recordProcessor.getClass().getName());
+                Method[] declaredMethods = recordProcessorClass.getDeclaredMethods();
+                for (Method declaredMethod : declaredMethods) {
+                    if (declaredMethod.getName().equals("processRecord")) {
+                        recordClassName = declaredMethod.getParameterTypes()[0].getName();
+                    }
+                }
+            } catch (ClassNotFoundException e) {
+                String error = "Configuration failed : unable to get record class name from registered record processor implementation.";
+                logger.severe(error);
+                throw new BatchConfigurationException(error, e);
+            }
         }
 
         String[] headers;
