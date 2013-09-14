@@ -31,7 +31,6 @@ import io.github.benas.cb4j.core.config.BatchConfigurationException;
 import io.github.benas.cb4j.core.impl.DefaultBatchEngineImpl;
 import io.github.benas.cb4j.core.util.BatchRunner;
 import io.github.benas.cb4j.core.validator.NumericFieldValidator;
-import io.github.benas.cb4j.integration.common.GreetingMapper;
 import io.github.benas.cb4j.integration.common.GreetingProcessor;
 
 /**
@@ -43,10 +42,10 @@ public class BeanValidationLauncher {
 
     public static void main(String[] args) {
 
-        if (args == null || args.length < 2){
+        if (args == null || args.length == 0 ){
             System.err.println("[CB4J] Configuration parameters not specified, usage : ");
-            System.err.println("java io.github.benas.cb4j.integration.beanValidation.BeanValidationLauncher path/to/data/file recordSize");
-            System.err.println("Example : java io.github.benas.cb4j.integration.beanValidation.BeanValidationLauncher /data/cb4j/persons-jsr303.csv 2");
+            System.err.println("java io.github.benas.cb4j.integration.beanValidation.BeanValidationLauncher path/to/data/file");
+            System.err.println("Example : java io.github.benas.cb4j.integration.beanValidation.BeanValidationLauncher /data/cb4j/persons-jsr303.csv");
             System.exit(1);
         }
 
@@ -55,7 +54,6 @@ public class BeanValidationLauncher {
          */
         BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
                 .inputDataFile(args[0])
-                .recordSize(Integer.parseInt(args[1]))
                 .skipHeader(true)
                 .build();
 
@@ -65,9 +63,8 @@ public class BeanValidationLauncher {
         batchConfiguration.registerFieldValidator(0, new NumericFieldValidator());
 
         /*
-        * Registering record mapper and processor
+        * Registering record processor
         */
-        batchConfiguration.registerRecordMapper(new GreetingMapper());
         batchConfiguration.registerRecordProcessor(new GreetingProcessor());
 
         /*

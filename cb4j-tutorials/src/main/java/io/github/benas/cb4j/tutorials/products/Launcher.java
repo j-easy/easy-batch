@@ -44,10 +44,10 @@ public class Launcher {
 
     public static void main(String[] args) {
 
-        if (args == null || args.length < 3){
+        if (args == null || args.length < 4){
             System.err.println("[CB4J] Configuration parameters not specified, usage : ");
-            System.err.println("java io.github.benas.cb4j.tutorials.products.Launcher path/to/data/file recordSize recordType fieldsLength");
-            System.err.println("Example : java io.github.benas.cb4j.tutorials.products.Launcher /data/cb4j/products.flr 3 FLR 8 3 4");
+            System.err.println("java io.github.benas.cb4j.tutorials.products.Launcher path/to/data/file recordType fieldsLength");
+            System.err.println("Example : java io.github.benas.cb4j.tutorials.products.Launcher /data/cb4j/products.flr FLR 8 3 4");
             System.exit(1);
         }
 
@@ -56,9 +56,8 @@ public class Launcher {
          */
         BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
                 .inputDataFile(args[0])
-                .recordSize(Integer.parseInt(args[1]))
-                .recordType(RecordType.valueOf(args[2]))
-                .fieldsLength(new int[]{Integer.parseInt(args[3]),Integer.parseInt(args[4]),Integer.parseInt(args[5])})
+                .recordType(RecordType.valueOf(args[1]))
+                .fieldsLength(new int[]{Integer.parseInt(args[2]),Integer.parseInt(args[3]),Integer.parseInt(args[4])})
                 .build();
 
         /*

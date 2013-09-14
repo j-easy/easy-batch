@@ -164,7 +164,6 @@
                             <mainClass>io.github.benas.cb4j.tutorials.customers.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/customers.csv</argument>
-                                <argument>10</argument>
                             </arguments>
                         </configuration>
                     </plugin>
@@ -184,7 +183,6 @@
                             <mainClass>io.github.benas.cb4j.tutorials.products.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/products.flr</argument>
-                                <argument>3</argument>
                                 <argument>FLR</argument>
                                 <argument>8</argument>
                                 <argument>3</argument>
@@ -227,7 +225,6 @@
                             <mainClass>io.github.benas.cb4j.tutorials.library.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/books.csv</argument>
-                                <argument>4</argument>
                                 <argument>'</argument>
                             </arguments>
                         </configuration>
@@ -248,7 +245,6 @@
                             <mainClass>io.github.benas.cb4j.integration.spring.SpringLauncher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/persons.csv</argument>
-                                <argument>2</argument>
                             </arguments>
                         </configuration>
                     </plugin>
@@ -268,7 +264,6 @@
                             <mainClass>io.github.benas.cb4j.integration.quartz.QuartzLauncher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/persons.csv</argument>
-                                <argument>2</argument>
                             </arguments>
                         </configuration>
                     </plugin>
@@ -288,7 +283,6 @@
                             <mainClass>io.github.benas.cb4j.integration.beanValidation.BeanValidationLauncher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/persons-jsr303.csv</argument>
-                                <argument>2</argument>
                             </arguments>
                         </configuration>
                     </plugin>
@@ -317,7 +311,6 @@
                                 </classpath>
                                 <argument>io.github.benas.cb4j.tutorials.jmx.Launcher</argument>
                                 <argument>${project.basedir}/src/main/resources/persons-jmx.csv</argument>
-                                <argument>2</argument>
                             </arguments>
                         </configuration>
                     </plugin>

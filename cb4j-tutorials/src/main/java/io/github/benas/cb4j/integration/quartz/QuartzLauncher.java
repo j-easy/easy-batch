@@ -27,7 +27,6 @@ package io.github.benas.cb4j.integration.quartz;
 import io.github.benas.cb4j.core.config.BatchConfiguration;
 import io.github.benas.cb4j.core.config.BatchConfigurationBuilder;
 import io.github.benas.cb4j.core.validator.NumericFieldValidator;
-import io.github.benas.cb4j.integration.common.GreetingMapper;
 import io.github.benas.cb4j.tutorials.helloworld.GreetingProcessor;
 
 import java.util.Date;
@@ -51,10 +50,10 @@ public class QuartzLauncher {
 
     public static void main(String[] args) {
 
-        if (args == null || args.length < 2){
+        if (args == null || args.length == 0){
             System.err.println("[CB4J] Configuration parameters not specified, usage : ");
-            System.err.println("java java io.github.benas.cb4j.integration.quartz.QuartzLauncher path/to/data/file recordSize");
-            System.err.println("Example : java io.github.benas.cb4j.integration.quartz.QuartzLauncher /data/cb4j/persons.csv 2");
+            System.err.println("java java io.github.benas.cb4j.integration.quartz.QuartzLauncher path/to/data/file");
+            System.err.println("Example : java io.github.benas.cb4j.integration.quartz.QuartzLauncher /data/cb4j/persons.csv");
             System.exit(1);
         }
 
@@ -63,7 +62,6 @@ public class QuartzLauncher {
          */
         BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
                 .inputDataFile(args[0])
-                .recordSize(Integer.parseInt(args[1]))
                 .skipHeader(true)
                 .build();
 
@@ -73,9 +71,8 @@ public class QuartzLauncher {
         batchConfiguration.registerFieldValidator(0, new NumericFieldValidator());
 
         /*
-        * Registering record mapper and processor
+        * Registering record processor
         */
-        batchConfiguration.registerRecordMapper(new GreetingMapper());
         batchConfiguration.registerRecordProcessor(new GreetingProcessor());
 
         /*

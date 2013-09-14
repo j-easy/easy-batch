@@ -44,10 +44,10 @@ public class Launcher {
 
     public static void main(String[] args) {
 
-        if (args == null || args.length < 2){
+        if (args == null || args.length < 1){
             System.err.println("[CB4J] Configuration parameters not specified, usage : ");
-            System.err.println("java io.github.benas.cb4j.tutorials.library.Launcher path/to/data/file recordSize qualifier");
-            System.err.println("Example : java io.github.benas.cb4j.tutorials.library.Launcher /data/cb4j/books.csv 4 ' ");
+            System.err.println("java io.github.benas.cb4j.tutorials.library.Launcher path/to/data/file qualifier");
+            System.err.println("Example : java io.github.benas.cb4j.tutorials.library.Launcher /data/cb4j/books.csv ' ");
             System.exit(1);
         }
 
@@ -61,8 +61,7 @@ public class Launcher {
          */
         BatchConfiguration batchConfiguration = new BatchConfigurationBuilder()
                 .inputDataFile(args[0])
-                .recordSize(Integer.parseInt(args[1]))
-                .qualifier(args[2])
+                .qualifier(args[1])
                 .build();
 
         /*

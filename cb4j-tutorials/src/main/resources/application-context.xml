@@ -4,8 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="greetingMapper" class="io.github.benas.cb4j.integration.common.GreetingMapper"/>
-
     <bean id="greetingProcessor" class="io.github.benas.cb4j.integration.common.GreetingProcessor"/>
 
 </beans>
