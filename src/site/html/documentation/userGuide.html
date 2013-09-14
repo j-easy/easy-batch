@@ -179,8 +179,8 @@
                 <tr>
                     <td>input.record.class</td>
                     <td>Specify the fully qualified class name of the domain object to map CSV/FL records to</td>
-                    <td>true</td>
-                    <td>N/A</td>
+                    <td>false</td>
+                    <td>the class name used in record processor implementation</td>
                 </tr>
                 <tr>
                     <td>input.record.headers</td>
@@ -215,8 +215,8 @@
                 <tr>
                     <td>input.record.size</td>
                     <td>Record size (number of fields)</td>
-                    <td>true</td>
-                    <td>N/A</td>
+                    <td>false</td>
+                    <td>header record size</td>
                 </tr>
                 <tr>
                     <td>output.data.ignored</td>
@@ -383,13 +383,13 @@ batchConfiguration.registerFieldValidators(1,field1Validators);
 
             <p>CB4J comes with a default <code class="prettyprint">RecordMapper&lt;T&gt;</code> implementation that is based on field names in header record to map data to domain object fields with the same name.</p>
             <p>For example, let's say your CSV file and domain object are respectively the following :</p>
-<pre>
+<pre class="prettyprint">
 sequence,name
 1,Foo
 2,Bar
 </pre>
 
-<pre>
+<pre class="prettyprint">
 public class Greeting {
 
     private long sequence;
@@ -403,11 +403,17 @@ public class Greeting {
 
             <p>CB4J will use field names in header record to map data to fields in <code class="prettyprint">Greeting</code> class with the same name.</p>
             <p>In this example, the first field <code class="prettyprint">sequence</code> in CSV record will be mapped to the field <code class="prettyprint">sequence</code> in <code class="prettyprint">Greeting</code> Object. This is the same for the <code class="prettyprint">name</code> field.</p>
-            <p>CB4J will also convert raw data in your CSV file to typed data according to field type of the domain object. For instance, <code class="prettyprint">sequence</code> values in CSV records will be converted to the type <code class="prettyprint">long</code> as defined in <code class="prettyprint">Greeting</code> Object.</p>
 
             <div class="alert alert-info">
                 <span class="label label-info">Info</span> if your CSV file does not contain a header record with field names, you can specify them using the <code class="prettyprint">input.record.headers</code> parameters.
             </div>
+
+            <p>CB4J will also convert raw textual data in your CSV file to typed data according to field type of the domain object. For instance, <code class="prettyprint">sequence</code> values in CSV records will be converted to the type <code class="prettyprint">long</code> as defined in <code class="prettyprint">Greeting</code> Object.</p>
+            <p>By default, CB4J can convert textual data to common built-in Java types such as Boolean, Integer, Date, etc. For all details about supported types, please refer to the package <code class="prettyprint">io.github.benas.cb4j.core.converter</code>.</p>
+                You can also provide your own type converter by implementing the <code class="prettyprint">io.github.benas.cb4j.core.api.TypeConverter</code> interface and registering your implementation as follows:
+<pre class="prettyprint">
+batchConfiguration.registerTypeConverter(myType.class, new myTypeConverter());
+</pre>
 
             <div class="alert">
                 <span class="label label-warning">Warning</span> The default mapper uses the <a href="http://docs.oracle.com/javase/tutorial/reflect/index.html">Java Reflection API</a> to dynamically introspect your domain object properties and populate them with CSV data.
@@ -446,7 +452,7 @@ public interface RollBackHandler&lt;T&gt; {
             <p>To register you rollback handler, use the method <code class="prettyprint">registerRollBackHandler</code> of <code class="prettyprint">BatchConfiguration</code> class as follows:</p>
 
 <pre class="prettyprint">
-batchConfiguration.registerRollBackHandler(myRollBackHandler());
+batchConfiguration.registerRollBackHandler(new myRollBackHandler());
 </pre>
 
             <div class="alert alert-info">
