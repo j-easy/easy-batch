@@ -66,8 +66,16 @@ public final class RecordReaderImpl implements RecordReader {
 
         recordCounterScanner = new Scanner(file, charset);
         if (skipHeader && hasNextRecord()) {
-            headerRecord = recordCounterScanner.nextLine();
+            recordCounterScanner.nextLine();
         }
+
+        /*
+         * a scanner to get header record (do not interfere with skipHeader param)
+         */
+        Scanner s = new Scanner(file, charset);
+        headerRecord = s.nextLine();
+        s.close();
+
     }
 
     /**
