@@ -150,20 +150,17 @@
 
                 <h2 id="3" class="section">3. Does CB4J provide built-in type conversion utilities ?</h2>
 
-                <p>Yes. The default record mapper converts raw data in CSV/FL records to typed data in your domain objects.</p>
-                <p>If you decided to implement your own mapper, you can use the public utility class <code class="prettyprint">io.github.benas.cb4j.core.util.TypeConversionUtil</code> which provides basic type conversion or use the built-in data conversion utilities in the JDK which are sufficient in most cases :</p>
-                <ul>
-                    <li><code class="prettyprint">Integer.parseInt(String)</code>, <code class="prettyprint">Double.parseDouble(String),</code> etc</li>
-                    <li><code class="prettyprint">java.text</code> and <code class="prettyprint">java.text.spi</code> packages (Date,Number,Currency)</li>
-                </ul>
-                <p>In a well designed CB4J batch, data validation step should ensure that all data types are valid so that data conversion in mapping step does not encounter any issue using these utilities.</p>
-                <p>If JDK's built-in utilities are not sufficient, you can always use well established and excellent tools such as :
-                <ul>
-                    <li><a href="http://commons.apache.org/beanutils/">Apache Commons BeanUtils</a></li>
-                    <li><a href="http://joda-convert.sourceforge.net/">Joda Convert</a></li>
-                    <li><a href="http://static.springsource.org/spring/docs/3.0.x/reference/validation.html">Spring 3 Type conversion</a></li>
-                    <li><a href="http://dozer.sourceforge.net/">Dozer</a></li>
-                </ul>
+                <p>Yes. The default record mapper converts raw textual data in CSV/FL records to typed data in your domain objects.</p>
+
+                <p>By default, CB4J can convert textual data to common built-in Java types such as Boolean, Integer, Date, etc. For all details about supported types, please refer to the package <code class="prettyprint">io.github.benas.cb4j.core.converter</code>.</p>
+                <p>CB4J uses JDK's built-in types conversion utilities behind the scene (<code class="prettyprint">Integer.parseInt(String)</code>, <code class="prettyprint">Double.parseDouble(String),</code> etc).</p>
+                <p>If CB4J's built-in utilities are not sufficient, you can provide your own type converter by implementing the <code class="prettyprint">io.github.benas.cb4j.core.api.TypeConverter</code> interface and registering your implementation as follows:</p>
+
+<pre class="prettyprint">
+batchConfiguration.registerTypeConverter(myType.class, new myTypeConverter());
+</pre>
+
+                <p>If you decided to implement your own mapper, you can always use the built-in type converters which are sufficient in most cases, and if not, register your own implementation as shown above.</p>
 
                 <h2 id="4" class="section">4. Can I monitor CB4J execution with JMX?</h2>
 

@@ -120,9 +120,9 @@
 
                 <h2>Sample usage</h2>
 
-                <p>In this section, we will rewrite the <a href="../tutorials/helloworld.html">Hello World tutorial</a> to use Spring to manage the <code>GreetingMapper</code> and <code>GreetingProcessor</code> objects.</p>
+                <p>In this section, we will rewrite the <a href="../tutorials/helloworld.html">Hello World tutorial</a> to use Spring to manage the <code>GreetingProcessor</code> object.</p>
 
-                <p>First, we will create a Spring Xml configuration file called <code>application-context.xml</code> to define <code>GreetingMapper</code> and <code>GreetingProcessor</code> beans as follows:</p>
+                <p>First, we will create a Spring Xml configuration file called <code>application-context.xml</code> to define the <code>GreetingProcessor</code> bean as follows:</p>
 
 <pre class="prettyprint">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
@@ -131,27 +131,23 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"&gt;
 
-  &lt;bean id="greetingMapper" class="io.github.benas.cb4j.integration.common.GreetingMapper"/&gt;
-
   &lt;bean id="greetingProcessor" class="io.github.benas.cb4j.integration.common.GreetingProcessor"/&gt;
 
 &lt;/beans&gt;
 </pre>
 
-                <p>Then, we will create a Spring container to manage these beans:</p>
+                <p>Then, we will create a Spring container to manage this bean:</p>
 <pre class="prettyprint">
 ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
 </pre>
 
-                <p>Finally, we register as usual <code>GreetingMapper</code> and <code>GreetingProcessor</code> beans to be used by CB4J:</p>
+                <p>Finally, we register as usual the <code>GreetingProcessor</code> bean to be used by CB4J:</p>
 <pre class="prettyprint">
-GreetingMapper recordMapper = (GreetingMapper) context.getBean("greetingMapper");
 GreetingProcessor recordProcessor = (GreetingProcessor) context.getBean("greetingProcessor");
 
-batchConfiguration.registerRecordMapper(recordMapper);
 batchConfiguration.registerRecordProcessor(recordProcessor);
 </pre>
-                <p>That's all! <code>GreetingMapper</code> and <code>GreetingProcessor</code> beans are now managed by Spring and used by CB4J.</p>
+                <p>That's all! <code>GreetingProcessor</code> bean is now managed by Spring and used by CB4J.</p>
                 <p>As you can see, no specific integration code is necessary to use Spring along with CB4J.</p>
                 <p>The complete source code of this example can be found <a href="https://github.com/benas/cb4j/tree/master/cb4j-tutorials/src/main/java/net/benas/cb4j/integration/spring">here</a>.</p>
                 <p>To run the tutorial with maven, launch the following command in the <code>cb4j/cb4j-tutorials</code> directory :</p>
