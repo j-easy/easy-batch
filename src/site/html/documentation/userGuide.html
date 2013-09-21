@@ -420,7 +420,7 @@ batchConfiguration.registerTypeConverter(MyType.class, new myTypeConverter());
 
             <div class="alert">
                 <span class="label label-warning">Warning</span> The default mapper uses the <a href="http://docs.oracle.com/javase/tutorial/reflect/index.html">Java Reflection API</a> to dynamically introspect your domain object properties and populate them with CSV data.
-                <p>If your application is performance sensitive, you would prefer implementing your own mapper without using reflection. This can result to about <strong>10x</strong> faster code than using reflection as demonstrated in <a href="https://github.com/benas/cb4j/blob/master/cb4j-core/src/test/java/net/benas/cb4j/core/test/ReflectionPerformanceShowcase.java">the benchmark here</a>.</p>
+                <p>If your application is performance sensitive, you would prefer implementing your own mapper without using reflection. This can result to about <strong>10x</strong> faster code than using reflection as demonstrated in <a href="https://github.com/benas/cb4j/blob/master/cb4j-core/src/test/java/io/github/benas/cb4j/core/test/ReflectionPerformanceShowcase.java">the benchmark here</a>.</p>
             </div>
 
             <h4 id="2.3.2">2.3.2 Provide custom mapping logic</h4>
