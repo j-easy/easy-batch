@@ -58,12 +58,12 @@ public class RegExpFieldValidatorTest {
     @Test
     public void testValidField() throws Exception {
         field = new Field(1,"aaab");
-        assertTrue(regExpFieldValidator.isValidField(field));
+        assertTrue(regExpFieldValidator.isValid(field));
     }
 
     @Test
     public void testInvalidField() throws Exception {
         field = new Field(1,"cccb");
-        assertFalse(regExpFieldValidator.isValidField(field));
+        assertFalse(regExpFieldValidator.isValid(field));
     }
 }

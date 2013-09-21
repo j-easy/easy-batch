@@ -49,8 +49,8 @@ public class BeforeDateFieldValidator extends DateFieldValidator implements Fiel
     /**
      * {@inheritDoc}
      */
-    public boolean isValidField(final Field field) {
-        return super.isValidField(field) && new Date(field.getContent()).before(date);
+    public boolean isValid(final Field field) {
+        return super.isValid(field) && new Date(field.getContent()).before(date);
     }
 
     /**

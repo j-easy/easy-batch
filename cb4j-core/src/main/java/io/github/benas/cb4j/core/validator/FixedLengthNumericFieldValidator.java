@@ -47,8 +47,8 @@ public class FixedLengthNumericFieldValidator extends NumericFieldValidator impl
      * {@inheritDoc}
      */
     @Override
-    public boolean isValidField(final Field field) {
-        return super.isValidField(field) && field.getContent().length() == length;
+    public boolean isValid(final Field field) {
+        return super.isValid(field) && field.getContent().length() == length;
     }
 
     /**

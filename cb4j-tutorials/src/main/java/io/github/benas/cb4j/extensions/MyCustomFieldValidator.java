@@ -33,7 +33,7 @@ import io.github.benas.cb4j.core.model.Field;
  */
 public class MyCustomFieldValidator implements FieldValidator{
 
-    public boolean isValidField(Field field) {
+    public boolean isValid(Field field) {
         return field.getContent().startsWith("XP");
     }
 

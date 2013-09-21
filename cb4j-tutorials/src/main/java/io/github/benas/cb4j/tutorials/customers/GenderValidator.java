@@ -38,9 +38,9 @@ public class GenderValidator extends FixedLengthNumericFieldValidator {
     }
 
     @Override
-    public boolean isValidField(Field field) {
+    public boolean isValid(Field field) {
 
-        if (!super.isValidField(field))
+        if (!super.isValid(field))
             return false;
 
         Integer gender = Integer.parseInt(field.getContent());

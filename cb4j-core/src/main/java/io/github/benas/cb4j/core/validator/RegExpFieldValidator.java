@@ -46,7 +46,7 @@ public class RegExpFieldValidator implements FieldValidator {
     /**
      * {@inheritDoc}
      */
-    public boolean isValidField(final Field field) {
+    public boolean isValid(final Field field) {
         String inputStr = field.getContent();
         return inputStr.matches(regexp);
     }

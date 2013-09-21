@@ -46,7 +46,7 @@ public class FixedLengthFieldValidator implements FieldValidator {
     /**
      * {@inheritDoc}
      */
-    public boolean isValidField(Field field) {
+    public boolean isValid(Field field) {
         return field.getContent().length() == length;
     }
 

@@ -38,7 +38,7 @@ public interface FieldValidator {
      * @param field the field to validate
      * @return true if the field is valid, false else
      */
-    boolean isValidField(final Field field);
+    boolean isValid(final Field field);
 
     /**
      * Getter for the validation constraint description.<br/>

@@ -61,13 +61,13 @@ public class BeforeDateFieldValidatorTest {
     @Test
     public void testValidDateValue() throws Exception {
         field = new Field(1,"2050/08/24"); // this date is after today
-        assertFalse(beforeDateFieldValidator.isValidField(field));
+        assertFalse(beforeDateFieldValidator.isValid(field));
     }
 
     @Test
     public void testInValidDateValue() throws Exception {
         field = new Field(1,"2000/08/24"); // this date is before today
-        assertTrue(beforeDateFieldValidator.isValidField(field));
+        assertTrue(beforeDateFieldValidator.isValid(field));
     }
 
 }

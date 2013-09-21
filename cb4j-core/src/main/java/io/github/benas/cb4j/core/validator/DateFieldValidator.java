@@ -75,7 +75,7 @@ public class DateFieldValidator implements FieldValidator {
     /**
      * {@inheritDoc}
      */
-    public boolean isValidField(final Field field) {
+    public boolean isValid(final Field field) {
         try {
             simpleDateFormat.parse(field.getContent());
         } catch (ParseException e) {

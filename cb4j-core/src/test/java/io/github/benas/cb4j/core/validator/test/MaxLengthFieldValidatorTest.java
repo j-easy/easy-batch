@@ -58,12 +58,12 @@ public class MaxLengthFieldValidatorTest {
     @Test
     public void testInvalidField() throws Exception {
         field = new Field(1,"Hi!");
-        assertTrue(maxLengthFieldValidator.isValidField(field));
+        assertTrue(maxLengthFieldValidator.isValid(field));
     }
 
     @Test
     public void testValidField() throws Exception {
         field = new Field(1,"Hi there!");
-        assertFalse(maxLengthFieldValidator.isValidField(field));
+        assertFalse(maxLengthFieldValidator.isValid(field));
     }
 }

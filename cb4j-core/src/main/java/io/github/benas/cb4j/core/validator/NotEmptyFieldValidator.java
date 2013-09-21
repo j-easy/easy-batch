@@ -37,7 +37,7 @@ public class NotEmptyFieldValidator implements FieldValidator {
     /**
      * {@inheritDoc}
      */
-    public boolean isValidField(final Field field) {
+    public boolean isValid(final Field field) {
         return field.getContent() != null && field.getContent().length() != 0;
     }
 

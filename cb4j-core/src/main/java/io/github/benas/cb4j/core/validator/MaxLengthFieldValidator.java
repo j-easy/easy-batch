@@ -45,8 +45,8 @@ public class MaxLengthFieldValidator extends NotEmptyFieldValidator implements F
     /**
      * {@inheritDoc}
      */
-    public boolean isValidField(Field field) {
-        return super.isValidField(field) && field.getContent().length() <= maxLength;
+    public boolean isValid(Field field) {
+        return super.isValid(field) && field.getContent().length() <= maxLength;
     }
 
     /**

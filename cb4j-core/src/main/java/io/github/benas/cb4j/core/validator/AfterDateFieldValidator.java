@@ -49,8 +49,8 @@ public class AfterDateFieldValidator extends DateFieldValidator implements Field
     /**
      * {@inheritDoc}
      */
-    public boolean isValidField(final Field field) {
-        return super.isValidField(field) && new Date(field.getContent()).after(date);
+    public boolean isValid(final Field field) {
+        return super.isValid(field) && new Date(field.getContent()).after(date);
     }
 
     /**

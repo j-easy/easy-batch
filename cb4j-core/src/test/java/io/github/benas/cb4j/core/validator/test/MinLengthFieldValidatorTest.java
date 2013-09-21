@@ -58,12 +58,12 @@ public class MinLengthFieldValidatorTest {
     @Test
     public void testInvalidField() throws Exception {
         field = new Field(1,"Hi!");
-        assertFalse(minLengthFieldValidator.isValidField(field));
+        assertFalse(minLengthFieldValidator.isValid(field));
     }
 
     @Test
     public void testValidField() throws Exception {
         field = new Field(1,"Hi there!");
-        assertTrue(minLengthFieldValidator.isValidField(field));
+        assertTrue(minLengthFieldValidator.isValid(field));
     }
 }

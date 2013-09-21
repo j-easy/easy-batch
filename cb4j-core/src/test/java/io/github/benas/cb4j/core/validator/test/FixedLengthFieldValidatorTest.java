@@ -58,12 +58,12 @@ public class FixedLengthFieldValidatorTest {
     @Test
     public void testInvalidField() throws Exception {
         field = new Field(1,"abc");
-        assertFalse(fixedLengthFieldValidator.isValidField(field));
+        assertFalse(fixedLengthFieldValidator.isValid(field));
     }
 
     @Test
     public void testValidField() throws Exception {
         field = new Field(1,"abcde");
-        assertTrue(fixedLengthFieldValidator.isValidField(field));
+        assertTrue(fixedLengthFieldValidator.isValid(field));
     }
 }

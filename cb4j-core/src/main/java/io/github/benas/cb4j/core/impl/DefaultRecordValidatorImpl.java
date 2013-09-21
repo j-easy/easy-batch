@@ -68,7 +68,7 @@ public class DefaultRecordValidatorImpl implements RecordValidator {
             List<FieldValidator> validators = fieldValidators.get(field.getIndex());
             if (validators != null && validators.size() > 0) {
                 for (FieldValidator validator : validators) {
-                    if (!validator.isValidField(field)) {
+                    if (!validator.isValid(field)) {
                         return "The field " + field + " is not valid according to validation constraint : [" + validator.getValidationConstraintDescription() + "]";
                     }
                 }

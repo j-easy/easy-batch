@@ -58,18 +58,18 @@ public class NumericFieldValidatorTest {
     @Test
     public void testInvalidField() throws Exception {
         field = new Field(1,"21c");
-        assertFalse(numericFieldValidator.isValidField(field));
+        assertFalse(numericFieldValidator.isValid(field));
     }
 
     @Test
     public void testValidField() throws Exception {
         field = new Field(1,"333");
-        assertTrue(numericFieldValidator.isValidField(field));
+        assertTrue(numericFieldValidator.isValid(field));
     }
 
     @Test
     public void testValidFloatField() throws Exception {
         field = new Field(1,"333.33");
-        assertTrue(numericFieldValidator.isValidField(field));
+        assertTrue(numericFieldValidator.isValid(field));
     }
 }

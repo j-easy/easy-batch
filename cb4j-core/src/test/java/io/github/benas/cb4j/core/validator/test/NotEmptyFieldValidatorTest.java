@@ -58,18 +58,18 @@ public class NotEmptyFieldValidatorTest {
     @Test
     public void testValidField() throws Exception {
         field = new Field(1,"x");
-        assertTrue(notEmptyFieldValidator.isValidField(field));
+        assertTrue(notEmptyFieldValidator.isValid(field));
     }
 
     @Test
     public void testInvalidNullContentField() throws Exception {
-        assertFalse(notEmptyFieldValidator.isValidField(field));
+        assertFalse(notEmptyFieldValidator.isValid(field));
     }
 
     @Test
     public void testInvalidField() throws Exception {
         field = new Field(1,"");
-        assertFalse(notEmptyFieldValidator.isValidField(field));
+        assertFalse(notEmptyFieldValidator.isValid(field));
     }
 
 }
