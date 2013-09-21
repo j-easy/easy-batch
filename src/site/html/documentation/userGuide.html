@@ -379,7 +379,7 @@ batchConfiguration.registerFieldValidators(1,field1Validators);
                 <li>Use the default mapper provided by CB4J</li>
                 <li>Provide your own mapper by implementing the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface</li>
             </ul>
-            <h4>2.3.1 Using the default mapper</h4>
+            <h4 id="2.3.1">2.3.1 Using the default mapper</h4>
 
             <p>CB4J comes with a default <code class="prettyprint">RecordMapper&lt;T&gt;</code> implementation that is based on field names in header record to map data to domain object fields with the same name.</p>
             <p>For example, let's say your CSV file and domain object are respectively the following :</p>
@@ -402,26 +402,28 @@ public class Greeting {
 </pre>
 
             <p>CB4J will use field names in header record to map data to fields in <code class="prettyprint">Greeting</code> class with the same name.</p>
-            <p>In this example, the first field <code class="prettyprint">sequence</code> in CSV record will be mapped to the field <code class="prettyprint">sequence</code> in <code class="prettyprint">Greeting</code> Object. This is the same for the <code class="prettyprint">name</code> field.</p>
+            <p>In this example, the first field <code class="prettyprint">sequence</code> in CSV record will be mapped to the field <code class="prettyprint">sequence</code> in <code class="prettyprint">Greeting</code> Object. This is the same for the <code class="prettyprint">name</code> field. The figure below shows how the default mapper works:</p>
+
+            <div align="center"><img src="../resources/img/csv-pojo-mapping.png"/></div>
 
             <div class="alert alert-info">
-                <span class="label label-info">Info</span> if your CSV file does not contain a header record with field names, you can specify them using the <code class="prettyprint">input.record.headers</code> parameters.
+                <p><span class="label label-info">Info</span> if your CSV file does not contain a header record with field names, you can specify them using the <code class="prettyprint">input.record.headers</code> parameter.</p>
+                <p><span class="label label-info">Info</span> Your domain object must provide a default constructor and a setter for each field (so that CB4J can instantiate your object and bind CSV data to its fields).</p>
             </div>
 
             <p>CB4J will also convert raw textual data in your CSV file to typed data according to field type of the domain object. For instance, <code class="prettyprint">sequence</code> values in CSV records will be converted to the type <code class="prettyprint">long</code> as defined in <code class="prettyprint">Greeting</code> Object.</p>
             <p>By default, CB4J can convert textual data to common built-in Java types such as Boolean, Integer, Date, etc. For all details about supported types, please refer to the package <code class="prettyprint">io.github.benas.cb4j.core.converter</code>.</p>
                 You can also provide your own type converter by implementing the <code class="prettyprint">io.github.benas.cb4j.core.api.TypeConverter</code> interface and registering your implementation as follows:
 <pre class="prettyprint">
-batchConfiguration.registerTypeConverter(myType.class, new myTypeConverter());
+batchConfiguration.registerTypeConverter(MyType.class, new myTypeConverter());
 </pre>
 
             <div class="alert">
                 <span class="label label-warning">Warning</span> The default mapper uses the <a href="http://docs.oracle.com/javase/tutorial/reflect/index.html">Java Reflection API</a> to dynamically introspect your domain object properties and populate them with CSV data.
-                This actually have a performance overhead that may affect your application if it is performance sensitive.<br/>
-                Please refer to the <a href="faq.html#2">question N°2 in FAQ section</a> for more details.
+                <p>If your application is performance sensitive, you would prefer implementing your own mapper without using reflection. This can result to about <strong>10x</strong> faster code than using reflection as demonstrated in <a href="https://github.com/benas/cb4j/blob/master/cb4j-core/src/test/java/net/benas/cb4j/core/test/ReflectionPerformanceShowcase.java">the benchmark here</a>.</p>
             </div>
 
-            <h4>2.3.2 Provide custom mapping logic</h4>
+            <h4 id="2.3.2">2.3.2 Provide custom mapping logic</h4>
 
             <p>As you have seen, the default mapper provides one-to-one mapping between CSV/FL record and your domain object. This may not be what you want if a record actually contains data corresponding to multiple nested domain objects or if you want to apply some data transformation before mapping values.</p>
             <p>To provide your custom Record/Object mapping, you have to implement the <code class="prettyprint">RecordMapper&lt;T&gt;</code> interface and register your implementation at configuration time as follows:</p>
@@ -530,7 +532,7 @@ public interface BatchEngine extends Callable&lt;BatchReport&gt; {
 
             <p>To write a custom field validator, you have to implement the <code class="prettyprint">FieldValidator</code> interface. This interface contains the following methods:</p>
             <ul>
-                <li><code class="prettyprint">public boolean isValidField(final Field field)</code>: This method should contain the validation logic for a field</li>
+                <li><code class="prettyprint">public boolean isValid(final Field field)</code>: This method should contain the validation logic for a field</li>
                 <li><code class="prettyprint">public String getValidationConstraintDescription()</code>: This method should return a description of the validation constraint implemented by the validator. This description will be used to report the cause of record rejection</li>
             </ul>
 
@@ -539,7 +541,7 @@ public interface BatchEngine extends Callable&lt;BatchReport&gt; {
 <pre class="prettyprint">
 public class MyCustomFieldValidator implements FieldValidator {
 
-    public boolean isValidField(final Field field) {
+    public boolean isValid(final Field field) {
         return field.getContent().startsWith("XP");
     }
 

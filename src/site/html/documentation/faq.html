@@ -137,16 +137,7 @@
 
                 <p>Yes. CB4J provides a default CSV to Object mapper which uses field names in header record to map data to fields in domain object with the same name.</p>
 
-                <p>The default mapper uses the <a href="http://docs.oracle.com/javase/tutorial/reflect/index.html">Java Reflection API</a> to dynamically introspect your domain object properties and populate them with CSV data. This actually adds a performance overhead that you should pay attention to if your application is performance sensitive.</p>
-                <p>To avoid this performance overhead due to the use of reflection, you should consider writing you own mapper (by implementing the <code class="prettyprint">io.github.benas.cb4j.core.api.RecordMapper</code> interface) without using reflection for performance reasons.</p>
-                <p>The listing below is an extract from <a href="http://docs.oracle.com/javase/tutorial/reflect/index.html">Java official documentation on reflection API</a>:</p>
-
-                <blockquote>
-                    <p><span class="label label-important"><strong>Performance Overhead</strong></span></p>
-                    <p>Because reflection involves types that are dynamically resolved, certain Java virtual machine optimizations can not be performed. Consequently, reflective operations have slower performance than their non-reflective counterparts, and should be avoided in sections of code which are called frequently in performance-sensitive applications.</p>
-                </blockquote>
-
-                <p>Writing the mapping logic explicitly is not costly even for POJOs with many properties and this results in about <strong>10x</strong> faster code than using reflection as demonstrated in <a href="https://github.com/benas/cb4j/blob/master/cb4j-core/src/test/java/net/benas/cb4j/core/test/ReflectionPerformanceShowcase.java">the benchmark here</a>.</p>
+                <p>Please refer to the <a href="userGuide.html#2.3">user guide</a> for more details about the default CSV/Object mapping strategy.</p>
 
                 <h2 id="3" class="section">3. Does CB4J provide built-in type conversion utilities ?</h2>
 

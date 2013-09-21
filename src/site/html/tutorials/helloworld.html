@@ -164,7 +164,10 @@ public class Greeting {
 </pre>
 
                 <p>To map CSV records to <code class="prettyprint">Greeting</code> objects, CB4J will use field names in header record to map data to fields in <code class="prettyprint">Greeting</code> class with the same name.</p>
-                <p>In this example, the first field <code class="prettyprint">sequence</code> in CSV record will be mapped to the field <code class="prettyprint">sequence</code> in <code class="prettyprint">Greeting</code> Object. This is the same for the <code class="prettyprint">name</code> field.</p>
+                <p>In this example, the first field <code class="prettyprint">sequence</code> in CSV record will be mapped to the field <code class="prettyprint">sequence</code> in <code class="prettyprint">Greeting</code> Object. This is the same for the <code class="prettyprint">name</code> field. The figure below shows how the default mapper works:</p>
+
+                <div align="center"><img src="../resources/img/csv-pojo-mapping.png"/></div>
+
                 <p>CB4J will also convert raw textual data in the CSV file to typed data according to field type of the domain object. For instance, <code class="prettyprint">sequence</code> values in CSV records will be converted to the type <code class="prettyprint">long</code> as defined in <code class="prettyprint">Greeting</code> Object.</p>
 
                 <h3 id="2.3">2.3 Processing records</h3>
