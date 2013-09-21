@@ -3,7 +3,7 @@
     <parent>
         <artifactId>cb4j</artifactId>
         <groupId>io.github.benas.cb4j</groupId>
-        <version>1.3.1-SNAPSHOT</version>
+        <version>1.4.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>io.github.benas.cb4j</groupId>
             <artifactId>cb4j-core</artifactId>
-            <version>1.3.1-SNAPSHOT</version>
+            <version>1.4.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
