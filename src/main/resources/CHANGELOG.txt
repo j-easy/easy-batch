@@ -2,7 +2,7 @@ CB4J FRAMEWORK CHANGELOG
 ========================
 https://github.com/benas/cb4j
 
-Changes in version 1.4.0 (2013-09-17)
+Changes in version 1.4.0 (2013-09-21)
 -------------------------------------
 
 * Added BatchResultHolder API to be able to get computation result at the end of batch execution
