@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.github.benas.cb4j</groupId>
         <artifactId>cb4j</artifactId>
-        <version>1.4.0</version>
+        <version>1.4.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>cb4j-tutorials</artifactId>
@@ -32,7 +32,7 @@
         <url>git@github.com:benas/cb4j.git</url>
         <connection>scm:git:git@github.com:benas/cb4j.git</connection>
         <developerConnection>scm:git:git@github.com:benas/cb4j.git</developerConnection>
-      <tag>cb4j-1.4.0</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <dependencies>
@@ -40,21 +40,21 @@
         <dependency>
             <groupId>io.github.benas.cb4j</groupId>
             <artifactId>cb4j-core</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.1-SNAPSHOT</version>
         </dependency>
 
         <!-- Dependencies for quartz integration showcase-->
         <dependency>
             <groupId>io.github.benas.cb4j</groupId>
             <artifactId>cb4j-quartz</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.1-SNAPSHOT</version>
         </dependency>
 
         <!--dependency for CB4J tools containing custom JMX clients used in JMX tutorial-->
         <dependency>
             <groupId>io.github.benas.cb4j</groupId>
             <artifactId>cb4j-tools</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
