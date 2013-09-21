@@ -1,8 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>cb4j</artifactId>
         <groupId>io.github.benas.cb4j</groupId>
-        <version>1.4.0</version>
+        <version>1.4.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -30,15 +31,14 @@
         <url>git@github.com:benas/cb4j.git</url>
         <connection>scm:git:git@github.com:benas/cb4j.git</connection>
         <developerConnection>scm:git:git@github.com:benas/cb4j.git</developerConnection>
-      <tag>cb4j-1.4.0</tag>
-  </scm>
+    </scm>
 
     <dependencies>
 
         <dependency>
             <groupId>io.github.benas.cb4j</groupId>
             <artifactId>cb4j-core</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
