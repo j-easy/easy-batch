@@ -37,7 +37,7 @@ public class EmailFieldValidator extends RegExpFieldValidator implements FieldVa
      * Regular expression for email format.
      */
     public static final String REGULAR_EXPRESSION = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Za-z]{2,4}$";
-    
+
     public EmailFieldValidator() {
         super(REGULAR_EXPRESSION);
     }

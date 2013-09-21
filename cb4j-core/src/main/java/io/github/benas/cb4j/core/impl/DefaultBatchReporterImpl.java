@@ -97,7 +97,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
         logger.info("Total input records = " + batchReport.getTotalInputRecordsNumber());
         logger.info("Total ignored records = " + batchReport.getIgnoredRecordsNumber());
         logger.info("Total rejected records = " + batchReport.getRejectedRecordsNumber());
-        logger.info("Total records processed successfully = " + Math.max(0, batchReport.getProcessedRecordsNumber() - batchReport.getErrorRecordsNumber() - batchReport.getIgnoredRecordsNumber() - batchReport.getRejectedRecordsNumber() ));
+        logger.info("Total records processed successfully = " + Math.max(0, batchReport.getProcessedRecordsNumber() - batchReport.getErrorRecordsNumber() - batchReport.getIgnoredRecordsNumber() - batchReport.getRejectedRecordsNumber()));
         logger.info("Total records processed with error = " + batchReport.getErrorRecordsNumber());
     }
 
@@ -274,7 +274,7 @@ public class DefaultBatchReporterImpl implements BatchReporter {
     }
 
     /**
-     * utility method to format error message
+     * utility method to format error message.
      * @param record the record in error
      * @param error the error returned by the engine
      * @param throwable the exception thrown

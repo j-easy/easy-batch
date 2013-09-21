@@ -31,6 +31,9 @@ package io.github.benas.cb4j.core.util;
  */
 public class BatchConstants {
 
+    private BatchConstants() {
+    }
+
     /*
      * Configuration parameters names
      */

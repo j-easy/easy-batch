@@ -39,6 +39,8 @@ import io.github.benas.cb4j.core.api.RecordProcessor;
  * {@link RecordProcessor#getBatchResultHolder()} to return a concrete implementation
  * of {@link io.github.benas.cb4j.core.api.BatchResultHolder}.
  *
+ * @param <T> The domain object type. This is the object type view of a CVS/FL record.
+ *
  * @author benas (md.benhassine@gmail.com)
  */
 public abstract class DefaultRecordProcessorImpl<T> implements RecordProcessor<T> {

@@ -57,15 +57,16 @@ public class BatchRunner {
 
     /**
      * Run the batch engine.
+     * @return the batch report
      */
     public BatchReport run() {
 
         try {
             batchEngine.init();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "An exception occurred during engine initialization. " +
-                    "In order to avoid any unexpected behavior during batch execution due to this exception, execution is aborted. Root error : ", e);
-            return null;// for security reason, abort execution
+            logger.log(Level.SEVERE, "An exception occurred during engine initialization. "
+                    + "In order to avoid any unexpected behavior during batch execution due to this exception, execution is aborted. Root error : ", e);
+            return null; // for security reason, abort execution
         }
 
         BatchReport batchReport;

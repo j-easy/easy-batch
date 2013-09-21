@@ -75,8 +75,8 @@ public class DefaultRecordMapperImpl implements RecordMapper {
          * Initialize setters that will be used to populate the returned instance.
          * This introspection should be done only once for evident performance reason.
          */
-        for(int i = 0 ;i < headersMapping.length; i++ ){
-            String setterName = "set" + headersMapping[i].substring(0, 1).toUpperCase() + headersMapping[i].substring(1);//javabean naming convention
+        for (int i = 0; i < headersMapping.length; i++) {
+            String setterName = "set" + headersMapping[i].substring(0, 1).toUpperCase() + headersMapping[i].substring(1); //javabean naming convention
             for (Method method : methods) {
                 if (method.getName().equals(setterName)) {
                     recordClassSetters[i] = method;

@@ -133,7 +133,7 @@ public class BatchMonitor extends NotificationBroadcasterSupport implements Batc
                         "batch report updated",
                         "BatchReport",
                         BatchReport.class.getName(),
-                        null,//no need for old value
+                        null, //no need for old value
                         batchReport);
         //send asynchronous jmx notification for clients
         sendNotification(n);

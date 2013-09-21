@@ -33,6 +33,8 @@ package io.github.benas.cb4j.core.api;
  *
  * In a well designed batch, records used by the implementation should be correctly validated and mapped to domain objects of type T
  *
+ * @param <T> The domain object type.
+ *
  * @author benas (md.benhassine@gmail.com)
  */
 public interface RecordProcessor<T> {

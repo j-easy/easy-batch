@@ -22,28 +22,8 @@
  *  THE SOFTWARE.
  */
 
-package io.github.benas.cb4j.core.util;
-
 /**
- * CB4J engine status enumeration.<br/>
- * This enumeration is used especially for JMX monitoring.
- *
- * @author benas (md.benhassine@gmail.com)
+ * This package contains CB4J built-in type converters.<br/>
+ * These converters are used to convert raw textual data in CSV/FL records to typed data in domain objects.
  */
-public enum BatchStatus {
-
-    /**
-     * Engine is initializing (execution of {@link io.github.benas.cb4j.core.api.BatchEngine#init()} ).
-     */
-    INITIALIZING,
-
-    /**
-     * Engine is running (execution of {@link io.github.benas.cb4j.core.api.BatchEngine#call()} ()} ).
-     */
-    RUNNING,
-
-    /**
-     * Engine is finalizing (execution of {@link io.github.benas.cb4j.core.api.BatchEngine#shutdown()} ).
-     */
-    FINALIZING
-}
+package io.github.benas.cb4j.core.converter;

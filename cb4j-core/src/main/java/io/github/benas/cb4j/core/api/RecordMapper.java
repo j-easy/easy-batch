@@ -30,6 +30,8 @@ import io.github.benas.cb4j.core.model.Record;
  * Interface for record/object mapper.<br/>
  * Implementation of this interface should use the same type T used in {@link RecordProcessor} to avoid type casting exception or any type safety warnings
  *
+ * @param <T> The domain object type.
+ *
  * @author benas (md.benhassine@gmail.com)
  */
 public interface RecordMapper<T> {

@@ -56,7 +56,6 @@ public abstract class Record {
      * Getter for a field by its index in the record. The first field is at index 0.
      * @param index the field index
      * @return The Field with index index
-     * @throws IndexOutOfBoundsException if the given index is out of range in the fields list
      */
     public Field getFieldByIndex(int index) {
         if (index < 0 || index >= fields.size()) {
@@ -70,7 +69,6 @@ public abstract class Record {
      * This method is a shortcut for getFieldByIndex(index).getContent() . The first field is at index 0
      * @param index the field index
      * @return The Field's content with the given index.
-     * @throws IndexOutOfBoundsException if the given index is out of range in the fields list
      */
     public String getFieldContentByIndex(int index) {
         if (index < 0 || index >= fields.size()) {

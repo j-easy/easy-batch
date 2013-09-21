@@ -225,9 +225,9 @@ public class BatchConfiguration {
 
         String[] headers;
         String headersProperty = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_HEADERS);
-        if( headersProperty == null) { // if no headers specified, use field names declared in the header record
+        if (headersProperty == null) { // if no headers specified, use field names declared in the header record
             String headerRecord = recordReader.getHeaderRecord();
-            Record record = recordParser.parseRecord(headerRecord,0); //use the record parser to parse the header record using the right delimiter
+            Record record = recordParser.parseRecord(headerRecord, 0); //use the record parser to parse the header record using the right delimiter
             List<Field> fields = record.getFields();
             headers = new String[fields.size()];
             for (int i = 0; i < fields.size(); i++) {
@@ -325,7 +325,7 @@ public class BatchConfiguration {
             logger.info("Record type property not specified, records will be considered as delimiter-separated values");
         } else if (!RecordType.DSV.toString().equalsIgnoreCase(recordTypeProperty) && !RecordType.FLR.toString().equalsIgnoreCase(recordTypeProperty)) {
             recordType = BatchConstants.DEFAULT_RECORD_TYPE;
-            logger.warning("Record type property '" + recordTypeProperty +"' is invalid, records will be considered as delimiter-separated values");
+            logger.warning("Record type property '" + recordTypeProperty + "' is invalid, records will be considered as delimiter-separated values");
         } else {
             recordType = recordTypeProperty;
         }
@@ -333,16 +333,16 @@ public class BatchConfiguration {
         // fixed length record configuration
         if (RecordType.FLR.toString().equalsIgnoreCase(recordType)) {
             String fieldsLengthProperties = configurationProperties.getProperty(BatchConstants.INPUT_FIELD_LENGTHS);
-            if ( fieldsLengthProperties == null || fieldsLengthProperties.length() == 0) {
+            if (fieldsLengthProperties == null || fieldsLengthProperties.length() == 0) {
                 String error = "Configuration failed : when using fixed length records, fields length values property '" + BatchConstants.INPUT_FIELD_LENGTHS + "' is mandatory but was not specified.";
                 logger.severe(error);
                 throw new BatchConfigurationException(error);
             } else {
                 //parse fields length property and extract numeric values
-                StringTokenizer stringTokenizer = new StringTokenizer(fieldsLengthProperties,",");
+                StringTokenizer stringTokenizer = new StringTokenizer(fieldsLengthProperties, ",");
                 int[] fieldsLength = new int[stringTokenizer.countTokens()];
                 int index = 0;
-                while(stringTokenizer.hasMoreTokens()) {
+                while (stringTokenizer.hasMoreTokens()) {
                     String length = stringTokenizer.nextToken();
                     try {
                         fieldsLength[index] = Integer.parseInt(length);
@@ -355,8 +355,7 @@ public class BatchConfiguration {
                 }
                 recordParser = new FlrRecordParserImpl(fieldsLength);
             }
-        }
-        else { //delimited values configuration
+        } else { //delimited values configuration
 
         String recordSizeProperty = configurationProperties.getProperty(BatchConstants.INPUT_RECORD_SIZE);
 
@@ -606,7 +605,7 @@ public class BatchConfiguration {
         return Boolean.valueOf(configurationProperties.getProperty(BatchConstants.OUTPUT_DATA_ABORT_ON_FIRST_MAPPING_EXCEPTION));
     }
 
-    public boolean getSkipHeader(){
+    public boolean getSkipHeader() {
         return Boolean.valueOf(configurationProperties.getProperty(BatchConstants.INPUT_DATA_SKIP_HEADER));
     }
 

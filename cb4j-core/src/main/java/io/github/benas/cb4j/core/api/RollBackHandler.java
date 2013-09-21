@@ -27,6 +27,8 @@ package io.github.benas.cb4j.core.api;
 /**
  * A callback interface to rollback a record processing when an unexpected exception occurs.
  *
+ * @param <T> The domain object type.
+ *
  * @author benas (md.benhassine@gmail.com)
  */
 public interface RollBackHandler<T> {
@@ -37,6 +39,6 @@ public interface RollBackHandler<T> {
      * @param record the record to rollback
      * @throws Exception thrown if a an exception occurs during rollback
      */
-    public void rollback(T record) throws Exception;
+    void rollback(T record) throws Exception;
 
 }

@@ -229,7 +229,7 @@ public class BatchConfigurationBuilder {
      * Build a BatchConfiguration instance. Make sure you have set mandatory parameters before calling this method.
      * @return a properly configured (if mandatory parameters set) BatchConfiguration instance
      */
-    public BatchConfiguration build(){
+    public BatchConfiguration build() {
         return new BatchConfiguration(properties);
     }
 

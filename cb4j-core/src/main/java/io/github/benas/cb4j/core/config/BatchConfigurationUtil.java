@@ -44,6 +44,9 @@ public class BatchConfigurationUtil {
 
     private static final Logger logger = Logger.getLogger(BatchConstants.LOGGER_CB4J);
 
+    private BatchConfigurationUtil() {
+    }
+
     /**
      * Remove file extension if any.<br/>
      * For instance : if fileName = "myData.dat" , the result returned by this function is "myData".<br/>

@@ -80,7 +80,7 @@ public final class FlrRecordParserImpl implements RecordParser {
     public Record parseRecord(final String stringRecord, final long currentRecordNumber) {
         Record record = new FlrRecord(currentRecordNumber, fieldsLength);
         for (int i = 0; i < fieldsLength.length; i++) {
-            String token = stringRecord.substring(fieldsOffsets[i], fieldsOffsets[i+1]);
+            String token = stringRecord.substring(fieldsOffsets[i], fieldsOffsets[i + 1]);
             Field field = new Field(i, token);
             record.getFields().add(field);
         }

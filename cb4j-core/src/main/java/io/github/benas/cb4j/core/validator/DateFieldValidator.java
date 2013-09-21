@@ -41,7 +41,7 @@ import java.util.logging.Logger;
 public class DateFieldValidator implements FieldValidator {
 
     /**
-     * Default date format to use
+     * Default date format to use.
      */
     public static final String DEFAULT_DATE_FORMAT = "dd/MM/yyyy";
 
@@ -53,7 +53,7 @@ public class DateFieldValidator implements FieldValidator {
     protected String dateFormat;
 
     /**
-     * The date formatter
+     * The date formatter.
      */
     protected DateFormat simpleDateFormat;
 

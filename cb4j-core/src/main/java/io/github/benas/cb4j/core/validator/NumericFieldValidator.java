@@ -41,7 +41,7 @@ public class NumericFieldValidator extends RegExpFieldValidator implements Field
     public NumericFieldValidator() {
         super(REGULAR_EXPRESSION);
     }
-    
+
     /**
      * {@inheritDoc}
      */
