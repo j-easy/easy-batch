@@ -1,47 +1,45 @@
-## What is CB4J?
+## What is Easy Batch?
 
-CSV Batch 4 Java is a framework that aims to simplify CSV files batch processing with Java.
+Easy Batch is a framework that aims to simplify batch processing with Java.
 
-CB4J addresses common tedious tasks such as reading, parsing and validating CSV records and lets you concentrate on your batch processing business logic.
+It addresses common tedious tasks such as reading, filtering and validating input data and lets you concentrate on your batch processing business logic.
 
 ## Key features
 
- * Lightweight framework : CB4J has no dependencies and hence a small memory footprint : a 70Ko jar file with a lot of features!
+ * Lightweight framework : Easy Batch has no dependencies and hence a small memory footprint : a 20Ko jar file with a lot of features!
 
- * POJO-based development : Map CSV records to your domain objects so you can still work with the Object Oriented aspect of Java.</p>
+ * POJO-based development : Map records to your domain objects so you can still work with the Object Oriented aspect of Java.</p>
 
- * Declarative data validation : CB4J lets you declare data validation constraints with extensible built-in validators for common requirements.
+ * Declarative data validation : Easy Batch lets you declare data validation on domain objects and handles the validation code for you.
 
- * Easy to learn and use : CB4J uses a simple and natural CSV model and API. You can learn it easily and start using it quickly.
+ * Easy to learn and use : Easy Batch uses a simple and natural data model and API. You can learn it easily and start using it quickly.
 
- * Statistics reporting : CB4J provides a customizable reporting for common statistics including validation errors and processing time.
+ * Statistics reporting : Easy Batch provides a simple and customizable reporting tools for common statistics including validation errors and processing time.
 
  * JMX monitoring : Monitor your batch execution and progress using JMX at runtime and in real time.
 
 ## Documentation
 
-All documentation about CB4J can be found at [http://benas.github.io/cb4j/][cb4j-doc]
-
-You can also find some slides at [speaker deck][].
+All documentation about Easy Batch can be found at [http://benas.github.io/easy-batch/][easy-batch-doc]
 
 ## Current version
 
-The current stable version of CB4J is 1.4.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/cb4j/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/cb4j/).
+The current stable version of Easy Batch is 2.0.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/).
 <br/>
-<a href="https://buildhive.cloudbees.com/job/benas/job/cb4j/"><img src="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/></a>
+<a href="https://buildhive.cloudbees.com/job/benas/job/easy-batch/"><img src="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/></a>
 
 ## License
-CB4J is released under the [MIT License][].
+Easy Batch is released under the [MIT License][].
 
 ## Contribution
 Your feedback is highly appreciated! For any issue, please use the [issue tracker][].
 
-You can also contribute with pull requests on github or by contacting the author directly [by mail][].
+You can also contribute with pull requests on GitHub or by contacting the author directly [by mail][].
 
 Many thanks upfront!
 
-[speaker deck]: https://speakerdeck.com/benas/cb4j
-[cb4j-doc]: http://benas.github.io/cb4j/
+[speaker deck]: https://speakerdeck.com/benas/easy-batch
+[easy-batch-doc]: http://benas.github.io/easy-batch/
 [MIT License]: http://opensource.org/licenses/mit-license.php/
-[issue tracker]: https://github.com/benas/cb4j/issues
-[by mail]: mailto:md.benhassine@gmail.com?subject=[CB4J]
+[issue tracker]: https://github.com/benas/easy-batch/issues
+[by mail]: mailto:md.benhassine@gmail.com?subject=[Easy Batch]

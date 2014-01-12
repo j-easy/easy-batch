@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *   Copyright (c) 2013, benas (md.benhassine@gmail.com)
+ *   Copyright (c) 2014, benas (md.benhassine@gmail.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +22,20 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.cb4j.core.api;
+package io.github.benas.easybatch.tutorials.helloworld;
+
+import io.github.benas.easybatch.core.api.AbstractRecordProcessor;
 
 /**
- * A callback interface to rollback a record processing when an unexpected exception occurs.
+* A processor that will generate greeting messages for each record in the input file.
  *
- * @param <T> The domain object type.
- *
- * @author benas (md.benhassine@gmail.com)
- */
-public interface RollBackHandler<T> {
+* @author benas (md.benhassine@gmail.com)
+*/
+public class GreetingProcessor extends AbstractRecordProcessor<Greeting> {
 
-    /**
-     * Rollback the processing of a record. This method is called when an unexpected exception occurs during record processing.<br/>
-     * <strong>Warning :</strong> this method is not called if you throw a {@link RecordProcessingException} deliberately during record processing.
-     * @param record the record to rollback
-     * @throws Exception thrown if a an exception occurs during rollback
-     */
-    void rollback(T record) throws Exception;
+    @Override
+    public void processRecord(Greeting greeting) throws Exception {
+        System.out.println(greeting.getGreetingMessage());
+    }
 
 }

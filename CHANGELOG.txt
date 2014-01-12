@@ -1,6 +1,17 @@
-CB4J FRAMEWORK CHANGELOG
-========================
-https://github.com/benas/cb4j
+EASY BATCH FRAMEWORK CHANGELOG
+==============================
+https://github.com/benas/easy-batch
+
+Changes in version 2.0.0 (2014-01-12)
+-------------------------------------
+
+* Renamed the former CB4J framework to Easy Batch which can now handle not only CSV input but also any type of input data
+* Added a new Record interface for generic input data type
+* Added record filtering feature through the RecordFilter API
+* Added new EasyBatchReportFormatter API to format Easy Batch reports to a specific format
+* Redesigned validation approach which is now well integrated with the Bean Validation API (JSR303)
+* Simplified logging through a single and centralised log file
+* Updated documentation and Javadoc
 
 Changes in version 1.4.0 (2013-09-21)
 -------------------------------------
