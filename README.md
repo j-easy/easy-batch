@@ -20,7 +20,7 @@ It addresses common tedious tasks such as reading, filtering and validating inpu
 
 ## Documentation
 
-All documentation about Easy Batch can be found at [http://benas.github.io/easy-batch/][easy-batch-doc]
+All documentation about Easy Batch can be found at [http://benas.github.io/easy-batch/index.html][easy-batch-doc]
 
 ## Current version
 
@@ -38,6 +38,6 @@ You can also contribute with pull requests on GitHub, your contribution is welco
 
 Many thanks upfront!
 
-[easy-batch-doc]: http://benas.github.io/easy-batch/
+[easy-batch-doc]: http://benas.github.io/easy-batch/index.html
 [MIT License]: http://opensource.org/licenses/mit-license.php/
 [issue tracker]: https://github.com/benas/easy-batch/issues
