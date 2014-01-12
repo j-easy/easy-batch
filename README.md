@@ -34,12 +34,10 @@ Easy Batch is released under the [MIT License][].
 ## Contribution
 Your feedback is highly appreciated! For any issue, please use the [issue tracker][].
 
-You can also contribute with pull requests on GitHub or by contacting the author directly [by mail][].
+You can also contribute with pull requests on GitHub, your contribution is welcome!
 
 Many thanks upfront!
 
-[speaker deck]: https://speakerdeck.com/benas/easy-batch
 [easy-batch-doc]: http://benas.github.io/easy-batch/
 [MIT License]: http://opensource.org/licenses/mit-license.php/
 [issue tracker]: https://github.com/benas/easy-batch/issues
-[by mail]: mailto:md.benhassine@gmail.com?subject=[Easy Batch]
