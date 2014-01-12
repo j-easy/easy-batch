@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <title>Easy Batch - User guide</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="benas">
+
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resources/css/prettify.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 15px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+        .section {
+            padding-top: 40px;
+        }
+    </style>
+    <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../resources/css/font-awesome.css" rel="stylesheet">
+    <link href="../resources/css/sidebar.css" rel="stylesheet">
+
+    <script type="text/javascript" src="../resources/js/prettify.js"></script>
+
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-35599235-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+
+</head>
+
+<body onload="prettyPrint()">
+
+<div class="navbar navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="../index.html">Easy Batch</a>
+            <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">Version: 2.0.0</p>
+                <ul class="nav">
+                    <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
+                    <li class="dropdown active">
+                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
+                            <li><a href="gettingStarted.html">Getting started</a></li>
+                            <li><a href="architecture.html">Architecture</a></li>
+                            <li><a href="userGuide.html">User Guide</a></li>
+                            <li><a href="faq.html">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a id="tutorials" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-folder-open"></i> Tutorials<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="tutorials">
+                            <li><a href="../tutorials/helloworld.html">Hello World!</a></li>
+                            <li><a href="../tutorials/products.html">Product Statistics</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a id="miscellaneous" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-asterisk"></i> Miscellaneous<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="miscellaneous">
+                            <li><a href="../miscellaneous/spring.html">Using Easy Batch with Spring</a></li>
+                            <li><a href="../miscellaneous/quartz.html">Scheduling Easy Batch with Quartz</a></li>
+                            <li><a href="../miscellaneous/jmx.html">Monitoring Easy Batch with JMX</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row-fluid">
+
+    <div class="span3">
+        <div class="well sidebar-nav bs-docs-sidenav" data-spy="affix">
+                <ul class="nav nav-list">
+                    <li class="nav-header"><i class="icon-home"></i> About Easy Batch</li>
+                    <li><a href="../index.html">Overview</a></li>
+                    <li><a href="../releaseNotes.html">Release notes</a></li>
+                    <li class="nav-header"><i class="icon-book"></i> Documentation</li>
+                    <li><a href="gettingStarted.html">Getting started</a></li>
+                    <li><a href="architecture.html">Architecture</a></li>
+                    <li class="active"><a href="userGuide.html">User Guide</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li class="nav-header"><i class="icon-folder-open"></i> Tutorials</li>
+                    <li><a href="../tutorials/helloworld.html">Hello World!</a></li>
+                    <li><a href="../tutorials/products.html">Product Statistics</a></li>
+                    <li class="nav-header"><i class="icon-asterisk"></i> Miscellaneous</li>
+                    <li><a href="../miscellaneous/spring.html">Using Easy Batch with Spring</a></li>
+                    <li><a href="../miscellaneous/quartz.html">Scheduling Easy Batch with Quartz</a></li>
+                    <li><a href="../miscellaneous/jmx.html">Monitoring Easy Batch with JMX</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="span9">
+
+            <div class="page-header">
+                <h1>User Guide</h1>
+            </div>
+
+            <div class="row-fluid">
+
+                <h2 id="1">1. Easy Batch engine</h2>
+                <h3 id="1.1">1.1 Creating an Easy Batch engine</h3>
+
+            <p>Creating an Easy Batch engine is straightforward and can be done through the <code>EasyBatchEngineBuilder</code> API as follows:</p>
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder().build();
+</pre>
+            <p>The Easy Batch engine builder API is the main entry point to configure and create Easy Batch engine instances.</p>
+
+                <h3 id="1.2">1.2 Running Easy Batch engine</h3>
+
+                <p>Once you have created an Easy Batch engine instance, you can run it simply as follows:</p>
+<pre class="prettyprint">
+easyBatchEngine.call();
+</pre>
+
+            <h2 id="2">2. Reading records</h2>
+
+            <p>To read records from a data source, you should register an implementation of the <code>RecordReader</code> interface :</p>
+
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordReader(new MyRecordReader(myDataSource))
+    .build();
+</pre>
+            <p>Easy Batch comes with a built-in <code>FlatFileRecordReader</code> that allows you to read records from a flat file.</p>
+            <p>To use the flat file record reader, first you need to add the <code>easybatch-flatfile</code> module to your dependencies:</p>
+<pre class="prettyprint">
+&lt;dependency&gt;
+    &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-flatfile&lt;/artifactId&gt;
+    &lt;version&gt;${version}&lt;/version&gt;
+&lt;/dependency&gt;
+</pre>
+
+            <p>Then, you can use the <code>FlatFileRecordReader</code> with the following snippet:</p>
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordReader(new FlatFileRecordReader(myFlatFile))
+    .build();
+</pre>
+
+            <h2 id="3">3. Filtering records</h2>
+
+            <p>With Easy Batch, you can filter records through the <code>RecordFilter</code> API. This interface allows you to skip records from being processed if they obey to some criteria.</p>
+            <p>A typical example is to filter comment records (that begin with # for example) in a flat file.</p>
+            <p>To use a record filter with Easy Batch, you can use the following snippet:</p>
+
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordFilter(new myRecordFilter())
+    .build();
+</pre>
+            <p>Easy Batch comes with built-in implementations of commonly used flat file record filters :</p>
+            <ul>
+                <li><code>StartsWithFlatFileRecordFilter</code> : filters a record if it starts with one of the given prefixes (for instance, records starting with #). You can also set the constructor parameter <code>negate</code> to true to inverse this behavior.</li>
+                <li><code>EndsWithFlatFileRecordFilter</code> : filters a record if it ends with one of the given suffixes. You can also set the constructor parameter <code>negate</code> to true to inverse this behavior.</li>
+                <li><code>RecordNumberEqualsToFlatFileRecordFilter</code> : filters a record if its number is equal to one of the given numbers (for example, record number 1). You can also set the constructor parameter <code>negate</code> to true to inverse this behavior.</li>
+                <li><code>RecordNumberGreaterThanFlatFileRecordFilter</code> : filters a record if its number is greater than a given number</li>
+                <li><code>RecordNumberLowerThanFlatFileRecordFilter</code> : filters a record if its number is lower than a given number</li>
+                <li><code>RecordNumberBetweenFlatFileRecordFilter</code> : filters a record if its number is in a given number range</li>
+            </ul>
+
+            <p>To use these built-in record filters, you have to add the <code>easybatch-flatfile</code> module to your dependencies as described in
+                <a href="#2">section 2</a>.</p>
+            <p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record filter that does not filter any input record.</p>
+
+            <h2 id="4">4. Mapping records to domain objects</h2>
+
+            <p>Easy Batch development is POJO-based and lets you map input records to your domain objects. To map records to your POJO instances, you should register an implementation of the <code>RecordMapper</code> interface as follows:</p>
+
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordMapper(new myRecordMapper())
+    .build();
+</pre>
+            <p>Easy Batch comes with two implementations of the <code>RecordMapper</code> interface:</p>
+            <ul>
+                <li><code>DsvRecordMapper</code> : allows you to map delimiter-separated-values to domain objects</li>
+                <li><code>FixedLengthRecordMapper</code> : allows you to map fixed-length records to domain objects</li>
+            </ul>
+
+            <p>These two mappers also convert raw textual data in flat file records to typed data in your domain objects.
+                Easy Batch supports all built-in Java primitive and wrapper types (please refer to the javadoc of the <code>io.github.benas.easybatch.flatfile.converter</code> package for all details about Easy Batch built-in type converters).
+                If you want to provide a custom type converter, you can implement the <code>TypeConverter</code> interface and register your implementation using
+                <code>DsvRecordMapper.registerTypeConverter</code> and <code>FixedLengthRecordMapper.registerTypeConverter</code> methods.</p>
+
+            <p>You can find an example of how to use the <code>DsvRecordMapper</code> in the <a href="../tutorials/helloworld.html">Hello World tutorial</a>,
+                and an example of how to use the <code>FixedLengthRecordMapper</code> in the <a href="../tutorials/products.html">Products statistics tutorial</a>.</p>
+
+                <p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record mapper that returns the record as is (no mapping logic).</p>
+
+
+                <h2 id="5">5. Validating records</h2>
+
+            <p>Validating input data is an essential step in every batch application. With Easy Batch, you can validate records by registering a <code>RecordValidator</code> implementation as follows:</p>
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordValidator(new myRecordValidator())
+    .build();
+</pre>
+
+            <p>Easy Batch comes with a built-in implementation of the <code>RecordValidtor</code> interface using the <a href="http://jcp.org/en/jsr/detail?id=303" target="_blank">Bean Validation API (JSR 303)</a> reference implementation <a href="http://hibernate.org/validator/" target="_blank">Hibernate validator</a>.</p>
+            <p>The following steps describe how to use the Bean Validation API record validator with Easy Batch :</p>
+
+            <ul>
+                <li>Add the <code>easybatch-validation</code> module to your dependencies :</br></br>
+<pre class="prettyprint">
+&lt;dependency&gt;
+    &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-validation&lt;/artifactId&gt;
+    &lt;version&gt;${version}&lt;/version&gt;
+&lt;/dependency&gt;
+</pre>
+                </li>
+                <li>Annotate your POJO with Bean Validation API annotations</li>
+                <li>Register the <code>BeanValidationRecordValidator</code> within Easy Batch engine:</br></br>
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordValidator(new BeanValidationRecordValidator&lt;YourPojoType&gt;())
+    .build();
+</pre>
+                </li>
+            </ul>
+                <p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record validator that does not apply any validation logic.</p>
+
+            <h2 id="6">6. Processing records</h2>
+
+            <p>Easy Batch lets you define your batch processing business logic through the <code>RecordProcessor</code> interface.
+                This is where you define what to do for each record. To register your record processor, use the following snippet:</p>
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordProcessor(new myRecordProcessor())
+    .build();
+</pre>
+            <p>With Easy Batch, you can also do some computation on input records and hold a batch result that will be returned at the end of execution.</p>
+            <p>This can be done through the <code>getEasyBatchResult</code> method of the <code>RecordProcessor</code> interface : Your record processor can hold the compuation result in an instance variable and return it using this method.</p>
+            <p>You can find an example of how to return a computation result in the <a href="../tutorials/products.html">Products statistics tutorial</a>.</p>
+
+                <p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record processor that logs an information message about the record being processed.</p>
+
+                <h2 id="7">7. Easy Batch report</h2>
+                <h3 id="7.1">7.1 Getting an Easy Batch report</h3>
+            
+            <p>Easy Batch engine records several metrics during record processing and provides a complete report at the end of execution.
+                This report is an instance of the <code>EasyBatchReport</code> class and contains the following information:</p>
+            <ul>
+                <li>The batch start time</li>
+                <li>The batch end time</li>
+                <li>The total records number</li>
+                <li>The number of filtered records</li>
+                <li>The number of ignored records</li>
+                <li>The number of rejected records</li>
+                <li>The number of records processed with error</li>
+                <li>The number of records successfully processed</li>
+                <li>The processing time for each record</li>
+                <li>The record processing time average</li>
+                <li>And the computation result if any</li>
+            </ul>
+
+            <p>You can get Easy Batch report as follows:</p>
+<pre class="prettyprint">
+EasyBatchReport easyBatchReport = easyBatchEngine.call();
+</pre>
+                <h3 id="7.2">7.2 Formatting Easy Batch report</h3>
+            <p>You can format Easy Batch reports using the <code>EasyBatchFormatter</code> interface.</p>
+            <p>Easy Batch comes with a built-in implementation named <code>EasyBatchHtmlReportFormatter</code> that formats Easy Batch reports to HTML format which you can use as follows:</p>
+<pre class="prettyprint">
+String htmlReport = new EasyBatchReportFormatter().formatEasyBatchReport(easyBatchReport);
+</pre>
+                <p>The following is a sample HTML report (click on the image for a live HTML demo):</p>
+
+                <div class="offset1" style="width:80%;height:80%;">
+                    <a href="htmlReport.html" target="_blank">
+                        <img src="../resources/img/htmlReport.png" alt="htmlReport"/>
+                    </a>
+                </div>
+
+                <p>To use the <code>EasyBatchHtmlReportFormatter</code>, you should add the <code>easybatch-tools</code> module to your dependencies:</p>
+<pre class="prettyprint">
+&lt;dependency&gt;
+    &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-tools&lt;/artifactId&gt;
+    &lt;version&gt;${version}&lt;/version&gt;
+&lt;/dependency&gt;
+</pre>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <footer>
+        <p class="pull-right"><a href="#"><i class="icon-circle-arrow-up"></i> Back to top</a></p>
+        <p>Easy Batch is maintained by <a href="mailto:md.benhassine@gmail.com?subject=[Easy Batch]"><i class="icon-envelope"></i> benas</a> at <a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Github</a></p>
+    </footer>
+
+</div>
+
+<script src="../resources/js/jquery.js"></script>
+<script src="../resources/js/bootstrap.min.js"></script>
+
+</body></html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <title>Easy Batch - JMX</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="benas">
+
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resources/css/prettify.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 15px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style>
+    <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../resources/css/font-awesome.css" rel="stylesheet">
+    <link href="../resources/css/sidebar.css" rel="stylesheet">
+
+    <script type="text/javascript" src="../resources/js/prettify.js"></script>
+
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-35599235-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+
+</head>
+
+<body onload="prettyPrint()">
+
+<div class="navbar navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="../index.html">Easy Batch</a>
+            <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">Version: 2.0.0</p>
+                <ul class="nav">
+                    <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
+                    <li class="dropdown">
+                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
+                            <li><a href="../documentation/gettingStarted.html">Getting started</a></li>
+                            <li><a href="../documentation/architecture.html">Architecture</a></li>
+                            <li><a href="../documentation/userGuide.html">User Guide</a></li>
+                            <li><a href="../documentation/faq.html">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a id="tutorials" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-folder-open"></i> Tutorials<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="tutorials">
+                            <li><a href="../tutorials/helloworld.html">Hello World!</a></li>
+                            <li><a href="../tutorials/products.html">Product Statistics</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a id="miscellaneous" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-asterisk"></i> Miscellaneous<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="miscellaneous">
+                            <li><a href="spring.html">Using Easy Batch with Spring </a></li>
+                            <li><a href="quartz.html">Scheduling Easy Batch with Quartz</a></li>
+                            <li><a href="jmx.html">Monitoring Easy Batch with JMX</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row-fluid">
+
+        <div class="span3">
+            <div class="well sidebar-nav bs-docs-sidenav" data-spy="affix">
+                <ul class="nav nav-list">
+                    <li class="nav-header"><i class="icon-home"></i> About Easy Batch</li>
+                    <li><a href="../index.html">Overview</a></li>
+                    <li><a href="../releaseNotes.html">Release notes</a></li>
+                    <li class="nav-header"><i class="icon-book"></i> Documentation</li>
+                    <li><a href="../documentation/gettingStarted.html">Getting started</a></li>
+                    <li><a href="../documentation/architecture.html">Architecture</a></li>
+                    <li><a href="../documentation/userGuide.html">User Guide</a></li>
+                    <li><a href="../documentation/faq.html">FAQ</a></li>
+                    <li class="nav-header"><i class="icon-folder-open"></i> Tutorials</li>
+                    <li><a href="../tutorials/helloworld.html">Hello World!</a></li>
+                    <li><a href="../tutorials/products.html">Product Statistics</a></li>
+                    <li class="nav-header"><i class="icon-asterisk"></i> Miscellaneous</li>
+                    <li><a href="spring.html">Using Easy Batch with Spring</a></li>
+                    <li><a href="quartz.html">Scheduling Easy Batch with Quartz</a></li>
+                    <li class="active"><a href="jmx.html">Monitoring Easy Batch with JMX</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="span9">
+
+            <div class="page-header">
+                <h2>Monitoring Easy Batch with JMX</h2>
+            </div>
+
+            <div class="row-fluid">
+
+                <h2>1. Introduction</h2>
+
+                <p>Easy Batch allows you to monitor batch execution and progress at runtime using JMX. By default, Easy Batch enables at startup a JMX MBean named <code>io.github.benas.easybatch.core.jmx:type=EasyBatchMonitorMBean</code>
+                    exposing the following attributes:</p>
+
+                <ul>
+                    <li>The batch start and end times</li>
+                    <li>The total number of records to process</li>
+                    <li>The total number of filtered, ignored, rejected, error and processed records</li>
+                    <li>The current record being processed</li>
+                    <li>And the execution progress</li>
+                </ul>
+
+                <p>To monitor Easy Batch JMX MBean attributes, you can use any standard JMX compliant tool such as <a href="http://visualvm.java.net/" target="_blank">VisualVM</a>.</p>
+
+                <p>The screenshot below shows an example of Easy Batch monitoring using VisualVM :</p>
+
+                <div align="center"><img src="../resources/img/easybatch-jmx.png"/></div>
+                <br/>
+
+                <h2>2. JMX tutorial</h2>
+
+                <h3>2.1 Description</h3>
+
+                <p>This tutorial is the same as the <a href="../tutorials/helloworld.html">Hello World tutorial</a> but with higher amount of input data and a slow processor for demonstration purpose.</p>
+                <p>In this tutorial, we will show how to use VisualVM to monitor the core engine execution progress in real time.</p>
+                <p>The complete source code of this tutorial can be found <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/jmx" target="_blank">here</a>.</p>
+
+                <h3>2.2 Running the batch</h3>
+
+                <p>To launch the core batch with maven, execute the following command in the <code>easybatch-tutorials</code> directory :</p>
+                <p><code>mvn exec:java -PrunJmxTutorial</code></p>
+                <p>This will launch the core batch to process the <code>greetings-jmx.csv</code> file containing about 100 lines which will take about 3 minutes to finish.
+                    You should have enough time to launch VisualVM and monitor progress in real time.</p>
+                <p>Once you have launched the tutotial, open VisualVM, connect to the jvm process running your batch and navigate to the MBeans tab
+                    (if you don't see the MBeans tab, <a href="http://visualvm.java.net/mbeans_tab.html" target="_blank">here</a> is how to install the plugin).</p>
+                <p>As described in the screen shot below, navigate to the <code>io.github.benas.easybatch.core.jmx:type=EasyBatchMonitorMBean</code> MBean and you will be able to monitor the execution progress of the slow Hello World tutorial in real time.</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <footer>
+        <p class="pull-right"><a href="#"><i class="icon-circle-arrow-up"></i> Back to top</a></p>
+        <p>Easy Batch is maintained by <a href="mailto:md.benhassine@gmail.com?subject=[Easy Batch]"><i class="icon-envelope"></i> benas</a> at <a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Github</a></p>
+    </footer>
+
+</div>
+
+<script src="../resources/js/jquery.js"></script>
+<script src="../resources/js/bootstrap.min.js"></script>
+
+</body></html>

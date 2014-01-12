@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <title>Easy Batch - Tutorials</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="benas">
+
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resources/css/prettify.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 15px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style>
+    <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../resources/css/font-awesome.css" rel="stylesheet">
+    <link href="../resources/css/sidebar.css" rel="stylesheet">
+
+    <script type="text/javascript" src="../resources/js/prettify.js"></script>
+
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-35599235-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+
+</head>
+
+<body onload="prettyPrint()">
+
+<div class="navbar navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="../index.html">Easy Batch</a>
+            <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">Version: 2.0.0</p>
+                <ul class="nav">
+                    <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
+                    <li class="dropdown">
+                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
+                            <li><a href="../documentation/gettingStarted.html">Getting started</a></li>
+                            <li><a href="../documentation/architecture.html">Architecture</a></li>
+                            <li><a href="../documentation/userGuide.html">User Guide</a></li>
+                            <li><a href="../documentation/faq.html">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a id="tutorials" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-folder-open"></i> Tutorials<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="tutorials">
+                            <li><a href="helloworld.html">Hello World!</a></li>
+                            <li><a href="products.html">Product Statistics</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a id="miscellaneous" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-asterisk"></i> Miscellaneous<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="miscellaneous">
+                            <li><a href="../miscellaneous/spring.html">Using Easy Batch with Spring</a></li>
+                            <li><a href="../miscellaneous/quartz.html">Scheduling Easy Batch with Quartz</a></li>
+                            <li><a href="../miscellaneous/jmx.html">Monitoring Easy Batch with JMX</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row-fluid">
+
+        <div class="span3">
+            <div class="well sidebar-nav bs-docs-sidenav" data-spy="affix">
+                <ul class="nav nav-list">
+                    <li class="nav-header"><i class="icon-home"></i> About Easy Batch</li>
+                    <li><a href="../index.html">Overview</a></li>
+                    <li><a href="../releaseNotes.html">Release notes</a></li>
+                    <li class="nav-header"><i class="icon-book"></i> Documentation</li>
+                    <li><a href="../documentation/gettingStarted.html">Getting started</a></li>
+                    <li><a href="../documentation/architecture.html">Architecture</a></li>
+                    <li><a href="../documentation/userGuide.html">User Guide</a></li>
+                    <li><a href="../documentation/faq.html">FAQ</a></li>
+                    <li class="nav-header"><i class="icon-folder-open"></i> Tutorials</li>
+                    <li><a href="helloworld.html">Hello World!</a></li>
+                    <li class="active"><a href="products.html">Product Statistics</a></li>
+                    <li class="nav-header"><i class="icon-asterisk"></i> Miscellaneous</li>
+                    <li><a href="../miscellaneous/spring.html">Using Easy Batch with Spring</a></li>
+                    <li><a href="../miscellaneous/quartz.html">Scheduling Easy Batch with Quartz</a></li>
+                    <li><a href="../miscellaneous/jmx.html">Monitoring Easy Batch with JMX</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="span9">
+
+            <div class="page-header">
+                <h1>Product Statistics Tutorial</h1>
+            </div>
+
+            <div class="row-fluid">
+
+                <h2 id="1">1. Description</h2>
+                <p>In this tutorial, the goal is to process a fixed length record flat file containing products prices and calculate the maximum product price. The input file named <code>products.flr</code> has the following content:</p>
+<pre>
+816589652500
+716589652400
+616589652300
+516589652200
+X96589652100
+916589652000
+</pre>
+
+                <p>The first 8 digits represent the product id. Then, the next 4 digits correspond to the product price.</p>
+                <p>In this tutorial , data validation constraints are simple : all fields must have numeric values.</p>
+                <p>The batch processing logic should calculate the maximum product price.</p>
+
+                <p><span class="label label-info">Note :</span> The record #5 <code>X96589652100</code> must be ignored since the product id (X9658965) is not numeric.
+
+                <h2 id="2">2. Implementation using Easy Batch</h2>
+                <p>Easy Batch is POJO-based, so first let's create a java bean representing a product:</p>
+<pre class="prettyprint">
+public class Product {
+
+    private long productId;
+
+    private double price;
+
+    // Getters and Setters omitted
+
+}
+</pre>
+                <p>Then, we to provide the batch processing business logic by implementing the <code>RecordProcessor</code> interface:</p>
+
+<pre class="prettyprint">
+public class ProductProcessor implements RecordProcessor&lt;Product,Double&gt; {
+
+    /**
+     * The maximum product price that will be returned as batch execution result.
+     */
+    private double maxProductPrice;
+
+    public void processRecord(Product product) throws Exception {
+
+        double productPrice = product.getPrice();
+        if (productPrice > maxProductPrice) {
+            maxProductPrice = productPrice;
+        }
+
+    }
+
+    @Override
+    public Double getEasyBatchResult() {
+        return maxProductPrice;
+    }
+
+}
+</pre>
+                <p>This processor will calculate the maximum product price as required.</p>
+
+                <p>Finally, let's configure an Easy Batch engine to:</p>
+
+                <ol>
+                    <li>Read records from the <code>products.flr</code> flat file</li>
+                    <li>Map each record to an instance of the <code>Product</code> bean</li>
+                    <li>Process each record using our <code>ProductProcessor</code></li>
+                </ol>
+
+                <p>The following listing provides this configuration:</p>
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordReader(new FlatFileRecordReader("products.flr")) // requirement N°1
+    .registerRecordMapper(
+    new FixedLengthRecordMapper(Product.class, new int[]{8, 4}, new String[]{"productId", "price"})) // requirement N°2
+    .registerRecordProcessor(new ProductProcessor()) // requirement N°3
+    .build();
+</pre>
+                <p>That's all, we can now run the batch and see the results!</p>
+
+                <h2 id="3">3. Running the tutorial</h2>
+
+                <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/products" target="_blank">here</a>.
+                    To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
+
+                <p><code>mvn exec:java -PrunProductsTutorial</code></p>
+
+                <p>After the execution is finished, you should see the following output in the console:</p>
+
+<pre>
+INFO: Initializing easy batch engine
+INFO: Easy batch JMX MBean registered successfully as: io.github.benas.easybatch.core.jmx:type=EasyBatchMonitorMBean
+INFO: Total records = 6
+INFO: easy batch engine is running...
+SEVERE: Error while mapping record #5 [StringRecord{number=5, rawContent='X96589652100'}] : Unable to convert 'X9658965' to type long for field productId
+INFO: Shutting down easy batch engine
+The maximum product price is : 2500.0
+</pre>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <footer>
+        <p class="pull-right"><a href="#"><i class="icon-circle-arrow-up"></i> Back to top</a></p>
+        <p>Easy Batch is maintained by <a href="mailto:md.benhassine@gmail.com?subject=[Easy Batch]"><i class="icon-envelope"></i> benas</a> at <a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Github</a></p>
+    </footer>
+
+</div>
+
+<script src="../resources/js/jquery.js"></script>
+<script src="../resources/js/bootstrap.min.js"></script>
+
+</body></html>

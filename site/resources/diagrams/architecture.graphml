@@ -13,16 +13,16 @@
   <key attr.name="description" attr.type="string" for="edge" id="d9"/>
   <key for="edge" id="d10" yfiles.type="edgegraphics"/>
   <graph edgedefault="directed" id="G">
-    <data key="d7"><![CDATA[CB4J architecture]]></data>
+    <data key="d7"><![CDATA[Easy Batch architecture]]></data>
     <node id="n0" yfiles.foldertype="group">
       <data key="d6">
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
             <y:GenericGroupNode configuration="com.yworks.bpmn.Artifact.withShadow">
-              <y:Geometry height="156.0" width="640.185478918919" x="214.02952216216215" y="198.5"/>
+              <y:Geometry height="156.0" width="842.1854789189189" x="213.9447842694869" y="207.5"/>
               <y:Fill color="#FFFFFF" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
-              <y:NodeLabel alignment="right" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="tl" textColor="#000000" visible="true" width="76.7265625" x="4.0" y="4.0">CB4J Engine</y:NodeLabel>
+              <y:NodeLabel alignment="right" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="internal" modelPosition="tl" textColor="#000000" visible="true" width="105.396484375" x="4.0" y="4.0">Easy Batch Engine</y:NodeLabel>
               <y:StyleProperties>
                 <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="ARTIFACT_TYPE_GROUP"/>
                 <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
@@ -63,10 +63,10 @@
     <node id="n1">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
-          <y:Geometry height="55.0" width="125.0" x="256.5" y="253.5"/>
+          <y:Geometry height="55.0" width="125.0" x="247.5" y="253.5"/>
           <y:Fill color="#FFFFFFE6" color2="#D4D4D4CC" transparent="false"/>
           <y:BorderStyle color="#123EA2" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="51.96875" horizontalTextPosition="center" iconData="1" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="88.1171875" x="18.44140625" y="1.515625">Record Parser<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="52.701171875" horizontalTextPosition="center" iconData="1" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="85.375" x="19.8125" y="1.1494140625">Record Reader<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -90,7 +90,7 @@
           <y:Geometry height="55.0" width="125.0" x="402.5" y="253.5"/>
           <y:Fill color="#FFFFFFE6" color2="#D4D4D4CC" transparent="false"/>
           <y:BorderStyle color="#123EA2" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="51.96875" horizontalTextPosition="center" iconData="2" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="104.20703125" x="10.396484375" y="1.515625">Record Validator<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="52.701171875" horizontalTextPosition="center" iconData="2" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="72.68359375" x="26.158203125" y="1.1494140625">Record Filter<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -111,10 +111,10 @@
     <node id="n3">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
-          <y:Geometry height="44.5" width="35.0" x="301.5" y="124.0"/>
+          <y:Geometry height="44.5" width="35.0" x="447.5" y="124.0"/>
           <y:Fill color="#FFFFFFE6" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="custom" textColor="#000000" visible="true" width="116.98046875" x="-40.990234375" y="-21.96875">CB4J Configuration<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="112.71484375" x="-38.857421875" y="-22.701171875">Record filtering logic<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -134,10 +134,10 @@
     <node id="n4">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
-          <y:Geometry height="55.0" width="125.0" x="548.5" y="253.5"/>
+          <y:Geometry height="55.0" width="125.0" x="556.75" y="253.5"/>
           <y:Fill color="#FFFFFFE6" color2="#D4D4D4CC" transparent="false"/>
           <y:BorderStyle color="#123EA2" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="51.96875" horizontalTextPosition="center" iconData="3" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="95.283203125" x="14.8583984375" y="1.515625">Record Mapper<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="52.701171875" horizontalTextPosition="center" iconData="3" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="86.705078125" x="19.1474609375" y="1.1494140625">Record Mapper<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -158,58 +158,6 @@
     <node id="n5">
       <data key="d6">
         <y:ImageNode>
-          <y:Geometry height="48.0" width="48.0" x="149.59023567567579" y="257.0"/>
-          <y:Fill color="#CCCCFF" transparent="false"/>
-          <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="sandwich" modelPosition="s" textColor="#000000" visible="true" width="62.88671875" x="-7.443359375" y="52.0">CSV input</y:NodeLabel>
-          <y:Image alphaImage="true" refid="4"/>
-        </y:ImageNode>
-      </data>
-    </node>
-    <node id="n6">
-      <data key="d6">
-        <y:ImageNode>
-          <y:Geometry height="30.0" width="32.0" x="303.0" y="138.5"/>
-          <y:Fill color="#CCCCFF" transparent="false"/>
-          <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="custom" textColor="#000000" visible="true" width="4.0" x="14.0" y="13.0">
-            <y:LabelModel>
-              <y:SmartNodeLabelModel distance="4.0"/>
-            </y:LabelModel>
-            <y:ModelParameter>
-              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
-            </y:ModelParameter>
-          </y:NodeLabel>
-          <y:Image alphaImage="true" refid="5"/>
-        </y:ImageNode>
-      </data>
-    </node>
-    <node id="n7">
-      <data key="d6">
-        <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
-          <y:Geometry height="44.5" width="35.0" x="447.5" y="124.0"/>
-          <y:Fill color="#FFFFFFE6" transparent="false"/>
-          <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="custom" textColor="#000000" visible="true" width="97.509765625" x="-31.2548828125" y="-21.96875">Validation rules<y:LabelModel>
-              <y:SmartNodeLabelModel distance="4.0"/>
-            </y:LabelModel>
-            <y:ModelParameter>
-              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.5" nodeRatioX="0.0" nodeRatioY="-0.5" offsetX="0.0" offsetY="-4.0" upX="0.0" upY="-1.0"/>
-            </y:ModelParameter>
-          </y:NodeLabel>
-          <y:StyleProperties>
-            <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="ARTIFACT_TYPE_DATA_OBJECT"/>
-            <y:Property class="com.yworks.yfiles.bpmn.view.DataObjectTypeEnum" name="com.yworks.bpmn.dataObjectType" value="DATA_OBJECT_TYPE_PLAIN"/>
-            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
-            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill" value="#ffffff"/>
-            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4"/>
-          </y:StyleProperties>
-        </y:GenericNode>
-      </data>
-    </node>
-    <node id="n8">
-      <data key="d6">
-        <y:ImageNode>
           <y:Geometry height="30.0" width="32.0" x="449.0" y="138.5"/>
           <y:Fill color="#CCCCFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
@@ -221,17 +169,17 @@
               <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
             </y:ModelParameter>
           </y:NodeLabel>
-          <y:Image alphaImage="true" refid="5"/>
+          <y:Image alphaImage="true" refid="4"/>
         </y:ImageNode>
       </data>
     </node>
-    <node id="n9">
+    <node id="n6">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
-          <y:Geometry height="44.5" width="35.0" x="593.5" y="124.0"/>
+          <y:Geometry height="44.5" width="35.0" x="763.5" y="124.0"/>
           <y:Fill color="#FFFFFFE6" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="custom" textColor="#000000" visible="true" width="130.43359375" x="-47.716796875" y="-21.96875">Object Mapping logic<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="118.064453125" x="-41.5322265625" y="-22.701171875">Validation constraints<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -248,10 +196,10 @@
         </y:GenericNode>
       </data>
     </node>
-    <node id="n10">
+    <node id="n7">
       <data key="d6">
         <y:ImageNode>
-          <y:Geometry height="30.0" width="32.0" x="595.0" y="138.5"/>
+          <y:Geometry height="30.0" width="32.0" x="765.0" y="138.5"/>
           <y:Fill color="#CCCCFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="custom" textColor="#000000" visible="true" width="4.0" x="14.0" y="13.0">
@@ -262,17 +210,58 @@
               <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
             </y:ModelParameter>
           </y:NodeLabel>
-          <y:Image alphaImage="true" refid="5"/>
+          <y:Image alphaImage="true" refid="4"/>
         </y:ImageNode>
       </data>
     </node>
-    <node id="n11">
+    <node id="n8">
+      <data key="d6">
+        <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
+          <y:Geometry height="44.5" width="35.0" x="601.75" y="124.0"/>
+          <y:Fill color="#FFFFFFE6" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="116.060546875" x="-40.5302734375" y="-22.701171875">Object Mapping logic<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.5" nodeRatioX="0.0" nodeRatioY="-0.5" offsetX="0.0" offsetY="-4.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="ARTIFACT_TYPE_DATA_OBJECT"/>
+            <y:Property class="com.yworks.yfiles.bpmn.view.DataObjectTypeEnum" name="com.yworks.bpmn.dataObjectType" value="DATA_OBJECT_TYPE_PLAIN"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill" value="#ffffff"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4"/>
+          </y:StyleProperties>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="n9">
+      <data key="d6">
+        <y:ImageNode>
+          <y:Geometry height="30.0" width="32.0" x="604.75" y="138.5"/>
+          <y:Fill color="#CCCCFF" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="custom" textColor="#000000" visible="true" width="4.0" x="14.0" y="13.0">
+            <y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:Image alphaImage="true" refid="4"/>
+        </y:ImageNode>
+      </data>
+    </node>
+    <node id="n10">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
-          <y:Geometry height="55.0" width="125.0" x="695.5" y="253.5"/>
+          <y:Geometry height="55.0" width="125.0" x="873.5" y="253.5"/>
           <y:Fill color="#FFFFFFE6" color2="#D4D4D4CC" transparent="false"/>
           <y:BorderStyle color="#123EA2" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="51.96875" horizontalTextPosition="center" iconData="6" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="108.296875" x="8.3515625" y="1.515625">Record Processor<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="52.701171875" horizontalTextPosition="center" iconData="5" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="100.03515625" x="12.482421875" y="1.1494140625">Record Processor<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -290,13 +279,13 @@
         </y:GenericNode>
       </data>
     </node>
-    <node id="n12">
+    <node id="n11">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
-          <y:Geometry height="44.5" width="35.0" x="736.5" y="124.0"/>
+          <y:Geometry height="44.5" width="35.0" x="914.5" y="124.0"/>
           <y:Fill color="#FFFFFFE6" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="custom" textColor="#000000" visible="true" width="88.955078125" x="-26.9775390625" y="-21.96875">Business logic<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="80.705078125" x="-22.8525390625" y="-22.701171875">Business logic<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -313,10 +302,10 @@
         </y:GenericNode>
       </data>
     </node>
-    <node id="n13">
+    <node id="n12">
       <data key="d6">
         <y:ImageNode>
-          <y:Geometry height="30.0" width="32.0" x="738.0" y="138.5"/>
+          <y:Geometry height="30.0" width="32.0" x="916.0" y="138.5"/>
           <y:Fill color="#CCCCFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="custom" textColor="#000000" visible="true" width="4.0" x="14.0" y="13.0">
@@ -327,17 +316,40 @@
               <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
             </y:ModelParameter>
           </y:NodeLabel>
-          <y:Image alphaImage="true" refid="5"/>
+          <y:Image alphaImage="true" refid="4"/>
         </y:ImageNode>
+      </data>
+    </node>
+    <node id="n13">
+      <data key="d6">
+        <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
+          <y:Geometry height="44.5" width="35.0" x="447.5" y="385.6875"/>
+          <y:Fill color="#FFFFFFE6" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="83.365234375" x="-24.1826171875" y="48.5">filtered records<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="-0.5" nodeRatioX="0.0" nodeRatioY="0.5" offsetX="0.0" offsetY="4.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="ARTIFACT_TYPE_DATA_OBJECT"/>
+            <y:Property class="com.yworks.yfiles.bpmn.view.DataObjectTypeEnum" name="com.yworks.bpmn.dataObjectType" value="DATA_OBJECT_TYPE_PLAIN"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill" value="#ffffff"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4"/>
+          </y:StyleProperties>
+        </y:GenericNode>
       </data>
     </node>
     <node id="n14">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
-          <y:Geometry height="44.5" width="35.0" x="301.5" y="393.5"/>
+          <y:Geometry height="44.5" width="35.0" x="763.5" y="385.6875"/>
           <y:Fill color="#FFFFFFE6" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="custom" textColor="#000000" visible="true" width="98.91015625" x="-31.955078125" y="48.5">Ignored records<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="94.708984375" x="-29.8544921875" y="48.5">Rejected records<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -356,11 +368,22 @@
     </node>
     <node id="n15">
       <data key="d6">
+        <y:ImageNode>
+          <y:Geometry height="48.0" width="48.0" x="1086.1302631884057" y="257.0"/>
+          <y:Fill color="#CCCCFF" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="sandwich" modelPosition="s" textColor="#000000" visible="true" width="69.3671875" x="-10.68359375" y="52.0">Batch report</y:NodeLabel>
+          <y:Image alphaImage="true" refid="6"/>
+        </y:ImageNode>
+      </data>
+    </node>
+    <node id="n16">
+      <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
-          <y:Geometry height="44.5" width="35.0" x="520.5" y="393.5"/>
+          <y:Geometry height="44.5" width="35.0" x="918.5" y="385.6875"/>
           <y:Fill color="#FFFFFFE6" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="custom" textColor="#000000" visible="true" width="105.61328125" x="-35.306640625" y="48.5">Rejected records<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="36.666015625" x="-0.8330078125" y="48.5">Errors<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -377,24 +400,60 @@
         </y:GenericNode>
       </data>
     </node>
-    <node id="n16">
-      <data key="d6">
-        <y:ImageNode>
-          <y:Geometry height="48.0" width="48.0" x="891.4635965217392" y="257.0"/>
-          <y:Fill color="#CCCCFF" transparent="false"/>
-          <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="sandwich" modelPosition="s" textColor="#000000" visible="true" width="79.22265625" x="-15.611328125" y="52.0">Batch report</y:NodeLabel>
-          <y:Image alphaImage="true" refid="7"/>
-        </y:ImageNode>
-      </data>
-    </node>
     <node id="n17">
       <data key="d6">
+        <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
+          <y:Geometry height="55.0" width="125.0" x="718.5" y="253.5"/>
+          <y:Fill color="#FFFFFFE6" color2="#D4D4D4CC" transparent="false"/>
+          <y:BorderStyle color="#123EA2" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="52.701171875" horizontalTextPosition="center" iconData="7" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="93.37890625" x="15.810546875" y="1.1494140625">Record Validator<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="ACTIVITY_TYPE"/>
+            <y:Property class="com.yworks.yfiles.bpmn.view.ActivityTypeEnum" name="com.yworks.bpmn.activityType" value="ACTIVITY_TYPE_TASK"/>
+            <y:Property class="com.yworks.yfiles.bpmn.view.TaskTypeEnum" name="com.yworks.bpmn.taskType" value="TASK_TYPE_ABSTRACT"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill" value="#ffffff"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4"/>
+          </y:StyleProperties>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="n18">
+      <data key="d5"/>
+      <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
-          <y:Geometry height="44.5" width="35.0" x="740.5" y="393.5"/>
+          <y:Geometry height="67.5" width="73.75" x="114.25" y="247.25"/>
           <y:Fill color="#FFFFFFE6" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="custom" textColor="#000000" visible="true" width="39.9765625" x="-2.48828125" y="48.5">Errors<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="68.69921875" x="2.525390625" y="24.3994140625">Data source<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="ARTIFACT_TYPE_DATA_STORE"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill" value="#ffffff"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4"/>
+          </y:StyleProperties>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="n19">
+      <data key="d6">
+        <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
+          <y:Geometry height="44.5" width="35.0" x="601.75" y="385.6875"/>
+          <y:Fill color="#FFFFFFE6" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="88.046875" x="-26.5234375" y="48.5">Ignored records<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -414,7 +473,7 @@
     <edge id="e0" source="n2" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="162.94313660266607" ty="4.5"/>
+          <y:Path sx="0.0" sy="0.0" tx="214.35716375198731" ty="4.5"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -441,7 +500,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e3" source="n7" target="n2">
+    <edge id="e3" source="n8" target="n4">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -451,20 +510,20 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e4" source="n9" target="n4">
+    <edge id="e4" source="n4" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="0.0" sy="-10.596452670270423" tx="413.3910068386753" ty="-6.096452670270423"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e5" source="n3" target="n0">
+    <edge id="e5" source="n4" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="-215.12226162162165" ty="-76.21875"/>
+          <y:Path sx="0.0" sy="-11.392405102702867" tx="414.53688646346984" ty="-6.892405102702867"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -474,44 +533,14 @@
     <edge id="e6" source="n4" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="-10.596452670270423" tx="314.23828398645446" ty="-6.096452670270423"/>
+          <y:Path sx="0.0" sy="-12.984309967567754" tx="406.5157290899082" ty="-8.484309967567754"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e7" source="n4" target="n0">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="-11.392405102702867" tx="315.1093219166314" ty="-6.892405102702867"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e8" source="n4" target="n0">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="-12.984309967567754" tx="309.01205640539365" ty="-8.484309967567754"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e9" source="n5" target="n1">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e10" source="n12" target="n11">
+    <edge id="e7" source="n11" target="n10">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-4.0" ty="0.0"/>
@@ -521,34 +550,25 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e11" source="n4" target="n11">
+    <edge id="e8" source="n10" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="0.0" sy="-15.0" tx="402.49833384980815" ty="-10.5"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e12" source="n11" target="n0">
+    <edge id="e9" source="n10" target="n1">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="-15.0" tx="305.95824206144243" ty="-10.5"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e13" source="n11" target="n1">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="-11.0" tx="-58.0" ty="-11.0">
-            <y:Point x="840.5" y="270.0"/>
+          <y:Path sx="1.25" sy="2.75" tx="-58.0" ty="-11.0">
+            <y:Point x="1028.0" y="283.75"/>
+            <y:Point x="1028.0" y="233.5"/>
             <y:Point x="840.5" y="233.5"/>
-            <y:Point x="236.5" y="233.5"/>
-            <y:Point x="236.5" y="270.0"/>
+            <y:Point x="226.5" y="233.5"/>
+            <y:Point x="226.5" y="270.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -556,30 +576,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e14" source="n1" target="n14">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e15" source="n2" target="n15">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
-            <y:Point x="465.0" y="335.375"/>
-            <y:Point x="538.0" y="335.375"/>
-          </y:Path>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e16" source="n4" target="n0">
+    <edge id="e10" source="n4" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="-4.5" tx="0.0" ty="0.0"/>
@@ -589,60 +586,78 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e17" source="n4" target="n0">
+    <edge id="e11" source="n4" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="76.87773837837835" ty="71.875"/>
+          <y:Path sx="0.0" sy="0.0" tx="101.13524446654634" ty="71.875"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e18" source="n4" target="n0">
+    <edge id="e12" source="n4" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="76.87773837837835" ty="38.1875"/>
+          <y:Path sx="0.0" sy="0.0" tx="101.13524446654634" ty="38.1875"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e19" source="n4" target="n0">
+    <edge id="e13" source="n4" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="76.87773837837835" ty="38.5"/>
+          <y:Path sx="0.0" sy="0.0" tx="101.13524446654634" ty="38.5"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e20" source="n4" target="n0">
+    <edge id="e14" source="n4" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="76.87773837837835" ty="36.5"/>
+          <y:Path sx="0.0" sy="0.0" tx="101.13524446654634" ty="36.5"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e21" source="n4" target="n15">
+    <edge id="e15" source="n0" target="n15">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="-7.75">
-            <y:Point x="611.0" y="335.375"/>
-            <y:Point x="538.0" y="335.375"/>
-          </y:Path>
+          <y:Path sx="421.0894293960537" sy="-4.5" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e22" source="n11" target="n16">
+    <edge id="e16" source="n10" target="n16">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e17" source="n18" target="n1">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="-59.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e18" source="n4" target="n19">
       <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -653,7 +668,62 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e23" source="n11" target="n17">
+    <edge id="e19" source="n2" target="n13">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e20" source="n17" target="n14">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e21" source="n6" target="n17">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e22" source="n3" target="n2">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e23" source="n4" target="n17">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e24" source="n17" target="n10">
       <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -881,11 +951,11 @@
    sodipodi:version="0.32"
    inkscape:version="0.46"
    version="1.0"
-   sodipodi:docname="sick.svg"
+   sodipodi:docname="vacation.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   inkscape:export-filename="C:\Users\schroede.silverwhite\Documents\graphics\orgchart icons\sick_64.png"
-   inkscape:export-xdpi="192"
-   inkscape:export-ydpi="192"&gt;
+   inkscape:export-filename="C:\Users\schroede.silverwhite\Documents\graphics\orgchart icons\vacation_32.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"&gt;
   &lt;defs
      id="defs3223"&gt;
     &lt;inkscape:perspective
@@ -930,7 +1000,7 @@
      id="layer1"&gt;
     &lt;path
        sodipodi:type="arc"
-       style="opacity:1;fill:#892ca0;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.50000000000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#aa8800;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.50000000000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
        id="path3253"
        sodipodi:cx="2.8571429"
        sodipodi:cy="5.1785712"
@@ -956,54 +1026,14 @@
        sodipodi:cy="5.1785712"
        sodipodi:cx="2.8571429"
        id="path3766"
-       style="opacity:1;fill:#ddafe9;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.50000000000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#ffdd55;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.50000000000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
        sodipodi:type="arc" /&gt;
   &lt;/g&gt;
 &lt;/svg&gt;
 </yed:SvgIcon>
         </yed:ScaledIcon>
       </y:Resource>
-      <y:Resource id="4" type="java.awt.image.BufferedImage">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</y:Resource>
-      <y:Resource id="5" type="java.awt.image.BufferedImage">iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAHIklEQVR42r1XCVCUZRi2EswKi9JK&#13;
+      <y:Resource id="4" type="java.awt.image.BufferedImage">iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAHIklEQVR42r1XCVCUZRi2EswKi9JK&#13;
 s2M6pnOYypHS0cqZzIyaZpzJaiItuoBlF3YBlysTjzDMTEtYWAQsNQ25L0FgYReWZeVazlTYZZcb&#13;
 FM3UDpt5et+PX1LDZnXUf+aZ7//e43m/4/3f7/snTHD+mfjNps15GzdtwYaN346B+yxn/YSr/Lhx&#13;
 wD/+/AunTv8+Bu6znPVXMtjEr77+JnfDxs3H6d1Fkk1bH7sRJ0+dwu6f07EnLVO03Gc56yU7F/Zj&#13;
@@ -1037,7 +1067,7 @@ v+TnIfHccFn/BdKeTTn3v2BNwCvGE0YV0LMbf9dFwxLnhe0KT7zlE1h1ToVzkfzcrvTf0h1hHy/8&#13
 PXqFD0bKAmnWT/zx7hz3WJIvIDx5pf+MLnyuj/Z/Vem1ZBn8lr5wRvbqjFjpYvIY4e6rMdsLn8mh&#13;
 QbKjnyzx/Era68f5FJUuJNdPuAbPLdKX8AjhrmsZ+Nwr+y1XI/A/EaVJQkC2aYkAAAAASUVORK5C&#13;
 YII=</y:Resource>
-      <y:Resource id="6">
+      <y:Resource id="5">
         <yed:SvgIcon>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;!-- Created with Inkscape (http://www.inkscape.org/) --&gt;
 &lt;svg
@@ -1135,7 +1165,7 @@ YII=</y:Resource>
 &lt;/svg&gt;
 </yed:SvgIcon>
       </y:Resource>
-      <y:Resource id="7" type="java.awt.image.BufferedImage">iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAALwklEQVR42rWYC3ST5R3GC8yzne2M&#13;
+      <y:Resource id="6" type="java.awt.image.BufferedImage">iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAALwklEQVR42rWYC3ST5R3GC8yzne2M&#13;
 ISh31KkgDud2Jk43mWObwkEZg4PIRUGQm1wkXEQqICAbF3XcilxKhdJCKbcCvZde6T1pWtKkTZo2&#13;
 aRLatE3SKwXl6PI97Hk/EgwI0oSac37n/31f3vf/f5738n1fEhR0l8/169e7tLS0/LapqWlRc3Pz&#13;
 0h8Lg8GwdNeuXf9gyS5Bnfmh+GdYoJ3R3draKhHf6L7DeUDHrCEtWLDg6vjx48d0qgmO/GIhXhQg&#13;
@@ -1189,6 +1219,106 @@ jwtEUp6beF7D6CAu0kTayBUPV8lXPlwj35Bv78E3nra+fa/65G3z1BI1HR4NJo/RAqFRaBWahfYg&#13
 Tk03XuwtHDGOIK/xy2mMsxmXMq5lXMf4CeMudg4jX/rC6+GMZ0gSSb4Hos0ZT58vbyNM1PDUWuep&#13;
 vdSjRWh6TWj0aO0ttN+yDzZs2NBVXBRrTEwP48/FumPn7sKt6MQi/aKjo/v7wu8HctoHM/6mI3ja&#13;
 Drw9j8gtanhWRXdRW2jwaHlAaBMafTf0/wF2T/keDxWanwAAAABJRU5ErkJggg==</y:Resource>
+      <y:Resource id="7">
+        <yed:ScaledIcon xScale="1.0" yScale="1.0">
+          <yed:SvgIcon>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;!-- Created with Inkscape (http://www.inkscape.org/) --&gt;
+&lt;svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="30"
+   height="30"
+   id="svg3221"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   version="1.0"
+   sodipodi:docname="sick.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="C:\Users\schroede.silverwhite\Documents\graphics\orgchart icons\sick_64.png"
+   inkscape:export-xdpi="192"
+   inkscape:export-ydpi="192"&gt;
+  &lt;defs
+     id="defs3223"&gt;
+    &lt;inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3229" /&gt;
+  &lt;/defs&gt;
+  &lt;sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.313708"
+     inkscape:cx="10.264757"
+     inkscape:cy="13.82017"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1104"
+     inkscape:window-height="787"
+     inkscape:window-x="392"
+     inkscape:window-y="60" /&gt;
+  &lt;metadata
+     id="metadata3226"&gt;
+    &lt;rdf:RDF&gt;
+      &lt;cc:Work
+         rdf:about=""&gt;
+        &lt;dc:format&gt;image/svg+xml&lt;/dc:format&gt;
+        &lt;dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /&gt;
+      &lt;/cc:Work&gt;
+    &lt;/rdf:RDF&gt;
+  &lt;/metadata&gt;
+  &lt;g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"&gt;
+    &lt;path
+       sodipodi:type="arc"
+       style="opacity:1;fill:#892ca0;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.50000000000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       id="path3253"
+       sodipodi:cx="2.8571429"
+       sodipodi:cy="5.1785712"
+       sodipodi:rx="19.642857"
+       sodipodi:ry="20.357143"
+       d="M 22.5,5.1785712 A 19.642857,20.357143 0 1 1 -16.785714,5.1785712 A 19.642857,20.357143 0 1 1 22.5,5.1785712 z"
+       transform="matrix(0.7636364,0,0,0.7368421,12.818182,11.184211)" /&gt;
+    &lt;path
+       transform="matrix(0.5576843,0,0,0.5381164,13.406616,12.213326)"
+       d="M 22.5,5.1785712 A 19.642857,20.357143 0 1 1 -16.785714,5.1785712 A 19.642857,20.357143 0 1 1 22.5,5.1785712 z"
+       sodipodi:ry="20.357143"
+       sodipodi:rx="19.642857"
+       sodipodi:cy="5.1785712"
+       sodipodi:cx="2.8571429"
+       id="path3764"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       sodipodi:type="arc" /&gt;
+    &lt;path
+       transform="matrix(0.3641941,0,0,0.3514153,13.959445,13.180171)"
+       d="M 22.5,5.1785712 A 19.642857,20.357143 0 1 1 -16.785714,5.1785712 A 19.642857,20.357143 0 1 1 22.5,5.1785712 z"
+       sodipodi:ry="20.357143"
+       sodipodi:rx="19.642857"
+       sodipodi:cy="5.1785712"
+       sodipodi:cx="2.8571429"
+       id="path3766"
+       style="opacity:1;fill:#ddafe9;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.50000000000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       sodipodi:type="arc" /&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+</yed:SvgIcon>
+        </yed:ScaledIcon>
+      </y:Resource>
     </y:Resources>
   </data>
 </graphml>
