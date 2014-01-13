@@ -27,6 +27,7 @@
         <module>easybatch-flatfile</module>
         <module>easybatch-tools</module>
         <module>easybatch-tutorials</module>
+        <module>easybatch-jdbc</module>
     </modules>
 
     <developers>
