@@ -69,6 +69,18 @@
 
         <dependency>
             <groupId>io.github.benas</groupId>
+            <artifactId>easybatch-jdbc</artifactId>
+            <version>2.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.2.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.benas</groupId>
             <artifactId>easybatch-validation</artifactId>
             <version>2.0.1-SNAPSHOT</version>
         </dependency>
@@ -116,6 +128,23 @@
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/greetings.csv</argument>
                             </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>runHelloWorldJdbcTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>io.github.benas.easybatch.tutorials.jdbc.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
