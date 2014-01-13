@@ -27,7 +27,7 @@ package io.github.benas.easybatch.flatfile;
 import io.github.benas.easybatch.core.api.Record;
 
 /**
- * A {@link Record} implementation that has textual data as row content.
+ * A {@link Record} implementation that has textual data as raw content.
  *
  * @author benas (md.benhassine@gmail.com)
  */
