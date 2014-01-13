@@ -24,6 +24,8 @@
 
 package io.github.benas.easybatch.flatfile;
 
+import io.github.benas.easybatch.core.util.StringRecord;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -22,7 +22,7 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile;
+package io.github.benas.easybatch.core.util;
 
 import io.github.benas.easybatch.core.api.Record;
 
@@ -34,22 +34,22 @@ import io.github.benas.easybatch.core.api.Record;
 public class StringRecord implements Record<String> {
 
     /**
-     * The record number in the input file.
+     * The record number.
      */
-    protected long number;
+    protected long recordNumber;
 
     /**
      * The record raw content.
      */
     protected String rawContent;
 
-    public StringRecord(final long number, final String rawContent) {
-        this.number = number;
+    public StringRecord(final long recordNumber, final String rawContent) {
+        this.recordNumber = recordNumber;
         this.rawContent = rawContent;
     }
 
     public long getNumber() {
-        return number;
+        return recordNumber;
     }
 
     public String getRawContent() {
@@ -59,7 +59,7 @@ public class StringRecord implements Record<String> {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("StringRecord{");
-        sb.append("number=").append(number);
+        sb.append("number=").append(recordNumber);
         sb.append(", rawContent='").append(rawContent).append('\'');
         sb.append('}');
         return sb.toString();

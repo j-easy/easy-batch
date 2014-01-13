@@ -25,6 +25,7 @@
 package io.github.benas.easybatch.flatfile;
 
 import io.github.benas.easybatch.core.api.RecordReader;
+import io.github.benas.easybatch.core.util.StringRecord;
 
 import java.io.File;
 import java.io.FileNotFoundException;

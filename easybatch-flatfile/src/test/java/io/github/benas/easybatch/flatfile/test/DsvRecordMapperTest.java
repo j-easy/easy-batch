@@ -25,7 +25,7 @@
 package io.github.benas.easybatch.flatfile.test;
 
 import io.github.benas.easybatch.flatfile.FlatFileRecord;
-import io.github.benas.easybatch.flatfile.StringRecord;
+import io.github.benas.easybatch.core.util.StringRecord;
 import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
 import org.junit.After;
 import org.junit.Before;
