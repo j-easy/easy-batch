@@ -22,20 +22,22 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
+package io.github.benas.easybatch.core.converter;
+
+import java.math.BigDecimal;
 
 /**
- * Boolean type converter.
+ * BigDecimal type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class BooleanTypeConverter implements TypeConverter<Boolean> {
+public class BigDecimalTypeConverter implements TypeConverter<BigDecimal> {
 
     /**
      * {@inheritDoc}
      */
-    public Boolean convert(final String value) {
-        return Boolean.valueOf(value);
+    public BigDecimal convert(final String value) {
+        return new BigDecimal(value);
     }
 
 }

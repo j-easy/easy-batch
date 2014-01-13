@@ -22,22 +22,20 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
-
-import java.math.BigInteger;
+package io.github.benas.easybatch.core.converter;
 
 /**
- * BigInteger type converter.
+ * Double type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class BigIntegerTypeConverter implements TypeConverter<BigInteger> {
+public class DoubleTypeConverter implements TypeConverter<Double> {
 
     /**
      * {@inheritDoc}
      */
-    public BigInteger convert(final String value) {
-        return new BigInteger(value);
+    public Double convert(final String value) {
+        return Double.valueOf(value);
     }
 
 }

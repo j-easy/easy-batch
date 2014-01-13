@@ -22,20 +22,22 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
+package io.github.benas.easybatch.core.converter;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Character type converter.
+ * AtomicLong type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class CharacterTypeConverter implements TypeConverter<Character> {
+public class AtomicLongTypeConverter implements TypeConverter<AtomicLong> {
 
     /**
      * {@inheritDoc}
      */
-    public Character convert(final String value) {
-        return value.charAt(0);
+    public AtomicLong convert(final String value) {
+        return new AtomicLong(Long.valueOf(value));
     }
 
 }

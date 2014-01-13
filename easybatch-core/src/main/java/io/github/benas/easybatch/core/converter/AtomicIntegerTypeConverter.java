@@ -22,22 +22,22 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
+package io.github.benas.easybatch.core.converter;
 
-import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * java.util.Date type converter.
+ * AtomicInteger type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class DateTypeConverter implements TypeConverter<Date> {
+public class AtomicIntegerTypeConverter implements TypeConverter<AtomicInteger> {
 
     /**
      * {@inheritDoc}
      */
-    public Date convert(final String value) {
-        return new Date(java.sql.Date.valueOf(value).getTime());
+    public AtomicInteger convert(final String value) {
+        return new AtomicInteger(Integer.valueOf(value));
     }
 
 }

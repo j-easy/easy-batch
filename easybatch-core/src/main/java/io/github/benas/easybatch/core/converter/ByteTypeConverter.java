@@ -22,22 +22,20 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
-
-import java.sql.Time;
+package io.github.benas.easybatch.core.converter;
 
 /**
- * java.sql.Time type converter.
+ * Byte type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class SqlTimeTypeConverter implements TypeConverter<Time> {
+public class ByteTypeConverter implements TypeConverter<Byte> {
 
     /**
      * {@inheritDoc}
      */
-    public Time convert(final String value) {
-        return Time.valueOf(value);
+    public Byte convert(final String value) {
+        return Byte.valueOf(value);
     }
 
 }

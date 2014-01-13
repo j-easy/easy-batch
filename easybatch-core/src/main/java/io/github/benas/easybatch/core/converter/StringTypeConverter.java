@@ -22,20 +22,20 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
+package io.github.benas.easybatch.core.converter;
 
 /**
- * Short type converter.
+ * String type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class ShortTypeConverter implements TypeConverter<Short> {
+public class StringTypeConverter implements TypeConverter<String> {
 
     /**
      * {@inheritDoc}
      */
-    public Short convert(final String value) {
-        return Short.valueOf(value);
+    public String convert(final String value) {
+        return value;
     }
 
 }

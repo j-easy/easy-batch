@@ -22,22 +22,22 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
+package io.github.benas.easybatch.core.converter;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.math.BigInteger;
 
 /**
- * AtomicLong type converter.
+ * BigInteger type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class AtomicLongTypeConverter implements TypeConverter<AtomicLong> {
+public class BigIntegerTypeConverter implements TypeConverter<BigInteger> {
 
     /**
      * {@inheritDoc}
      */
-    public AtomicLong convert(final String value) {
-        return new AtomicLong(Long.valueOf(value));
+    public BigInteger convert(final String value) {
+        return new BigInteger(value);
     }
 
 }

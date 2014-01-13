@@ -22,22 +22,22 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
+package io.github.benas.easybatch.core.converter;
 
-import java.sql.Date;
+import java.sql.Time;
 
 /**
- * java.sql.Date type converter.
+ * java.sql.Time type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class SqlDateTypeConverter implements TypeConverter<Date> {
+public class SqlTimeTypeConverter implements TypeConverter<Time> {
 
     /**
      * {@inheritDoc}
      */
-    public Date convert(final String value) {
-        return Date.valueOf(value);
+    public Time convert(final String value) {
+        return Time.valueOf(value);
     }
 
 }

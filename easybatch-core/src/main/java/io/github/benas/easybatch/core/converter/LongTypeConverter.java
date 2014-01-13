@@ -22,20 +22,20 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
+package io.github.benas.easybatch.core.converter;
 
 /**
- * Double type converter.
+ * Long type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class DoubleTypeConverter implements TypeConverter<Double> {
+public class LongTypeConverter implements TypeConverter<Long> {
 
     /**
      * {@inheritDoc}
      */
-    public Double convert(final String value) {
-        return Double.valueOf(value);
+    public Long convert(final String value) {
+        return Long.valueOf(value);
     }
 
 }

@@ -22,20 +22,22 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
+package io.github.benas.easybatch.core.converter;
+
+import java.sql.Date;
 
 /**
- * Long type converter.
+ * java.sql.Date type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class LongTypeConverter implements TypeConverter<Long> {
+public class SqlDateTypeConverter implements TypeConverter<Date> {
 
     /**
      * {@inheritDoc}
      */
-    public Long convert(final String value) {
-        return Long.valueOf(value);
+    public Date convert(final String value) {
+        return Date.valueOf(value);
     }
 
 }

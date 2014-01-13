@@ -22,22 +22,22 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
+package io.github.benas.easybatch.core.converter;
+
+import java.sql.Timestamp;
 
 /**
- * Interface for type converter used to convert raw textual data to typed data in domain objects.
- *
- * @param <T> The target type.
+ * java.sql.Timestamp type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public interface TypeConverter<T> {
+public class SqlTimestampTypeConverter implements TypeConverter<Timestamp> {
 
     /**
-     * Convert raw data from textual to typed value.
-     * @param value the String value to convert
-     * @return Converted value
+     * {@inheritDoc}
      */
-    T convert(final String value);
+    public Timestamp convert(final String value) {
+        return Timestamp.valueOf(value);
+    }
 
 }

@@ -22,22 +22,20 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
-
-import java.util.concurrent.atomic.AtomicInteger;
+package io.github.benas.easybatch.core.converter;
 
 /**
- * AtomicInteger type converter.
+ * Character type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class AtomicIntegerTypeConverter implements TypeConverter<AtomicInteger> {
+public class CharacterTypeConverter implements TypeConverter<Character> {
 
     /**
      * {@inheritDoc}
      */
-    public AtomicInteger convert(final String value) {
-        return new AtomicInteger(Integer.valueOf(value));
+    public Character convert(final String value) {
+        return value.charAt(0);
     }
 
 }

@@ -26,4 +26,4 @@
  * This package contains easy batch built-in type converters.<br/>
  * These converters are used to convert raw textual data in flat file records to typed data in domain objects.
  */
-package io.github.benas.easybatch.flatfile.converter;
+package io.github.benas.easybatch.core.converter;

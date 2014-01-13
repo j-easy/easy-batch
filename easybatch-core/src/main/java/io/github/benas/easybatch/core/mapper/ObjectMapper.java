@@ -22,35 +22,33 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile;
+package io.github.benas.easybatch.core.mapper;
 
-import io.github.benas.easybatch.flatfile.converter.*;
+import io.github.benas.easybatch.core.converter.*;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A helper class that maps a flat file record to a domain object.
+ * A helper class that maps a record to a domain object.
  *
  * @param <T> the target domain object type
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class FlatFileRecordObjectMapper<T> {
+public class ObjectMapper<T> {
 
     /**
      * The logger.
      */
-    private Logger logger = Logger.getLogger(FlatFileRecordObjectMapper.class.getName());
+    private Logger logger = Logger.getLogger(ObjectMapper.class.getName());
 
     /**
      * The target domain object class.
@@ -72,7 +70,7 @@ public class FlatFileRecordObjectMapper<T> {
      */
     private Map<Class, TypeConverter> typeConverters;
 
-    public FlatFileRecordObjectMapper(final Class<? extends T> recordClass, final String[] headersMapping) {
+    public ObjectMapper(final Class<? extends T> recordClass, final String[] headersMapping) {
         initTypeConverters();
         this.recordClass = recordClass;
         this.headersMapping = headersMapping;
@@ -90,16 +88,15 @@ public class FlatFileRecordObjectMapper<T> {
         }
     }
 
-    public T mapObject(final List<FlatFileField> flatFileFields) throws Exception {
+    public T mapObject(final String[] fieldsContents) throws Exception {
 
         T result = recordClass.newInstance();
 
         // for each field
-        for (FlatFileField flatFileField : flatFileFields) {
+        for (int index = 0; index < fieldsContents.length; index++) {
 
             //get field content and index
-            String content = flatFileField.getRawContent();
-            int index = flatFileField.getIndex();
+            String content = fieldsContents[index];
 
             //convert the String raw value to field recordClass
             Object typedValue = null;
@@ -153,10 +150,6 @@ public class FlatFileRecordObjectMapper<T> {
         typeConverters.put(java.sql.Time.class, new SqlTimeTypeConverter());
         typeConverters.put(java.sql.Timestamp.class, new SqlTimestampTypeConverter());
         typeConverters.put(String.class, new StringTypeConverter());
-    }
-
-    public Map<Class, TypeConverter> getTypeConverters() {
-        return typeConverters;
     }
 
     /**

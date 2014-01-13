@@ -22,20 +22,20 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
+package io.github.benas.easybatch.core.converter;
 
 /**
- * Byte type converter.
+ * Float type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class ByteTypeConverter implements TypeConverter<Byte> {
+public class FloatTypeConverter implements TypeConverter<Float> {
 
     /**
      * {@inheritDoc}
      */
-    public Byte convert(final String value) {
-        return Byte.valueOf(value);
+    public Float convert(final String value) {
+        return Float.valueOf(value);
     }
 
 }

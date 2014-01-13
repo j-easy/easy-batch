@@ -22,20 +22,22 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
+package io.github.benas.easybatch.core.converter;
 
 /**
- * Integer type converter.
+ * Interface for type converter used to convert raw textual data to typed data in domain objects.
+ *
+ * @param <T> The target type.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class IntegerTypeConverter implements TypeConverter<Integer> {
+public interface TypeConverter<T> {
 
     /**
-     * {@inheritDoc}
+     * Convert raw data from textual to typed value.
+     * @param value the String value to convert
+     * @return Converted value
      */
-    public Integer convert(final String value) {
-        return Integer.valueOf(value);
-    }
+    T convert(final String value);
 
 }

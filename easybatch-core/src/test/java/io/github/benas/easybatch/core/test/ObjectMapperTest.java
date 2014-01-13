@@ -22,33 +22,28 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.test;
+package io.github.benas.easybatch.core.test;
 
-import io.github.benas.easybatch.flatfile.FlatFileField;
-import io.github.benas.easybatch.flatfile.FlatFileRecordObjectMapper;
+import io.github.benas.easybatch.core.mapper.ObjectMapper;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
 
 /**
- * Unit test class for {@link io.github.benas.easybatch.flatfile.FlatFileRecordObjectMapper}
+ * Unit test class for {@link io.github.benas.easybatch.core.mapper.ObjectMapper}.
  * @author benas (md.benhassine@gmail.com)
  */
-public class FlatFileRecordObjectMapperTest {
+public class ObjectMapperTest {
 
-    private FlatFileRecordObjectMapper mapper;
+    private ObjectMapper mapper;
 
 
     @Before
     public void setUp() throws Exception {
-        mapper = new FlatFileRecordObjectMapper<Person>(Person.class,
+        mapper = new ObjectMapper<Person>(Person.class,
                 new String[]{"firstName","lastName", "age", "birthDate", "isMarried"});
     }
 
@@ -56,28 +51,18 @@ public class FlatFileRecordObjectMapperTest {
     public void testPersonTypeMapping() throws Exception {
 
         // prepare mock record fields
-        FlatFileField firstNameField = new FlatFileField(0, "foo");
-        FlatFileField lastNameField = new FlatFileField(1, "bar");
-        FlatFileField ageField = new FlatFileField(2, "30");
-        FlatFileField birthDateField = new FlatFileField(3, "1990-12-12");
-        FlatFileField isMarriedField = new FlatFileField(4, "true");
-        List<FlatFileField> fields = new ArrayList<FlatFileField>();
-        fields.add(firstNameField);
-        fields.add(lastNameField);
-        fields.add(ageField);
-        fields.add(birthDateField);
-        fields.add(isMarriedField);
+        String[] fields = new String[]{"foo", "bar", "30", "1990-12-12", "true"};
 
         // map record to Person bean
         Person person = (Person) mapper.mapObject(fields);
 
         // person bean must be not null and correctly populated
-        assertNotNull(person);
-        assertEquals("foo", person.getFirstName());
-        assertEquals("bar", person.getLastName());
-        assertEquals(30, person.getAge());
-        assertEquals("1990-12-12", new SimpleDateFormat("yyyy-MM-dd").format(person.getBirthDate()));
-        assertEquals(true, person.isMarried());
+        Assert.assertNotNull(person);
+        Assert.assertEquals("foo", person.getFirstName());
+        Assert.assertEquals("bar", person.getLastName());
+        Assert.assertEquals(30, person.getAge());
+        Assert.assertEquals("1990-12-12", new SimpleDateFormat("yyyy-MM-dd").format(person.getBirthDate()));
+        Assert.assertEquals(true, person.isMarried());
     }
 
     @After

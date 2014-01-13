@@ -22,22 +22,20 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
-
-import java.sql.Timestamp;
+package io.github.benas.easybatch.core.converter;
 
 /**
- * java.sql.Timestamp type converter.
+ * Boolean type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class SqlTimestampTypeConverter implements TypeConverter<Timestamp> {
+public class BooleanTypeConverter implements TypeConverter<Boolean> {
 
     /**
      * {@inheritDoc}
      */
-    public Timestamp convert(final String value) {
-        return Timestamp.valueOf(value);
+    public Boolean convert(final String value) {
+        return Boolean.valueOf(value);
     }
 
 }

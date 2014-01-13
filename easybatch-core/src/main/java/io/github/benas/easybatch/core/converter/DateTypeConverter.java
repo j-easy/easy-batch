@@ -22,22 +22,22 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.converter;
+package io.github.benas.easybatch.core.converter;
 
-import java.math.BigDecimal;
+import java.util.Date;
 
 /**
- * BigDecimal type converter.
+ * java.util.Date type converter.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class BigDecimalTypeConverter implements TypeConverter<BigDecimal> {
+public class DateTypeConverter implements TypeConverter<Date> {
 
     /**
      * {@inheritDoc}
      */
-    public BigDecimal convert(final String value) {
-        return new BigDecimal(value);
+    public Date convert(final String value) {
+        return new Date(java.sql.Date.valueOf(value).getTime());
     }
 
 }

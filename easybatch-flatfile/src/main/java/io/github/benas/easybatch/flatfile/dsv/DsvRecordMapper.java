@@ -26,10 +26,10 @@ package io.github.benas.easybatch.flatfile.dsv;
 
 import io.github.benas.easybatch.core.api.Record;
 import io.github.benas.easybatch.core.api.RecordMapper;
+import io.github.benas.easybatch.core.mapper.ObjectMapper;
 import io.github.benas.easybatch.flatfile.FlatFileField;
 import io.github.benas.easybatch.flatfile.FlatFileRecord;
-import io.github.benas.easybatch.flatfile.FlatFileRecordObjectMapper;
-import io.github.benas.easybatch.flatfile.converter.TypeConverter;
+import io.github.benas.easybatch.core.converter.TypeConverter;
 
 /**
  * DSV to Object mapper implementation.
@@ -73,7 +73,7 @@ public class DsvRecordMapper<T> implements RecordMapper<T> {
     /**
      * The object mapper.
      */
-    private FlatFileRecordObjectMapper<T> flatFileRecordObjectMapper;
+    private ObjectMapper<T> objectMapper;
 
     /**
      * Total number of characters expected based on declared fields length.
@@ -90,15 +90,18 @@ public class DsvRecordMapper<T> implements RecordMapper<T> {
         this.qualifier = DEFAULT_QUALIFIER; // default qualifier
         this.trimWhitespaces = DEFAULT_WHITESPACE_TRIMMING; // default value
         recordExpectedLength = fieldsMapping.length;
-        flatFileRecordObjectMapper = new FlatFileRecordObjectMapper<T>(recordClass, fieldsMapping);
+        objectMapper = new ObjectMapper<T>(recordClass, fieldsMapping);
     }
 
     @Override
     public T mapRecord(final Record record) throws Exception {
 
         FlatFileRecord flatFileRecord = parseRecord(record);
-
-        return flatFileRecordObjectMapper.mapObject(flatFileRecord.getFlatFileFields());
+        String[] fieldsContents = new String[flatFileRecord.getFlatFileFields().size()];
+        for (FlatFileField flatFileField : flatFileRecord.getFlatFileFields()) {
+            fieldsContents[flatFileField.getIndex()] = flatFileField.getRawContent();
+        }
+        return objectMapper.mapObject(fieldsContents);
     }
 
     public FlatFileRecord parseRecord(final Record record) throws Exception {
@@ -168,7 +171,7 @@ public class DsvRecordMapper<T> implements RecordMapper<T> {
      * @param typeConverter the type converter to user
      */
     public void registerTypeConverter(final Class type, final TypeConverter typeConverter) {
-        flatFileRecordObjectMapper.getTypeConverters().put(type, typeConverter);
+        objectMapper.registerTypeConverter(type, typeConverter);
     }
 
 }

@@ -26,10 +26,10 @@ package io.github.benas.easybatch.flatfile.flr;
 
 import io.github.benas.easybatch.core.api.Record;
 import io.github.benas.easybatch.core.api.RecordMapper;
+import io.github.benas.easybatch.core.mapper.ObjectMapper;
 import io.github.benas.easybatch.flatfile.FlatFileField;
 import io.github.benas.easybatch.flatfile.FlatFileRecord;
-import io.github.benas.easybatch.flatfile.FlatFileRecordObjectMapper;
-import io.github.benas.easybatch.flatfile.converter.TypeConverter;
+import io.github.benas.easybatch.core.converter.TypeConverter;
 
 /**
  * Fixed Length Record to Object mapper implementation.
@@ -40,7 +40,7 @@ import io.github.benas.easybatch.flatfile.converter.TypeConverter;
  */
 public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
 
-    private FlatFileRecordObjectMapper<T> flatFileRecordObjectMapper;
+    private ObjectMapper<T> objectMapper;
 
     /**
      * Fields length array.
@@ -65,7 +65,7 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
      */
     public FixedLengthRecordMapper(Class<? extends T> recordClass, int[] fieldsLength, String[] fieldsMapping) {
         this.fieldsLength = fieldsLength;
-        flatFileRecordObjectMapper = new FlatFileRecordObjectMapper<T>(recordClass, fieldsMapping);
+        objectMapper = new ObjectMapper<T>(recordClass, fieldsMapping);
         for (int fieldLength : fieldsLength) {
             recordExpectedLength += fieldLength;
         }
@@ -76,8 +76,11 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
     public T mapRecord(final Record record) throws Exception {
 
         FlatFileRecord flatFileRecord = parseRecord(record);
-
-        return flatFileRecordObjectMapper.mapObject(flatFileRecord.getFlatFileFields());
+        String[] fieldsContents = new String[flatFileRecord.getFlatFileFields().size()];
+        for (FlatFileField flatFileField : flatFileRecord.getFlatFileFields()) {
+            fieldsContents[flatFileField.getIndex()] = flatFileField.getRawContent();
+        }
+        return objectMapper.mapObject(fieldsContents);
     }
 
     public FlatFileRecord parseRecord(final Record record) throws Exception {
@@ -120,7 +123,7 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
      * @param typeConverter the type converter to user
      */
     public void registerTypeConverter(final Class type, final TypeConverter typeConverter) {
-        flatFileRecordObjectMapper.getTypeConverters().put(type, typeConverter);
+        objectMapper.registerTypeConverter(type, typeConverter);
     }
 
 }
