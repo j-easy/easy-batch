@@ -28,6 +28,7 @@
         <module>easybatch-tools</module>
         <module>easybatch-tutorials</module>
         <module>easybatch-jdbc</module>
+        <module>easybatch-xml</module>
     </modules>
 
     <developers>
