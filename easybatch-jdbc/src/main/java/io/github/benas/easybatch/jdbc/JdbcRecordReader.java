@@ -75,6 +75,7 @@ public class JdbcRecordReader implements RecordReader {
 
     @Override
     public void open() throws Exception {
+        currentRecordNumber = 0;
         statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         resultSet = statement.executeQuery(query);
     }
