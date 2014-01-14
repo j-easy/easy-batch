@@ -69,6 +69,12 @@
 
         <dependency>
             <groupId>io.github.benas</groupId>
+            <artifactId>easybatch-xml</artifactId>
+            <version>2.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.benas</groupId>
             <artifactId>easybatch-jdbc</artifactId>
             <version>2.0.1-SNAPSHOT</version>
         </dependency>
@@ -145,6 +151,27 @@
                         <version>1.2.1</version>
                         <configuration>
                             <mainClass>io.github.benas.easybatch.tutorials.jdbc.Launcher</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>runHelloWorldXmlTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>io.github.benas.easybatch.tutorials.xml.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/greetings.xml</argument>
+                                <argument>${project.basedir}/src/main/resources/greetings.xsd</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
