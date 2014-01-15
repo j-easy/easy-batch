@@ -101,6 +101,8 @@
                     <li class="nav-header"><i class="icon-folder-open"></i> Tutorials</li>
                     <li><a href="../tutorials/helloworld.html">Hello World!</a></li>
                     <li><a href="../tutorials/products.html">Product Statistics</a></li>
+                    <li><a href="../tutorials/products.html">Product Statistics</a></li>
+                    <li><a href="../tutorials/products.html">Product Statistics</a></li>
                     <li class="nav-header"><i class="icon-asterisk"></i> Miscellaneous</li>
                     <li><a href="../miscellaneous/spring.html">Using Easy Batch with Spring</a></li>
                     <li><a href="../miscellaneous/quartz.html">Scheduling Easy Batch with Quartz</a></li>
@@ -142,8 +144,17 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordReader(new MyRecordReader(myDataSource))
     .build();
 </pre>
-            <p>Easy Batch comes with a built-in <code>FlatFileRecordReader</code> that allows you to read records from a flat file.</p>
-            <p>To use the flat file record reader, first you need to add the <code>easybatch-flatfile</code> module to your dependencies:</p>
+            <p>Easy Batch comes with built-in record readers that allows you to read records from a variety of data sources :</p>
+                <ul>
+                    <li>flat files</li>
+                    <li>xml files</li>
+                    <li>and databases</li>
+                </ul>
+
+                <h3>2.1 Reading data from a flat file</h3>
+
+                <p>Easy Batch comes with a built-in <code>FlatFileRecordReader</code> that allows you to read records from a flat file.</p>
+                <p>To use the flat file record reader, first you need to add the <code>easybatch-flatfile</code> module to your dependencies:</p>
 <pre class="prettyprint">
 &lt;dependency&gt;
     &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
@@ -152,14 +163,87 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 &lt;/dependency&gt;
 </pre>
 
-            <p>Then, you can use the <code>FlatFileRecordReader</code> with the following snippet:</p>
+                <p>Then, you can register the <code>FlatFileRecordReader</code> with the following snippet:</p>
 <pre class="prettyprint">
 EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordReader(new FlatFileRecordReader(myFlatFile))
     .build();
 </pre>
 
-            <h2 id="3">3. Filtering records</h2>
+                <h3>2.2 Reading data from an xml file</h3>
+
+                <p>Easy Batch comes with a built-in <code>XmlRecordReader</code> that allows you to read records from an xml file using the
+                    <a href="https://www.jcp.org/en/jsr/detail?id=173">Stax</a> API.</p>
+                <p>Since Easy Batch is Pojo-Based, Xml records correspond to instances of your domain objects. Let's see an example, consider the following xml file:</p>
+
+<pre class="prettyprint">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans&gt;
+    &lt;bean&gt;
+        &lt;id&gt;1&lt;/id&gt;
+        &lt;name&gt;foo&lt;/name&gt;
+    &lt;/bean&gt;
+    &lt;bean&gt;
+        &lt;id&gt;2&lt;/id&gt;
+        &lt;name&gt;bar&lt;/name&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</pre>
+                <p>For this xml file, if your domain object is an object representing a <code>bean</code> tag, then for Easy Batch the first record is:</p>
+
+<pre class="prettyprint">
+&lt;bean&gt;
+    &lt;id&gt;1&lt;/id&gt;
+    &lt;name&gt;foo&lt;/name&gt;
+&lt;/bean&gt;
+</pre>
+                <p>The second record is:</p>
+
+<pre class="prettyprint">
+&lt;bean&gt;
+    &lt;id&gt;2&lt;/id&gt;
+    &lt;name&gt;bar&lt;/name&gt;
+&lt;/bean&gt;
+</pre>
+                <p>and so on.. To use the <code>XmlRecordReader</code>, first you need to add the <code>easybatch-xml</code> module to your dependencies:</p>
+<pre class="prettyprint">
+&lt;dependency&gt;
+    &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-xml&lt;/artifactId&gt;
+    &lt;version&gt;${version}&lt;/version&gt;
+&lt;/dependency&gt;
+</pre>
+
+                <p>Then, you can register the <code>XmlRecordReader</code> with the following snippet:</p>
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordReader(new XmlRecordReader(myRootElementName, myXmlFile))
+    .build();
+</pre>
+                <p> When you create an <code>XmlRecordReader</code>, you should specify the xml root element name, and the input xml file path.</p>
+
+                <h3>2.3 Reading data from a database</h3>
+
+                <p>Easy Batch comes with a built-in <code>JdbcRecordReader</code> that allows you to read records from a database using the
+                    <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/jdbc/">JDBC</a> technology.</p>
+                <p>To use the database record reader, first you need to add the <code>easybatch-jdbc</code> module to your dependencies:</p>
+<pre class="prettyprint">
+&lt;dependency&gt;
+    &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;${version}&lt;/version&gt;
+&lt;/dependency&gt;
+</pre>
+
+                <p>Then, you can register the <code>JdbcRecordReader</code> with the following snippet:</p>
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordReader(new JdbcRecordReader(myDatabaseConnection, myQuery))
+    .build();
+</pre>
+                <p> When you create a <code>JdbcRecordReader</code>, you should specify the jdbc database connection and the sql query to use to fetch data.</p>
+
+                <h2 id="3">3. Filtering records</h2>
 
             <p>With Easy Batch, you can filter records through the <code>RecordFilter</code> API. This interface allows you to skip records from being processed if they obey to some criteria.</p>
             <p>A typical example is to filter comment records (that begin with # for example) in a flat file.</p>
@@ -193,7 +277,11 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordMapper(new myRecordMapper())
     .build();
 </pre>
-            <p>Easy Batch comes with two implementations of the <code>RecordMapper</code> interface:</p>
+                <p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record mapper that returns the record as is (no mapping logic).</p>
+
+                <h3>4.1 Mapping flat file records</h3>
+
+            <p>Easy Batch comes with two implementations of the <code>RecordMapper</code> interface to map flat file records to your domain objects :</p>
             <ul>
                 <li><code>DsvRecordMapper</code> : allows you to map delimiter-separated-values to domain objects</li>
                 <li><code>FixedLengthRecordMapper</code> : allows you to map fixed-length records to domain objects</li>
@@ -204,11 +292,80 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 If you want to provide a custom type converter, you can implement the <code>TypeConverter</code> interface and register your implementation using
                 <code>DsvRecordMapper.registerTypeConverter</code> and <code>FixedLengthRecordMapper.registerTypeConverter</code> methods.</p>
 
-            <p>You can find an example of how to use the <code>DsvRecordMapper</code> in the <a href="../tutorials/helloworld.html">Hello World tutorial</a>,
-                and an example of how to use the <code>FixedLengthRecordMapper</code> in the <a href="../tutorials/products.html">Products statistics tutorial</a>.</p>
+                <p>To use these two mappers, you need to add the <code>easybatch-flatfile</code> module to your dependencies.</p>
 
-                <p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record mapper that returns the record as is (no mapping logic).</p>
+                <div class="alert alert-warning">
+                    <p>Note that these flat file record mappers should be used in conjunction with the <code>FlatFileRecordReader</code>.</p>
+                 </div>
 
+                <h4>4.1.1 Mapping delimiter-separated values</h4>
+
+                <p>To register the <code>DsvRecordMapper</code>, use the following snippet:</p>
+
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordMapper(new DsvRecordMapper(MyPojoType.class, new String[]{"myPojoField1", "myPojoField2"}))
+    .build();
+</pre>
+                <p>When you create a <code>DsvRecordMapper</code>, you should specify your domain object type and an array of field names in the same order as they appear in the delimited record.</p>
+
+                <p>You can find an example of how to use the <code>DsvRecordMapper</code> in the <a href="../tutorials/helloworld.html">Hello World tutorial.</a>
+
+                <h4>4.1.2 Mapping fixed-length records</h4>
+
+                <p>To register the <code>FixedLengthRecordMapper</code>, use the following snippet:</p>
+
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordMapper(new FixedLengthRecordMapper(
+        MyPojoType.class,
+        new int[]{filed1Length, filed2Length},
+        new String[]{"filed1Name", "filed2Name"}))
+    .build();
+</pre>
+                <p>When you create a <code>FixedLengthRecordMapper</code>, you should specify your domain object type, an array of field lengths and an array of field names in the same order as they appear in the fixed length record.</p>
+
+                <p>You can find an example of how to use the <code>FixedLengthRecordMapper</code> in the <a href="../tutorials/helloworld.html">Hello World tutorial.</a>
+
+                <h3>4.2 Mapping xml records</h3>
+
+                <p>Easy Batch comes with a built-in implementation of the <code>RecordMapper</code> interface named <code>XmlRecordMapper</code> to map xml records to your domain objects.</p>
+
+                <p>This mapper uses <a href="https://jaxb.java.net/">JAXB</a> technology behind the scene. To use this mapper, you should annotate your POJO with JAXB annotations to be able to map xml records.</p>
+
+                <p>To use the <code>XmlRecordMapper</code>, first you need to add the <code>easybatch-xml</code> module to your dependencies, then you can register this mapper as follows:</p>
+
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordMapper(new XmlRecordMapper(MyPojoType.class, myXsdFile))
+    .build();
+</pre>
+                <p>When you create an <code>XmlRecordMapper</code>, you should specify your domain object type and an xsd file against which the xml record should be validated (if no xsd is specified, no validation will be applied).</p>
+
+                <p>You can find an example of how to use the <code>XmlRecordMapper</code> in the <a href="../tutorials/helloworld.html">Hello World tutorial</a>.</p>
+
+                <div class="alert alert-warning">
+                    <p>The <code>XmlRecordMapper</code> should be used in conjunction with the <code>XmlRecordReader</code>.</p>
+                </div>
+
+                <h3>4.3 Mapping database records</h3>
+
+                <p>Easy Batch comes with a built-in implementation of the <code>RecordMapper</code> interface named <code>JdbcRecordMapper</code> to map database records to your domain objects.</p>
+
+                <p>To use the <code>JdbcRecordMapper</code>, first you need to add the <code>easybatch-jdbc</code> module to your dependencies, then you can register this mapper as follows:</p>
+
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordMapper(new JdbcRecordMapper(MyPojoType.class, new String[]{"myPojoField1", "myPojoField2"}))
+    .build();
+</pre>
+                <p>When you create a <code>JdbcRecordMapper</code>, you should specify your domain object type and an array of field names in the same order as in the database record.</p>
+
+                <p>You can find an example of how to use the <code>JdbcRecordMapper</code> in the <a href="../tutorials/helloworld.html">Hello World tutorial</a>,
+
+                <div class="alert alert-warning">
+                    <p>The <code>JdbcRecordMapper</code> should be used in conjunction with the <code>JdbcRecordReader</code>.</p>
+                </div>
 
                 <h2 id="5">5. Validating records</h2>
 
