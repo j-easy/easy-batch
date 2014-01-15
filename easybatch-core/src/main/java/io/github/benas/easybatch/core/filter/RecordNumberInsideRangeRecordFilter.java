@@ -22,7 +22,7 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.filter;
+package io.github.benas.easybatch.core.filter;
 
 import io.github.benas.easybatch.core.api.Record;
 

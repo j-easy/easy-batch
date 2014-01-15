@@ -28,7 +28,7 @@ import io.github.benas.easybatch.core.api.EasyBatchReport;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
-import io.github.benas.easybatch.flatfile.filter.StartsWithFlatFileRecordFilter;
+import io.github.benas.easybatch.core.filter.StartsWithStringRecordFilter;
 import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
 import io.github.benas.easybatch.tutorials.helloworld.Greeting;
 import io.github.benas.easybatch.validation.BeanValidationRecordValidator;
@@ -46,7 +46,7 @@ public class Launcher {
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(args[0]))
-                .registerRecordFilter(new StartsWithFlatFileRecordFilter("#"))
+                .registerRecordFilter(new StartsWithStringRecordFilter("#"))
                 .registerRecordMapper(new DsvRecordMapper<Greeting>(Greeting.class, new String[]{"sequence", "name"}))
                 .registerRecordValidator(new BeanValidationRecordValidator<Greeting>())
                 .registerRecordProcessor(new GreetingSlowProcessor())

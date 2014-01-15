@@ -22,52 +22,53 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.filter;
+package io.github.benas.easybatch.core.filter;
 
 import io.github.benas.easybatch.core.api.Record;
 import io.github.benas.easybatch.core.api.RecordFilter;
 
 /**
- * A {@link io.github.benas.easybatch.core.api.RecordFilter} that filters flat file records based on their number.
+ * A {@link RecordFilter} that filters string records ending with one of the given suffixes.
  * The parameter negate can be set to true to inverse this behavior :
- * this filter will filter records which number is not equal to any of the given numbers.
+ * this filter will filter records that do not start with one of the given suffixes.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class RecordNumberEqualsToFlatFileRecordFilter implements RecordFilter {
+public class EndsWithStringRecordFilter implements RecordFilter {
 
     /**
-     * Record numbers that causes the record to be filtered.
+     * Suffixes that causes the record to be filtered.
      */
-    private long[] numbers;
+    private String[] suffixes;
 
     /**
-     * Parameter to filter a record if its number is not equal to one of the given numbers.
+     * Parameter to filter a record if it does not end with one of the given suffixes.
      */
     private boolean negate;
 
     /**
-     * @param numbers record numbers that cause the record to be filtered.
+     * @param suffixes suffixes that cause the record to be filtered.
      */
-    public RecordNumberEqualsToFlatFileRecordFilter(final long... numbers) {
-        this(false, numbers);
+    public EndsWithStringRecordFilter(final String... suffixes) {
+        this(false, suffixes);
     }
 
     /**
-     * @param negate true if the filter should filter records which number is not equal to any of the given numbers.
-     * @param numbers record numbers that cause the record to be filtered.
+     * @param negate true if the filter should filter records that do not end with any of the given suffixes.
+     * @param suffixes suffixes that cause the record to be filtered.
      */
-    public RecordNumberEqualsToFlatFileRecordFilter(final boolean negate, final long... numbers) {
+    public EndsWithStringRecordFilter(final boolean negate, final String... suffixes) {
         this.negate = negate;
-        this.numbers = numbers;
+        this.suffixes = suffixes;
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean filterRecord(final Record record) {
-        for (long number : numbers) {
-            if (record.getNumber() == number) {
+        String recordRawContent = (String) record.getRawContent();
+        for (String prefix : suffixes) {
+            if (recordRawContent.endsWith(prefix)) {
                 return !negate;
             }
         }

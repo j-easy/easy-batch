@@ -22,36 +22,7 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.filter;
-
-import io.github.benas.easybatch.core.api.Record;
-import io.github.benas.easybatch.core.api.RecordFilter;
-
 /**
- * A {@link io.github.benas.easybatch.core.api.RecordFilter} that filters flat file records
- * if their number is greater than a given number.
- *
- * @author benas (md.benhassine@gmail.com)
+ * This package contains classes to filter records based on their numbers or raw content.
  */
-public class RecordNumberGreaterThanFlatFileRecordFilter implements RecordFilter {
-
-    /**
-     * Record number after which records will be filtered.
-     */
-    private long number;
-
-    /**
-     * @param number record number after which records will be filtered.
-     */
-    public RecordNumberGreaterThanFlatFileRecordFilter(final long number) {
-        this.number = number;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean filterRecord(final Record record) {
-        return record.getNumber() > number;
-    }
-
-}
+package io.github.benas.easybatch.core.filter;

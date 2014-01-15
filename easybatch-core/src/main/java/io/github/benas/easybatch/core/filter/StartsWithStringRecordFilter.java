@@ -22,44 +22,44 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.filter;
+package io.github.benas.easybatch.core.filter;
 
 import io.github.benas.easybatch.core.api.Record;
 import io.github.benas.easybatch.core.api.RecordFilter;
 
 /**
- * A {@link RecordFilter} that filters string records ending with one of the given suffixes.
+ * A {@link RecordFilter} that filters string records starting with one of the given prefixes.
  * The parameter negate can be set to true to inverse this behavior :
- * this filter will filter records that do not start with one of the given suffixes.
+ * this filter will filter records that do not start with one of the given prefixes.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class EndsWithStringRecordFilter implements RecordFilter {
+public class StartsWithStringRecordFilter implements RecordFilter {
 
     /**
-     * Suffixes that causes the record to be filtered.
+     * Prefixes that causes the record to be filtered.
      */
-    private String[] suffixes;
+    private String[] prefixes;
 
     /**
-     * Parameter to filter a record if it does not end with one of the given suffixes.
+     * Parameter to filter a record if it does not start with one of the given prefixes.
      */
     private boolean negate;
 
     /**
-     * @param suffixes suffixes that cause the record to be filtered.
+     * @param prefixes prefixes that cause the record to be filtered.
      */
-    public EndsWithStringRecordFilter(final String... suffixes) {
-        this(false, suffixes);
+    public StartsWithStringRecordFilter(final String... prefixes) {
+        this(false, prefixes);
     }
 
     /**
-     * @param negate true if the filter should filter records that do not end with any of the given suffixes.
-     * @param suffixes suffixes that cause the record to be filtered.
+     * @param negate true if the filter should filter records that do not start with any of the given prefixes.
+     * @param prefixes prefixes that cause the record to be filtered.
      */
-    public EndsWithStringRecordFilter(final boolean negate, final String... suffixes) {
+    public StartsWithStringRecordFilter(final boolean negate, final String... prefixes) {
         this.negate = negate;
-        this.suffixes = suffixes;
+        this.prefixes = prefixes;
     }
 
     /**
@@ -67,8 +67,8 @@ public class EndsWithStringRecordFilter implements RecordFilter {
      */
     public boolean filterRecord(final Record record) {
         String recordRawContent = (String) record.getRawContent();
-        for (String prefix : suffixes) {
-            if (recordRawContent.endsWith(prefix)) {
+        for (String prefix : prefixes) {
+            if (recordRawContent.startsWith(prefix)) {
                 return !negate;
             }
         }

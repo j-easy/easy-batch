@@ -22,7 +22,41 @@
  *   THE SOFTWARE.
  */
 
+package io.github.benas.easybatch.core.filter;
+
+import io.github.benas.easybatch.core.api.Record;
+import io.github.benas.easybatch.core.api.RecordFilter;
+
 /**
- * This package contains classes to filter data from flat.
+ * An abstract base class for {@link RecordNumberInsideRangeRecordFilter}
+ * and {@link RecordNumberOutsideRangeRecordFilter}.
+ *
+ * @author benas (md.benhassine@gmail.com)
  */
-package io.github.benas.easybatch.flatfile.filter;
+public abstract class AbstractRecordNumberRangeRecordFilter implements RecordFilter {
+
+    /**
+     * Record number range lower bound.
+     */
+    protected long lowerBound;
+
+    /**
+     * Record number range higher bound.
+     */
+    protected long higherBound;
+
+    /**
+     * @param lowerBound Record number range lower bound.
+     * @param higherBound Record number range higher bound.
+     */
+    public AbstractRecordNumberRangeRecordFilter(final long lowerBound, final long higherBound) {
+        this.lowerBound = lowerBound;
+        this.higherBound = higherBound;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public abstract boolean filterRecord(final Record record);
+
+}

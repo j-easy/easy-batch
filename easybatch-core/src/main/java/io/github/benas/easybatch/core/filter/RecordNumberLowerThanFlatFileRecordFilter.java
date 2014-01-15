@@ -22,57 +22,36 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.filter;
+package io.github.benas.easybatch.core.filter;
 
 import io.github.benas.easybatch.core.api.Record;
 import io.github.benas.easybatch.core.api.RecordFilter;
 
 /**
- * A {@link RecordFilter} that filters string records starting with one of the given prefixes.
- * The parameter negate can be set to true to inverse this behavior :
- * this filter will filter records that do not start with one of the given prefixes.
+ * A {@link io.github.benas.easybatch.core.api.RecordFilter} that filters flat file records
+ * if their number is lower than a given number.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class StartsWithStringRecordFilter implements RecordFilter {
+public class RecordNumberLowerThanFlatFileRecordFilter implements RecordFilter {
 
     /**
-     * Prefixes that causes the record to be filtered.
+     * Record number under which records will be filtered.
      */
-    private String[] prefixes;
+    private long number;
 
     /**
-     * Parameter to filter a record if it does not start with one of the given prefixes.
+     * @param number record number under which records will be filtered.
      */
-    private boolean negate;
-
-    /**
-     * @param prefixes prefixes that cause the record to be filtered.
-     */
-    public StartsWithStringRecordFilter(final String... prefixes) {
-        this(false, prefixes);
-    }
-
-    /**
-     * @param negate true if the filter should filter records that do not start with any of the given prefixes.
-     * @param prefixes prefixes that cause the record to be filtered.
-     */
-    public StartsWithStringRecordFilter(final boolean negate, final String... prefixes) {
-        this.negate = negate;
-        this.prefixes = prefixes;
+    public RecordNumberLowerThanFlatFileRecordFilter(final long number) {
+        this.number = number;
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean filterRecord(final Record record) {
-        String recordRawContent = (String) record.getRawContent();
-        for (String prefix : prefixes) {
-            if (recordRawContent.startsWith(prefix)) {
-                return !negate;
-            }
-        }
-        return false;
+        return record.getNumber() < number;
     }
 
 }

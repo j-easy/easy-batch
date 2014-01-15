@@ -22,41 +22,31 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.filter;
+package io.github.benas.easybatch.core.filter;
 
 import io.github.benas.easybatch.core.api.Record;
-import io.github.benas.easybatch.core.api.RecordFilter;
 
 /**
- * An abstract base class for {@link io.github.benas.easybatch.flatfile.filter.RecordNumberInsideRangeRecordFilter}
- * and {@link io.github.benas.easybatch.flatfile.filter.RecordNumberOutsideRangeRecordFilter}.
+ * A {@link io.github.benas.easybatch.core.api.RecordFilter} that filters records
+ * if their number is outside a given range.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public abstract class AbstractRecordNumberRangeRecordFilter implements RecordFilter {
+public class RecordNumberOutsideRangeRecordFilter extends AbstractRecordNumberRangeRecordFilter {
 
     /**
-     * Record number range lower bound.
-     */
-    protected long lowerBound;
-
-    /**
-     * Record number range higher bound.
-     */
-    protected long higherBound;
-
-    /**
-     * @param lowerBound Record number range lower bound.
+     * @param lowerBound  Record number range lower bound.
      * @param higherBound Record number range higher bound.
      */
-    public AbstractRecordNumberRangeRecordFilter(final long lowerBound, final long higherBound) {
-        this.lowerBound = lowerBound;
-        this.higherBound = higherBound;
+    public RecordNumberOutsideRangeRecordFilter(long lowerBound, long higherBound) {
+        super(lowerBound, higherBound);
     }
 
     /**
      * {@inheritDoc}
      */
-    public abstract boolean filterRecord(final Record record);
+    public boolean filterRecord(final Record record) {
+        return record.getNumber() < lowerBound && record.getNumber() > higherBound;
+    }
 
 }

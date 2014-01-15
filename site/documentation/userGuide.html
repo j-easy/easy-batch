@@ -254,14 +254,15 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordFilter(new myRecordFilter())
     .build();
 </pre>
-            <p>Easy Batch comes with built-in implementations of commonly used flat file record filters :</p>
+            <p>Easy Batch comes with built-in implementations of commonly used record filters :</p>
             <ul>
-                <li><code>StartsWithFlatFileRecordFilter</code> : filters a record if it starts with one of the given prefixes (for instance, records starting with #). You can also set the constructor parameter <code>negate</code> to true to inverse this behavior.</li>
-                <li><code>EndsWithFlatFileRecordFilter</code> : filters a record if it ends with one of the given suffixes. You can also set the constructor parameter <code>negate</code> to true to inverse this behavior.</li>
-                <li><code>RecordNumberEqualsToFlatFileRecordFilter</code> : filters a record if its number is equal to one of the given numbers (for example, record number 1). You can also set the constructor parameter <code>negate</code> to true to inverse this behavior.</li>
-                <li><code>RecordNumberGreaterThanFlatFileRecordFilter</code> : filters a record if its number is greater than a given number</li>
-                <li><code>RecordNumberLowerThanFlatFileRecordFilter</code> : filters a record if its number is lower than a given number</li>
-                <li><code>RecordNumberBetweenFlatFileRecordFilter</code> : filters a record if its number is in a given number range</li>
+                <li><code>StartsWithStringRecordFilter</code> : filters a string record if it starts with one of the given prefixes. You can also set the constructor parameter <code>negate</code> to true to inverse this behavior.</li>
+                <li><code>EndsWithStringRecordFilter</code> : filters a string record if it ends with one of the given suffixes. You can also set the constructor parameter <code>negate</code> to true to inverse this behavior.</li>
+                <li><code>RecordNumberEqualsToRecordFilter</code> : filters a record if its number is equal to one of the given numbers. You can also set the constructor parameter <code>negate</code> to true to inverse this behavior.</li>
+                <li><code>RecordNumberGreaterThanRecordFilter</code> : filters a record if its number is greater than a given number</li>
+                <li><code>RecordNumberLowerThanRecordFilter</code> : filters a record if its number is lower than a given number</li>
+                <li><code>RecordNumberInsideRangeRecordFilter</code> : filters a record if its number is inside a given number range</li>
+                <li><code>RecordNumberOutsideRangeRecordFilter</code> : filters a record if its number is outside a given number range</li>
             </ul>
 
             <p>To use these built-in record filters, you have to add the <code>easybatch-flatfile</code> module to your dependencies as described in

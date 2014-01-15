@@ -22,31 +22,36 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.flatfile.filter;
+package io.github.benas.easybatch.core.filter;
 
 import io.github.benas.easybatch.core.api.Record;
+import io.github.benas.easybatch.core.api.RecordFilter;
 
 /**
- * A {@link io.github.benas.easybatch.core.api.RecordFilter} that filters records
- * if their number is outside a given range.
+ * A {@link io.github.benas.easybatch.core.api.RecordFilter} that filters flat file records
+ * if their number is greater than a given number.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class RecordNumberOutsideRangeRecordFilter extends AbstractRecordNumberRangeRecordFilter {
+public class RecordNumberGreaterThanFlatFileRecordFilter implements RecordFilter {
 
     /**
-     * @param lowerBound  Record number range lower bound.
-     * @param higherBound Record number range higher bound.
+     * Record number after which records will be filtered.
      */
-    public RecordNumberOutsideRangeRecordFilter(long lowerBound, long higherBound) {
-        super(lowerBound, higherBound);
+    private long number;
+
+    /**
+     * @param number record number after which records will be filtered.
+     */
+    public RecordNumberGreaterThanFlatFileRecordFilter(final long number) {
+        this.number = number;
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean filterRecord(final Record record) {
-        return record.getNumber() < lowerBound && record.getNumber() > higherBound;
+        return record.getNumber() > number;
     }
 
 }
