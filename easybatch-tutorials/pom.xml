@@ -199,6 +199,47 @@
         </profile>
 
         <profile>
+            <id>runParallelSingleFileTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>io.github.benas.easybatch.tutorials.parallel.SingleFileLauncher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/secret-messages.txt</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>runParallelMultipleFilesTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>io.github.benas.easybatch.tutorials.parallel.MultipleFilesLauncher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/secret-messages-part1.txt</argument>
+                                <argument>${project.basedir}/src/main/resources/secret-messages-part2.txt</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
             <id>runQuartzTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
