@@ -247,7 +247,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 
             <p>With Easy Batch, you can filter records through the <code>RecordFilter</code> API. This interface allows you to skip records from being processed if they obey to some criteria.</p>
             <p>A typical example is to filter comment records (that begin with # for example) in a flat file.</p>
-            <p>To use a record filter with Easy Batch, you can use the following snippet:</p>
+            <p>To register a record filter within Easy Batch, you can use the following snippet:</p>
 
 <pre class="prettyprint">
 EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
@@ -265,8 +265,6 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 <li><code>RecordNumberOutsideRangeRecordFilter</code> : filters a record if its number is outside a given number range</li>
             </ul>
 
-            <p>To use these built-in record filters, you have to add the <code>easybatch-flatfile</code> module to your dependencies as described in
-                <a href="#2">section 2</a>.</p>
             <p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record filter that does not filter any input record.</p>
 
             <h2 id="4">4. Mapping records to domain objects</h2>
@@ -289,7 +287,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
             </ul>
 
             <p>These two mappers also convert raw textual data in flat file records to typed data in your domain objects.
-                Easy Batch supports all built-in Java primitive and wrapper types (please refer to the javadoc of the <code>io.github.benas.easybatch.flatfile.converter</code> package for all details about Easy Batch built-in type converters).
+                Easy Batch supports all built-in Java primitive and wrapper types (please refer to the javadoc of the <code>io.github.benas.easybatch.core.converter</code> package for all details about Easy Batch built-in type converters).
                 If you want to provide a custom type converter, you can implement the <code>TypeConverter</code> interface and register your implementation using
                 <code>DsvRecordMapper.registerTypeConverter</code> and <code>FixedLengthRecordMapper.registerTypeConverter</code> methods.</p>
 
@@ -330,9 +328,9 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 
                 <h3>4.2 Mapping xml records</h3>
 
-                <p>Easy Batch comes with a built-in implementation of the <code>RecordMapper</code> interface named <code>XmlRecordMapper</code> to map xml records to your domain objects.</p>
+                <p>Easy Batch comes with a built-in implementation of the <code>RecordMapper</code> interface named <code>XmlRecordMapper</code> to map xml records to your domain objects using the <a href="https://jaxb.java.net/">JAXB</a> technology.</p>
 
-                <p>This mapper uses <a href="https://jaxb.java.net/">JAXB</a> technology behind the scene. To use this mapper, you should annotate your POJO with JAXB annotations to be able to map xml records.</p>
+                <p>To use this mapper, you should annotate your POJO with JAXB annotations to be able to map xml records.</p>
 
                 <p>To use the <code>XmlRecordMapper</code>, first you need to add the <code>easybatch-xml</code> module to your dependencies, then you can register this mapper as follows:</p>
 
@@ -362,7 +360,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 </pre>
                 <p>When you create a <code>JdbcRecordMapper</code>, you should specify your domain object type and an array of field names in the same order as in the database record.</p>
 
-                <p>You can find an example of how to use the <code>JdbcRecordMapper</code> in the <a href="../tutorials/helloworld.html">Hello World tutorial</a>,
+                <p>You can find an example of how to use the <code>JdbcRecordMapper</code> in the <a href="../tutorials/helloworld.html">Hello World tutorial</a>.</p>
 
                 <div class="alert alert-warning">
                     <p>The <code>JdbcRecordMapper</code> should be used in conjunction with the <code>JdbcRecordReader</code>.</p>
