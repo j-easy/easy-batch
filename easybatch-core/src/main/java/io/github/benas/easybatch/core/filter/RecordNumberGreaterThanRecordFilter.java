@@ -29,21 +29,21 @@ import io.github.benas.easybatch.core.api.RecordFilter;
 
 /**
  * A {@link io.github.benas.easybatch.core.api.RecordFilter} that filters flat file records
- * if their number is lower than a given number.
+ * if their number is greater than a given number.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class RecordNumberLowerThanFlatFileRecordFilter implements RecordFilter {
+public class RecordNumberGreaterThanRecordFilter implements RecordFilter {
 
     /**
-     * Record number under which records will be filtered.
+     * Record number after which records will be filtered.
      */
     private long number;
 
     /**
-     * @param number record number under which records will be filtered.
+     * @param number record number after which records will be filtered.
      */
-    public RecordNumberLowerThanFlatFileRecordFilter(final long number) {
+    public RecordNumberGreaterThanRecordFilter(final long number) {
         this.number = number;
     }
 
@@ -51,7 +51,7 @@ public class RecordNumberLowerThanFlatFileRecordFilter implements RecordFilter {
      * {@inheritDoc}
      */
     public boolean filterRecord(final Record record) {
-        return record.getNumber() < number;
+        return record.getNumber() > number;
     }
 
 }
