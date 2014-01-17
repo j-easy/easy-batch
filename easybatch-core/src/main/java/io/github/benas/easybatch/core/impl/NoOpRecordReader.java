@@ -60,6 +60,11 @@ class NoOpRecordReader implements RecordReader {
         return 0;
     }
 
+    @Override
+    public String getDataSourceName() {
+        return "";
+    }
+
     /**
      * {@inheritDoc}
      */

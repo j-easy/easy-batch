@@ -110,6 +110,16 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
+    public String getDataSourceName() {
+        try {
+            return "Connection URL: " + connection.getMetaData().getURL() + " | " +
+                    "Query string: " + query;
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to get data source name", e);
+        }
+    }
+
+    @Override
     public void close() {
         try {
             if (resultSet != null) resultSet.close();

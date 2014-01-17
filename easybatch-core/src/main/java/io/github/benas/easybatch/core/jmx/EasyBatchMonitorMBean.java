@@ -32,6 +32,12 @@ package io.github.benas.easybatch.core.jmx;
 public interface EasyBatchMonitorMBean {
 
     /**
+     * Get the data source name.
+     * @return the data source name
+     */
+    String getDataSource();
+
+    /**
      * Get the current record number being processed by the engine.
      * @return the current record number
      */

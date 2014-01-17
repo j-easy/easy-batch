@@ -25,6 +25,7 @@
 package io.github.benas.easybatch.core.api;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -34,9 +35,13 @@ import java.util.*;
  */
 public class EasyBatchReport implements Serializable {
 
+    public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+
     private long startTime;
 
     private long endTime;
+
+    private String dataSource;
 
     private long totalRecords;
 
@@ -124,6 +129,14 @@ public class EasyBatchReport implements Serializable {
 
     public void setEndTime(long endTime) {
         this.endTime = endTime;
+    }
+
+    public String getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(String dataSource) {
+        this.dataSource = dataSource;
     }
 
     public long getCurrentRecordNumber() {
@@ -220,11 +233,11 @@ public class EasyBatchReport implements Serializable {
     }
 
     public String getFormattedEndTime() {
-        return new Date(endTime).toString();
+        return new SimpleDateFormat(DATE_FORMAT).format(new Date(endTime));
     }
 
     public String getFormattedStartTime() {
-        return new Date(startTime).toString();
+        return new SimpleDateFormat(DATE_FORMAT).format(new Date(startTime));
     }
 
     public String getFormattedFilteredRecords() {

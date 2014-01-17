@@ -57,6 +57,12 @@ public interface RecordReader {
     long getTotalRecords();
 
     /**
+     * This method returns a human readable data source name to be shown in the batch report.
+     * @return the data source name this reader is reading data from
+     */
+    String getDataSourceName();
+
+    /**
      * Close the reader.
      */
     void close();

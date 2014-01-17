@@ -106,6 +106,11 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
+    public String getDataSourceName() {
+        return xmlFile;
+    }
+
+    @Override
     public void close() {
         try {
             xmlEventReader.close();

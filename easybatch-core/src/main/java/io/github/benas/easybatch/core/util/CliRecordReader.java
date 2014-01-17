@@ -68,6 +68,11 @@ public class CliRecordReader implements RecordReader {
     }
 
     @Override
+    public String getDataSourceName() {
+        return "Standard Input";
+    }
+
+    @Override
     public void close() {
         scanner.close();
     }

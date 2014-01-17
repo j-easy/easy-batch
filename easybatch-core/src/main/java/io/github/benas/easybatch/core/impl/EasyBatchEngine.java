@@ -77,6 +77,10 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
         logger.info("Initializing easy batch engine");
         recordReader.open();
 
+        String dataSourceName = recordReader.getDataSourceName();
+        logger.info("Data source: " + dataSourceName);
+        easyBatchReport.setDataSource(dataSourceName);
+
         long totalRecords = recordReader.getTotalRecords();
         logger.info("Total records = " + totalRecords);
         logger.info("easy batch engine is running...");

@@ -15,6 +15,12 @@
 
 <div class="container col-md-8 col-md-offset-2">
     <div class="row">
+        <h2>Easy Batch Report</h2>
+        <h3>Data source : $report.dataSource</h3>
+    </div>
+
+    <div class="row">
+
         <div class="col-md-6">
             <table class="table table-bordered table-hover table-condensed">
                 <tbody>
@@ -94,6 +100,9 @@
                 labelFormatter: function() {
                     return this.name + ' (' + this.y + '%)';
                 }
+            },
+            credits: {
+                enabled: false
             },
             plotOptions: {
                 pie: {

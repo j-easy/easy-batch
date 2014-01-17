@@ -108,6 +108,11 @@ public class FlatFileRecordReader implements RecordReader {
         return totalRecords;
     }
 
+    @Override
+    public String getDataSourceName() {
+        return input;
+    }
+
     /**
      * {@inheritDoc}
      */

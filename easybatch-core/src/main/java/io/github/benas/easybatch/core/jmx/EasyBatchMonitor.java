@@ -47,6 +47,11 @@ public class EasyBatchMonitor implements EasyBatchMonitorMBean {
         this.easyBatchReport = easyBatchReport;
     }
 
+    @Override
+    public String getDataSource() {
+        return easyBatchReport.getDataSource();
+    }
+
     /**
      * {@inheritDoc}
      */
