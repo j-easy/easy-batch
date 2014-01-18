@@ -24,6 +24,8 @@
 
 package io.github.benas.easybatch.tutorials.products;
 
+import java.util.Date;
+
 /**
 * JavaBean representing a product.
  *
@@ -33,7 +35,17 @@ public class Product {
 
     private long productId;
 
+    private long vendorId;
+
+    private String name;
+
+    private String description;
+
     private double price;
+
+    private boolean published;
+
+    private Date lastUpdate;
 
     public long getProductId() {
         return productId;
@@ -41,6 +53,30 @@ public class Product {
 
     public void setProductId(long productId) {
         this.productId = productId;
+    }
+
+    public long getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(long vendorId) {
+        this.vendorId = vendorId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getPrice() {
@@ -51,13 +87,19 @@ public class Product {
         this.price = price;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Product");
-        sb.append("{productId=").append(productId);
-        sb.append(", price=").append(price);
-        sb.append('}');
-        return sb.toString();
+    public boolean isPublished() {
+        return published;
+    }
+
+    public void setPublished(boolean published) {
+        this.published = published;
+    }
+
+    public Date getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 }

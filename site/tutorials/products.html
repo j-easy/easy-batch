@@ -18,6 +18,12 @@
         .sidebar-nav {
             padding: 9px 0;
         }
+        .table td.center-td{
+            text-align: center;
+        }
+        .table th.center-th{
+            text-align: center;
+        }
     </style>
     <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../resources/css/font-awesome.min.css" rel="stylesheet">
@@ -104,80 +110,124 @@
             <div class="row-fluid">
 
                 <h2 id="1">1. Description</h2>
-                <p>In this tutorial, the goal is to process a fixed length record flat file containing products prices and calculate the maximum product price. The input file named <code>products.flr</code> has the following content:</p>
+                <p>In this tutorial, the goal is to process a delimited-values flat file containing products data and calculate the maximum product price. You will learn how to: </p>
+                <ul>
+                    <li>Configure the built-in <code>DsvRecordMapper</code> with custom parameters</li>
+                    <li>Use the <code>RecordProcessor.getEasyBatchResult</code> to get a computation result at the end of batch execution</li>
+                </ul>
+
+                <p>The input file named <code>products.csv</code> has the following content:</p>
 <pre>
-816589652500
-716589652400
-616589652300
-516589652200
-X96589652100
-916589652000
+#"productId"|"name"|"description"|"price"|"published"|"lastUpdate"
+"0001"|"product1"|"description1"|"2500"|"true"|"2014-01-01"
+"0002"|"product2"|"description2"|"2400"|"false"|"2014-01-02"
+"0003"|"product3"|"description3"|"2300"|"true"|"2014-01-03"
+"0004"|"product4"|"description4"|"2200"|"false"|"2014-01-04"
+"0005"|"product5"|"description5"|"2100"|"true"|"2014-01-05"
+"0006"|"product6"|"description6"|"1100"|"true"|"2014-01-06"
+"0007"|"product7"|"description7"|"1200"|"false"|"2014-01-07"
+"0008"|"product8"|"description8"|"1300"|"true"|"2014-01-08"
+"0009"|"product9"|"description9"|"1400"|"false"|"2014-01-09"
+"0010"|"product10"|"description10"|"1500"|"true"|"2014-01-10"
 </pre>
 
-                <p>The first 8 digits represent the product id. Then, the next 4 digits correspond to the product price.</p>
-                <p>In this tutorial , data validation constraints are simple : all fields must have numeric values.</p>
-                <p>The batch processing logic should calculate the maximum product price.</p>
-
-                <p><span class="label label-info">Note :</span> The record #5 <code>X96589652100</code> must be ignored since the product id (X9658965) is not numeric.
+                <p>The record format is self explanatory. The first record is a header record and should be skipped.
+                    The delimiter is the pipe character ("|") and data is qualified by double quotes ("").
+                    The batch processing logic should calculate the maximum product price for only published products (<code>published</code> field equals to <code>true</code>).</p>
+                <p>Let's get started!</p>
 
                 <h2 id="2">2. Implementation using Easy Batch</h2>
-                <p>Easy Batch is POJO-based, so first let's create a java bean representing a product:</p>
+                <p>Easy Batch development is POJO-based, so first, let's create a java bean representing a product:</p>
 <pre class="prettyprint">
 public class Product {
 
     private long productId;
 
+    private long vendorId;
+
+    private String name;
+
+    private String description;
+
     private double price;
+
+    private boolean published;
+
+    private Date lastUpdate;
 
     // Getters and Setters omitted
 
 }
 </pre>
-                <p>Then, we to provide the batch processing business logic by implementing the <code>RecordProcessor</code> interface:</p>
+                <p>Then, let's code the batch processing business logic by implementing the <code>RecordProcessor</code> interface:</p>
 
 <pre class="prettyprint">
-public class ProductProcessor implements RecordProcessor&lt;Product,Double&gt; {
+public class ProductProcessor implements RecordProcessor&lt;Product, Double&gt; {
 
     /**
      * The maximum product price that will be returned as batch execution result.
      */
     private double maxProductPrice;
 
-    public void processRecord(Product product) throws Exception {
-
-        double productPrice = product.getPrice();
-        if (productPrice > maxProductPrice) {
-            maxProductPrice = productPrice;
+    /**
+     * Calculate the maximum product price for published products.
+     */
+    public void processRecord(final Product product) throws Exception {
+        if (product.isPublished()) {
+            double productPrice = product.getPrice();
+            if (productPrice > maxProductPrice) {
+                maxProductPrice = productPrice;
+            }
         }
-
     }
 
-    @Override
+    /*
+     * Return the maximum product price.
+     */
     public Double getEasyBatchResult() {
         return maxProductPrice;
     }
-
 }
 </pre>
-                <p>This processor will calculate the maximum product price as required.</p>
-
+                <p>This processor will calculate the maximum product price for published products as required.</p>
+                <p>The <code>getEasyBatchResult</code> methods return the computation result that will be able to get at the end of batch execution.</p>
                 <p>Finally, let's configure an Easy Batch engine to:</p>
 
                 <ol>
-                    <li>Read records from the <code>products.flr</code> flat file</li>
+                    <li>Read records from the <code>products.csv</code> flat file</li>
+                    <li>Filter the header record</li>
                     <li>Map each record to an instance of the <code>Product</code> bean</li>
                     <li>Process each record using our <code>ProductProcessor</code></li>
                 </ol>
 
                 <p>The following listing provides this configuration:</p>
+
 <pre class="prettyprint">
+// Configure the product record mapper
+DsvRecordMapper&lt;Product&gt; productMapper = new DsvRecordMapper&lt;Product&gt;(
+    Product.class, // POJO type
+    new String[]{"productId","name", "description", "price","published", "lastUpdate" }); //Ordered fields names
+productMapper.setDelimiter("|"); // set field delimiter
+productMapper.setQualifier("\"");// set data qualifier
+
+// Build an easy batch engine
 EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordReader(new FlatFileRecordReader("products.flr")) // requirement N°1
-    .registerRecordMapper(
-    new FixedLengthRecordMapper(Product.class, new int[]{8, 4}, new String[]{"productId", "price"})) // requirement N°2
-    .registerRecordProcessor(new ProductProcessor()) // requirement N°3
+    .registerRecordReader(new FlatFileRecordReader("products.csv")) // requirement N°1
+    .registerRecordFilter(new StartsWithStringRecordFilter("#")) // requirement N°2
+    .registerRecordMapper(productMapper) // requirement N°3
+    .registerRecordProcessor(new ProductProcessor()) //requirement N°4
     .build();
+
+// Run easy batch engine and get execution report
+EasyBatchReport easyBatchReport = easyBatchEngine.call();
+
+// Get the batch computation result
+Double maxProductPrice = (Double) easyBatchReport.getEasyBatchResult();
+
+// Print the maximum price
+System.out.println("The maximum product price for published products is : " + maxProductPrice);
 </pre>
+
                 <p>That's all, we can now run the batch and see the results!</p>
 
                 <h2 id="3">3. Running the tutorial</h2>
@@ -185,19 +235,85 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/products" target="_blank">here</a>.
                     To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
 
-                <p><code>mvn exec:java -PrunProductsTutorial</code></p>
+                <p><span class="icon-stack"> <i class="icon-sign-blank icon-stack-base"></i> <i class="icon-terminal icon-light"></i> </span>
+                    <em><strong>mvn exec:java -PrunProductsTutorial</strong></em>
+                </p>
 
                 <p>After the execution is finished, you should see the following output in the console:</p>
 
 <pre>
 INFO: Initializing easy batch engine
-INFO: Easy batch JMX MBean registered successfully as: io.github.benas.easybatch.core.jmx:type=EasyBatchMonitorMBean
-INFO: Total records = 6
+INFO: Data source: /data/in/products.csv
+INFO: Total records = 11
 INFO: easy batch engine is running...
-SEVERE: Error while mapping record #5 [StringRecord{number=5, rawContent='X96589652100'}] : Unable to convert 'X9658965' to type long for field productId
+INFO: Record #1 [StringRecord{number=1, rawContent='#"productId"|"name"|"description"|"price"|"published"|"lastUpdate"'}] has been filtered
 INFO: Shutting down easy batch engine
-The maximum product price is : 2500.0
+The maximum product price for published products is : 2500.0
 </pre>
+
+                <h2 id="4">4. Conclusion</h2>
+                <p> In this tutorial, we have seen how to:</p>
+                <ul>
+                    <li>Configure the built-in <code>DsvRecordMapper</code> with custom parameters</li>
+                    <li>Use the <code>RecordProcessor.getEasyBatchResult</code> to get a computation result at the end of batch execution</li>
+                </ul>
+
+                <p>Using Easy Batch, all we have done is :</p>
+                <ul>
+                    <li>Implementing the business logic of our batch</li>
+                    <li>Providing configuration meta data</li>
+                </ul>
+
+                <p>Easy Batch handled all the plumbing code of reading, filtering, parsing and mapping products data to instances of our domain object <code>Product</code>.</p>
+
+                <p>The following table summarizes what we have done and what Easy Batch has done for us :</p>
+
+                <table class="table table-bordered table-condensed table-striped table-center">
+                    <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th class="center-th">You</th>
+                        <th class="center-th">Easy Batch</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Provide configuration meta data</td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Provide record processing logic</td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Handle I/O for input file</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Read input file record by record</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Filter comment records</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Map records to domain objects</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Apply business processing logic</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
 
             </div>
 

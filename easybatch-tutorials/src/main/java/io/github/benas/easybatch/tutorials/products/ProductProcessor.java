@@ -27,11 +27,11 @@ package io.github.benas.easybatch.tutorials.products;
 import io.github.benas.easybatch.core.api.RecordProcessor;
 
 /**
- * A product processor that calculates the maximum product price.
+ * A product processor that calculates the maximum product price for published products.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class ProductProcessor implements RecordProcessor<Product,Double> {
+public class ProductProcessor implements RecordProcessor<Product, Double> {
 
     /**
      * The maximum product price that will be returned as batch execution result.
@@ -39,12 +39,12 @@ public class ProductProcessor implements RecordProcessor<Product,Double> {
     private double maxProductPrice;
 
     public void processRecord(Product product) throws Exception {
-
-        double productPrice = product.getPrice();
-        if (productPrice > maxProductPrice) {
-            maxProductPrice = productPrice;
+        if (product.isPublished()) {
+            double productPrice = product.getPrice();
+            if (productPrice > maxProductPrice) {
+                maxProductPrice = productPrice;
+            }
         }
-
     }
 
     @Override

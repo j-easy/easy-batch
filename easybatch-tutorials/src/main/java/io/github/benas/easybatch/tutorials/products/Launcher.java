@@ -25,10 +25,11 @@
 package io.github.benas.easybatch.tutorials.products;
 
 import io.github.benas.easybatch.core.api.EasyBatchReport;
+import io.github.benas.easybatch.core.filter.StartsWithStringRecordFilter;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
-import io.github.benas.easybatch.flatfile.flr.FixedLengthRecordMapper;
+import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
 
 /**
 * Main class to run the products statistics tutorial.
@@ -39,21 +40,29 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
+        // Configure the product record mapper
+        DsvRecordMapper<Product> productMapper = new DsvRecordMapper<Product>(
+                Product.class,
+                new String[]{"productId","name", "description", "price","published", "lastUpdate" });
+        productMapper.setDelimiter("|");
+        productMapper.setQualifier("\"");
+
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(args[0]))
-                .registerRecordMapper(new FixedLengthRecordMapper<Product>(Product.class, new int[]{8, 4}, new String[]{"productId", "price"}))
+                .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from products.csv
+                .registerRecordFilter(new StartsWithStringRecordFilter("#"))
+                .registerRecordMapper(productMapper)
                 .registerRecordProcessor(new ProductProcessor())
                 .build();
 
-        // Run easy batch engine
+        // Run easy batch engine and get execution report
         EasyBatchReport easyBatchReport = easyBatchEngine.call();
 
         // Get the batch computation result
-        Double batchResult = (Double) easyBatchReport.getEasyBatchResult();
+        Double maxProductPrice = (Double) easyBatchReport.getEasyBatchResult();
 
         // Print the maximum price
-        System.out.println("The maximum product price is : " + batchResult);
+        System.out.println("The maximum product price for published products is : " + maxProductPrice);
 
     }
 
