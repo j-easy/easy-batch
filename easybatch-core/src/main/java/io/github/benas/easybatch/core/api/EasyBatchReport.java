@@ -160,6 +160,7 @@ public class EasyBatchReport implements Serializable {
         final StringBuilder sb = new StringBuilder("Easy Batch Report:");
         sb.append("\n\tStart time = ").append(getFormattedStartTime());
         sb.append("\n\tEnd time = ").append(getFormattedEndTime());
+        sb.append("\n\tData source = ").append(dataSource);
         sb.append("\n\tBatch duration = ").append(getFormattedBatchDuration());
         sb.append("\n\tTotal records = ").append(totalRecords);
         sb.append("\n\tFiltered records = ").append(getFormattedFilteredRecords()).append(filteredRecords);
