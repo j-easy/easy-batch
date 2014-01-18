@@ -28,6 +28,7 @@ import java.sql.Timestamp;
 
 /**
  * java.sql.Timestamp type converter.
+ * Converts a String Timestamp in the "yyyy-mm-dd hh:mm:ss[.f...]" format to a java.sql.Timestamp type.
  *
  * @author benas (md.benhassine@gmail.com)
  */

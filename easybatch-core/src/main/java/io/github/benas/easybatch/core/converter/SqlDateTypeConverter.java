@@ -28,6 +28,7 @@ import java.sql.Date;
 
 /**
  * java.sql.Date type converter.
+ * Converts a String date in the "yyyy-mm-dd" format to a java.sql.Date type.
  *
  * @author benas (md.benhassine@gmail.com)
  */

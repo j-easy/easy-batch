@@ -28,6 +28,7 @@ import java.sql.Time;
 
 /**
  * java.sql.Time type converter.
+ * Converts a String Time in the "hh:mm:ss" format to a java.sql.Time type.
  *
  * @author benas (md.benhassine@gmail.com)
  */

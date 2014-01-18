@@ -28,6 +28,7 @@ import java.util.Date;
 
 /**
  * java.util.Date type converter.
+ * Converts a String date in the "yyyy-mm-dd" format to a java.util.Date type.
  *
  * @author benas (md.benhassine@gmail.com)
  */
