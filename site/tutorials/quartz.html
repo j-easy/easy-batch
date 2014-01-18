@@ -20,7 +20,7 @@
         }
     </style>
     <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="../resources/css/font-awesome.css" rel="stylesheet">
+    <link href="../resources/css/font-awesome.min.css" rel="stylesheet">
     <link href="../resources/css/sidebar.css" rel="stylesheet">
 
     <script type="text/javascript" src="../resources/js/prettify.js"></script>
@@ -46,33 +46,26 @@
 <div class="navbar navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="../index.html">Easy Batch</a>
+            <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.0.0</p>
+                <p class="navbar-text pull-right">Version: 2.1.0</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
                         <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
-                            <li><a href="../documentation/gettingStarted.html">Getting started</a></li>
-                            <li><a href="../documentation/architecture.html">Architecture</a></li>
-                            <li><a href="../documentation/userGuide.html">User Guide</a></li>
-                            <li><a href="../documentation/faq.html">FAQ</a></li>
+                            <li><a href="../documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
+                            <li><a href="../documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
+                            <li><a href="../documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
+                            <li><a href="index.html"><i class="icon-code"></i> Tutorials</a></li>
+                            <li><a href="../documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a id="tutorials" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-folder-open"></i> Tutorials<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="tutorials">
-                            <li><a href="../tutorials/helloworld.html">Hello World!</a></li>
-                            <li><a href="../tutorials/products.html">Product Statistics</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown active">
-                        <a id="miscellaneous" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-asterisk"></i> Miscellaneous<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="miscellaneous">
-                            <li><a href="spring.html">Using Easy Batch with Spring </a></li>
-                            <li><a href="quartz.html">Scheduling Easy Batch with Quartz</a></li>
-                            <li><a href="jmx.html">Monitoring Easy Batch with JMX</a></li>
+                        <a id="getinvolved" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-thumbs-up"></i> Get involved<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="getinvolved">
+                            <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
+                            <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -87,21 +80,18 @@
         <div class="span3">
             <div class="well sidebar-nav bs-docs-sidenav" data-spy="affix">
                 <ul class="nav nav-list">
-                    <li class="nav-header"><i class="icon-home"></i> About Easy Batch</li>
-                    <li><a href="../index.html">Overview</a></li>
-                    <li><a href="../releaseNotes.html">Release notes</a></li>
-                    <li class="nav-header"><i class="icon-book"></i> Documentation</li>
-                    <li><a href="../documentation/gettingStarted.html">Getting started</a></li>
-                    <li><a href="../documentation/architecture.html">Architecture</a></li>
-                    <li><a href="../documentation/userGuide.html">User Guide</a></li>
-                    <li><a href="../documentation/faq.html">FAQ</a></li>
-                    <li class="nav-header"><i class="icon-folder-open"></i> Tutorials</li>
-                    <li><a href="../tutorials/helloworld.html">Hello World!</a></li>
-                    <li><a href="../tutorials/products.html">Product Statistics</a></li>
-                    <li class="nav-header"><i class="icon-asterisk"></i> Miscellaneous</li>
-                    <li><a href="spring.html">Using Easy Batch with Spring</a></li>
-                    <li class="active"><a href="quartz.html">Scheduling Easy Batch with Quartz</a></li>
-                    <li><a href="jmx.html">Monitoring Easy Batch with JMX</a></li>
+                    <li class="nav-header">About Easy Batch</li>
+                    <li><a href="../index.html"><i class="icon-home"></i> Overview</a></li>
+                    <li><a href="../releaseNotes.html"><i class="icon-tags"></i> Release notes</a></li>
+                    <li class="nav-header">Documentation</li>
+                    <li><a href="../documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
+                    <li><a href="../documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
+                    <li><a href="../documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
+                    <li class="active"><a href="index.html"><i class="icon-code"></i> Tutorials</a></li>
+                    <li><a href="../documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
+                    <li class="nav-header">Get involved</li>
+                    <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
+                    <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
                 </ul>
             </div>
         </div>
@@ -118,9 +108,9 @@
 
                 <p>Easy Batch allows you to schedule your batch application with the popular Java scheduler <a href="http://quartz-scheduler.org/" target="_blank">Quartz</a>.</p>
 
-                <p>In this section, we will introduce how to schedule a Easy Batch instance using the provided <code>EasyBatchScheduler</code> API.</p>
+                <p>In this section, we will introduce how to schedule an Easy Batch instance using the provided <code>EasyBatchScheduler</code> API.</p>
 
-                <h2>2. Sample usage</h2>
+                <h2 id="quartzTutorial">2. Sample usage</h2>
                 <p>First, you need to add the <code>easybatch-tools</code> module to your project dependencies:</p>
 
 <pre class="prettyprint">

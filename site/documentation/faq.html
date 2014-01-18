@@ -21,7 +21,7 @@
         }
     </style>
     <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="../resources/css/font-awesome.css" rel="stylesheet">
+    <link href="../resources/css/font-awesome.min.css" rel="stylesheet">
     <link href="../resources/css/sidebar.css" rel="stylesheet">
 
     <script type="text/javascript" src="../resources/js/prettify.js"></script>
@@ -47,33 +47,26 @@
 <div class="navbar navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="../index.html">Easy Batch</a>
+            <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.0.0</p>
+                <p class="navbar-text pull-right">Version: 2.1.0</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
-                    <li class="dropdown active">
+                    <li class="dropdown">
                         <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
-                            <li><a href="gettingStarted.html">Getting started</a></li>
-                            <li><a href="architecture.html">Architecture</a></li>
-                            <li><a href="userGuide.html">User Guide</a></li>
-                            <li><a href="faq.html">FAQ</a></li>
+                            <li><a href="../documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
+                            <li><a href="../documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
+                            <li><a href="../documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
+                            <li><a href="../tutorials/index.html"><i class="icon-code"></i> Tutorials</a></li>
+                            <li><a href="../documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a id="tutorials" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-folder-open"></i> Tutorials<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="tutorials">
-                            <li><a href="../tutorials/helloworld.html">Hello World!</a></li>
-                            <li><a href="../tutorials/products.html">Product Statistics</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a id="miscellaneous" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-asterisk"></i> Miscellaneous<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="miscellaneous">
-                            <li><a href="../miscellaneous/spring.html">Using Easy Batch with Spring</a></li>
-                            <li><a href="../miscellaneous/quartz.html">Scheduling Easy Batch with Quartz</a></li>
-                            <li><a href="../miscellaneous/jmx.html">Monitoring Easy Batch with JMX</a></li>
+                        <a id="getinvolved" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-thumbs-up"></i> Get involved<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="getinvolved">
+                            <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
+                            <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -88,21 +81,18 @@
         <div class="span3">
             <div class="well sidebar-nav bs-docs-sidenav" data-spy="affix">
                 <ul class="nav nav-list">
-                    <li class="nav-header"><i class="icon-home"></i> About Easy Batch</li>
-                    <li><a href="../index.html">Overview</a></li>
-                    <li><a href="../releaseNotes.html">Release notes</a></li>
-                    <li class="nav-header"><i class="icon-book"></i> Documentation</li>
-                    <li><a href="gettingStarted.html">Getting started</a></li>
-                    <li><a href="architecture.html">Architecture</a></li>
-                    <li><a href="userGuide.html">User Guide</a></li>
-                    <li class="active"><a href="faq.html">FAQ</a></li>
-                    <li class="nav-header"><i class="icon-folder-open"></i> Tutorials</li>
-                    <li><a href="../tutorials/helloworld.html">Hello World!</a></li>
-                    <li><a href="../tutorials/products.html">Product Statistics</a></li>
-                    <li class="nav-header"><i class="icon-asterisk"></i> Miscellaneous</li>
-                    <li><a href="../miscellaneous/spring.html">Using Easy Batch with Spring</a></li>
-                    <li><a href="../miscellaneous/quartz.html">Scheduling Easy Batch with Quartz</a></li>
-                    <li><a href="../miscellaneous/jmx.html">Monitoring Easy Batch with JMX</a></li>
+                    <li class="nav-header">About Easy Batch</li>
+                    <li><a href="../index.html"><i class="icon-home"></i> Overview</a></li>
+                    <li><a href="../releaseNotes.html"><i class="icon-tags"></i> Release notes</a></li>
+                    <li class="nav-header">Documentation</li>
+                    <li><a href="../documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
+                    <li><a href="../documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
+                    <li><a href="../documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
+                    <li><a href="../tutorials/index.html"><i class="icon-code"></i> Tutorials</a></li>
+                    <li  class="active"><a href="../documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
+                    <li class="nav-header">Get involved</li>
+                    <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
+                    <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
                 </ul>
             </div>
         </div>
@@ -115,7 +105,7 @@
 
             <div class="row-fluid">
 
-                <h2 id="1">1. Can I use <a href="http://jcp.org/en/jsr/detail?id=303" target="_blank">Bean Validation (JSR 303)</a> with Easy Batch?</h2>
+                <h3 id="1">1. Can I use <a href="http://jcp.org/en/jsr/detail?id=303" target="_blank">Bean Validation (JSR 303)</a> with Easy Batch?</h3>
 
                 <p>Yes. Easy Batch uses the reference implementation <a href="http://hibernate.org/validator/" target="_blank">Hibernate validator</a> to validate domain objects.</p>
 
@@ -146,19 +136,19 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 
                 </ul>
 
-                <h2 id="2">2. Does Easy Batch implement the <a href="http://jcp.org/en/jsr/detail?id=352" target="_blank">Batch Processing for Java Platform (JSR 352)</a> ?</h2>
+                <h3 id="2">2. Does Easy Batch implement the <a href="http://jcp.org/en/jsr/detail?id=352" target="_blank">Batch Processing for Java Platform (JSR 352)</a> ?</h3>
                 <p>No because the JSR 352 is pretty new and Easy Batch does not implement it yet.
                     This is currently being analysed and Easy Batch will probably implement this JSR because it is already designed to split the batch into multiple steps as in JSR 352.</p>
 
-                <h2 id="3">3. Can I monitor Easy Batch execution with JMX?</h2>
+                <h3 id="3">3. Can I monitor Easy Batch execution with JMX?</h3>
 
                 <p>Yes. By default, Easy Batch enables a JMX MBean named <code>io.github.benas.easybatch.core.jmx:type=EasyBatchMonitorMBean</code> at startup. You can use any standard JMX compliant tool to monitor Easy Batch metrics. For more details about this feature, please refer to the <a href="../miscellaneous/jmx.html">JMX section</a>.</p>
 
-                <h2 id="4">4. Can I use Easy Batch with Spring ?</h2>
+                <h3 id="4">4. Can I use Easy Batch with Spring ?</h3>
                 <p>Yes. You do not have to write any specific code to use Easy Batch with Spring. You can configure your batch components in Spring and then register them within Easy Batch engine, that's it!
                     You can find a complete example of using Easy Batch with Spring <a href="../miscellaneous/spring.html">here</a>.</p>
 
-                <h2 id="5">5. How can I configure Easy Batch logging ?</h2>
+                <h3 id="5">5. How can I configure Easy Batch logging ?</h3>
                 <p>Easy Batch framework core uses the <code>java.util.logging</code> API. By default, Easy Batch logs messages to the standard output.
                     Please refer to <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/logging/overview.html" target="_blank">official documentation</a> of the the <code>java.util.logging</code> API for more details about how to customize it.</p>
 

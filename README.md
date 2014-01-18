@@ -18,13 +18,15 @@ It addresses common tedious tasks such as reading, filtering and validating inpu
 
  * JMX monitoring : Monitor your batch execution and progress using JMX at runtime and in real time.
 
+ * Parallel execution : Easy Batch allows you to run multiple engine instances in parallel to speed up execution and reduce the overall processing time!
+
 ## Documentation
 
 All documentation about Easy Batch can be found at [http://benas.github.io/easy-batch/index.html][easy-batch-doc]
 
 ## Current version
 
-The current stable version of Easy Batch is 2.0.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/).
+The current stable version of Easy Batch is 2.1.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/).
 <br/>
 <a href="https://buildhive.cloudbees.com/job/benas/job/easy-batch/"><img src="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/></a>
 

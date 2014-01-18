@@ -19,7 +19,7 @@
         }
     </style>
     <link href="./resources/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="./resources/css/font-awesome.css" rel="stylesheet">
+    <link href="./resources/css/font-awesome.min.css" rel="stylesheet">
     <link href="./resources/css/sidebar.css" rel="stylesheet">
 
     <script type="text/javascript">
@@ -43,33 +43,26 @@
 <div class="navbar navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="./index.html">Easy Batch</a>
+            <a class="brand" href="./index.html"><i class="icon-cogs"></i> Easy Batch</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.0.0</p>
+                <p class="navbar-text pull-right">Version: 2.1.0</p>
                 <ul class="nav">
-                    <li class="active"><a href="./index.html"><i class="icon-home"></i> Home</a></li>
+                    <li><a href="./index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
                         <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
-                            <li><a href="./documentation/gettingStarted.html">Getting started</a></li>
-                            <li><a href="./documentation/architecture.html">Architecture</a></li>
-                            <li><a href="./documentation/userGuide.html">User Guide</a></li>
-                            <li><a href="./documentation/faq.html">FAQ</a></li>
+                            <li><a href="./documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
+                            <li><a href="./documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
+                            <li><a href="./documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
+                            <li><a href="./tutorials/index.html"><i class="icon-code"></i> Tutorials</a></li>
+                            <li><a href="./documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a id="tutorials" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-folder-open"></i> Tutorials<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="tutorials">
-                            <li><a href="./tutorials/helloworld.html">Hello World!</a></li>                            
-                            <li><a href="./tutorials/products.html">Product Statistics</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a id="miscellaneous" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-asterisk"></i> Miscellaneous<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="miscellaneous">
-                            <li><a href="./miscellaneous/spring.html">Using Easy Batch with Spring</a></li>
-                            <li><a href="./miscellaneous/quartz.html">Scheduling Easy Batch with Quartz</a></li>
-                            <li><a href="./miscellaneous/jmx.html">Monitoring Easy Batch with JMX</a></li>
+                        <a id="getinvolved" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-thumbs-up"></i> Get involved<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="getinvolved">
+                            <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
+                            <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -84,17 +77,14 @@
         <div class="span10 offset1">
 
             <div class="hero-unit well">
-
                 <h2>Easy Batch : batch processing with Java made easy!</h2>
                 <p>Easy Batch is a framework that aims to simplify batch processing with Java. 
                     It addresses common tedious tasks such as reading, filtering and validating input data and lets you concentrate on your batch processing business logic.</p>
-
                 <div class="row" align="center">
                     <div class="span4"><a class="btn btn-primary btn-large" href="./documentation/gettingStarted.html">Get started »</a></div>
                     <div class="span4"><a class="btn btn-primary btn-large" href="./documentation/architecture.html">Learn more »</a></div>
-                    <div class="span4"><a class="btn btn-primary btn-large" href="./tutorials/helloworld.html">2 Minutes Tutorial »</a></div>
+                    <div class="span4"><a class="btn btn-primary btn-large" href="./tutorials/index.html">Checkout Tutorials »</a></div>
                 </div>
-
             </div>
 
             <div class="page-header">
@@ -104,7 +94,7 @@
             <div class="row-fluid">
                 <div class="span4">
                     <h2><img src="./resources/img/feather.png"> Lightweight framework</h2>
-                    <p>Easy Batch has no dependencies and hence a small memory footprint : a 40Ko jar file with a lot of features!</p>
+                    <p>Easy Batch framework core has no dependencies and hence a small memory footprint : a 40Ko jar file with a lot of features!</p>
                 </div>
                 <div class="span4">
                     <h2><img src="./resources/img/pojo.png"> POJO-based development</h2>
@@ -132,7 +122,7 @@
             <div class="row-fluid">
                 <div class="span4">
                     <h2><img src="./resources/img/parallel.png"> Parallel execution</h2>
-                    <p>Easy Batch allows you to run multiple engine instances in parallel to speed up you execution and reduce the overall processing time!</p>
+                    <p>Easy Batch allows you to run multiple engine instances in parallel to speed up execution and reduce the overall processing time!</p>
                 </div>
                 <div class="span4">
                     <h2><img src="./resources/img/puzzle.png"> Modular architecture</h2>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <title>Easy Batch - Tutorials</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Mahmoud Ben Hassine">
+    <link rel="shortcut icon" href="../resources/img/gear.ico"/>
+
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resources/css/prettify.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+        padding-top: 60px;
+        padding-bottom: 15px;
+        }
+        .sidebar-nav {
+        padding: 9px 0;
+        }
+        .table td.center-td{
+        text-align: center;
+        }
+        .table th.center-th{
+        text-align: center;
+        }
+    </style>
+    <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../resources/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../resources/css/sidebar.css" rel="stylesheet">
+
+    <script type="text/javascript" src="../resources/js/prettify.js"></script>
+
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-35599235-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+
+</head>
+
+<body onload="prettyPrint()">
+
+<div class="navbar navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
+            <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">Version: 2.1.0</p>
+                <ul class="nav">
+                    <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
+                    <li class="dropdown">
+                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
+                            <li><a href="../documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
+                            <li><a href="../documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
+                            <li><a href="../documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
+                            <li><a href="index.html"><i class="icon-code"></i> Tutorials</a></li>
+                            <li><a href="../documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a id="getinvolved" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-thumbs-up"></i> Get involved<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="getinvolved">
+                            <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
+                            <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+<div class="row-fluid">
+
+<div class="span3">
+    <div class="well sidebar-nav bs-docs-sidenav" data-spy="affix">
+        <ul class="nav nav-list">
+            <li class="nav-header">About Easy Batch</li>
+            <li><a href="../index.html"><i class="icon-home"></i> Overview</a></li>
+            <li><a href="../releaseNotes.html"><i class="icon-tags"></i> Release notes</a></li>
+            <li class="nav-header">Documentation</li>
+            <li><a href="../documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
+            <li><a href="../documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
+            <li><a href="../documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
+            <li class="active"><a href="index.html"><i class="icon-code"></i> Tutorials</a></li>
+            <li><a href="../documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
+            <li class="nav-header">Get involved</li>
+            <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
+            <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="span9">
+
+    <div class="page-header">
+        <h1>Hello World Standard Input Tutorial</h1>
+    </div>
+
+    <div class="row-fluid">
+
+        <h2 id="1">1. Description</h2>
+        <p>This tutorial is the same as the <a href="helloworldCSV.html">Hello World CSV tutorial</a> except that greetings are read from the standard input instead of a CSV flat file.
+            We will be able to type in CSV records in the console and see how Easy Batch engine will process them.
+            As in the <a href="helloworldCSV.html">Hello World CSV tutorial</a>, the engine is expecting CSV records of the following format:</p>
+<pre class="prettyprint">
+#sequence,name
+1,foo
+2,bar
+x,baz
+</pre>
+        <p>Each record is composed of 2 fields :</p>
+        <ul>
+            <li>a sequence number</li>
+            <li>a person name</li>
+        </ul>
+
+        <p>For each record, the batch application should print to the console a greeting of the format : <em>Hi foo! Your sequence number is 1</em> .</p>
+
+        <p>Easy Batch development is POJO-based, so we would like to map each record to an instance of the following <code>Greeting</code> bean:</p>
+<pre class="prettyprint">
+public class Greeting {
+
+    private long sequence;
+
+    private String name;
+
+    // Getters and Setters omitted
+
+    public String getGreetingMessage() {
+        return "Hi " + name + "! Your sequence number is " + sequence;
+    }
+}
+</pre>
+        <p>The sequence and name fields in the CSV records should be mapped respectively to the sequence and name fields in the <code>Greeting</code> bean.</p>
+
+        <p>Records starting with # should be filtered. Records having invalid data should be ignored.</p>
+
+        <p>So let's get started!</p>
+
+        <h2 id="2">2. Implementation using Easy Batch</h2>
+        <p>First, let's implement our batch processing logic by extending the <code>AbstractRecordProcessor</code> class:</p>
+<pre class="prettyprint">
+public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
+
+    @Override
+    public void processRecord(Greeting greeting) throws Exception {
+        System.out.println(greeting.getGreetingMessage());
+    }
+
+}
+</pre>
+        <p>This processor will print the greeting message for each input record as required.</p>
+
+        <p>Then, we should configure Easy Batch engine to :<p>
+        <ol>
+            <li>Read records from the standard input</li>
+            <li>Filter records starting with #</li>
+            <li>Map each record to an instance of the <code>Greeting</code> bean</li>
+            <li>Process each record using our <code>GreetingProcessor</code></li>
+        </ol>
+
+        <p>The following listing provides this configuration:</p>
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordReader(new CliRecordReader()) // requirement N°1
+    .registerRecordFilter(new StartsWithStringRecordFilter("#")) // requirement N°2
+    .registerRecordMapper(new DsvRecordMapper(Greeting.class, new String[]{"sequence", "name"})) // requirement N°3
+    .registerRecordProcessor(new GreetingProcessor()) // requirement N°4
+    .build();
+</pre>
+        <p>The <code>CliRecordReader</code> is a convenient record reader which is very useful for test:
+            It allows you to read data from the standard input (until you type in the word 'quit') which makes the application interactive and you can see the results immediately!</p>
+
+        <p>That's all, we can now run the batch and see the results!</p>
+
+        <h2 id="3">3. Running the batch</h2>
+
+        <p>To run Easy Batch, we use the following snippet :</p>
+<pre class="prettyprint">
+// Run easy batch engine
+easyBatchEngine.call();
+</pre>
+
+        <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/helloworld/cli" target="_blank">here</a>.
+
+        <p>To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
+
+        <p><span class="icon-stack"> <i class="icon-sign-blank icon-stack-base"></i> <i class="icon-terminal icon-light"></i> </span>
+            <em><strong>mvn exec:java -PrunHelloWorldCLITutorial</strong></em>
+        </p>
+
+        <p>If everything is ok, you should see the something like the following output in the console and you can type in CSV records :</p>
+
+<pre>
+INFO: Initializing easy batch engine
+INFO: Data source: Standard Input
+INFO: Total records = 0
+INFO: easy batch engine is running...
+#sequence,name
+INFO: Record #1 [StringRecord{number=1, rawContent='#sequence,name'}] has been filtered
+1,foo
+Hi foo! Your sequence number is 1
+2,bar
+Hi bar! Your sequence number is 2
+x,baz
+SEVERE: Error while mapping record #4 [StringRecord{number=4, rawContent='x,baz'}] : Unable to convert 'x' to type long for field sequence
+4,foo,bar
+SEVERE: Error while mapping record #5 [StringRecord{number=5, rawContent='4,foo,bar'}] : record length (3 fields) not equal to expected length of 2 fields
+quit
+INFO: Shutting down easy batch engine
+</pre>
+
+        <p>As expected, Easy Batch processed only valid records and generated a greeting message for each person.</p>
+
+        <p>Moreover, Easy Batch has logged precise information about which record has been filtered and ignored with an error message for each case.</p>
+
+    </div>
+
+</div>
+
+</div>
+
+<hr>
+
+<footer>
+    <p class="pull-right"><a href="#"><i class="icon-circle-arrow-up"></i> Back to top</a></p>
+    <p>Easy Batch is maintained by <a href="mailto:md.benhassine@gmail.com?subject=[Easy Batch]"><i class="icon-envelope"></i> benas</a> at <a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Github</a></p>
+</footer>
+
+</div>
+
+<script src="../resources/js/jquery.js"></script>
+<script src="../resources/js/bootstrap.min.js"></script>
+
+</body></html>

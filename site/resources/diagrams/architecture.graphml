@@ -425,13 +425,12 @@
       </data>
     </node>
     <node id="n18">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Artifact.withShadow">
-          <y:Geometry height="67.5" width="73.75" x="114.25" y="247.25"/>
+          <y:Geometry height="55.0" width="48.0" x="114.25" y="182.5"/>
           <y:Fill color="#FFFFFFE6" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="68.69921875" x="2.525390625" y="24.3994140625">Data source<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="20.669921875" x="13.6650390625" y="18.1494140625">DB<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -468,6 +467,30 @@
             <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4"/>
           </y:StyleProperties>
         </y:GenericNode>
+      </data>
+    </node>
+    <node id="n20">
+      <data key="d5"/>
+      <data key="d6">
+        <y:ImageNode>
+          <y:Geometry height="64.0" width="64.0" x="106.25" y="260.4558823529412"/>
+          <y:Fill color="#CCCCFF" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="sandwich" modelPosition="s" textColor="#000000" visible="true" width="4.0" x="30.0" y="68.0"/>
+          <y:Image alphaImage="true" refid="8"/>
+        </y:ImageNode>
+      </data>
+    </node>
+    <node id="n21">
+      <data key="d5"/>
+      <data key="d6">
+        <y:ImageNode>
+          <y:Geometry height="64.0" width="64.0" x="106.25" y="342.59375000000006"/>
+          <y:Fill color="#CCCCFF" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="sandwich" modelPosition="s" textColor="#000000" visible="true" width="4.0" x="30.0" y="68.0"/>
+          <y:Image alphaImage="true" refid="9"/>
+        </y:ImageNode>
       </data>
     </node>
     <edge id="e0" source="n2" target="n0">
@@ -646,19 +669,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e17" source="n18" target="n1">
-      <data key="d9"/>
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="-59.0" ty="0.0"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e18" source="n4" target="n19">
-      <data key="d9"/>
+    <edge id="e17" source="n4" target="n19">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -668,8 +679,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e19" source="n2" target="n13">
-      <data key="d9"/>
+    <edge id="e18" source="n2" target="n13">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -679,8 +689,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e20" source="n17" target="n14">
-      <data key="d9"/>
+    <edge id="e19" source="n17" target="n14">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -690,8 +699,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e21" source="n6" target="n17">
-      <data key="d9"/>
+    <edge id="e20" source="n6" target="n17">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -701,8 +709,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e22" source="n3" target="n2">
-      <data key="d9"/>
+    <edge id="e21" source="n3" target="n2">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -712,8 +719,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e23" source="n4" target="n17">
-      <data key="d9"/>
+    <edge id="e22" source="n4" target="n17">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -723,11 +729,50 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e24" source="n17" target="n10">
-      <data key="d9"/>
+    <edge id="e23" source="n17" target="n10">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e24" source="n20" target="n1">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="-62.17717086834739" ty="11.455882352941217"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e25" source="n18" target="n1">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="-61.07317927170874" ty="11.455882352941217">
+            <y:Point x="188.20728291316522" y="210.0"/>
+            <y:Point x="188.20728291316522" y="292.4558823529412"/>
+            <y:Point x="191.51925770308117" y="292.4558823529412"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e26" source="n21" target="n1">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="-61.07317927170874" ty="11.455882352941217">
+            <y:Point x="188.20728291316522" y="374.59375000000006"/>
+            <y:Point x="188.20728291316522" y="292.4558823529412"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -1319,6 +1364,35 @@ Drw9j8gtanhWRXdRW2jwaHlAaBMafTf0/wF2T/keDxWanwAAAABJRU5ErkJggg==</y:Resource>
 </yed:SvgIcon>
         </yed:ScaledIcon>
       </y:Resource>
+      <y:Resource id="8" type="java.awt.image.BufferedImage">iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADE0lEQVR42u3bTUtiURgH8DbDDA3M&#13;
+N5gPkGllSVBqEbUQcSG9UCgRlW4MNxW9kPm2KTcDbQpDSBxUEGnlqlokRoq4KogCBZEMhoH5Cs/c&#13;
+52HuhdmNTF7vreeBP3gPCp7fPefci+fa1cXFxcXFxdVy9fT0WHt7e78Jib5GhoeHI16v96MqOq/V&#13;
+am3Cl4bXzOjoKOzv7zcTicRnxQNoNJrYawMYDAZYXl6GQCCgfAThCyfbATAzMwMulwv8fv+PYDD4&#13;
+5V0CzM/PE4IwHZSL0G4AzOrqKvh8PmUiyAGAwTVhb29PeQhyAWCWlpZge3u7GY1Gu98lAGZxcRE2&#13;
+NzeVgyA3AMbhcMD6+royEDoBgFlYWFAGQqcAxJHQ8enQSQBxTdja2moKV4fudwkgXh12dnY6g9AO&#13;
+gMHBQZienv5nAPE+QUBoCAifVA+g0+nAZrO1BCDeMe7u7sqL0A4ATH9/PxiNRhgbG2spFosFIYqq&#13;
+B/jP/GIABmAABmAABmAABmAABmAABmAABmAABmAABmAABpANYHZ2FqrVKkxMTEg/c+fzeQiHw3R8&#13;
+d3cH5+fnf30Gf9F9fn6Gg4MDOvb5fBCPx9U7Ao6OjiCbzUqdub6+JgitVguNRgNqtRqYTCbp/aFQ&#13;
+COr1OpycnNBxMBiEZDKpXgDc3alUKrh5CU9PT7TRge0jIyMEEIvFqNPYhijlcpk6n8lk3gYAxu12&#13;
+Q7PZlM4qxmq1wv39PczNzUGxWJSmzM3NDaysrMDl5eXbAYhEIjTfLy4uaPhjm9PppM7i69vbW9oD&#13;
+PD09pWmCr3HUvAkAu90Oj4+PtLhdXV3ho27Uvra2BrlcTurk2dkZPDw80NSYnJyktUH1AH19fVAo&#13;
+FKQ5jhh4VZiamsInvSCVSlG72Wym9UCc97gt/vLyAkNDQwSQTqdBr9dTxBGkCgCPx0NnfWBgQGo7&#13;
+Pj6mBAIBODw8lNqxk7i1LR6XSiUYHx/HrW4aGWI2Njb4RogBGECBABqN5rsCAX7KCeBVIEBONgDh&#13;
+kvXhz99lykIqCkhWuLX+2sXFxcXFxdVS/QbhZojwS/ZWPAAAAABJRU5ErkJggg==</y:Resource>
+      <y:Resource id="9" type="java.awt.image.BufferedImage">iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACxUlEQVR42u3bT2saURAA8FwKpYV+&#13;
+g34A1zXGBF1RMV7UWGowf5Co5Cjk0oMiBAkegrcENEJzKApBpCer5OAxwUMOBVMP/kGJJkQLEUqh&#13;
+X2HqPGJpSAqVRvdtMwMD664rb36+nV13cWaGgoKCgoJi7FCpVG/UanVimB8eI/V6/XubzfZcEcWL&#13;
+ovh2OGh4zDSZTOByuW4cDsdL7gEEQchMAmB1dVUZCMMBf5wUwC3CN0mSXj1ZAO4RpgHANcK0ALhF&#13;
+mCYA5tLS0o3b7X7xZAG4Q5ADgCsEuQC4QZATgAsEuQFkR+ABQFYEXgAwnU7n16n/ipwEgE6ng5WV&#13;
+FWUgTAIA02AwgN1ux4LGzsXFxc+KB/jH/EEABEAABEAABEAABEAABEAABEAABEAABEAABEAA8gCI&#13;
+ogiSJIFGo7m3DdfhHeD/FmB7exuazSZcX19Dp9OBUqnE7tritv39fajX62z78fExWCwWODs7g1Ao&#13;
+dOczEokEZLNZ5QHE43Go1WqwsbHBZsHs7CxEIhHY3NwEr9fLisdb3/jecDgMNpsNdnZ2GNLvM6TR&#13;
+aIDP51MWwPz8PFxdXYHf739wgIFAgBVmNBrvPRHq9/tgtVrZa9y/Wq0yQEUBrK2tsWn/0HE/+mZz&#13;
+uRxcXFxAMpn8VTBmoVCAWCzGljOZDOzt7SmvB+Ajql6v90eAUXo8Hjg6OoJutwvLy8ts3dbWFpTL&#13;
+ZZibm2N9A58OKQ4AO/vl5SUEg8G/GjAipFIptqzVaqHdbsPu7i6cnJwo9yyADQ0LQQQEwWmORWHD&#13;
+wyl+cHDAisV+cXp6ytaP9k2n02wGRaNRZZ8GsahKpQKDwYAVlM/nWbc3m81QLBbZFG+1WnB4eHjn&#13;
+cFlfX4fz8/N7TZKuBAmAAPgDEAQhxyHA92kCvOMQoDQ1gIWFhWe3f5epDPMLB/lpeOn8eoaCgoKC&#13;
+gmKs+An4T1mqPnSXXwAAAABJRU5ErkJggg==</y:Resource>
     </y:Resources>
   </data>
 </graphml>
