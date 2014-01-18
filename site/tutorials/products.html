@@ -110,9 +110,10 @@
             <div class="row-fluid">
 
                 <h2 id="1">1. Description</h2>
-                <p>In this tutorial, the goal is to process a delimited-values flat file containing products data and calculate the maximum product price. You will learn how to: </p>
+                <p>In this tutorial, the goal is to process a delimited-values flat file containing products data and calculate the maximum product price. You will learn how to:</p>
                 <ul>
                     <li>Configure the built-in <code>DsvRecordMapper</code> with custom parameters</li>
+                    <li>Get an execution report at the end of batch processing</li>
                     <li>Use the <code>RecordProcessor.getEasyBatchResult</code> to get a computation result at the end of batch execution</li>
                 </ul>
 
@@ -128,7 +129,6 @@
 "0007"|"product7"|"description7"|"1200"|"false"|"2014-01-07"
 "0008"|"product8"|"description8"|"1300"|"true"|"2014-01-08"
 "0009"|"product9"|"description9"|"1400"|"false"|"2014-01-09"
-"0010"|"product10"|"description10"|"1500"|"true"|"2014-01-10"
 </pre>
 
                 <p>The record format is self explanatory. The first record is a header record and should be skipped.
@@ -221,6 +221,9 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 // Run easy batch engine and get execution report
 EasyBatchReport easyBatchReport = easyBatchEngine.call();
 
+// Print the batch report
+System.out.println("easyBatchReport = " + easyBatchReport);
+
 // Get the batch computation result
 Double maxProductPrice = (Double) easyBatchReport.getEasyBatchResult();
 
@@ -244,17 +247,42 @@ System.out.println("The maximum product price for published products is : " + ma
 <pre>
 INFO: Initializing easy batch engine
 INFO: Data source: /data/in/products.csv
-INFO: Total records = 11
+INFO: Total records = 10
 INFO: easy batch engine is running...
 INFO: Record #1 [StringRecord{number=1, rawContent='#"productId"|"name"|"description"|"price"|"published"|"lastUpdate"'}] has been filtered
 INFO: Shutting down easy batch engine
+easyBatchReport = Easy Batch Report:
+	Start time = 2014-01-18 08:13:35
+	End time = 2014-01-18 08:13:35
+	Batch duration = 0s
+	Data source = /data/in/products.csv
+	Total records = 10
+	Filtered records = 1 (10%) [1]
+	Ignored records = 0 (0%) []
+	Rejected records = 0 (0%) []
+	Error records = 0 (0%) []
+	Processed records = 9 (90%)
+	Average record processing time = 0.0s
+	Result = 2500.0
 The maximum product price for published products is : 2500.0
 </pre>
+                <p>As you can see, Easy Batch generated an execution report at the end of execution containing the following information:</p>
+                <ul>
+                    <li>The batch start time, end time and duration</li>
+                    <li>The data source processed</li>
+                    <li>The total number of records</li>
+                    <li>The total number of filtered, ignored and rejected records, records processed with errors and records processed successfully</li>
+                    <li>The average record processing time</li>
+                    <li>And the batch result returned by the <code>RecordProcessor.getEasyBatchResult</code> method</li>
+                </ul>
+
+                <p>For more details about the <code>EasyBatchReport</code> API, please refer to the <a href="../documentation/userGuide.html#7">user guide</a>.</p>
 
                 <h2 id="4">4. Conclusion</h2>
                 <p> In this tutorial, we have seen how to:</p>
                 <ul>
                     <li>Configure the built-in <code>DsvRecordMapper</code> with custom parameters</li>
+                    <li>Get an execution report at the end of batch processing</li>
                     <li>Use the <code>RecordProcessor.getEasyBatchResult</code> to get a computation result at the end of batch execution</li>
                 </ul>
 
@@ -309,6 +337,11 @@ The maximum product price for published products is : 2500.0
                     </tr>
                     <tr>
                         <td>Apply business processing logic</td>
+                        <td></td>
+                        <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Generate a batch execution report</td>
                         <td></td>
                         <td class="center-td"><i class="icon-ok-circle"></i></td>
                     </tr>
