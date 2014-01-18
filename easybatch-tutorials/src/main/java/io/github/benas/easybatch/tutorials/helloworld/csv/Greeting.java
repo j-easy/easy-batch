@@ -22,29 +22,19 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.tutorials.xml;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.validation.constraints.Max;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+package io.github.benas.easybatch.tutorials.helloworld.csv;
 
 /**
 * JavaBean representing a greeting object.
  *
 * @author benas (md.benhassine@gmail.com)
 */
-@XmlRootElement
 public class Greeting {
 
-    @Max(2)
     private long sequence;
 
-    @NotEmpty
     private String name;
 
-    @XmlElement
     public long getSequence() {
         return sequence;
     }
@@ -57,7 +47,6 @@ public class Greeting {
         return name;
     }
 
-    @XmlElement
     public void setName(String name) {
         this.name = name;
     }

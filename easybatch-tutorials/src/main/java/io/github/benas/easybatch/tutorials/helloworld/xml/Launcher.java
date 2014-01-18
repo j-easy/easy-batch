@@ -22,18 +22,16 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.tutorials.helloworld;
+package io.github.benas.easybatch.tutorials.helloworld.xml;
 
 import io.github.benas.easybatch.core.api.EasyBatchReport;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
-import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
-import io.github.benas.easybatch.core.filter.StartsWithStringRecordFilter;
-import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
-import io.github.benas.easybatch.validation.BeanValidationRecordValidator;
+import io.github.benas.easybatch.xml.XmlRecordMapper;
+import io.github.benas.easybatch.xml.XmlRecordReader;
 
 /**
-* Main class to run the hello world tutorial.
+* Main class to run the hello world xml tutorial.
  *
 * @author benas (md.benhassine@gmail.com)
 */
@@ -43,10 +41,8 @@ public class Launcher {
 
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(args[0]))
-                .registerRecordFilter(new StartsWithStringRecordFilter("#"))
-                .registerRecordMapper(new DsvRecordMapper<Greeting>(Greeting.class, new String[]{"sequence", "name"}))
-                .registerRecordValidator(new BeanValidationRecordValidator<Greeting>())
+                .registerRecordReader(new XmlRecordReader("greeting", args[0]))
+                .registerRecordMapper(new XmlRecordMapper<Greeting>(Greeting.class, args[1]))
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 

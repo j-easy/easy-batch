@@ -22,20 +22,47 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.tutorials.helloworld;
+package io.github.benas.easybatch.tutorials.helloworld.xml;
 
-import io.github.benas.easybatch.core.api.AbstractRecordProcessor;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Max;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
-* A processor that will generate greeting messages for each record in the input file.
+* JavaBean representing a greeting object.
  *
 * @author benas (md.benhassine@gmail.com)
 */
-public class GreetingProcessor extends AbstractRecordProcessor<Greeting> {
+@XmlRootElement
+public class Greeting {
 
-    @Override
-    public void processRecord(Greeting greeting) throws Exception {
-        System.out.println(greeting.getGreetingMessage());
+    @Max(2)
+    private long sequence;
+
+    @NotEmpty
+    private String name;
+
+    @XmlElement
+    public long getSequence() {
+        return sequence;
     }
 
+    public void setSequence(long sequence) {
+        this.sequence = sequence;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @XmlElement
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGreetingMessage() {
+        return "Hi " + name + "! Your sequence number is " + sequence;
+    }
 }

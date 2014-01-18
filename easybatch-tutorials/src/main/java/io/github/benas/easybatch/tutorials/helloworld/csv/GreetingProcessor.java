@@ -22,42 +22,20 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.tutorials.helloworld;
+package io.github.benas.easybatch.tutorials.helloworld.csv;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.validation.constraints.Max;
+import io.github.benas.easybatch.core.api.AbstractRecordProcessor;
 
 /**
-* JavaBean representing a greeting object.
+* A processor that will generate greeting messages for each record in the input file.
  *
 * @author benas (md.benhassine@gmail.com)
 */
-public class Greeting {
+public class GreetingProcessor extends AbstractRecordProcessor<Greeting> {
 
-    @Max(2)
-    private long sequence;
-
-    @NotEmpty
-    private String name;
-
-    public long getSequence() {
-        return sequence;
+    @Override
+    public void processRecord(Greeting greeting) throws Exception {
+        System.out.println(greeting.getGreetingMessage());
     }
 
-    public void setSequence(long sequence) {
-        this.sequence = sequence;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getGreetingMessage() {
-        return "Hi " + name + "! Your sequence number is " + sequence;
-    }
 }

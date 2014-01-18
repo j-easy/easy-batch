@@ -22,23 +22,19 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.tutorials.jmx;
+package io.github.benas.easybatch.tutorials.helloworld.xml;
 
-import io.github.benas.easybatch.tutorials.helloworld.csv.Greeting;
-import io.github.benas.easybatch.tutorials.helloworld.csv.GreetingProcessor;
+import io.github.benas.easybatch.core.api.AbstractRecordProcessor;
 
 /**
-* A processor that will generate (slooowly :-) ) a greeting message for each record.
+* A processor that will generate greeting messages for each record in the input file.
  *
 * @author benas (md.benhassine@gmail.com)
 */
-public class GreetingSlowProcessor extends GreetingProcessor {
+public class GreetingProcessor extends AbstractRecordProcessor<Greeting> {
 
     @Override
     public void processRecord(Greeting greeting) throws Exception {
-        //slow the processor for demonstration purpose
-        Thread.sleep(3000);
-
         System.out.println(greeting.getGreetingMessage());
     }
 

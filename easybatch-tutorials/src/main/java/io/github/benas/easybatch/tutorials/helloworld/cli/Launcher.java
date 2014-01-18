@@ -22,20 +22,36 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.tutorials.xml;
+package io.github.benas.easybatch.tutorials.helloworld.cli;
 
-import io.github.benas.easybatch.core.api.AbstractRecordProcessor;
+import io.github.benas.easybatch.core.filter.StartsWithStringRecordFilter;
+import io.github.benas.easybatch.core.impl.EasyBatchEngine;
+import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
+import io.github.benas.easybatch.core.util.CliRecordReader;
+import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
+import io.github.benas.easybatch.tutorials.helloworld.csv.Greeting;
+import io.github.benas.easybatch.tutorials.helloworld.csv.GreetingProcessor;
 
 /**
-* A processor that will generate greeting messages for each record in the input xml file.
+* Main class to run the hello world CLI tutorial.
  *
 * @author benas (md.benhassine@gmail.com)
 */
-public class GreetingProcessor extends AbstractRecordProcessor<Greeting> {
+public class Launcher {
 
-    @Override
-    public void processRecord(Greeting greeting) throws Exception {
-        System.out.println(greeting.getGreetingMessage());
+    public static void main(String[] args) throws Exception {
+
+        // Build an easy batch engine
+        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+                .registerRecordReader(new CliRecordReader())
+                .registerRecordFilter(new StartsWithStringRecordFilter("#"))
+                .registerRecordMapper(new DsvRecordMapper<Greeting>(Greeting.class, new String[]{"sequence", "name"}))
+                .registerRecordProcessor(new GreetingProcessor())
+                .build();
+
+        // Run easy batch engine
+        easyBatchEngine.call();
+
     }
 
 }

@@ -31,8 +31,8 @@ import io.github.benas.easybatch.core.filter.StartsWithStringRecordFilter;
 import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
 import io.github.benas.easybatch.tools.scheduling.EasyBatchScheduler;
 import io.github.benas.easybatch.tools.scheduling.EasyBatchSchedulerException;
-import io.github.benas.easybatch.tutorials.helloworld.Greeting;
-import io.github.benas.easybatch.tutorials.helloworld.GreetingProcessor;
+import io.github.benas.easybatch.tutorials.helloworld.csv.Greeting;
+import io.github.benas.easybatch.tutorials.helloworld.csv.GreetingProcessor;
 import io.github.benas.easybatch.validation.BeanValidationRecordValidator;
 
 import java.util.Date;

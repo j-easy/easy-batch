@@ -121,7 +121,7 @@
     <profiles>
 
         <profile>
-            <id>runHelloWorldTutorial</id>
+            <id>runHelloWorldCSVTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
                 <plugins>
@@ -130,7 +130,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.helloworld.Launcher</mainClass>
+                            <mainClass>io.github.benas.easybatch.tutorials.helloworld.csv.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/greetings.csv</argument>
                             </arguments>
@@ -141,7 +141,7 @@
         </profile>
 
         <profile>
-            <id>runHelloWorldJdbcTutorial</id>
+            <id>runHelloWorldFLRTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
                 <plugins>
@@ -150,7 +150,10 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.jdbc.Launcher</mainClass>
+                            <mainClass>io.github.benas.easybatch.tutorials.helloworld.flr.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/greetings.flr</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -158,7 +161,7 @@
         </profile>
 
         <profile>
-            <id>runHelloWorldXmlTutorial</id>
+            <id>runHelloWorldJDBCTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
                 <plugins>
@@ -167,11 +170,45 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.xml.Launcher</mainClass>
+                            <mainClass>io.github.benas.easybatch.tutorials.helloworld.jdbc.Launcher</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>runHelloWorldXMLTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>io.github.benas.easybatch.tutorials.helloworld.xml.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/greetings.xml</argument>
                                 <argument>${project.basedir}/src/main/resources/greetings.xsd</argument>
                             </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>runHelloWorldCLITutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>io.github.benas.easybatch.tutorials.helloworld.cli.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
