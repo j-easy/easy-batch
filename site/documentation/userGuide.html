@@ -295,8 +295,36 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .build();
 </pre>
                 <p>When you create a <code>DsvRecordMapper</code>, you should specify your domain object type and an array of field names in the same order as they appear in the delimited record.</p>
+                <p>You can also configure the <code>DsvRecordMapper</code> with custom parameters defined in the table below:</p>
+                <table class="table table-bordered table-condensed table-striped table-center">
+                    <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Required</th>
+                        <th>Default value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>delimiter</td>
+                        <td class="center-td">false</td>
+                        <td>","</td>
+                    </tr>
+                    <tr>
+                        <td>qualifier</td>
+                        <td class="center-td">false</td>
+                        <td>""</td>
+                    </tr>
+                    <tr>
+                        <td>trimWhitespaces</td>
+                        <td>false</td>
+                        <td class="center-td">true</td>
+                    </tr>
+                    </tbody>
+                </table>
 
-                <p>You can find an example of how to use the <code>DsvRecordMapper</code> in the <a href="../tutorials/helloworld.html">Hello World tutorial.</a>
+                <p>You can find examples of how to use the <code>DsvRecordMapper</code> in the <a href="../tutorials/helloworldCSV.html">Hello World CSV tutorial</a> and the
+                    <a href="../tutorials/products.html">Products statistics tutorial</a>.</p>
 
                 <h4>4.1.2 Mapping fixed-length records</h4>
 
