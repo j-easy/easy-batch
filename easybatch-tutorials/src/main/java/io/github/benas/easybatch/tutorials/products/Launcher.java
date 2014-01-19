@@ -43,7 +43,7 @@ public class Launcher {
         // Configure the product record mapper
         DsvRecordMapper<Product> productMapper = new DsvRecordMapper<Product>(
                 Product.class,
-                new String[]{"productId","name", "description", "price","published", "lastUpdate" });
+                new String[]{"productId","name", "description", "price","published", "lastUpdate", "origin" });
         productMapper.setDelimiter("|");
         productMapper.setQualifier("\"");
         productMapper.registerTypeConverter(Origin.class, new OriginTypeConverter());
