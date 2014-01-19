@@ -41,7 +41,7 @@ public class CustomerProcessor extends AbstractRecordProcessor<Customer> {
     /**
      * The Jaxb marshaller to write customer xml data.
      */
-    Marshaller jaxbMarshaller;
+    private Marshaller jaxbMarshaller;
 
     /**
      * Create a CustomerProcessor.
