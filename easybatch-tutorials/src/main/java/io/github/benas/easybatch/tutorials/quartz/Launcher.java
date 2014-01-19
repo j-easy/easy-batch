@@ -38,7 +38,7 @@ import io.github.benas.easybatch.validation.BeanValidationRecordValidator;
 import java.util.Date;
 
 /**
- * Main class to run the Hello World tutorial repeatedly every hour using easy batch - quartz integration module.<br/>
+ * Main class to run the Hello World tutorial repeatedly every minute using easy batch - quartz integration module.<br/>
  *
  * The {@link EasyBatchScheduler} API lets you schedule easy batch executions as follows :
  * <ul>
@@ -62,10 +62,10 @@ public class Launcher {
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 
-        // schedule the engine to start now and run every hour
+        // schedule the engine to start now and run every minute
         try {
             EasyBatchScheduler easyBatchScheduler = new EasyBatchScheduler(easyBatchEngine);
-            easyBatchScheduler.scheduleAtWithInterval(new Date(), 60);
+            easyBatchScheduler.scheduleAtWithInterval(new Date(), 1);
             easyBatchScheduler.start();
         } catch (EasyBatchSchedulerException e) {
             System.err.println(e.getMessage());
