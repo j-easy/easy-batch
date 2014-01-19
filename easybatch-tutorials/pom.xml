@@ -86,6 +86,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>4.2.1.Final</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.github.benas</groupId>
             <artifactId>easybatch-validation</artifactId>
             <version>2.0.1-SNAPSHOT</version>
@@ -244,7 +250,27 @@
                         <configuration>
                             <mainClass>io.github.benas.easybatch.tutorials.products.Launcher</mainClass>
                             <arguments>
-                                <argument>${project.basedir}/src/main/resources/products.flr</argument>
+                                <argument>${project.basedir}/src/main/resources/products.csv</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>runBeanValidationTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>io.github.benas.easybatch.tutorials.beanValidation.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/products-jsr303.csv</argument>
                             </arguments>
                         </configuration>
                     </plugin>
