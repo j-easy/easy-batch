@@ -131,19 +131,23 @@
 
                 <h3 id="jmxTutorial">2.1 Description</h3>
 
-                <p>This tutorial is the same as the <a href="../tutorials/helloworld.html">Hello World tutorial</a> but with higher amount of input data and a slow processor for demonstration purpose.</p>
+                <p>This tutorial is the same as the <a href="../tutorials/helloworldCSV.html" target="_blank">Hello World tutorial</a> but with higher amount of input data and a slow processor for demonstration purpose.</p>
                 <p>In this tutorial, we will show how to use VisualVM to monitor the core engine execution progress in real time.</p>
                 <p>The complete source code of this tutorial can be found <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/jmx" target="_blank">here</a>.</p>
 
                 <h3>2.2 Running the batch</h3>
 
                 <p>To launch the core batch with maven, execute the following command in the <code>easybatch-tutorials</code> directory :</p>
-                <p><code>mvn exec:java -PrunJmxTutorial</code></p>
+
+                <p><span class="icon-stack"> <i class="icon-sign-blank icon-stack-base"></i> <i class="icon-terminal icon-light"></i> </span>
+                    <em><strong>mvn exec:java -PrunJmxTutorial</strong></em>
+                </p>
+
                 <p>This will launch the core batch to process the <code>greetings-jmx.csv</code> file containing about 100 lines which will take about 3 minutes to finish.
                     You should have enough time to launch VisualVM and monitor progress in real time.</p>
-                <p>Once you have launched the tutotial, open VisualVM, connect to the jvm process running your batch and navigate to the MBeans tab
+                <p>Once you have launched the tutorial, open VisualVM, connect to the jvm process running your batch and navigate to the MBeans tab
                     (if you don't see the MBeans tab, <a href="http://visualvm.java.net/mbeans_tab.html" target="_blank">here</a> is how to install the plugin).</p>
-                <p>As described in the screen shot below, navigate to the <code>io.github.benas.easybatch.core.jmx:type=EasyBatchMonitorMBean</code> MBean and you will be able to monitor the execution progress of the slow Hello World tutorial in real time.</p>
+                <p>As described in the screen shot above, navigate to the <code>io.github.benas.easybatch.core.jmx:type=EasyBatchMonitorMBean</code> MBean and you will be able to monitor the execution progress of the slow Hello World tutorial in real time.</p>
 
             </div>
 

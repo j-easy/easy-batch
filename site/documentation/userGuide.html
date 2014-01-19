@@ -136,6 +136,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 <ul>
                     <li>flat files</li>
                     <li>xml files</li>
+                    <li>in-memory strings</li>
                     <li>and databases</li>
                 </ul>
 
@@ -162,7 +163,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 
                 <p>Easy Batch comes with a built-in <code>XmlRecordReader</code> that allows you to read records from an xml file using the
                     <a href="https://www.jcp.org/en/jsr/detail?id=173">Stax</a> API.</p>
-                <p>Since Easy Batch is Pojo-Based, Xml records correspond to instances of your domain objects. Let's see an example, consider the following xml file:</p>
+                <p>Since Easy Batch development is Pojo-Based, Xml records correspond to instances of your domain objects. Let's see an example, consider the following xml file:</p>
 
 <pre class="prettyprint">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
@@ -210,7 +211,18 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 </pre>
                 <p> When you create an <code>XmlRecordReader</code>, you should specify the xml root element name, and the input xml file path.</p>
 
-                <h3>2.3 Reading data from a database</h3>
+                <h3>2.3 Reading data from an in-memory String</h3>
+
+                <p>Easy Batch allows you to read data from a String using the <code>StringRecordReader</code> API. You can register this record reader as follows:</p>
+
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordReader(new StringRecordReader(myString))
+    .build();
+</pre>
+                <p> When you create a <code>StringRecordReader</code>, you should specify the String reference to read data from.</p>
+
+                <h3>2.4 Reading data from a database</h3>
 
                 <p>Easy Batch comes with a built-in <code>JdbcRecordReader</code> that allows you to read records from a database using the
                     <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/jdbc/" target="_blank">JDBC</a> technology.</p>
@@ -230,6 +242,11 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .build();
 </pre>
                 <p> When you create a <code>JdbcRecordReader</code>, you should specify the jdbc database connection and the sql query to use to fetch data.</p>
+
+                <div class="alert">
+                    <strong>Head up!</strong> The JDBC API does not allow to stream data from a database, so the <code>JdbcRecordReader</code> loads all data fetched by the sql query you provide into a <code>java.sql.ResultSet</code> object.
+                    You should pay attention to large data sets when you specify the sql query to the <code>JdbcRecordReader</code>.
+                </div>
 
                 <h2 id="3">3. Filtering records</h2>
 
@@ -438,12 +455,11 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
             <ul>
                 <li>The batch start time</li>
                 <li>The batch end time</li>
+                <li>The batch duration</li>
                 <li>The data source name</li>
                 <li>The total records number</li>
-                <li>The number of filtered records</li>
-                <li>The number of ignored records</li>
-                <li>The number of rejected records</li>
-                <li>The number of records processed with error</li>
+                <li>The number of filtered, ignored and rejected records</li>
+                <li>The number of records processed with errors</li>
                 <li>The number of records successfully processed</li>
                 <li>The processing time for each record</li>
                 <li>The record processing time average</li>
@@ -467,7 +483,7 @@ String htmlReport = new EasyBatchReportFormatter().formatEasyBatchReport(easyBat
                         <img src="../resources/img/htmlReport.png" alt="htmlReport"/>
                     </a>
                 </div>
-
+                <br/>
                 <p>To use the <code>EasyBatchHtmlReportFormatter</code>, you should add the <code>easybatch-tools</code> module to your dependencies:</p>
 <pre class="prettyprint">
 &lt;dependency&gt;

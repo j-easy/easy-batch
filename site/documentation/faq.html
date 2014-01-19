@@ -109,32 +109,8 @@
 
                 <p>Yes. Easy Batch uses the reference implementation <a href="http://hibernate.org/validator/" target="_blank">Hibernate validator</a> to validate domain objects.</p>
 
-                <p>The following steps describe how to use Bean Validation API with Easy Batch :</p>
-
-                <ul>
-                    <li>Add the <code>easybatch-validation</code> module to your dependencies :
-                        <p>
-<pre class="prettyprint">
-&lt;dependency&gt;
-    &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
-    &lt;artifactId&gt;easybatch-validation&lt;/artifactId&gt;
-    &lt;version&gt;${version}&lt;/version&gt;
-&lt;/dependency&gt;
-</pre>
-                        </p>
-                    </li>
-                    <li>Annotate your POJO with Bean Validation API annotations</li>
-                    <li>Register the <code>BeanValidationRecordValidator</code> using the <code>EasyBatchEngineBuilder</code> :
-                        <p>
-<pre class="prettyprint">
-EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordValidator(new BeanValidationRecordValidator&lt;YourPojoType&gt;())
-    .build();
-</pre>
-                        </p>
-                    </li>
-
-                </ul>
+                <p>For all details about how to validate data using Bean Validation API with Easy Batch, please refer to the
+                    <a href="./userGuide.html#5">user guide</a>. You can also find a complete tutorial of this feature <a href="../tutorials/beanValidation.html">here</a>.</p>
 
                 <h3 id="2">2. Does Easy Batch implement the <a href="http://jcp.org/en/jsr/detail?id=352" target="_blank">Batch Processing for Java Platform (JSR 352)</a> ?</h3>
                 <p>No because the JSR 352 is pretty new and Easy Batch does not implement it yet.
@@ -146,7 +122,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 
                 <h3 id="4">4. Can I use Easy Batch with Spring ?</h3>
                 <p>Yes. You do not have to write any specific code to use Easy Batch with Spring. You can configure your batch components in Spring and then register them within Easy Batch engine, that's it!
-                    You can find a complete example of using Easy Batch with Spring <a href="../miscellaneous/spring.html">here</a>.</p>
+                    You can find a complete example of using Easy Batch with Spring <a href="../tutorials/spring.html">here</a>.</p>
 
                 <h3 id="5">5. How can I configure Easy Batch logging ?</h3>
                 <p>Easy Batch framework core uses the <code>java.util.logging</code> API. By default, Easy Batch logs messages to the standard output.

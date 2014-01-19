@@ -111,7 +111,7 @@
         <div class="row-fluid">
 
             <h2 id="1">1. Description</h2>
-            <p>This tutorial is the same as the <a href="helloworldCSV.html">Hello World CSV tutorial</a> except that greetings are read from an XML file instead of a CSV flat file.
+            <p>This tutorial is the same as the <a href="helloworldCSV.html">Hello World CSV tutorial</a> except that greetings are read from an XML file rather than a CSV flat file.
                 We will process a simple XML file containing greetings and generate greeting messages.
                 To keep the tutorial simple, the input file named <code>greetings.xml</code> has the following content:</p>
 <pre class="prettyprint">
@@ -265,13 +265,17 @@ INFO: Shutting down easy batch engine
             <p>Moreover, Easy Batch has logged precise information about which record has been ignored with the JAXB error message of the root cause.</p>
 
             <h2 id="4">4. Conclusion</h2>
-            <p> As you have seen, it is very easy to process data from an XML file using Easy Batch. All we have done is :</p>
+
+            <p>In this tutorial, you have learned how to process data from an XML file using Easy Batch.</p>
+
+            <p>With Easy Batch, all we have done is :</p>
             <ul>
                 <li>Implementing the business logic of our batch</li>
                 <li>Providing configuration meta data</li>
             </ul>
 
-            <p>Actually, Easy Batch has reduced the plumbing code from hundred lines to only 6 lines! (listing above)</p>
+            <p>Easy Batch handled all the plumbing code of reading, filtering, parsing and mapping XML records to
+                instances of our domain object <code>Greeting</code> and actually has reduced this plumbing code from hundred lines to only a very few lines! (listing above)</p>
 
             <p>The following table summarizes what we have done and what Easy Batch has done for us :</p>
 

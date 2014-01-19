@@ -104,13 +104,15 @@
 
             <div class="row-fluid">
 
-                <h2>1. Description</h2>
+                <h2>1. Introduction</h2>
 
-                <p>Easy Batch allows you to schedule your batch application with the popular Java scheduler <a href="http://quartz-scheduler.org/" target="_blank">Quartz</a>.</p>
+                <p>Easy Batch engine implements the <code>java.util.concurrent.Callable</code> interface so it can be easily scheduled using the <code>java.util.concurrent.ScheduledExecutorService</code> API.
+                    Nevertheless, this service is limited in terms of scheduling features that's why Easy Batch provides an integration module with the popular Java scheduler <a href="http://quartz-scheduler.org/" target="_blank">Quartz</a>.</p>
 
                 <p>In this section, we will introduce how to schedule an Easy Batch instance using the provided <code>EasyBatchScheduler</code> API.</p>
 
                 <h2 id="quartzTutorial">2. Sample usage</h2>
+
                 <p>First, you need to add the <code>easybatch-tools</code> module to your project dependencies:</p>
 
 <pre class="prettyprint">
@@ -128,13 +130,24 @@
                     <li>Using unix cron-like expression with <code>scheduleCron(String cronExpression)</code></li>
                 </ul>
 
-                <p>For all details about these APIs, please refer to the Javadoc.</p>
+                <p>For all details about these APIs, please refer to the Javadoc of the <code>io.github.benas.easybatch.tools.scheduling</code> package.</p>
 
-                <p>You can find <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/quartz" target="_blank">here</a> a complete tutorial that schedules the <a href="../tutorials/helloworld.html">Hello World</a> batch to run every hour.</p>
+                <p>The listing below shows how to schedule the <a href="./helloworldCSV.html">Hello World tutorial</a> to run every minute:</p>
+
+<pre class="prettyprint">
+EasyBatchScheduler easyBatchScheduler = new EasyBatchScheduler(easyBatchEngine);
+easyBatchScheduler.scheduleAtWithInterval(new Date(), 1);
+easyBatchScheduler.start();
+</pre>
+                <p>You can find the complete source code of this tutorial <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/quartz" target="_blank">here</a>.</p>
 
                 <p>To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
 
-                <p><code>mvn clean install exec:java -PrunQuartzTutorial</code></p>
+                <p><span class="icon-stack"> <i class="icon-sign-blank icon-stack-base"></i> <i class="icon-terminal icon-light"></i> </span>
+                    <em><strong>mvn exec:java -PrunQuartzTutorial</strong></em>
+                </p>
+
+                <p>If everything is ok, you will see in the console that Easy Batch engine will run every minute.</p>
 
             </div>
 
