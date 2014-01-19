@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>easybatch-jdbc</artifactId>
+    <packaging>jar</packaging>
 
     <name>easybatch-jdbc</name>
     <description>Easy Batch jdbc module</description>

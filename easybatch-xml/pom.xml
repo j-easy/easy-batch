@@ -10,6 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>easybatch-xml</artifactId>
+    <packaging>jar</packaging>
+
     <name>easybatch-xml</name>
     <description>Easy Batch xml module</description>
     <url>http://benas.github.io/easy-batch</url>
