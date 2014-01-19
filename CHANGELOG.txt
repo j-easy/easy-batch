@@ -2,6 +2,19 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 https://github.com/benas/easy-batch
 
+Changes in version 2.1.0 (2014-01-19)
+-------------------------------------
+
+* Added a new module to process data from a database using JDBC API
+* Added a new module to process data from an xml file using JAXB API
+* Added a new API to read data from an in-memory String data source
+* Added a new API to read data from the Standard Input
+* Added data source name to Easy Batch report
+* Added 10 new tutorials about all Easy Batch features (basic, intermediate and advanced)
+* Moved record filters to core module
+* Fixed issue#10 : reset record numbers when (re)opening the jdbc record reader
+* Updated documentation and Javadoc
+
 Changes in version 2.0.0 (2014-01-12)
 -------------------------------------
 
