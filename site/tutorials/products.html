@@ -110,7 +110,11 @@
             <div class="row-fluid">
 
                 <h2 id="1">1. Description</h2>
-                <p>In this tutorial, the goal is to process a delimited-values flat file containing products data and calculate the maximum product price. You will learn how to:</p>
+                <p>In this tutorial, the goal is to process a delimited-values flat file containing products data and calculate the maximum product price:</p>
+
+                <p align="center"><img src="../resources/img/productsStats.png"/></p>
+
+                <p>In this tutorial, you will learn how to:</p>
                 <ul>
                     <li>Configure the built-in <code>DsvRecordMapper</code> with custom parameters and type converter</li>
                     <li>Get an execution report at the end of batch processing</li>
@@ -163,9 +167,7 @@ public class Product {
 }
 
 public enum Origin {
-
     NATIONAL,
-
     INTERNATIONAL
 }
 </pre>
@@ -267,7 +269,7 @@ System.out.println("The maximum product price for national published products is
                     <em><strong>mvn exec:java -PrunProductsTutorial</strong></em>
                 </p>
 
-                <p>After the execution is finished, you should see the following output in the console:</p>
+                <p>At the end of execution, you should see the following output in the console:</p>
 
 <pre>
 INFO: Initializing easy batch engine
