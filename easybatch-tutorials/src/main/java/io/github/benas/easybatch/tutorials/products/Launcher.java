@@ -46,6 +46,7 @@ public class Launcher {
                 new String[]{"productId","name", "description", "price","published", "lastUpdate" });
         productMapper.setDelimiter("|");
         productMapper.setQualifier("\"");
+        productMapper.registerTypeConverter(Origin.class, new OriginTypeConverter());
 
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
@@ -65,7 +66,7 @@ public class Launcher {
         Double maxProductPrice = (Double) easyBatchReport.getEasyBatchResult();
 
         // Print the maximum price
-        System.out.println("The maximum product price for published products is : " + maxProductPrice);
+        System.out.println("The maximum product price for national published products is : " + maxProductPrice);
 
     }
 

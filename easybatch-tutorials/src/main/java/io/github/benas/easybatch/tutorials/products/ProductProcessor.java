@@ -38,8 +38,8 @@ public class ProductProcessor implements RecordProcessor<Product, Double> {
      */
     private double maxProductPrice;
 
-    public void processRecord(Product product) throws Exception {
-        if (product.isPublished()) {
+    public void processRecord(final Product product) throws Exception {
+        if (product.isPublished() && Origin.NATIONAL.equals(product.getOrigin())) {
             double productPrice = product.getPrice();
             if (productPrice > maxProductPrice) {
                 maxProductPrice = productPrice;

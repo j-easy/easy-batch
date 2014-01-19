@@ -35,8 +35,6 @@ public class Product {
 
     private long productId;
 
-    private long vendorId;
-
     private String name;
 
     private String description;
@@ -47,20 +45,14 @@ public class Product {
 
     private Date lastUpdate;
 
+    private Origin origin;
+
     public long getProductId() {
         return productId;
     }
 
     public void setProductId(long productId) {
         this.productId = productId;
-    }
-
-    public long getVendorId() {
-        return vendorId;
-    }
-
-    public void setVendorId(long vendorId) {
-        this.vendorId = vendorId;
     }
 
     public String getName() {
@@ -101,5 +93,13 @@ public class Product {
 
     public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
+    }
+
+    public Origin getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Origin origin) {
+        this.origin = origin;
     }
 }
