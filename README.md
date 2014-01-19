@@ -2,7 +2,7 @@
 
 Easy Batch is a framework that aims to simplify batch processing with Java.
 
-It addresses common tedious tasks such as reading, filtering and validating input data and lets you concentrate on your batch processing business logic.
+It addresses common tedious tasks such as reading, filtering, parsing and validating input data and lets you concentrate on your batch processing business logic.
 
 ## Key features
 
