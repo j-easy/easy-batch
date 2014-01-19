@@ -113,7 +113,8 @@
                     <li>Split the data source into multiple parts which will be processed by separated threads</li>
                     <li>Use a single data source and filter records to be processed by each thread</li>
                 </ul>
-                <p>Easy Batch does not provide a feature to partition input data but allows you to process data in parallel for both cases above. So let's see how to achieve this easily with Easy Batch on a real use case!</p>
+                <p>Easy Batch does not provide a feature to partition input data but allows you to process data in parallel for both cases above.
+                    So let's see how to achieve this with Easy Batch on a real use case!</p>
 
                 <p>In this tutorial, the goal is to encrypt an input text file containing a sensible set of data. The input file named <code>secret-messages.txt</code> has the following content:</p>
 
@@ -130,7 +131,7 @@ This is a secret message9!
 This is a secret message10!
 </pre>
 
-                <p>In a real use case, we suppose this input file is a huge text file with millions of records and we would like to encrypt data in parallel.To keep the tutorial simple, we will only process 10 records.</p>
+                <p>In a real use case, we suppose that this input file is a huge text file with millions of records and we would like to encrypt data in parallel.To keep the tutorial simple, we will only process 10 records.</p>
                 <p>We would like to run two Easy Batch instances to process records 1-5 and records 6-10 in parallel with two methods:</p>
                 <ul>
                     <li>The first one is by partitioning the input file into multiple parts.</li>
@@ -155,7 +156,10 @@ public class MessageEncrypter extends AbstractRecordProcessor&lt;StringRecord&gt
 
                 <h2 id="2">2. Reading data from multiple input files</h2>
 
-                <p>In this part, we have split the input file <code>secret-messages.txt</code> into two slices: <code>secret-messages-part1.txt</code> containing records 1-5 and <code>secret-messages-part2.txt</code> containing records 6-10.</p>
+                <p>In this part, we have split the input file <code>secret-messages.txt</code> into two slices: <code>secret-messages-part1.txt</code> containing records 1-5 and <code>secret-messages-part2.txt</code> containing records 6-10:</p>
+
+                <p align="center"><img src="../resources/img/parallelMultipleParts.png"/></p>
+
                 <p>The following listing shows how to run two Easy Batch instances to process these two parts in parallel:</p>
 <pre class="prettyprint">
 // To avoid any thread-safety issues,
@@ -185,9 +189,11 @@ executorService.shutdown();
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/parallel" target="_blank">here</a>.
                     To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
 
-                <p><code>mvn exec:java -PrunParallelMultipleFilesTutorial</code></p>
+                <p><span class="icon-stack"> <i class="icon-sign-blank icon-stack-base"></i> <i class="icon-terminal icon-light"></i> </span>
+                    <em><strong>mvn exec:java -PrunParallelMultipleFilesTutorial</strong></em>
+                </p>
 
-                <p>After the execution is finished, you should see all the secret messages encrypted in the console.</p>
+                <p>At the end of execution, you should see all the secret messages encrypted in the console.</p>
 
                 <h2 id="3">3. Reading data from a single input file</h2>
 
@@ -212,14 +218,14 @@ executorService.shutdown();
 // Build an Easy Batch engine 1
 EasyBatchEngine easyBatchEngine1 = new EasyBatchEngineBuilder()
         .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from secret-messages.txt
-        .registerRecordFilter(new RecordNumberGreaterThanRecordFilter(5)) // filter records 6-10
+        <strong>.registerRecordFilter(new RecordNumberGreaterThanRecordFilter(5)) // filter records 6-10</strong>
         .registerRecordProcessor(new MessageEncrypter())
         .build();
 
 // Build an Easy Batch engine 2
 EasyBatchEngine easyBatchEngine2 = new EasyBatchEngineBuilder()
         .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from secret-messages.txt
-        .registerRecordFilter(new RecordNumberLowerThanRecordFilter(6)) // filter records 1-5
+        <strong>.registerRecordFilter(new RecordNumberLowerThanRecordFilter(6)) // filter records 1-5</strong>
         .registerRecordProcessor(new MessageEncrypter())
         .build();
 
@@ -239,9 +245,11 @@ executorService.shutdown();
                 <p>Finally, we will compare performance results and speed up based on the overall processing time of each method.</p>
 
                 <p>To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
-                <p><code>mvn exec:java -PrunParallelSingleFileTutorial</code></p>
+                <p><span class="icon-stack"> <i class="icon-sign-blank icon-stack-base"></i> <i class="icon-terminal icon-light"></i> </span>
+                    <em><strong>mvn exec:java -PrunParallelSingleFileTutorial</strong></em>
+                </p>
 
-                <p>After the execution is finished, you should see all the secret messages encrypted in the console and the following output at the end:</p>
+                <p>At the end of execution, you should see all the secret messages encrypted in the console and the following output at the end:</p>
 
 <pre>
 ###############################################################################
