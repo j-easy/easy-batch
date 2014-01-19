@@ -199,6 +199,23 @@
         </profile>
 
         <profile>
+            <id>runHelloWorldInMemoryTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>io.github.benas.easybatch.tutorials.helloworld.memory.Launcher</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
             <id>runHelloWorldCLITutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
