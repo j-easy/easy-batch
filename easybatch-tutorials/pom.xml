@@ -259,6 +259,23 @@
         </profile>
 
         <profile>
+            <id>runCustomersTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>io.github.benas.easybatch.tutorials.customers.Launcher</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
             <id>runBeanValidationTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
