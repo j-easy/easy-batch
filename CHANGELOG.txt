@@ -1,0 +1,111 @@
+EASY BATCH FRAMEWORK CHANGELOG
+==============================
+https://github.com/benas/easy-batch
+
+Changes in version 2.1.0 (2014-01-20)
+-------------------------------------
+
+* Added a new module to process data from a database using JDBC API
+* Added a new module to process data from an xml file using StAX and JAXB APIs
+* Added a new API to read data from an in-memory String data source
+* Added a new API to read data from the Standard Input
+* Added data source name to Easy Batch report
+* Added 10 new tutorials about all Easy Batch features (basic, intermediate and advanced)
+* Moved record filters to core module
+* Fixed issue#10 : reset record numbers when (re)opening the jdbc record reader
+* Updated documentation and Javadoc
+
+Changes in version 2.0.0 (2014-01-12)
+-------------------------------------
+
+* Renamed the former CB4J framework to Easy Batch which can now handle not only CSV input but also any type of input data
+* Added a new Record interface for generic input data type
+* Added record filtering feature through the RecordFilter API
+* Added new EasyBatchReportFormatter API to format Easy Batch reports to a specific format
+* Redesigned validation approach which is now well integrated with the Bean Validation API (JSR303)
+* Simplified logging through a single and centralised log file
+* Updated documentation and Javadoc
+
+Changes in version 1.4.0 (2013-09-21)
+-------------------------------------
+
+* Added BatchResultHolder API to be able to get computation result at the end of batch execution
+* Added DefaultRecordMapperImpl class to map records to domain objects based on field names declared in header record
+* Added TypeConverter API to extend CB4J's built-in type conversion utilities
+* Added a new parameter to abort execution on first record processing error
+* Added a new parameter to abort execution on first record mapping exception
+* Added a new parameter to enable/disable JMX monitoring feature
+* Added two new validators to validate that date value is before/after a given date
+* Added two new validators to validate that field field content size has a min/max length
+* Fixed issue#5 : CB4J runs indefinitely when an exception occurs during batch finalization step
+* Fixed issue#6 : Record number in batch report does not match real record number when skipping header record
+* Fixed issue#7 : A non sens warning is reported by CB4J when file encoding is not specified
+* Fixed issue#8 : add a log message to inform the user that the engine is about to abort execution on first reject/error
+* Fixed issue#9 : CB4J must abort execution on first reject when an unexpected exception occurs during record validation
+* Updated record size parameter configuration : record size parameter is now optional and is set to header record size by default
+* Updated documentation and Javadoc
+
+Changes in version 1.3.0 (2013-04-21)
+-------------------------------------
+
+* Added basic record processing transaction support
+* Added new JMX custom clients : command line and graphical asynchronous real time monitors
+* Added batch configuration builder
+* Updated documentation and Javadoc
+
+Changes in version 1.2.0 (2013-01-13)
+-------------------------------------
+
+* Added Fixed-Length Record parsing support (issue #2)
+* Added cb4j-quartz module to schedule CB4J batch with Quartz scheduler
+* Added a database loader use case using Hibernate : the book library tutorial
+* Added Spring use case
+* Added BatchReport class to allow clients to get a batch report as execution result
+* BatchEngine interface now extends Callable and not Runnable to make it possible to return a result object (BatchReport)
+* Merged pull request #4 : regular expression validator review
+* Updated documentation and Javadoc
+
+Changes in version 1.1.0 (2012-12-08)
+-------------------------------------
+
+* Added parameter to support data qualifier character
+* Added parameter to trim whitespaces between fields
+* Added parameter to support execution abort on first reject
+* Added support for JMX monitoring
+* Added a log file for records processed with error
+* Fixed reporting issue : CB4J hides the root cause when an exception occurs during record processing
+* Fixed CB4J crash if an exception occurs during record validation
+* Updated documentation and Javadoc
+
+Changes in version 1.0.2 (2012-12-01)
+-------------------------------------
+
+* Added support for loading configuration parameters file from the classpath
+* Added support for loading parameters from XML properties file
+* Added test cases for record parsing with common CSV delimiters
+* Enhanced batch reporter performance by about 15% : use StringBuilder instead of String concatenation
+* Record parser and validator now return null instead of empty string if no error occurs
+* Renamed parameter input.field.separator to input.field.delimiter
+* Updated Java Reflection API performance showcase to execute introspection code only once
+* Updated documentation and Javadoc
+
+Changes in version 1.0.1 (2012-11-01)
+-------------------------------------
+
+* Fixed IndexOutOfBoundsException in RecordMapper
+* Fixed IllegalCharsetNameException in BatchConfiguration
+* Fixed CB4J crash if an exception occurs during records processing
+* Added RecordProcessingException exception to be thrown if an exception occurs during record processing
+* Added DefaultRecordProcessorImpl class to simplify implementation of RecordProcessor interface
+* Added date value validation support in DateFieldValidator
+* Performance enhancement in DateFieldValidator
+* Renamed parameter input.record.separator to input.field.separator
+* Added FAQ section in documentation
+* Fixed typos in documentation
+* Updated Javadoc
+
+Changes in version 1.0.0 (2012-10-14)
+-------------------------------------
+
+* Initial core API and Implementation
+* Common data type validators

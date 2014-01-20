@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <title>Easy Batch - Tutorials</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Mahmoud Ben Hassine">
+    <link rel="shortcut icon" href="../resources/img/gear.ico"/>
+
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resources/css/prettify.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+        padding-top: 60px;
+        padding-bottom: 15px;
+        }
+        .sidebar-nav {
+        padding: 9px 0;
+        }
+        .table td.center-td{
+        text-align: center;
+        }
+        .table th.center-th{
+        text-align: center;
+        }
+    </style>
+    <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../resources/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../resources/css/sidebar.css" rel="stylesheet">
+
+    <script type="text/javascript" src="../resources/js/prettify.js"></script>
+
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-35599235-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+
+</head>
+
+<body onload="prettyPrint()">
+
+<div class="navbar navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
+            <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">Version: 2.1.0</p>
+                <ul class="nav">
+                    <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
+                    <li class="dropdown">
+                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
+                            <li><a href="../documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
+                            <li><a href="../documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
+                            <li><a href="../documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
+                            <li><a href="index.html"><i class="icon-code"></i> Tutorials</a></li>
+                            <li><a href="../documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a id="getinvolved" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-thumbs-up"></i> Get involved<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="getinvolved">
+                            <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
+                            <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+<div class="row-fluid">
+
+    <div class="span3">
+        <div class="well sidebar-nav bs-docs-sidenav" data-spy="affix">
+            <ul class="nav nav-list">
+                <li class="nav-header">About Easy Batch</li>
+                <li><a href="../index.html"><i class="icon-home"></i> Overview</a></li>
+                <li><a href="../releaseNotes.html"><i class="icon-tags"></i> Release notes</a></li>
+                <li class="nav-header">Documentation</li>
+                <li><a href="../documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
+                <li><a href="../documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
+                <li><a href="../documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
+                <li class="active"><a href="index.html"><i class="icon-code"></i> Tutorials</a></li>
+                <li><a href="../documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
+                <li class="nav-header">Get involved</li>
+                <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
+                <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="span9">
+
+        <div class="page-header">
+            <h1>Hello World FLR Tutorial</h1>
+        </div>
+
+        <div class="row-fluid">
+
+            <h2 id="1">1. Description</h2>
+            <p>This tutorial is the same as the <a href="helloworldCSV.html">Hello World CSV tutorial</a> except that greetings are read from a Fixed-Length Record flat file instead of a CSV flat file.
+                We will process a simple FLR file containing greeting records and generate greeting messages.
+                To keep the tutorial simple, the input file named <code>greetings.flr</code> has the following content:</p>
+<pre class="prettyprint">
+#[3:sequence][3:name]
+001foo
+002bar
+00xbaz
+</pre>
+            <p>Each record is composed of 2 fields :</p>
+            <ul>
+                <li>The first 3 characters represent a sequence number</li>
+                <li>The next 3 characters represent a person name</li>
+            </ul>
+
+            <p>For each record, the batch application should print to the console a greeting of the format : <em>Hi foo! Your sequence number is 1</em> .</p>
+
+            <p>Easy Batch development is POJO-based, so we would like to map each record to an instance of the following <code>Greeting</code> bean:</p>
+<pre class="prettyprint">
+public class Greeting {
+
+    private long sequence;
+
+    private String name;
+
+    // Getters and Setters omitted
+
+    public String getGreetingMessage() {
+        return "Hi " + name + "! Your sequence number is " + sequence;
+    }
+}
+</pre>
+            <p>The sequence and name fields in fixed-length records should be mapped respectively to the sequence and name fields in the <code>Greeting</code> bean.</p>
+
+            <p>The record number 4 <code>00xbaz</code> should be ignored since the value <code>00x</code> is not a number as expected.</p>
+
+            <p>Finally, we should skip the header record from being processed since it only describes the flat file record format.</p>
+
+            <p>You will see that all these requirements can be easily implemented using Easy Batch, so let's get started!</p>
+
+            <h2 id="2">2. Implementation using Easy Batch</h2>
+            <p>The goal of Easy Batch is to let you concentrate on your batch processing logic and to handle for you all the plumbing code of reading, filtering and mapping fixed-length records to domain objects.</p>
+            <p>First, let's implement our batch processing logic by extending the <code>AbstractRecordProcessor</code> class:</p>
+<pre class="prettyprint">
+public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
+
+    @Override
+    public void processRecord(Greeting greeting) throws Exception {
+        System.out.println(greeting.getGreetingMessage());
+    }
+
+}
+</pre>
+            <p>This processor will print the greeting message for each input record as required.</p>
+            <p>Actually, we have almost finished our batch implementation! We should now configure Easy Batch engine to :<p>
+            <ol>
+                <li>Read records from the <code>greetings.flr</code> flat file</li>
+                <li>Filter records starting with # (mainly the header record)</li>
+                <li>Map each record to an instance of the <code>Greeting</code> bean</li>
+                <li>Process each record using our <code>GreetingProcessor</code></li>
+            </ol>
+
+            <p>The following listing provides this configuration:</p>
+<pre class="prettyprint">
+// Build an easy batch engine
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordReader(new FlatFileRecordReader("greetings.flr")) // requirement N°1
+    .registerRecordFilter(new StartsWithStringRecordFilter("#")) // requirement N°2
+    .registerRecordMapper(new FixedLengthRecordMapper( // requirement N°3
+        Greeting.class, //Pojo type
+        new int[]{3,3}, // Fields lengths in FL record
+        new String[]{"sequence", "name"})) // // Fields names in the same order as in the FL records
+    .registerRecordProcessor(new GreetingProcessor()) // requirement N°4
+    .build();
+</pre>
+            <p>That's all, we can now run the batch and see the results!</p>
+
+            <h2 id="3">3. Running the batch</h2>
+
+            <p>To run Easy Batch, we use the following snippet :</p>
+<pre class="prettyprint">
+// Run easy batch engine
+easyBatchEngine.call();
+</pre>
+
+            <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/helloworld/flr" target="_blank">here</a>.
+
+            <p>To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
+
+            <p><span class="icon-stack"> <i class="icon-sign-blank icon-stack-base"></i> <i class="icon-terminal icon-light"></i> </span>
+                <em><strong>mvn exec:java -PrunHelloWorldFLRTutorial</strong></em>
+            </p>
+
+            <p>If everything is ok, you should see something like the following output in the console :</p>
+
+<pre>
+INFO: Initializing easy batch engine
+INFO: Data source: /data/in/greetings.flr
+INFO: Total records = 4
+INFO: easy batch engine is running...
+INFO: Record #1 [StringRecord{number=1, rawContent='#[3:sequence][3:name]'}] has been filtered
+Hi foo! Your sequence number is 1
+Hi bar! Your sequence number is 2
+SEVERE: Error while mapping record #4 [StringRecord{number=4, rawContent='00xbaz'}] : Unable to convert '00x' to type long for field sequence
+INFO: Shutting down easy batch engine
+</pre>
+
+            <p>As expected, Easy Batch processed only valid records and generated a greeting message for each person.</p>
+            <p>Moreover, Easy Batch has logged precise information about which record has been filtered and ignored with an error message for each case.</p>
+
+            <h2 id="4">4. Conclusion</h2>
+
+            <p>In this tutorial, you have learned how to process data from a fixed-length flat file using Easy Batch.</p>
+
+            <p>With Easy Batch, all we have done is :</p>
+            <ul>
+                <li>Implementing the business logic of our batch</li>
+                <li>Providing configuration meta data</li>
+            </ul>
+
+            <p>Easy Batch handled all the plumbing code of reading, filtering, parsing and mapping flat file records to
+                instances of our domain object <code>Greeting</code> and actually has reduced this plumbing code from hundred lines to only a very few lines! (listing above)</p>
+
+            <p>The following table summarizes what we have done and what Easy Batch has done for us :</p>
+
+            <table class="table table-bordered table-condensed table-striped table-center">
+                <thead>
+                <tr>
+                    <th>Task</th>
+                    <th class="center-th">You</th>
+                    <th class="center-th">Easy Batch</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Provide configuration meta data</td>
+                    <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Provide record processing logic</td>
+                    <td class="center-td"><i class="icon-ok-circle"></i></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Handle I/O for input file</td>
+                    <td></td>
+                    <td class="center-td"><i class="icon-ok-circle"></i></td>
+                </tr>
+                <tr>
+                    <td>Read input file record by record</td>
+                    <td></td>
+                    <td class="center-td"><i class="icon-ok-circle"></i></td>
+                </tr>
+                <tr>
+                    <td>Filter comment records</td>
+                    <td></td>
+                    <td class="center-td"><i class="icon-ok-circle"></i></td>
+                </tr>
+                <tr>
+                    <td>Map records to domain objects</td>
+                    <td></td>
+                    <td class="center-td"><i class="icon-ok-circle"></i></td>
+                </tr>
+                <tr>
+                    <td>Apply business processing logic</td>
+                    <td></td>
+                    <td class="center-td"><i class="icon-ok-circle"></i></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr>
+
+<footer>
+    <p class="pull-right"><a href="#"><i class="icon-circle-arrow-up"></i> Back to top</a></p>
+    <p>Easy Batch is maintained by <a href="mailto:md.benhassine@gmail.com?subject=[Easy Batch]"><i class="icon-envelope"></i> benas</a> at <a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Github</a></p>
+</footer>
+
+</div>
+
+<script src="../resources/js/jquery.js"></script>
+<script src="../resources/js/bootstrap.min.js"></script>
+
+</body></html>

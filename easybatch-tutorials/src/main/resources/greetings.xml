@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<greetings>
+    <greeting>
+        <sequence>1</sequence>
+        <name>foo</name>
+    </greeting>
+    <greeting>
+        <sequence>2</sequence>
+        <name>bar</name>
+    </greeting>
+    <greeting>
+        <sequence>x</sequence>
+        <name>baz</name>
+    </greeting>
+    <greeting>
+        <id>4</id>
+        <name>blah!</name>
+    </greeting>
+</greetings>

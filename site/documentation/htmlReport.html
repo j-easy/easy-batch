@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Easy Batch Report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <style>
+        body {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container col-md-8 col-md-offset-2">
+
+    <div class="row">
+        <h2>Easy Batch Report</h2>
+        <h3>Data source : /data/in/greetings.csv</h3>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <table class="table table-bordered table-hover table-condensed">
+                <tbody>
+                <tr>
+                    <td>Start Time</td>
+                    <td>2014-01-17 04:38:03</td>
+                </tr>
+                <tr>
+                    <td>End Time</td>
+                    <td>2014-01-17 04:38:03</td>
+                </tr>
+                <tr>
+                    <td>Batch duration</td>
+                    <td>100s</td>
+                <tr>
+                    <td>Total records</td>
+                    <td>100</td>
+                </tr>
+                <tr>
+                    <td>Record processing average time</td>
+                    <td>1.0s</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <table class="table table table-bordered table-hover table-condensed">
+                <tbody>
+                <tr>
+                    <td>Filtered records</td>
+                    <td><span class="label label-default">10 (10%)</span></td>
+                </tr>
+                <tr>
+                    <td>Ignored records</td>
+                    <td><span class="label label-info">10 (10%)</span></td>
+                </tr>
+                <tr>
+                    <td>Rejected records</td>
+                    <td><span class="label label-warning">10 (10%)</span></td>
+                </tr>
+                <tr>
+                    <td>Error records</td>
+                    <td><span class="label label-danger">20 (20%)</span></td>
+                </tr>
+                <tr>
+                    <td>Processed records</td>
+                    <td><span class="label label-success">50 (50%)</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script>
+    jQuery(document).ready(function () {
+
+        jQuery('#chart').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: true
+            },title: {
+                text: 'Records statistics'
+            },
+            tooltip: {
+                pointFormat: '<b>{point.y}%</b>'
+            },
+            legend: {
+                labelFormatter: function() {
+                    return this.name + ' (' + this.y + '%)';
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                type: 'pie',
+                data: [
+                    {
+                        name: 'Filtered',
+                        color: '#999999',
+                        y: 10
+                    },
+                    {
+                        name: 'Ignored',
+                        color: '#5BC0DE',
+                        y: 10
+                    },
+                    {
+                        name: 'Rejected',
+                        color: '#F0AD4E',
+                        y: 10
+                    },
+                    {
+                        name: 'Errors',
+                        color: '#D9534F',
+                        y: 20
+                    },
+                    {
+                        name: 'Processed',
+                        color: '#5CB85C',
+                        y: 50
+                    }
+                ]
+            }]
+        });
+    });
+
+</script>
+</body>
+</html>
