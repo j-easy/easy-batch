@@ -18,6 +18,12 @@
         .sidebar-nav {
             padding: 9px 0;
         }
+        .table td.center-td{
+            text-align: center;
+        }
+        .table th.center-th{
+            text-align: center;
+        }
     </style>
     <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../resources/css/font-awesome.min.css" rel="stylesheet">
@@ -187,7 +193,7 @@ executorService.shutdown();
 </pre>
                 <p class="text-success">The advantage of this approach is that each Easy Batch engine reads only its own part and not the whole data source.</p>
                 <p class="text-error">The drawback of this approach is that you should split the data source into multiple parts since Easy Batch does not provide data partitioning feature and then merge results.</p>
-                <p>Note that the merge operation can be avoided if your <code>RecordProcessor</code> implementation can write data concurrently in a destination data source (a database for instance).</p>
+                <p>Note that the merge operation is optional (it depends on the use case) and can be avoided if your <code>RecordProcessor</code> implementation can write data concurrently in a destination data source (a database for instance).</p>
                 <p>Note also that Easy Batch engines run in the same JVM. You can also run multiple instances in separate JVMs if you want.</p>
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/parallel" target="_blank">here</a>.
                     To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
@@ -269,6 +275,28 @@ Processing the input file with a single Easy Batch instance took 10806ms
 
                 <h2 id="4">4. Conclusion</h2>
                 <p>In this tutorial, we have seen how to run multiple Easy Batch instances in parallel to speed up the data processing and decrease the overall processing time.</p>
+                <p>The following table summarizes the advantages and drawbacks for each approach of parallelism:</p>
+                <table class="table table-bordered table-condensed table-center">
+                    <thead>
+                    <tr>
+                        <th>Parallelism approach</th>
+                        <th>Advantages</th>
+                        <th>Drawbacks</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>* Multiple data source parts<br/>* Multiple Easy Batch instances</td>
+                        <td><span class="text-success">Each Easy Batch engine reads only its own part and not the whole data source</span></td>
+                        <td><span class="text-error">Need to split the data source into multiple parts since Easy Batch does not provide data partitioning feature</span></td>
+                    </tr>
+                    <tr>
+                        <td>* Single data source<br/>* Multiple Easy Batch instances (with record filtering technique)</td>
+                        <td><span class="text-success">No need to split the input data source into multiple parts</span></td>
+                        <td><span class="text-error">Each Easy Batch instance will read the whole data source</span></td>
+                    </tr>
+                    </tbody>
+                </table>
                 <p>Even though the tutorial was about processing an input flat file, the same technique of record filtering can be used with any type of data source.</p>
 
             </div>
