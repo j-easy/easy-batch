@@ -187,7 +187,7 @@ executorService.shutdown();
 </pre>
                 <p class="text-success">The advantage of this approach is that each Easy Batch engine reads only its own part and not the whole data source.</p>
                 <p class="text-error">The drawback of this approach is that you should split the data source into multiple parts since Easy Batch does not provide data partitioning feature and then merge results.</p>
-                <p>Note that The merge operation can be avoided if you <code>RecordProcessor</code> implementation can write data concurrently in a destination data source (a database for instance).</p>
+                <p>Note that the merge operation can be avoided if your <code>RecordProcessor</code> implementation can write data concurrently in a destination data source (a database for instance).</p>
                 <p>Note also that Easy Batch engines run in the same JVM. You can also run multiple instances in separate JVMs if you want.</p>
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/parallel" target="_blank">here</a>.
                     To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
