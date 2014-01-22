@@ -110,7 +110,7 @@
                 <p>Using the <code>java.util.concurrent.ExecutorService</code> with a pool of threads allows you to run multiple Easy Batch instances in parallel.</p>
                 <p>Usually, there are two main use cases for processing input data in parallel:</p>
                 <ul>
-                    <li>Split the data source into multiple parts which will be processed by separated threads</li>
+                    <li>Split the data source into multiple parts which will be processed by separated threads (or JVMs)</li>
                     <li>Use a single data source and filter records to be processed by each thread</li>
                 </ul>
                 <p>Easy Batch does not provide a feature to partition input data but allows you to process data in parallel for both cases above.
@@ -185,7 +185,10 @@ Future&lt;EasyBatchReport&gt; easyBatchReport2 = executorService.submit(easyBatc
 
 executorService.shutdown();
 </pre>
-
+                <p class="text-success">The advantage of this approach is that each Easy Batch engine reads only its own part and not the whole data source.</p>
+                <p class="text-error">The drawback of this approach is that you should split the data source into multiple parts since Easy Batch does not provide data partitioning feature and then merge results.</p>
+                <p>Note that The merge operation can be avoided if you <code>RecordProcessor</code> implementation can write data concurrently in a destination data source (a database for instance).</p>
+                <p>Note also that Easy Batch engines run in the same JVM. You can also run multiple instances in separate JVMs if you want.</p>
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/parallel" target="_blank">here</a>.
                     To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
 
@@ -237,7 +240,8 @@ Future&lt;EasyBatchReport&gt; easyBatchReport2 = executorService.submit(easyBatc
 
 executorService.shutdown();
 </pre>
-
+                <p class="text-success">The advantage of this approach is that you don't need to split the input data source into multiple parts.</p>
+                <p class="text-error">The drawback of this approach is that each Easy Batch instance will read the whole data source which can be costly but remains negligible comparing to the overall speedup you can achieve with this technique.</p>
                 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/parallel" target="_blank">here</a>.</p>
 
                 <p>To be able to compare results and speed up, first we run a single Easy Batch instance to process the input file <code>secret-messages.txt</code> and record the total processing time (not shown in the listing above).</p>
