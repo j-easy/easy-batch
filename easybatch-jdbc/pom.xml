@@ -54,7 +54,6 @@
         <dependency>
             <groupId>io.github.benas</groupId>
             <artifactId>easybatch-core</artifactId>
-            <version>2.1.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
