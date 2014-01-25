@@ -26,7 +26,7 @@ All documentation about Easy Batch can be found at [http://benas.github.io/easy-
 
 ## Current version
 
-The current stable version of Easy Batch is 2.1.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/).
+The current stable version of Easy Batch is 2.1.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/) [![Coverage Status](https://coveralls.io/repos/benas/easy-batch/badge.png)](https://coveralls.io/r/benas/easy-batch).
 <br/>
 <a href="https://buildhive.cloudbees.com/job/benas/job/easy-batch/"><img src="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/></a>
 
