@@ -45,7 +45,8 @@ public class EasyBatchReport implements Serializable {
 
     private long totalRecords;
 
-    private long currentRecordNumber; // needed only for jmx
+    // needed only for jmx
+    private long currentRecordNumber;
 
     private List<Long> filteredRecords;
 

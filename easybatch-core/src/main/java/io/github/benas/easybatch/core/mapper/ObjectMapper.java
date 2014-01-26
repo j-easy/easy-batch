@@ -84,7 +84,8 @@ public class ObjectMapper<T> {
 
         // Initialize setters that will be used to populate the returned instance.
         for (int i = 0; i < headersMapping.length; i++) {
-            String setterName = "set" + headersMapping[i].substring(0, 1).toUpperCase() + headersMapping[i].substring(1); //javabean naming convention
+            //javabean naming convention
+            String setterName = "set" + headersMapping[i].substring(0, 1).toUpperCase() + headersMapping[i].substring(1);
             for (Method method : methods) {
                 if (method.getName().equals(setterName)) {
                     recordClassSetters[i] = method;
