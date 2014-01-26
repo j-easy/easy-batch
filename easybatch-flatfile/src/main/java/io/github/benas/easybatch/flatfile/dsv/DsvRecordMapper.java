@@ -86,9 +86,9 @@ public class DsvRecordMapper<T> implements RecordMapper<T> {
      * @param fieldsMapping a String array representing fields name in the same order in the DSV flat file.
      */
     public DsvRecordMapper(final Class<? extends T> recordClass, final String[] fieldsMapping) {
-        this.delimiter = DEFAULT_DELIMITER; // default delimiter
-        this.qualifier = DEFAULT_QUALIFIER; // default qualifier
-        this.trimWhitespaces = DEFAULT_WHITESPACE_TRIMMING; // default value
+        this.delimiter = DEFAULT_DELIMITER;
+        this.qualifier = DEFAULT_QUALIFIER;
+        this.trimWhitespaces = DEFAULT_WHITESPACE_TRIMMING;
         recordExpectedLength = fieldsMapping.length;
         objectMapper = new ObjectMapper<T>(recordClass, fieldsMapping);
     }
@@ -143,7 +143,8 @@ public class DsvRecordMapper<T> implements RecordMapper<T> {
      */
     public void setDelimiter(final String delimiter) {
         String prefix = "";
-        if ("|".equals(delimiter)) { //escape the "pipe" character used in regular expression of String.split method
+        //escape the "pipe" character used in regular expression of String.split method
+        if ("|".equals(delimiter)) {
             prefix = "\\";
         }
         this.delimiter = prefix + delimiter;
