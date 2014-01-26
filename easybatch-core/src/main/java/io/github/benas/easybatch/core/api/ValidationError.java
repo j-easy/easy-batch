@@ -34,7 +34,7 @@ public class ValidationError {
     /**
      * The error message.
      */
-    private String message;
+    private final String message;
 
     public ValidationError(final String message) {
         this.message = message;
