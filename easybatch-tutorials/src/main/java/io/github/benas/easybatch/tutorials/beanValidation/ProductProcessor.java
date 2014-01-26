@@ -40,14 +40,14 @@ import java.util.logging.Logger;
  */
 public class ProductProcessor extends AbstractRecordProcessor<Product> {
 
-    private Logger logger = Logger.getLogger(ProductProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ProductProcessor.class.getName());
 
     public void processRecord(final Product product) throws Exception {
         DatabaseUtil.getCurrentSession().beginTransaction();
         try {
             DatabaseUtil.getCurrentSession().saveOrUpdate(product);
             DatabaseUtil.getCurrentSession().getTransaction().commit();
-            logger.log(Level.INFO, "Product {0} successfully persisted in the database", product);
+            LOGGER.log(Level.INFO, "Product {0} successfully persisted in the database", product);
         } catch (HibernateException e) {
             DatabaseUtil.getCurrentSession().getTransaction().rollback();
             throw new Exception("A database exception occurred during product persisting.", e);

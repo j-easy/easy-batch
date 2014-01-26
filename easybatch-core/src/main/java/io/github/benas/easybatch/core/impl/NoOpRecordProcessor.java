@@ -36,13 +36,13 @@ import java.util.logging.Logger;
  */
 class NoOpRecordProcessor implements RecordProcessor<Record, Object> {
 
-    private Logger logger = Logger.getLogger(NoOpRecordProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NoOpRecordProcessor.class.getName());
 
     /**
      * {@inheritDoc}
      */
     public void processRecord(final Record record) throws Exception {
-        logger.info("Processing record : " + record);
+        LOGGER.info("Processing record : " + record);
     }
 
     /**

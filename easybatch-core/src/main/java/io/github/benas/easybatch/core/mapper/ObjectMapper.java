@@ -48,7 +48,7 @@ public class ObjectMapper<T> {
     /**
      * The logger.
      */
-    private Logger logger = Logger.getLogger(ObjectMapper.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ObjectMapper.class.getName());
 
     /**
      * The target domain object class.
@@ -120,7 +120,7 @@ public class ObjectMapper<T> {
                     throw new Exception("Unable to convert '" + content + "' to type " + type + " for field " + headersMapping[index], e);
                 }
             } else {
-                logger.log(Level.WARNING, "Type conversion not supported for type " + type + ", field " + headersMapping[index] + " will be set to null");
+                LOGGER.log(Level.WARNING, "Type conversion not supported for type " + type + ", field " + headersMapping[index] + " will be set to null");
             }
 
             //set the typed value to the object field
