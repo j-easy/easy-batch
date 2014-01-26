@@ -24,21 +24,53 @@
 
 package io.github.benas.easybatch.core.converter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * java.util.Date type converter.
- * Converts a String date in the "yyyy-mm-dd" format to a java.util.Date type.
+ * Converts a String date (by default in the "yyyy-mm-dd" format) to a java.util.Date type.
  *
  * @author benas (md.benhassine@gmail.com)
  */
 public class DateTypeConverter implements TypeConverter<Date> {
 
     /**
+     * The default date format.
+     */
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-mm-dd";
+
+    /**
+     * The date format to use.
+     */
+    private String dateFormat;
+
+    /**
+     * Create a Date converter with the default format {@link DateTypeConverter#DEFAULT_DATE_FORMAT}
+     */
+    public DateTypeConverter() {
+        this(DEFAULT_DATE_FORMAT);
+    }
+
+    /**
+     * Create a Date converter with the specified date format.
+     * @param dateFormat the date format to use
+     */
+    public DateTypeConverter(String dateFormat) {
+        this.dateFormat = dateFormat;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public Date convert(final String value) {
-        return new Date(java.sql.Date.valueOf(value).getTime());
+        try {
+            return new SimpleDateFormat(DEFAULT_DATE_FORMAT).parse(value);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Unable to convert value '" + value + "' to a Date object with format "
+                    + dateFormat, e);
+        }
     }
 
 }
