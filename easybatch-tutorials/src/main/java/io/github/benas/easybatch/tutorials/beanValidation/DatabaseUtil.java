@@ -35,10 +35,10 @@ public class DatabaseUtil {
     /*
      * HSQL utility methods
      */
-    private static final String databaseURL = "jdbc:hsqldb:mem";
+    private static final String DATABASE_URL = "jdbc:hsqldb:mem";
 
     public static void startEmbeddedDatabase() throws Exception {
-            Connection connection = DriverManager.getConnection(databaseURL, "sa", "pwd");
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "sa", "pwd");
             Statement statement = connection.createStatement();
 
             String query = "CREATE TABLE if not exists product (\n" +
@@ -57,7 +57,7 @@ public class DatabaseUtil {
 
     public static void dumpProductTable() throws Exception {
         System.out.println("Loading products from the database...");
-            Connection connection = DriverManager.getConnection(databaseURL, "sa", "pwd");
+            Connection connection = DriverManager.getConnection(DATABASE_URL, "sa", "pwd");
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from product");
 
