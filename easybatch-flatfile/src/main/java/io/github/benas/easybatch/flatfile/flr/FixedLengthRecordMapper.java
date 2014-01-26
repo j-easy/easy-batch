@@ -64,7 +64,7 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
      * @param fieldsMapping a String array representing fields name in the same order in the FLR flat file.
      */
     public FixedLengthRecordMapper(Class<? extends T> recordClass, int[] fieldsLength, String[] fieldsMapping) {
-        this.fieldsLength = fieldsLength;
+        this.fieldsLength = fieldsLength.clone();
         objectMapper = new ObjectMapper<T>(recordClass, fieldsMapping);
         for (int fieldLength : fieldsLength) {
             recordExpectedLength += fieldLength;

@@ -78,7 +78,7 @@ public class ObjectMapper<T> {
     public ObjectMapper(final Class<? extends T> recordClass, final String[] headersMapping) {
         initTypeConverters();
         this.recordClass = recordClass;
-        this.headersMapping = headersMapping;
+        this.headersMapping = headersMapping.clone();
         recordClassSetters = new Method[headersMapping.length];
         Method[] methods = recordClass.getDeclaredMethods();
 
