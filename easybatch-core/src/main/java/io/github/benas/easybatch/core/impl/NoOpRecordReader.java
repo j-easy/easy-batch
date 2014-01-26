@@ -38,6 +38,7 @@ class NoOpRecordReader implements RecordReader {
      * {@inheritDoc}
      */
     public void open() {
+        //no op implementation
     }
 
     /**
@@ -70,6 +71,7 @@ class NoOpRecordReader implements RecordReader {
      * {@inheritDoc}
      */
     public void close() {
+        //no op implementation
     }
 
 }
