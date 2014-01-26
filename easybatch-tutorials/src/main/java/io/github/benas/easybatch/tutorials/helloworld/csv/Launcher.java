@@ -30,7 +30,6 @@ import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
 import io.github.benas.easybatch.core.filter.StartsWithStringRecordFilter;
 import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
-import io.github.benas.easybatch.validation.BeanValidationRecordValidator;
 
 /**
 * Main class to run the hello world tutorial.
