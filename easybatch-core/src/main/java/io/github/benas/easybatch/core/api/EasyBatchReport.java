@@ -180,7 +180,7 @@ public class EasyBatchReport implements Serializable {
      * @return the percent.
      */
     public int percent(final long current, final long total) {
-        return ((int) (((float) current / (float) total) * 100));
+        return (int) (((float) current / (float) total) * 100);
     }
 
     public int getFilteredRecordsNumber() {
