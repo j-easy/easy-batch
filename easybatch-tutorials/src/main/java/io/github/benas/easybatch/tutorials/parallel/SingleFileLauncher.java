@@ -61,7 +61,7 @@ public class SingleFileLauncher {
         System.out.println("############################################");
         System.out.println("Running two Easy Batch instances in parallel");
         System.out.println("############################################");
-        long ParallelInstancesStartTime = System.currentTimeMillis();
+        long parallelInstancesStartTime = System.currentTimeMillis();
 
         // To avoid any thread-safety issues,
         // we will create 2 engines with separate instances of record readers and processors
@@ -91,10 +91,10 @@ public class SingleFileLauncher {
 
         executorService.shutdown();
 
-        long ParallelInstancesEndTime = System.currentTimeMillis() - ParallelInstancesStartTime;
+        long parallelInstancesEndTime = System.currentTimeMillis() - parallelInstancesStartTime;
 
         System.out.println("###########################################################################################################");
-        System.out.println("Processing the input file with two Easy Batch instances in parallel took " + ParallelInstancesEndTime + "ms");
+        System.out.println("Processing the input file with two Easy Batch instances in parallel took " + parallelInstancesEndTime + "ms");
         System.out.println("Processing the input file with a single Easy Batch instance took " + singleInstanceEndTime + "ms");
         System.out.println("###########################################################################################################");
 
