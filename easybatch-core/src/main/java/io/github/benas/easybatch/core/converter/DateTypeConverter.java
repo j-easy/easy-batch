@@ -30,7 +30,7 @@ import java.util.Date;
 
 /**
  * java.util.Date type converter.
- * Converts a String date (by default in the "yyyy-mm-dd" format) to a java.util.Date type.
+ * Converts a String date (by default in the "yyyy-MM-dd" format) to a java.util.Date type.
  *
  * @author benas (md.benhassine@gmail.com)
  */
@@ -39,7 +39,7 @@ public class DateTypeConverter implements TypeConverter<Date> {
     /**
      * The default date format.
      */
-    public static final String DEFAULT_DATE_FORMAT = "yyyy-mm-dd";
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 
     /**
      * The date format to use.
