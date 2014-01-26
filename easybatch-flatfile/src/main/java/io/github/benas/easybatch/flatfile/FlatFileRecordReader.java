@@ -98,7 +98,7 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
-    public long getTotalRecords() {
+    public Long getTotalRecords() {
         long totalRecords = 0;
         while (recordCounterScanner.hasNextLine()) {
             totalRecords++;

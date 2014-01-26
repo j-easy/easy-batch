@@ -61,7 +61,7 @@ public class StringRecordReader implements RecordReader {
     }
 
     @Override
-    public long getTotalRecords() {
+    public Long getTotalRecords() {
         long totalRecords = 0;
         while (recordCounterScanner.hasNextLine()) {
             totalRecords++;

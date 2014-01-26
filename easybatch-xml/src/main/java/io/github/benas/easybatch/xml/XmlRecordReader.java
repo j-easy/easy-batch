@@ -87,7 +87,7 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public long getTotalRecords() {
+    public Long getTotalRecords() {
         long totalRecords = 0;
         try {
             XMLEventReader totalRecordsXmlEventReader =

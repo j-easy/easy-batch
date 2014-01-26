@@ -95,8 +95,8 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
-    public long getTotalRecords() {
-        int rowCount = 0;
+    public Long getTotalRecords() {
+        long rowCount = 0;
 
         try {
             if (resultSet.last()) {

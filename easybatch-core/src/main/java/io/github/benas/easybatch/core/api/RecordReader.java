@@ -52,9 +52,10 @@ public interface RecordReader {
 
     /**
      * Get the total record number in the data source. This is useful to calculate execution progress.
-     * @return the total record number in the data source.
+     * @return the total record number in the data source or null if the total records number cannot be
+     * calculated in advance
      */
-    long getTotalRecords();
+    Long getTotalRecords();
 
     /**
      * This method returns a human readable data source name to be shown in the batch report.

@@ -63,9 +63,9 @@ public class CliRecordReader implements RecordReader {
     }
 
     @Override
-    public long getTotalRecords() {
+    public Long getTotalRecords() {
         // total record cannot be calculated upfront
-        return 0;
+        return null;
     }
 
     @Override
