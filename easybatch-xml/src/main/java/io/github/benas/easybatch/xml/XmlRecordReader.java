@@ -90,16 +90,16 @@ public class XmlRecordReader implements RecordReader {
     public long getTotalRecords() {
         long totalRecords = 0;
         try {
-            XMLEventReader xmlEventReader =
+            XMLEventReader totalRecordsXmlEventReader =
                     XMLInputFactory.newInstance().createXMLEventReader(new FileInputStream(new File(xmlFile)));
             XMLEvent event;
-            while (xmlEventReader.hasNext()) {
-                event = xmlEventReader.nextEvent();
+            while (totalRecordsXmlEventReader.hasNext()) {
+                event = totalRecordsXmlEventReader.nextEvent();
                 if (event.isStartElement() && event.asStartElement().getName().toString().equals(rootElementName)) {
                     totalRecords++;
                 }
             }
-            xmlEventReader.close();
+            totalRecordsXmlEventReader.close();
         } catch (XMLStreamException e) {
             throw new RuntimeException("Unable to read data from xml file " + xmlFile, e);
         } catch (FileNotFoundException e) {

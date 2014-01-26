@@ -287,8 +287,6 @@ public class EasyBatchReport implements Serializable {
 
     // This is needed only for JMX
     public String getFormattedProgress() {
-        long currentRecordNumber = getCurrentRecordNumber();
-        long totalRecords = getTotalRecords();
         String ratio = currentRecordNumber + "/" + totalRecords;
         String percent = " (" + percent(currentRecordNumber, totalRecords) + "%)";
         return ratio + percent;
