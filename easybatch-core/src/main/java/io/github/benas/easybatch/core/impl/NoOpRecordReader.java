@@ -37,7 +37,8 @@ class NoOpRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
-    public void open() { }
+    public void open() {
+    }
 
     /**
      * {@inheritDoc}
@@ -68,6 +69,7 @@ class NoOpRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
-    public void close() { }
+    public void close() {
+    }
 
 }
