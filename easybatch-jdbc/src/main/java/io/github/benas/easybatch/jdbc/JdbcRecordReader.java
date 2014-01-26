@@ -122,10 +122,16 @@ public class JdbcRecordReader implements RecordReader {
     @Override
     public void close() {
         try {
-            if (resultSet != null) resultSet.close();
-            if (statement != null) { statement.close(); }
-            if (connection != null) connection.close();
-        }   catch (SQLException e) {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
             throw new RuntimeException("An exception occurred during database connection closing", e);
         }
     }
