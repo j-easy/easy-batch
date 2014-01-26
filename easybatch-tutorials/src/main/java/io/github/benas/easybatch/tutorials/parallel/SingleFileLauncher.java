@@ -42,11 +42,13 @@ import java.util.concurrent.Future;
  */
 public class SingleFileLauncher {
 
+    public static final String COMMENT_SEPARATOR = "####################################";
+
     public static void main(String[] args) throws Exception {
 
-        System.out.println("####################################");
+        System.out.println(COMMENT_SEPARATOR);
         System.out.println("Running a single Easy Batch instance");
-        System.out.println("####################################");
+        System.out.println(COMMENT_SEPARATOR);
         long singleInstanceStartTime = System.currentTimeMillis();
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from secret-messages.txt
@@ -58,9 +60,9 @@ public class SingleFileLauncher {
 
         long singleInstanceEndTime = System.currentTimeMillis() - singleInstanceStartTime;
 
-        System.out.println("############################################");
+        System.out.println(COMMENT_SEPARATOR);
         System.out.println("Running two Easy Batch instances in parallel");
-        System.out.println("############################################");
+        System.out.println(COMMENT_SEPARATOR);
         long parallelInstancesStartTime = System.currentTimeMillis();
 
         // To avoid any thread-safety issues,
@@ -93,10 +95,10 @@ public class SingleFileLauncher {
 
         long parallelInstancesEndTime = System.currentTimeMillis() - parallelInstancesStartTime;
 
-        System.out.println("###########################################################################################################");
+        System.out.println(COMMENT_SEPARATOR);
         System.out.println("Processing the input file with two Easy Batch instances in parallel took " + parallelInstancesEndTime + "ms");
         System.out.println("Processing the input file with a single Easy Batch instance took " + singleInstanceEndTime + "ms");
-        System.out.println("###########################################################################################################");
+        System.out.println(COMMENT_SEPARATOR);
 
     }
 
