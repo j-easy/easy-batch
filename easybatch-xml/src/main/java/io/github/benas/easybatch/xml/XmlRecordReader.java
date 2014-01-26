@@ -11,13 +11,17 @@ import javax.xml.stream.events.XMLEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * A reader that read xml record from an xml file.
+ * A record reader that reads xml records from an xml file.
  *
  * @author benas (md.benhassine@gmail.com)
  */
 public class XmlRecordReader implements RecordReader {
+
+    private static final Logger logger = Logger.getLogger(XmlRecordReader.class.getSimpleName());
 
     /**
      * The root element name.
@@ -61,7 +65,7 @@ public class XmlRecordReader implements RecordReader {
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "An exception occurred during checking the existence of next xml record", e);
             return false;
         }
     }
@@ -78,9 +82,8 @@ public class XmlRecordReader implements RecordReader {
 
             return new XmlRecord(++currentRecordNumber, stringBuilder.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("An exception occurred during reading next xml record", e);
         }
-        return null;
     }
 
     @Override

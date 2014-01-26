@@ -71,7 +71,7 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
         try {
             return (T) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(xmlRecord.getRawContent().getBytes()));
         } catch (UnmarshalException e) {
-            throw new Exception(e.getLinkedException().getLocalizedMessage());
+            throw new Exception(e.getLinkedException().getLocalizedMessage(), e);
         }
     }
 

@@ -63,13 +63,9 @@ public class Launcher {
                 .build();
 
         // schedule the engine to start now and run every minute
-        try {
-            EasyBatchScheduler easyBatchScheduler = new EasyBatchScheduler(easyBatchEngine);
-            easyBatchScheduler.scheduleAtWithInterval(new Date(), 1);
-            easyBatchScheduler.start();
-        } catch (EasyBatchSchedulerException e) {
-            System.err.println(e.getMessage());
-        }
+        EasyBatchScheduler easyBatchScheduler = new EasyBatchScheduler(easyBatchEngine);
+        easyBatchScheduler.scheduleAtWithInterval(new Date(), 1);
+        easyBatchScheduler.start();
 
     }
 

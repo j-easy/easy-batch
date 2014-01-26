@@ -37,8 +37,7 @@ public class DatabaseUtil {
      */
     private static final String databaseURL = "jdbc:hsqldb:mem";
 
-    public static void startEmbeddedDatabase() {
-        try {
+    public static void startEmbeddedDatabase() throws Exception {
             Connection connection = DriverManager.getConnection(databaseURL, "sa", "pwd");
             Statement statement = connection.createStatement();
 
@@ -54,14 +53,10 @@ public class DatabaseUtil {
             statement.executeUpdate(query);
             statement.close();
             connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
-    public static void dumpProductTable() {
+    public static void dumpProductTable() throws Exception {
         System.out.println("Loading products from the database...");
-        try {
             Connection connection = DriverManager.getConnection(databaseURL, "sa", "pwd");
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from product");
@@ -80,8 +75,5 @@ public class DatabaseUtil {
             resultSet.close();
             statement.close();
             connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

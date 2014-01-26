@@ -28,7 +28,6 @@ import io.github.benas.easybatch.core.api.AbstractRecordProcessor;
 import io.github.benas.easybatch.tutorials.customers.model.Customer;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 /**
@@ -55,11 +54,7 @@ public class CustomerProcessor extends AbstractRecordProcessor<Customer> {
 
     @Override
     public void processRecord(final Customer customer) throws Exception {
-        try {
-            jaxbMarshaller.marshal(customer, System.out);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+        jaxbMarshaller.marshal(customer, System.out);
     }
 
 }

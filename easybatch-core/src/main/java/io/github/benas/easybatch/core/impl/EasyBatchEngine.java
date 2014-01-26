@@ -112,7 +112,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
             try {
                 typedRecord = recordMapper.mapRecord(currentRecord);
             } catch (Exception e) {
-                logger.log(Level.SEVERE, "Error while mapping record #" + currentRecordNumber + " [" + currentRecord + "] : " + e.getMessage());
+                logger.log(Level.SEVERE, "Error while mapping record #" + currentRecordNumber + " [" + currentRecord + "] : " + e.getMessage(), e);
                 easyBatchReport.addIgnoredRecord(currentRecordNumber);
                 easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
                 continue;
@@ -173,7 +173,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
             }
         } catch (Exception e) {
             String error = "Unable to register Easy batch JMX MBean. Root exception is :" + e.getMessage();
-            logger.warning(error);
+            logger.log(Level.WARNING, error, e);
         }
     }
 

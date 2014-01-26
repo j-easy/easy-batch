@@ -70,6 +70,11 @@ public class ObjectMapper<T> {
      */
     private Map<Class, TypeConverter> typeConverters;
 
+    /**
+     * Construct an object mapper.
+     * @param recordClass the target object type
+     * @param headersMapping field names array
+     */
     public ObjectMapper(final Class<? extends T> recordClass, final String[] headersMapping) {
         initTypeConverters();
         this.recordClass = recordClass;
@@ -88,6 +93,12 @@ public class ObjectMapper<T> {
         }
     }
 
+    /**
+     * Map a list of field contents to fields of the target object type.
+     * @param fieldsContents fields content values
+     * @return A populated instance of the target type.
+     * @throws Exception thrown if field contents cannot be mapped to target object fields
+     */
     public T mapObject(final String[] fieldsContents) throws Exception {
 
         T result = recordClass.newInstance();
@@ -106,7 +117,7 @@ public class ObjectMapper<T> {
                 try {
                     typedValue = typeConverter.convert(content);
                 } catch (Exception e) {
-                    throw new Exception("Unable to convert '" + content + "' to type " + type + " for field " + headersMapping[index]);
+                    throw new Exception("Unable to convert '" + content + "' to type " + type + " for field " + headersMapping[index], e);
                 }
             } else {
                 logger.log(Level.WARNING, "Type conversion not supported for type " + type + ", field " + headersMapping[index] + " will be set to null");
