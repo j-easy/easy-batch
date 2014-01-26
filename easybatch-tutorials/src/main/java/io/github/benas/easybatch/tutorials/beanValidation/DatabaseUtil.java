@@ -11,6 +11,8 @@ import java.sql.*;
  */
 public class DatabaseUtil {
 
+    private static final String DATABASE_URL = "jdbc:hsqldb:mem";
+
     /*
      * Hibernate related utilities
      */
@@ -35,7 +37,6 @@ public class DatabaseUtil {
     /*
      * HSQL utility methods
      */
-    private static final String DATABASE_URL = "jdbc:hsqldb:mem";
 
     public static void startEmbeddedDatabase() throws Exception {
             Connection connection = DriverManager.getConnection(DATABASE_URL, "sa", "pwd");
