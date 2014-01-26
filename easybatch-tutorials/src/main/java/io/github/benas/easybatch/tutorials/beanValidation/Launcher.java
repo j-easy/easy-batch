@@ -32,8 +32,6 @@ import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
 import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
 import io.github.benas.easybatch.validation.BeanValidationRecordValidator;
 
-import java.util.Locale;
-
 /**
 * Main class to run the bean validation tutorial.
  *
