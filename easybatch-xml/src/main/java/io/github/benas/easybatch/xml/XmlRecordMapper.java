@@ -22,11 +22,6 @@ import java.io.File;
 public class XmlRecordMapper<T> implements RecordMapper<T> {
 
     /**
-     * The target domain object type.
-     */
-    private Class<? extends T> type;
-
-    /**
      * Jaxb context.
      */
     private JAXBContext jaxbContext;
@@ -42,7 +37,6 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
      * @throws Exception thrown if an error occurs during the creation of Jaxb context.
      */
     public XmlRecordMapper(Class<? extends T> type) throws Exception {
-        this.type = type;
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
     }
@@ -54,7 +48,6 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
      * @throws Exception thrown if an error occurs during the creation of Jaxb context.
      */
     public XmlRecordMapper(Class<? extends T> type, String xsd) throws Exception {
-        this.type = type;
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);

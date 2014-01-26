@@ -38,11 +38,6 @@ public class EasyBatchMonitor implements EasyBatchMonitorMBean {
      */
     private EasyBatchReport easyBatchReport;
 
-    /**
-     * JMX notification sequence number.
-     */
-    private long sequenceNumber = 1;
-
     public EasyBatchMonitor(final EasyBatchReport easyBatchReport) {
         this.easyBatchReport = easyBatchReport;
     }
