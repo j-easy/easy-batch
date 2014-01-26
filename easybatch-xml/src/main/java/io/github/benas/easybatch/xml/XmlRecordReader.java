@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class XmlRecordReader implements RecordReader {
 
-    private static final Logger logger = Logger.getLogger(XmlRecordReader.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(XmlRecordReader.class.getSimpleName());
 
     /**
      * The root element name.
@@ -65,7 +65,7 @@ public class XmlRecordReader implements RecordReader {
             }
             return true;
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "An exception occurred during checking the existence of next xml record", e);
+            LOGGER.log(Level.SEVERE, "An exception occurred during checking the existence of next xml record", e);
             return false;
         }
     }
