@@ -71,19 +71,15 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readNextRecord() {
+    public Record readNextRecord() throws Exception {
         StringBuilder stringBuilder = new StringBuilder("");
-        try {
-            while (!nextTagIsRootElementEnd()) {
-                stringBuilder.append(xmlEventReader.nextEvent().toString());
-            }
-            //append root element end tag
+        while (!nextTagIsRootElementEnd()) {
             stringBuilder.append(xmlEventReader.nextEvent().toString());
-
-            return new XmlRecord(++currentRecordNumber, stringBuilder.toString());
-        } catch (Exception e) {
-            throw new RuntimeException("An exception occurred during reading next xml record", e);
         }
+        //append root element end tag
+        stringBuilder.append(xmlEventReader.nextEvent().toString());
+
+        return new XmlRecord(++currentRecordNumber, stringBuilder.toString());
     }
 
     @Override
@@ -101,9 +97,11 @@ public class XmlRecordReader implements RecordReader {
                 }
             }
         } catch (XMLStreamException e) {
-            throw new RuntimeException("Unable to read data from xml file " + xmlFile, e);
+            LOGGER.log(Level.SEVERE, "Unable to read data from xml file " + xmlFile, e);
+            return null;
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("File not found " + xmlFile, e);
+            LOGGER.log(Level.SEVERE, "File not found " + xmlFile, e);
+            return null;
         } finally {
             if (totalRecordsXmlEventReader != null) {
                 try {
@@ -122,12 +120,8 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() {
-        try {
-            xmlEventReader.close();
-        } catch (XMLStreamException e) {
-            throw new RuntimeException("An exception occurred during closing xml reader", e);
-        }
+    public void close() throws Exception {
+        xmlEventReader.close();
     }
 
     /**
