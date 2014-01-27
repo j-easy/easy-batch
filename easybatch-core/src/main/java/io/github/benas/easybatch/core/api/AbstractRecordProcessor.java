@@ -12,7 +12,7 @@ public abstract class AbstractRecordProcessor<T> implements RecordProcessor<T, O
 
     @Override
     public Object getEasyBatchResult() {
-        return new Object();
+        return null;
     }
 
 }
