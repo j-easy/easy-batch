@@ -130,14 +130,21 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
             }
 
             //validate record
-            Set<ValidationError> validationsErrors = recordValidator.validateRecord(typedRecord);
+            try {
+                Set<ValidationError> validationsErrors = recordValidator.validateRecord(typedRecord);
 
-            if (!validationsErrors.isEmpty()) {
-                StringBuilder stringBuilder = new StringBuilder();
-                for (ValidationError validationError : validationsErrors) {
-                    stringBuilder.append(validationError.getMessage()).append(" | ");
+                if (!validationsErrors.isEmpty()) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (ValidationError validationError : validationsErrors) {
+                        stringBuilder.append(validationError.getMessage()).append(" | ");
+                    }
+                    LOGGER.log(Level.SEVERE, "Record #" + currentRecordNumber + " [" + currentRecord + "] is not valid : " + stringBuilder.toString());
+                    easyBatchReport.addRejectedRecord(currentRecordNumber);
+                    easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
+                    continue;
                 }
-                LOGGER.log(Level.SEVERE, "Error while validating record #" + currentRecordNumber + " [" + currentRecord + "] : " + stringBuilder.toString());
+            } catch(Exception e) {
+                LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + currentRecordNumber + " [" + currentRecord + "]", e);
                 easyBatchReport.addRejectedRecord(currentRecordNumber);
                 easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
                 continue;
