@@ -89,8 +89,9 @@ public class XmlRecordReader implements RecordReader {
     @Override
     public Long getTotalRecords() {
         long totalRecords = 0;
+        XMLEventReader totalRecordsXmlEventReader = null;
         try {
-            XMLEventReader totalRecordsXmlEventReader =
+            totalRecordsXmlEventReader =
                     XMLInputFactory.newInstance().createXMLEventReader(new FileInputStream(new File(xmlFile)));
             XMLEvent event;
             while (totalRecordsXmlEventReader.hasNext()) {
@@ -99,11 +100,18 @@ public class XmlRecordReader implements RecordReader {
                     totalRecords++;
                 }
             }
-            totalRecordsXmlEventReader.close();
         } catch (XMLStreamException e) {
             throw new RuntimeException("Unable to read data from xml file " + xmlFile, e);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("File not found " + xmlFile, e);
+        } finally {
+            if (totalRecordsXmlEventReader != null) {
+                try {
+                    totalRecordsXmlEventReader.close();
+                } catch (XMLStreamException e) {
+                    LOGGER.log(Level.SEVERE, "An exception occurred during closing xml total record reader", e);
+                }
+            }
         }
         return totalRecords;
     }
