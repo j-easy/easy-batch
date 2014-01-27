@@ -30,6 +30,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A {@link io.github.benas.easybatch.core.api.RecordReader} that reads records from a database using jdbc API.
@@ -37,6 +39,11 @@ import java.sql.Statement;
  * @author benas (md.benhassine@gmail.com)
  */
 public class JdbcRecordReader implements RecordReader {
+
+    /**
+     * The logger to use.
+     */
+    private static final Logger LOGGER = Logger.getLogger(JdbcRecordReader.class.getSimpleName());
 
     /**
      * The database connection to use to read data.
@@ -85,7 +92,8 @@ public class JdbcRecordReader implements RecordReader {
         try {
             return resultSet.next();
         } catch (SQLException e) {
-            throw new RuntimeException("An exception occurred during reading database next record", e);
+            LOGGER.log(Level.SEVERE, "An exception occurred during checking the existence of next database record", e);
+            return false;
         }
     }
 
@@ -105,7 +113,8 @@ public class JdbcRecordReader implements RecordReader {
             }
             return rowCount;
         } catch (SQLException e) {
-            throw new RuntimeException("An exception occurred during fetching database record set size", e);
+            LOGGER.log(Level.SEVERE, "An exception occurred during fetching database record set size", e);
+            return null;
         }
     }
 
@@ -115,24 +124,21 @@ public class JdbcRecordReader implements RecordReader {
             return "Connection URL: " + connection.getMetaData().getURL() + " | " +
                     "Query string: " + query;
         } catch (SQLException e) {
-            throw new RuntimeException("Unable to get data source name", e);
+            LOGGER.log(Level.SEVERE, "Unable to get data source name", e);
+            return "N/A";
         }
     }
 
     @Override
-    public void close() {
-        try {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (statement != null) {
-                statement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("An exception occurred during database connection closing", e);
+    public void close() throws Exception {
+        if (resultSet != null) {
+            resultSet.close();
+        }
+        if (statement != null) {
+            statement.close();
+        }
+        if (connection != null) {
+            connection.close();
         }
     }
 
