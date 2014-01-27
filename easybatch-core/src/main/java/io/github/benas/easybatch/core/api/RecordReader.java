@@ -47,8 +47,9 @@ public interface RecordReader {
     /**
      * Read next record from the data source.
      * @return the next record from the data source.
+     * @throws Exception thrown if an exception occurs during reading next record
      */
-    Record readNextRecord();
+    Record readNextRecord() throws Exception;
 
     /**
      * Get the total record number in the data source. This is useful to calculate execution progress.
@@ -65,7 +66,8 @@ public interface RecordReader {
 
     /**
      * Close the reader.
+     * @throws Exception thrown if an exception occurs during reader closing
      */
-    void close();
+    void close() throws Exception;
 
 }
