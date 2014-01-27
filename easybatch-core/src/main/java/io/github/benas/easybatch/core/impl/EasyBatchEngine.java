@@ -75,7 +75,12 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
     public EasyBatchReport call() throws Exception {
 
         LOGGER.info("Initializing easy batch engine");
-        recordReader.open();
+        try {
+            recordReader.open();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "An exception occurred during opening data source reader", e);
+            return null;
+        }
 
         String dataSourceName = recordReader.getDataSourceName();
         LOGGER.info("Data source: " + dataSourceName);
@@ -149,10 +154,15 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
         easyBatchReport.setEndTime(System.currentTimeMillis());
         easyBatchReport.setEasyBatchResult(recordProcessor.getEasyBatchResult());
 
-        //close the record reader
-        recordReader.close();
-
         LOGGER.info("Shutting down easy batch engine");
+        //close the record reader
+        try {
+            recordReader.close();
+        } catch (Exception e) {
+            //at this point, there is no need to log a severe message and return null as batch report
+            LOGGER.log(Level.WARNING, "An exception occurred during closing data source reader", e);
+        }
+
         return easyBatchReport;
 
     }
