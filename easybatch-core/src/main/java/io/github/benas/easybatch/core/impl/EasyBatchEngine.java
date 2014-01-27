@@ -72,7 +72,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
     }
 
     @Override
-    public EasyBatchReport call() throws Exception {
+    public EasyBatchReport call() {
 
         LOGGER.info("Initializing easy batch engine");
         try {
@@ -100,7 +100,13 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
             long currentRecordProcessingStartTime = System.currentTimeMillis();
 
             //read next record
-            Record currentRecord = recordReader.readNextRecord();
+            Record currentRecord;
+            try {
+                currentRecord = recordReader.readNextRecord();
+            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record", e);
+                return null;
+            }
             currentRecordNumber = currentRecord.getNumber();
             easyBatchReport.setCurrentRecordNumber(currentRecordNumber);
 
