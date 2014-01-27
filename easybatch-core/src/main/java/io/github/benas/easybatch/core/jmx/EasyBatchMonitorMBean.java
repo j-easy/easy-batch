@@ -47,7 +47,7 @@ public interface EasyBatchMonitorMBean {
      * Get total input records number.
      * @return total input records number
      */
-    long getTotalRecords();
+    String getTotalRecords();
 
     /**
      * Get filtered records number.
