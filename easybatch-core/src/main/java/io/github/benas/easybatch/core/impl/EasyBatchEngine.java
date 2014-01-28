@@ -93,7 +93,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
         easyBatchReport.setTotalRecords(totalRecords);
         easyBatchReport.setStartTime(System.currentTimeMillis());
 
-        long currentRecordNumber;
+        long currentRecordNumber = 0;
 
         while (recordReader.hasNextRecord()) {
 
@@ -153,17 +153,18 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
             //process record
             try {
                 recordProcessor.processRecord(typedRecord);
+                easyBatchReport.addSuccessRecord(currentRecordNumber);
             } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "Error while processing record #" + currentRecordNumber + "[" + currentRecord + "]", e);
                 easyBatchReport.addErrorRecord(currentRecordNumber);
+            } finally {
+                //log processing time for the current record
                 easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
             }
 
-            //log processing time for the current record
-            easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
-
         }
 
+        easyBatchReport.setTotalRecords(currentRecordNumber);
         easyBatchReport.setEndTime(System.currentTimeMillis());
         easyBatchReport.setEasyBatchResult(recordProcessor.getEasyBatchResult());
 

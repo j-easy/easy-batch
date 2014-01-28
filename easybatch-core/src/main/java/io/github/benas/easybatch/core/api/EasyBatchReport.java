@@ -56,6 +56,8 @@ public class EasyBatchReport implements Serializable {
 
     private List<Long> errorRecords;
 
+    private List<Long> successRecords;
+
     private Map<Long, Long> processingTimes;
 
     private Object easyBatchResult;
@@ -65,6 +67,7 @@ public class EasyBatchReport implements Serializable {
         ignoredRecords = new ArrayList<Long>();
         rejectedRecords = new ArrayList<Long>();
         errorRecords = new ArrayList<Long>();
+        successRecords = new ArrayList<Long>();
         processingTimes = new HashMap<Long, Long>();
     }
 
@@ -82,6 +85,10 @@ public class EasyBatchReport implements Serializable {
 
     public void addErrorRecord(final long recordNumber) {
         errorRecords.add(recordNumber);
+    }
+
+    public void addSuccessRecord(final long recordNumber) {
+        successRecords.add(recordNumber);
     }
 
     public void addProcessingTime(long recordNumber, long processingTime) {
@@ -110,6 +117,10 @@ public class EasyBatchReport implements Serializable {
 
     public List<Long> getErrorRecords() {
         return errorRecords;
+    }
+
+    public List<Long> getSuccessRecords() {
+        return successRecords;
     }
 
     public Map<Long, Long> getProcessingTimes() {
@@ -168,7 +179,7 @@ public class EasyBatchReport implements Serializable {
         sb.append("\n\tIgnored records = ").append(getFormattedIgnoredRecords()).append(ignoredRecords);
         sb.append("\n\tRejected records = ").append(getFormattedRejectedRecords()).append(rejectedRecords);
         sb.append("\n\tError records = ").append(getFormattedErrorRecords()).append(errorRecords);
-        sb.append("\n\tProcessed records = ").append(getFormattedProcessedRecords());
+        sb.append("\n\tSuccess records = ").append(getFormattedSuccessRecords());
         sb.append("\n\tAverage record processing time = ").append(getFormattedAverageRecordProcessingTime());
         sb.append("\n\tResult = ").append(easyBatchResult);
         return sb.toString();
@@ -184,44 +195,44 @@ public class EasyBatchReport implements Serializable {
         return (int) (((float) current / (float) total) * 100);
     }
 
-    public int getFilteredRecordsNumber() {
+    public int getFilteredRecordsCount() {
         return filteredRecords.size();
     }
 
-    public int getIgnoredRecordsNumber() {
+    public int getIgnoredRecordsCount() {
         return ignoredRecords.size();
     }
 
-    public int getRejectedRecordsNumber() {
+    public int getRejectedRecordsCount() {
         return rejectedRecords.size();
     }
 
-    public int getErrorRecordsNumber() {
+    public int getErrorRecordsCount() {
         return errorRecords.size();
     }
 
-    public long getProcessedRecordsNumber() {
-        return totalRecords - getFilteredRecordsNumber() - getIgnoredRecordsNumber() - getRejectedRecordsNumber() - getErrorRecordsNumber();
+    public long getSuccessRecordsCount() {
+        return successRecords.size();
     }
 
     public long getFilteredRecordsPercent() {
-        return percent(getFilteredRecordsNumber(), totalRecords);
+        return percent(getFilteredRecordsCount(), totalRecords);
     }
 
     public long getIgnoredRecordsPercent() {
-        return percent(getIgnoredRecordsNumber(), totalRecords);
+        return percent(getIgnoredRecordsCount(), totalRecords);
     }
 
     public long getRejectedRecordsPercent() {
-        return percent(getRejectedRecordsNumber(), totalRecords);
+        return percent(getRejectedRecordsCount(), totalRecords);
     }
 
     public long getErrorRecordsPercent() {
-        return percent(getErrorRecordsNumber(), totalRecords);
+        return percent(getErrorRecordsCount(), totalRecords);
     }
 
-    public long getProcessedRecordsPercent() {
-        return percent(getProcessedRecordsNumber(), totalRecords);
+    public long getSuccessRecordsPercent() {
+        return percent(getSuccessRecordsCount(), totalRecords);
     }
 
     public long getBatchDuration() {
@@ -244,31 +255,31 @@ public class EasyBatchReport implements Serializable {
 
     public String getFormattedFilteredRecords() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(getFilteredRecordsNumber()).append(" (").append(getFilteredRecordsPercent()).append("%) ");
+        sb.append(getFilteredRecordsCount()).append(" (").append(getFilteredRecordsPercent()).append("%) ");
         return sb.toString();
     }
 
     public String getFormattedIgnoredRecords() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(getIgnoredRecordsNumber()).append(" (").append(getIgnoredRecordsPercent()).append("%) ");
+        sb.append(getIgnoredRecordsCount()).append(" (").append(getIgnoredRecordsPercent()).append("%) ");
         return sb.toString();
     }
 
     public String getFormattedRejectedRecords() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(getRejectedRecordsNumber()).append(" (").append(getRejectedRecordsPercent()).append("%) ");
+        sb.append(getRejectedRecordsCount()).append(" (").append(getRejectedRecordsPercent()).append("%) ");
         return sb.toString();
     }
 
     public String getFormattedErrorRecords() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(getErrorRecordsNumber()).append(" (").append(getErrorRecordsPercent()).append("%) ");
+        sb.append(getErrorRecordsCount()).append(" (").append(getErrorRecordsPercent()).append("%) ");
         return sb.toString();
     }
 
-    public String getFormattedProcessedRecords() {
+    public String getFormattedSuccessRecords() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(getProcessedRecordsNumber()).append(" (").append(getProcessedRecordsPercent()).append("%) ");
+        sb.append(getSuccessRecordsCount()).append(" (").append(getSuccessRecordsPercent()).append("%) ");
         return sb.toString();
     }
 
@@ -280,9 +291,17 @@ public class EasyBatchReport implements Serializable {
 
     // This is needed only for JMX
     public String getFormattedCurrentlyProcessedRecords() {
-        long currentlyProcessedRecords = getCurrentRecordNumber() - 1 - getFilteredRecordsNumber() - getErrorRecordsNumber() - getIgnoredRecordsNumber() - getRejectedRecordsNumber();
+        long currentlyProcessedRecords = getCurrentRecordNumber()
+                - 1
+                - getFilteredRecordsCount()
+                - getErrorRecordsCount()
+                - getIgnoredRecordsCount()
+                - getRejectedRecordsCount();
         final StringBuilder sb = new StringBuilder();
-        sb.append(currentlyProcessedRecords).append(" (").append(percent(currentlyProcessedRecords, totalRecords)).append("%) ");
+        sb.append(currentlyProcessedRecords)
+                .append(" (")
+                .append(percent(currentlyProcessedRecords, totalRecords))
+                .append("%) ");
         return sb.toString();
     }
 
