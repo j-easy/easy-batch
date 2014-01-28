@@ -25,7 +25,7 @@
 package io.github.benas.easybatch.core.jmx;
 
 /**
- *  Easy batch JMX MBean interface.
+ *  Easy Batch JMX MBean interface.
  *
  *  @author benas (md.benhassine@gmail.com)
  */
@@ -44,38 +44,38 @@ public interface EasyBatchMonitorMBean {
     long getCurrentRecordNumber();
 
     /**
-     * Get total input records number.
-     * @return total input records number
+     * Get total input records count.
+     * @return total input records count
      */
     String getTotalRecords();
 
     /**
-     * Get filtered records number.
-     * @return filtered records number
+     * Get filtered records count.
+     * @return filtered records count
      */
     String getFilteredRecords();
 
     /**
-     * Get ignored records number.
-     * @return ignored records number
+     * Get ignored records count.
+     * @return ignored records count
      */
     String getIgnoredRecords();
 
     /**
-     * Get rejected records number.
-     * @return rejected records number
+     * Get rejected records count.
+     * @return rejected records count
      */
     String getRejectedRecords();
 
     /**
-     * Get error records number.
-     * @return error records number
+     * Get error records count.
+     * @return error records count
      */
     String getErrorRecords();
 
     /**
-     * Get processed records number.
-     * @return processed records number
+     * Get currently processed records count.
+     * @return currently processed records count
      */
     String getProcessedRecords();
 
