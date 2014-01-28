@@ -43,7 +43,7 @@ public class EasyBatchReport implements Serializable {
 
     private String dataSource;
 
-    private long totalRecords;
+    private Long totalRecords;
 
     // needed only for jmx
     private long currentRecordNumber;
@@ -95,11 +95,11 @@ public class EasyBatchReport implements Serializable {
         processingTimes.put(recordNumber, processingTime);
     }
 
-    public void setTotalRecords(final long totalRecords) {
+    public void setTotalRecords(final Long totalRecords) {
         this.totalRecords = totalRecords;
     }
 
-    public long getTotalRecords() {
+    public Long getTotalRecords() {
         return totalRecords;
     }
 
@@ -255,31 +255,46 @@ public class EasyBatchReport implements Serializable {
 
     public String getFormattedFilteredRecords() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(getFilteredRecordsCount()).append(" (").append(getFilteredRecordsPercent()).append("%) ");
+        sb.append(getFilteredRecordsCount());
+        if (totalRecords != null) {
+            sb.append(" (").append(getFilteredRecordsPercent()).append("%) ");
+        }
         return sb.toString();
     }
 
     public String getFormattedIgnoredRecords() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(getIgnoredRecordsCount()).append(" (").append(getIgnoredRecordsPercent()).append("%) ");
+        sb.append(getIgnoredRecordsCount());
+        if (totalRecords != null) {
+            sb.append(" (").append(getIgnoredRecordsPercent()).append("%) ");
+        }
         return sb.toString();
     }
 
     public String getFormattedRejectedRecords() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(getRejectedRecordsCount()).append(" (").append(getRejectedRecordsPercent()).append("%) ");
+        sb.append(getRejectedRecordsCount());
+        if (totalRecords != null) {
+            sb.append(" (").append(getRejectedRecordsPercent()).append("%) ");
+        }
         return sb.toString();
     }
 
     public String getFormattedErrorRecords() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(getErrorRecordsCount()).append(" (").append(getErrorRecordsPercent()).append("%) ");
+        sb.append(getErrorRecordsCount());
+        if (totalRecords != null) {
+            sb.append(" (").append(getErrorRecordsPercent()).append("%) ");
+        }
         return sb.toString();
     }
 
     public String getFormattedSuccessRecords() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(getSuccessRecordsCount()).append(" (").append(getSuccessRecordsPercent()).append("%) ");
+        sb.append(getSuccessRecordsCount());
+        if (totalRecords != null) {
+            sb.append(" (").append(getSuccessRecordsPercent()).append("%) ");
+        }
         return sb.toString();
     }
 
@@ -290,23 +305,10 @@ public class EasyBatchReport implements Serializable {
     }
 
     // This is needed only for JMX
-    public String getFormattedCurrentlyProcessedRecords() {
-        long currentlyProcessedRecords = getCurrentRecordNumber()
-                - 1
-                - getFilteredRecordsCount()
-                - getErrorRecordsCount()
-                - getIgnoredRecordsCount()
-                - getRejectedRecordsCount();
-        final StringBuilder sb = new StringBuilder();
-        sb.append(currentlyProcessedRecords)
-                .append(" (")
-                .append(percent(currentlyProcessedRecords, totalRecords))
-                .append("%) ");
-        return sb.toString();
-    }
-
-    // This is needed only for JMX
     public String getFormattedProgress() {
+        if (totalRecords == null) {
+            return "N/A";
+        }
         String ratio = currentRecordNumber + "/" + totalRecords;
         String percent = " (" + percent(currentRecordNumber, totalRecords) + "%)";
         return ratio + percent;
