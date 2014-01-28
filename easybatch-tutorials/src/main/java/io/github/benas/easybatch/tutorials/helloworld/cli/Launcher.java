@@ -24,6 +24,7 @@
 
 package io.github.benas.easybatch.tutorials.helloworld.cli;
 
+import io.github.benas.easybatch.core.api.EasyBatchReport;
 import io.github.benas.easybatch.core.filter.StartsWithStringRecordFilter;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
@@ -50,7 +51,8 @@ public class Launcher {
                 .build();
 
         // Run easy batch engine
-        easyBatchEngine.call();
+        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+        System.out.println("easyBatchReport = " + easyBatchReport);
 
     }
 

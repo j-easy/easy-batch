@@ -216,9 +216,11 @@ Hi foo! Your sequence number is 1
 2,bar
 Hi bar! Your sequence number is 2
 x,baz
-SEVERE: Error while mapping record #4 [StringRecord{number=4, rawContent='x,baz'}] : Unable to convert 'x' to type long for field sequence
+<span class="text-error"><strong>SEVERE: Error while mapping record #4 [StringRecord{number=4, rawContent='x,baz'}] :
+    Unable to convert 'x' to type long for field sequence</strong></span>
 4,foo,bar
-SEVERE: Error while mapping record #5 [StringRecord{number=5, rawContent='4,foo,bar'}] : record length (3 fields) not equal to expected length of 2 fields
+<span class="text-error"><strong>SEVERE: Error while mapping record #5 [StringRecord{number=5, rawContent='4,foo,bar'}] :
+    record length (3 fields) not equal to expected length of 2 fields</strong></span>
 quit
 INFO: Shutting down easy batch engine
 </pre>

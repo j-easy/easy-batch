@@ -60,7 +60,7 @@ public class Launcher {
         EasyBatchReport easyBatchReport = easyBatchEngine.call();
 
         // Print Easy Batch report
-        System.out.println("easyBatchReport = " + easyBatchReport);
+        System.out.println(easyBatchReport);
 
         // Get the batch computation result
         Double maxProductPrice = (Double) easyBatchReport.getEasyBatchResult();

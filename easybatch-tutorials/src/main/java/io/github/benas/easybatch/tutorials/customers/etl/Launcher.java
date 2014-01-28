@@ -59,7 +59,7 @@ public class Launcher {
 
         // Run easy batch engine
         EasyBatchReport easyBatchReport = easyBatchEngine.call();
-        System.out.println("easyBatchReport = " + easyBatchReport);
+        System.out.println(easyBatchReport);
 
     }
 
