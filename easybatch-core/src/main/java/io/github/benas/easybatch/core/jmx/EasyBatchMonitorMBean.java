@@ -74,10 +74,10 @@ public interface EasyBatchMonitorMBean {
     String getErrorRecords();
 
     /**
-     * Get currently processed records count.
-     * @return currently processed records count
+     * Get success records count.
+     * @return success records count
      */
-    String getProcessedRecords();
+    String getSuccessRecords();
 
     /**
      * Get batch execution start time.

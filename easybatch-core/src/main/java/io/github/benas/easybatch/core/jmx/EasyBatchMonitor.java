@@ -93,8 +93,8 @@ public class EasyBatchMonitor implements EasyBatchMonitorMBean {
     /**
      * {@inheritDoc}
      */
-    public String getProcessedRecords() {
-        return easyBatchReport.getFormattedCurrentlyProcessedRecords();
+    public String getSuccessRecords() {
+        return easyBatchReport.getFormattedSuccessRecords();
     }
 
     /**
