@@ -76,9 +76,41 @@ public class ObjectMapper<T> {
      * @param headersMapping field names array
      */
     public ObjectMapper(final Class<? extends T> recordClass, final String[] headersMapping) {
+        this(recordClass);
+        this.headersMapping = headersMapping.clone();
+        initializeSetters();
+    }
+
+    /**
+     * Construct an object mapper.
+     * @param recordClass the target object type
+     */
+    public ObjectMapper(final Class<? extends T> recordClass) {
         initTypeConverters();
         this.recordClass = recordClass;
+    }
+
+    /**
+     * Getter for headers mapping.
+     * @return headers mapping
+     */
+    public String[] getHeadersMapping() {
+        return headersMapping;
+    }
+
+    /**
+     * Setter for header mapping.
+     * @param headersMapping headers mapping to set
+     */
+    public void setHeadersMapping(String[] headersMapping) {
         this.headersMapping = headersMapping.clone();
+        initializeSetters();
+    }
+
+    /**
+     * Initialize setters methods array from headers mapping.
+     */
+    private void initializeSetters() {
         recordClassSetters = new Method[headersMapping.length];
         Method[] methods = recordClass.getDeclaredMethods();
 

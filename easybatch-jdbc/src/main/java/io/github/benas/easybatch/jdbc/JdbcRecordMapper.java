@@ -45,9 +45,18 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
     private ObjectMapper<T> objectMapper;
 
     /**
+     * Constructs a default JdbcRecordMapper instance. Column names will be fetched from the jdbc result set meta data
+     * and set to fields with the same name of the target object.
+     * @param recordClass the target domain object class
+     */
+    public JdbcRecordMapper(final Class<? extends T> recordClass) {
+        objectMapper = new ObjectMapper<T>(recordClass);
+    }
+
+    /**
      * Constructs a JdbcRecordMapper instance.
      * @param recordClass the target domain object class
-     * @param fieldsMapping a String array representing fields name in the same order as in the jdbc record.
+     * @param fieldsMapping a String array representing fields name of the target object in the same order as in the jdbc record.
      */
     public JdbcRecordMapper(final Class<? extends T> recordClass, final String[] fieldsMapping) {
         objectMapper = new ObjectMapper<T>(recordClass, fieldsMapping);
@@ -58,6 +67,17 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
         JdbcRecord jdbcRecord = (JdbcRecord) record;
         ResultSet resultSet = jdbcRecord.getRawContent();
         int columnCount = resultSet.getMetaData().getColumnCount();
+
+        // if fields mapping is not specified, retrieve it from the result set meta data (done only once)
+        if (objectMapper.getHeadersMapping() == null) {
+            String[] fieldsMapping = new String[columnCount];
+            for (int i = 1; i < columnCount + 1; i++) {
+                fieldsMapping[i - 1] = resultSet.getMetaData().getColumnName(i).toLowerCase();
+            }
+            objectMapper.setHeadersMapping(fieldsMapping);
+        }
+
+        // get result set data and map it to domain object instance
         String[] fieldsContents = new String[columnCount];
         for (int i = 1; i < columnCount + 1; i++) {
             fieldsContents[i - 1] = resultSet.getString(i);
