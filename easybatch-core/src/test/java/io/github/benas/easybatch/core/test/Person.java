@@ -43,12 +43,6 @@ public class Person {
 
     private boolean isMarried;
 
-    /**
-     * Default constructor needed by default mapper
-     */
-    void Person() {
-    }
-
     public String getFirstName() {
         return firstName;
     }
