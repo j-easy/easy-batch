@@ -123,7 +123,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
             try {
                 typedRecord = recordMapper.mapRecord(currentRecord);
             } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Error while mapping record #" + currentRecordNumber + " [" + currentRecord + "] : " + e.getMessage(), e);
+                LOGGER.log(Level.SEVERE, "Error while mapping record #" + currentRecordNumber + " [" + currentRecord + "]. Root exception:", e);
                 easyBatchReport.addIgnoredRecord(currentRecordNumber);
                 easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
                 continue;
