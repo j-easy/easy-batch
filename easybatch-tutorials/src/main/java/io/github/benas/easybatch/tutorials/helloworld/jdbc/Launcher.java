@@ -56,7 +56,7 @@ public class Launcher {
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 .registerRecordReader(new JdbcRecordReader(connection, "select * from greeting"))
-                .registerRecordMapper(new JdbcRecordMapper<Greeting>(Greeting.class, new String[]{"sequence", "name"}))
+                .registerRecordMapper(new JdbcRecordMapper<Greeting>(Greeting.class))
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 
@@ -64,7 +64,7 @@ public class Launcher {
         EasyBatchReport easyBatchReport = easyBatchEngine.call();
 
         // Print the batch execution report
-        System.out.println("easyBatchReport = " + easyBatchReport);
+        System.out.println(easyBatchReport);
 
     }
 

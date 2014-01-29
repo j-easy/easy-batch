@@ -390,10 +390,19 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 
 <pre class="prettyprint">
 EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordMapper(new JdbcRecordMapper(MyPojoType.class))
+    .build();
+</pre>
+                <p>When you create a <code>JdbcRecordMapper</code>, you should specify your domain object type. Easy Batch will introspect your bean and the jdbc record result set and then map columns to fields with the same name.</p>
+
+                <p>If column names are different from your Pojo field names, you can specify an array of field names in the same order as in the database record as follows:</p>
+
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordMapper(new JdbcRecordMapper(MyPojoType.class, new String[]{"myPojoField1", "myPojoField2"}))
     .build();
 </pre>
-                <p>When you create a <code>JdbcRecordMapper</code>, you should specify your domain object type and an array of field names in the same order as in the database record.</p>
+                <p>Easy Batch will then use this array of field names to map data from columns in the same order as in the jdbc record.</p>
 
                 <p>You can find an example of how to use the <code>JdbcRecordMapper</code> in the <a href="../tutorials/helloworldJDBC.html">Hello World JDBC tutorial</a>.</p>
 

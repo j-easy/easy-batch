@@ -126,7 +126,7 @@
 
         <p>For each record, the batch application should print to the console a greeting of the format : <em>Hi foo! Your sequence number is 1</em> .</p>
 
-        <p>Easy Batch development is POJO-based, so we would like to map each record to an instance of the following <code>Greeting</code> bean:</p>
+        <p>Easy Batch development is POJO-based, so we would like to map each database record to an instance of the following <code>Greeting</code> bean:</p>
 <pre class="prettyprint">
 public class Greeting {
 
@@ -173,9 +173,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordReader(new JdbcRecordReader( // requirement N°1
         connection, // database JDBC connection
         "select * from greeting")) // Query string to fetch data
-    .registerRecordMapper(new JdbcRecordMapper( // requirement N°2
-        Greeting.class, // Pojo Type
-        new String[]{"sequence", "name"})) // Fields name in the same order as in the database record
+    .registerRecordMapper(new JdbcRecordMapper(Greeting.class)) // requirement N°2
     .registerRecordProcessor(new GreetingProcessor()) // requirement N°3
     .build();
 </pre>
