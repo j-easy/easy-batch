@@ -112,7 +112,7 @@ public class ObjectMapper<T> {
      */
     private void initializeSetters() {
         recordClassSetters = new Method[headersMapping.length];
-        Method[] methods = recordClass.getDeclaredMethods();
+        Method[] methods = recordClass.getMethods();
 
         // Initialize setters that will be used to populate the returned instance.
         for (int i = 0; i < headersMapping.length; i++) {

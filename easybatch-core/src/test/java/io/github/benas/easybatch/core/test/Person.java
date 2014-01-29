@@ -29,19 +29,19 @@ import java.util.Date;
 /**
  * A person java bean used for tests.
  *
- * @author benas (md.benhassine@gmail.Com)
+ * @author benas (md.benhassine@gmail.com)
  */
 public class Person {
 
-    private String firstName;
+    protected String firstName;
 
-    private String lastName;
+    protected String lastName;
 
-    private int age;
+    protected int age;
 
-    private Date birthDate;
+    protected Date birthDate;
 
-    private boolean isMarried;
+    protected boolean isMarried;
 
     public String getFirstName() {
         return firstName;

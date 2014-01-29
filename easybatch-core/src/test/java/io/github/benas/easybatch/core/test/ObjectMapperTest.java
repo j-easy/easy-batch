@@ -65,6 +65,28 @@ public class ObjectMapperTest {
         Assert.assertEquals(true, person.isMarried());
     }
 
+    @Test
+    public void testExtendedPersonTypeMapping() throws Exception {
+
+        mapper = new ObjectMapper<ExtendedPerson>(ExtendedPerson.class,
+                new String[]{"firstName","lastName", "age", "birthDate", "isMarried", "nickName"});
+
+        // prepare mock record fields
+        String[] fields = new String[]{"foo", "bar", "30", "1990-12-12", "true", "FB"};
+
+        // map record to extended person bean
+        ExtendedPerson extendedPerson = (ExtendedPerson) mapper.mapObject(fields);
+
+        // extended person bean must be not null and correctly populated
+        Assert.assertNotNull(extendedPerson);
+        Assert.assertEquals("foo", extendedPerson.getFirstName());
+        Assert.assertEquals("bar", extendedPerson.getLastName());
+        Assert.assertEquals(30, extendedPerson.getAge());
+        Assert.assertEquals("1990-12-12", new SimpleDateFormat("yyyy-MM-dd").format(extendedPerson.getBirthDate()));
+        Assert.assertEquals(true, extendedPerson.isMarried());
+        Assert.assertEquals("FB", extendedPerson.getNickName());
+    }
+
     @After
     public void tearDown() throws Exception {
         mapper = null;
