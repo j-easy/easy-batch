@@ -26,6 +26,10 @@ package io.github.benas.easybatch.core.mapper;
 
 import io.github.benas.easybatch.core.converter.*;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -112,17 +116,22 @@ public class ObjectMapper<T> {
      */
     private void initializeSetters() {
         recordClassSetters = new Method[headersMapping.length];
-        Method[] methods = recordClass.getMethods();
 
-        // Initialize setters that will be used to populate the returned instance.
-        for (int i = 0; i < headersMapping.length; i++) {
-            //javabean naming convention
-            String setterName = "set" + headersMapping[i].substring(0, 1).toUpperCase() + headersMapping[i].substring(1);
-            for (Method method : methods) {
-                if (method.getName().equals(setterName)) {
-                    recordClassSetters[i] = method;
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(recordClass);
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+
+            // Initialize setters that will be used to populate the returned instance.
+            for (int i = 0; i < headersMapping.length; i++) {
+                for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+                    if (propertyDescriptor.getName().equalsIgnoreCase(headersMapping[i])) {
+                        recordClassSetters[i] = propertyDescriptor.getWriteMethod();
+                    }
                 }
             }
+        } catch (IntrospectionException e) {
+            LOGGER.log(Level.SEVERE, "Unable to introspect target type", e);
+            throw new RuntimeException(e);
         }
     }
 
