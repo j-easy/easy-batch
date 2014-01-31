@@ -90,6 +90,12 @@
             <artifactId>hibernate-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.benas</groupId>
+            <artifactId>jpopulator</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
