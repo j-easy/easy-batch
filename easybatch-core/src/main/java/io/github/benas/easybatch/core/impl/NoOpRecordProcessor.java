@@ -24,32 +24,27 @@
 
 package io.github.benas.easybatch.core.impl;
 
-import io.github.benas.easybatch.core.api.Record;
 import io.github.benas.easybatch.core.api.RecordProcessor;
-
-import java.util.logging.Logger;
 
 /**
  * A No Operation {@link RecordProcessor} implementation used by default by easy batch engine.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-class NoOpRecordProcessor implements RecordProcessor<Record, Object> {
-
-    private static final Logger LOGGER = Logger.getLogger(NoOpRecordProcessor.class.getName());
+class NoOpRecordProcessor implements RecordProcessor<Object, Object> {
 
     /**
      * {@inheritDoc}
      */
-    public void processRecord(final Record record) throws Exception {
-        LOGGER.info("Processing record : " + record);
+    public void processRecord(final Object record) throws Exception {
+        //no op
     }
 
     /**
      * {@inheritDoc}
      */
     public Object getEasyBatchResult() {
-        return new Object();
+        return null;
     }
 
 }
