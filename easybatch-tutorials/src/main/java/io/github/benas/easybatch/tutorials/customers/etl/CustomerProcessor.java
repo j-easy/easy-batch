@@ -50,6 +50,7 @@ public class CustomerProcessor extends AbstractRecordProcessor<Customer> {
         JAXBContext jaxbContext = JAXBContext.newInstance(Customer.class);
         jaxbMarshaller = jaxbContext.createMarshaller();
         jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        jaxbMarshaller.setProperty("com.sun.xml.bind.xmlDeclaration", Boolean.FALSE);
     }
 
     @Override
