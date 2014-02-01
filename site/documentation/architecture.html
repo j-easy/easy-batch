@@ -106,7 +106,9 @@
                 <h2 id="1" >1. Main components</h2>
 
                 <p>The next figure describes Easy Batch main components and gives an overview of the framework architecture:</p>
-                <p align="center"><img src="../resources/img/architecture.png"/></p>
+                <div>
+                    <img src="../resources/img/architecture.png"/>
+                </div>
 
                 <p>Easy Batch main components are the following :</p>
                 <ul>
@@ -125,22 +127,22 @@
 
                 <p>The workflow used internally by Easy Batch is illustrated by the next figure and described below :</p>
 
-                <div class="row">
-                    <div class="span4">
-                        <br/> <br/> <br/>
+                <div>
+                    <div class="span6">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                         <ol>
-                            <li>The engine reads records one by one from the data source. <br/><br/></li>
-                            <li>If the record should be filtered, then the engine skips it and moves to the next one. <br/><br/></li>
+                            <li>The engine reads records one by one from the data source. <br/><br/><br/><br/></li>
+                            <li>If the record should be filtered, then the engine skips it and moves to the next one. <br/><br/><br/><br/><br/></li>
                             <li>The record mapper then tries to map the record to the domain object type.
                                 If the record is not well formed or cannot be mapped to the domain object (due to type conversion exceptions),
-                                the engine ignores the record and moves to the next one. <br/><br/></li>
+                                the engine ignores the record and moves to the next one. <br/><br/><br/><br/><br/></li>
                             <li>The record validator applies declared validation constraints on the record.
-                                If a validation constraint is violated, then the record is rejected. <br/><br/></li>
+                                If a validation constraint is violated, then the record is rejected. <br/><br/><br/><br/><br/><br/><br/></li>
                             <li>Finally, the business logic is executed by the record processor on the domain object correctly populated with valid data.
                                 If an exception occurs during record processing, the engine logs the exception and moves to the next record.</li>
                         </ol>
                     </div>
-                    <div class="span5">
+                    <div class="span6">
                         <img src="../resources/img/workflow.png"/>
                     </div>
                 </div>
