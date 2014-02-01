@@ -2,6 +2,27 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 https://github.com/benas/easy-batch
 
+Changes in version 2.1.1 (2014-02-01)
+-------------------------------------
+
+* Added a Spring factory bean to use Easy Batch engine as a Spring bean
+* Added a performance benchmark
+* Fixed issue#21 : NoOpRecordProcessor throws java.lang.ClassCastException when using a custom POJO
+* Fixed issue#20 : Easy Batch Object Mapper does not handle inherited fields
+* Fixed issue#19 : Make JdbcRecordMapper more intelligent : add convention over configuration if field names are the same as result set column names
+* Fixed issue#18 : Wrong JMX metrics when total records count is undefined
+* Fixed issue#17 : show "N/A" instead of "null" for total records count in the JMX console when the total records count is undefined.
+* Fixed issue#16 : Easy Batch crashes if an unexpected exception occurs during data validation
+* Fixed issue#15 : Easy Batch crashes if an unexpected exception occurs during reading the next data source record
+* Fixed issue#14 : Easy Batch crashes if an unexpected exception occurs during opening/closing data source reader
+* Fixed issue#13 : Add the possibility to specify the date format for the DateTypeConverter
+* Fixed issue#12 : make the BooleanTypeConverter more intelligent
+* Merged pull request #11 from nihed/master : Update poms to use dependencyManagement
+* Improved code quality by fixing sonar warnings
+* Improved Object Mapper implementation : use java.beans.Introspector and java.beans.BeanInfo classes to introspect the target type
+* Improved RecordReader API design : make the getTotalRecords method return Long (instead of long) to be able to return null if the total records count cannot be calculated in advance
+* Updated documentation and Javadoc
+
 Changes in version 2.1.0 (2014-01-20)
 -------------------------------------
 
