@@ -164,7 +164,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 <h3>2.2 Reading data from an xml file</h3>
 
                 <p>Easy Batch comes with a built-in <code>XmlRecordReader</code> that allows you to read records from an xml file using the
-                    <a href="https://www.jcp.org/en/jsr/detail?id=173">Stax</a> API.</p>
+                    <a href="https://www.jcp.org/en/jsr/detail?id=173" target="_blank">Stax</a> API.</p>
                 <p>Since Easy Batch development is Pojo-Based, Xml records correspond to instances of your domain objects. Let's see an example, consider the following xml file:</p>
 
 <pre class="prettyprint">
@@ -248,8 +248,8 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 <p> When you create a <code>JdbcRecordReader</code>, you should specify the jdbc database connection and the sql query to use to fetch data.</p>
 
                 <div class="alert">
-                    <strong>Head up!</strong> The JDBC API does not allow to stream data from a database, so the <code>JdbcRecordReader</code> loads all data fetched by the sql query you provide into a <code>java.sql.ResultSet</code> object.
-                    You should pay attention to large data sets when you specify the sql query to the <code>JdbcRecordReader</code>.
+                    <strong>Heads up!</strong> The <code>JdbcRecordReader</code> loads all data fetched by the sql query you provide into a <code>java.sql.ResultSet</code> object.
+                    You should pay attention to large data sets with the sql query you specify to the <code>JdbcRecordReader</code>.
                 </div>
 
                 <h2 id="3">3. Filtering records</h2>
@@ -344,8 +344,8 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                     </tbody>
                 </table>
 
-                <p>You can find examples of how to use the <code>DsvRecordMapper</code> in the <a href="../tutorials/helloworldCSV.html">Hello World CSV tutorial</a> and the
-                    <a href="../tutorials/products.html">Products statistics tutorial</a>.</p>
+                <p>You can find examples of how to use the <code>DsvRecordMapper</code> in the <a href="../tutorials/helloworldCSV.html" target="_blank">Hello World CSV tutorial</a> and the
+                    <a href="../tutorials/products.html" target="_blank">Products statistics tutorial</a>.</p>
 
                 <h4>4.1.2 Mapping fixed-length records</h4>
 
@@ -361,7 +361,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 </pre>
                 <p>When you create a <code>FixedLengthRecordMapper</code>, you should specify your domain object type, an array of field lengths and an array of field names in the same order as they appear in the fixed length record.</p>
 
-                <p>You can find an example of how to use the <code>FixedLengthRecordMapper</code> in the <a href="../tutorials/helloworldFLR.html">Hello World FLR tutorial.</a>
+                <p>You can find an example of how to use the <code>FixedLengthRecordMapper</code> in the <a href="../tutorials/helloworldFLR.html" target="_blank">Hello World FLR tutorial.</a>
 
                 <h3>4.2 Mapping xml records</h3>
 
@@ -378,7 +378,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 </pre>
                 <p>When you create an <code>XmlRecordMapper</code>, you should specify your domain object type and an xsd file against which the xml record should be validated (if no xsd is specified, no validation will be applied).</p>
 
-                <p>You can find an example of how to use the <code>XmlRecordMapper</code> in the <a href="../tutorials/helloworldXML.html">Hello World XML tutorial</a>.</p>
+                <p>You can find an example of how to use the <code>XmlRecordMapper</code> in the <a href="../tutorials/helloworldXML.html" target="_blank">Hello World XML tutorial</a>.</p>
 
                 <div class="alert alert-warning">
                     <p>The <code>XmlRecordMapper</code> should be used in conjunction with the <code>XmlRecordReader</code>.</p>
@@ -406,7 +406,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 </pre>
                 <p>Easy Batch will then use this array of field names to map data from columns in the same order as in the jdbc record.</p>
 
-                <p>You can find an example of how to use the <code>JdbcRecordMapper</code> in the <a href="../tutorials/helloworldJDBC.html">Hello World JDBC tutorial</a>.</p>
+                <p>You can find an example of how to use the <code>JdbcRecordMapper</code> in the <a href="../tutorials/helloworldJDBC.html" target="_blank">Hello World JDBC tutorial</a>.</p>
 
                 <div class="alert alert-warning">
                     <p>The <code>JdbcRecordMapper</code> should be used in conjunction with the <code>JdbcRecordReader</code>.</p>
@@ -456,7 +456,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 </pre>
             <p>With Easy Batch, you can also do some computation on input records and hold a batch result that will be returned at the end of execution.</p>
             <p>This can be done through the <code>getEasyBatchResult</code> method of the <code>RecordProcessor</code> interface : Your record processor can hold the compuation result in an instance variable and return it using this method.</p>
-            <p>You can find an example of how to return a computation result in the <a href="../tutorials/products.html">Products statistics tutorial</a>.</p>
+            <p>You can find an example of how to return a computation result in the <a href="../tutorials/products.html" target="_blank">Products statistics tutorial</a>.</p>
 
                 <p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record processor that logs an information message about the record being processed.</p>
 
