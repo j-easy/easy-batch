@@ -57,7 +57,7 @@ public class Benchmark {
 
         //remove generated file
         File file = new File(customersFile);
-        //file.delete();
+        file.delete();
 
     }
 
