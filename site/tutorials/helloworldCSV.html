@@ -175,7 +175,7 @@ public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
 <pre class="prettyprint">
 EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordReader(new FlatFileRecordReader("greetings.csv")) // requirement N°1
-    .registerRecordMapper(new DsvRecordMapper(Greeting.class)) // requirement N°2
+    .registerRecordMapper(new DelimitedRecordMapper(Greeting.class)) // requirement N°2
     .registerRecordProcessor(new GreetingProcessor()) // requirement N°3
     .build();
 </pre>

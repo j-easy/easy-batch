@@ -179,7 +179,7 @@ public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
 EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordReader(new CliRecordReader()) // requirement N°1
     .registerRecordFilter(new StartsWithStringRecordFilter("#")) // requirement N°2
-    .registerRecordMapper(new DsvRecordMapper(Greeting.class, new String[]{"sequence", "name"})) // requirement N°3
+    .registerRecordMapper(new DelimitedRecordMapper(Greeting.class, new String[]{"sequence", "name"})) // requirement N°3
     .registerRecordProcessor(new GreetingProcessor()) // requirement N°4
     .build();
 </pre>

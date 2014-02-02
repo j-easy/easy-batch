@@ -178,7 +178,7 @@ String[] fields = new String[] {"id", "firstName", "lastName", "birthDate",
             "email", "phone", "street", "zipCode", "city", "country"};
 EasyBatchEngine easyBatchCsvEngine = new EasyBatchEngineBuilder()
     .registerRecordReader(new FlatFileRecordReader(customersFile))
-    .registerRecordMapper(new DsvRecordMapper&ltCustomer&gt(Customer.class, fields))
+    .registerRecordMapper(new DelimitedRecordMapper&ltCustomer&gt(Customer.class, fields))
     .build();
 
 // For Xml

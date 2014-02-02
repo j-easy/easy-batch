@@ -119,7 +119,7 @@
 
                 <p>In this tutorial, you will learn how to:</p>
                 <ul>
-                    <li>Configure the built-in <code>DsvRecordMapper</code> with custom parameters and type converter</li>
+                    <li>Configure the built-in <code>DelimitedRecordMapper</code> with custom parameters and type converter</li>
                     <li>Get an execution report at the end of batch processing</li>
                     <li>Use the <code>RecordProcessor.getEasyBatchResult</code> to get a computation result at the end of batch execution</li>
                 </ul>
@@ -233,7 +233,7 @@ public class ProductProcessor implements RecordProcessor&lt;Product, Double&gt; 
 
 <pre class="prettyprint">
 // Configure the product record mapper
-DsvRecordMapper&lt;Product&gt; productMapper = new DsvRecordMapper&lt;Product&gt;(
+DelimitedRecordMapper&lt;Product&gt; productMapper = new DelimitedRecordMapper&lt;Product&gt;(
     Product.class, // POJO type
     new String[]{"productId","name", "description", "price","published", "lastUpdate" }); //Ordered fields names
 productMapper.setDelimiter("|"); // set field delimiter
@@ -311,7 +311,7 @@ The maximum product price for published products is : 2500.0
                 <h2 id="4">4. Conclusion</h2>
                 <p> In this tutorial, we have seen how to:</p>
                 <ul>
-                    <li>Configure the built-in <code>DsvRecordMapper</code> with custom parameters and type converter</li>
+                    <li>Configure the built-in <code>DelimitedRecordMapper</code> with custom parameters and type converter</li>
                     <li>Get an execution report at the end of batch processing</li>
                     <li>Use the <code>RecordProcessor.getEasyBatchResult</code> to get a computation result at the end of batch execution</li>
                 </ul>

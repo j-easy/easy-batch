@@ -26,7 +26,7 @@ package io.github.benas.easybatch.flatfile.test;
 
 import io.github.benas.easybatch.flatfile.FlatFileRecord;
 import io.github.benas.easybatch.core.util.StringRecord;
-import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
+import io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,19 +35,19 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Unit test class for {@link io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper}.
+ * Unit test class for {@link io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper}.
  *
  * @author benas (md.benhassine@gmail.com)
  */
 public class DsvRecordMapperTest {
 
-    private DsvRecordMapper dsvRecordMapper;
+    private DelimitedRecordMapper delimitedRecordMapper;
 
     private StringRecord stringRecord;
 
     @Before
     public void setUp() throws Exception {
-        dsvRecordMapper = new DsvRecordMapper<Person>(Person.class,
+        delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class,
                 new String[]{"firstName", "lastName", "age", "birthDate", "isMarried"});
         stringRecord = new StringRecord(1, "foo,bar,30,1990-12-12,true");
     }
@@ -55,14 +55,14 @@ public class DsvRecordMapperTest {
     @Test(expected = Exception.class)
     public void testRecordWellFormednessKO() throws Exception {
         stringRecord = new StringRecord(1, "foo,bar,30,1990-12-12");// incorrect record size
-        dsvRecordMapper.parseRecord(stringRecord);
+        delimitedRecordMapper.parseRecord(stringRecord);
     }
 
 
     @Test
     public void testRecordSizeWithEmptyField() throws Exception {
         stringRecord = new StringRecord(1, "foo,bar,30,1990-12-12,");
-        FlatFileRecord flatFileRecord = dsvRecordMapper.parseRecord(stringRecord);
+        FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(stringRecord);
         assertEquals("", flatFileRecord.getFlatFileFields().get(4).getRawContent());
     }
 
@@ -73,49 +73,49 @@ public class DsvRecordMapperTest {
 
     @Test
     public void testRecordParsingWithTrimmedWhitespaces() throws Exception {
-        dsvRecordMapper.setTrimWhitespaces(true);
+        delimitedRecordMapper.setTrimWhitespaces(true);
         stringRecord = new StringRecord(1, "  foo ,    bar  ,  30  ,     1990-12-12  ,  true         ");
         validateRecord(stringRecord);
     }
 
     @Test
     public void testRecordParsingWithPipeDelimiter() throws Exception {
-        dsvRecordMapper.setDelimiter("|");
+        delimitedRecordMapper.setDelimiter("|");
         stringRecord = new StringRecord(1, "foo|bar|30|1990-12-12|true");
         validateRecord(stringRecord);
     }
 
     @Test
     public void testRecordParsingWithSpaceDelimiter() throws Exception {
-        dsvRecordMapper.setDelimiter(" ");
+        delimitedRecordMapper.setDelimiter(" ");
         stringRecord = new StringRecord(1, "foo bar 30 1990-12-12 true");
         validateRecord(stringRecord);
     }
 
     @Test
     public void testRecordParsingWithTabDelimiter() throws Exception {
-        dsvRecordMapper.setDelimiter("\t");
+        delimitedRecordMapper.setDelimiter("\t");
         stringRecord = new StringRecord(1, "foo\tbar\t30\t1990-12-12\ttrue");
         validateRecord(stringRecord);
     }
 
     @Test
     public void testRecordParsingWithMultipleCharacterDelimiter() throws Exception {
-        dsvRecordMapper.setDelimiter("###");
+        delimitedRecordMapper.setDelimiter("###");
         stringRecord = new StringRecord(1, "foo###bar###30###1990-12-12###true");
         validateRecord(stringRecord);
     }
 
     @Test
     public void testRecordParsingWithDataQualifierCharacter() throws Exception {
-        dsvRecordMapper.setQualifier("'");
+        delimitedRecordMapper.setQualifier("'");
         stringRecord = new StringRecord(1, "'foo','bar','30','1990-12-12','true'");
         validateRecord(stringRecord);
     }
 
     private void validateRecord(final StringRecord stringRecord) throws Exception {
-        assertNotNull(dsvRecordMapper.parseRecord(stringRecord));
-        FlatFileRecord flatFileRecord = dsvRecordMapper.parseRecord(stringRecord);
+        assertNotNull(delimitedRecordMapper.parseRecord(stringRecord));
+        FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(stringRecord);
         assertEquals(5, flatFileRecord.getFlatFileFields().size());
         assertEquals("foo",flatFileRecord.getFlatFileFields().get(0).getRawContent());
         assertEquals("bar",flatFileRecord.getFlatFileFields().get(1).getRawContent());
@@ -126,7 +126,7 @@ public class DsvRecordMapperTest {
 
     @After
     public void tearDown() throws Exception {
-        dsvRecordMapper = null;
+        delimitedRecordMapper = null;
         stringRecord = null;
         System.gc();
     }

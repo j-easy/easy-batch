@@ -177,7 +177,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
         &lt;/bean&gt;
 
         &lt;!-- configure record mapper --&gt;
-        &lt;bean id="greetingMapper" class="io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper"&gt;
+        &lt;bean id="greetingMapper" class="io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper"&gt;
             &lt;constructor-arg&gt;
                 &lt;value type="java.lang.Class"&gt;io.github.benas.easybatch.tutorials.helloworld.csv.Greeting&lt;/value&gt;
             &lt;/constructor-arg&gt;

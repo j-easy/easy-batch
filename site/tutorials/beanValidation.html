@@ -222,7 +222,7 @@ public class ProductProcessor extends AbstractRecordProcessor&lt;Product&gt; {
 
 <pre class="prettyprint">
 // Configure the product record mapper
-DsvRecordMapper&lt;Product&gt; productMapper = new DsvRecordMapper&lt;Product&gt;(
+DelimitedRecordMapper&lt;Product&gt; productMapper = new DelimitedRecordMapper&lt;Product&gt;(
     Product.class, // POJO type
     new String[]{"productId","name", "description", "price","published", "lastUpdate" }); //Ordered fields names
     productMapper.setDelimiter("|"); // set field delimiter

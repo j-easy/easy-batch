@@ -10,7 +10,7 @@
     </bean>
 
     <!-- configure record mapper -->
-    <bean id="greetingMapper" class="io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper">
+    <bean id="greetingMapper" class="io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper">
         <constructor-arg>
             <value type="java.lang.Class">io.github.benas.easybatch.tutorials.helloworld.csv.Greeting</value>
         </constructor-arg>

@@ -179,7 +179,7 @@ String dataSource =
 // Build an easy batch engine
 EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordReader(new StringRecordReader(dataSource))
-    .registerRecordMapper(new DsvRecordMapper(Greeting.class, new String[]{"sequence", "name"}))
+    .registerRecordMapper(new DelimitedRecordMapper(Greeting.class, new String[]{"sequence", "name"}))
     .registerRecordProcessor(new GreetingProcessor())
     .build();
 </pre>

@@ -3,7 +3,7 @@ package io.github.benas.easybatch.tutorials.bench;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
-import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
+import io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import io.github.benas.easybatch.xml.XmlRecordMapper;
 import io.github.benas.easybatch.xml.XmlRecordReader;
 import io.github.benas.jpopulator.api.Populator;
@@ -68,7 +68,7 @@ public class BenchmarkUtil {
     public static EasyBatchEngine buildCsvEasyBatchEngine(String customersFile) throws Exception {
         return new EasyBatchEngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(customersFile))
-                .registerRecordMapper(new DsvRecordMapper<Customer>(Customer.class,
+                .registerRecordMapper(new DelimitedRecordMapper<Customer>(Customer.class,
                         new String[]{"id", "firstName", "lastName", "birthDate", "email", "phone", "street", "zipCode", "city", "country"}))
                 .build();
     }

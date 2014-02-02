@@ -27,7 +27,7 @@ package io.github.benas.easybatch.tutorials.helloworld.csv;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
-import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
+import io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper;
 
 /**
 * Main class to run the hello world tutorial.
@@ -41,7 +41,7 @@ public class Launcher {
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(args[0]))
-                .registerRecordMapper(new DsvRecordMapper<Greeting>(Greeting.class))
+                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class))
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 

@@ -29,7 +29,7 @@ import io.github.benas.easybatch.core.filter.StartsWithStringRecordFilter;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
-import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
+import io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper;
 
 /**
 * Main class to run the products statistics tutorial.
@@ -41,7 +41,7 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         // Configure the product record mapper
-        DsvRecordMapper<Product> productMapper = new DsvRecordMapper<Product>(
+        DelimitedRecordMapper<Product> productMapper = new DelimitedRecordMapper<Product>(
                 Product.class,
                 new String[]{"productId","name", "description", "price","published", "lastUpdate", "origin" });
         productMapper.setDelimiter("|");

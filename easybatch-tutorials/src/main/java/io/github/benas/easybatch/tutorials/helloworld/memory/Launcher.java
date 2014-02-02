@@ -29,7 +29,7 @@ import io.github.benas.easybatch.core.filter.StartsWithStringRecordFilter;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.core.util.StringRecordReader;
-import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
+import io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import io.github.benas.easybatch.tutorials.helloworld.csv.Greeting;
 import io.github.benas.easybatch.tutorials.helloworld.csv.GreetingProcessor;
 
@@ -51,7 +51,7 @@ public class Launcher {
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 .registerRecordReader(new StringRecordReader(dataSource))
                 .registerRecordFilter(new StartsWithStringRecordFilter("#"))
-                .registerRecordMapper(new DsvRecordMapper<Greeting>(Greeting.class, new String[]{"sequence", "name"}))
+                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"sequence", "name"}))
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 

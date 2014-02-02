@@ -291,14 +291,14 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 
             <p>Easy Batch comes with two implementations of the <code>RecordMapper</code> interface to map flat file records to your domain objects :</p>
             <ul>
-                <li><code>DsvRecordMapper</code> : allows you to map delimiter-separated-values to domain objects</li>
+                <li><code>DelimitedRecordMapper</code> : allows you to map delimiter-separated-values to domain objects</li>
                 <li><code>FixedLengthRecordMapper</code> : allows you to map fixed-length records to domain objects</li>
             </ul>
 
             <p>These two mappers also convert raw textual data in flat file records to typed data in your domain objects.
                 Easy Batch supports all built-in Java primitive and wrapper types (please refer to the javadoc of the <code>io.github.benas.easybatch.core.converter</code> package for all details about Easy Batch built-in type converters).
                 If you want to provide a custom type converter, you can implement the <code>TypeConverter</code> interface and register your implementation using
-                <code>DsvRecordMapper.registerTypeConverter</code> and <code>FixedLengthRecordMapper.registerTypeConverter</code> methods.</p>
+                <code>DelimitedRecordMapper.registerTypeConverter</code> and <code>FixedLengthRecordMapper.registerTypeConverter</code> methods.</p>
 
                 <p>To use these two mappers, you need to add the <code>easybatch-flatfile</code> module to your dependencies.</p>
 
@@ -308,15 +308,26 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 
                 <h4>4.1.1 Mapping delimiter-separated values</h4>
 
-                <p>To register the <code>DsvRecordMapper</code>, use the following snippet:</p>
+                <p>To register the <code>DelimitedRecordMapper</code>, use the following snippet:</p>
+<pre class="prettyprint">
+EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordMapper(new DelimitedRecordMapper(MyPojoType.class))
+    .build();
+</pre>
+
+                <p>By default, the <code>DelimiterRecordMapper</code> will use the header record to map delimited fields to domain object fields with the same name.
+                    If you use this convention of configuration, you should not skip the header record.</p>
+                    <p>If you want to use a custom name mapping strategy, you can specify field names as follows:</p>
 
 <pre class="prettyprint">
 EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordMapper(new DsvRecordMapper(MyPojoType.class, new String[]{"myPojoField1", "myPojoField2"}))
+    .registerRecordMapper(new DelimitedRecordMapper(MyPojoType.class, new String[]{"myPojoField1", "myPojoField2"}))
     .build();
 </pre>
-                <p>When you create a <code>DsvRecordMapper</code>, you should specify your domain object type and an array of field names in the same order as they appear in the delimited record.</p>
-                <p>You can also configure the <code>DsvRecordMapper</code> with custom parameters defined in the table below:</p>
+
+                <p>Field names should be in the same order as they appear in the delimited record.</p>
+
+                <p>You can also configure the <code>DelimitedRecordMapper</code> with custom parameters defined in the table below:</p>
                 <table class="table table-bordered table-condensed table-striped table-center">
                     <thead>
                     <tr>
@@ -344,8 +355,8 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                     </tbody>
                 </table>
 
-                <p>You can find examples of how to use the <code>DsvRecordMapper</code> in the <a href="../tutorials/helloworldCSV.html" target="_blank">Hello World CSV tutorial</a> and the
-                    <a href="../tutorials/products.html" target="_blank">Products statistics tutorial</a>.</p>
+                <p>You can find examples of how to use the <code>DelimitedRecordMapper</code> in the <a href="../tutorials/helloworldCSV.html" target="_blank">Hello World CSV tutorial</a>
+                    and in the <a href="../tutorials/products.html" target="_blank">Products statistics tutorial</a>.</p>
 
                 <h4>4.1.2 Mapping fixed-length records</h4>
 

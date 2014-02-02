@@ -38,7 +38,7 @@ import io.github.benas.easybatch.core.converter.TypeConverter;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class DsvRecordMapper<T> implements RecordMapper<T> {
+public class DelimitedRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * The default delimiter.
@@ -83,28 +83,28 @@ public class DsvRecordMapper<T> implements RecordMapper<T> {
     /**
      * private default constructor to initialize the mapper with default parameter values.
      */
-    private DsvRecordMapper() {
+    private DelimitedRecordMapper() {
         this.delimiter = DEFAULT_DELIMITER;
         this.qualifier = DEFAULT_QUALIFIER;
         this.trimWhitespaces = DEFAULT_WHITESPACE_TRIMMING;
     }
 
     /**
-     * Constructs a default DsvRecordMapper instance. Column names will be calculated from the header record
+     * Constructs a default DelimitedRecordMapper instance. Column names will be calculated from the header record
      * and set to fields with the same name of the target object.
      * @param recordClass the target domain object class
      */
-    public DsvRecordMapper(final Class<? extends T> recordClass) {
+    public DelimitedRecordMapper(final Class<? extends T> recordClass) {
         this();
         objectMapper = new ObjectMapper<T>(recordClass);
     }
 
     /**
-     * Constructs a DsvRecordMapper instance.
+     * Constructs a DelimitedRecordMapper instance.
      * @param recordClass the target domain object class
      * @param fieldsMapping a String array representing fields name in the same order in the DSV flat file.
      */
-    public DsvRecordMapper(final Class<? extends T> recordClass, final String[] fieldsMapping) {
+    public DelimitedRecordMapper(final Class<? extends T> recordClass, final String[] fieldsMapping) {
         this();
         recordExpectedLength = fieldsMapping.length;
         objectMapper = new ObjectMapper<T>(recordClass, fieldsMapping);
@@ -130,7 +130,15 @@ public class DsvRecordMapper<T> implements RecordMapper<T> {
         if (objectMapper.getHeadersMapping() == null) {
             String[] fieldsMapping = new String[tokens.length];
             for (int i = 0; i < tokens.length; i++) {
-                fieldsMapping[i] = tokens[i].toLowerCase();
+                String token = tokens[i];
+                if (trimWhitespaces) {
+                    token = token.trim();
+                }
+                final int qualifierLength = qualifier.length();
+                if (qualifierLength > 0) {
+                    token = token.substring(qualifierLength, token.length() - qualifierLength);
+                }
+                fieldsMapping[i] = token.toLowerCase();
             }
 
             this.recordExpectedLength = tokens.length;
