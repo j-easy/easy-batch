@@ -81,14 +81,31 @@ public class DsvRecordMapper<T> implements RecordMapper<T> {
     private int recordExpectedLength;
 
     /**
+     * private default constructor to initialize the mapper with default parameter values.
+     */
+    private DsvRecordMapper() {
+        this.delimiter = DEFAULT_DELIMITER;
+        this.qualifier = DEFAULT_QUALIFIER;
+        this.trimWhitespaces = DEFAULT_WHITESPACE_TRIMMING;
+    }
+
+    /**
+     * Constructs a default DsvRecordMapper instance. Column names will be calculated from the header record
+     * and set to fields with the same name of the target object.
+     * @param recordClass the target domain object class
+     */
+    public DsvRecordMapper(final Class<? extends T> recordClass) {
+        this();
+        objectMapper = new ObjectMapper<T>(recordClass);
+    }
+
+    /**
      * Constructs a DsvRecordMapper instance.
      * @param recordClass the target domain object class
      * @param fieldsMapping a String array representing fields name in the same order in the DSV flat file.
      */
     public DsvRecordMapper(final Class<? extends T> recordClass, final String[] fieldsMapping) {
-        this.delimiter = DEFAULT_DELIMITER;
-        this.qualifier = DEFAULT_QUALIFIER;
-        this.trimWhitespaces = DEFAULT_WHITESPACE_TRIMMING;
+        this();
         recordExpectedLength = fieldsMapping.length;
         objectMapper = new ObjectMapper<T>(recordClass, fieldsMapping);
     }
@@ -108,6 +125,18 @@ public class DsvRecordMapper<T> implements RecordMapper<T> {
 
         String recordRawContent = (String) record.getRawContent();
         String[] tokens = recordRawContent.split(delimiter, -1);
+
+        // convention over configuration : if fields mapping is not specified, retrieve it from the header record (done only once)
+        if (objectMapper.getHeadersMapping() == null) {
+            String[] fieldsMapping = new String[tokens.length];
+            for (int i = 0; i < tokens.length; i++) {
+                fieldsMapping[i] = tokens[i].toLowerCase();
+            }
+
+            this.recordExpectedLength = tokens.length;
+            objectMapper.setHeadersMapping(fieldsMapping);
+        }
+
         if (tokens.length != recordExpectedLength) {
             throw new Exception("record length (" + tokens.length + " fields) not equal to expected length of "
                     + recordExpectedLength + " fields");
