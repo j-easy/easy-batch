@@ -179,6 +179,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordProcessor(new GreetingProcessor()) // requirement N°3
     .build();
 </pre>
+        <p>By default, Easy Batch will use the jdbc result set meta data to map <em>greeting</em> table columns to <code>Greeting</code> fields with the same name.</p>
         <p>That's all, we can now run the batch and see the results!</p>
 
         <h2 id="3">3. Running the batch</h2>
