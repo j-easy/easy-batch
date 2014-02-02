@@ -28,6 +28,8 @@ import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
 import io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper;
+import io.github.benas.easybatch.tutorials.common.Greeting;
+import io.github.benas.easybatch.tutorials.common.GreetingProcessor;
 
 /**
 * Main class to run the hello world tutorial.

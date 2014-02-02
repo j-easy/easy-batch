@@ -29,8 +29,8 @@ import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.jdbc.JdbcRecordMapper;
 import io.github.benas.easybatch.jdbc.JdbcRecordReader;
-import io.github.benas.easybatch.tutorials.helloworld.csv.Greeting;
-import io.github.benas.easybatch.tutorials.helloworld.csv.GreetingProcessor;
+import io.github.benas.easybatch.tutorials.common.Greeting;
+import io.github.benas.easybatch.tutorials.common.GreetingProcessor;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

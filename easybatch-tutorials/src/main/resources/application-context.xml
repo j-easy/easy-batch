@@ -12,7 +12,7 @@
     <!-- configure record mapper -->
     <bean id="greetingMapper" class="io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper">
         <constructor-arg>
-            <value type="java.lang.Class">io.github.benas.easybatch.tutorials.helloworld.csv.Greeting</value>
+            <value type="java.lang.Class">io.github.benas.easybatch.tutorials.common.Greeting</value>
         </constructor-arg>
         <constructor-arg>
             <list>
@@ -23,7 +23,7 @@
     </bean>
 
     <!-- configure record processor -->
-    <bean id="greetingProcessor" class="io.github.benas.easybatch.tutorials.helloworld.csv.GreetingProcessor"/>
+    <bean id="greetingProcessor" class="io.github.benas.easybatch.tutorials.common.GreetingProcessor"/>
 
     <!-- configure Easy Batch engine -->
     <bean id="easyBatchEngine" class="io.github.benas.easybatch.tools.spring.EasyBatchFactoryBean">

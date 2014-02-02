@@ -30,8 +30,8 @@ import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
 import io.github.benas.easybatch.flatfile.flr.FixedLengthRecordMapper;
-import io.github.benas.easybatch.tutorials.helloworld.csv.Greeting;
-import io.github.benas.easybatch.tutorials.helloworld.csv.GreetingProcessor;
+import io.github.benas.easybatch.tutorials.common.Greeting;
+import io.github.benas.easybatch.tutorials.common.GreetingProcessor;
 
 /**
 * Main class to run the hello world FLR tutorial.

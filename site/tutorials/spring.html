@@ -126,7 +126,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd"&gt;
 
-  &lt;bean id="greetingProcessor" class="io.github.benas.easybatch.tutorials.helloworld.csv.GreetingProcessor"/&gt;
+  &lt;bean id="greetingProcessor" class="io.github.benas.easybatch.tutorials.common.GreetingProcessor"/&gt;
 
 &lt;/beans&gt;
 </pre>
@@ -179,7 +179,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
         &lt;!-- configure record mapper --&gt;
         &lt;bean id="greetingMapper" class="io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper"&gt;
             &lt;constructor-arg&gt;
-                &lt;value type="java.lang.Class"&gt;io.github.benas.easybatch.tutorials.helloworld.csv.Greeting&lt;/value&gt;
+                &lt;value type="java.lang.Class"&gt;io.github.benas.easybatch.tutorials.common.Greeting&lt;/value&gt;
             &lt;/constructor-arg&gt;
             &lt;constructor-arg&gt;
                 &lt;list&gt;
@@ -190,7 +190,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
         &lt;/bean&gt;
 
         &lt;!-- configure record processor --&gt;
-        &lt;bean id="greetingProcessor" class="io.github.benas.easybatch.tutorials.helloworld.csv.GreetingProcessor"/&gt;
+        &lt;bean id="greetingProcessor" class="io.github.benas.easybatch.tutorials.common.GreetingProcessor"/&gt;
 
         &lt;!-- configure Easy Batch engine --&gt;
         &lt;bean id="easyBatchEngine" class="io.github.benas.easybatch.tools.spring.EasyBatchFactoryBean"&gt;

@@ -22,7 +22,7 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.tutorials.helloworld.csv;
+package io.github.benas.easybatch.tutorials.common;
 
 import io.github.benas.easybatch.core.api.AbstractRecordProcessor;
 

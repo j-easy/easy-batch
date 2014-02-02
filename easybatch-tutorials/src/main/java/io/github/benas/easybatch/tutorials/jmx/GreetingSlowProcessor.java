@@ -24,8 +24,8 @@
 
 package io.github.benas.easybatch.tutorials.jmx;
 
-import io.github.benas.easybatch.tutorials.helloworld.csv.Greeting;
-import io.github.benas.easybatch.tutorials.helloworld.csv.GreetingProcessor;
+import io.github.benas.easybatch.tutorials.common.Greeting;
+import io.github.benas.easybatch.tutorials.common.GreetingProcessor;
 
 /**
 * A processor that will generate (slooowly :-) ) a greeting message for each record.
