@@ -25,7 +25,7 @@
 package io.github.benas.easybatch.core.converter;
 
 /**
- * Boolean type converter : converts "true" , "1", and "yes" (ignoring case) to the boolean true value.
+ * Boolean type converter : converts "true" , "1", "yes" and "on" (ignoring case) to the boolean true value.
  * Any other value will be converted to false.
  *
  * @author benas (md.benhassine@gmail.com)
@@ -36,7 +36,7 @@ public class BooleanTypeConverter implements TypeConverter<Boolean> {
      * {@inheritDoc}
      */
     public Boolean convert(final String value) {
-        return Boolean.valueOf(value) || "1".equals(value) || "yes".equals(value);
+        return Boolean.valueOf(value) || "1".equals(value) || "on".equalsIgnoreCase(value) || "yes".equals(value);
     }
 
 }
