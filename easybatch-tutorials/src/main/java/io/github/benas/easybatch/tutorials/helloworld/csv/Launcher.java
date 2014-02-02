@@ -24,6 +24,7 @@
 
 package io.github.benas.easybatch.tutorials.helloworld.csv;
 
+import io.github.benas.easybatch.core.api.EasyBatchReport;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
@@ -48,7 +49,10 @@ public class Launcher {
                 .build();
 
         // Run easy batch engine
-        easyBatchEngine.call();
+        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+
+        // Print the batch execution report
+        System.out.println(easyBatchReport);
 
     }
 
