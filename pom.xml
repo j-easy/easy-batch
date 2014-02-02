@@ -10,7 +10,7 @@
 
     <groupId>io.github.benas</groupId>
     <artifactId>easybatch</artifactId>
-    <version>2.1.1</version>
+    <version>2.1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>easybatch</name>
     <description>Easy Batch parent module</description>
@@ -52,7 +52,7 @@
         <url>git@github.com:benas/easy-batch.git</url>
         <connection>scm:git:git@github.com:benas/easy-batch.git</connection>
         <developerConnection>scm:git:git@github.com:benas/easy-batch.git</developerConnection>
-        <tag>easybatch-2.1.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <licenses>
