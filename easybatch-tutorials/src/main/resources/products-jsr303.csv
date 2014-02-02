@@ -1,4 +1,4 @@
-#"productId"|"name"|"description"|"price"|"published"|"lastUpdate"
+"productId"|"name"|"description"|"price"|"published"|"lastUpdate"
 "0001"|"product1"|"description1"|"2500"|"true"|"2014-01-01"
 "0002"|""|"description2"|"2400"|"false"|"2014-01-02"
 "0003"|"product3"|"description3"|"-2300"|"true"|"2014-01-03"

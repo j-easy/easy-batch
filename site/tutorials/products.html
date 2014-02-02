@@ -117,7 +117,7 @@
 
                 <p align="center"><img src="../resources/img/productsStats.png"/></p>
 
-                <p>In this tutorial, you will learn how to:</p>
+                <p>You will learn how to:</p>
                 <ul>
                     <li>Configure the built-in <code>DelimitedRecordMapper</code> with custom parameters and type converter</li>
                     <li>Get an execution report at the end of batch processing</li>
@@ -126,7 +126,7 @@
 
                 <p>The input file named <code>products.csv</code> has the following content:</p>
 <pre>
-#"productId"|"name"|"description"|"price"|"published"|"lastUpdate"|"origin"
+"productId"|"name"|"description"|"price"|"published"|"lastUpdate"|"origin"
 "0001"|"product1"|"description1"|"2500"|"true"|"2014-01-01"|"0"
 "0002"|"product2"|"description2"|"2400"|"false"|"2014-01-02"|"1"
 "0003"|"product3"|"description3"|"2300"|"true"|"2014-01-03"|"0"
@@ -139,7 +139,6 @@
 </pre>
 
                 <p>The record format is self explanatory. The origin field can be national (0) or international (1).
-                    The first record is a header record that should be skipped.
                     The delimiter is the pipe character ("|") and data is qualified by double quotes ("").
                     The batch processing logic should calculate the maximum product price for only national published products (<code>published</code> field equals to <code>true</code> and <code>origin</code> field equals to 0).</p>
 
@@ -148,34 +147,40 @@
                 <h2 id="2">2. Implementation using Easy Batch</h2>
 
                 <p>Easy Batch development is POJO-based, so first, let's create a java bean representing a product and an enumeration representing the product origin:</p>
+                <div>
+                    <div class="span6">
 <pre class="prettyprint">
 public class Product {
-
     private long productId;
-
     private String name;
-
     private String description;
-
     private double price;
-
     private boolean published;
-
     private Date lastUpdate;
-
     private Origin origin;
-
     // Getters and Setters omitted
-
 }
-
+</pre>
+                    </div>
+                    <div class="span6">
+<pre class="prettyprint">
 public enum Origin {
     NATIONAL,
     INTERNATIONAL
 }
+
+
+
+
+
+
+
 </pre>
-                <p>Easy Batch comes with built-in type converters for all java primitive and wrapper types (please refer to the javadoc of the <code>io.github.benas.easybatch.core.converter</code> package for all details about Easy Batch built-in type converters) and allows to define custom type converters through the <code>TypeConverter</code> interface.
-                In our tutorial, we will implement the <code>TypeConverter</code> interface to tell Easy Batch how to convert origin String values in CSV records to typed values <code>Origin</code> in the <code>Product</code> bean. So here is the implementation:</p>
+                    </div>
+                </div>
+
+                <p>Easy Batch comes with built-in type converters for all java primitive and wrapper types (please refer to the javadoc of the <code>io.github.benas.easybatch.core.converter</code> package for all details about Easy Batch built-in type converters) and allows you to define custom type converters through the <code>TypeConverter</code> interface.
+                In this tutorial, we will implement the <code>TypeConverter</code> interface to tell Easy Batch how to convert <em>Origin</em> String values in CSV records to typed values <code>Origin</code> in the <code>Product</code> bean. Here is the implementation:</p>
 <pre class="prettyprint">
 public class OriginTypeConverter implements TypeConverter&lt;Origin&gt; {
 
@@ -186,9 +191,9 @@ public class OriginTypeConverter implements TypeConverter&lt;Origin&gt; {
 
 }
 </pre>
-                <p>This type converter will convert String value 0 to <code>Origin.NATIONAL</code> value and String value 1 to <code>Origin.INTERNATIONAL</code> value.</p>
+                <p>This type converter will convert String value <em>0</em> to <code>Origin.NATIONAL</code> value and String value <em>1</em> to <code>Origin.INTERNATIONAL</code> value.</p>
 
-                <p>Then, let's code the batch processing business logic by implementing the <code>RecordProcessor</code> interface:</p>
+                <p>Then, let's implement the <code>RecordProcessor</code> interface to provide the batch processing business logic:</p>
 
 <pre class="prettyprint">
 public class ProductProcessor implements RecordProcessor&lt;Product, Double&gt; {
@@ -224,7 +229,6 @@ public class ProductProcessor implements RecordProcessor&lt;Product, Double&gt; 
 
                 <ol>
                     <li>Read records from the <code>products.csv</code> flat file</li>
-                    <li>Filter the header record</li>
                     <li>Map each record to an instance of the <code>Product</code> bean</li>
                     <li>Process each record using our <code>ProductProcessor</code></li>
                 </ol>
@@ -233,9 +237,7 @@ public class ProductProcessor implements RecordProcessor&lt;Product, Double&gt; 
 
 <pre class="prettyprint">
 // Configure the product record mapper
-DelimitedRecordMapper&lt;Product&gt; productMapper = new DelimitedRecordMapper&lt;Product&gt;(
-    Product.class, // POJO type
-    new String[]{"productId","name", "description", "price","published", "lastUpdate" }); //Ordered fields names
+DelimitedRecordMapper&lt;Product&gt; productMapper = new DelimitedRecordMapper(Product.class);
 productMapper.setDelimiter("|"); // set field delimiter
 productMapper.setQualifier("\"");// set data qualifier
 productMapper.registerTypeConverter(Origin.class, new OriginTypeConverter()); // register custom type converter
@@ -243,16 +245,15 @@ productMapper.registerTypeConverter(Origin.class, new OriginTypeConverter()); //
 // Build an easy batch engine
 EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordReader(new FlatFileRecordReader("products.csv")) // requirement N°1
-    .registerRecordFilter(new StartsWithStringRecordFilter("#")) // requirement N°2
-    .registerRecordMapper(productMapper) // requirement N°3
-    .registerRecordProcessor(new ProductProcessor()) //requirement N°4
+    .registerRecordMapper(productMapper) // requirement N°2
+    .registerRecordProcessor(new ProductProcessor()) //requirement N°3
     .build();
 
 // Run easy batch engine and get execution report
 EasyBatchReport easyBatchReport = easyBatchEngine.call();
 
 // Print the batch report
-System.out.println("easyBatchReport = " + easyBatchReport);
+System.out.println(easyBatchReport);
 
 // Get the batch computation result
 Double maxProductPrice = (Double) easyBatchReport.getEasyBatchResult();
@@ -279,7 +280,7 @@ INFO: Initializing easy batch engine
 INFO: Data source: /data/in/products.csv
 INFO: Total records = 10
 INFO: easy batch engine is running...
-INFO: Record #1 [StringRecord{number=1, rawContent='#"productId"|"name"|"description"|"price"|"published"|"lastUpdate"'}] has been filtered
+<span class="text-error"><strong>SEVERE: Error while mapping record #1: Unable to convert 'productId' to type long for field productId</strong></span>
 INFO: Shutting down easy batch engine
 Easy Batch Report:
 	Start time = 2014-01-18 08:13:35
@@ -287,8 +288,8 @@ Easy Batch Report:
 	Batch duration = 0s
 	Data source = /data/in/products.csv
 	Total records = 10
-	Filtered records = 1 (10%) [1]
-	Ignored records = 0 (0%) []
+	Filtered records = 0 (0%) []
+	Ignored records = 1 (10%) [1]
 	Rejected records = 0 (0%) []
 	Error records = 0 (0%) []
 	Success records = 9 (90%)
@@ -296,12 +297,17 @@ Easy Batch Report:
 	Result = 2500.0
 The maximum product price for published products is : 2500.0
 </pre>
-                <p>As you can see, Easy Batch generated an execution report at the end of execution containing the following information:</p>
+
+                <p>The header record has been ignored since the String <em>productId</em> cannot be converted to the filed <em>productId</em> of type <em>long</em> in the <code>Product</code> Pojo.
+                    The header record could be filtered using the <code>RecordFilter</code> API, but this is not done in this tutorial. You can find an example of record filtering in the
+                    <a href="./helloworldFLR.html" target="_blank">Hello World FLR tutorial</a>.</p>
+
+                <p>Easy Batch generated an execution report at the end of execution containing the following information:</p>
                 <ul>
                     <li>The batch start time, end time and duration</li>
                     <li>The data source being processed</li>
                     <li>The total number of records</li>
-                    <li>The total number of filtered, ignored and rejected records, records processed with errors and records processed successfully</li>
+                    <li>The total number of filtered, ignored, rejected records, error and success records</li>
                     <li>The average record processing time</li>
                     <li>And the batch result returned by the <code>RecordProcessor.getEasyBatchResult</code> method</li>
                 </ul>
@@ -322,7 +328,7 @@ The maximum product price for published products is : 2500.0
                     <li>Providing configuration meta data</li>
                 </ul>
 
-                <p>Easy Batch handled all the plumbing code of reading, filtering, parsing and mapping products data to instances of our domain object <code>Product</code>.</p>
+                <p>Easy Batch handled all the plumbing code of reading, parsing and mapping products data to instances of our domain object <code>Product</code>.</p>
 
                 <p>The following table summarizes what we have done and what Easy Batch has done for us :</p>
 
@@ -352,11 +358,6 @@ The maximum product price for published products is : 2500.0
                     </tr>
                     <tr>
                         <td>Read input file record by record</td>
-                        <td></td>
-                        <td class="center-td"><i class="icon-ok-circle"></i></td>
-                    </tr>
-                    <tr>
-                        <td>Filter comment records</td>
                         <td></td>
                         <td class="center-td"><i class="icon-ok-circle"></i></td>
                     </tr>

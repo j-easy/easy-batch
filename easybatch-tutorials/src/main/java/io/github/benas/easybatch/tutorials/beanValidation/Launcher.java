@@ -25,7 +25,6 @@
 package io.github.benas.easybatch.tutorials.beanValidation;
 
 import io.github.benas.easybatch.core.api.EasyBatchReport;
-import io.github.benas.easybatch.core.filter.StartsWithStringRecordFilter;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
@@ -51,16 +50,13 @@ public class Launcher {
         DatabaseUtil.initializeSessionFactory();
 
         // Configure the product record mapper
-        DelimitedRecordMapper<Product> productMapper = new DelimitedRecordMapper<Product>(
-                Product.class,
-                new String[]{"productId","name", "description", "price","published", "lastUpdate" });
+        DelimitedRecordMapper<Product> productMapper = new DelimitedRecordMapper<Product>(Product.class);
         productMapper.setDelimiter("|");
         productMapper.setQualifier("\"");
 
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from products-jsr303.csv
-                .registerRecordFilter(new StartsWithStringRecordFilter("#"))
                 .registerRecordMapper(productMapper)
                 .registerRecordValidator(new BeanValidationRecordValidator<Product>())
                 .registerRecordProcessor(new ProductProcessor())
