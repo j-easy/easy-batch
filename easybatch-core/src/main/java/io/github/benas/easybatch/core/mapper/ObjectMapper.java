@@ -146,7 +146,7 @@ public class ObjectMapper<T> {
         T result = recordClass.newInstance();
 
         // for each field
-        for (int index = 0; index < fieldsContents.length; index++) {
+        for (int index = 0; index < recordClassSetters.length; index++) {
 
             //get field content and index
             String content = fieldsContents[index];
