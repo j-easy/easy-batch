@@ -171,7 +171,7 @@ public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
                     <li>Process each record using our <code>GreetingProcessor</code></li>
                 </ol>
 
-                <p>The following listing provides this configuration:</p>
+                <p>The following listing shows how to achieve this configuration:</p>
 <pre class="prettyprint">
 EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordReader(new FlatFileRecordReader("greetings.csv")) // requirement N°1

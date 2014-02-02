@@ -109,7 +109,7 @@
                 <h2 id="1" >1. Description</h2>
                     <p>In this section, we will perform a benchmark to measure the potential overhead you may have using Easy Batch.</p>
                     <p>The goal of the benchmark is to measure Easy Batch performance for reading, parsing and mapping data to domain objects.
-                        We will not include record processing logic since it depends heavily on the use case. To do this, we will use the <code>NoOpRecordProcessor</code> registered by default by Easy Batch.</p>
+                        We will not include record processing logic since it heavily depends on the use case.</p>
                     <p>We will perform two benchmarks:</p>
                     <ul>
                         <li>Read a Csv flat file containing customer data</li>
@@ -226,7 +226,7 @@ EasyBatchEngine easyBatchXmlEngine = new EasyBatchEngineBuilder()
                     <div class="row span5 offset1" id="csvBenchChart" style="height: 400px;"></div>
                     <div class="row span5" id="xmlBenchChart" style="height: 400px;"></div>
                 </div>
-                <p class="text-center">The following tables summarize record number, file size and processing time for each benchmark:</p>
+                <p class="text-center">The following tables summarize the record number, the file size and the processing time for each benchmark:</p>
                 <table class="offset1 table table-bordered table-condensed table-striped table-center" style="width:80%">
                     <thead>
                     <tr>

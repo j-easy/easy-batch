@@ -162,7 +162,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 
                 <p>Easy Batch comes with a built-in <code>XmlRecordReader</code> that allows you to read records from an xml file using the
                     <a href="https://www.jcp.org/en/jsr/detail?id=173" target="_blank">Stax</a> API.</p>
-                <p>Since Easy Batch development is Pojo-Based, Xml records correspond to instances of your domain objects. Let's see an example, consider the following xml file:</p>
+                <p>Since Easy Batch development is Pojo-Based, Xml records correspond to instances of your domain objects. Let's consider the following xml file:</p>
 
 <pre class="prettyprint">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
@@ -221,7 +221,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordReader(new StringRecordReader(myString))
     .build();
 </pre>
-                <p> When you create a <code>StringRecordReader</code>, you should specify the String reference to read data from.</p>
+                <p> When you create a <code>StringRecordReader</code>, you should specify the String reference representing the data source.</p>
 
                 <h3>2.4 Reading data from a database</h3>
 
@@ -242,7 +242,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordReader(new JdbcRecordReader(myDatabaseConnection, myQuery))
     .build();
 </pre>
-                <p> When you create a <code>JdbcRecordReader</code>, you should specify the jdbc database connection and the sql query to use to fetch data.</p>
+                <p> When you create a <code>JdbcRecordReader</code>, you should specify the jdbc database connection and the sql query to use to fetch the data.</p>
 
                 <div class="alert">
                     <strong>Heads up!</strong> The <code>JdbcRecordReader</code> loads all data fetched by the sql query you provide into a <code>java.sql.ResultSet</code> object.
@@ -472,7 +472,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .build();
 </pre>
             <p>With Easy Batch, you can also do some computation on input records and hold a batch result that will be returned at the end of execution.</p>
-            <p>This can be done through the <code>getEasyBatchResult</code> method of the <code>RecordProcessor</code> interface : Your record processor can hold the compuation result in an instance variable and return it using this method.</p>
+            <p>This can be done through the <code>getEasyBatchResult</code> method of the <code>RecordProcessor</code> interface : Your record processor can hold the computation result in an instance variable and return it using this method.</p>
             <p>You can find an example of how to return a computation result in the <a href="../tutorials/products.html" target="_blank">Products statistics tutorial</a>.</p>
 
                 <p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record processor that logs an information message about the record being processed.</p>
@@ -491,7 +491,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 <li>The number of records processed with errors</li>
                 <li>The number of records successfully processed</li>
                 <li>The processing time for each record</li>
-                <li>The record processing time average</li>
+                <li>The record average processing time</li>
                 <li>And the computation result if any</li>
             </ul>
 
