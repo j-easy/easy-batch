@@ -24,11 +24,9 @@
 
 package io.github.benas.easybatch.tutorials.helloworld.csv;
 
-import io.github.benas.easybatch.core.api.EasyBatchReport;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
-import io.github.benas.easybatch.core.filter.StartsWithStringRecordFilter;
 import io.github.benas.easybatch.flatfile.dsv.DsvRecordMapper;
 
 /**
@@ -43,16 +41,12 @@ public class Launcher {
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(args[0]))
-                .registerRecordFilter(new StartsWithStringRecordFilter("#"))
-                .registerRecordMapper(new DsvRecordMapper<Greeting>(Greeting.class, new String[]{"sequence", "name"}))
+                .registerRecordMapper(new DsvRecordMapper<Greeting>(Greeting.class))
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 
         // Run easy batch engine
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
-
-        // Print the batch execution report
-        System.out.println("easyBatchReport = " + easyBatchReport);
+        easyBatchEngine.call();
 
     }
 

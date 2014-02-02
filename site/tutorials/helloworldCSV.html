@@ -117,10 +117,9 @@
                     We will process a simple CSV file containing greeting records and generate greeting messages.
                    The input file named <code>greetings.csv</code> has the following content:</p>
 <pre class="prettyprint">
-#sequence,name
+sequence,name
 1,foo
 2,bar
-x,baz
 </pre>
                 <p>Each record is composed of 2 fields :</p>
                 <ul>
@@ -147,15 +146,11 @@ public class Greeting {
 </pre>
                 <p>The sequence and name fields in the CSV file should be mapped respectively to the sequence and name fields in the <code>Greeting</code> bean.</p>
 
-                <p>The record number 4 <code>x,baz</code> should be ignored since the value <code>x</code> is not a number as expected.</p>
-
-                <p>Finally, we should skip the header record from being processed since it only describes the flat file record format.</p>
-
-                <p>You will see that all these requirements can be easily implemented using Easy Batch, so let's get started!</p>
+                <p>So let's get started!</p>
 
                 <h2 id="2">2. Implementation using Easy Batch</h2>
 
-                <p>The goal of Easy Batch is to let you concentrate on your batch processing logic and to handle for you all the plumbing code of reading, filtering, parsing and mapping CSV records to domain objects.</p>
+                <p>The goal of Easy Batch is to let you concentrate on your batch processing logic and to handle for you all the plumbing code of reading, parsing and mapping CSV records to domain objects.</p>
 
                 <p>First, let's implement our batch processing logic by extending the <code>AbstractRecordProcessor</code> class:</p>
 <pre class="prettyprint">
@@ -172,7 +167,6 @@ public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
                 <p>Actually, we have almost finished our batch implementation! We should now configure Easy Batch engine to :<p>
                 <ol>
                     <li>Read records from the <code>greetings.csv</code> flat file</li>
-                    <li>Filter records starting with # (mainly the header record)</li>
                     <li>Map each record to an instance of the <code>Greeting</code> bean</li>
                     <li>Process each record using our <code>GreetingProcessor</code></li>
                 </ol>
@@ -181,13 +175,12 @@ public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
 <pre class="prettyprint">
 EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .registerRecordReader(new FlatFileRecordReader("greetings.csv")) // requirement N°1
-    .registerRecordFilter(new StartsWithStringRecordFilter("#")) // requirement N°2
-    .registerRecordMapper(new DsvRecordMapper(Greeting.class, new String[]{"sequence", "name"})) // requirement N°3
-    .registerRecordProcessor(new GreetingProcessor()) // requirement N°4
+    .registerRecordMapper(new DsvRecordMapper(Greeting.class)) // requirement N°2
+    .registerRecordProcessor(new GreetingProcessor()) // requirement N°3
     .build();
 </pre>
-                <p>For the <code>DsvRecordMapper</code>, we have specified the target Pojo type and an array of fields names in the same order as in CSV records.</p>
 
+                <p>By default, Easy Batch will use the header record to map Csv fields to <code>Greeting</code> fields with the same name.</p>
                 <p>That's all, we can now run the batch and see the results!</p>
 
                 <h2 id="3">3. Running the batch</h2>
@@ -211,18 +204,20 @@ easyBatchEngine.call();
 <pre>
 INFO: Initializing easy batch engine
 INFO: Data source: /data/in/greetings.csv
-INFO: Total records = 4
+INFO: Total records = 3
 INFO: easy batch engine is running...
-INFO: Record #1 [StringRecord{number=1, rawContent='#sequence,name'}] has been filtered
+<span class="text-error"><strong>SEVERE: Error while mapping record #1 [StringRecord{number=1, rawContent='sequence,name'}] :
+    Unable to convert 'sequence' to type long for field sequence</strong></span>
 Hi foo! Your sequence number is 1
 Hi bar! Your sequence number is 2
-<span class="text-error"><strong>SEVERE: Error while mapping record #4 [StringRecord{number=4, rawContent='x,baz'}] :
-    Unable to convert 'x' to type long for field sequence</strong></span>
 INFO: Shutting down easy batch engine
 </pre>
 
-                <p>As expected, Easy Batch processed only valid records and generated a greeting message for each person.</p>
-                <p>Moreover, Easy Batch has logged precise information about which record has been filtered and ignored with an error message for each case.</p>
+                <p>As expected, Easy Batch generated a greeting message for each person.</p>
+
+                <p>The header record has been ignored since the String <em>sequence</em> cannot be converted to the filed <em>sequence</em> of type <em>long</em> in our <code>Greeting</code> Pojo.
+                    The header record could be filtered using the <code>RecordFilter</code> API, but this is not shown in this tutorial. You can find an example of record filtering in the
+                    <a href="./helloworldFLR.html" target="_blank">Hello World FLR tutorial</a>.</p>
 
                 <h2 id="4">4. Conclusion</h2>
 
@@ -234,7 +229,7 @@ INFO: Shutting down easy batch engine
                     <li>Providing configuration meta data</li>
                 </ul>
 
-                <p>Easy Batch handled all the plumbing code of reading, filtering, parsing and mapping flat file records to
+                <p>Easy Batch handled all the plumbing code of reading, parsing and mapping flat file records to
                     instances of our domain object <code>Greeting</code> and actually has reduced this plumbing code from hundred lines to only a very few lines! (listing above)</p>
 
                 <p>The following table summarizes what we have done and what Easy Batch has done for us :</p>
@@ -265,11 +260,6 @@ INFO: Shutting down easy batch engine
                     </tr>
                     <tr>
                         <td>Read input file record by record</td>
-                        <td></td>
-                        <td class="center-td"><i class="icon-ok-circle"></i></td>
-                    </tr>
-                    <tr>
-                        <td>Filter comment records</td>
                         <td></td>
                         <td class="center-td"><i class="icon-ok-circle"></i></td>
                     </tr>
