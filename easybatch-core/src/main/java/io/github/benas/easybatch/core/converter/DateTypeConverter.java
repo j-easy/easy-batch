@@ -66,7 +66,7 @@ public class DateTypeConverter implements TypeConverter<Date> {
      */
     public Date convert(final String value) {
         try {
-            return new SimpleDateFormat(DEFAULT_DATE_FORMAT).parse(value);
+            return new SimpleDateFormat(dateFormat).parse(value);
         } catch (ParseException e) {
             throw new IllegalArgumentException("Unable to convert value '" + value + "' to a Date object with format "
                     + dateFormat, e);
