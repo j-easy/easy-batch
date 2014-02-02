@@ -352,6 +352,12 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                     </tbody>
                 </table>
 
+                <p>If a delimited record is not well formed, the <code>DelimitedRecordMapper</code> throws an exception that causes the record to be ignored by the engine in the following cases:</p>
+                <ul>
+                    <li>Fields number is not equal to the expected fields number (missing field, extra field, etc)</li>
+                    <li>A field is not enclosed as expected with the data qualifier</li>
+                </ul>
+
                 <p>You can find examples of how to use the <code>DelimitedRecordMapper</code> in the <a href="../tutorials/helloworldCSV.html" target="_blank">Hello World CSV tutorial</a>
                     and in the <a href="../tutorials/products.html" target="_blank">Products statistics tutorial</a>.</p>
 
@@ -368,6 +374,9 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
     .build();
 </pre>
                 <p>When you create a <code>FixedLengthRecordMapper</code>, you should specify your domain object type, an array of field lengths and an array of field names in the same order as they appear in the fixed length record.</p>
+
+                <p>If a fixed length record is not well formed, the <code>FixedLengthRecordMapper</code> throws an exception that causes the record to be ignored by the engine.
+                    A fixed length record is not well formed if its length is not equal to expected record length.</p>
 
                 <p>You can find an example of how to use the <code>FixedLengthRecordMapper</code> in the <a href="../tutorials/helloworldFLR.html" target="_blank">Hello World FLR tutorial.</a>
 
