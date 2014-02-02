@@ -56,7 +56,7 @@ public class SingleFileLauncher {
                 .build();
 
         EasyBatchReport easyBatchReport = easyBatchEngine.call();
-        System.out.println("easyBatchReport = " + easyBatchReport);
+        System.out.println(easyBatchReport);
 
         long singleInstanceEndTime = System.currentTimeMillis() - singleInstanceStartTime;
 
