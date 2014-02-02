@@ -24,6 +24,7 @@
 
 package io.github.benas.easybatch.tutorials.quartz;
 
+import io.github.benas.easybatch.core.filter.RecordNumberEqualsToRecordFilter;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
@@ -55,7 +56,7 @@ public class Launcher {
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(args[0]))
-                .registerRecordFilter(new StartsWithStringRecordFilter("#"))
+                .registerRecordFilter(new RecordNumberEqualsToRecordFilter(1))
                 .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"sequence", "name"}))
                 .registerRecordValidator(new BeanValidationRecordValidator<Greeting>())
                 .registerRecordProcessor(new GreetingProcessor())
