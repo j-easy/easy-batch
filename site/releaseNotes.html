@@ -107,6 +107,9 @@
 
                 <p>This release is mainly a bug fix release with 10+ fixed bugs. It also includes some minor API changes and documentation updates:</p>
                 <ul>
+                    <li>Renamed <code>DsvRecordMapper</code> to <code>DelimitedRecordMapper</code></li>
+                    <li>Added a convention over configuration for <code>DelimitedRecordMapper</code> to read field names from the header record</li>
+                    <li>Added a convention over configuration for <code>JdbcRecordMapper</code> to read field names from the result set meta data</li>
                     <li>Added a Spring factory bean to use Easy Batch engine as a Spring bean</li>
                     <li>Added a performance benchmark</li>
                     <li>Improved RecordReader API design</li>

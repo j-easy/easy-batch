@@ -7,9 +7,11 @@ Changes in version 2.1.1 (2014-02-01)
 
 * Added a Spring factory bean to use Easy Batch engine as a Spring bean
 * Added a performance benchmark
+* Fixed issue#23 : DateTypeConverter always uses the default date format
+* Fixed issue#22 : Make DelimitedRecordMapper more intelligent : add convention over configuration to read field names from header record
 * Fixed issue#21 : NoOpRecordProcessor throws java.lang.ClassCastException when using a custom POJO
 * Fixed issue#20 : Easy Batch Object Mapper does not handle inherited fields
-* Fixed issue#19 : Make JdbcRecordMapper more intelligent : add convention over configuration if field names are the same as result set column names
+* Fixed issue#19 : Make JdbcRecordMapper more intelligent : add convention over configuration to read field names from the result set meta data
 * Fixed issue#18 : Wrong JMX metrics when total records count is undefined
 * Fixed issue#17 : show "N/A" instead of "null" for total records count in the JMX console when the total records count is undefined.
 * Fixed issue#16 : Easy Batch crashes if an unexpected exception occurs during data validation
@@ -18,6 +20,7 @@ Changes in version 2.1.1 (2014-02-01)
 * Fixed issue#13 : Add the possibility to specify the date format for the DateTypeConverter
 * Fixed issue#12 : make the BooleanTypeConverter more intelligent
 * Merged pull request #11 from nihed/master : Update poms to use dependencyManagement
+* Renamed <code>DsvRecordMapper</code> to <code>DelimitedRecordMapper</code>
 * Improved code quality by fixing sonar warnings
 * Improved Object Mapper implementation : use java.beans.Introspector and java.beans.BeanInfo classes to introspect the target type
 * Improved RecordReader API design : make the getTotalRecords method return Long (instead of long) to be able to return null if the total records count cannot be calculated in advance
