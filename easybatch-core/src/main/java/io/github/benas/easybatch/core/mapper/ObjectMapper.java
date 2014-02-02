@@ -65,7 +65,7 @@ public class ObjectMapper<T> {
     private Method[] recordClassSetters;
 
     /**
-     * An array of the names of the properties of the domain object in the same order they appear in the record.
+     * An array of the names of the properties of the domain object in the same order in which they appear in the record.
      */
     private String[] headersMapping;
 
@@ -151,7 +151,7 @@ public class ObjectMapper<T> {
             //get field content and index
             String content = fieldsContents[index];
 
-            //convert the String raw value to field recordClass
+            //convert the String raw value to the field type
             Object typedValue = null;
             Class<?> type = recordClassSetters[index].getParameterTypes()[0];
             TypeConverter typeConverter = typeConverters.get(type);
@@ -162,7 +162,8 @@ public class ObjectMapper<T> {
                     throw new Exception("Unable to convert '" + content + "' to type " + type + " for field " + headersMapping[index], e);
                 }
             } else {
-                LOGGER.log(Level.WARNING, "Type conversion not supported for type " + type + ", field " + headersMapping[index] + " will be set to null");
+                LOGGER.log(Level.WARNING, "Type conversion not supported for type " + type +
+                        ", field " + headersMapping[index] + " will be set to null (if object type) or default value (if primitive type)");
             }
 
             //set the typed value to the object field
