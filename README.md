@@ -22,7 +22,14 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 
 ## Documentation
 
-All documentation about Easy Batch can be found at [http://benas.github.io/easy-batch/index.html][easy-batch-doc]
+### Project Home
+[http://benas.github.io/easy-batch/index.html][easy-batch-doc]
+
+### Presentation slides
+[https://speakerdeck.com/benas/easy-batch][easy-batch-slides]
+
+### Blog posts
+- [How I reduced my Java batch application’s code by 80% using Easy Batch!][easy-batch-post1]
 
 ## Current version
 
@@ -42,5 +49,7 @@ You can also contribute with pull requests on GitHub, your contribution is welco
 Many thanks upfront!
 
 [easy-batch-doc]: http://benas.github.io/easy-batch/index.html
+[easy-batch-slides]: https://speakerdeck.com/benas/easy-batch
+[easy-batch-post1]: http://mahmoudbenhassine.com/2014/01/21/how-i-reduced-my-java-batch-applications-code-by-80-using-easy-batch/
 [MIT License]: http://opensource.org/licenses/mit-license.php/
 [issue tracker]: https://github.com/benas/easy-batch/issues
