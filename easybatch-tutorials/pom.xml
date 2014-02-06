@@ -430,8 +430,8 @@
                         <configuration>
                             <mainClass>io.github.benas.easybatch.tutorials.advanced.Launcher</mainClass>
                             <arguments>
-                                <argument>${project.basedir}/src/main/resources/greetings.csv</argument>
-                                <argument>${project.basedir}/src/main/resources/greetings.xml</argument>
+                                <argument>${project.basedir}/src/main/resources/greetings-adv.csv</argument>
+                                <argument>${project.basedir}/src/main/resources/greetings-adv.xml</argument>
                             </arguments>
                         </configuration>
                     </plugin>
