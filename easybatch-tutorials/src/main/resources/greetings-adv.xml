@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<greetings>
+    <greeting>
+        <sequence>3</sequence>
+        <name>baz</name>
+    </greeting>
+    <greeting>
+        <sequence>4</sequence>
+        <name>bas</name>
+    </greeting>
+</greetings>

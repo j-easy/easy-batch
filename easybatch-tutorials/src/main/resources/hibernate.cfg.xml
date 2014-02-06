@@ -17,6 +17,7 @@
 
         <!-- mapping files -->
         <mapping resource="Product.hbm.xml"/>
+        <mapping resource="Greeting.hbm.xml"/>
 
     </session-factory>
 

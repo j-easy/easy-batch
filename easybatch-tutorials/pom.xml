@@ -95,6 +95,11 @@
             <artifactId>jpopulator</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.0.4</version>
+        </dependency>
 
     </dependencies>
 
@@ -406,6 +411,27 @@
                             <mainClass>io.github.benas.easybatch.tutorials.jmx.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/greetings-jmx.csv</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>runAdvancedETLTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>io.github.benas.easybatch.tutorials.advanced.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/greetings.csv</argument>
+                                <argument>${project.basedir}/src/main/resources/greetings.xml</argument>
                             </arguments>
                         </configuration>
                     </plugin>
