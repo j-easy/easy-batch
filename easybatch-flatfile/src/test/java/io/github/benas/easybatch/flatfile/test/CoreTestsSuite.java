@@ -34,7 +34,7 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses( {
-        DsvRecordMapperTest.class,
+        DelimitedRecordMapperTest.class,
         FixedLengthRecordMapperTest.class})
 public class CoreTestsSuite {
 }
