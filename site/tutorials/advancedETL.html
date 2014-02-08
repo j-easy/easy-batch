@@ -123,6 +123,12 @@ We will use the same resources as in <a href="./helloworldCSV.html" target="_bla
 <p>We will use the same <code>Greeting</code> POJO to load data from the following CSV and XML input files:</p>
 
 <div>
+<pre class="prettyprint">
+1,foo
+2,bar
+</pre>
+</div>
+<div>
     <div class="span6">
 <pre class="prettyprint">
 @XmlRootElement
@@ -135,18 +141,11 @@ public class Greeting {
     private String name;
 
     //Getters and setters omitted
-
 }
-
-
-
 </pre>
     </div>
     <div class="span6">
-<pre class="prettyprint">
-1,foo
-2,bar
-</pre>
+
 <pre class="prettyprint">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;greetings&gt;
@@ -167,7 +166,8 @@ public class Greeting {
 
 <h2 id="2">2. Implementation using Easy Batch</h2>
 
-<p>To keep the tutorial simple, we will use an in-memory database. The following <code>RecordProcessor</code> implementation (which uses <a href="http://hibernate.org/orm/" target="_blank">Hibernate</a> APIs) will be used to load greetings in the database</p>
+<p>To keep the tutorial simple, we will use an in-memory database.
+    The following <code>RecordProcessor</code> implementation (which uses <a href="http://hibernate.org/orm/" target="_blank">Hibernate</a> APIs) will be used to load greetings in the database:</p>
 
 <pre class="prettyprint">
 public class GreetingDataLoader extends AbstractRecordProcessor&lt;Greeting&gt; {
@@ -205,8 +205,8 @@ public class GreetingJsonGenerator extends AbstractRecordProcessor&lt;Greeting&g
         JsonObject greetingModel = Json.createObjectBuilder()
                 .add("sequence", greeting.getSequence())
                 .add("name", greeting.getName())
-        .build();
-    jsonWriter.writeObject(greetingModel);
+                .build();
+        jsonWriter.writeObject(greetingModel);
     }
 
 }
@@ -278,8 +278,8 @@ easyBatchJsonEngine.call();
 <p>At the end of execution, you should see the following output in the console:</p>
 
 <pre>
-INFO: Initializing easy batch engine
-INFO: Initializing easy batch engine
+INFO: Initializing easy batch engine <span class="text-info"><em><strong><= output of CSV engine</strong></em></span>
+INFO: Initializing easy batch engine <span class="text-info"><em><strong><= output of XML engine</strong></em></span>
 INFO: Data source: /data/in/greetings-adv.xml
 INFO: Data source: /data/in/greetings-adv.csv
 INFO: Total records = 2
@@ -292,7 +292,7 @@ INFO: Greeting {sequence=2, name='bar'} successfully persisted in the database
 INFO: Greeting {sequence=4, name='bas'} successfully persisted in the database
 INFO: Shutting down easy batch engine
 INFO: Shutting down easy batch engine
-INFO: Initializing easy batch engine
+INFO: Initializing easy batch engine <span class="text-info"><em><strong><= output of JSON engine</strong></em></span>
 INFO: Data source: Connection URL: jdbc:hsqldb:mem | Query string: select * from greeting
 INFO: Total records = 4
 INFO: easy batch engine is running...
