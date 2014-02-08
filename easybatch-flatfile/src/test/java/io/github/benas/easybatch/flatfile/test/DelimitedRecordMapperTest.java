@@ -39,7 +39,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class DsvRecordMapperTest {
+public class DelimitedRecordMapperTest {
 
     private DelimitedRecordMapper delimitedRecordMapper;
 
