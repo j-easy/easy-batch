@@ -130,7 +130,7 @@ public class ObjectMapper<T> {
                 }
             }
         } catch (IntrospectionException e) {
-            LOGGER.log(Level.SEVERE, "Unable to introspect target type " + recordClass, e);
+            LOGGER.log(Level.SEVERE, "Unable to introspect target type " + recordClass.getName(), e);
             throw new RuntimeException(e);
         }
     }
