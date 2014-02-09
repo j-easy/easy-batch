@@ -113,6 +113,19 @@ public class DelimitedRecordMapperTest {
         validateRecord(stringRecord);
     }
 
+    @Test
+    public void testFieldFilteringMapping() throws Exception {
+        delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class,
+                new Integer[]{1, 5},
+                new String[]{"firstName", "married"}
+        );
+        assertNotNull(delimitedRecordMapper.parseRecord(stringRecord));
+        FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(stringRecord);
+        assertEquals(2, flatFileRecord.getFlatFileFields().size());
+        assertEquals("foo",flatFileRecord.getFlatFileFields().get(0).getRawContent());
+        assertEquals("true",flatFileRecord.getFlatFileFields().get(1).getRawContent());
+    }
+
     private void validateRecord(final StringRecord stringRecord) throws Exception {
         assertNotNull(delimitedRecordMapper.parseRecord(stringRecord));
         FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(stringRecord);
