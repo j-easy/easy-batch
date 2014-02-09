@@ -6,8 +6,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
@@ -37,7 +35,7 @@ public class XmlRecordMapperTest {
         assertEquals(1, person.getId());
         assertEquals("foo", person.getFirstName());
         assertEquals("bar", person.getLastName());
-//        assertEquals(new SimpleDateFormat("yyyy-MM-dd").parse("2000-01-01"), person.getBirthDate());
+        assertEquals(new SimpleDateFormat("yyyy-MM-dd").parse("2000-01-01"), person.getBirthDate());
         assertEquals(true, person.isMarried());
     }
 

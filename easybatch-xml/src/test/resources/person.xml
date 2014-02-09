@@ -2,6 +2,6 @@
     <id>1</id>
     <firstName>foo</firstName>
     <lastName>bar</lastName>
-    <dirthDate>2000-01-01</dirthDate>
+    <birthDate>2000-01-01</birthDate>
     <married>true</married>
 </person>

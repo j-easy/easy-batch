@@ -24,9 +24,7 @@
 
 package io.github.benas.easybatch.xml.test;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import java.util.Date;
 
 /**
@@ -75,8 +73,6 @@ public class Person {
         return birthDate;
     }
 
-    @XmlElement
-    @XmlSchemaType(name = "date")
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
