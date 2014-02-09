@@ -11,7 +11,7 @@ import org.junit.Test;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class RecordNumberEqualsToFilterTest {
+public class RecordFiltersTest {
 
     private StartsWithStringRecordFilter startsWithStringRecordFilter;
     private EndsWithStringRecordFilter endsWithStringRecordFilter;
