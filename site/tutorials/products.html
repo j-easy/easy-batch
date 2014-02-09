@@ -236,33 +236,40 @@ public class ProductProcessor implements RecordProcessor&lt;Product, Double&gt; 
                 <p>The following listing provides this configuration:</p>
 
 <pre class="prettyprint">
-// Configure the product record mapper
-DelimitedRecordMapper&lt;Product&gt; productMapper = new DelimitedRecordMapper(Product.class);
-productMapper.setDelimiter("|"); // set field delimiter
-productMapper.setQualifier("\"");// set data qualifier
-productMapper.registerTypeConverter(Origin.class, new OriginTypeConverter()); // register custom type converter
+public class Launcher {
 
-// Build an easy batch engine
-EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordReader(new FlatFileRecordReader("products.csv")) // requirement N°1
-    .registerRecordMapper(productMapper) // requirement N°2
-    .registerRecordProcessor(new ProductProcessor()) //requirement N°3
-    .build();
+    public static void main(String[] args) throws Exception {
 
-// Run easy batch engine and get execution report
-EasyBatchReport easyBatchReport = easyBatchEngine.call();
+        // Configure the product record mapper
+        DelimitedRecordMapper&lt;Product&gt; productMapper = new DelimitedRecordMapper(Product.class);
+        productMapper.setDelimiter("|"); // set field delimiter
+        productMapper.setQualifier("\"");// set data qualifier
+        productMapper.registerTypeConverter(Origin.class, new OriginTypeConverter()); // register custom type converter
 
-// Print the batch report
-System.out.println(easyBatchReport);
+        // Build an easy batch engine
+        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+            .registerRecordReader(new FlatFileRecordReader("products.csv")) // requirement N°1
+            .registerRecordMapper(productMapper) // requirement N°2
+            .registerRecordProcessor(new ProductProcessor()) //requirement N°3
+            .build();
 
-// Get the batch computation result
-Double maxProductPrice = (Double) easyBatchReport.getEasyBatchResult();
+        // Run easy batch engine and get execution report
+        EasyBatchReport easyBatchReport = easyBatchEngine.call();
 
-// Print the maximum price
-System.out.println("The maximum product price for national published products is : " + maxProductPrice);
+        // Print the batch report
+        System.out.println(easyBatchReport);
+
+        // Get the batch computation result
+        Double maxProductPrice = (Double) easyBatchReport.getEasyBatchResult();
+
+        // Print the maximum price
+        System.out.println("The maximum product price for national published products is : " + maxProductPrice);
+
+    }
+}
 </pre>
 
-                <p>That's all, we can now run the batch and see the results!</p>
+                <p>That's all, we can now run the batch and see the results.</p>
 
                 <h2 id="3">3. Running the tutorial</h2>
 

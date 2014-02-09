@@ -307,16 +307,33 @@ public class CustomerProcessor extends AbstractRecordProcessor&lt;Customer&gt; {
                 <p>The following listing provides this configuration:</p>
 
 <pre class="prettyprint">
-// Build an easy batch engine
-EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-        .registerRecordReader(new JdbcRecordReader(connection, "select * from customer"))
-        .registerRecordMapper(new CustomerMapper())
-        .registerRecordProcessor(new CustomerProcessor())
-        .build();
+public class Launcher {
+
+    public static void main(String[] args) throws Exception {
+
+        // create an embedded hsqldb in-memory database
+        Connection connection = DriverManager.getConnection("jdbc:hsqldb:mem", "sa", "");
+        populateEmbeddedDB(connection);
+
+        // Build an easy batch engine
+        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+            .registerRecordReader(new JdbcRecordReader(connection, "select * from customer"))
+            .registerRecordMapper(new CustomerMapper())
+            .registerRecordProcessor(new CustomerProcessor())
+            .build();
+
+        // Run easy batch engine and get execution report
+        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+
+        // Print the batch report
+        System.out.println(easyBatchReport);
+
+    }
+}
 </pre>
                 <p>In memory database setup details are not shown here.</p>
 
-                <p>That's all, we can now run the batch and see the results!</p>
+                <p>That's all, we can now run the batch and see the results.</p>
 
                 <h2 id="3">3. Running the tutorial</h2>
 

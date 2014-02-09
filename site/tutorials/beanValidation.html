@@ -219,21 +219,34 @@ public class ProductProcessor extends AbstractRecordProcessor&lt;Product&gt; {
                 <p>The following listing provides this configuration:</p>
 
 <pre class="prettyprint">
-// Configure the product record mapper
-DelimitedRecordMapper&lt;Product&gt; productMapper = new DelimitedRecordMapper(Product.class);
-    productMapper.setDelimiter("|"); // set field delimiter
-    productMapper.setQualifier("\"");// set data qualifier
+public class Launcher {
 
-// Build an easy batch engine
-EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordReader(new FlatFileRecordReader("products-jsr303.csv")) // requirement N°1
-    .registerRecordMapper(productMapper) // requirement N°3
-    <strong>.registerRecordValidator(new BeanValidationRecordValidator&lt;Product&gt;())</strong> // requirement N°4
-    .registerRecordProcessor(new ProductProcessor()) // requirement N°5
-    .build();
+    public static void main(String[] args) throws Exception {
+
+        // Configure the product record mapper
+        DelimitedRecordMapper&lt;Product&gt; productMapper = new DelimitedRecordMapper(Product.class);
+            productMapper.setDelimiter("|"); // set field delimiter
+            productMapper.setQualifier("\"");// set data qualifier
+
+        // Build an easy batch engine
+        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+            .registerRecordReader(new FlatFileRecordReader("products-jsr303.csv")) // requirement N°1
+            .registerRecordMapper(productMapper) // requirement N°3
+            <strong>.registerRecordValidator(new BeanValidationRecordValidator&lt;Product&gt;())</strong> // requirement N°4
+            .registerRecordProcessor(new ProductProcessor()) // requirement N°5
+            .build();
+
+        // Run easy batch engine and get execution report
+        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+
+        // Print the batch report
+        System.out.println(easyBatchReport);
+
+    }
+}
 </pre>
 
-                <p>That's all, we can now run the batch and see the results!</p>
+                <p>That's all, we can now run the batch and see the results.</p>
 
                 <h2 id="3">3. Running the tutorial</h2>
 

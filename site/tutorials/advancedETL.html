@@ -223,39 +223,53 @@ public class GreetingJsonGenerator extends AbstractRecordProcessor&lt;Greeting&g
 <p>So let's see how to configure Easy Batch to do all this stuff. The following snippet does the trick:</p>
 
 <pre class="prettyprint">
-// Build an easy batch engine to read greetings from csv file
-EasyBatchEngine easyBatchCsvEngine = new EasyBatchEngineBuilder()
-    .registerRecordReader(new FlatFileRecordReader(args[0]))
-    .registerRecordMapper(new DelimitedRecordMapper(Greeting.class, new String[]{"sequence","name"}))
-    .registerRecordProcessor(new GreetingDataLoader())
-    .build();
+public class Launcher {
 
-// Build an easy batch engine to read greetings from xml file
-EasyBatchEngine easyBatchXmlEngine = new EasyBatchEngineBuilder()
-    .registerRecordReader(new XmlRecordReader("greeting", args[1]))
-    .registerRecordMapper(new XmlRecordMapper(Greeting.class))
-    .registerRecordProcessor(new GreetingDataLoader())
-    .build();
+    public static void main(String[] args) throws Exception {
 
-//create a 2 threads pool to call Easy Batch engines in parallel
-ExecutorService executorService = Executors.newFixedThreadPool(2);
+        //Start embedded database server
+        DatabaseUtil.startEmbeddedDatabase();
 
-Future&lt;EasyBatchReport&gt; easyBatchFutureReport1 = executorService.submit(easyBatchCsvEngine);
-Future&lt;EasyBatchReport&gt; easyBatchFutureReport2 = executorService.submit(easyBatchXmlEngine);
+        // Build an easy batch engine to read greetings from csv file
+        EasyBatchEngine easyBatchCsvEngine = new EasyBatchEngineBuilder()
+            .registerRecordReader(new FlatFileRecordReader(args[0]))
+            .registerRecordMapper(new DelimitedRecordMapper(Greeting.class, new String[]{"sequence","name"}))
+            .registerRecordProcessor(new GreetingDataLoader())
+            .build();
 
-easyBatchFutureReport1.get();
-easyBatchFutureReport2.get();
+        // Build an easy batch engine to read greetings from xml file
+        EasyBatchEngine easyBatchXmlEngine = new EasyBatchEngineBuilder()
+            .registerRecordReader(new XmlRecordReader("greeting", args[1]))
+            .registerRecordMapper(new XmlRecordMapper(Greeting.class))
+            .registerRecordProcessor(new GreetingDataLoader())
+            .build();
 
-executorService.shutdown();
+        //create a 2 threads pool to call Easy Batch engines in parallel
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-// Build an easy batch engine to generate JSON products data from the database
-EasyBatchEngine easyBatchJsonEngine = new EasyBatchEngineBuilder()
-    .registerRecordReader(new JdbcRecordReader(DatabaseUtil.getDatabaseConnection(), "select * from greeting"))
-    .registerRecordMapper(new JdbcRecordMapper(Greeting.class))
-    .registerRecordProcessor(new GreetingJsonGenerator())
-    .build();
+        Future&lt;EasyBatchReport&gt; easyBatchFutureReport1 = executorService.submit(easyBatchCsvEngine);
+        Future&lt;EasyBatchReport&gt; easyBatchFutureReport2 = executorService.submit(easyBatchXmlEngine);
 
-easyBatchJsonEngine.call();
+        easyBatchFutureReport1.get();
+        easyBatchFutureReport2.get();
+
+        executorService.shutdown();
+
+        // Build an easy batch engine to generate JSON products data from the database
+        EasyBatchEngine easyBatchJsonEngine = new EasyBatchEngineBuilder()
+            .registerRecordReader(new JdbcRecordReader(DatabaseUtil.getDatabaseConnection(), "select * from greeting"))
+            .registerRecordMapper(new JdbcRecordMapper(Greeting.class))
+            .registerRecordProcessor(new GreetingJsonGenerator())
+            .build();
+
+        // Run easy batch engine and get execution report
+        EasyBatchReport easyBatchReport = easyBatchJsonEngine.call();
+
+        // Print the batch report
+        System.out.println(easyBatchReport);
+
+    }
+}
 </pre>
 
 <p>In-memory database setup details are not shown here for readability sake.</p>

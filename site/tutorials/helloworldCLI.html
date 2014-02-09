@@ -170,25 +170,34 @@ public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
 
         <p>The following listing provides this configuration:</p>
 <pre class="prettyprint">
-EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordReader(new CliRecordReader()) // requirement N°1
-    .registerRecordFilter(new StartsWithStringRecordFilter("#")) // requirement N°2
-    .registerRecordMapper(new DelimitedRecordMapper(Greeting.class, new String[]{"sequence", "name"})) // requirement N°3
-    .registerRecordProcessor(new GreetingProcessor()) // requirement N°4
-    .build();
+public class Launcher {
+
+    public static void main(String[] args) throws Exception {
+
+        // Build an easy batch engine
+        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+            .registerRecordReader(new CliRecordReader()) // requirement N°1
+            .registerRecordFilter(new StartsWithStringRecordFilter("#")) // requirement N°2
+            .registerRecordMapper(new DelimitedRecordMapper( // requirement N°3
+                    Greeting.class,
+                    new String[]{"sequence", "name"}))
+            .registerRecordProcessor(new GreetingProcessor()) // requirement N°4
+            .build();
+
+        // Run easy batch engine
+        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+
+        // Print the batch execution report
+        System.out.println(easyBatchReport);
+    }
+}
 </pre>
         <p>The <code>CliRecordReader</code> is a convenient record reader which is very useful for test:
             It allows you to read data from the standard input (until you type in the word 'quit') which makes the application interactive and you can see the results immediately!</p>
 
-        <p>That's all, we can now run the batch and see the results!</p>
+        <p>That's all, we can now run the batch and see the results.</p>
 
         <h2 id="3">3. Running the batch</h2>
-
-        <p>To run Easy Batch, we use the following snippet :</p>
-<pre class="prettyprint">
-// Run easy batch engine
-easyBatchEngine.call();
-</pre>
 
         <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/helloworld/cli" target="_blank">here</a>.
 
