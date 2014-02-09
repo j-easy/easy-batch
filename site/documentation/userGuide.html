@@ -392,7 +392,7 @@ RecordMapper&lt;MyPojo&gt; myPojoMapper =
 
                 <p>For example, to use the <em>pipe</em> character as a delimiter, use the following snippet:</p>
 <pre class="prettyprint">
-RecordMapper&lt;MyPojo&gt; myPojoMapper = new DelimitedRecordMapper&lt;MyPojo&gt;(MyPojo.class);
+DelimitedRecordMapper&lt;MyPojo&gt; myPojoMapper = new DelimitedRecordMapper&lt;MyPojo&gt;(MyPojo.class);
 myPojoMapper.setDelimiter("|");
 </pre>
                 <p>You can use other setters to provide custom parameters.</p>
