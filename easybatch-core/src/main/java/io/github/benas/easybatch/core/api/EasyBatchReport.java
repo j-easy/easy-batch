@@ -299,6 +299,9 @@ public class EasyBatchReport implements Serializable {
     }
 
     public String getFormattedAverageRecordProcessingTime() {
+        if (totalRecords == null || totalRecords == 0) {
+            return "N/A";
+        }
         final StringBuilder sb = new StringBuilder();
         sb.append( (float) getBatchDuration() / (float) totalRecords).append("s");
         return sb.toString();
