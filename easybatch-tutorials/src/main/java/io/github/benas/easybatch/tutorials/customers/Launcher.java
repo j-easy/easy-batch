@@ -22,12 +22,14 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.tutorials.customers.etl;
+package io.github.benas.easybatch.tutorials.customers;
 
 import io.github.benas.easybatch.core.api.EasyBatchReport;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.jdbc.JdbcRecordReader;
+import io.github.benas.easybatch.tutorials.customers.etl.CustomerMapper;
+import io.github.benas.easybatch.tutorials.customers.etl.CustomerProcessor;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
