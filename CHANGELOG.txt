@@ -2,6 +2,17 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 https://github.com/benas/easy-batch
 
+Changes in version 2.1.2 (2014-02-16)
+-------------------------------------
+
+* Added a tutorial with an advanced ETL application
+* Added a tutorial with a custom record reader of a master-detail delimited flat file
+* Fixed issue#26 : Incorrect record processing time average value
+* Fixed issue#25 : A resource leak occurs if a unexpected exception is thrown during batch processing
+* Fixed issue#24 : add the possibility to select only some delimited fields to be mapped to domain object
+* Fixed a NPE in XmlRecordMapper
+* Updated documentation and Javadoc
+
 Changes in version 2.1.1 (2014-02-01)
 -------------------------------------
 
