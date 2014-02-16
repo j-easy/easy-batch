@@ -86,95 +86,99 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
         LOGGER.info("Data source: " + dataSourceName);
         easyBatchReport.setDataSource(dataSourceName);
 
-        Long totalRecords = recordReader.getTotalRecords();
-        LOGGER.info("Total records = " + (totalRecords == null ? "N/A" : totalRecords));
-        LOGGER.info("easy batch engine is running...");
+        try {
 
-        easyBatchReport.setTotalRecords(totalRecords);
-        easyBatchReport.setStartTime(System.currentTimeMillis());
+            Long totalRecords = recordReader.getTotalRecords();
+            LOGGER.info("Total records = " + (totalRecords == null ? "N/A" : totalRecords));
+            LOGGER.info("easy batch engine is running...");
 
-        long currentRecordNumber = 0;
+            easyBatchReport.setTotalRecords(totalRecords);
+            easyBatchReport.setStartTime(System.currentTimeMillis());
 
-        while (recordReader.hasNextRecord()) {
+            long currentRecordNumber = 0;
 
-            long currentRecordProcessingStartTime = System.currentTimeMillis();
+            while (recordReader.hasNextRecord()) {
 
-            //read next record
-            Record currentRecord;
-            try {
-                currentRecord = recordReader.readNextRecord();
-            } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record", e);
-                return null;
-            }
-            currentRecordNumber = currentRecord.getNumber();
-            easyBatchReport.setCurrentRecordNumber(currentRecordNumber);
+                long currentRecordProcessingStartTime = System.currentTimeMillis();
 
-            //filter record if any
-            if (recordFilter.filterRecord(currentRecord)) {
-                LOGGER.log(Level.INFO, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been filtered");
-                easyBatchReport.addFilteredRecord(currentRecordNumber);
-                easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
-                continue;
-            }
+                //read next record
+                Record currentRecord;
+                try {
+                    currentRecord = recordReader.readNextRecord();
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record", e);
+                    return null;
+                }
+                currentRecordNumber = currentRecord.getNumber();
+                easyBatchReport.setCurrentRecordNumber(currentRecordNumber);
 
-            //map record
-            Object typedRecord;
-            try {
-                typedRecord = recordMapper.mapRecord(currentRecord);
-            } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Error while mapping record #" + currentRecordNumber + " [" + currentRecord + "]. Root exception:", e);
-                easyBatchReport.addIgnoredRecord(currentRecordNumber);
-                easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
-                continue;
-            }
+                //filter record if any
+                if (recordFilter.filterRecord(currentRecord)) {
+                    LOGGER.log(Level.INFO, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been filtered");
+                    easyBatchReport.addFilteredRecord(currentRecordNumber);
+                    easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
+                    continue;
+                }
 
-            //validate record
-            try {
-                Set<ValidationError> validationsErrors = recordValidator.validateRecord(typedRecord);
+                //map record
+                Object typedRecord;
+                try {
+                    typedRecord = recordMapper.mapRecord(currentRecord);
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Error while mapping record #" + currentRecordNumber + " [" + currentRecord + "]. Root exception:", e);
+                    easyBatchReport.addIgnoredRecord(currentRecordNumber);
+                    easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
+                    continue;
+                }
 
-                if (!validationsErrors.isEmpty()) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (ValidationError validationError : validationsErrors) {
-                        stringBuilder.append(validationError.getMessage()).append(" | ");
+                //validate record
+                try {
+                    Set<ValidationError> validationsErrors = recordValidator.validateRecord(typedRecord);
+
+                    if (!validationsErrors.isEmpty()) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (ValidationError validationError : validationsErrors) {
+                            stringBuilder.append(validationError.getMessage()).append(" | ");
+                        }
+                        LOGGER.log(Level.SEVERE, "Record #" + currentRecordNumber + " [" + currentRecord + "] is not valid : " + stringBuilder.toString());
+                        easyBatchReport.addRejectedRecord(currentRecordNumber);
+                        easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
+                        continue;
                     }
-                    LOGGER.log(Level.SEVERE, "Record #" + currentRecordNumber + " [" + currentRecord + "] is not valid : " + stringBuilder.toString());
+                } catch(Exception e) {
+                    LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + currentRecordNumber + " [" + currentRecord + "]", e);
                     easyBatchReport.addRejectedRecord(currentRecordNumber);
                     easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
                     continue;
                 }
-            } catch(Exception e) {
-                LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + currentRecordNumber + " [" + currentRecord + "]", e);
-                easyBatchReport.addRejectedRecord(currentRecordNumber);
-                easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
-                continue;
+
+                //process record
+                try {
+                    recordProcessor.processRecord(typedRecord);
+                    easyBatchReport.addSuccessRecord(currentRecordNumber);
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Error while processing record #" + currentRecordNumber + "[" + currentRecord + "]", e);
+                    easyBatchReport.addErrorRecord(currentRecordNumber);
+                } finally {
+                    //log processing time for the current record
+                    easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
+                }
+
             }
 
-            //process record
+            easyBatchReport.setTotalRecords(currentRecordNumber);
+            easyBatchReport.setEndTime(System.currentTimeMillis());
+            easyBatchReport.setEasyBatchResult(recordProcessor.getEasyBatchResult());
+
+        } finally {
+            LOGGER.info("Shutting down easy batch engine");
+            //close the record reader
             try {
-                recordProcessor.processRecord(typedRecord);
-                easyBatchReport.addSuccessRecord(currentRecordNumber);
+                recordReader.close();
             } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Error while processing record #" + currentRecordNumber + "[" + currentRecord + "]", e);
-                easyBatchReport.addErrorRecord(currentRecordNumber);
-            } finally {
-                //log processing time for the current record
-                easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
+                //at this point, there is no need to log a severe message and return null as batch report
+                LOGGER.log(Level.WARNING, "An exception occurred during closing data source reader", e);
             }
-
-        }
-
-        easyBatchReport.setTotalRecords(currentRecordNumber);
-        easyBatchReport.setEndTime(System.currentTimeMillis());
-        easyBatchReport.setEasyBatchResult(recordProcessor.getEasyBatchResult());
-
-        LOGGER.info("Shutting down easy batch engine");
-        //close the record reader
-        try {
-            recordReader.close();
-        } catch (Exception e) {
-            //at this point, there is no need to log a severe message and return null as batch report
-            LOGGER.log(Level.WARNING, "An exception occurred during closing data source reader", e);
         }
 
         return easyBatchReport;
