@@ -48,7 +48,7 @@ public class DelimitedRecordMapperTest {
     @Before
     public void setUp() throws Exception {
         delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class,
-                new String[]{"firstName", "lastName", "age", "birthDate", "isMarried"});
+                new String[]{"firstName", "lastName", "age", "birthDate", "married"});
         stringRecord = new StringRecord(1, "foo,bar,30,1990-12-12,true");
     }
 

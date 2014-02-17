@@ -46,26 +46,25 @@ public class FixedLengthRecordMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        int[] fieldsLength = {4, 2, 3, 5};
-        fixedLengthRecordMapper = new FixedLengthRecordMapper<Person>(Person.class, fieldsLength,
-                new String[]{"field1", "field2", "field3", "field4"});
-        stringRecord = new StringRecord(1, "aaaabbcccddddd");
+        int[] fieldsLength = {4, 2, 3};
+        fixedLengthRecordMapper = new FixedLengthRecordMapper<Bean>(Bean.class, fieldsLength,
+                new String[]{"field1", "field2", "field3"});
+        stringRecord = new StringRecord(1, "aaaabbccc");
     }
 
     @Test (expected = Exception.class)
     public void testRecordWellFormednessKO() throws Exception {
-        stringRecord = new StringRecord(1, "aaaabbcccdddddd"); // unexpected record size
+        stringRecord = new StringRecord(1, "aaaabbcccd"); // unexpected record size
         fixedLengthRecordMapper.parseRecord(stringRecord);
     }
 
     @Test
     public void testRecordParsing() throws Exception {
         FlatFileRecord flatFileRecord = fixedLengthRecordMapper.parseRecord(stringRecord);
-        assertEquals(4, flatFileRecord.getFlatFileFields().size());
+        assertEquals(3, flatFileRecord.getFlatFileFields().size());
         assertEquals("aaaa",flatFileRecord.getFlatFileFields().get(0).getRawContent());
         assertEquals("bb",flatFileRecord.getFlatFileFields().get(1).getRawContent());
         assertEquals("ccc",flatFileRecord.getFlatFileFields().get(2).getRawContent());
-        assertEquals("ddddd",flatFileRecord.getFlatFileFields().get(3).getRawContent());
     }
 
     @After
