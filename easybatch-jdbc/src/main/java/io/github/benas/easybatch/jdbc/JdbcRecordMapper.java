@@ -72,7 +72,7 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
         if (objectMapper.getHeadersMapping() == null) {
             String[] fieldsMapping = new String[columnCount];
             for (int i = 1; i < columnCount + 1; i++) {
-                fieldsMapping[i - 1] = resultSet.getMetaData().getColumnName(i).toLowerCase();
+                fieldsMapping[i - 1] = resultSet.getMetaData().getColumnLabel(i).toLowerCase();
             }
             objectMapper.setHeadersMapping(fieldsMapping);
         }
