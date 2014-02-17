@@ -128,6 +128,11 @@ public class ObjectMapper<T> {
                         recordClassSetters[i] = propertyDescriptor.getWriteMethod();
                     }
                 }
+                if (recordClassSetters[i] == null) {
+                    throw new RuntimeException("Unable to find a setter for property '" + headersMapping[i] +
+                            "' of type '" + recordClass.getName() +
+                            "'. Please check that this property exist and that a setter is provided.");
+                }
             }
         } catch (IntrospectionException e) {
             LOGGER.log(Level.SEVERE, "Unable to introspect target type " + recordClass.getName(), e);
