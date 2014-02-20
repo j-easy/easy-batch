@@ -28,7 +28,10 @@ import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import io.github.benas.easybatch.tutorials.common.Greeting;
-import io.github.benas.easybatch.tutorials.common.GreetingProcessor;
+import io.github.benas.easybatch.tutorials.jmx.GreetingSlowProcessor;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
 * Main class to run the JMS tutorial.
@@ -42,16 +45,26 @@ public class Launcher {
         //start embedded JMS broker
         JMSUtil.startBroker();
 
-        // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-                .registerRecordReader(new GreetingJmsReader())
-                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class))
-                .registerRecordProcessor(new GreetingProcessor())
+        // Build easy batch engines
+        EasyBatchEngine easyBatchEngine1 = buildEasyBatchEngine(1);
+        EasyBatchEngine easyBatchEngine2 = buildEasyBatchEngine(2);
+
+        //create a 2 threads pool to call Easy Batch engines in parallel
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+        executorService.submit(easyBatchEngine1);
+        executorService.submit(easyBatchEngine2);
+
+        executorService.shutdown();
+
+    }
+
+    public static EasyBatchEngine buildEasyBatchEngine(int id) {
+        return new EasyBatchEngineBuilder()
+                .registerRecordReader(new GreetingJmsReader(id))
+                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"sequence","name"}))
+                .registerRecordProcessor(new GreetingSlowProcessor())
                 .build();
-
-        // Run easy batch engine
-        easyBatchEngine.call();
-
     }
 
 }

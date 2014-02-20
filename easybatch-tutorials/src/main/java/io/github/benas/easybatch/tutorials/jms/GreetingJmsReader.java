@@ -16,6 +16,8 @@ import java.util.Properties;
  */
 public class GreetingJmsReader implements RecordReader {
 
+    private int id;
+
     private int currentRecordNumber;
 
     QueueConnection queueConnection;
@@ -27,6 +29,10 @@ public class GreetingJmsReader implements RecordReader {
     Queue queue;
 
     private boolean stop;
+
+    public GreetingJmsReader(int id) {
+        this.id = id;
+    }
 
     @Override
     public void open() throws Exception {
@@ -55,16 +61,14 @@ public class GreetingJmsReader implements RecordReader {
         Message m = queueReceiver.receive();
         TextMessage message = (TextMessage) m;
         record = message.getText();
-        if (record.equalsIgnoreCase("quit")){
-            stop = true;
-        }
-        System.out.println("Greeting Reader : received JMS message: " + record);
+        stop = record.equalsIgnoreCase("quit");
+        System.out.println("Greeting Reader " + id + " : received JMS message: " + record);
         return new StringRecord(++currentRecordNumber, record);
     }
 
     @Override
     public Long getTotalRecords() {
-        //undefined
+        //undefined, cannot be calculated in advance
         return null;
     }
 
