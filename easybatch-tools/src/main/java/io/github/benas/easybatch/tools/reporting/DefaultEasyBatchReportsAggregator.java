@@ -35,19 +35,19 @@ public class DefaultEasyBatchReportsAggregator implements EasyBatchReportsAggreg
 
         List<Long> endTimes = new ArrayList<Long>();
 
-        long totalRecords = 0;
+        int totalRecords = 0;
 
-        List<Long> filteredRecords = new ArrayList<Long>();
+        List<Integer> filteredRecords = new ArrayList<Integer>();
 
-        List<Long> ignoredRecords = new ArrayList<Long>();
+        List<Integer> ignoredRecords = new ArrayList<Integer>();
 
-        List<Long> rejectedRecords = new ArrayList<Long>();
+        List<Integer> rejectedRecords = new ArrayList<Integer>();
 
-        List<Long> errorRecords = new ArrayList<Long>();
+        List<Integer> errorRecords = new ArrayList<Integer>();
 
-        List<Long> successRecords = new ArrayList<Long>();
+        List<Integer> successRecords = new ArrayList<Integer>();
 
-        Map<Long, Long> processingTimes = new HashMap<Long, Long>();
+        Map<Integer, Long> processingTimes = new HashMap<Integer, Long>();
 
         List<Object> results = new ArrayList<Object>();
 
@@ -73,22 +73,22 @@ public class DefaultEasyBatchReportsAggregator implements EasyBatchReportsAggreg
         easyBatchFinalReport.setStartTime(Collections.min(startTimes));
         easyBatchFinalReport.setEndTime(Collections.max(endTimes));
         easyBatchFinalReport.setTotalRecords(totalRecords);
-        for (Long filteredRecord : filteredRecords) {
+        for (Integer filteredRecord : filteredRecords) {
             easyBatchFinalReport.addFilteredRecord(filteredRecord);
         }
-        for (Long ignoredRecord : ignoredRecords) {
+        for (Integer ignoredRecord : ignoredRecords) {
             easyBatchFinalReport.addIgnoredRecord(ignoredRecord);
         }
-        for (Long rejectedRecord : rejectedRecords) {
+        for (Integer rejectedRecord : rejectedRecords) {
             easyBatchFinalReport.addRejectedRecord(rejectedRecord);
         }
-        for (Long errorRecord : errorRecords) {
+        for (Integer errorRecord : errorRecords) {
             easyBatchFinalReport.addErrorRecord(errorRecord);
         }
-        for (Long successRecord : successRecords) {
+        for (Integer successRecord : successRecords) {
             easyBatchFinalReport.addSuccessRecord(successRecord);
         }
-        for (Map.Entry<Long, Long> entry : processingTimes.entrySet()) {
+        for (Map.Entry<Integer, Long> entry : processingTimes.entrySet()) {
             easyBatchFinalReport.addProcessingTime(entry.getKey(), entry.getValue());
         }
         easyBatchFinalReport.setEasyBatchResult(results);

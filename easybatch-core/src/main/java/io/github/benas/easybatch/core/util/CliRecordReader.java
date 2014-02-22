@@ -19,7 +19,7 @@ public class CliRecordReader implements RecordReader {
     /**
      * The current record number.
      */
-    private long recordNumber;
+    private int recordNumber;
 
     /**
      * The user input.
@@ -63,7 +63,7 @@ public class CliRecordReader implements RecordReader {
     }
 
     @Override
-    public Long getTotalRecords() {
+    public Integer getTotalRecords() {
         // total record cannot be calculated upfront
         return null;
     }

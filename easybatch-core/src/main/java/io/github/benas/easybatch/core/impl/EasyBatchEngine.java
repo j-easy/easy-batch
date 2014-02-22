@@ -58,7 +58,6 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
     private EasyBatchReport easyBatchReport;
 
-
     EasyBatchEngine(final RecordReader recordReader, final RecordFilter recordFilter, final RecordMapper recordMapper,
                     final RecordValidator recordValidator, final RecordProcessor recordProcessor) {
         this.recordReader = recordReader;
@@ -88,14 +87,14 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
         try {
 
-            Long totalRecords = recordReader.getTotalRecords();
+            Integer totalRecords = recordReader.getTotalRecords();
             LOGGER.info("Total records = " + (totalRecords == null ? "N/A" : totalRecords));
             LOGGER.info("easy batch engine is running...");
 
             easyBatchReport.setTotalRecords(totalRecords);
             easyBatchReport.setStartTime(System.currentTimeMillis());
 
-            long currentRecordNumber = 0;
+            int currentRecordNumber = 0;
 
             while (recordReader.hasNextRecord()) {
 

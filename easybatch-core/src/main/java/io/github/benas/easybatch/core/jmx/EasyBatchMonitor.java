@@ -58,7 +58,7 @@ public class EasyBatchMonitor implements EasyBatchMonitorMBean {
      * {@inheritDoc}
      */
     public String getTotalRecords() {
-        Long totalRecords = easyBatchReport.getTotalRecords();
+        Integer totalRecords = easyBatchReport.getTotalRecords();
         return totalRecords == null ? "N/A" : totalRecords.toString();
     }
 

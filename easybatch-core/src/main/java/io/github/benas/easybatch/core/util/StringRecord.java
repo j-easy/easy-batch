@@ -36,19 +36,19 @@ public class StringRecord implements Record<String> {
     /**
      * The record number.
      */
-    protected long recordNumber;
+    protected int recordNumber;
 
     /**
      * The record raw content.
      */
     protected String rawContent;
 
-    public StringRecord(final long recordNumber, final String rawContent) {
+    public StringRecord(final int recordNumber, final String rawContent) {
         this.recordNumber = recordNumber;
         this.rawContent = rawContent;
     }
 
-    public long getNumber() {
+    public int getNumber() {
         return recordNumber;
     }
 

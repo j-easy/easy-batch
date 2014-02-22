@@ -14,7 +14,7 @@ public class XmlRecord extends StringRecord {
      * @param recordNumber the record number
      * @param rawContent the record raw xml content
      */
-    public XmlRecord(long recordNumber, String rawContent) {
+    public XmlRecord(int recordNumber, String rawContent) {
         super(recordNumber, rawContent);
     }
 

@@ -43,87 +43,87 @@ public class EasyBatchReport implements Serializable {
 
     private String dataSource;
 
-    private Long totalRecords;
+    private Integer totalRecords;
 
     // needed only for jmx
-    private long currentRecordNumber;
+    private int currentRecordNumber;
 
-    private List<Long> filteredRecords;
+    private List<Integer> filteredRecords;
 
-    private List<Long> ignoredRecords;
+    private List<Integer> ignoredRecords;
 
-    private List<Long> rejectedRecords;
+    private List<Integer> rejectedRecords;
 
-    private List<Long> errorRecords;
+    private List<Integer> errorRecords;
 
-    private List<Long> successRecords;
+    private List<Integer> successRecords;
 
-    private Map<Long, Long> processingTimes;
+    private Map<Integer, Long> processingTimes;
 
     private Object easyBatchResult;
 
     public EasyBatchReport() {
-        filteredRecords = new ArrayList<Long>();
-        ignoredRecords = new ArrayList<Long>();
-        rejectedRecords = new ArrayList<Long>();
-        errorRecords = new ArrayList<Long>();
-        successRecords = new ArrayList<Long>();
-        processingTimes = new HashMap<Long, Long>();
+        filteredRecords = new ArrayList<Integer>();
+        ignoredRecords = new ArrayList<Integer>();
+        rejectedRecords = new ArrayList<Integer>();
+        errorRecords = new ArrayList<Integer>();
+        successRecords = new ArrayList<Integer>();
+        processingTimes = new HashMap<Integer, Long>();
     }
 
-    public void addFilteredRecord(long recordNumber) {
+    public void addFilteredRecord(final int recordNumber) {
         filteredRecords.add(recordNumber);
     }
 
-    public void addIgnoredRecord(final long recordNumber) {
+    public void addIgnoredRecord(final int recordNumber) {
         ignoredRecords.add(recordNumber);
     }
 
-    public void addRejectedRecord(final long recordNumber) {
+    public void addRejectedRecord(final int recordNumber) {
         rejectedRecords.add(recordNumber);
     }
 
-    public void addErrorRecord(final long recordNumber) {
+    public void addErrorRecord(final int recordNumber) {
         errorRecords.add(recordNumber);
     }
 
-    public void addSuccessRecord(final long recordNumber) {
+    public void addSuccessRecord(final int recordNumber) {
         successRecords.add(recordNumber);
     }
 
-    public void addProcessingTime(long recordNumber, long processingTime) {
+    public void addProcessingTime(final int recordNumber, final long processingTime) {
         processingTimes.put(recordNumber, processingTime);
     }
 
-    public void setTotalRecords(final Long totalRecords) {
+    public void setTotalRecords(final Integer totalRecords) {
         this.totalRecords = totalRecords;
     }
 
-    public Long getTotalRecords() {
+    public Integer getTotalRecords() {
         return totalRecords;
     }
 
-    public List<Long> getFilteredRecords() {
+    public List<Integer> getFilteredRecords() {
         return filteredRecords;
     }
 
-    public List<Long> getIgnoredRecords() {
+    public List<Integer> getIgnoredRecords() {
         return ignoredRecords;
     }
 
-    public List<Long> getRejectedRecords() {
+    public List<Integer> getRejectedRecords() {
         return rejectedRecords;
     }
 
-    public List<Long> getErrorRecords() {
+    public List<Integer> getErrorRecords() {
         return errorRecords;
     }
 
-    public List<Long> getSuccessRecords() {
+    public List<Integer> getSuccessRecords() {
         return successRecords;
     }
 
-    public Map<Long, Long> getProcessingTimes() {
+    public Map<Integer, Long> getProcessingTimes() {
         return processingTimes;
     }
 
@@ -131,7 +131,7 @@ public class EasyBatchReport implements Serializable {
         return startTime;
     }
 
-    public void setStartTime(long startTime) {
+    public void setStartTime(final long startTime) {
         this.startTime = startTime;
     }
 
@@ -139,7 +139,7 @@ public class EasyBatchReport implements Serializable {
         return endTime;
     }
 
-    public void setEndTime(long endTime) {
+    public void setEndTime(final long endTime) {
         this.endTime = endTime;
     }
 
@@ -147,15 +147,15 @@ public class EasyBatchReport implements Serializable {
         return dataSource;
     }
 
-    public void setDataSource(String dataSource) {
+    public void setDataSource(final String dataSource) {
         this.dataSource = dataSource;
     }
 
-    public long getCurrentRecordNumber() {
+    public int getCurrentRecordNumber() {
         return currentRecordNumber;
     }
 
-    public void setCurrentRecordNumber(long currentRecordNumber) {
+    public void setCurrentRecordNumber(final int currentRecordNumber) {
         this.currentRecordNumber = currentRecordNumber;
     }
 
@@ -163,7 +163,7 @@ public class EasyBatchReport implements Serializable {
         return easyBatchResult;
     }
 
-    public void setEasyBatchResult(Object easyBatchResult) {
+    public void setEasyBatchResult(final Object easyBatchResult) {
         this.easyBatchResult = easyBatchResult;
     }
 
@@ -191,7 +191,7 @@ public class EasyBatchReport implements Serializable {
      * @param total the total
      * @return the percent.
      */
-    public int percent(final long current, final long total) {
+    public int percent(final int current, final int total) {
         return (int) (((float) current / (float) total) * 100);
     }
 
@@ -211,27 +211,27 @@ public class EasyBatchReport implements Serializable {
         return errorRecords.size();
     }
 
-    public long getSuccessRecordsCount() {
+    public int getSuccessRecordsCount() {
         return successRecords.size();
     }
 
-    public long getFilteredRecordsPercent() {
+    public int getFilteredRecordsPercent() {
         return percent(getFilteredRecordsCount(), totalRecords);
     }
 
-    public long getIgnoredRecordsPercent() {
+    public int getIgnoredRecordsPercent() {
         return percent(getIgnoredRecordsCount(), totalRecords);
     }
 
-    public long getRejectedRecordsPercent() {
+    public int getRejectedRecordsPercent() {
         return percent(getRejectedRecordsCount(), totalRecords);
     }
 
-    public long getErrorRecordsPercent() {
+    public int getErrorRecordsPercent() {
         return percent(getErrorRecordsCount(), totalRecords);
     }
 
-    public long getSuccessRecordsPercent() {
+    public int getSuccessRecordsPercent() {
         return percent(getSuccessRecordsCount(), totalRecords);
     }
 

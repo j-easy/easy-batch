@@ -40,20 +40,20 @@ public class JdbcRecord implements Record<ResultSet> {
     /**
      * The record number.
      */
-    private long recordNumber;
+    private int recordNumber;
 
     /**
      * The record raw content.
      */
     private ResultSet resultSet;
 
-    public JdbcRecord(final long recordNumber, final ResultSet resultSet) {
+    public JdbcRecord(final int recordNumber, final ResultSet resultSet) {
         this.recordNumber = recordNumber;
         this.resultSet = resultSet;
     }
 
     @Override
-    public long getNumber() {
+    public int getNumber() {
         return recordNumber;
     }
 

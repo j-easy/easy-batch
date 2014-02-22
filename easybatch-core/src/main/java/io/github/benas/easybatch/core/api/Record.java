@@ -37,7 +37,7 @@ public interface Record<T> {
      * Get the record number in the input data source.
      * @return the record number in the input data source.
      */
-    long getNumber();
+    int getNumber();
 
     /**
      * Get the record raw content.

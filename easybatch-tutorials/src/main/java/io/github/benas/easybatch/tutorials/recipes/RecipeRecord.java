@@ -17,7 +17,7 @@ public class RecipeRecord implements Record<Recipe> {
     }
 
     @Override
-    public long getNumber() {
+    public int getNumber() {
         return number;
     }
 

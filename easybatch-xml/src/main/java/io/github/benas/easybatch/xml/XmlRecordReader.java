@@ -41,7 +41,7 @@ public class XmlRecordReader implements RecordReader {
     /**
      * The current record number.
      */
-    private long currentRecordNumber;
+    private int currentRecordNumber;
 
     public XmlRecordReader(final String rootElementName, final String xmlFile) {
         this.rootElementName = rootElementName;
@@ -83,8 +83,8 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public Long getTotalRecords() {
-        long totalRecords = 0;
+    public Integer getTotalRecords() {
+        int totalRecords = 0;
         XMLEventReader totalRecordsXmlEventReader = null;
         try {
             totalRecordsXmlEventReader =

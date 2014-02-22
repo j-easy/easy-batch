@@ -67,7 +67,7 @@ public class GreetingJmsReader implements RecordReader {
     }
 
     @Override
-    public Long getTotalRecords() {
+    public Integer getTotalRecords() {
         //undefined, cannot be calculated in advance
         return null;
     }

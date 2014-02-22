@@ -65,7 +65,7 @@ public class RecipeRecordReader implements RecordReader {
     }
 
     @Override
-    public Long getTotalRecords() {
+    public Integer getTotalRecords() {
         // not implemented in this tutorial.
         return null;
     }

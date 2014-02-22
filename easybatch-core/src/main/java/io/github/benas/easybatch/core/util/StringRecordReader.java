@@ -15,7 +15,7 @@ public class StringRecordReader implements RecordReader {
     /**
      * The current read record number.
      */
-    private long currentRecordNumber;
+    private int currentRecordNumber;
 
     /**
      * Scanner to read input String.
@@ -61,8 +61,8 @@ public class StringRecordReader implements RecordReader {
     }
 
     @Override
-    public Long getTotalRecords() {
-        long totalRecords = 0;
+    public Integer getTotalRecords() {
+        int totalRecords = 0;
         while (recordCounterScanner.hasNextLine()) {
             totalRecords++;
             recordCounterScanner.nextLine();

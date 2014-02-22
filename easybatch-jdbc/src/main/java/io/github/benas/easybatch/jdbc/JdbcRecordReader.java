@@ -68,7 +68,7 @@ public class JdbcRecordReader implements RecordReader {
     /**
      * The current record number.
      */
-    private long currentRecordNumber;
+    private int currentRecordNumber;
 
     /**
      * Create a JdbcRecordReader instance.
@@ -103,8 +103,8 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
-    public Long getTotalRecords() {
-        long rowCount = 0;
+    public Integer getTotalRecords() {
+        int rowCount = 0;
 
         try {
             if (resultSet.last()) {

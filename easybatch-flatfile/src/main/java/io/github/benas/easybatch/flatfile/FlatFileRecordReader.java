@@ -42,7 +42,7 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * The current read record number.
      */
-    private long currentRecordNumber;
+    private int currentRecordNumber;
 
     /**
      * The input file path.
@@ -98,8 +98,8 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
-    public Long getTotalRecords() {
-        long totalRecords = 0;
+    public Integer getTotalRecords() {
+        int totalRecords = 0;
         while (recordCounterScanner.hasNextLine()) {
             totalRecords++;
             recordCounterScanner.nextLine();
