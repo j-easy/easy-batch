@@ -24,6 +24,7 @@
 
 package io.github.benas.easybatch.tutorials.jms;
 
+import io.github.benas.easybatch.core.api.EasyBatchReport;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper;
@@ -32,6 +33,7 @@ import io.github.benas.easybatch.tutorials.jmx.GreetingSlowProcessor;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
 * Main class to run the JMS tutorial.
@@ -62,7 +64,7 @@ public class Launcher {
     public static EasyBatchEngine buildEasyBatchEngine(int id) {
         return new EasyBatchEngineBuilder()
                 .registerRecordReader(new GreetingJmsReader(id))
-                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"sequence","name"}))
+                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id","name"}))
                 .registerRecordProcessor(new GreetingSlowProcessor())
                 .build();
     }

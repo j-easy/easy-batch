@@ -33,7 +33,7 @@ import java.util.Date;
 */
 public class Product {
 
-    private long productId;
+    private int id;
 
     private String name;
 
@@ -47,12 +47,12 @@ public class Product {
 
     private Origin origin;
 
-    public long getProductId() {
-        return productId;
+    public int getId() {
+        return id;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

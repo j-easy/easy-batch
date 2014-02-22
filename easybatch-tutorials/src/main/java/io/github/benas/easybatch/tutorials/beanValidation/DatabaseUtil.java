@@ -43,7 +43,7 @@ public class DatabaseUtil {
             Statement statement = connection.createStatement();
 
             String query = "CREATE TABLE if not exists product (\n" +
-                    "  productId varchar(4) NOT NULL PRIMARY KEY,\n" +
+                    "  id varchar(4) NOT NULL PRIMARY KEY,\n" +
                     "  name varchar(32) NOT NULL,\n" +
                     "  description varchar(32) NOT NULL,\n" +
                     "  price decimal NOT NULL,\n" +
@@ -64,7 +64,7 @@ public class DatabaseUtil {
 
             while (resultSet.next()) {
                 System.out.println(
-                        "Product : productId= " + resultSet.getString("productId") + " | " +
+                        "Product : id= " + resultSet.getString("id") + " | " +
                                 "name= " + resultSet.getString("name") + " | " +
                                 "description= " + resultSet.getString("description") + " | " +
                                 "price= " + resultSet.getDouble("price") + " | " +

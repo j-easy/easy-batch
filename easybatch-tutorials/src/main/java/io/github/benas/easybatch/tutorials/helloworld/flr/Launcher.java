@@ -49,7 +49,7 @@ public class Launcher {
                 .registerRecordMapper(new FixedLengthRecordMapper<Greeting>(
                         Greeting.class,
                         new int[]{3,3},
-                        new String[]{"sequence", "name"}))
+                        new String[]{"id", "name"}))
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 

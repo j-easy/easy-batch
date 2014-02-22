@@ -45,7 +45,7 @@ public class DatabaseUtil {
             Statement statement = connection.createStatement();
 
             String query = "CREATE TABLE IF NOT EXISTS greeting (\n" +
-                    "  sequence int IDENTITY NOT NULL PRIMARY KEY,\n" +
+                    "  id int IDENTITY NOT NULL PRIMARY KEY,\n" +
                     "  name varchar(32) DEFAULT NULL,\n" +
                     ");";
 

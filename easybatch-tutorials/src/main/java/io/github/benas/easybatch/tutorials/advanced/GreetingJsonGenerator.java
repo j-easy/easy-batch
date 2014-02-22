@@ -18,7 +18,7 @@ public class GreetingJsonGenerator extends AbstractRecordProcessor<Greeting> {
 
         JsonWriter jsonWriter = Json.createWriter(System.out);
         JsonObject greetingModel = Json.createObjectBuilder()
-                .add("sequence", greeting.getSequence())
+                .add("id", greeting.getId())
                 .add("name", greeting.getName())
                 .build();
 

@@ -59,7 +59,7 @@ public class Launcher {
         // Build an easy batch engine to read greetings from csv file
         EasyBatchEngine easyBatchCsvEngine = new EasyBatchEngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(args[0]))
-                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"sequence","name"}))
+                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id","name"}))
                 .registerRecordProcessor(new GreetingDataLoader())
                 .build();
 

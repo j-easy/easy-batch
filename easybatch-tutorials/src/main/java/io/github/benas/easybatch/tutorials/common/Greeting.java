@@ -31,16 +31,16 @@ package io.github.benas.easybatch.tutorials.common;
 */
 public class Greeting {
 
-    private long sequence;
+    private int id;
 
     private String name;
 
-    public long getSequence() {
-        return sequence;
+    public int getId() {
+        return id;
     }
 
-    public void setSequence(long sequence) {
-        this.sequence = sequence;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -52,6 +52,6 @@ public class Greeting {
     }
 
     public String getGreetingMessage() {
-        return "Hi " + name + "! Your sequence number is " + sequence;
+        return "Hi " + name + "! Your id is " + id;
     }
 }

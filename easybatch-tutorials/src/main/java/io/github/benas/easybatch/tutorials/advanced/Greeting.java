@@ -35,17 +35,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Greeting {
 
-    private long sequence;
+    private int id;
 
     private String name;
 
-    public long getSequence() {
-        return sequence;
+    public int getId() {
+        return id;
     }
 
     @XmlElement
-    public void setSequence(long sequence) {
-        this.sequence = sequence;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -60,7 +60,7 @@ public class Greeting {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Greeting{");
-        sb.append("sequence=").append(sequence);
+        sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append('}');
         return sb.toString();

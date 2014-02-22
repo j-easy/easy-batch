@@ -16,7 +16,7 @@
         </constructor-arg>
         <constructor-arg>
             <list>
-                <value>sequence</value>
+                <value>id</value>
                 <value>name</value>
             </list>
         </constructor-arg>

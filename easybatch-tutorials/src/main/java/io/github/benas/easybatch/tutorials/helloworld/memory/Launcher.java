@@ -51,7 +51,7 @@ public class Launcher {
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 .registerRecordReader(new StringRecordReader(dataSource))
                 .registerRecordFilter(new StartsWithStringRecordFilter("#"))
-                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"sequence", "name"}))
+                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 

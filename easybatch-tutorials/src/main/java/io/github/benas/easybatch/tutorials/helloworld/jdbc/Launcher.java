@@ -71,7 +71,7 @@ public class Launcher {
     private static void populateEmbeddedDB(Connection connection) throws Exception {
 
         executeQuery(connection, "CREATE TABLE greeting (\n" +
-                "  sequence int IDENTITY NOT NULL PRIMARY KEY,\n" +
+                "  id int IDENTITY NOT NULL PRIMARY KEY,\n" +
                 "  name varchar(32) DEFAULT NULL,\n" +
                 ");");
 

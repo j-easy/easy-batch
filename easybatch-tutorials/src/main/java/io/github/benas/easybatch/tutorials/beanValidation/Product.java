@@ -39,7 +39,7 @@ import java.util.Date;
 public class Product {
 
     @NotNull
-    private long productId;
+    private int id;
 
     @NotEmpty
     private String name;
@@ -54,12 +54,12 @@ public class Product {
     @Past
     private Date lastUpdate;
 
-    public long getProductId() {
-        return productId;
+    public int getId() {
+        return id;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -104,6 +104,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return "[productId:" + productId + "|name:" + name +"]";
+        return "[id:" + id + "|name:" + name +"]";
     }
 }
