@@ -155,11 +155,11 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
             </div>
 
             <p>You may want to use Spring dependency injection to configure Easy Batch components like record mapper or processor and declare Easy Batch engine as a Spring bean. This can be done using the provided <code>EasyBatchFactoryBean</code> factory bean.
-                To use this factory bean, first, you need to add the <code>easybatch-tools</code> module to your dependencies:</p>
+                To use this factory bean, first, you need to add the <code>easybatch-spring</code> module to your dependencies:</p>
 <pre class="prettyprint">
 &lt;dependency&gt;
     &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
-    &lt;artifactId&gt;easybatch-tools&lt;/artifactId&gt;
+    &lt;artifactId&gt;easybatch-spring&lt;/artifactId&gt;
     &lt;version&gt;2.1.2&lt;/version&gt;
 &lt;/dependency&gt;
 </pre>
@@ -184,7 +184,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
             &lt;/constructor-arg&gt;
             &lt;constructor-arg&gt;
                 &lt;list&gt;
-                    &lt;value&gt;sequence&lt;/value&gt;
+                    &lt;value&gt;id&lt;/value&gt;
                     &lt;value&gt;name&lt;/value&gt;
                 &lt;/list&gt;
             &lt;/constructor-arg&gt;
@@ -194,7 +194,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
         &lt;bean id="greetingProcessor" class="io.github.benas.easybatch.tutorials.common.GreetingProcessor"/&gt;
 
         &lt;!-- configure Easy Batch engine --&gt;
-        &lt;bean id="easyBatchEngine" class="io.github.benas.easybatch.tools.spring.EasyBatchFactoryBean"&gt;
+        &lt;bean id="easyBatchEngine" class="io.github.benas.easybatch.integration.spring.EasyBatchFactoryBean"&gt;
             &lt;property name="recordReader" ref="greetingReader"/&gt;
             &lt;property name="recordMapper" ref="greetingMapper"/&gt;
             &lt;property name="recordProcessor" ref="greetingProcessor"/&gt;
