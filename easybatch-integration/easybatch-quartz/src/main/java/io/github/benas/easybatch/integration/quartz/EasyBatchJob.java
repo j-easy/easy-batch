@@ -22,19 +22,38 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.tools.scheduling;
+package io.github.benas.easybatch.integration.quartz;
 
-import org.quartz.SchedulerException;
+import io.github.benas.easybatch.core.impl.EasyBatchEngine;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 /**
- * Easy batch scheduler exception used to signal any scheduler setup or startup failure.
+ * Quartz Job implementation to launch easy batch instances.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class EasyBatchSchedulerException extends Exception {
+public class EasyBatchJob implements Job {
 
-    public EasyBatchSchedulerException(final String message, final SchedulerException e) {
-        super(message, e);
+    /**
+     * EAsy batch instance.
+     */
+    private EasyBatchEngine easyBatchEngine;
+
+    public EasyBatchJob(final EasyBatchEngine easyBatchEngine) {
+        this.easyBatchEngine = easyBatchEngine;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void execute(final JobExecutionContext context) throws JobExecutionException {
+        try {
+            easyBatchEngine.call();
+        } catch (Exception e) {
+            throw new JobExecutionException("An exception occurred during easy batch engine execution", e);
+        }
     }
 
 }

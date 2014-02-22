@@ -22,38 +22,7 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.tools.scheduling;
-
-import io.github.benas.easybatch.core.impl.EasyBatchEngine;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-
 /**
- * Quartz Job implementation to launch easy batch instances.
- *
- * @author benas (md.benhassine@gmail.com)
+ * This package contains easy batch - quartz integration module classes.
  */
-public class EasyBatchJob implements Job {
-
-    /**
-     * EAsy batch instance.
-     */
-    private EasyBatchEngine easyBatchEngine;
-
-    public EasyBatchJob(final EasyBatchEngine easyBatchEngine) {
-        this.easyBatchEngine = easyBatchEngine;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void execute(final JobExecutionContext context) throws JobExecutionException {
-        try {
-            easyBatchEngine.call();
-        } catch (Exception e) {
-            throw new JobExecutionException("An exception occurred during easy batch engine execution", e);
-        }
-    }
-
-}
+package io.github.benas.easybatch.integration.quartz;

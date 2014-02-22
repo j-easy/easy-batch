@@ -22,33 +22,19 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.tools.scheduling;
+package io.github.benas.easybatch.integration.quartz;
 
-import io.github.benas.easybatch.core.impl.EasyBatchEngine;
-import org.quartz.Job;
-import org.quartz.Scheduler;
-import org.quartz.spi.JobFactory;
-import org.quartz.spi.TriggerFiredBundle;
+import org.quartz.SchedulerException;
 
 /**
- * Quartz Job factory implementation used to create easy batch job instances.
+ * Easy batch scheduler exception used to signal any scheduler setup or startup failure.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class EasyBatchJobFactory implements JobFactory {
+public class EasyBatchSchedulerException extends Exception {
 
-    /**
-     * EAsy batch instance.
-     */
-    private EasyBatchEngine easyBatchEngine;
-
-    public EasyBatchJobFactory(final EasyBatchEngine easyBatchEngine) {
-        this.easyBatchEngine = easyBatchEngine;
-    }
-
-    @Override
-    public Job newJob(final TriggerFiredBundle bundle, final Scheduler scheduler) {
-        return new EasyBatchJob(easyBatchEngine);
+    public EasyBatchSchedulerException(final String message, final SchedulerException e) {
+        super(message, e);
     }
 
 }

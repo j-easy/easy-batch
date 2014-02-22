@@ -22,7 +22,7 @@
  *   THE SOFTWARE.
  */
 
-package io.github.benas.easybatch.tools.scheduling;
+package io.github.benas.easybatch.integration.quartz;
 
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import org.quartz.*;

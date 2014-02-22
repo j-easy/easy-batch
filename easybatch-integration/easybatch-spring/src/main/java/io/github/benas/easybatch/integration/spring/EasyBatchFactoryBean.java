@@ -1,4 +1,4 @@
-package io.github.benas.easybatch.tools.spring;
+package io.github.benas.easybatch.integration.spring;
 
 import io.github.benas.easybatch.core.api.*;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;

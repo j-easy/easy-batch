@@ -1,16 +1,18 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>easybatch</artifactId>
+        <artifactId>easybatch-integration</artifactId>
         <groupId>io.github.benas</groupId>
         <version>2.1.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>easybatch-tools</artifactId>
+    <artifactId>easybatch-spring</artifactId>
     <packaging>jar</packaging>
-
-    <name>easybatch-tools</name>
-    <description>Easy Batch tools module</description>
+    <name>easybatch-spring</name>
+    <description>Easy Batch - Spring integration module</description>
     <url>http://benas.github.io/easy-batch</url>
 
     <properties>
@@ -49,23 +51,16 @@
     </licenses>
 
     <dependencies>
-
         <dependency>
             <groupId>io.github.benas</groupId>
             <artifactId>easybatch-core</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>3.2.7.RELEASE</version>
         </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
     <reporting>

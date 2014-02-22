@@ -81,6 +81,16 @@
         </dependency>
 
         <dependency>
+            <groupId>io.github.benas</groupId>
+            <artifactId>easybatch-quartz</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.benas</groupId>
+            <artifactId>easybatch-spring</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
         </dependency>

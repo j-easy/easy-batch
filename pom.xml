@@ -29,6 +29,7 @@
         <module>easybatch-tutorials</module>
         <module>easybatch-jdbc</module>
         <module>easybatch-xml</module>
+        <module>easybatch-integration</module>
     </modules>
 
     <developers>
@@ -100,18 +101,24 @@
                 <artifactId>easybatch-tools</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>io.github.benas</groupId>
+                <artifactId>easybatch-spring</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.benas</groupId>
+                <artifactId>easybatch-quartz</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
-            </dependency>
-            
-            <dependency>
-                <groupId>org.quartz-scheduler</groupId>
-                <artifactId>quartz</artifactId>
-                <version>2.1.6</version>
             </dependency>
 
             <dependency>
