@@ -58,6 +58,8 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
     private EasyBatchReport easyBatchReport;
 
+    private boolean strictMode;
+
     EasyBatchEngine(final RecordReader recordReader, final RecordFilter recordFilter, final RecordMapper recordMapper,
                     final RecordValidator recordValidator, final RecordProcessor recordProcessor) {
         this.recordReader = recordReader;
@@ -85,6 +87,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
         LOGGER.info("Data source: " + dataSourceName);
         easyBatchReport.setDataSource(dataSourceName);
 
+        LOGGER.info("Strict mode: " + strictMode);
         try {
 
             Integer totalRecords = recordReader.getTotalRecords();
@@ -127,6 +130,10 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                     LOGGER.log(Level.SEVERE, "Error while mapping record #" + currentRecordNumber + " [" + currentRecord + "]. Root exception:", e);
                     easyBatchReport.addIgnoredRecord(currentRecordNumber);
                     easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
+                    if (strictMode) {
+                        LOGGER.info("Strict mode enabled : aborting execution");
+                        break;
+                    }
                     continue;
                 }
 
@@ -148,6 +155,10 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                     LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + currentRecordNumber + " [" + currentRecord + "]", e);
                     easyBatchReport.addRejectedRecord(currentRecordNumber);
                     easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
+                    if (strictMode) {
+                        LOGGER.info("Strict mode enabled : aborting execution");
+                        break;
+                    }
                     continue;
                 }
 
@@ -158,6 +169,10 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                 } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "Error while processing record #" + currentRecordNumber + "[" + currentRecord + "]", e);
                     easyBatchReport.addErrorRecord(currentRecordNumber);
+                    if (strictMode) {
+                        LOGGER.info("Strict mode enabled : aborting execution");
+                        break;
+                    }
                 } finally {
                     //log processing time for the current record
                     easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
@@ -222,6 +237,10 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
     void setRecordProcessor(final RecordProcessor recordProcessor) {
         this.recordProcessor = recordProcessor;
+    }
+
+    void setStrictMode(final boolean strictMode) {
+        this.strictMode = strictMode;
     }
 
 }

@@ -98,6 +98,16 @@ public final class EasyBatchEngineBuilder {
     }
 
     /**
+     * Enable strict mode : if true, then the execution will be aborted on first mapping, validating or processing error.
+     * @param strictMode true if strict mode should be enabled
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder enableStrictMode(final boolean strictMode) {
+        easyBatchEngine.setStrictMode(strictMode);
+        return this;
+    }
+
+    /**
      * Build an Easy Batch engine instance.
      * @return an Easy Batch instance
      */
