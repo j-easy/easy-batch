@@ -45,7 +45,10 @@ public class JMSSenderLauncher {
             input = scanner.nextLine();
             JMSUtil.sendJmsMessage(input);
         } while (!input.equalsIgnoreCase("quit"));
+        JMSUtil.sendJmsMessage("quit");//needed to stop the second engine
 
+        //close JMS session
+        JMSUtil.closeJMSSession();
     }
 
 }

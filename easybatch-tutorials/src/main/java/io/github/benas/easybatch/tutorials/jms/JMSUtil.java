@@ -16,6 +16,8 @@ public class JMSUtil {
 
     private static QueueSession queueSession;
 
+    private static QueueConnection queueConnection;
+
     public static void initJMSFactory() throws Exception {
 
         Properties p = new Properties();
@@ -25,7 +27,7 @@ public class JMSUtil {
         QueueConnectionFactory queueConnectionFactory = (QueueConnectionFactory) jndiContext.lookup("QueueConnectionFactory");
         Queue queue = (Queue) jndiContext.lookup("q");
 
-        QueueConnection queueConnection = queueConnectionFactory.createQueueConnection();
+        queueConnection = queueConnectionFactory.createQueueConnection();
         queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
         queueSender = queueSession.createSender(queue);
         queueConnection.start();
@@ -44,6 +46,12 @@ public class JMSUtil {
         message.setText(jmsMessage);
         queueSender.send(message);
         System.out.println("Message '" + jmsMessage + "' sent to JMS queue");
+    }
+
+    public static void closeJMSSession() throws JMSException {
+        queueConnection.close();
+        queueSender.close();
+        queueSession.close();
     }
 
 }
