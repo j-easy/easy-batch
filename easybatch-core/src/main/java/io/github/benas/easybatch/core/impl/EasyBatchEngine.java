@@ -44,6 +44,8 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
     private static final Logger LOGGER = Logger.getLogger(EasyBatchEngine.class.getName());
 
+    public static final String STRICT_MODE_MESSAGE = "Strict mode enabled : aborting execution";
+
     private RecordReader recordReader;
 
     private RecordFilter recordFilter;
@@ -116,7 +118,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
                 //filter record if any
                 if (recordFilter.filterRecord(currentRecord)) {
-                    LOGGER.log(Level.INFO, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been filtered");
+                    LOGGER.log(Level.INFO, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been filtered.");
                     easyBatchReport.addFilteredRecord(currentRecordNumber);
                     easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
                     continue;
@@ -127,11 +129,11 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                 try {
                     typedRecord = recordMapper.mapRecord(currentRecord);
                 } catch (Exception e) {
-                    LOGGER.log(Level.SEVERE, "Error while mapping record #" + currentRecordNumber + " [" + currentRecord + "]. Root exception:", e);
+                    LOGGER.log(Level.SEVERE, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been ignored. Root exception:", e);
                     easyBatchReport.addIgnoredRecord(currentRecordNumber);
                     easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
                     if (strictMode) {
-                        LOGGER.info("Strict mode enabled : aborting execution");
+                        LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
                     }
                     continue;
@@ -146,7 +148,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                         for (ValidationError validationError : validationsErrors) {
                             stringBuilder.append(validationError.getMessage()).append(" | ");
                         }
-                        LOGGER.log(Level.SEVERE, "Record #" + currentRecordNumber + " [" + currentRecord + "] is not valid : " + stringBuilder.toString());
+                        LOGGER.log(Level.SEVERE, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been rejected. Validation error(s): " + stringBuilder.toString());
                         easyBatchReport.addRejectedRecord(currentRecordNumber);
                         easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
                         continue;
@@ -156,7 +158,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                     easyBatchReport.addRejectedRecord(currentRecordNumber);
                     easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
                     if (strictMode) {
-                        LOGGER.info("Strict mode enabled : aborting execution");
+                        LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
                     }
                     continue;
@@ -170,7 +172,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                     LOGGER.log(Level.SEVERE, "Error while processing record #" + currentRecordNumber + "[" + currentRecord + "]", e);
                     easyBatchReport.addErrorRecord(currentRecordNumber);
                     if (strictMode) {
-                        LOGGER.info("Strict mode enabled : aborting execution");
+                        LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
                     }
                 } finally {
