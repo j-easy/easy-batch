@@ -414,6 +414,23 @@
         </profile>
 
         <profile>
+            <id>runSpringTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>io.github.benas.easybatch.tutorials.spring.Launcher</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
             <id>runJmxTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
