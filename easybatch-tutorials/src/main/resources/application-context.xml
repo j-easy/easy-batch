@@ -4,9 +4,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!-- input file bean -->
+    <bean id="file" class="java.io.File">
+        <constructor-arg value="classpath:greetings.csv"/>
+    </bean>
+
     <!-- configure record reader -->
     <bean id="greetingReader" class="io.github.benas.easybatch.flatfile.FlatFileRecordReader">
-        <constructor-arg value="classpath:greetings.csv"/>
+        <constructor-arg ref="file"/>
     </bean>
 
     <!-- configure record mapper -->
