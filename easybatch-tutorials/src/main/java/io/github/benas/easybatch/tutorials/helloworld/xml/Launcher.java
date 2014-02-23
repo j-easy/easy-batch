@@ -30,6 +30,8 @@ import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.xml.XmlRecordMapper;
 import io.github.benas.easybatch.xml.XmlRecordReader;
 
+import java.io.File;
+
 /**
 * Main class to run the hello world xml tutorial.
  *
@@ -41,8 +43,8 @@ public class Launcher {
 
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-                .registerRecordReader(new XmlRecordReader("greeting", args[0]))
-                .registerRecordMapper(new XmlRecordMapper<Greeting>(Greeting.class, args[1]))
+                .registerRecordReader(new XmlRecordReader("greeting", new File(args[0])))
+                .registerRecordMapper(new XmlRecordMapper<Greeting>(Greeting.class, new File(args[1])))
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 

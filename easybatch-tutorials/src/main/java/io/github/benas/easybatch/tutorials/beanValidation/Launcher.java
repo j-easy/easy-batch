@@ -31,6 +31,8 @@ import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
 import io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import io.github.benas.easybatch.validation.BeanValidationRecordValidator;
 
+import java.io.File;
+
 /**
 * Main class to run the bean validation tutorial.
  *
@@ -56,7 +58,7 @@ public class Launcher {
 
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from products-jsr303.csv
+                .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from products-jsr303.csv
                 .registerRecordMapper(productMapper)
                 .registerRecordValidator(new BeanValidationRecordValidator<Product>())
                 .registerRecordProcessor(new ProductProcessor())

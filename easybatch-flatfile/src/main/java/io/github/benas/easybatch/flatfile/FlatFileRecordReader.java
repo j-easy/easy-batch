@@ -45,9 +45,9 @@ public class FlatFileRecordReader implements RecordReader {
     private int currentRecordNumber;
 
     /**
-     * The input file path.
+     * The input file.
      */
-    private String input;
+    private File input;
 
     /**
      * The input file encoding name.
@@ -68,20 +68,20 @@ public class FlatFileRecordReader implements RecordReader {
 
     /**
      * Constructs a flat file record reader.
-     * @param input the input file path
+     * @param input the input file
      * @throws FileNotFoundException thrown if the file does not exist
      */
-    public FlatFileRecordReader(final String input) throws FileNotFoundException {
+    public FlatFileRecordReader(final File input) throws FileNotFoundException {
         this(input, Charset.defaultCharset().name());
     }
 
     /**
      * Constructs a flat file record reader.
-     * @param input the input file path
+     * @param input the input file
      * @param charsetName the encoding to use to read the file
      * @throws FileNotFoundException thrown if the file does not exist
      */
-    public FlatFileRecordReader(final String input, final String charsetName) throws FileNotFoundException {
+    public FlatFileRecordReader(final File input, final String charsetName) throws FileNotFoundException {
         this.input = input;
         this.charsetName = charsetName;
 
@@ -110,7 +110,7 @@ public class FlatFileRecordReader implements RecordReader {
 
     @Override
     public String getDataSourceName() {
-        return input;
+        return input.getAbsolutePath();
     }
 
     /**
@@ -118,9 +118,8 @@ public class FlatFileRecordReader implements RecordReader {
      */
     public void open() throws Exception {
         currentRecordNumber = 0;
-        File file = new File(input);
-        scanner = new Scanner(file, charsetName);
-        recordCounterScanner = new Scanner(file);
+        scanner = new Scanner(input, charsetName);
+        recordCounterScanner = new Scanner(input);
     }
 
     /**
@@ -136,4 +135,5 @@ public class FlatFileRecordReader implements RecordReader {
     public void close() {
         scanner.close();
     }
+
 }

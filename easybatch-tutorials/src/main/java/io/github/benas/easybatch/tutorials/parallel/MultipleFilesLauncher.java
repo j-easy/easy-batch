@@ -29,6 +29,7 @@ import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
 
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -47,13 +48,13 @@ public class MultipleFilesLauncher {
 
         // Build an easy batch engine1
         EasyBatchEngine easyBatchEngine1 = new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from secret-messages-part1.txt
+                .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages-part1.txt
                 .registerRecordProcessor(new MessageEncrypter())
                 .build();
 
         // Build an easy batch engine2
         EasyBatchEngine easyBatchEngine2 = new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(args[1])) //read data from secret-messages-part2.txt
+                .registerRecordReader(new FlatFileRecordReader(new File(args[1]))) //read data from secret-messages-part2.txt
                 .registerRecordProcessor(new MessageEncrypter())
                 .build();
 

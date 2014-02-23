@@ -30,6 +30,8 @@ import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
 import io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper;
 
+import java.io.File;
+
 /**
 * Main class to run the products statistics tutorial.
  *
@@ -47,7 +49,7 @@ public class Launcher {
 
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from products.csv
+                .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from products.csv
                 .registerRecordMapper(productMapper)
                 .registerRecordProcessor(new ProductProcessor())
                 .build();

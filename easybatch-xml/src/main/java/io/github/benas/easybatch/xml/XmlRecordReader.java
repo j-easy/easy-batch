@@ -31,7 +31,7 @@ public class XmlRecordReader implements RecordReader {
     /**
      * The xml input file.
      */
-    private String xmlFile;
+    private File xmlFile;
 
     /**
      * The xml reader.
@@ -43,7 +43,7 @@ public class XmlRecordReader implements RecordReader {
      */
     private int currentRecordNumber;
 
-    public XmlRecordReader(final String rootElementName, final String xmlFile) {
+    public XmlRecordReader(final String rootElementName, final File xmlFile) {
         this.rootElementName = rootElementName;
         this.xmlFile = xmlFile;
     }
@@ -51,7 +51,7 @@ public class XmlRecordReader implements RecordReader {
     @Override
     public void open() throws Exception {
         currentRecordNumber = 0;
-        xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(new FileInputStream(new File(xmlFile)));
+        xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(new FileInputStream(xmlFile));
     }
 
     @Override
@@ -88,7 +88,7 @@ public class XmlRecordReader implements RecordReader {
         XMLEventReader totalRecordsXmlEventReader = null;
         try {
             totalRecordsXmlEventReader =
-                    XMLInputFactory.newInstance().createXMLEventReader(new FileInputStream(new File(xmlFile)));
+                    XMLInputFactory.newInstance().createXMLEventReader(new FileInputStream(xmlFile));
             XMLEvent event;
             while (totalRecordsXmlEventReader.hasNext()) {
                 event = totalRecordsXmlEventReader.nextEvent();
@@ -116,7 +116,7 @@ public class XmlRecordReader implements RecordReader {
 
     @Override
     public String getDataSourceName() {
-        return xmlFile;
+        return xmlFile.getAbsolutePath();
     }
 
     @Override

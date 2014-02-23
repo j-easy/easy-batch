@@ -34,6 +34,7 @@ import io.github.benas.easybatch.tutorials.common.Greeting;
 import io.github.benas.easybatch.tutorials.common.GreetingProcessor;
 import io.github.benas.easybatch.validation.BeanValidationRecordValidator;
 
+import java.io.File;
 import java.util.Date;
 
 /**
@@ -54,7 +55,7 @@ public class Launcher {
 
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(args[0]))
+                .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
                 .registerRecordFilter(new RecordNumberEqualsToRecordFilter(1))
                 .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
                 .registerRecordValidator(new BeanValidationRecordValidator<Greeting>())

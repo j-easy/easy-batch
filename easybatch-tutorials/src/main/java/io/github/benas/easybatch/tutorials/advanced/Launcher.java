@@ -34,6 +34,7 @@ import io.github.benas.easybatch.jdbc.JdbcRecordReader;
 import io.github.benas.easybatch.xml.XmlRecordMapper;
 import io.github.benas.easybatch.xml.XmlRecordReader;
 
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -58,14 +59,14 @@ public class Launcher {
 
         // Build an easy batch engine to read greetings from csv file
         EasyBatchEngine easyBatchCsvEngine = new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(args[0]))
+                .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
                 .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id","name"}))
                 .registerRecordProcessor(new GreetingDataLoader())
                 .build();
 
         // Build an easy batch engine to read greetings from xml file
         EasyBatchEngine easyBatchXmlEngine = new EasyBatchEngineBuilder()
-                .registerRecordReader(new XmlRecordReader("greeting", args[1]))
+                .registerRecordReader(new XmlRecordReader("greeting", new File(args[1])))
                 .registerRecordMapper(new XmlRecordMapper<Greeting>(Greeting.class))
                 .registerRecordProcessor(new GreetingDataLoader())
                 .build();

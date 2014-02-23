@@ -31,6 +31,7 @@ import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.FlatFileRecordReader;
 
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -51,7 +52,7 @@ public class SingleFileLauncher {
         System.out.println(COMMENT_SEPARATOR);
         long singleInstanceStartTime = System.currentTimeMillis();
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from secret-messages.txt
+                .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
                 .registerRecordProcessor(new MessageEncrypter())
                 .build();
 
@@ -70,14 +71,14 @@ public class SingleFileLauncher {
 
         // Build an easy batch engine1
         EasyBatchEngine easyBatchEngine1 = new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from secret-messages.txt
+                .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
                 .registerRecordFilter(new RecordNumberGreaterThanRecordFilter(5)) // filter records 6-10
                 .registerRecordProcessor(new MessageEncrypter())
                 .build();
 
         // Build an easy batch engine2
         EasyBatchEngine easyBatchEngine2 = new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from secret-messages.txt
+                .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
                 .registerRecordFilter(new RecordNumberLowerThanRecordFilter(6)) // filter records 1-5
                 .registerRecordProcessor(new MessageEncrypter())
                 .build();

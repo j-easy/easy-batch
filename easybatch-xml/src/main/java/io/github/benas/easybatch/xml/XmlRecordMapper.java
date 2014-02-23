@@ -5,7 +5,6 @@ import io.github.benas.easybatch.core.api.RecordMapper;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.UnmarshalException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -44,14 +43,14 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
     /**
      *  Creates an XmlRecordMapper.
      * @param type the target domain object type.
-     * @param xsd the xsd file path against which xml records will be validated
+     * @param xsd the xsd file against which xml records will be validated
      * @throws Exception thrown if an error occurs during the creation of Jaxb context.
      */
-    public XmlRecordMapper(Class<? extends T> type, String xsd) throws Exception {
+    public XmlRecordMapper(Class<? extends T> type, File xsd) throws Exception {
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Schema schema = schemaFactory.newSchema(new File(xsd));
+        Schema schema = schemaFactory.newSchema(xsd);
         jaxbUnmarshaller.setSchema(schema);
     }
 

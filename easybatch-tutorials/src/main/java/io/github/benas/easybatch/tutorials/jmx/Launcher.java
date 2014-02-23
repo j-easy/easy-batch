@@ -33,6 +33,7 @@ import io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import io.github.benas.easybatch.tutorials.common.Greeting;
 import io.github.benas.easybatch.validation.BeanValidationRecordValidator;
 
+import java.io.File;
 
 /**
 * Main class to run the hello world tutorial with a slow processor.
@@ -45,7 +46,7 @@ public class Launcher {
 
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(args[0]))
+                .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
                 .registerRecordFilter(new StartsWithStringRecordFilter("#"))
                 .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
                 .registerRecordValidator(new BeanValidationRecordValidator<Greeting>())

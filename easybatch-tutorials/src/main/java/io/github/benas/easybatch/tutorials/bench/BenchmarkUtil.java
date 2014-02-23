@@ -14,6 +14,7 @@ import io.github.benas.jpopulator.randomizers.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
@@ -67,7 +68,7 @@ public class BenchmarkUtil {
 
     public static EasyBatchEngine buildCsvEasyBatchEngine(String customersFile) throws Exception {
         return new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(customersFile))
+                .registerRecordReader(new FlatFileRecordReader(new File(customersFile)))
                 .registerRecordMapper(new DelimitedRecordMapper<Customer>(Customer.class,
                         new String[]{"id", "firstName", "lastName", "birthDate", "email", "phone", "street", "zipCode", "city", "country"}))
                 .build();
@@ -75,7 +76,7 @@ public class BenchmarkUtil {
 
     public static EasyBatchEngine buildXmlEasyBatchEngine(String customersFile) throws Exception {
         return new EasyBatchEngineBuilder()
-                .registerRecordReader(new XmlRecordReader("customer", customersFile))
+                .registerRecordReader(new XmlRecordReader("customer", new File(customersFile)))
                 .registerRecordMapper(new XmlRecordMapper<Customer>(Customer.class))
                 .build();
     }
