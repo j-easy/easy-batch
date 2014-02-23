@@ -46,6 +46,7 @@ public class CustomerMapper implements RecordMapper<Customer> {
         ResultSet resultSet = jdbcRecord.getRawContent();
 
         Customer customer = new Customer();
+        customer.setId(resultSet.getInt("id"));
         customer.setFirstName(resultSet.getString("firstName"));
         customer.setLastName(resultSet.getString("lastName"));
         customer.setBirthDate(resultSet.getDate("birthDate"));

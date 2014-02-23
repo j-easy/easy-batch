@@ -35,18 +35,18 @@ import java.util.Date;
 @XmlRootElement
 public class Customer {
 
-    private Long id;
+    private int id;
     private String firstName;
     private String lastName;
     private Date birthDate;
     private Contact contact;
     private Address address;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
