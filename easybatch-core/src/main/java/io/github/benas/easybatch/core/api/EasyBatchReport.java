@@ -175,10 +175,10 @@ public class EasyBatchReport implements Serializable {
         sb.append("\n\tBatch duration = ").append(getFormattedBatchDuration());
         sb.append("\n\tData source = ").append(dataSource);
         sb.append("\n\tTotal records = ").append(totalRecords);
-        sb.append("\n\tFiltered records = ").append(getFormattedFilteredRecords()).append(filteredRecords);
-        sb.append("\n\tIgnored records = ").append(getFormattedIgnoredRecords()).append(ignoredRecords);
-        sb.append("\n\tRejected records = ").append(getFormattedRejectedRecords()).append(rejectedRecords);
-        sb.append("\n\tError records = ").append(getFormattedErrorRecords()).append(errorRecords);
+        sb.append("\n\tFiltered records = ").append(getFormattedFilteredRecords());
+        sb.append("\n\tIgnored records = ").append(getFormattedIgnoredRecords());
+        sb.append("\n\tRejected records = ").append(getFormattedRejectedRecords());
+        sb.append("\n\tError records = ").append(getFormattedErrorRecords());
         sb.append("\n\tSuccess records = ").append(getFormattedSuccessRecords());
         sb.append("\n\tAverage record processing time = ").append(getFormattedAverageRecordProcessingTime());
         sb.append("\n\tResult = ").append(easyBatchResult);
@@ -191,8 +191,8 @@ public class EasyBatchReport implements Serializable {
      * @param total the total
      * @return the percent.
      */
-    public int percent(final int current, final int total) {
-        return (int) (((float) current / (float) total) * 100);
+    public float percent(final int current, final int total) {
+        return ((float) current / (float) total) * 100;
     }
 
     public int getFilteredRecordsCount() {
@@ -215,23 +215,23 @@ public class EasyBatchReport implements Serializable {
         return successRecords.size();
     }
 
-    public int getFilteredRecordsPercent() {
+    public float getFilteredRecordsPercent() {
         return percent(getFilteredRecordsCount(), totalRecords);
     }
 
-    public int getIgnoredRecordsPercent() {
+    public float getIgnoredRecordsPercent() {
         return percent(getIgnoredRecordsCount(), totalRecords);
     }
 
-    public int getRejectedRecordsPercent() {
+    public float getRejectedRecordsPercent() {
         return percent(getRejectedRecordsCount(), totalRecords);
     }
 
-    public int getErrorRecordsPercent() {
+    public float getErrorRecordsPercent() {
         return percent(getErrorRecordsCount(), totalRecords);
     }
 
-    public int getSuccessRecordsPercent() {
+    public float getSuccessRecordsPercent() {
         return percent(getSuccessRecordsCount(), totalRecords);
     }
 
