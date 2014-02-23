@@ -28,6 +28,8 @@ import io.github.benas.easybatch.core.api.EasyBatchReport;
 import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import io.github.benas.easybatch.core.impl.EasyBatchEngineBuilder;
 import io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper;
+import io.github.benas.easybatch.tools.reporting.DefaultEasyBatchReportsAggregator;
+import io.github.benas.easybatch.tools.reporting.EasyBatchReportsAggregator;
 import io.github.benas.easybatch.tutorials.common.Greeting;
 import io.github.benas.easybatch.tutorials.jmx.GreetingSlowProcessor;
 
@@ -54,10 +56,23 @@ public class Launcher {
         //create a 2 threads pool to call Easy Batch engines in parallel
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-        executorService.submit(easyBatchEngine1);
-        executorService.submit(easyBatchEngine2);
+        Future<EasyBatchReport> batchReportFuture1 = executorService.submit(easyBatchEngine1);
+        Future<EasyBatchReport> batchReportFuture2 = executorService.submit(easyBatchEngine2);
 
+        //wait for easy batch instances termination and get partial reports
+        EasyBatchReport easyBatchReport1 = batchReportFuture1.get();
+        EasyBatchReport easyBatchReport2 = batchReportFuture2.get();
+
+        //aggregate partial reports into a global one
+        EasyBatchReportsAggregator reportsAggregator = new DefaultEasyBatchReportsAggregator();
+        EasyBatchReport finalReport = reportsAggregator.aggregateReports(easyBatchReport1, easyBatchReport2);
+        System.out.println(finalReport);
+
+        //shutdown executor service
         executorService.shutdown();
+
+        //stop embedded JMS broker
+        JMSUtil.stopBroker();
 
     }
 

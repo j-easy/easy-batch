@@ -18,6 +18,8 @@ public class JMSUtil {
 
     private static QueueConnection queueConnection;
 
+    private static BrokerService broker;
+
     public static void initJMSFactory() throws Exception {
 
         Properties p = new Properties();
@@ -35,7 +37,7 @@ public class JMSUtil {
     }
 
     public static void startBroker() throws Exception {
-        BrokerService broker = new BrokerService();
+        broker = new BrokerService();
         broker.addConnector("tcp://localhost:61616");
         broker.start();
         initJMSFactory();
@@ -52,6 +54,13 @@ public class JMSUtil {
         queueConnection.close();
         queueSender.close();
         queueSession.close();
+    }
+
+    public static void stopBroker() throws Exception {
+        queueConnection.close();
+        queueSender.close();
+        queueSession.close();
+        broker.stop();
     }
 
 }
