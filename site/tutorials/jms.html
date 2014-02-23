@@ -55,7 +55,7 @@
         <div class="container">
             <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.2</p>
+                <p class="navbar-text pull-right">Version: 2.1.3</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -308,13 +308,15 @@ public class JMSSenderLauncher {
             JMSUtil.sendJmsMessage(input);
         } while (!input.equalsIgnoreCase("quit"));
 
+        //close JMS session
+        JMSUtil.closeJMSSession();
     }
 
 }
 </pre>
 
-<p>This class makes the tutorial interactive : we will type in data in the console and see how and which Easy Batch instance will process it.</p>
-
+<p>This class makes the tutorial interactive : we will type in data in the console to send it to the JMS queue and see how and which Easy Batch instance will process it.
+    To stop the execution, we have to send <em>quit</em> message to the queue.</p>
 <p>That's all, we can now run the tutorial and see the results.</p>
 
 <h2 id="3">3. Running the tutorial</h2>
@@ -341,6 +343,8 @@ public class JMSSenderLauncher {
 Message '1,foo' sent to JMS queue
 2,bar
 Message '2,bar' sent to JMS queue
+quit
+Message 'quit' sent to JMS queue
 </pre>
     </div>
     <div class="span6">
@@ -352,9 +356,9 @@ INFO: Strict mode: false
 INFO: Total records = N/A
 INFO: easy batch engine is running...
 Greeting Reader 2 : received JMS message: 1,foo
-Hi foo! Your id number is 1
+Hi foo! Your id is 1
 Greeting Reader 1 : received JMS message: 2,bar
-Hi bar! Your id number is 2
+Hi bar! Your id is 2
 </pre>
     </div>
 </div>

@@ -49,7 +49,7 @@
         <div class="container">
             <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.2</p>
+                <p class="navbar-text pull-right">Version: 2.1.3</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -160,7 +160,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 &lt;dependency&gt;
     &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-spring&lt;/artifactId&gt;
-    &lt;version&gt;2.1.2&lt;/version&gt;
+    &lt;version&gt;2.1.3&lt;/version&gt;
 &lt;/dependency&gt;
 </pre>
             <p>Then, you can configure Easy Batch components and declare Easy Batch engine as a Spring bean:</p>
@@ -172,10 +172,15 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
            xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd"&gt;
 
+        &lt;!-- input file bean --&gt;
+        &lt;bean id="file" class="java.io.File"&gt;
+            &lt;constructor-arg value="/data/in/greetings.csv"/&gt;
+        &lt;/bean>
+
         &lt;!-- configure record reader --&gt;
         &lt;bean id="greetingReader" class="io.github.benas.easybatch.flatfile.FlatFileRecordReader"&gt;
-            &lt;constructor-arg value="/data/in/greetings.csv"/&gt;
-        &lt;/bean&gt;
+            &lt;constructor-arg ref="file"/&gt;
+        &lt;/bean>
 
         &lt;!-- configure record mapper --&gt;
         &lt;bean id="greetingMapper" class="io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper"&gt;
@@ -211,6 +216,11 @@ easyBatchEngine.call();
 </pre>
 
             <p>You can find the complete source code of this tutorial <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/spring" target="_blank">here</a>.</p>
+            <p>To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
+
+            <p><span class="icon-stack"> <i class="icon-sign-blank icon-stack-base"></i> <i class="icon-terminal icon-light"></i> </span>
+                <em><strong>mvn exec:java -PrunSpringTutorial</strong></em>
+            </p>
 
 
         </div>

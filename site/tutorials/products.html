@@ -55,7 +55,7 @@
         <div class="container">
             <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.2</p>
+                <p class="navbar-text pull-right">Version: 2.1.3</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -127,7 +127,7 @@
 
                 <p>The input file named <code>products.csv</code> has the following content:</p>
 <pre>
-"productId"|"name"|"description"|"price"|"published"|"lastUpdate"|"origin"
+"id"|"name"|"description"|"price"|"published"|"lastUpdate"|"origin"
 "0001"|"product1"|"description1"|"2500"|"true"|"2014-01-01"|"0"
 "0002"|"product2"|"description2"|"2400"|"false"|"2014-01-02"|"1"
 "0003"|"product3"|"description3"|"2300"|"true"|"2014-01-03"|"0"
@@ -152,7 +152,7 @@
                     <div class="span6">
 <pre class="prettyprint">
 public class Product {
-    private long productId;
+    private int id;
     private String name;
     private String description;
     private double price;
@@ -184,12 +184,10 @@ public enum Origin {
                 In this tutorial, we will implement the <code>TypeConverter</code> interface to tell Easy Batch how to convert <em>Origin</em> String values in CSV records to typed values <code>Origin</code> in the <code>Product</code> bean. Here is the implementation:</p>
 <pre class="prettyprint">
 public class OriginTypeConverter implements TypeConverter&lt;Origin&gt; {
-
     @Override
     public Origin convert(String value) {
         return "0".equals(value) ? Origin.NATIONAL : Origin.INTERNATIONAL;
     }
-
 }
 </pre>
                 <p>This type converter will convert String value <em>0</em> to <code>Origin.NATIONAL</code> value and String value <em>1</em> to <code>Origin.INTERNATIONAL</code> value.</p>
@@ -249,7 +247,7 @@ public class Launcher {
 
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-            .registerRecordReader(new FlatFileRecordReader("products.csv")) // requirement N°1
+            .registerRecordReader(new FlatFileRecordReader(new File("products.csv"))) // requirement N°1
             .registerRecordMapper(productMapper) // requirement N°2
             .registerRecordProcessor(new ProductProcessor()) //requirement N°3
             .build();
@@ -286,9 +284,11 @@ public class Launcher {
 <pre>
 INFO: Initializing easy batch engine
 INFO: Data source: /data/in/products.csv
+INFO: Strict mode: false
 INFO: Total records = 10
 INFO: easy batch engine is running...
-<span class="text-error"><strong>SEVERE: Error while mapping record #1: Unable to convert 'productId' to type long for field productId</strong></span>
+<span class="text-error"><strong>Record #1 [StringRecord{number=1, rawContent='"id"|"name"|"description"|"price"|"published"|"lastUpdate"|"origin"'}]
+has been ignored. Root exception: Unable to convert 'id' to type int for field id</strong></span>
 INFO: Shutting down easy batch engine
 Easy Batch Report:
 	Start time = 2014-01-18 08:13:35
@@ -296,17 +296,17 @@ Easy Batch Report:
 	Batch duration = 0s
 	Data source = /data/in/products.csv
 	Total records = 10
-	Filtered records = 0 (0%) []
-	Ignored records = 1 (10%) [1]
-	Rejected records = 0 (0%) []
-	Error records = 0 (0%) []
+	Filtered records = 0 (0%)
+	Ignored records = 1 (10%)
+	Rejected records = 0 (0%)
+	Error records = 0 (0%)
 	Success records = 9 (90%)
 	Average record processing time = 0.0s
 	Result = 2500.0
 The maximum product price for published products is : 2500.0
 </pre>
 
-                <p>The header record has been ignored since the String <em>productId</em> cannot be converted to the filed <em>productId</em> of type <em>long</em> in the <code>Product</code> Pojo.
+                <p>The header record has been ignored since the String <em>id</em> cannot be converted to the filed <em>id</em> of type <em>int</em> in the <code>Product</code> Pojo.
                     The header record could be filtered using the <code>RecordFilter</code> API, but this is not done in this tutorial. You can find an example of record filtering in the
                     <a href="./helloworldFLR.html" target="_blank">Hello World FLR tutorial</a>.</p>
 
@@ -320,7 +320,7 @@ The maximum product price for published products is : 2500.0
                     <li>And the batch result returned by the <code>RecordProcessor.getEasyBatchResult</code> method</li>
                 </ul>
 
-                <p>For more details about the <code>EasyBatchReport</code> API, please refer to the <a href="../documentation/userGuide.html#7">user guide</a>.</p>
+                <p>For more details about the <code>EasyBatchReport</code> API, please refer to the <a href="../documentation/userGuide.html#7" target="_blank">user guide</a>.</p>
 
                 <h2 id="4">4. Conclusion</h2>
                 <p> In this tutorial, we have seen how to:</p>

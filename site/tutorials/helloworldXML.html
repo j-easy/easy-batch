@@ -55,7 +55,7 @@
         <div class="container">
             <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.2</p>
+                <p class="navbar-text pull-right">Version: 2.1.3</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -121,26 +121,26 @@
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;greetings&gt;
     &lt;greeting&gt;
-        &lt;sequence&gt;1&lt;/sequence&gt;
+        &lt;id&gt;1&lt;/id&gt;
         &lt;name&gt;foo&lt;/name&gt;
     &lt;/greeting&gt;
     &lt;greeting&gt;
-        &lt;sequence&gt;2&lt;/sequence&gt;
+        &lt;id&gt;2&lt;/id&gt;
         &lt;name&gt;bar&lt;/name&gt;
     &lt;/greeting&gt;
     &lt;greeting&gt;
-        &lt;sequence&gt;x&lt;/sequence&gt;
+        &lt;id&gt;x&lt;/id&gt;
         &lt;name&gt;baz&lt;/name&gt;
     &lt;/greeting&gt;
     &lt;greeting&gt;
-        &lt;id&gt;4&lt;/id&gt;
+        &lt;ref&gt;4&lt;/ref&gt;
         &lt;name&gt;blah!&lt;/name&gt;
     &lt;/greeting&gt;
 &lt;/greetings&gt;
 </pre>
             <p>Each <code>greeting</code> tag is composed of 2 children tags :</p>
             <ul>
-                <li>a sequence tag representing the greeting sequence</li>
+                <li>a id tag representing the greeting id</li>
                 <li>a name tag representing a person name</li>
             </ul>
 
@@ -150,7 +150,7 @@
 public class Greeting {
 
     @XmlElement
-    private long sequence;
+    private int id;
 
     @XmlElement
     private String name;
@@ -158,14 +158,14 @@ public class Greeting {
     // Getters and Setters omitted
 
     public String getGreetingMessage() {
-        return "Hi " + name + "! Your sequence number is " + sequence;
+        return "Hi " + name + "! Your id is " + id;
     }
 }
 </pre>
             <p>Each <code>greeting</code> tag is seen as a record in Easy Batch, an "XML record".</p>
             <p>Easy Batch uses <a href="https://jaxb.java.net/" target="_blank">JAXB</a> to map XML records to java objects, so we have annotated our <code>Greeting</code> bean with JAXB annotations to map XML tags to the corresponding fields of our Pojo.</p>
 
-            <p>For each XML record, the batch application should print to the console a greeting of the format : <em>Hi foo! Your sequence number is 1</em> .</p>
+            <p>For each XML record, the batch application should print to the console a greeting of the format : <em>Hi foo! Your id is 1</em> .</p>
 
             <p>Moreover, we would like to ignore records that do not conform to the following <code>greetings.xsd</code> file:</p>
 <pre class="prettyprint">
@@ -173,16 +173,16 @@ public class Greeting {
 &lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
     &lt;xs:element name="greeting"&gt;
         &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-                &lt;xs:element name="sequence" type="xs:long"/&gt;
+            &lt;xs:id&gt;
+                &lt;xs:element name="id" type="xs:int"/&gt;
                 &lt;xs:element name="name" type="xs:string"/&gt;
-            &lt;/xs:sequence&gt;
+            &lt;/xs:id&gt;
         &lt;/xs:complexType&gt;
     &lt;/xs:element&gt;
 &lt;/xs:schema&gt;
 </pre>
 
-            <p>With this requirement, the record number 3 should be ignored since the value <code>x</code> is not a number as expected and the record number 4 should also be ignored since the tag <code>id</code> is not expected according to the <code>greetings.xsd</code> file (a <code>sequence</code> tag is expected instead).</p>
+            <p>With this requirement, the record number 3 should be ignored since the value <code>x</code> is not a number as expected and the record number 4 should also be ignored since the tag <code>ref</code> is not expected according to the <code>greetings.xsd</code> file (a <code>id</code> tag is expected instead).</p>
 
             <p>You will see that all these requirements can be easily implemented using Easy Batch, so let's get started!</p>
 
@@ -191,12 +191,10 @@ public class Greeting {
             <p>First, let's implement our batch processing logic by extending the <code>AbstractRecordProcessor</code> class:</p>
 <pre class="prettyprint">
 public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
-
     @Override
     public void processRecord(Greeting greeting) throws Exception {
         System.out.println(greeting.getGreetingMessage());
     }
-
 }
 </pre>
             <p>This processor will print the greeting message for each input record as required.</p>
@@ -218,10 +216,10 @@ public static void main(String[] args) throws Exception {
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
             .registerRecordReader(new XmlRecordReader( // requirement N°1
                 "greeting", // root element tag name
-                "greetings.xml")) // XML data source
+                new File("greetings.xml"))) // XML data source
             .registerRecordMapper(new XmlRecordMapper( // requirement N°2
                 Greeting.class, // Pojo Type
-                "greetings.xsd")) // XSD file to validate XML records
+                new File("greetings.xsd"))) // XSD file to validate XML records
             .registerRecordProcessor(new GreetingProcessor()) // requirement N°3
             .build();
 
@@ -250,22 +248,25 @@ public static void main(String[] args) throws Exception {
 <pre>
 INFO: Initializing easy batch engine
 INFO: Data source: /data/in/greetings.xml
+INFO: Strict mode: false
 INFO: Total records = 4
 INFO: easy batch engine is running...
-Hi foo! Your sequence number is 1
-Hi bar! Your sequence number is 2
-<span class="text-error"><strong>SEVERE: Error while mapping record #3 [StringRecord{number=3, rawContent='
+Hi foo! Your id is 1
+Hi bar! Your id is 2
+<span class="text-error"><strong>SEVERE: Record #3 [StringRecord{number=3, rawContent='
     &lt;greeting&gt;
-        &lt;sequence&gt;x&lt;/sequence&gt;
+        &lt;id&gt;x&lt;/id&gt;
         &lt;name&gt;baz&lt;/name&gt;
     &lt;/greeting&gt;
-    '}] : cvc-datatype-valid.1.2.1: 'x' is not a valid value for 'integer'.
-SEVERE: Error while mapping record #4 [StringRecord{number=4, rawContent='
+    '}] has been ignored. Root exception:
+    cvc-datatype-valid.1.2.1: 'x' is not a valid value for 'integer'.
+SEVERE: Record #4 [StringRecord{number=4, rawContent='
     &lt;greeting&gt;
         &lt;id&gt;4&lt;/id&gt;
         &lt;name&gt;blah!&lt;/name&gt;
     &lt;/greeting&gt;
-    '}] : cvc-complex-type.2.4.a: Invalid content was found starting with element 'id'. One of '{sequence}' is expected.</strong></span>
+    '}] has been ignored. Root exception:
+    cvc-complex-type.2.4.a: Invalid content was found starting with element 'ref'. One of '{id}' is expected.</strong></span>
 INFO: Shutting down easy batch engine
 </pre>
 

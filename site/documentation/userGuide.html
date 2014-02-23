@@ -49,7 +49,7 @@
         <div class="container">
             <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.2</p>
+                <p class="navbar-text pull-right">Version: 2.1.3</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -159,7 +159,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 &lt;dependency&gt;
     &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-flatfile&lt;/artifactId&gt;
-    &lt;version&gt;2.1.2&lt;/version&gt;
+    &lt;version&gt;2.1.3&lt;/version&gt;
 &lt;/dependency&gt;
 </pre>
 
@@ -210,7 +210,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 &lt;dependency&gt;
     &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-xml&lt;/artifactId&gt;
-    &lt;version&gt;2.1.2&lt;/version&gt;
+    &lt;version&gt;2.1.3&lt;/version&gt;
 &lt;/dependency&gt;
 </pre>
 
@@ -244,7 +244,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 &lt;dependency&gt;
     &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-jdbc&lt;/artifactId&gt;
-    &lt;version&gt;2.1.2&lt;/version&gt;
+    &lt;version&gt;2.1.3&lt;/version&gt;
 &lt;/dependency&gt;
 </pre>
 
@@ -504,7 +504,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 &lt;dependency&gt;
     &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-validation&lt;/artifactId&gt;
-    &lt;version&gt;2.1.2&lt;/version&gt;
+    &lt;version&gt;2.1.3&lt;/version&gt;
 &lt;/dependency&gt;
 </pre>
                 </li>
@@ -574,12 +574,12 @@ String htmlReport = new EasyBatchReportFormatter().formatEasyBatchReport(easyBat
 &lt;dependency&gt;
     &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-tools&lt;/artifactId&gt;
-    &lt;version&gt;2.1.2&lt;/version&gt;
+    &lt;version&gt;2.1.3&lt;/version&gt;
 &lt;/dependency&gt;
 </pre>
 
                 <h3 id="7.3">7.3 Merging Easy Batch reports</h3>
-            <p>When you run multiple Easy Batch instances to process a data source, each engine will generate a report for the data partition it has processed.</p>
+            <p>When you run multiple Easy Batch instances to process a data source, each engine will generate a partial report for the data partition it has processed.</p>
             <p>You may want to aggregate partial reports into a merged and consolidated one. This is where the <code>EasyBatchReportsAggregator</code> comes to play:</p>
 
             <p class="text-center">
@@ -596,9 +596,9 @@ String htmlReport = new EasyBatchReportFormatter().formatEasyBatchReport(easyBat
                 <li>The total rejected records is the sum of total rejected records</li>
                 <li>The total error records is the sum of total error records</li>
                 <li>The total success records is the sum of total success records</li>
-                <li>The final processing times map is the merge of processing times maps</li>
-                <li>The final batch result is a list of all batch results</li>
-                <li>The final data source name is the concatenation (one per line) of data sources names</li>
+                <li>The final processing times map is the merge of partial processing times maps</li>
+                <li>The final batch result is a list of all batch partial results</li>
+                <li>The final data source name is the concatenation (one per line) of partial data sources names</li>
             </ul>
 
             <p>To use the report aggregator, first you need to add the <code>easybatch-tools</code> module to your dependencies:</p>
@@ -606,7 +606,7 @@ String htmlReport = new EasyBatchReportFormatter().formatEasyBatchReport(easyBat
 &lt;dependency&gt;
     &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-tools&lt;/artifactId&gt;
-    &lt;version&gt;2.1.2&lt;/version&gt;
+    &lt;version&gt;2.1.3&lt;/version&gt;
 &lt;/dependency&gt;
 </pre>
 
@@ -616,7 +616,9 @@ EasyBatchReportsAggregator reportsAggregator = new DefaultEasyBatchReportsAggreg
 EasyBatchReport finalReport = reportsAggregator.aggregateReports(report1, report2);
 </pre>
 
-        </div>
+                <p>You can find an example of how to use the report aggregator in the <a href="../tutorials/jms.html" target="_blank">JMS tutorial</a>.</p>
+
+            </div>
 
         </div>
 

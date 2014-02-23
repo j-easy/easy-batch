@@ -55,7 +55,7 @@
         <div class="container">
             <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.2</p>
+                <p class="navbar-text pull-right">Version: 2.1.3</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -136,7 +136,7 @@ We will use the same resources as in <a href="./helloworldCSV.html" target="_bla
 public class Greeting {
 
     @XmlElement
-    private long sequence;
+    private long id;
 
     @XmlElement
     private String name;
@@ -151,11 +151,11 @@ public class Greeting {
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;greetings&gt;
     &lt;greeting&gt;
-        &lt;sequence&gt;3&lt;/sequence&gt;
+        &lt;id&gt;3&lt;/id&gt;
         &lt;name&gt;baz&lt;/name&gt;
     &lt;/greeting&gt;
     &lt;greeting&gt;
-        &lt;sequence&gt;4&lt;/sequence&gt;
+        &lt;id&gt;4&lt;/id&gt;
         &lt;name&gt;bas&lt;/name&gt;
     &lt;/greeting&gt;
 &lt;/greetings&gt;
@@ -204,7 +204,7 @@ public class GreetingJsonGenerator extends AbstractRecordProcessor&lt;Greeting&g
     public void processRecord(Greeting greeting) throws Exception {
         JsonWriter jsonWriter = Json.createWriter(System.out);
         JsonObject greetingModel = Json.createObjectBuilder()
-                .add("sequence", greeting.getSequence())
+                .add("id", greeting.getId())
                 .add("name", greeting.getName())
                 .build();
         jsonWriter.writeObject(greetingModel);
@@ -233,14 +233,14 @@ public class Launcher {
 
         // Build an easy batch engine to read greetings from csv file
         EasyBatchEngine easyBatchCsvEngine = new EasyBatchEngineBuilder()
-            .registerRecordReader(new FlatFileRecordReader(args[0]))
-            .registerRecordMapper(new DelimitedRecordMapper(Greeting.class, new String[]{"sequence","name"}))
+            .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
+            .registerRecordMapper(new DelimitedRecordMapper(Greeting.class, new String[]{"id","name"}))
             .registerRecordProcessor(new GreetingDataLoader())
             .build();
 
         // Build an easy batch engine to read greetings from xml file
         EasyBatchEngine easyBatchXmlEngine = new EasyBatchEngineBuilder()
-            .registerRecordReader(new XmlRecordReader("greeting", args[1]))
+            .registerRecordReader(new XmlRecordReader("greeting", new File(args[1])))
             .registerRecordMapper(new XmlRecordMapper(Greeting.class))
             .registerRecordProcessor(new GreetingDataLoader())
             .build();
@@ -301,20 +301,20 @@ INFO: Total records = 2
 INFO: easy batch engine is running...
 INFO: Total records = 2
 INFO: easy batch engine is running...
-INFO: Greeting {sequence=1, name='foo'} successfully persisted in the database
-INFO: Greeting {sequence=3, name='baz'} successfully persisted in the database
-INFO: Greeting {sequence=2, name='bar'} successfully persisted in the database
-INFO: Greeting {sequence=4, name='bas'} successfully persisted in the database
+INFO: Greeting {id=1, name='foo'} successfully persisted in the database
+INFO: Greeting {id=3, name='baz'} successfully persisted in the database
+INFO: Greeting {id=2, name='bar'} successfully persisted in the database
+INFO: Greeting {id=4, name='bas'} successfully persisted in the database
 INFO: Shutting down easy batch engine
 INFO: Shutting down easy batch engine
 INFO: Initializing easy batch engine <span class="text-info"><em><strong><= output of JSON engine</strong></em></span>
 INFO: Data source: Connection URL: jdbc:hsqldb:mem | Query string: select * from greeting
 INFO: Total records = 4
 INFO: easy batch engine is running...
-{"sequence":1,"name":"foo"}
-{"sequence":2,"name":"bar"}
-{"sequence":3,"name":"baz"}
-{"sequence":4,"name":"bas"}
+{"id":1,"name":"foo"}
+{"id":2,"name":"bar"}
+{"id":3,"name":"baz"}
+{"id":4,"name":"bas"}
 INFO: Shutting down easy batch engine
 </pre>
 

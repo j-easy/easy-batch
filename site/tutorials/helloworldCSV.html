@@ -55,7 +55,7 @@
         <div class="container">
             <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.2</p>
+                <p class="navbar-text pull-right">Version: 2.1.3</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -118,34 +118,34 @@
                     We will process a simple CSV file containing greeting records and generate greeting messages.
                    The input file named <code>greetings.csv</code> has the following content:</p>
 <pre class="prettyprint">
-sequence,name
+id,name
 1,foo
 2,bar
 </pre>
                 <p>Each record is composed of 2 fields :</p>
                 <ul>
-                    <li>a sequence number</li>
+                    <li>an id</li>
                     <li>a person name</li>
                 </ul>
 
-                <p>For each record, the batch application should print to the console a greeting of the format : <em>Hi foo! Your sequence number is 1</em> .</p>
+                <p>For each record, the batch application should print to the console a greeting of the format : <em>Hi foo! Your id is 1</em> .</p>
 
                 <p>Easy Batch development is POJO-based, so we would like to map each record to an instance of the following <code>Greeting</code> bean:</p>
 <pre class="prettyprint">
 public class Greeting {
 
-    private long sequence;
+    private int id;
 
     private String name;
 
     // Getters and Setters omitted
 
     public String getGreetingMessage() {
-        return "Hi " + name + "! Your sequence number is " + sequence;
+        return "Hi " + name + "! Your id is " + id;
     }
 }
 </pre>
-                <p>The sequence and name fields in the CSV file should be mapped respectively to the sequence and name fields in the <code>Greeting</code> bean.</p>
+                <p>The id and name fields in the CSV file should be mapped respectively to the id and name fields in the <code>Greeting</code> bean.</p>
 
                 <p>So let's get started!</p>
 
@@ -156,12 +156,10 @@ public class Greeting {
                 <p>First, let's implement our batch processing logic by extending the <code>AbstractRecordProcessor</code> class:</p>
 <pre class="prettyprint">
 public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
-
     @Override
     public void processRecord(Greeting greeting) throws Exception {
         System.out.println(greeting.getGreetingMessage());
     }
-
 }
 </pre>
                 <p>This processor will print the greeting message for each input record as required.</p>
@@ -180,7 +178,7 @@ public class Launcher {
 
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-            .registerRecordReader(new FlatFileRecordReader("greetings.csv")) // requirement N°1
+            .registerRecordReader(new FlatFileRecordReader(new File("greetings.csv"))) // requirement N°1
             .registerRecordMapper(new DelimitedRecordMapper(Greeting.class)) // requirement N°2
             .registerRecordProcessor(new GreetingProcessor()) // requirement N°3
             .build();
@@ -212,18 +210,19 @@ public class Launcher {
 <pre>
 INFO: Initializing easy batch engine
 INFO: Data source: /data/in/greetings.csv
+INFO: Strict mode: false
 INFO: Total records = 3
 INFO: easy batch engine is running...
-<span class="text-error"><strong>SEVERE: Error while mapping record #1 [StringRecord{number=1, rawContent='sequence,name'}] :
-    Unable to convert 'sequence' to type long for field sequence</strong></span>
-Hi foo! Your sequence number is 1
-Hi bar! Your sequence number is 2
+<span class="text-error"><strong>SEVERE: Record #1 [StringRecord{number=1, rawContent='id,name'}] has been ignored. Root exception:
+    Unable to convert 'id' to type int for field id</strong></span>
+Hi foo! Your id is 1
+Hi bar! Your id is 2
 INFO: Shutting down easy batch engine
 </pre>
 
                 <p>As expected, Easy Batch generated a greeting message for each person.</p>
 
-                <p>The header record has been ignored since the String <em>sequence</em> cannot be converted to the filed <em>sequence</em> of type <em>long</em> in our <code>Greeting</code> Pojo.
+                <p>The header record has been ignored since the String <em>id</em> cannot be converted to the filed <em>id</em> of type <em>int</em> in our <code>Greeting</code> Pojo.
                     The header record could be filtered using the <code>RecordFilter</code> API, but this is not shown in this tutorial. You can find an example of record filtering in the
                     <a href="./helloworldFLR.html" target="_blank">Hello World FLR tutorial</a>.</p>
 

@@ -55,7 +55,7 @@
         <div class="container">
             <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.2</p>
+                <p class="navbar-text pull-right">Version: 2.1.3</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -118,7 +118,7 @@
 
                 <p align="center"><img src="../resources/img/customers.png"/></p>
 
-                <p>Easy Batch provides built-in record mappers for flat file, xml and database records, but these mappers actually maps data in a one-to-one fashion: Each field in the input record is mapped to the domain object field with the same name.</p>
+                <p>Easy Batch provides built-in record mappers for flat file, xml and database records, but these mappers actually maps data in a one-to-one fashion: Each field in the input record is mapped to a field of the domain object.</p>
                 <p>This is actually fine when your input record can be mapped with this approach to your domain object. But how to do if your domain model contains multiple object types?</p>
 
                 <p>In this tutorial, you will learn how to use custom record mapping strategy to map input data to a non-trivial domain object.</p>
@@ -174,7 +174,7 @@
 <pre class="prettyprint">
 @XmlRootElement
 public class Customer {
-    private Long id;
+    private int id;
     private String firstName;
     private String lastName;
     private Date birthDate;
@@ -206,6 +206,7 @@ public class Contact {
                 <p>The goal of the tutorial is to generate an XML file containing customer data in the following format:</p>
 <pre class="prettyprint">
 &lt;customer&gt;
+    &lt;id&gt;1&lt;/id&gt;
     &lt;firstName&gt;foo&lt;/firstName&gt;
     &lt;lastName&gt;bar&lt;/lastName&gt;
     &lt;birthDate&gt;1990-12-13T00:00:00+01:00&lt;/birthDate&gt;
@@ -237,6 +238,7 @@ public class CustomerMapper implements RecordMapper&lt;Customer&gt; {
         ResultSet resultSet = jdbcRecord.getRawContent();
 
         Customer customer = new Customer();
+        customer.setId(resultSet.getInt("id"));
         customer.setFirstName(resultSet.getString("firstName"));
         customer.setLastName(resultSet.getString("lastName"));
         customer.setBirthDate(resultSet.getDate("birthDate"));
@@ -285,11 +287,7 @@ public class CustomerProcessor extends AbstractRecordProcessor&lt;Customer&gt; {
 
     @Override
     public void processRecord(final Customer customer) throws Exception {
-        try {
-            jaxbMarshaller.marshal(customer, System.out);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+        jaxbMarshaller.marshal(customer, System.out);
     }
 
 }
@@ -350,6 +348,7 @@ public class Launcher {
 <pre>
 INFO: Initializing easy batch engine
 INFO: Data source: Connection URL: jdbc:hsqldb:mem | Query string: select * from customer
+INFO: Strict mode: false
 INFO: Total records = 2
 INFO: easy batch engine is running...
 &lt;customer&gt;
@@ -366,6 +365,7 @@ INFO: easy batch engine is running...
     &lt;/contact&gt;
     &lt;firstName&gt;foo&lt;/firstName&gt;
     &lt;lastName&gt;bar&lt;/lastName&gt;
+    &lt;id&gt;1&lt;/id&gt;
 &lt;/customer&gt;
 &lt;customer&gt;
     &lt;address&gt;
@@ -381,6 +381,7 @@ INFO: easy batch engine is running...
     &lt;/contact&gt;
     &lt;firstName&gt;bar&lt;/firstName&gt;
     &lt;lastName&gt;foo&lt;/lastName&gt;
+    &lt;id&gt;2&lt;/id&gt;
 &lt;/customer&gt;
 INFO: Shutting down easy batch engine
 Easy Batch Report:
@@ -389,10 +390,10 @@ Easy Batch Report:
 	Batch duration = 0s
 	Data source = Connection URL: jdbc:hsqldb:mem | Query string: select * from customer
 	Total records = 2
-	Filtered records = 0 (0%) []
-	Ignored records = 0 (0%) []
-	Rejected records = 0 (0%) []
-	Error records = 0 (0%) []
+	Filtered records = 0 (0%)
+	Ignored records = 0 (0%)
+	Rejected records = 0 (0%)
+	Error records = 0 (0%)
 	Success records = 2 (100%)
 	Average record processing time = 0.0s
 </pre>

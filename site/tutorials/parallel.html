@@ -49,7 +49,7 @@
         <div class="container">
             <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.2</p>
+                <p class="navbar-text pull-right">Version: 2.1.3</p>
                 <ul class="nav">
                     <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -170,13 +170,13 @@ public class MessageEncrypter extends AbstractRecordProcessor&lt;StringRecord&gt
 
 // Build an Easy Batch engine 1
 EasyBatchEngine easyBatchEngine1 = new EasyBatchEngineBuilder()
-        .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from secret-messages-part1.txt
+        .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages-part1.txt
         .registerRecordProcessor(new MessageEncrypter())
         .build();
 
 // Build an Easy Batch engine 2
 EasyBatchEngine easyBatchEngine2 = new EasyBatchEngineBuilder()
-        .registerRecordReader(new FlatFileRecordReader(args[1])) //read data from secret-messages-part2.txt
+        .registerRecordReader(new FlatFileRecordReader(new File(args[1]))) //read data from secret-messages-part2.txt
         .registerRecordProcessor(new MessageEncrypter())
         .build();
 
@@ -223,14 +223,14 @@ executorService.shutdown();
 
 // Build an Easy Batch engine 1
 EasyBatchEngine easyBatchEngine1 = new EasyBatchEngineBuilder()
-        .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from secret-messages.txt
+        .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
         <strong>.registerRecordFilter(new RecordNumberGreaterThanRecordFilter(5)) // filter records 6-10</strong>
         .registerRecordProcessor(new MessageEncrypter())
         .build();
 
 // Build an Easy Batch engine 2
 EasyBatchEngine easyBatchEngine2 = new EasyBatchEngineBuilder()
-        .registerRecordReader(new FlatFileRecordReader(args[0])) //read data from secret-messages.txt
+        .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
         <strong>.registerRecordFilter(new RecordNumberLowerThanRecordFilter(6)) // filter records 1-5</strong>
         .registerRecordProcessor(new MessageEncrypter())
         .build();

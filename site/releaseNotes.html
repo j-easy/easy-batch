@@ -46,7 +46,7 @@
         <div class="container">
             <a class="brand" href="./index.html"><i class="icon-cogs"></i> Easy Batch</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.2</p>
+                <p class="navbar-text pull-right">Version: 2.1.3</p>
                 <ul class="nav">
                     <li><a href="./index.html"><i class="icon-home"></i> Home</a></li>
                     <li class="dropdown">
@@ -104,7 +104,23 @@
 
             <div class="row-fluid">
 
-                <h2>Current stable version : 2.1.2 (2014-02-16)</h2>
+                <h2>Current stable version : 2.1.3 (2014-02-24)</h2>
+
+                <p>This release is a third bug fix release of the 2.x branch. This release has:</p>
+                <ul>
+                    <li>Fixed issue#27: ObjectMapper throws a NPE when using JDBC column aliases</li>
+                    <li>Fixed issue#28: ObjectMapper throws a NPE when there is no Pojo field corresponding to a given database column</li>
+                    <li>Added the <a href="./tutorials/jms.html" target="_blank">JMS tutorial</a></li>
+                    <li>Added the <a href="./documentation/userGuide.html#7.3" target="_blank">EasyBatchReportsAggregator</a> API to merge partial reports</li>
+                    <li>Added the <a href="./documentation/userGuide.html#1.3" target="_blank">Strict mode</a> parameter to abort execution on first error</li>
+                    <li>Introduced some minor API changes</li>
+                </ul>
+
+                <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes and fixed bugs.</p>
+
+                <h2>Prior versions</h2>
+
+                <h3>version : 2.1.2 (2014-02-16)</h3>
 
                 <p>This release is a second bug fix release of the 2.x branch. This release has:</p>
                 <ul>
@@ -112,10 +128,6 @@
                     <li>Added a <a href="./tutorials/recipes.html" target="_blank">tutorial</a> with a custom record reader of a master-detail delimited flat file</li>
                     <li>Fixed some minor bugs</li>
                 </ul>
-
-                <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes and fixed bugs.</p>
-
-                <h2>Prior versions</h2>
 
                 <h3>version : 2.1.1 (2014-02-01)</h3>
 

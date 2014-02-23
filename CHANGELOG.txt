@@ -2,6 +2,20 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 https://github.com/benas/easy-batch
 
+Changes in version 2.1.3 (2014-02-23)
+-------------------------------------
+
+* Added strict mode to abort execution on first error
+* Added EasyBatchReportsAggregator API to merge partial reports
+* Added JMS tutorial
+* Fixed issue#27: ObjectMapper throws a NPE when using JDBC column aliases
+* Fixed issue#28: ObjectMapper throws a NPE when there is no Pojo field corresponding to a given database column
+* Changed FlatFileRecordReader constructor to take a java.io.File object instead of file path for input file
+* Changed XmlRecordReader constructor to take a java.io.File object instead of file path for input file
+* Changed XmlRecordMapper constructor to take a java.io.File object instead of file path for xsd file
+* Moved Spring and Quartz integration modules to a separate directory
+* Updated documentation and Javadoc
+
 Changes in version 2.1.2 (2014-02-16)
 -------------------------------------
 
