@@ -181,13 +181,13 @@
       </data>
     </node>
     <node id="n6">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
           <y:Geometry height="73.5" width="98.0" x="92.94478426948695" y="244.25"/>
           <y:Fill color="#FFFFFFE6" color2="#999999" transparent="false"/>
           <y:BorderStyle color="#808080" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="82.701171875" horizontalTextPosition="center" iconData="6" iconTextGap="0" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="68.0" x="15.0" y="-4.6005859375">Datasource<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="97.40234375" horizontalTextPosition="center" iconData="6" iconTextGap="0" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="68.0" x="15.0" y="-11.951171875">
+Datasource<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -206,7 +206,6 @@
       </data>
     </node>
     <node id="n7">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
           <y:Geometry height="55.0" width="125.0" x="402.5" y="122.5"/>
@@ -231,7 +230,6 @@
       </data>
     </node>
     <node id="n8">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
           <y:Geometry height="55.0" width="125.0" x="556.75" y="122.5"/>
@@ -256,7 +254,6 @@
       </data>
     </node>
     <node id="n9">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
           <y:Geometry height="55.0" width="125.0" x="718.5" y="122.5"/>
@@ -281,7 +278,6 @@
       </data>
     </node>
     <node id="n10">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
           <y:Geometry height="55.0" width="125.0" x="873.5" y="122.5"/>
@@ -306,13 +302,12 @@
       </data>
     </node>
     <node id="n11">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
           <y:Geometry height="73.5" width="98.0" x="1086.1302631884057" y="244.25"/>
           <y:Fill color="#FFFFFFE6" color2="#999999" transparent="false"/>
           <y:BorderStyle color="#808080" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.701171875" horizontalTextPosition="center" iconTextGap="4" image="8" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="69.3671875" x="14.31640625" y="13.3994140625">Batch report<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="52.701171875" horizontalTextPosition="center" iconTextGap="10" image="8" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="69.3671875" x="14.31640625" y="10.3994140625">Batch report<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -331,7 +326,6 @@
       </data>
     </node>
     <node id="n12">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
           <y:Geometry height="55.0" width="125.0" x="402.5" y="367.5"/>
@@ -356,12 +350,11 @@
       </data>
     </node>
     <node id="n13">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
           <y:Geometry height="55.0" width="125.0" x="556.75" y="367.5"/>
           <y:Fill color="#FFFFFFE6" color2="#FFFF00" transparent="false"/>
-          <y:BorderStyle color="#99CC00" type="line" width="1.0"/>
+          <y:BorderStyle color="#FFFF00" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.701171875" horizontalTextPosition="center" iconData="9" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="88.046875" x="18.4765625" y="4.1494140625">Ignored records<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
@@ -381,7 +374,6 @@
       </data>
     </node>
     <node id="n14">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
           <y:Geometry height="55.0" width="125.0" x="718.5" y="367.5"/>
@@ -406,7 +398,6 @@
       </data>
     </node>
     <node id="n15">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
           <y:Geometry height="55.0" width="125.0" x="873.5" y="367.5"/>
@@ -587,7 +578,6 @@
       </data>
     </edge>
     <edge id="e15" source="n6" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-55.5" ty="0.0"/>
@@ -598,7 +588,6 @@
       </data>
     </edge>
     <edge id="e16" source="n7" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -609,7 +598,6 @@
       </data>
     </edge>
     <edge id="e17" source="n8" target="n3">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -620,7 +608,6 @@
       </data>
     </edge>
     <edge id="e18" source="n9" target="n5">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -631,7 +618,6 @@
       </data>
     </edge>
     <edge id="e19" source="n10" target="n4">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -642,7 +628,6 @@
       </data>
     </edge>
     <edge id="e20" source="n0" target="n11">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-12.537523728946212" sy="8.5" tx="0.0" ty="0.0"/>
@@ -653,7 +638,6 @@
       </data>
     </edge>
     <edge id="e21" source="n2" target="n12">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -664,7 +648,6 @@
       </data>
     </edge>
     <edge id="e22" source="n3" target="n13">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="-0.0"/>
@@ -675,7 +658,6 @@
       </data>
     </edge>
     <edge id="e23" source="n5" target="n14">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="-0.0"/>
@@ -686,7 +668,6 @@
       </data>
     </edge>
     <edge id="e24" source="n4" target="n15">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="-0.0"/>
