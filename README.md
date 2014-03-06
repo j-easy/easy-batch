@@ -28,8 +28,9 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 ### Presentation slides
 [https://speakerdeck.com/benas/easy-batch][easy-batch-slides]
 
-### Blog posts
+### Articles and Blog posts
 - [How I reduced my Java batch application’s code by 80% using Easy Batch!][easy-batch-post1]
+- [Easy Batch vs Spring Batch : a Hello World comparison][easy-batch-post2]
 
 ## Current version
 
@@ -53,5 +54,6 @@ Many thanks upfront!
 [easy-batch-doc]: http://benas.github.io/easy-batch/index.html
 [easy-batch-slides]: https://speakerdeck.com/benas/easy-batch
 [easy-batch-post1]: http://mahmoudbenhassine.com/2014/01/21/how-i-reduced-my-java-batch-applications-code-by-80-using-easy-batch/
+[easy-batch-post2]: http://mahmoudbenhassine.wordpress.com/2014/03/03/spring-batch-vs-easy-batch-a-hello-world-comparison/
 [MIT License]: http://opensource.org/licenses/mit-license.php/
 [issue tracker]: https://github.com/benas/easy-batch/issues
