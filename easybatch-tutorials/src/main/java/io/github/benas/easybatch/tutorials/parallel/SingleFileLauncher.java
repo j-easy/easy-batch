@@ -35,6 +35,7 @@ import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Main class to run the crypto tutorial with a single input file in parallel.
@@ -50,7 +51,7 @@ public class SingleFileLauncher {
         System.out.println(COMMENT_SEPARATOR);
         System.out.println("Running a single Easy Batch instance");
         System.out.println(COMMENT_SEPARATOR);
-        long singleInstanceStartTime = System.currentTimeMillis();
+        long singleInstanceStartTime = System.nanoTime();
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
                 .registerRecordProcessor(new MessageEncrypter())
@@ -59,12 +60,12 @@ public class SingleFileLauncher {
         EasyBatchReport easyBatchReport = easyBatchEngine.call();
         System.out.println(easyBatchReport);
 
-        long singleInstanceEndTime = System.currentTimeMillis() - singleInstanceStartTime;
+        long singleInstanceEndTime = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - singleInstanceStartTime);
 
         System.out.println(COMMENT_SEPARATOR);
         System.out.println("Running two Easy Batch instances in parallel");
         System.out.println(COMMENT_SEPARATOR);
-        long parallelInstancesStartTime = System.currentTimeMillis();
+        long parallelInstancesStartTime = System.nanoTime();
 
         // To avoid any thread-safety issues,
         // we will create 2 engines with separate instances of record readers and processors
@@ -94,7 +95,7 @@ public class SingleFileLauncher {
 
         executorService.shutdown();
 
-        long parallelInstancesEndTime = System.currentTimeMillis() - parallelInstancesStartTime;
+        long parallelInstancesEndTime = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - parallelInstancesStartTime);
 
         System.out.println(COMMENT_SEPARATOR);
         System.out.println("Processing the input file with two Easy Batch instances in parallel took " + parallelInstancesEndTime + "ms");

@@ -5,6 +5,7 @@ import io.github.benas.easybatch.core.impl.EasyBatchEngine;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class used to benchmark Easy Batch performance.
@@ -40,9 +41,9 @@ public class Benchmark {
                 easyBatchEngine = BenchmarkUtil.buildXmlEasyBatchEngine(customersFile);
             }
             System.out.println("Running easy batch...");
-            long startTime = System.currentTimeMillis();
+            long startTime = System.nanoTime();
             easyBatchEngine.call();
-            long duration = System.currentTimeMillis() - startTime;
+            long duration = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
             System.out.println("Easy batch engine took = " + duration + "ms to process " + customersCount + " customers");
             processingTimes.put(customersCount, duration);
 
