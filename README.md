@@ -39,7 +39,7 @@ The current stable version of Easy Batch is 2.1.3 : [![Build Status](https://bui
 The current development version of Easy Batch is 2.1.4-SNAPSHOT
 <br/>
 <a href="https://buildhive.cloudbees.com/job/benas/job/easy-batch/"><img src="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/></a>
-<a href="http://www.jetbrains.com/idea/"><img src="https://raw.github.com/benas/easy-batch/master/site/resources/img/idea.png"/></a>
+<a href="http://www.jetbrains.com/idea/"><img src="https://raw.github.com/benas/easy-batch/master/site/img/misc/idea.png"/></a>
 
 ## License
 Easy Batch is released under the [MIT License][].
