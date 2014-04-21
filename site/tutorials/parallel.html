@@ -56,7 +56,7 @@ This is a secret message10!</code></pre>
 
               <p>In this part, we have split the input file <code>secret-messages.txt</code> into two slices: <code>secret-messages-part1.txt</code> containing records 1-5 and <code>secret-messages-part2.txt</code> containing records 6-10:</p>
 
-              <p class="pull-center"><img src="/img/eb/parallelMultipleParts.png"/></p>
+              <p class="pull-center"><img src="/easy-batch/img/eb/parallelMultipleParts.png"/></p>
 
               <p>The following listing shows how to run two Easy Batch instances to process these two parts in parallel:</p>
 
@@ -107,7 +107,7 @@ executorService.shutdown();</code></pre>
               <p>The figure below illustrates this configuration:</p>
 
               <p class="pull-center">
-                  <img src="/img/eb/partitioning.png"/>
+                  <img src="/easy-batch/img/eb/partitioning.png"/>
               </p>
 
               <p>The following listing shows the code to achieve this configuration:</p>
@@ -161,7 +161,7 @@ Processing the input file with a single Easy Batch instance took 10806ms
               <p>As expected, running two instances of Easy Batch in parallel on separate parts of the input file is twice faster than a single instance. This 200% speed up can actually be increased to <code>x * 100%</code> if you use the same technique with x threads! :</p>
 
                 <p class="pull-center">
-                    <img src="/img/eb/parallelChart.png" style="width: 60%"/>
+                    <img src="/easy-batch/img/eb/parallelChart.png" style="width: 60%"/>
                 </p>
 
               <h2 id="4">4. Conclusion</h2>
