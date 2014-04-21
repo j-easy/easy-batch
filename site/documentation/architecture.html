@@ -9,7 +9,7 @@ name : Architecture
               <p>The next figure describes Easy Batch main components and gives an overview of the framework architecture:</p>
 
               <p>
-                  <img style="width: 100%;" src="/img/eb/architecture.png"/>
+                  <img style="width: 100%;" src="/easy-batch/img/eb/architecture.png"/>
               </p>
 
               <p>The main components are:</p>
@@ -23,14 +23,14 @@ name : Architecture
 
               <p>All these components (except record reader) are optional. Easy Batch provides a No Operation implementation for each component.</p>
 
-              <p>All details about these components can be found in the <a href="/documentation/userGuide.html">user guide section</a>.</p>
+              <p>All details about these components can be found in the <a href="/easy-batch/documentation/userGuide.html">user guide section</a>.</p>
 
               <h2 id="2">2. Processing workflow</h2>
 
               <p>The workflow used internally by Easy Batch is illustrated by the next figure and described below :</p>
 
               <div>
-                  <img src="/img/eb/workflow.png"/>
+                  <img src="/easy-batch/img/eb/workflow.png"/>
                   <ol>
                       <li>The engine reads records one by one from the data source.
                           If the record should be filtered, then the engine skips it and moves to the next one.</li>

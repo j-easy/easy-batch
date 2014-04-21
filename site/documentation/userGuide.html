@@ -289,8 +289,8 @@ myPojoMapper.setDelimiter("|");</code></pre>
                   <li>A field is not enclosed as expected with the data qualifier</li>
               </ul>
 
-              <p>You can find examples of how to use the <code>DelimitedRecordMapper</code> in the <a href="/tutorials/helloworldCSV.html" target="_blank">Hello World CSV tutorial</a>
-                  and in the <a href="/tutorials/products.html" target="_blank">Products statistics tutorial</a>.</p>
+              <p>You can find examples of how to use the <code>DelimitedRecordMapper</code> in the <a href="/easy-batch/tutorials/helloworldCSV.html" target="_blank">Hello World CSV tutorial</a>
+                  and in the <a href="/easy-batch/tutorials/products.html" target="_blank">Products statistics tutorial</a>.</p>
 
               <h4>4.1.2 Mapping fixed-length records</h4>
 
@@ -308,7 +308,7 @@ myPojoMapper.setDelimiter("|");</code></pre>
               <p>If a fixed length record is not well formed, the <code>FixedLengthRecordMapper</code> throws an exception that causes the record to be ignored by the engine.
                   A fixed length record is not well formed if its length is not equal to expected record length.</p>
 
-              <p>You can find an example of how to use the <code>FixedLengthRecordMapper</code> in the <a href="/tutorials/helloworldFLR.html" target="_blank">Hello World FLR tutorial.</a>
+              <p>You can find an example of how to use the <code>FixedLengthRecordMapper</code> in the <a href="/easy-batch/tutorials/helloworldFLR.html" target="_blank">Hello World FLR tutorial.</a>
 
               <h3>4.2 Mapping xml records</h3>
 
@@ -324,7 +324,7 @@ myPojoMapper.setDelimiter("|");</code></pre>
 
               <p>When you create an <code>XmlRecordMapper</code>, you should specify your domain object type and an xsd file against which the xml record should be validated (if no xsd is specified, no validation will be applied).</p>
 
-              <p>You can find an example of how to use the <code>XmlRecordMapper</code> in the <a href="/tutorials/helloworldXML.html" target="_blank">Hello World XML tutorial</a>.</p>
+              <p>You can find an example of how to use the <code>XmlRecordMapper</code> in the <a href="/easy-batch/tutorials/helloworldXML.html" target="_blank">Hello World XML tutorial</a>.</p>
 
               <div class="alert alert-warning">
                   <p>The <code>XmlRecordMapper</code> should be used in conjunction with the <code>XmlRecordReader</code>.</p>
@@ -351,7 +351,7 @@ myPojoMapper.setDelimiter("|");</code></pre>
 
               <p>Easy Batch will then use this array of field names to map data from columns in the same order as in the jdbc record.</p>
 
-              <p>You can find an example of how to use the <code>JdbcRecordMapper</code> in the <a href="/tutorials/helloworldJDBC.html" target="_blank">Hello World JDBC tutorial</a>.</p>
+              <p>You can find an example of how to use the <code>JdbcRecordMapper</code> in the <a href="/easy-batch/tutorials/helloworldJDBC.html" target="_blank">Hello World JDBC tutorial</a>.</p>
 
               <div class="alert alert-warning">
                   <p>The <code>JdbcRecordMapper</code> should be used in conjunction with the <code>JdbcRecordReader</code>.</p>
@@ -400,7 +400,7 @@ myPojoMapper.setDelimiter("|");</code></pre>
 
               <p>With Easy Batch, you can also do some computation on input records and hold a batch result that will be returned at the end of execution.</p>
               <p>This can be done through the <code>getEasyBatchResult</code> method of the <code>RecordProcessor</code> interface : Your record processor can hold the computation result in an instance variable and return it using this method.</p>
-              <p>You can find an example of how to return a computation result in the <a href="/tutorials/products.html" target="_blank">Products statistics tutorial</a>.</p>
+              <p>You can find an example of how to return a computation result in the <a href="/easy-batch/tutorials/products.html" target="_blank">Products statistics tutorial</a>.</p>
 
               <p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record processor that logs an information message about the record being processed.</p>
 
@@ -435,7 +435,7 @@ myPojoMapper.setDelimiter("|");</code></pre>
                 <p>The following is a sample HTML report (click on the image for a live HTML demo):</p>
 
                 <div class="pull-center">
-                    <a href="/documentation/htmlReport.html" target="_blank">
+                    <a href="/easy-batch/documentation/htmlReport.html" target="_blank">
                         <img src="/img/eb/htmlReport.png" alt="htmlReport" style="width: 80%"/>
                     </a>
                 </div>
@@ -484,4 +484,4 @@ myPojoMapper.setDelimiter("|");</code></pre>
 <pre><code class="java">EasyBatchReportsAggregator reportsAggregator = new DefaultEasyBatchReportsAggregator();
 EasyBatchReport finalReport = reportsAggregator.aggregateReports(report1, report2);</code></pre>
 
-              <p>You can find an example of how to use the report aggregator in the <a href="/tutorials/jms.html" target="_blank">JMS tutorial</a>.</p>
+              <p>You can find an example of how to use the report aggregator in the <a href="/easy-batch/tutorials/jms.html" target="_blank">JMS tutorial</a>.</p>
