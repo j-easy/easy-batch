@@ -1,0 +1,61 @@
+/*
+ * --------------------------------------------------
+ * 1. General Elements
+ *--------------------------------------------------
+ */
+#navigation {
+  /* 1. Navigation wrapper */
+}
+#highlighted {
+  /* 2. Highlighted (below header) wrapper */
+}
+#content {
+  /* 3. Content wrapper */
+}
+#content-below {
+  /* 4. Content Below wrapper */
+}
+#footer {
+  /* 5. Footer wrapper */
+}
+/*
+ * --------------------------------------------------
+ * 2. Colours
+ *-------------------------------------------------- 
+ */
+/*
+ * --------------------------------------------------
+ * 3. Responsiveness/media queries
+ *--------------------------------------------------
+ */
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+@media (min-width: 768px) {
+  /* Small devices (tablets, 768px and up) */
+}
+@media (min-width: 992px) {
+  /* Medium devices (desktops, 992px and up) */
+}
+@media (min-width: 1200px) {
+  /* Large devices (large desktops, 1200px and up) */
+}
+/*
+ * --------------------------------------------------
+ * 4. Misc
+ * Other stuff
+ *--------------------------------------------------
+ */
+pre {
+    padding: 0px;
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+.floatright,.right { float: right }
+
+.back-top-wrapper { width: 100%; position: absolute; overflow: hidden; height: 50px; display: block; }
+.back-top { bottom: 55px; right: 20px; margin-bottom: 0; display: block; position: fixed; display: scroll; display: none; }
+.back-top a { width: 50px; nowhitespace: afterproperty; height: 50px; display: block; text-align: center; text-transform: uppercase; text-decoration: none; background: #00adbb url(../img/misc/up-arrow.png) no-repeat center center; border-radius: 5px; /* transition */ -webkit-transition: 1s;-moz-transition:1s;transition:1s; ; }
+.back-top a:hover { background-color: #00adbb } /* arrow icon (span tag) */
+.back-top span { width: 50px; nowhitespace: afterproperty; height: 50px; display: block; border-radius: 10px; /* transition */ -webkit-transition: 1s;-moz-transition:1s;transition:1s; ; }
+

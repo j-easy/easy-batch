@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include head.html %}
+<body class="page page-index-static">
+
+{% include header.html %}
+
+<div id="content">
+    <div class="container">
+
+        {% include breadcrumb.html %}
+
+        <div id="row">
+            <div class="col-md-9">
+
+                <h1 class="title-divider"><span>{{ page.name }}</span></h1>
+
+                {{ content }}
+
+            </div>
+
+            <div class="col-md-3 sidebar sidebar-right">
+                {% include sidebar.html %}
+            </div>
+        </div>
+
+
+    </div>
+</div>
+{% include footer.html %}
+
+{% include scripts.html %}
+</body>
+</html>

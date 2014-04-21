@@ -1,153 +1,37 @@
-<!DOCTYPE html>
+---
+layout: home
+---
 
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <div class="block features">
+          <h2 class="title-divider"><span>Core <span class="de-em">Features</span></span></h2>
+          <div class="row">
+              <div class="feature col-sm-6 col-md-4">
+                  <h3 class="title"><i class="fa fa-leaf fa-lg"></i> Lightweight framework</h3>
+                  <p>Easy Batch framework's core has no dependencies and hence a small memory footprint : a 40Ko jar file with a lot of features!</p>
+              </div>
+              <div class="feature col-sm-6 col-md-4">
+                  <h3 class="title"><i class="fa fa-coffee fa-lg"></i> POJO-based development</h3>
+                  <p>Easy Batch development is POJO-based. It allows you to map data to domain objects so you can still work with the Object Oriented aspect of Java.</p>
+              </div>
+              <div class="feature col-sm-6 col-md-4">
+                  <h3 class="title"><i class="fa fa-check-square-o fa-lg"></i>  Declarative data validation</h3>
+                  <p>Easy Batch lets you declare data validation constraints on domain objects and handles the validation code for you.</p>
+              </div>
+          </div>
 
-    <meta charset="utf-8">
-    <title>Java Easy Batch - Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Mahmoud Ben Hassine">
-	<meta name="description" content="Batch processing with Java made easy!">
-    <link rel="shortcut icon" href="resources/img/gear.ico"/>
+          <div class="row">
+              <div class="feature col-sm-6 col-md-4">
+                  <h3 class="title"><i class="fa fa-cogs fa-lg"></i> Parallel execution</h3>
+                  <p>Easy Batch allows you to run multiple engine instances in parallel to speed up execution and reduce the overall processing time!</p>
+              </div>
+              <div class="feature col-sm-6 col-md-4">
+                  <h3 class="title"><i class="fa fa-tachometer fa-lg"></i> JMX monitoring</h3>
+                  <p>With Easy Batch, you can monitor your batch execution and progress using JMX at runtime and in real time.</p>
+              </div>
+              <div class="feature col-sm-6 col-md-4">
+                  <h3 class="title"><i class="fa fa-puzzle-piece fa-lg"></i> Modular architecture</h3>
+                  <p>Easy Batch architecture is modular and extensible through a consistent API. You can extend its components and integrate your own solutions.</p>
+              </div>
+          </div>
 
-    <link href="./resources/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-        body {
-            padding-top: 60px;
-            padding-bottom: 15px;
-        }
-    </style>
-    <link href="./resources/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="./resources/css/font-awesome.min.css" rel="stylesheet">
-    <link href="./resources/css/sidebar.css" rel="stylesheet">
-
-    <script type="text/javascript">
-
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-35599235-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-
-    </script>
-
-</head>
-
-<body>
-
-<div class="navbar navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="brand" href="./index.html"><i class="icon-cogs"></i> Easy Batch</a>
-            <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.3</p>
-                <ul class="nav">
-                    <li><a href="./index.html"><i class="icon-home"></i> Home</a></li>
-                    <li class="dropdown">
-                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
-                            <li><a href="./documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
-                            <li><a href="./documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
-                            <li><a href="./documentation/benchmark.html"><i class="icon-dashboard"></i> Performance benchmark</a></li>
-                            <li><a href="./documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
-                            <li><a href="./tutorials/index.html"><i class="icon-code"></i> Tutorials</a></li>
-                            <li><a href="./documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a id="getinvolved" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-thumbs-up"></i> Get involved<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="getinvolved">
-                            <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
-                            <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row-fluid">
-
-        <div class="span10 offset1">
-
-            <div class="hero-unit well">
-                <h2>Easy Batch : batch processing with Java made easy!</h2>
-                <p>Easy Batch is a framework that aims to simplify batch processing with Java. 
-                    It addresses common tedious tasks such as reading, filtering, parsing and validating input data and lets you concentrate on your batch processing business logic.</p>
-                <div class="row" align="center">
-                    <div class="span4"><a class="btn btn-primary btn-large" href="./documentation/gettingStarted.html">Get started »</a></div>
-                    <div class="span4"><a class="btn btn-primary btn-large" href="./documentation/architecture.html">Learn more »</a></div>
-                    <div class="span4"><a class="btn btn-primary btn-large" href="./tutorials/index.html">Checkout Tutorials »</a></div>
-                </div>
-            </div>
-
-            <div class="page-header">
-                <h2>Key features</h2>
-            </div>
-
-            <div class="row-fluid">
-                <div class="span4">
-                    <h2><img src="./resources/img/feather.png"> Lightweight framework</h2>
-                    <p>Easy Batch framework core has no dependencies and hence a small memory footprint : a 40Ko jar file with a lot of features!</p>
-                </div>
-                <div class="span4">
-                    <h2><img src="./resources/img/pojo.png"> POJO-based development</h2>
-                    <p>Map records to your domain objects so you can still work with the Object Oriented aspect of Java.</p>
-                </div>
-                <div class="span4">
-                    <h2><img src="./resources/img/validation.png"> Declarative data validation</h2>
-                    <p>Easy Batch lets you declare data validation on domain objects and handles the validation code for you.</p>
-                </div>
-            </div>
-            <div class="row-fluid">
-                <div class="span4">
-                    <h2><img src="./resources/img/learn.png"> Easy to learn and use</h2>
-                    <p>Easy Batch uses a simple and natural data model and API. You can learn it easily and start using it quickly.</p>
-                </div>
-                <div class="span4">
-                    <h2><img src="./resources/img/statistics.png"> Statistics reporting</h2>
-                    <p>Easy Batch provides a simple and customizable reporting tools for common statistics including validation errors and processing time.</p>
-                </div>
-                <div class="span4">
-                    <h2><img src="./resources/img/monitor.png"> JMX monitoring</h2>
-                    <p>With Easy Batch, you can monitor your batch execution and progress using JMX at runtime and in real time.</p>
-                </div>
-            </div>
-            <div class="row-fluid">
-                <div class="span4">
-                    <h2><img src="./resources/img/parallel.png"> Parallel execution</h2>
-                    <p>Easy Batch allows you to run multiple engine instances in parallel to speed up execution and reduce the overall processing time!</p>
-                </div>
-                <div class="span4">
-                    <h2><img src="./resources/img/puzzle.png"> Modular architecture</h2>
-                    <p>Easy Batch is designed to be modular and extensible through a consistent API so you can extend its components and integrate your own solutions within the framework.</p>
-                </div>
-                <div class="span4">
-                    <h2><img src="./resources/img/opensource.png"> Free and Open source</h2>
-                    <p>Easy Batch is free and open source and is released under the <a href="http://opensource.org/licenses/mit-license.php/" target="_blank">MIT license</a>.
-                        You can contribute to the project on <a href="https://github.com/benas/easy-batch" target="_blank">Github</a>. Any contribution or feedback is welcome!</p>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <hr>
-
-    <footer>
-        <p class="pull-right"><a href="#"><i class="icon-circle-arrow-up"></i> Back to top</a></p>
-        <p>Easy Batch is maintained by <a href="mailto:md.benhassine@gmail.com?subject=[Easy Batch]"><i class="icon-envelope"></i> benas</a> on <a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> GitHub</a></p>
-    </footer>
-
-</div>
-
-<script src="./resources/js/jquery.js"></script>
-<script src="./resources/js/bootstrap.min.js"></script>
-
-</body></html>
+      </div>

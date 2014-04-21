@@ -1,265 +1,144 @@
-<!DOCTYPE html>
+---
+layout: template
+menu : releaseNotes
+name : Release notes
+---
+              <h2>Current stable version : 2.1.3 (2014-02-24)</h2>
 
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+              <p>This release is a third bug fix release of the 2.x branch. This release has:</p>
+              <ul>
+                  <li>Fixed issue#27: ObjectMapper throws a NPE when using JDBC column aliases</li>
+                  <li>Fixed issue#28: ObjectMapper throws a NPE when there is no Pojo field corresponding to a given database column</li>
+                  <li>Added the <a href="/tutorials/jms.html" target="_blank">JMS tutorial</a></li>
+                  <li>Added the <a href="/documentation/userGuide.html#7.3" target="_blank">EasyBatchReportsAggregator</a> API to merge partial reports</li>
+                  <li>Added the <a href="/documentation/userGuide.html#1.3" target="_blank">Strict mode</a> parameter to abort execution on first error</li>
+                  <li>Introduced some minor API changes</li>
+              </ul>
 
-    <meta charset="utf-8">
-    <title>Java Easy Batch - Release notes</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Mahmoud Ben Hassine">
-	<meta name="description" content="Batch processing with Java made easy!">
-    <link rel="shortcut icon" href="resources/img/gear.ico"/>
+              <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes and fixed bugs.</p>
 
-    <link href="./resources/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-        body {
-            padding-top: 60px;
-            padding-bottom: 15px;
-        }
-        .sidebar-nav {
-            padding: 9px 0;
-        }
-    </style>
-    <link href="./resources/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="./resources/css/font-awesome.min.css" rel="stylesheet">
-    <link href="./resources/css/sidebar.css" rel="stylesheet">
+              <h2>Prior versions</h2>
 
-    <script type="text/javascript">
+              <h3>version : 2.1.2 (2014-02-16)</h3>
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-35599235-1']);
-        _gaq.push(['_trackPageview']);
+              <p>This release is a second bug fix release of the 2.x branch. This release has:</p>
+              <ul>
+                  <li>Added a <a href="/tutorials/advancedETL.html" target="_blank">tutorial</a> with an advanced ETL application</li>
+                  <li>Added a <a href="/tutorials/recipes.html" target="_blank">tutorial</a> with a custom record reader of a master-detail delimited flat file</li>
+                  <li>Fixed some minor bugs</li>
+              </ul>
 
-        (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
+              <h3>version : 2.1.1 (2014-02-01)</h3>
 
-    </script>
+              <p>This release is mainly a bug fix release with 10+ fixed bugs. It also includes some minor API changes and documentation updates:</p>
+              <ul>
+                  <li>Renamed <code>DsvRecordMapper</code> to <code>DelimitedRecordMapper</code></li>
+                  <li>Added a convention over configuration for <code>DelimitedRecordMapper</code> to read field names from the header record</li>
+                  <li>Added a convention over configuration for <code>JdbcRecordMapper</code> to read field names from the result set meta data</li>
+                  <li>Added a Spring factory bean to use Easy Batch engine as a Spring bean</li>
+                  <li>Added a performance benchmark</li>
+                  <li>Improved RecordReader API design</li>
+                  <li>Improved Object Mapper implementation</li>
+                  <li>Improved code quality by fixing 50+ sonar warnings</li>
+              </ul>
 
-</head>
+              <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes and fixed bugs.</p>
 
-<body>
+              <h3>version : 2.1.0 (2014-01-20)</h3>
 
-<div class="navbar navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="brand" href="./index.html"><i class="icon-cogs"></i> Easy Batch</a>
-            <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.3</p>
-                <ul class="nav">
-                    <li><a href="./index.html"><i class="icon-home"></i> Home</a></li>
-                    <li class="dropdown">
-                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
-                            <li><a href="./documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
-                            <li><a href="./documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
-                            <li><a href="./documentation/benchmark.html"><i class="icon-dashboard"></i> Performance benchmark</a></li>
-                            <li><a href="./documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
-                            <li><a href="./tutorials/index.html"><i class="icon-code"></i> Tutorials</a></li>
-                            <li><a href="./documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a id="getinvolved" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-thumbs-up"></i> Get involved<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="getinvolved">
-                            <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
-                            <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+              <p>This release adds the following new features:</p>
+              <ul>
+                  <li>Added a new module to process data from a database using JDBC API</li>
+                  <li>Added a new module to process data from an xml file using StAX and JAXB APIs</li>
+                  <li>Added a new API to read data from an in-memory String data source</li>
+                  <li>Added a new API to read data from the Standard Input</li>
+                  <li>Added data source name to Easy Batch report</li>
+                  <li>Added 10 new tutorials about all Easy Batch features (basic, intermediate and advanced)</li>
+                  <li>Updated documentation and Javadoc</li>
+              </ul>
 
-<div class="container">
-    <div class="row-fluid">
+              <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes.</p>
 
-        <div class="span3">
-            <div class="well sidebar-nav bs-docs-sidenav" data-spy="affix">
-                <ul class="nav nav-list">
-                    <li class="nav-header">About Easy Batch</li>
-                    <li><a href="./index.html"><i class="icon-home"></i> Overview</a></li>
-                    <li class="active"><a href="./releaseNotes.html"><i class="icon-tags"></i> Release notes</a></li>
-                    <li class="nav-header">Documentation</li>
-                    <li><a href="./documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
-                    <li><a href="./documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
-                    <li><a href="./documentation/benchmark.html"><i class="icon-dashboard"></i> Performance benchmark</a></li>
-                    <li><a href="./documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
-                    <li><a href="./tutorials/index.html"><i class="icon-code"></i> Tutorials</a></li>
-                    <li><a href="./documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
-                    <li class="nav-header">Get involved</li>
-                    <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
-                    <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
-                </ul>
-            </div>
-        </div>
+              <h3>Version : 2.0.0 (2014-01-12)</h3>
 
-        <div class="span9">
+              <p>This is the first stable version of Easy Batch in the 2.x branch. This version brings a big refactoring to the former CB4J
+                  framework to make it able to process not only CSV input but also any type of input. This release adds many new features such as:</p>
+              <ul>
+                  <li>New Record interface for generic input data type</li>
+                  <li>Record filtering through the RecordFilter API which allows to skip records from being processed by the engine</li>
+                  <li>Redesigned validation approach which is now well integrated with the Bean Validation API (JSR303)</li>
+                  <li>Simplified logging through a single and centralised log file</li>
+                  <li>New EasyBatchReportFormatter API to format Easy Batch reports to a specific format (HTML, PDF, etc)</li>
+                  <li>Updated documentation and Javadoc</li>
+              </ul>
 
-            <div class="page-header" id="releaseNotes">
-                <h1>Release notes</h1>
-            </div>
+              <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes.</p>
 
-            <div class="row-fluid">
+              <h3>Version : 1.4.0 (2013-09-21)</h3>
 
-                <h2>Current stable version : 2.1.3 (2014-02-24)</h2>
+              <p>This release adds many new features such as:</p>
+              <ul>
+                  <li>New BatchResultHolder API to be able to get computation result at the end of batch execution</li>
+                  <li>New CSV/Object mapper implementation to map records to domain objects based on field names declared in header record</li>
+                  <li>New parameter to abort execution on first record processing error / record mapping exception</li>
+                  <li>New parameter to enable/disable JMX monitoring feature</li>
+                  <li>New validators to validate that date value is before/after a given date</li>
+                  <li>New validators to validate that field field content size has a min/max length</li>
+              </ul>
 
-                <p>This release is a third bug fix release of the 2.x branch. This release has:</p>
-                <ul>
-                    <li>Fixed issue#27: ObjectMapper throws a NPE when using JDBC column aliases</li>
-                    <li>Fixed issue#28: ObjectMapper throws a NPE when there is no Pojo field corresponding to a given database column</li>
-                    <li>Added the <a href="./tutorials/jms.html" target="_blank">JMS tutorial</a></li>
-                    <li>Added the <a href="./documentation/userGuide.html#7.3" target="_blank">EasyBatchReportsAggregator</a> API to merge partial reports</li>
-                    <li>Added the <a href="./documentation/userGuide.html#1.3" target="_blank">Strict mode</a> parameter to abort execution on first error</li>
-                    <li>Introduced some minor API changes</li>
-                </ul>
+              <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes.</p>
 
-                <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes and fixed bugs.</p>
+              <h3>Version 1.3.0 (2013-04-21)</h3>
 
-                <h2>Prior versions</h2>
+              <p>This release adds the following new features:</p>
+              <ul>
+                  <li>Basic record processing transaction support</li>
+                  <li>New JMX custom clients : command line and graphical asynchronous real time monitors</li>
+                  <li>New batch configuration builder API</li>
+              </ul>
 
-                <h3>version : 2.1.2 (2014-02-16)</h3>
+              <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes.</p>
 
-                <p>This release is a second bug fix release of the 2.x branch. This release has:</p>
-                <ul>
-                    <li>Added a <a href="./tutorials/advancedETL.html" target="_blank">tutorial</a> with an advanced ETL application</li>
-                    <li>Added a <a href="./tutorials/recipes.html" target="_blank">tutorial</a> with a custom record reader of a master-detail delimited flat file</li>
-                    <li>Fixed some minor bugs</li>
-                </ul>
+              <h3>Version 1.2.0 (2013-01-13)</h3>
 
-                <h3>version : 2.1.1 (2014-02-01)</h3>
+              <p>This release adds the following new features:</p>
+              <ul>
+                  <li>Fixed-Length Record parsing support</li>
+                  <li>Quartz scheduling module</li>
+                  <li>Hibernate integration use case</li>
+                  <li>Spring integration use case</li>
+              </ul>
 
-                <p>This release is mainly a bug fix release with 10+ fixed bugs. It also includes some minor API changes and documentation updates:</p>
-                <ul>
-                    <li>Renamed <code>DsvRecordMapper</code> to <code>DelimitedRecordMapper</code></li>
-                    <li>Added a convention over configuration for <code>DelimitedRecordMapper</code> to read field names from the header record</li>
-                    <li>Added a convention over configuration for <code>JdbcRecordMapper</code> to read field names from the result set meta data</li>
-                    <li>Added a Spring factory bean to use Easy Batch engine as a Spring bean</li>
-                    <li>Added a performance benchmark</li>
-                    <li>Improved RecordReader API design</li>
-                    <li>Improved Object Mapper implementation</li>
-                    <li>Improved code quality by fixing 50+ sonar warnings</li>
-                </ul>
+              <p>This release also includes some minor API changes and documentation updates. Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes.</p>
 
-                <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes and fixed bugs.</p>
+              <h3>Version 1.1.0 (2012-12-08)</h3>
 
-                <h3>version : 2.1.0 (2014-01-20)</h3>
+              <p>This release adds the following new features:</p>
+              <ul>
+                  <li>Support for data qualifier character</li>
+                  <li>Support for whitespaces trimming</li>
+                  <li>Support for execution abort on first reject</li>
+                  <li>JMX monitoring support</li>
+                  <li>More precise reporting about records processed with errors</li>
+              </ul>
 
-                <p>This release adds the following new features:</p>
-                <ul>
-                    <li>Added a new module to process data from a database using JDBC API</li>
-                    <li>Added a new module to process data from an xml file using StAX and JAXB APIs</li>
-                    <li>Added a new API to read data from an in-memory String data source</li>
-                    <li>Added a new API to read data from the Standard Input</li>
-                    <li>Added data source name to Easy Batch report</li>
-                    <li>Added 10 new tutorials about all Easy Batch features (basic, intermediate and advanced)</li>
-                    <li>Updated documentation and Javadoc</li>
-                </ul>
+              <p>For all details about changes in this release, please refer to the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a>.</p>
 
-                <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes.</p>
+              <h3>Version 1.0.2 (2012-12-01)</h3>
 
-                <h3>Version : 2.0.0 (2014-01-12)</h3>
+              <p>This is the second maintenance release in the 1.0.x branch. This release adds some minor changes to support loading configuration parameters file from the classpath.
+                  It also fixes a performance issue due to String concatenation. For all details about changes in this release, please refer to the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a>.</p>
 
-                <p>This is the first stable version of Easy Batch in the 2.x branch. This version brings a big refactoring to the former CB4J
-                    framework to make it able to process not only CSV input but also any type of input. This release adds many new features such as:</p>
-                <ul>
-                    <li>New Record interface for generic input data type</li>
-                    <li>Record filtering through the RecordFilter API which allows to skip records from being processed by the engine</li>
-                    <li>Redesigned validation approach which is now well integrated with the Bean Validation API (JSR303)</li>
-                    <li>Simplified logging through a single and centralised log file</li>
-                    <li>New EasyBatchReportFormatter API to format Easy Batch reports to a specific format (HTML, PDF, etc)</li>
-                    <li>Updated documentation and Javadoc</li>
-                </ul>
+              <h3>Version 1.0.1 (2012-11-01)</h3>
 
-                <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes.</p>
+              <p>This is the first maintenance release in the 1.0.x branch. The release includes multiple performance optimizations, bugfixes and documentation updates.
+                  The full list of changes may be found in the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a>.</p>
 
-                <h3>Version : 1.4.0 (2013-09-21)</h3>
+              <h3>Version 1.0.0 (2012-10-14)</h3>
 
-                <p>This release adds many new features such as:</p>
-                <ul>
-                    <li>New BatchResultHolder API to be able to get computation result at the end of batch execution</li>
-                    <li>New CSV/Object mapper implementation to map records to domain objects based on field names declared in header record</li>
-                    <li>New parameter to abort execution on first record processing error / record mapping exception</li>
-                    <li>New parameter to enable/disable JMX monitoring feature</li>
-                    <li>New validators to validate that date value is before/after a given date</li>
-                    <li>New validators to validate that field field content size has a min/max length</li>
-                </ul>
+              <p>This is the first CB4J release. The main features of this release are :</p>
 
-                <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes.</p>
-
-                <h3>Version 1.3.0 (2013-04-21)</h3>
-
-                <p>This release adds the following new features:</p>
-                <ul>
-                    <li>Basic record processing transaction support</li>
-                    <li>New JMX custom clients : command line and graphical asynchronous real time monitors</li>
-                    <li>New batch configuration builder API</li>
-                </ul>
-
-                <p>Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes.</p>
-
-                <h3>Version 1.2.0 (2013-01-13)</h3>
-
-                <p>This release adds the following new features:</p>
-                <ul>
-                    <li>Fixed-Length Record parsing support</li>
-                    <li>Quartz scheduling module</li>
-                    <li>Hibernate integration use case</li>
-                    <li>Spring integration use case</li>
-                </ul>
-
-                <p>This release also includes some minor API changes and documentation updates. Please check the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a> for all details about changes.</p>
-
-                <h3>Version 1.1.0 (2012-12-08)</h3>
-
-                <p>This release adds the following new features:</p>
-                <ul>
-                    <li>Support for data qualifier character</li>
-                    <li>Support for whitespaces trimming</li>
-                    <li>Support for execution abort on first reject</li>
-                    <li>JMX monitoring support</li>
-                    <li>More precise reporting about records processed with errors</li>
-                </ul>
-
-                <p>For all details about changes in this release, please refer to the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a>.</p>
-
-                <h3>Version 1.0.2 (2012-12-01)</h3>
-
-                <p>This is the second maintenance release in the 1.0.x branch. This release adds some minor changes to support loading configuration parameters file from the classpath.
-                    It also fixes a performance issue due to String concatenation. For all details about changes in this release, please refer to the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a>.</p>
-
-                <h3>Version 1.0.1 (2012-11-01)</h3>
-
-                <p>This is the first maintenance release in the 1.0.x branch. The release includes multiple performance optimizations, bugfixes and documentation updates.
-                   The full list of changes may be found in the <a href="https://github.com/benas/easy-batch/blob/master/CHANGELOG.txt" target="_blank">change log</a>.</p>
-
-                <h3>Version 1.0.0 (2012-10-14)</h3>
-
-                <p>This is the first CB4J release. The main features of this release are :</p>
-
-                <ul>
-                    <li>Initial core API and Implementation</li>
-                    <li>Common data type validators</li>
-                </ul>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <hr>
-
-    <footer>
-        <p class="pull-right"><a href="#"><i class="icon-circle-arrow-up"></i> Back to top</a></p>
-        <p>Easy Batch is maintained by <a href="mailto:md.benhassine@gmail.com?subject=[Easy Batch]"><i class="icon-envelope"></i> benas</a> on <a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> GitHub</a></p>
-    </footer>
-
-</div>
-
-<script src="./resources/js/jquery.js"></script>
-<script src="./resources/js/bootstrap.min.js"></script>
-
-</body></html>
+              <ul>
+                  <li>Initial core API and Implementation</li>
+                  <li>Common data type validators</li>
+              </ul>

@@ -1,166 +1,54 @@
-<!DOCTYPE html>
-
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-    <meta charset="utf-8">
-    <title>Java Easy Batch - Tutorials</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Mahmoud Ben Hassine">
-	<meta name="description" content="Batch processing with Java made easy!">
-    <link rel="shortcut icon" href="../resources/img/gear.ico"/>
-
-    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../resources/css/prettify.css" rel="stylesheet">
-    <style type="text/css">
-        body {
-            padding-top: 60px;
-            padding-bottom: 15px;
-        }
-        .sidebar-nav {
-            padding: 9px 0;
-        }
-        .table td.center-td{
-            text-align: center;
-        }
-        .table th.center-th{
-            text-align: center;
-        }
-    </style>
-    <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="../resources/css/font-awesome.min.css" rel="stylesheet">
-    <link href="../resources/css/sidebar.css" rel="stylesheet">
-
-    <script type="text/javascript" src="../resources/js/prettify.js"></script>
-
-    <script type="text/javascript">
-
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-35599235-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-
-    </script>
-
-</head>
-
-<body onload="prettyPrint()">
-
-<div class="navbar navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
-            <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.3</p>
-                <ul class="nav">
-                    <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
-                    <li class="dropdown">
-                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
-                            <li><a href="../documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
-                            <li><a href="../documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
-                            <li><a href="../documentation/benchmark.html"><i class="icon-dashboard"></i> Performance benchmark</a></li>
-                            <li><a href="../documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
-                            <li><a href="index.html"><i class="icon-code"></i> Tutorials</a></li>
-                            <li><a href="../documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a id="getinvolved" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-thumbs-up"></i> Get involved<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="getinvolved">
-                            <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
-                            <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-<div class="row-fluid">
-
-<div class="span3">
-    <div class="well sidebar-nav bs-docs-sidenav" data-spy="affix">
-        <ul class="nav nav-list">
-            <li class="nav-header">About Easy Batch</li>
-            <li><a href="../index.html"><i class="icon-home"></i> Overview</a></li>
-            <li><a href="../releaseNotes.html"><i class="icon-tags"></i> Release notes</a></li>
-            <li class="nav-header">Documentation</li>
-            <li><a href="../documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
-            <li><a href="../documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
-            <li><a href="../documentation/benchmark.html"><i class="icon-dashboard"></i> Performance benchmark</a></li>
-            <li><a href="../documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
-            <li class="active"><a href="index.html"><i class="icon-code"></i> Tutorials</a></li>
-            <li><a href="../documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
-            <li class="nav-header">Get involved</li>
-            <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
-            <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
-        </ul>
-    </div>
-</div>
-
-<div class="span9">
-
-<div class="page-header">
-    <h1>Advanced ETL Tutorial</h1>
-</div>
-
-<div class="row-fluid">
+---
+layout: template
+menu : tutorial
+name : Advanced ETL tutorial
+---
 
 <h2 id="1">1. Description</h2>
-<p>In this tutorial, we will see how to use Easy Batch to create complex data ETL scenarios with a very few lines of code.
-We will use the same resources as in <a href="./helloworldCSV.html" target="_blank">Hello World tutorial</a> (greetings data and <code>Greeting</code> POJO) to create the following nontrivial ETL application:</p>
 
-<p align="center"><img src="../resources/img/advancedETL.png"/></p>
+<p>In this tutorial, we will see how to use Easy Batch to create complex data ETL scenarios with a very few lines of code.
+We will use the same resources as in <a href="/tutorials/helloworldCSV.html" target="_blank">Hello World tutorial</a> (greetings data and <code>Greeting</code> POJO) to create the following nontrivial ETL application:</p>
+
+<p class="pull-center">
+    <img src="/img/eb/advancedETL.png"/>
+</p>
 
 <p>We would like to load greetings data from a CSV and an XML file in parallel into the same database. Once all data is loaded successfully, we would like to extract it and generate a greetings file in JSON format.</p>
 <p>This is often the case in production systems where we need to load the same data in different formats from several data sources into the same data warehouse.</p>
 <p>We will use the same <code>Greeting</code> POJO to load data from the following CSV and XML input files:</p>
 
-<div>
-<pre class="prettyprint">
-1,foo
-2,bar
-</pre>
-</div>
-<div>
-    <div class="span6">
-<pre class="prettyprint">
-@XmlRootElement
+<pre><code class="java">1,foo
+2,bar</code></pre>
+
+<div class="col-md-6">
+<pre><code class="java">@XmlRootElement
 public class Greeting {
 
-    @XmlElement
-    private long id;
+@XmlElement
+private long id;
 
-    @XmlElement
-    private String name;
+@XmlElement
+private String name;
 
-    //Getters and setters omitted
-}
-</pre>
-    </div>
-    <div class="span6">
+//Getters and setters omitted
+}</code></pre>
 
-<pre class="prettyprint">
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+</div>
+
+<div class="col-md-6">
+
+<pre><code class="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;greetings&gt;
-    &lt;greeting&gt;
-        &lt;id&gt;3&lt;/id&gt;
-        &lt;name&gt;baz&lt;/name&gt;
-    &lt;/greeting&gt;
-    &lt;greeting&gt;
-        &lt;id&gt;4&lt;/id&gt;
-        &lt;name&gt;bas&lt;/name&gt;
-    &lt;/greeting&gt;
-&lt;/greetings&gt;
-</pre>
-    </div>
+&lt;greeting&gt;
+    &lt;id&gt;3&lt;/id&gt;
+    &lt;name&gt;baz&lt;/name&gt;
+&lt;/greeting&gt;
+&lt;greeting&gt;
+    &lt;id&gt;4&lt;/id&gt;
+    &lt;name&gt;bas&lt;/name&gt;
+&lt;/greeting&gt;
+&lt;/greetings&gt;</code></pre>
+
 </div>
 
 <p>Let's get started!</p>
@@ -168,132 +56,128 @@ public class Greeting {
 <h2 id="2">2. Implementation using Easy Batch</h2>
 
 <p>To keep the tutorial simple, we will use an in-memory database.
-    The following <code>RecordProcessor</code> implementation (which uses <a href="http://hibernate.org/orm/" target="_blank">Hibernate</a> APIs) will be used to load greetings in the database:</p>
+The following <code>RecordProcessor</code> implementation (which uses <a href="http://hibernate.org/orm/" target="_blank">Hibernate</a> APIs) will be used to load greetings in the database:</p>
 
-<pre class="prettyprint">
-public class GreetingDataLoader extends AbstractRecordProcessor&lt;Greeting&gt; {
+<pre><code class="java">public class GreetingDataLoader extends AbstractRecordProcessor&lt;Greeting&gt; {
 
-    private Logger logger = Logger.getLogger(GreetingDataLoader.class.getName());
+private Logger logger = Logger.getLogger(GreetingDataLoader.class.getName());
 
-    public void processRecord(final Greeting greeting) throws Exception {
-        DatabaseUtil.getCurrentSession().beginTransaction();
-        try {
-            DatabaseUtil.getCurrentSession().saveOrUpdate(greeting);
-            DatabaseUtil.getCurrentSession().getTransaction().commit();
-            logger.log(Level.INFO, "Greeting {0} successfully persisted in the database", greeting);
-        } catch (HibernateException e) {
-            DatabaseUtil.getCurrentSession().getTransaction().rollback();
-            throw new Exception("A database exception occurred during greeting persisting.", e);
-        }
+public void processRecord(final Greeting greeting) throws Exception {
+    DatabaseUtil.getCurrentSession().beginTransaction();
+    try {
+        DatabaseUtil.getCurrentSession().saveOrUpdate(greeting);
+        DatabaseUtil.getCurrentSession().getTransaction().commit();
+        logger.log(Level.INFO, "Greeting {0} successfully persisted in the database", greeting);
+    } catch (HibernateException e) {
+        DatabaseUtil.getCurrentSession().getTransaction().rollback();
+        throw new Exception("A database exception occurred during greeting persisting.", e);
     }
-
 }
-</pre>
+
+}</code></pre>
 
 <div class="alert alert-danger">
-    <p>This implementation is kept simple for demonstration purpose. In production use case, you should define a
-        commit interval to avoid performance issues of committing the transaction after each record insertion.</p>
+<p>This implementation is kept simple for demonstration purpose. In production use case, you should define a
+    commit interval to avoid performance issues of committing the transaction after each record insertion.</p>
 </div>
 
 <p>To generate greetings in the JSON format, we will use the following <code>GreetingJsonGenerator</code> implementation which uses
-    the <a href="https://jsonp.java.net/" target="_blank">Java API for JSON Processing</a>:
-<pre class="prettyprint">
-public class GreetingJsonGenerator extends AbstractRecordProcessor&lt;Greeting&gt; {
+the <a href="https://jsonp.java.net/" target="_blank">Java API for JSON Processing</a>:
 
-    @Override
-    public void processRecord(Greeting greeting) throws Exception {
-        JsonWriter jsonWriter = Json.createWriter(System.out);
-        JsonObject greetingModel = Json.createObjectBuilder()
-                .add("id", greeting.getId())
-                .add("name", greeting.getName())
-                .build();
-        jsonWriter.writeObject(greetingModel);
-    }
+<pre><code class="java">public class GreetingJsonGenerator extends AbstractRecordProcessor&lt;Greeting&gt; {
 
+@Override
+public void processRecord(Greeting greeting) throws Exception {
+    JsonWriter jsonWriter = Json.createWriter(System.out);
+    JsonObject greetingModel = Json.createObjectBuilder()
+            .add("id", greeting.getId())
+            .add("name", greeting.getName())
+            .build();
+    jsonWriter.writeObject(greetingModel);
 }
-</pre>
+
+}</code></pre>
 
 <p>To keep the tutorial simple, we will print out Json data to the console.</p>
 <p>At this stage we have implemented the business logic of our ETL application. The following tasks will be handled by Easy Batch:</p>
 <ul>
-    <li>Reading data from CSV, XML and database</li>
-    <li>Parse and map CSV, XML and database records to <code>Greeting</code> instances</li>
-    <li>Apply our business logic using the above record processor implementations</li>
+<li>Reading data from CSV, XML and database</li>
+<li>Parse and map CSV, XML and database records to <code>Greeting</code> instances</li>
+<li>Apply our business logic using the above record processor implementations</li>
 </ul>
 
 <p>So let's see how to configure Easy Batch to do all this stuff. The following snippet does the trick:</p>
 
-<pre class="prettyprint">
-public class Launcher {
+<pre><code class="java">public class Launcher {
 
-    public static void main(String[] args) throws Exception {
+public static void main(String[] args) throws Exception {
 
-        //Start embedded database server
-        DatabaseUtil.startEmbeddedDatabase();
+    //Start embedded database server
+    DatabaseUtil.startEmbeddedDatabase();
 
-        // Build an easy batch engine to read greetings from csv file
-        EasyBatchEngine easyBatchCsvEngine = new EasyBatchEngineBuilder()
-            .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
-            .registerRecordMapper(new DelimitedRecordMapper(Greeting.class, new String[]{"id","name"}))
-            .registerRecordProcessor(new GreetingDataLoader())
-            .build();
+    // Build an easy batch engine to read greetings from csv file
+    EasyBatchEngine easyBatchCsvEngine = new EasyBatchEngineBuilder()
+        .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
+        .registerRecordMapper(new DelimitedRecordMapper(Greeting.class, new String[]{"id","name"}))
+        .registerRecordProcessor(new GreetingDataLoader())
+        .build();
 
-        // Build an easy batch engine to read greetings from xml file
-        EasyBatchEngine easyBatchXmlEngine = new EasyBatchEngineBuilder()
-            .registerRecordReader(new XmlRecordReader("greeting", new File(args[1])))
-            .registerRecordMapper(new XmlRecordMapper(Greeting.class))
-            .registerRecordProcessor(new GreetingDataLoader())
-            .build();
+    // Build an easy batch engine to read greetings from xml file
+    EasyBatchEngine easyBatchXmlEngine = new EasyBatchEngineBuilder()
+        .registerRecordReader(new XmlRecordReader("greeting", new File(args[1])))
+        .registerRecordMapper(new XmlRecordMapper(Greeting.class))
+        .registerRecordProcessor(new GreetingDataLoader())
+        .build();
 
-        //create a 2 threads pool to call Easy Batch engines in parallel
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
+    //create a 2 threads pool to call Easy Batch engines in parallel
+    ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-        Future&lt;EasyBatchReport&gt; easyBatchFutureReport1 = executorService.submit(easyBatchCsvEngine);
-        Future&lt;EasyBatchReport&gt; easyBatchFutureReport2 = executorService.submit(easyBatchXmlEngine);
+    Future&lt;EasyBatchReport&gt; easyBatchFutureReport1 = executorService.submit(easyBatchCsvEngine);
+    Future&lt;EasyBatchReport&gt; easyBatchFutureReport2 = executorService.submit(easyBatchXmlEngine);
 
-        easyBatchFutureReport1.get();
-        easyBatchFutureReport2.get();
+    easyBatchFutureReport1.get();
+    easyBatchFutureReport2.get();
 
-        executorService.shutdown();
+    executorService.shutdown();
 
-        // Build an easy batch engine to generate JSON products data from the database
-        EasyBatchEngine easyBatchJsonEngine = new EasyBatchEngineBuilder()
-            .registerRecordReader(new JdbcRecordReader(DatabaseUtil.getDatabaseConnection(), "select * from greeting"))
-            .registerRecordMapper(new JdbcRecordMapper(Greeting.class))
-            .registerRecordProcessor(new GreetingJsonGenerator())
-            .build();
+    // Build an easy batch engine to generate JSON products data from the database
+    EasyBatchEngine easyBatchJsonEngine = new EasyBatchEngineBuilder()
+        .registerRecordReader(new JdbcRecordReader(DatabaseUtil.getDatabaseConnection(),
+                              "select * from greeting"))
+        .registerRecordMapper(new JdbcRecordMapper(Greeting.class))
+        .registerRecordProcessor(new GreetingJsonGenerator())
+        .build();
 
-        // Run easy batch engine and get execution report
-        EasyBatchReport easyBatchReport = easyBatchJsonEngine.call();
+    // Run easy batch engine and get execution report
+    EasyBatchReport easyBatchReport = easyBatchJsonEngine.call();
 
-        // Print the batch report
-        System.out.println(easyBatchReport);
+    // Print the batch report
+    System.out.println(easyBatchReport);
 
-    }
 }
-</pre>
+
+}</code></pre>
 
 <p>In-memory database setup details are not shown here for readability sake.</p>
 
-<p>Using a <code>ExecutorService</code> allows us to run multiple Easy Batch instances in parallel (see the <a href="./parallel.html" target="_blank">parallelism tutorial</a>).</p>
+<p>Using a <code>ExecutorService</code> allows us to run multiple Easy Batch instances in parallel (see the <a href="/tutorials/parallel.html" target="_blank">parallelism tutorial</a>).</p>
 <p>The call to <code>java.util.concurrent.Future#get</code> method is synchronous and waits for the computation to complete. This is actually what will ensure that all data
-    is loaded in the database before extracting it and generating Json file. It is a kind of <em>thread synchronisation</em>.</p>
+is loaded in the database before extracting it and generating Json file. It is a kind of <em>thread synchronisation</em>.</p>
 
 <p>That's all, we can now run the batch and see the results!</p>
 
 <h2 id="3">3. Running the tutorial</h2>
 
 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/advanced" target="_blank">here</a>.
-    To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
+To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
 
-<p><span class="icon-stack"> <i class="icon-sign-blank icon-stack-base"></i> <i class="icon-terminal icon-light"></i> </span>
-    <em><strong>mvn exec:java -PrunAdvancedETLTutorial</strong></em>
-</p>
+          <p>
+              <kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunAdvancedETLTutorial</kbd>
+          </p>
 
 <p>At the end of execution, you should see the following output in the console:</p>
 
-<pre>
-INFO: Initializing easy batch engine <span class="text-info"><em><strong><= output of CSV engine</strong></em></span>
+<pre><code>INFO: Initializing easy batch engine <span class="text-info"><em><strong><= output of CSV engine</strong></em></span>
 INFO: Initializing easy batch engine <span class="text-info"><em><strong><= output of XML engine</strong></em></span>
 INFO: Data source: /data/in/greetings-adv.xml
 INFO: Data source: /data/in/greetings-adv.csv
@@ -315,15 +199,14 @@ INFO: easy batch engine is running...
 {"id":2,"name":"bar"}
 {"id":3,"name":"baz"}
 {"id":4,"name":"bas"}
-INFO: Shutting down easy batch engine
-</pre>
+INFO: Shutting down easy batch engine</code></pre>
 
 <h2 id="4">4. Conclusion</h2>
 <p> In this tutorial, we have seen how to use Easy Batch to create a nontrivial ETL application.</p>
 <p>All we have done is :</p>
 <ul>
-    <li>Implementing the business logic of our batch</li>
-    <li>Providing configuration meta data</li>
+<li>Implementing the business logic of our batch</li>
+<li>Providing configuration meta data</li>
 </ul>
 
 <p>Easy Batch handled all the plumbing code of reading, parsing and mapping data to instances of our domain object <code>Greeting</code>.</p>
@@ -331,64 +214,44 @@ INFO: Shutting down easy batch engine
 
 <p>The following table summarizes what we have done and what Easy Batch has done for us :</p>
 
-<table class="table table-bordered table-condensed table-striped table-center">
-    <thead>
-    <tr>
-        <th>Task</th>
-        <th class="center-th">You</th>
-        <th class="center-th">Easy Batch</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>Provide configuration meta data</td>
-        <td class="center-td"><i class="icon-ok-circle"></i></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Provide record processing logic</td>
-        <td class="center-td"><i class="icon-ok-circle"></i></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Handle I/O for input files and database</td>
-        <td></td>
-        <td class="center-td"><i class="icon-ok-circle"></i></td>
-    </tr>
-    <tr>
-        <td>Read input files and database records one by one</td>
-        <td></td>
-        <td class="center-td"><i class="icon-ok-circle"></i></td>
-    </tr>
-    <tr>
-        <td>Map CSV, XML and database records to domain object instances</td>
-        <td></td>
-        <td class="center-td"><i class="icon-ok-circle"></i></td>
-    </tr>
-    <tr>
-        <td>Apply business processing logic</td>
-        <td></td>
-        <td class="center-td"><i class="icon-ok-circle"></i></td>
-    </tr>
-    </tbody>
+<table class="table table-bordered table-condensed table-striped">
+<thead>
+<tr class="info">
+    <th>Task</th>
+    <th class="pull-center">You</th>
+    <th class="pull-center">Easy Batch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td>Provide configuration meta data</td>
+    <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+    <td></td>
+</tr>
+<tr>
+    <td>Provide record processing logic</td>
+    <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+    <td></td>
+</tr>
+<tr>
+    <td>Handle I/O for input files and database</td>
+    <td></td>
+    <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+</tr>
+<tr>
+    <td>Read input files and database records one by one</td>
+    <td></td>
+    <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+</tr>
+<tr>
+    <td>Map CSV, XML and database records to domain object instances</td>
+    <td></td>
+    <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+</tr>
+<tr>
+    <td>Apply business processing logic</td>
+    <td></td>
+    <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+</tr>
+</tbody>
 </table>
-
-</div>
-
-</div>
-
-</div>
-
-<hr>
-
-<footer>
-    <p class="pull-right"><a href="#"><i class="icon-circle-arrow-up"></i> Back to top</a></p>
-    <p>Easy Batch is maintained by <a href="mailto:md.benhassine@gmail.com?subject=[Easy Batch]"><i class="icon-envelope"></i> benas</a> on <a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> GitHub</a></p>
-</footer>
-
-</div>
-
-<script src="../resources/js/jquery.js"></script>
-<script src="../resources/js/bootstrap.min.js"></script>
-
-</body></html>

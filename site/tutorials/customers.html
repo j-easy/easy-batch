@@ -1,192 +1,83 @@
-<!DOCTYPE html>
+---
+layout: template
+menu : tutorial
+name : Customers ETL tutorial
+---
+              <h2 id="1">1. Description</h2>
 
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+              <p>In this tutorial, the goal is to extract customers data from a database, transform it and load it into an output XML file:</p>
 
-    <meta charset="utf-8">
-    <title>Java Easy Batch - Tutorials</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Mahmoud Ben Hassine">
-	<meta name="description" content="Batch processing with Java made easy!">
-    <link rel="shortcut icon" href="../resources/img/gear.ico"/>
+              <p class="pull-center"><img src="/img/eb/customers.png"/></p>
 
-    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../resources/css/prettify.css" rel="stylesheet">
-    <style type="text/css">
-        body {
-            padding-top: 60px;
-            padding-bottom: 15px;
-        }
-        .sidebar-nav {
-            padding: 9px 0;
-        }
-        .table td.center-td{
-            text-align: center;
-        }
-        .table th.center-th{
-            text-align: center;
-        }
-    </style>
-    <link href="../resources/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="../resources/css/font-awesome.min.css" rel="stylesheet">
-    <link href="../resources/css/sidebar.css" rel="stylesheet">
+              <p>Easy Batch provides built-in record mappers for flat file, xml and database records, but these mappers actually maps data in a one-to-one fashion: Each field in the input record is mapped to a field of the domain object.</p>
+              <p>This is actually fine when your input record can be mapped with this approach to your domain object. But how to do if your domain model contains multiple object types?</p>
 
-    <script type="text/javascript" src="../resources/js/prettify.js"></script>
+              <p>In this tutorial, you will learn how to use custom record mapping strategy to map input data to a non-trivial domain object.</p>
 
-    <script type="text/javascript">
+              <p>Consider the following database table containing customer data:</p>
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-35599235-1']);
-        _gaq.push(['_trackPageview']);
+              <table class="table table-bordered table-condensed table-striped">
+                  <thead>
+                  <tr class="info">
+                      <th>id</th>
+                      <th>firstName</th>
+                      <th>lastName</th>
+                      <th>birthDate</th>
+                      <th>phone</th>
+                      <th>email</th>
+                      <th>street</th>
+                      <th>zipCode</th>
+                      <th>city</th>
+                      <th>country</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                      <td>1</td>
+                      <td>foo</td>
+                      <td>bar</td>
+                      <td>1990-12-13</td>
+                      <td>0123456789</td>
+                      <td>foo@bar.org</td>
+                      <td>street1</td>
+                      <td>zipCode1</td>
+                      <td>london</td>
+                      <td>uk</td>
+                  </tr>
+                  <tr>
+                      <td>2</td>
+                      <td>bar</td>
+                      <td>foo</td>
+                      <td>2000-12-13</td>
+                      <td>9876543210</td>
+                      <td>bar@foo.org</td>
+                      <td>street2</td>
+                      <td>zipCode2</td>
+                      <td>new york</td>
+                      <td>usa</td>
+                  </tr>
+                  </tbody>
+              </table>
 
-        (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
+              <p>We would like to map each database record to the following <code>Customer</code> bean:</p>
 
-    </script>
-
-</head>
-
-<body onload="prettyPrint()">
-
-<div class="navbar navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="brand" href="../index.html"><i class="icon-cogs"></i> Easy Batch</a>
-            <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">Version: 2.1.3</p>
-                <ul class="nav">
-                    <li><a href="../index.html"><i class="icon-home"></i> Home</a></li>
-                    <li class="dropdown">
-                        <a id="documentation" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Documentation<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="documentation">
-                            <li><a href="../documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
-                            <li><a href="../documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
-                            <li><a href="../documentation/benchmark.html"><i class="icon-dashboard"></i> Performance benchmark</a></li>
-                            <li><a href="../documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
-                            <li><a href="index.html"><i class="icon-code"></i> Tutorials</a></li>
-                            <li><a href="../documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a id="getinvolved" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-thumbs-up"></i> Get involved<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="getinvolved">
-                            <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
-                            <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row-fluid">
-
-        <div class="span3">
-            <div class="well sidebar-nav bs-docs-sidenav" data-spy="affix">
-                <ul class="nav nav-list">
-                    <li class="nav-header">About Easy Batch</li>
-                    <li><a href="../index.html"><i class="icon-home"></i> Overview</a></li>
-                    <li><a href="../releaseNotes.html"><i class="icon-tags"></i> Release notes</a></li>
-                    <li class="nav-header">Documentation</li>
-                    <li><a href="../documentation/gettingStarted.html"><i class="icon-play"></i> Getting started</a></li>
-                    <li><a href="../documentation/architecture.html"><i class="icon-beaker"></i> Architecture</a></li>
-                    <li><a href="../documentation/benchmark.html"><i class="icon-dashboard"></i> Performance benchmark</a></li>
-                    <li><a href="../documentation/userGuide.html"><i class="icon-book"></i> User Guide</a></li>
-                    <li class="active"><a href="index.html"><i class="icon-code"></i> Tutorials</a></li>
-                    <li><a href="../documentation/faq.html"><i class="icon-question"></i> FAQ</a></li>
-                    <li class="nav-header">Get involved</li>
-                    <li><a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> Source repository</a></li>
-                    <li><a href="https://github.com/benas/easy-batch/issues" target="_blank"><i class="icon-bug"></i> Issue tracker</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="span9">
-
-            <div class="page-header">
-                <h1>Customers ETL Tutorial</h1>
-            </div>
-
-            <div class="row-fluid">
-
-                <h2 id="1">1. Description</h2>
-
-                <p>In this tutorial, the goal is to extract customers data from a database, transform it and load it into an output XML file:</p>
-
-                <p align="center"><img src="../resources/img/customers.png"/></p>
-
-                <p>Easy Batch provides built-in record mappers for flat file, xml and database records, but these mappers actually maps data in a one-to-one fashion: Each field in the input record is mapped to a field of the domain object.</p>
-                <p>This is actually fine when your input record can be mapped with this approach to your domain object. But how to do if your domain model contains multiple object types?</p>
-
-                <p>In this tutorial, you will learn how to use custom record mapping strategy to map input data to a non-trivial domain object.</p>
-
-                <p>Consider the following database table containing customer data:</p>
-
-                <table class="table table-bordered table-condensed table-striped table-center">
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>firstName</th>
-                            <th>lastName</th>
-                            <th>birthDate</th>
-                            <th>phone</th>
-                            <th>email</th>
-                            <th>street</th>
-                            <th>zipCode</th>
-                            <th>city</th>
-                            <th>country</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>foo</td>
-                        <td>bar</td>
-                        <td>1990-12-13</td>
-                        <td>0123456789</td>
-                        <td>foo@bar.org</td>
-                        <td>street1</td>
-                        <td>zipCode1</td>
-                        <td>london</td>
-                        <td>uk</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>bar</td>
-                        <td>foo</td>
-                        <td>2000-12-13</td>
-                        <td>9876543210</td>
-                        <td>bar@foo.org</td>
-                        <td>street2</td>
-                        <td>zipCode2</td>
-                        <td>new york</td>
-                        <td>usa</td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <p>We would like to map each database record to the following <code>Customer</code> bean:</p>
-                <div class="row">
-                <div class="span4 offset1">
-<pre class="prettyprint">
-@XmlRootElement
+                  <div class="col-md-6">
+<pre><code class="java">@XmlRootElement
 public class Customer {
+
     private int id;
     private String firstName;
     private String lastName;
     private Date birthDate;
     private Contact contact;
     private Address address;
+
     //Getters and setters omitted
-}
-</pre>
-                </div>
-                <div class="span5 offset1">
-<pre class="prettyprint">
-public class Address {
+
+}</code></pre>
+                  </div>
+                  <div class="col-md-6">
+<pre><code class="java">public class Address {
     private String street;
     private String zipCode;
     private String city;
@@ -198,14 +89,12 @@ public class Contact {
     private String email;
     private String phone;
     //Getters and setters omitted
-}
-</pre>
-                </div>
-                </div>
+}</code></pre>
+                  </div>
 
-                <p>The goal of the tutorial is to generate an XML file containing customer data in the following format:</p>
-<pre class="prettyprint">
-&lt;customer&gt;
+              <p>The goal of the tutorial is to generate an XML file containing customer data in the following format:</p>
+
+<pre><code class="xml">&lt;customer&gt;
     &lt;id&gt;1&lt;/id&gt;
     &lt;firstName&gt;foo&lt;/firstName&gt;
     &lt;lastName&gt;bar&lt;/lastName&gt;
@@ -220,17 +109,16 @@ public class Contact {
         &lt;city&gt;london&lt;/city&gt;
         &lt;country&gt;uk&lt;/country&gt;
     &lt;/address&gt;
-&lt;/customer&gt;
-</pre>
+&lt;/customer&gt;</code></pre>
 
-                <p>So let's get started!</p>
+              <p>So let's get started!</p>
 
-                <h2 id="2">2. Implementation using Easy Batch</h2>
+              <h2 id="2">2. Implementation using Easy Batch</h2>
 
-                <p>Easy Batch allows you to define custom mapping strategy through the <code>RecordMapper</code> interface.
-                    To map customer table records to instances of our <code>Customer</code> bean, we will use the following implementation:</p>
-<pre class="prettyprint">
-public class CustomerMapper implements RecordMapper&lt;Customer&gt; {
+              <p>Easy Batch allows you to define custom mapping strategy through the <code>RecordMapper</code> interface.
+                  To map customer table records to instances of our <code>Customer</code> bean, we will use the following implementation:</p>
+
+<pre><code class="java">public class CustomerMapper implements RecordMapper&lt;Customer&gt; {
 
     public Customer mapRecord(final Record record) throws Exception {
 
@@ -259,16 +147,16 @@ public class CustomerMapper implements RecordMapper&lt;Customer&gt; {
         return customer;
     }
 
-}
-</pre>
-                <p>In this tutorial, data is extracted from a database, so we will use the <code>JdbcRecordReader</code> to read data from the <code>customer</code> table.
-                This reader returns records of type <code>JdbcRecord</code> which has a raw content as a <code>java.sql.ResultSet</code> object containing the current record data.</p>
-                <p>In our record mapper implementation above, first we get the <code>JdbcRecord</code> raw content and then map record data to our <code>Customer</code> bean.</p>
-                <p><span class="label label-info">Heads up!</span> Note that we do not iterate over the result set, this is done by Easy Batch.</p>
+}</code></pre>
 
-                <p>Now, to generate XML record for each customer, we will use the following <code>RecordProcessor</code> implementation which uses JAXB API:</p>
-<pre class="prettyprint">
-public class CustomerProcessor extends AbstractRecordProcessor&lt;Customer&gt; {
+              <p>In this tutorial, data is extracted from a database, so we will use the <code>JdbcRecordReader</code> to read data from the <code>customer</code> table.
+                  This reader returns records of type <code>JdbcRecord</code> which has a raw content as a <code>java.sql.ResultSet</code> object containing the current record data.</p>
+              <p>In our record mapper implementation above, first we get the <code>JdbcRecord</code> raw content and then map record data to our <code>Customer</code> bean.</p>
+              <p><span class="label label-info">Heads up!</span> Note that we do not iterate over the result set, this is done by Easy Batch.</p>
+
+              <p>Now, to generate XML record for each customer, we will use the following <code>RecordProcessor</code> implementation which uses JAXB API:</p>
+
+<pre><code class="java">public class CustomerProcessor extends AbstractRecordProcessor&lt;Customer&gt; {
 
     /**
     * The Jaxb marshaller to write customer xml data.
@@ -290,23 +178,21 @@ public class CustomerProcessor extends AbstractRecordProcessor&lt;Customer&gt; {
         jaxbMarshaller.marshal(customer, System.out);
     }
 
-}
-</pre>
+}</code></pre>
 
-                <p>To keep the tutorial simple, we will write XML data to the standard output. This can be easily changed to write XML data to a file.</p>
+              <p>To keep the tutorial simple, we will write XML data to the standard output. This can be easily changed to write XML data to a file.</p>
 
-                <p>Finally, let's configure an Easy Batch engine to:</p>
+              <p>Finally, let's configure an Easy Batch engine to:</p>
 
-                <ol>
-                    <li>Read records from the customers database</li>
-                    <li>Map each record to an instance of the <code>Customer</code> bean using our custom record mapper</li>
-                    <li>Process each record using our <code>CustomerProcessor</code></li>
-                </ol>
+              <ol>
+                  <li>Read records from the customers database</li>
+                  <li>Map each record to an instance of the <code>Customer</code> bean using our custom record mapper</li>
+                  <li>Process each record using our <code>CustomerProcessor</code></li>
+              </ol>
 
-                <p>The following listing provides this configuration:</p>
+              <p>The following listing provides this configuration:</p>
 
-<pre class="prettyprint">
-public class Launcher {
+<pre><code class="java">public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
@@ -328,25 +214,22 @@ public class Launcher {
         System.out.println(easyBatchReport);
 
     }
-}
-</pre>
-                <p>In memory database setup details are not shown here.</p>
+}</code></pre>
 
-                <p>That's all, we can now run the batch and see the results.</p>
+              <p>In memory database setup details are not shown here.</p>
 
-                <h2 id="3">3. Running the tutorial</h2>
+              <p>That's all, we can now run the batch and see the results.</p>
 
-                <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/customers" target="_blank">here</a>.
-                    To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
+              <h2 id="3">3. Running the tutorial</h2>
 
-                <p><span class="icon-stack"> <i class="icon-sign-blank icon-stack-base"></i> <i class="icon-terminal icon-light"></i> </span>
-                    <em><strong>mvn exec:java -PrunCustomersTutorial</strong></em>
-                </p>
+              <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/customers" target="_blank">here</a>.
+                  To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
 
-                <p>At the end of execution, you should see the following output in the console:</p>
+              <p><kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunCustomersTutorial</kbd></p>
 
-<pre>
-INFO: Initializing easy batch engine
+              <p>At the end of execution, you should see the following output in the console:</p>
+
+<pre><code>INFO: Initializing easy batch engine
 INFO: Data source: Connection URL: jdbc:hsqldb:mem | Query string: select * from customer
 INFO: Strict mode: false
 INFO: Total records = 2
@@ -385,100 +268,79 @@ INFO: easy batch engine is running...
 &lt;/customer&gt;
 INFO: Shutting down easy batch engine
 Easy Batch Report:
-	Start time = 2014-01-19 10:52:35
-	End time = 2014-01-19 10:52:35
-	Batch duration = 0s
-	Data source = Connection URL: jdbc:hsqldb:mem | Query string: select * from customer
-	Total records = 2
-	Filtered records = 0 (0%)
-	Ignored records = 0 (0%)
-	Rejected records = 0 (0%)
-	Error records = 0 (0%)
-	Success records = 2 (100%)
-	Average record processing time = 0.0s
-</pre>
+Start time = 2014-01-19 10:52:35
+End time = 2014-01-19 10:52:35
+Batch duration = 0s
+Data source = Connection URL: jdbc:hsqldb:mem | Query string: select * from customer
+Total records = 2
+Filtered records = 0 (0%)
+Ignored records = 0 (0%)
+Rejected records = 0 (0%)
+Error records = 0 (0%)
+Success records = 2 (100%)
+Average record processing time = 0.0s</code></pre>
 
-                <p>As you can see, Easy Batch extracted data from the customers database, transformed it to our domain model and generated an XML output as required.</p>
+              <p>As you can see, Easy Batch extracted data from the customers database, transformed it to our domain model and generated an XML output as required.</p>
 
-                <h2 id="4">4. Conclusion</h2>
+              <h2 id="4">4. Conclusion</h2>
 
-                <p>In this tutorial, we have seen how to provide a custom mapping strategy with Easy Batch.
-                    This tutorial is also a complete use case of how to use Easy Batch to do ETL operations.</p>
+              <p>In this tutorial, we have seen how to provide a custom mapping strategy with Easy Batch.
+                  This tutorial is also a complete use case of how to use Easy Batch to do ETL operations.</p>
 
-                <p>Using Easy Batch, all we have done is :</p>
-                <ul>
-                    <li>Providing the custom mapping logic of our domain object</li>
-                    <li>Implementing the business logic of our batch</li>
-                    <li>Providing configuration meta data</li>
-                </ul>
+              <p>Using Easy Batch, all we have done is :</p>
+              <ul>
+                  <li>Providing the custom mapping logic of our domain object</li>
+                  <li>Implementing the business logic of our batch</li>
+                  <li>Providing configuration meta data</li>
+              </ul>
 
-                <p>Easy Batch handled all the plumbing code of handling database connection, reading records and iterating over the JDBC result set.</p>
+              <p>Easy Batch handled all the plumbing code of handling database connection, reading records and iterating over the JDBC result set.</p>
 
-                <p>The following table summarizes what we have done and what Easy Batch has done for us :</p>
+              <p>The following table summarizes what we have done and what Easy Batch has done for us :</p>
 
-                <table class="table table-bordered table-condensed table-striped table-center">
-                    <thead>
-                    <tr>
-                        <th>Task</th>
-                        <th class="center-th">You</th>
-                        <th class="center-th">Easy Batch</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>Provide configuration meta data</td>
-                        <td class="center-td"><i class="icon-ok-circle"></i></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Provide record mapping logic</td>
-                        <td class="center-td"><i class="icon-ok-circle"></i></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Provide record processing logic</td>
-                        <td class="center-td"><i class="icon-ok-circle"></i></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Handle I/O for database connection</td>
-                        <td></td>
-                        <td class="center-td"><i class="icon-ok-circle"></i></td>
-                    </tr>
-                    <tr>
-                        <td>Iterating over the JDBC result set</td>
-                        <td></td>
-                        <td class="center-td"><i class="icon-ok-circle"></i></td>
-                    </tr>
-                    <tr>
-                        <td>Apply business processing logic</td>
-                        <td></td>
-                        <td class="center-td"><i class="icon-ok-circle"></i></td>
-                    </tr>
-                    <tr>
-                        <td>Generate a batch execution report</td>
-                        <td></td>
-                        <td class="center-td"><i class="icon-ok-circle"></i></td>
-                    </tr>
-                    </tbody>
-                </table>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <hr>
-
-    <footer>
-        <p class="pull-right"><a href="#"><i class="icon-circle-arrow-up"></i> Back to top</a></p>
-    <p>Easy Batch is maintained by <a href="mailto:md.benhassine@gmail.com?subject=[Easy Batch]"><i class="icon-envelope"></i> benas</a> on <a href="https://github.com/benas/easy-batch" target="_blank"><i class="icon-github"></i> GitHub</a></p>
-    </footer>
-
-</div>
-
-<script src="../resources/js/jquery.js"></script>
-<script src="../resources/js/bootstrap.min.js"></script>
-
-</body></html>
+              <table class="table table-bordered table-condensed table-striped">
+                  <thead>
+                  <tr class="info">
+                      <th>Task</th>
+                      <th class="pull-center">You</th>
+                      <th class="pull-center">Easy Batch</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                      <td>Provide configuration meta data</td>
+                      <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td>Provide record mapping logic</td>
+                      <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td>Provide record processing logic</td>
+                      <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td>Handle I/O for database connection</td>
+                      <td></td>
+                      <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+                  </tr>
+                  <tr>
+                      <td>Iterating over the JDBC result set</td>
+                      <td></td>
+                      <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+                  </tr>
+                  <tr>
+                      <td>Apply business processing logic</td>
+                      <td></td>
+                      <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+                  </tr>
+                  <tr>
+                      <td>Generate a batch execution report</td>
+                      <td></td>
+                      <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+                  </tr>
+                  </tbody>
+              </table>
