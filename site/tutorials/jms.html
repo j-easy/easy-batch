@@ -7,11 +7,11 @@ name : JMS tutorial
 
               <p>In this tutorial, we will see how to use Easy Batch to asynchronously process data in parallel from a JMS queue:</p>
 
-              <p align="center"><img src="/easy-batch/img/eb/jms.png"/></p>
+              <p align="center"><img src="../img/eb/jms.png"/></p>
 
               <p>We will also show how to use the <code>EasyBatchReportsAggregator</code> API to merge partial reports into a global and final one.</p>
               <p>We will create a custom record reader that pulls data from the JMS queue. To distribute the work, messages posted to the queue will be processed by several Easy Batch engines.
-                  We will use the same resources as in the <a href="/easy-batch/tutorials/helloworldCSV.html" target="_blank">Hello World tutorial</a> (greetings CSV data and <code>Greeting</code> POJO) to create the application:</p>
+                  We will use the same resources as in the <a href="../tutorials/helloworldCSV.html" target="_blank">Hello World tutorial</a> (greetings CSV data and <code>Greeting</code> POJO) to create the application:</p>
 
               <div>
                   <div class="col-md-6">
@@ -31,7 +31,7 @@ name : JMS tutorial
                   </div>
               </div>
 
-              <p>As in the <a href="/easy-batch/tutorials/helloworldCSV.html" target="_blank">Hello World tutorial</a>, the goal is to simply write a greeting message to the console for each CSV record.
+              <p>As in the <a href="../tutorials/helloworldCSV.html" target="_blank">Hello World tutorial</a>, the goal is to simply write a greeting message to the console for each CSV record.
                   We will use the same <code>GreetingProcessor</code> in this tutorial.</p>
 
               <p>So let's get started!</p>

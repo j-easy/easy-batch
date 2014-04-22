@@ -7,10 +7,10 @@ name : Advanced ETL tutorial
 <h2 id="1">1. Description</h2>
 
 <p>In this tutorial, we will see how to use Easy Batch to create complex data ETL scenarios with a very few lines of code.
-We will use the same resources as in <a href="/easy-batch/tutorials/helloworldCSV.html" target="_blank">Hello World tutorial</a> (greetings data and <code>Greeting</code> POJO) to create the following nontrivial ETL application:</p>
+We will use the same resources as in <a href="../tutorials/helloworldCSV.html" target="_blank">Hello World tutorial</a> (greetings data and <code>Greeting</code> POJO) to create the following nontrivial ETL application:</p>
 
 <p class="pull-center">
-    <img src="/easy-batch/img/eb/advancedETL.png"/>
+    <img src="../img/eb/advancedETL.png"/>
 </p>
 
 <p>We would like to load greetings data from a CSV and an XML file in parallel into the same database. Once all data is loaded successfully, we would like to extract it and generate a greetings file in JSON format.</p>
@@ -160,7 +160,7 @@ public static void main(String[] args) throws Exception {
 
 <p>In-memory database setup details are not shown here for readability sake.</p>
 
-<p>Using a <code>ExecutorService</code> allows us to run multiple Easy Batch instances in parallel (see the <a href="/easy-batch/tutorials/parallel.html" target="_blank">parallelism tutorial</a>).</p>
+<p>Using a <code>ExecutorService</code> allows us to run multiple Easy Batch instances in parallel (see the <a href="../tutorials/parallel.html" target="_blank">parallelism tutorial</a>).</p>
 <p>The call to <code>java.util.concurrent.Future#get</code> method is synchronous and waits for the computation to complete. This is actually what will ensure that all data
 is loaded in the database before extracting it and generating Json file. It is a kind of <em>thread synchronisation</em>.</p>
 

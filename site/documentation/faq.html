@@ -26,7 +26,7 @@ name : Frequently Asked Questions
               <p>Yes. Easy Batch uses the reference implementation <a href="http://hibernate.org/validator/" target="_blank">Hibernate validator</a> to validate domain objects.</p>
 
               <p>For all details about how to validate data using Bean Validation API with Easy Batch, please refer to the
-                  <a href="/easy-batch/documentation/userGuide.html#5">user guide</a>. You can also find a complete tutorial of this feature <a href="/easy-batch/tutorials/beanValidation.html">here</a>.</p>
+                  <a href="../documentation/userGuide.html#5">user guide</a>. You can also find a complete tutorial of this feature <a href="../tutorials/beanValidation.html">here</a>.</p>
 
               <h3 id="4">4. Does Easy Batch implement the <a href="http://jcp.org/en/jsr/detail?id=352" target="_blank">Batch Processing for Java Platform (JSR 352)</a> ?</h3>
               <p>No. Easy Batch has been designed and implemented years before the JSR 352 has been submitted. Easy Batch will not implement JSR 352
@@ -36,17 +36,17 @@ name : Frequently Asked Questions
               <h3 id="5">5. Can I monitor Easy Batch execution with JMX?</h3>
 
               <p>Yes. By default, Easy Batch enables a JMX MBean named <code>io.github.benas.easybatch.core.jmx:type=EasyBatchMonitorMBean</code> at startup.
-                  You can use any standard JMX compliant tool to monitor Easy Batch metrics. For more details about this feature, please refer to the <a href="/easy-batch/tutorials/jmx.html" target="_blank">JMX tutorial</a>.</p>
+                  You can use any standard JMX compliant tool to monitor Easy Batch metrics. For more details about this feature, please refer to the <a href="../tutorials/jmx.html" target="_blank">JMX tutorial</a>.</p>
 
               <h3 id="6">6. Can I use Easy Batch with Spring ?</h3>
               <p>Yes. Easy Batch provides a Spring factory bean that allows you to declare Easy Batch engine as a Spring bean.
-                  You can find a complete example of using Easy Batch with Spring <a href="/easy-batch/tutorials/spring.html" target="_blank">here</a>.</p>
+                  You can find a complete example of using Easy Batch with Spring <a href="../tutorials/spring.html" target="_blank">here</a>.</p>
 
               <h3 id="7">7. How does Easy Batch compare to Spring Batch?</h3>
               <p> Spring Batch is an advanced batch processing framework with a steep learning curve. Entire books have been written on Spring Batch because of its very rich and advanced features set such as remoting, partitioning, automatic retry on failure, etc.
                   Easy Batch is a simple and lightweight framework that can be learned quickly an used easily for the majority of batch processing use cases.</p>
               <p>The main difference between Easy Batch and Spring batch is in the processing workflow: Spring Batch is "Chunk Oriented" (a set of Read-Process-Write steps on a chunk of input data) while Easy Batch is "One Shot" (the data source is processed entirely record by record with a predefined
-                  <a href="/easy-batch/documentation/architecture.html#2" target="_blank">workflow</a>).</p>
+                  <a href="../documentation/architecture.html#2" target="_blank">workflow</a>).</p>
               <p>Easy Batch does not use concepts such as Job, JobExecution, JobInstance, Step, StepExecution used by Spring Batch and the JSR 352 in general. Easy Batch is not intended to compete with Spring Batch but to provide a lightweight alternative that is easy to learn and use.</p>
 
               <h3 id="8">8. How can I configure Easy Batch logging ?</h3>
