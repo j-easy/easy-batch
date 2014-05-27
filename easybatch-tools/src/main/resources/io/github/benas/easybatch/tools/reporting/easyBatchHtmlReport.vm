@@ -40,7 +40,7 @@
                     <td>$report.totalRecords</td>
                 </tr>
                 <tr>
-                    <td>Record processing average time</td>
+                    <td>Record processing time average</td>
                     <td>$report.formattedAverageRecordProcessingTime</td>
                 </tr>
                 </tbody>
