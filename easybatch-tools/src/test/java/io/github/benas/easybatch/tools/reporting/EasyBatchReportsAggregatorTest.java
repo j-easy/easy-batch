@@ -28,11 +28,6 @@ public class EasyBatchReportsAggregatorTest {
         report1.addSuccessRecord(5);
         report1.setStartTime(startTime1);
         report1.setEndTime(endTime1);
-        report1.addProcessingTime(1, 1);
-        report1.addProcessingTime(2, 1);
-        report1.addProcessingTime(3, 1);
-        report1.addProcessingTime(4, 1);
-        report1.addProcessingTime(5,1);
         report1.setEasyBatchResult("result1");
         report1.setDataSource("datasource1");
 
@@ -47,11 +42,6 @@ public class EasyBatchReportsAggregatorTest {
         report2.addSuccessRecord(10);
         report2.setStartTime(startTime2);
         report2.setEndTime(endTime2);
-        report2.addProcessingTime(6,1);
-        report2.addProcessingTime(7,1);
-        report2.addProcessingTime(8,1);
-        report2.addProcessingTime(9,1);
-        report2.addProcessingTime(10,1);
         report2.setEasyBatchResult("result2");
         report2.setDataSource("datasource2");
 
@@ -66,13 +56,6 @@ public class EasyBatchReportsAggregatorTest {
         assertEquals(2, finalReport.getSuccessRecordsCount());// sum of success records
         assertEquals(1, finalReport.getStartTime());// min of start times
         assertEquals(11, finalReport.getEndTime());// max of end times
-
-        //processing times
-        Map<Integer, Long> processingTimes = finalReport.getProcessingTimes();
-        for (int i = 1; i <= 10; i++) {
-            assertTrue(processingTimes.containsKey(i));// all records should be merged
-            assertEquals(new Long(1), processingTimes.get(i));// check processing time for each record
-        }
 
         //batch results
         List<Object> results = (List<Object>) finalReport.getEasyBatchResult();

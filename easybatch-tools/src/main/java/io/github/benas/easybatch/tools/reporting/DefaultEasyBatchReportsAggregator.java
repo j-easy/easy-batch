@@ -47,8 +47,6 @@ public class DefaultEasyBatchReportsAggregator implements EasyBatchReportsAggreg
 
         List<Integer> successRecords = new ArrayList<Integer>();
 
-        Map<Integer, Long> processingTimes = new HashMap<Integer, Long>();
-
         List<Object> results = new ArrayList<Object>();
 
         List<String> datasources = new ArrayList<String>();
@@ -64,7 +62,6 @@ public class DefaultEasyBatchReportsAggregator implements EasyBatchReportsAggreg
             rejectedRecords.addAll(easyBatchReport.getRejectedRecords());
             errorRecords.addAll(easyBatchReport.getErrorRecords());
             successRecords.addAll(easyBatchReport.getSuccessRecords());
-            processingTimes.putAll(easyBatchReport.getProcessingTimes());
             results.add(easyBatchReport.getEasyBatchResult());
             datasources.add(easyBatchReport.getDataSource());
         }
@@ -87,9 +84,6 @@ public class DefaultEasyBatchReportsAggregator implements EasyBatchReportsAggreg
         }
         for (Integer successRecord : successRecords) {
             easyBatchFinalReport.addSuccessRecord(successRecord);
-        }
-        for (Map.Entry<Integer, Long> entry : processingTimes.entrySet()) {
-            easyBatchFinalReport.addProcessingTime(entry.getKey(), entry.getValue());
         }
         easyBatchFinalReport.setEasyBatchResult(results);
 
