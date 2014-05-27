@@ -58,8 +58,6 @@ public class EasyBatchReport implements Serializable {
 
     private List<Integer> successRecords;
 
-    private Map<Integer, Long> processingTimes;
-
     private Object easyBatchResult;
 
     public EasyBatchReport() {
@@ -68,7 +66,6 @@ public class EasyBatchReport implements Serializable {
         rejectedRecords = new ArrayList<Integer>();
         errorRecords = new ArrayList<Integer>();
         successRecords = new ArrayList<Integer>();
-        processingTimes = new HashMap<Integer, Long>();
     }
 
     public void addFilteredRecord(final int recordNumber) {
@@ -89,10 +86,6 @@ public class EasyBatchReport implements Serializable {
 
     public void addSuccessRecord(final int recordNumber) {
         successRecords.add(recordNumber);
-    }
-
-    public void addProcessingTime(final int recordNumber, final long processingTime) {
-        processingTimes.put(recordNumber, processingTime);
     }
 
     public void setTotalRecords(final Integer totalRecords) {
@@ -121,10 +114,6 @@ public class EasyBatchReport implements Serializable {
 
     public List<Integer> getSuccessRecords() {
         return successRecords;
-    }
-
-    public Map<Integer, Long> getProcessingTimes() {
-        return processingTimes;
     }
 
     public long getStartTime() {
@@ -180,7 +169,7 @@ public class EasyBatchReport implements Serializable {
         sb.append("\n\tRejected records = ").append(getFormattedRejectedRecords());
         sb.append("\n\tError records = ").append(getFormattedErrorRecords());
         sb.append("\n\tSuccess records = ").append(getFormattedSuccessRecords());
-        sb.append("\n\tAverage record processing time = ").append(getFormattedAverageRecordProcessingTime());
+        sb.append("\n\tRecord processing time average = ").append(getFormattedAverageRecordProcessingTime());
         sb.append("\n\tResult = ").append(easyBatchResult);
         return sb.toString();
     }
@@ -236,12 +225,12 @@ public class EasyBatchReport implements Serializable {
     }
 
     public long getBatchDuration() {
-        return (endTime - startTime) / 1000;
+        return (endTime - startTime) / 1000000;
     }
 
     public String getFormattedBatchDuration() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(getBatchDuration()).append("s");
+        sb.append(getBatchDuration()).append("ms");
         return sb.toString();
     }
 
@@ -303,7 +292,7 @@ public class EasyBatchReport implements Serializable {
             return "N/A";
         }
         final StringBuilder sb = new StringBuilder();
-        sb.append( (float) getBatchDuration() / (float) totalRecords).append("s");
+        sb.append( (float) getBatchDuration() / (float) totalRecords).append("ms");
         return sb.toString();
     }
 

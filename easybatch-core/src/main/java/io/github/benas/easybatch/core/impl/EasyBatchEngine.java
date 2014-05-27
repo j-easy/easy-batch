@@ -97,13 +97,11 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
             LOGGER.info("easy batch engine is running...");
 
             easyBatchReport.setTotalRecords(totalRecords);
-            easyBatchReport.setStartTime(System.currentTimeMillis());
+            easyBatchReport.setStartTime(System.nanoTime());
 
             int currentRecordNumber = 0;
 
             while (recordReader.hasNextRecord()) {
-
-                long currentRecordProcessingStartTime = System.currentTimeMillis();
 
                 //read next record
                 Record currentRecord;
@@ -120,7 +118,6 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                 if (recordFilter.filterRecord(currentRecord)) {
                     LOGGER.log(Level.INFO, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been filtered.");
                     easyBatchReport.addFilteredRecord(currentRecordNumber);
-                    easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
                     continue;
                 }
 
@@ -131,7 +128,6 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                 } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been ignored. Root exception:", e);
                     easyBatchReport.addIgnoredRecord(currentRecordNumber);
-                    easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
@@ -150,13 +146,11 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                         }
                         LOGGER.log(Level.SEVERE, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been rejected. Validation error(s): " + stringBuilder.toString());
                         easyBatchReport.addRejectedRecord(currentRecordNumber);
-                        easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
                         continue;
                     }
                 } catch(Exception e) {
                     LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + currentRecordNumber + " [" + currentRecord + "]", e);
                     easyBatchReport.addRejectedRecord(currentRecordNumber);
-                    easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
@@ -175,15 +169,12 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
                     }
-                } finally {
-                    //log processing time for the current record
-                    easyBatchReport.addProcessingTime(currentRecordNumber, System.currentTimeMillis() - currentRecordProcessingStartTime);
                 }
 
             }
 
             easyBatchReport.setTotalRecords(currentRecordNumber);
-            easyBatchReport.setEndTime(System.currentTimeMillis());
+            easyBatchReport.setEndTime(System.nanoTime());
             easyBatchReport.setEasyBatchResult(recordProcessor.getEasyBatchResult());
 
         } finally {
