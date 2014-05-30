@@ -4,7 +4,7 @@
 
 <hibernate-mapping>
 
-    <class name="io.github.benas.easybatch.tutorials.beanValidation.Product" table="product">
+    <class name="org.easybatch.tutorials.beanValidation.Product" table="product">
         <id column="id" name="id">
             <generator class="assigned"/>
         </id>

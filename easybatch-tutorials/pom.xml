@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>easybatch</artifactId>
-        <groupId>io.github.benas</groupId>
+        <groupId>org.easybatch</groupId>
         <version>2.1.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -11,7 +11,7 @@
 
     <name>easybatch-tutorials</name>
     <description>Easy Batch tutorials module</description>
-    <url>http://benas.github.io/easy-batch</url>
+    <url>http://www.easybatch.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -51,42 +51,42 @@
     <dependencies>
 
         <dependency>
-            <groupId>io.github.benas</groupId>
+            <groupId>org.easybatch</groupId>
             <artifactId>easybatch-core</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.github.benas</groupId>
+            <groupId>org.easybatch</groupId>
             <artifactId>easybatch-flatfile</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.github.benas</groupId>
+            <groupId>org.easybatch</groupId>
             <artifactId>easybatch-xml</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.github.benas</groupId>
+            <groupId>org.easybatch</groupId>
             <artifactId>easybatch-jdbc</artifactId>
         </dependency>
         
         <dependency>
-            <groupId>io.github.benas</groupId>
+            <groupId>org.easybatch</groupId>
             <artifactId>easybatch-validation</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.github.benas</groupId>
+            <groupId>org.easybatch</groupId>
             <artifactId>easybatch-tools</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.github.benas</groupId>
+            <groupId>org.easybatch</groupId>
             <artifactId>easybatch-quartz</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.github.benas</groupId>
+            <groupId>org.easybatch</groupId>
             <artifactId>easybatch-spring</artifactId>
         </dependency>
 
@@ -149,7 +149,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.bench.Benchmark</mainClass>
+                            <mainClass>org.easybatch.tutorials.bench.Benchmark</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/</argument>
                                 <argument>csv</argument>
@@ -171,7 +171,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.bench.Benchmark</mainClass>
+                            <mainClass>org.easybatch.tutorials.bench.Benchmark</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/</argument>
                                 <argument>xml</argument>
@@ -193,7 +193,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.helloworld.csv.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.helloworld.csv.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/greetings.csv</argument>
                             </arguments>
@@ -213,7 +213,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.helloworld.flr.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.helloworld.flr.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/greetings.flr</argument>
                             </arguments>
@@ -233,7 +233,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.helloworld.jdbc.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.helloworld.jdbc.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -250,7 +250,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.helloworld.xml.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.helloworld.xml.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/greetings.xml</argument>
                                 <argument>${project.basedir}/src/main/resources/greetings.xsd</argument>
@@ -271,7 +271,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.helloworld.memory.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.helloworld.memory.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -288,7 +288,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.helloworld.cli.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.helloworld.cli.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -305,7 +305,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.products.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.products.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/products.csv</argument>
                             </arguments>
@@ -325,7 +325,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.customers.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.customers.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -342,7 +342,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.beanValidation.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.beanValidation.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/products-jsr303.csv</argument>
                             </arguments>
@@ -362,7 +362,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.parallel.SingleFileLauncher</mainClass>
+                            <mainClass>org.easybatch.tutorials.parallel.SingleFileLauncher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/secret-messages.txt</argument>
                             </arguments>
@@ -382,7 +382,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.parallel.MultipleFilesLauncher</mainClass>
+                            <mainClass>org.easybatch.tutorials.parallel.MultipleFilesLauncher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/secret-messages-part1.txt</argument>
                                 <argument>${project.basedir}/src/main/resources/secret-messages-part2.txt</argument>
@@ -403,7 +403,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.quartz.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.quartz.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/greetings.csv</argument>
                             </arguments>
@@ -423,7 +423,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.spring.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.spring.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -440,9 +440,9 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.jmx.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.jmx.Launcher</mainClass>
                             <arguments>
-                                <argument>${project.basedir}/src/main/resources/greetings-jmx.csv</argument>
+                                <argument>/tmp/greetings-jmx.csv</argument>
                             </arguments>
                         </configuration>
                     </plugin>
@@ -460,7 +460,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.advanced.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.advanced.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/greetings-adv.csv</argument>
                                 <argument>${project.basedir}/src/main/resources/greetings-adv.xml</argument>
@@ -481,7 +481,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.recipes.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.recipes.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/recipes.csv</argument>
                             </arguments>
@@ -501,7 +501,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.jms.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.jms.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -518,7 +518,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>io.github.benas.easybatch.tutorials.jms.JMSSenderLauncher</mainClass>
+                            <mainClass>org.easybatch.tutorials.jms.JMSSenderLauncher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>

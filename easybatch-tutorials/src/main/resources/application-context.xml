@@ -6,18 +6,18 @@
 
     <!-- input file bean -->
     <bean id="file" class="java.io.File">
-        <constructor-arg value="classpath:greetings.csv"/>
+        <constructor-arg value="classpath:/greetings.csv"/>
     </bean>
 
     <!-- configure record reader -->
-    <bean id="greetingReader" class="io.github.benas.easybatch.flatfile.FlatFileRecordReader">
+    <bean id="greetingReader" class="org.easybatch.flatfile.FlatFileRecordReader">
         <constructor-arg ref="file"/>
     </bean>
 
     <!-- configure record mapper -->
-    <bean id="greetingMapper" class="io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper">
+    <bean id="greetingMapper" class="org.easybatch.flatfile.dsv.DelimitedRecordMapper">
         <constructor-arg>
-            <value type="java.lang.Class">io.github.benas.easybatch.tutorials.common.Greeting</value>
+            <value type="java.lang.Class">org.easybatch.tutorials.common.Greeting</value>
         </constructor-arg>
         <constructor-arg>
             <list>
@@ -28,10 +28,10 @@
     </bean>
 
     <!-- configure record processor -->
-    <bean id="greetingProcessor" class="io.github.benas.easybatch.tutorials.common.GreetingProcessor"/>
+    <bean id="greetingProcessor" class="org.easybatch.tutorials.common.GreetingProcessor"/>
 
     <!-- configure Easy Batch engine -->
-    <bean id="easyBatchEngine" class="io.github.benas.easybatch.integration.spring.EasyBatchFactoryBean">
+    <bean id="easyBatchEngine" class="org.easybatch.integration.spring.EasyBatchFactoryBean">
         <property name="recordReader" ref="greetingReader"/>
         <property name="recordMapper" ref="greetingMapper"/>
         <property name="recordProcessor" ref="greetingProcessor"/>

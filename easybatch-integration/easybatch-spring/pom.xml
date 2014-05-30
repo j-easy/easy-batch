@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>easybatch-integration</artifactId>
-        <groupId>io.github.benas</groupId>
+        <groupId>org.easybatch</groupId>
         <version>2.1.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <name>easybatch-spring</name>
     <description>Easy Batch - Spring integration module</description>
-    <url>http://benas.github.io/easy-batch</url>
+    <url>http://www.easybatch.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -50,7 +50,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.github.benas</groupId>
+            <groupId>org.easybatch</groupId>
             <artifactId>easybatch-core</artifactId>
         </dependency>
 

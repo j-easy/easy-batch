@@ -8,13 +8,13 @@
         <version>7</version>
     </parent>
 
-    <groupId>io.github.benas</groupId>
+    <groupId>org.easybatch</groupId>
     <artifactId>easybatch</artifactId>
     <version>2.1.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>easybatch</name>
     <description>Easy Batch parent module</description>
-    <url>http://benas.github.io/easy-batch</url>
+    <url>http://www.easybatch.org</url>
 
     <properties>
         <junit.version>4.11</junit.version>
@@ -67,49 +67,49 @@
         <dependencies>
             
             <dependency>
-                <groupId>io.github.benas</groupId>
+                <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             
             <dependency>
-                <groupId>io.github.benas</groupId>
+                <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-flatfile</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.benas</groupId>
+                <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-xml</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.benas</groupId>
+                <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-jdbc</artifactId>
                 <version>${project.version}</version>
             </dependency>
         
             <dependency>
-                <groupId>io.github.benas</groupId>
+                <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-validation</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.benas</groupId>
+                <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-tools</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.benas</groupId>
+                <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-spring</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.benas</groupId>
+                <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-quartz</artifactId>
                 <version>${project.version}</version>
             </dependency>
