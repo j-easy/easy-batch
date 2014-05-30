@@ -26,7 +26,7 @@ name : Easy Batch and Spring
        http://www.springframework.org/schema/beans/spring-beans.xsd"&gt;
 
   &lt;bean id="greetingProcessor"
-        class="io.github.benas.easybatch.tutorials.common.GreetingProcessor"/&gt;
+        class="org.easybatch.tutorials.common.GreetingProcessor"/&gt;
 
 &lt;/beans&gt;</code></pre>
 
@@ -51,7 +51,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
               To use this factory bean, first, you need to add the <code>easybatch-spring</code> module to your dependencies:</p>
 
 <pre><code class="xml">&lt;dependency&gt;
-    &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-spring&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
@@ -71,16 +71,16 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 
         &lt;!-- configure record reader --&gt;
         &lt;bean id="greetingReader"
-                class="io.github.benas.easybatch.flatfile.FlatFileRecordReader"&gt;
+                class="org.easybatch.flatfile.FlatFileRecordReader"&gt;
             &lt;constructor-arg ref="file"/&gt;
         &lt;/bean>
 
         &lt;!-- configure record mapper --&gt;
         &lt;bean id="greetingMapper"
-                class="io.github.benas.easybatch.flatfile.dsv.DelimitedRecordMapper"&gt;
+                class="org.easybatch.flatfile.dsv.DelimitedRecordMapper"&gt;
             &lt;constructor-arg&gt;
                 &lt;value type="java.lang.Class"&gt;
-                    io.github.benas.easybatch.tutorials.common.Greeting
+                    Greeting
                 &lt;/value&gt;
             &lt;/constructor-arg&gt;
             &lt;constructor-arg&gt;
@@ -93,11 +93,11 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 
         &lt;!-- configure record processor --&gt;
         &lt;bean id="greetingProcessor"
-            class="io.github.benas.easybatch.tutorials.common.GreetingProcessor"/&gt;
+            class="GreetingProcessor"/&gt;
 
         &lt;!-- configure Easy Batch engine --&gt;
         &lt;bean id="easyBatchEngine"
-            class="io.github.benas.easybatch.integration.spring.EasyBatchFactoryBean"&gt;
+            class="org.easybatch.integration.spring.EasyBatchFactoryBean"&gt;
             &lt;property name="recordReader" ref="greetingReader"/&gt;
             &lt;property name="recordMapper" ref="greetingMapper"/&gt;
             &lt;property name="recordProcessor" ref="greetingProcessor"/&gt;

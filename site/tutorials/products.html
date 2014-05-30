@@ -60,7 +60,7 @@ name : Product Statistics Tutorial
 
               </div>
 
-              <p>Easy Batch comes with built-in type converters for all java primitive and wrapper types (please refer to the javadoc of the <code>io.github.benas.easybatch.core.converter</code> package for all details about Easy Batch built-in type converters) and allows you to define custom type converters through the <code>TypeConverter</code> interface.
+              <p>Easy Batch comes with built-in type converters for all java primitive and wrapper types (please refer to the javadoc of the <code>org.easybatch.core.converter</code> package for all details about Easy Batch built-in type converters) and allows you to define custom type converters through the <code>TypeConverter</code> interface.
                   In this tutorial, we will implement the <code>TypeConverter</code> interface to tell Easy Batch how to convert <em>Origin</em> String values in CSV records to typed values <code>Origin</code> in the <code>Product</code> bean. Here is the implementation:</p>
               
 <pre><code class="java">public class OriginTypeConverter implements TypeConverter&lt;Origin&gt; {

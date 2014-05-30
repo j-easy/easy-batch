@@ -6,7 +6,7 @@ name : JMX tutorial
 
               <h2>1. Introduction</h2>
 
-              <p>Easy Batch allows you to monitor batch execution and progress at runtime using JMX. By default, Easy Batch enables at startup a JMX MBean named <code>io.github.benas.easybatch.core.jmx:type=EasyBatchMonitorMBean</code>
+              <p>Easy Batch allows you to monitor batch execution and progress at runtime using JMX. By default, Easy Batch enables at startup a JMX MBean named <code>org.easybatch.core.jmx:type=EasyBatchMonitorMBean</code>
                   exposing the following attributes:</p>
 
               <ul>
@@ -23,7 +23,7 @@ name : JMX tutorial
               <p>The screenshot below shows an example of Easy Batch monitoring using VisualVM :</p>
 
               <p class="pull-center">
-                  <img src="../img/eb/easybatch-jmx.png"/>
+                  <img src="../img/eb/jmx.png"/>
               </p>
               <br/>
 
@@ -45,4 +45,4 @@ name : JMX tutorial
                   You should have enough time to launch VisualVM and monitor progress in real time.</p>
               <p>Once you have launched the tutorial, open VisualVM, connect to the jvm process running your batch and navigate to the MBeans tab
                   (if you don't see the MBeans tab, <a href="http://visualvm.java.net/mbeans_tab.html" target="_blank">here</a> is how to install the plugin).</p>
-              <p>As described in the screen shot above, navigate to the <code>io.github.benas.easybatch.core.jmx:type=EasyBatchMonitorMBean</code> MBean and you will be able to monitor the execution progress of the slow Hello World tutorial in real time.</p>
+              <p>As described in the screen shot above, navigate to the <code>org.easybatch.core.jmx:type=EasyBatchMonitorMBean</code> MBean and you will be able to monitor the execution progress of the slow Hello World tutorial in real time.</p>

@@ -49,7 +49,7 @@ name : User Guide
               <p>Easy Batch comes with a built-in <code>FlatFileRecordReader</code> that allows you to read records from a flat file.</p>
               <p>To use the flat file record reader, first you need to add the <code>easybatch-flatfile</code> module to your dependencies:</p>
 <pre><code class="xml">&lt;dependency&gt;
-    &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-flatfile&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
@@ -93,7 +93,7 @@ name : User Guide
 
               <p>and so on.. To use the <code>XmlRecordReader</code>, first you need to add the <code>easybatch-xml</code> module to your dependencies:</p>
 <pre><code class="xml">&lt;dependency&gt;
-    &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-xml&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
@@ -125,7 +125,7 @@ name : User Guide
               <p>To use the database record reader, first you need to add the <code>easybatch-jdbc</code> module to your dependencies:</p>
 
 <pre><code class="xml">&lt;dependency&gt;
-    &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-jdbc&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
@@ -184,7 +184,7 @@ name : User Guide
               </ul>
 
               <p>These two mappers also convert raw textual data in flat file records to typed data in your domain objects.
-                  Easy Batch supports all built-in Java primitive and wrapper types (please refer to the javadoc of the <code>io.github.benas.easybatch.core.converter</code> package for all details about Easy Batch built-in type converters).
+                  Easy Batch supports all built-in Java primitive and wrapper types (please refer to the javadoc of the <code>org.easybatch.core.converter</code> package for all details about Easy Batch built-in type converters).
                   If you want to provide a custom type converter, you can implement the <code>TypeConverter</code> interface and register your implementation using
                   <code>DelimitedRecordMapper.registerTypeConverter</code> and <code>FixedLengthRecordMapper.registerTypeConverter</code> methods.</p>
 
@@ -372,7 +372,7 @@ myPojoMapper.setDelimiter("|");</code></pre>
                   <li>Add the <code>easybatch-validation</code> module to your dependencies :</br></br>
 
 <pre><code class="xml">&lt;dependency&gt;
-    &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-validation&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
@@ -443,7 +443,7 @@ myPojoMapper.setDelimiter("|");</code></pre>
               <p>To use the <code>EasyBatchHtmlReportFormatter</code>, you should add the <code>easybatch-tools</code> module to your dependencies:</p>
 
 <pre><code class="xml">&lt;dependency&gt;
-    &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-tools&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
@@ -474,7 +474,7 @@ myPojoMapper.setDelimiter("|");</code></pre>
               <p>To use the report aggregator, first you need to add the <code>easybatch-tools</code> module to your dependencies:</p>
 
 <pre><code class="xml">&lt;dependency&gt;
-    &lt;groupId&gt;io.github.benas&lt;/groupId&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-tools&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
