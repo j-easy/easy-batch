@@ -30,6 +30,7 @@
         <module>easybatch-jdbc</module>
         <module>easybatch-xml</module>
         <module>easybatch-integration</module>
+        <module>easybatch-bench</module>
     </modules>
 
     <developers>

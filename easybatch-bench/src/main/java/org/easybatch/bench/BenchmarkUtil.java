@@ -1,15 +1,15 @@
-package org.easybatch.tutorials.bench;
+package org.easybatch.bench;
 
+import io.github.benas.jpopulator.api.Populator;
+import io.github.benas.jpopulator.api.Randomizer;
+import io.github.benas.jpopulator.impl.PopulatorBuilder;
+import io.github.benas.jpopulator.randomizers.*;
 import org.easybatch.core.impl.EasyBatchEngine;
 import org.easybatch.core.impl.EasyBatchEngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import org.easybatch.xml.XmlRecordMapper;
 import org.easybatch.xml.XmlRecordReader;
-import io.github.benas.jpopulator.api.Populator;
-import io.github.benas.jpopulator.api.Randomizer;
-import io.github.benas.jpopulator.impl.PopulatorBuilder;
-import io.github.benas.jpopulator.randomizers.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

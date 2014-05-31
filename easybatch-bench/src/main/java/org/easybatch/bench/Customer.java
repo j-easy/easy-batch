@@ -1,4 +1,4 @@
-package org.easybatch.tutorials.bench;
+package org.easybatch.bench;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
