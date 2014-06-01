@@ -2,6 +2,18 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 https://github.com/benas/easy-batch
 
+Changes in version 2.2.0 (2014-06-08)
+-------------------------------------
+
+* Changed website URL to http://www.easybatch.org
+* Changed base package form io.github.benas.easybatch to org.easybatch
+* Changed maven group id to org.easybatch
+* Moved benchmark classes to a dedicated module easybatch-bench which now uses JMH for microbenchmarks
+* Fixed issue #29 : EasyBatchReport problem while processing large volume files
+* Fixed issue #30 : fix java.io.FileNotFoundException when running the Spring tutorial
+* Added tutorial about processing JSON data source
+* Updated documentation and Javadoc
+
 Changes in version 2.1.3 (2014-02-23)
 -------------------------------------
 
