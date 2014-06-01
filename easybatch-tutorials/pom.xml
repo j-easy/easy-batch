@@ -105,6 +105,13 @@
             <artifactId>javax.json</artifactId>
             <version>1.0.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-core</artifactId>
@@ -185,6 +192,23 @@
                         <version>1.2.1</version>
                         <configuration>
                             <mainClass>org.easybatch.tutorials.helloworld.jdbc.Launcher</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>runJsonTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <mainClass>org.easybatch.tutorials.helloworld.json.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>

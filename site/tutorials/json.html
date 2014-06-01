@@ -1,0 +1,219 @@
+---
+layout: template
+menu : tutorial
+name : JSON tutorial
+---
+
+              <h2 id="1">1. Description</h2>
+
+             <p>Easy Batch does not provide built-in JSON support yet. Please refer to FAQs section for more details about supported formats.</p>
+
+              <p>In this tutorial, you will learn how to use a custom record reader and a custom record mapper to process JSON data with Easy Batch.
+                  Like the <a href="helloworldCSV.html" target="_blank">Hello World CSV tutorial</a>, the goal is to process greetings data defined in the following <code>greetings.json</code> file:</p>
+
+<pre><code class="java">{
+    "id" : "1",
+    "name" : "foo"
+}
+{
+    "id" : "2",
+    "name" : "bar"
+}</code></pre>
+
+<p>Each JSON record is composed of 2 fields :</p>
+<ul>
+    <li>an id</li>
+    <li>a person name</li>
+</ul>
+
+<p>For each record, the batch application should print to the console a greeting of the format : <em>Hi foo! Your id is 1</em> .</p>
+
+<p>Easy Batch development is POJO-based, so we would like to map each record to an instance of the following <code>Greeting</code> bean:</p>
+
+<pre><code class="java">public class Greeting {
+
+    private int id;
+
+    private String name;
+
+    // Getters and Setters omitted
+
+    public String getGreetingMessage() {
+    return "Hi " + name + "! Your id is " + id;
+    }
+
+}</code></pre>
+
+<p>The id and name fields in the JSON file should be mapped respectively to the <em>id</em> and <em>name</em> fields in the <code>Greeting</code> bean.</p>
+
+        <p>We will create a custom record reader to read JSON records and a custom record mapper to map JSON data to <code>Greeting</code> objects.</p>
+
+              <p>So let's get started!</p>
+
+              <h2 id="2">2. Implementation using Easy Batch</h2>
+
+<p>First, let's implement our batch processing logic by extending the <code>AbstractRecordProcessor</code> class:</p>
+
+<pre><code class="java">public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
+
+    @Override
+    public void processRecord(Greeting greeting) throws Exception {
+        System.out.println(greeting.getGreetingMessage());
+    }
+
+}</code></pre>
+
+              <p>Next, we will implement a custom <code>RecordReader</code> that will read JSON records , so here is the implementation:</p>
+
+<pre><code class="java">public class JsonRecordReader implements RecordReader {
+
+    /**
+    * Data source file.
+    */
+    private File file;
+
+    /**
+    * Scanner to read the input file.
+    */
+    private Scanner scanner;
+
+    /**
+    * The current read record number.
+    */
+    private int currentRecordNumber;
+
+    public JsonRecordReader(File file) {
+        this.file = file;
+    }
+
+    @Override
+    public void open() throws Exception {
+        scanner = new Scanner(file);
+    }
+
+    @Override
+    public boolean hasNextRecord() {
+        return scanner.hasNextLine();
+    }
+
+    <strong>@Override
+    public Record readNextRecord() throws Exception {
+        StringBuilder stringBuilder = new StringBuilder("");
+        while (scanner.hasNext()) {
+            String line = scanner.nextLine();
+            stringBuilder.append(line);
+            if (line.equals("}")) {
+                break;
+            }
+        }
+
+        return new JsonRecord(++currentRecordNumber, stringBuilder.toString());
+    }</strong>
+
+    @Override
+    public Integer getTotalRecords() {
+        // not implemented in this tutorial.
+        return null;
+    }
+
+    @Override
+    public String getDataSourceName() {
+        return file.getAbsolutePath();
+    }
+
+    @Override
+    public void close() throws Exception {
+        scanner.close();
+    }
+
+}</code></pre>
+
+              <p>The implementation is pretty straightforward. All the trick is in the <code>readNextRecord</code> method: this is where we read data until finding a closing <code>}</code> which delimits a JSON record.</p>
+
+              <p>Now, once we have read JSON data, it is time to define how to map data to <code>Greeting</code> object.
+                  We will use the <a href="https://code.google.com/p/google-gson/" target="_blank">Gson</a> library to map JSON data to <code>Greeting</code> objects by implementing the <code>RecordMapper</code> interface as follows:</p>
+
+<pre><code class="java">public class JsonRecordMapper implements RecordMapper&lt;Greeting&gt; {
+
+    private Gson gson;
+
+    public JsonRecordMapper() {
+        gson = new Gson();
+    }
+
+    @Override
+    public Greeting mapRecord(Record record) throws Exception {
+        String jsonRecord = (String) record.getRawContent();
+        return gson.fromJson(jsonRecord, Greeting.class);
+    }
+
+}</code></pre>
+
+              <p>That's all for the record mapper which is pretty simple thanks to the Gson library.</p>
+
+              <p>Finally, let's configure an Easy Batch engine to:</p>
+
+              <ol>
+                  <li>Read JSON data from <code>greetings.json</code> file using our custom <code>JsonRecordReader</code></li>
+                  <li>Map JSON records to <code>Greeting</code> objects with the <code>JsonRecordMapper</code></li>
+                  <li>Process each greeting JSON record using the <code>GreetingProcessor</code></li>
+              </ol>
+
+              <p>The following listing provides this configuration:</p>
+
+<pre><code class="java">public class Launcher {
+
+    public static void main(String[] args) throws Exception {
+
+        // Build an easy batch engine
+        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+            .registerRecordReader(new JsonRecordReader(new File(args[0])))
+            .registerRecordMapper(new JsonRecordMapper())
+            .registerRecordProcessor(new GreetingProcessor())
+            .build();
+
+        // Run easy batch engine
+        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+
+        // Print the batch execution report
+        System.out.println(easyBatchReport);
+
+    }
+
+}</code></pre>
+
+              <p>That's all, we can now run the batch and see the results.</p>
+
+              <h2 id="3">3. Running the tutorial</h2>
+
+              <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/io/github/benas/easybatch/tutorials/helloworld/json" target="_blank">here</a>.
+                  To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
+
+              <p><kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunJsonTutorial</kbd></p>
+
+              <p>At the end of execution, you should see the following output in the console:</p>
+
+<pre><code>INFO: Initializing easy batch engine
+INFO: Data source: /tmp/greetings.json
+INFO: Strict mode: false
+INFO: Total records = N/A
+INFO: easy batch engine is running...
+Hi foo! Your id is 1
+Hi bar! Your id is 2
+INFO: Shutting down easy batch engine
+Easy Batch Report:
+Start time = 2014-06-01 01:45:12
+End time = 2014-06-01 01:45:12
+Batch duration = 10ms
+Data source = /tmp/greetings.json
+Total records = 2
+Filtered records = 0 (0.0%)
+Ignored records = 0 (0.0%)
+Rejected records = 0 (0.0%)
+Error records = 0 (0.0%)
+Success records = 2 (100.0%)
+Record processing time average = 5.0ms</code></pre>
+
+              <h2 id="4">4. Conclusion</h2>
+
+              <p>In this tutorial, we have seen how to provide a custom record reading and mapping strategies with Easy Batch to process JSON data.</p>
