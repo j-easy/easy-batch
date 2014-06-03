@@ -330,6 +330,11 @@ myPojoMapper.setDelimiter("|");</code></pre>
                   <p>The <code>XmlRecordMapper</code> should be used in conjunction with the <code>XmlRecordReader</code>.</p>
               </div>
 
+                <div class="alert alert-info">
+                    <p>If you want to register a custom JAXB adapter, or listener, etc you can create an instance of the <code>javax.xml.bind.Unmarshaller</code>,
+                        register your custom components and then use the constructor <code>org.easybatch.xml.XmlRecordMapper(javax.xml.bind.Unmarshaller unmarshaller)</code>.</p>
+                </div>
+
               <h3>4.3 Mapping database records</h3>
 
               <p>Easy Batch comes with a built-in implementation of the <code>RecordMapper</code> interface named <code>JdbcRecordMapper</code> to map database records to your domain objects.</p>

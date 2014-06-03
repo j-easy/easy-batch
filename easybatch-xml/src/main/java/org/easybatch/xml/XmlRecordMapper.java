@@ -54,6 +54,16 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
         jaxbUnmarshaller.setSchema(schema);
     }
 
+    /**
+     * A constructor that let's you preconfigure the unmarshaller (with custom adapter, custom listener, etc)
+     * to be used by the Xml record mapper.
+     *
+     * @param unmarshaller the unmarshaller to use
+     */
+    public XmlRecordMapper(Unmarshaller unmarshaller) {
+        this.jaxbUnmarshaller = unmarshaller;
+    }
+
     @Override
     public T mapRecord(final Record record) throws Exception {
 
