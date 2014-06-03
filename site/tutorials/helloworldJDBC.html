@@ -39,7 +39,7 @@ name : Hello World JDBC Tutorial
         <p>So let's get started!</p>
 
         <h2 id="2">2. Implementation using Easy Batch</h2>
-        <p>The goal of Easy Batch is to let you concentrate on your batch processing logic and to handle for you all the plumbing code of reading data from the database and mapping records to domain objects.</p>
+        <p>The goal of Easy Batch is to let you concentrate on your batch processing logic and to take care of the boilerplate code of reading data from the database and mapping records to domain objects.</p>
         <p>First, let's implement our batch processing logic by extending the <code>AbstractRecordProcessor</code> class:</p>
 
 <pre><code class="java">public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
@@ -126,8 +126,8 @@ INFO: Shutting down easy batch engine</code></pre>
             <li>Providing configuration meta data</li>
         </ul>
 
-        <p>Easy Batch handled all the plumbing code of reading, filtering, parsing and mapping database records to
-            instances of our domain object <code>Greeting</code> and actually has reduced this plumbing code from hundred lines to only a very few lines! (listing above)</p>
+        <p>Easy Batch handled all the boilerplate code of reading, filtering, parsing and mapping database records to
+            instances of our domain object <code>Greeting</code> and actually has reduced this boilerplate code from hundred lines to only a very few lines! (listing above)</p>
 
         <p>The following table summarizes what we have done and what Easy Batch has done for us :</p>
 
