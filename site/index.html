@@ -2,20 +2,20 @@
 layout: home
 ---
 
-        <div class="block features">
+        <div id="features" class="block features">
             <h2 class="title-divider"><span>What is <span class="de-em">Easy Batch?</span></span></h2>
 
             <div class="row">
                 <div class="col-md-4">
                     <br/>
-                    <br/>
                     <p>Easy Batch is a framework that aims to simplify batch processing with Java.
-                        It addresses common tedious tasks such as reading, filtering, parsing and validating input data and lets you concentrate on your batch processing business logic.</p>
-                    <p>The main motivation behind Easy Batch is to make your life as a developer easier! Easy Batch is a lightweight framework that you can configure easily with an intuitive Java API and run without the need to setup an application server.</p>
+                        It's main goal is to take care of the boilerplate code for tedious tasks such as reading, filtering, parsing and validating input data and to let you concentrate on your batch processing business logic.</p>
+                    <p>The motivation behind Easy Batch is to make your life as a developer easier! Easy Batch is a lightweight framework that you can configure easily with an intuitive Java builder API and run without the need to setup an application server.</p>
                 </div>
                 <div class="col-md-8">
                     <img src="../img/eb/eb-motivation.png" class="pull-center" style=" width: 90%">
                 </div>
+            </div>
 
         </div>
 
@@ -52,3 +52,48 @@ layout: home
           </div>
 
       </div>
+
+            <div class="block features">
+                <h2 class="title-divider"><span>Show me <span class="de-em"> the code!</span></span></h2>
+
+                <div class="row">
+                    <div class="col-md-8">
+<pre><code class="java">public class Launcher {
+
+    public static void main(String[] args) throws Exception {
+
+        // Build an easy batch engine
+        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+            .registerRecordReader(new FlatFileRecordReader(new File("data.csv")))
+            .registerRecordMapper(new DelimitedRecordMapper(Data.class))
+            .registerRecordProcessor(new DataProcessor())
+            .build();
+
+        // Run easy batch engine and get the execution report
+        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+
+    }
+}</code></pre>
+                    </div>
+                    <div class="col-md-4">
+                    <p>You write the <code>DataProcessor</code> and Easy Batch will take care of the rest:</p>
+                <ul>
+                    <li>Read data from your data source</li>
+                    <li>Parse data according to the specified format</li>
+                    <li>Map data to your domain POJO <code>Data.class</code></li>
+                    <li>Give you a nice report at the end of execution</li>
+                    <li>And much more!</li>
+                </ul>
+                <p>Easy, isn't it?</p>
+                        <div class="pull-center">
+                            <br/>
+                            <br/>
+                            <a href="../documentation/architecture.html" class="btn btn-lg btn-primary">Learn more</a>
+                            <a href="../tutorials/index.html" class="btn btn-lg btn-primary">Checkout tutorials</a> </div>
+                        </div>
+                    </div>
+
+                <br/>
+                </div>
+
+
