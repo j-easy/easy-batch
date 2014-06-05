@@ -23,7 +23,6 @@
  */
 
 /**
- * This package contains easy batch built-in type converters.<br/>
- * These converters are used to convert raw textual data in input records to typed data in domain objects.
+ * This package contains easy batch Jdbc related classes.
  */
-package org.easybatch.core.converter;
+package org.easybatch.jdbc;
