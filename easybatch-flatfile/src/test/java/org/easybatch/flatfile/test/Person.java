@@ -46,7 +46,7 @@ public class Person {
     /**
      * Default constructor needed by default mapper
      */
-    void Person() {
+    Person() {
     }
 
     public String getFirstName() {
