@@ -11,6 +11,7 @@ Changes in version 2.2.0 (2014-06-08)
 * Moved benchmark classes to a dedicated module easybatch-bench which now uses JMH for microbenchmarks
 * Fixed issue #29 : EasyBatchReport problem while processing large volume files
 * Fixed issue #30 : fix java.io.FileNotFoundException when running the Spring tutorial
+* Fixed issue #31 : Add the possibility to customise the JAXB unmarshaller in XmlRecordMapper
 * Added tutorial about processing JSON data source
 * Updated documentation and Javadoc
 
