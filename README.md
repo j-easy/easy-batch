@@ -6,7 +6,7 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 
 ## Key features
 
- * Lightweight framework : Easy Batch has no dependencies and hence a small memory footprint : a 40Ko jar file with a lot of features!
+ * Lightweight framework : Easy Batch has no dependencies and hence a small memory footprint : a 42Ko jar file with a lot of features!
 
  * POJO-based development : Map records to your domain objects so you can still work with the Object Oriented aspect of Java.</p>
 
@@ -28,15 +28,18 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 ### Presentation slides
 [https://speakerdeck.com/benas/easy-batch][easy-batch-slides]
 
-### Articles and Blog posts
+### Articles
+- [Develop a Java batch application in less than 5 minutes using Easy Batch (in french) ][easy-batch-post3]
+
+### Blog posts
 - [How I reduced my Java batch application’s code by 80% using Easy Batch!][easy-batch-post1]
 - [Easy Batch vs Spring Batch : a Hello World comparison][easy-batch-post2]
 
 ## Current version
 
-The current stable version of Easy Batch is 2.1.3 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/).
+The current stable version of Easy Batch is 2.2.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/).
 <br/>
-The current development version of Easy Batch is 2.2.0-SNAPSHOT
+The current development version of Easy Batch is 2.2.1-SNAPSHOT
 <br/>
 <a href="https://buildhive.cloudbees.com/job/benas/job/easy-batch/"><img src="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/></a>
 <a href="http://www.jetbrains.com/idea/"><img src="https://raw.github.com/benas/easy-batch/master/site/img/misc/idea.png"/></a>
@@ -55,5 +58,6 @@ Many thanks upfront!
 [easy-batch-slides]: https://speakerdeck.com/benas/easy-batch
 [easy-batch-post1]: http://mahmoudbenhassine.com/2014/01/21/how-i-reduced-my-java-batch-applications-code-by-80-using-easy-batch/
 [easy-batch-post2]: http://mahmoudbenhassine.wordpress.com/2014/03/03/spring-batch-vs-easy-batch-a-hello-world-comparison/
+[easy-batch-post3]: http://benassi.developpez.com/tutoriels/java/developper-batch-easybatch-5-minutes/
 [MIT License]: http://opensource.org/licenses/mit-license.php/
 [issue tracker]: https://github.com/benas/easy-batch/issues
