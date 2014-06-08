@@ -24,7 +24,6 @@
 
 package org.easybatch.tutorials.quartz;
 
-import org.easybatch.core.filter.RecordNumberEqualsToRecordFilter;
 import org.easybatch.core.impl.EasyBatchEngine;
 import org.easybatch.core.impl.EasyBatchEngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
