@@ -38,7 +38,7 @@ name : Hello World FLR Tutorial
 
 }</code></pre>
 
-            <p>The id and name fields in fixed-length records should be mapped respectively to the id and name fields in the <code>Greeting</code> bean.</p>
+            <p>The <em>id</em> and <em>name</em> fields in fixed-length records should be mapped respectively to the <em>id</em> and <em>name</em> fields in the <code>Greeting</code> bean.</p>
 
             <p>The record number 4 <code>00xbaz</code> should be ignored since the value <code>00x</code> is not a number as expected.</p>
 
@@ -77,7 +77,7 @@ name : Hello World FLR Tutorial
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
             // requirement N°1
-            .registerRecordReader(new FlatFileRecordReader(new File("greetings.flr")))
+            .registerRecordReader(new FlatFileRecordReader(new File("/data/greetings.flr")))
             // requirement N°2
             .registerRecordFilter(new StartsWithStringRecordFilter("#"))
             // requirement N°3
@@ -112,7 +112,7 @@ name : Hello World FLR Tutorial
             <p>If everything is ok, you should see something like the following output in the console :</p>
 
 <pre><code>INFO: Initializing easy batch engine
-INFO: Data source: /data/in/greetings.flr
+INFO: Data source: /data/greetings.flr
 INFO: Strict mode: false
 INFO: Total records = 4
 INFO: easy batch engine is running...

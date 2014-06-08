@@ -9,8 +9,7 @@ name : Hello World CSV Tutorial
                   We will process a simple CSV file containing greeting records and generate greeting messages.
                   The input file named <code>greetings.csv</code> has the following content:</p>
 
-<pre><code>id,name
-1,foo
+<pre><code>1,foo
 2,bar
 </code></pre>
               <p>Each record is composed of 2 fields :</p>
@@ -37,7 +36,7 @@ name : Hello World CSV Tutorial
 
 }</code></pre>
 
-              <p>The id and name fields in the CSV file should be mapped respectively to the id and name fields in the <code>Greeting</code> bean.</p>
+              <p>The <em>id</em> and <em>name</em> fields in the CSV file should be mapped respectively to the <em>id</em> and <em>name</em> fields in the <code>Greeting</code> bean.</p>
 
               <p>So let's get started!</p>
 
@@ -73,9 +72,10 @@ name : Hello World CSV Tutorial
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
             // requirement N°1
-            .registerRecordReader(new FlatFileRecordReader(new File("greetings.csv")))
+            .registerRecordReader(new FlatFileRecordReader(new File("/data/greetings.csv")))
             // requirement N°2
-            .registerRecordMapper(new DelimitedRecordMapper(Greeting.class))
+            .registerRecordMapper(
+                new DelimitedRecordMapper(Greeting.class, new String[]{"id", "name"})))
             // requirement N°3
             .registerRecordProcessor(new GreetingProcessor())
             .build();
@@ -89,7 +89,8 @@ name : Hello World CSV Tutorial
 
 }</code></pre>
 
-              <p>By default, Easy Batch will use the header record to map Csv fields to <code>Greeting</code> fields with the same name.</p>
+              <p>The <code>FlatFileRecordReader</code> is provided by Easy Batch to read data from a flat file, we simply create a new instance pointing to the data source file.</p>
+              <p>The <code>DelimitedRecordMapper</code> is also provided by Easy Batch to map data from delimited records to domain objects : In our case, we configure the mapper by providing the domain object type and the order of fields in the flat file.</p>
               <p>That's all, we can now run the batch and see the results.</p>
 
               <h2 id="3">3. Running the batch</h2>
@@ -105,22 +106,28 @@ name : Hello World CSV Tutorial
               <p>If everything is ok, you should see something like the following output in the console :</p>
 
 <pre><code>INFO: Initializing easy batch engine
-INFO: Data source: /data/in/greetings.csv
+INFO: Data source: /data/greetings.csv
 INFO: Strict mode: false
-INFO: Total records = 3
+INFO: Total records = 2
 INFO: easy batch engine is running...
-<span class="text-danger"><strong>SEVERE: Record #1 [StringRecord{number=1, rawContent='id,name'}] has been ignored. Root exception:
-    Unable to convert 'id' to type int for field id</strong></span>
 Hi foo! Your id is 1
 Hi bar! Your id is 2
 INFO: Shutting down easy batch engine
+Easy Batch Report:
+    Start time = 2014-06-08 11:16:07
+    End time = 2014-06-08 11:16:07
+    Batch duration = 2ms
+    Data source = /data/greetings.csv
+    Total records = 2
+    Filtered records = 0 (0.0%)
+    Ignored records = 0 (0.0%)
+    Rejected records = 0 (0.0%)
+    Error records = 0 (0.0%)
+    Success records = 2 (100.0%)
+    Record processing time average = 1.0ms
 </code></pre>
 
               <p>As expected, Easy Batch generated a greeting message for each person.</p>
-
-              <p>The header record has been ignored since the String <em>id</em> cannot be converted to the filed <em>id</em> of type <em>int</em> in our <code>Greeting</code> Pojo.
-                  The header record could be filtered using the <code>RecordFilter</code> API, but this is not shown in this tutorial. You can find an example of record filtering in the
-                  <a href="../tutorials/helloworldFLR.html" target="_blank">Hello World FLR tutorial</a>.</p>
 
               <h2 id="4">4. Conclusion</h2>
 
@@ -167,12 +174,22 @@ INFO: Shutting down easy batch engine
                       <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
                   </tr>
                   <tr>
+                      <td>Parse delimited fields in each record</td>
+                      <td></td>
+                      <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+                  </tr>
+                  <tr>
                       <td>Map records to domain objects</td>
                       <td></td>
                       <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
                   </tr>
                   <tr>
                       <td>Apply business processing logic</td>
+                      <td></td>
+                      <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+                  </tr>
+                  <tr>
+                      <td>Provide statistics report at the end of execution</td>
                       <td></td>
                       <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
                   </tr>

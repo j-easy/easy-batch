@@ -35,7 +35,7 @@ import org.easybatch.tutorials.common.GreetingProcessor;
 import java.io.File;
 
 /**
-* Main class to run the hello world tutorial.
+* Main class to run the hello world CSV tutorial.
  *
 * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
 */
@@ -46,7 +46,7 @@ public class Launcher {
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
-                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class))
+                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 

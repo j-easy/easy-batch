@@ -60,19 +60,19 @@ The following <code>RecordProcessor</code> implementation (which uses <a href="h
 
 <pre><code class="java">public class GreetingDataLoader extends AbstractRecordProcessor&lt;Greeting&gt; {
 
-private Logger logger = Logger.getLogger(GreetingDataLoader.class.getName());
+    private Logger logger = Logger.getLogger(GreetingDataLoader.class.getName());
 
-public void processRecord(final Greeting greeting) throws Exception {
-    DatabaseUtil.getCurrentSession().beginTransaction();
-    try {
-        DatabaseUtil.getCurrentSession().saveOrUpdate(greeting);
-        DatabaseUtil.getCurrentSession().getTransaction().commit();
-        logger.log(Level.INFO, "Greeting {0} successfully persisted in the database", greeting);
-    } catch (HibernateException e) {
-        DatabaseUtil.getCurrentSession().getTransaction().rollback();
-        throw new Exception("A database exception occurred during greeting persisting.", e);
+    public void processRecord(final Greeting greeting) throws Exception {
+        DatabaseUtil.getCurrentSession().beginTransaction();
+        try {
+            DatabaseUtil.getCurrentSession().saveOrUpdate(greeting);
+            DatabaseUtil.getCurrentSession().getTransaction().commit();
+            logger.log(Level.INFO, "Greeting {0} successfully persisted in the database", greeting);
+        } catch (HibernateException e) {
+            DatabaseUtil.getCurrentSession().getTransaction().rollback();
+            throw new Exception("A database exception occurred during greeting persisting.", e);
+        }
     }
-}
 
 }</code></pre>
 
@@ -86,15 +86,15 @@ the <a href="https://jsonp.java.net/" target="_blank">Java API for JSON Processi
 
 <pre><code class="java">public class GreetingJsonGenerator extends AbstractRecordProcessor&lt;Greeting&gt; {
 
-@Override
-public void processRecord(Greeting greeting) throws Exception {
-    JsonWriter jsonWriter = Json.createWriter(System.out);
-    JsonObject greetingModel = Json.createObjectBuilder()
-            .add("id", greeting.getId())
-            .add("name", greeting.getName())
-            .build();
-    jsonWriter.writeObject(greetingModel);
-}
+    @Override
+    public void processRecord(Greeting greeting) throws Exception {
+        JsonWriter jsonWriter = Json.createWriter(System.out);
+        JsonObject greetingModel = Json.createObjectBuilder()
+                .add("id", greeting.getId())
+                .add("name", greeting.getName())
+                .build();
+        jsonWriter.writeObject(greetingModel);
+    }
 
 }</code></pre>
 
