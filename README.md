@@ -52,6 +52,8 @@ Your feedback is highly appreciated! For any issue, please use the [issue tracke
 
 You can also contribute with pull requests on GitHub, your contribution is welcome!
 
+If you have any question, you can use the forum [here](https://groups.google.com/d/forum/easy-batch).
+
 Many thanks upfront!
 
 [easy-batch-doc]: http://www.easybatch.org
