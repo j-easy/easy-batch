@@ -66,8 +66,8 @@
                     <td><span class="label label-danger">$report.formattedErrorRecords</span></td>
                 </tr>
                 <tr>
-                    <td>Processed records</td>
-                    <td><span class="label label-success">$report.formattedProcessedRecords</span></td>
+                    <td>Success records</td>
+                    <td><span class="label label-success">$report.formattedSuccessRecords</span></td>
                 </tr>
                 </tbody>
             </table>
@@ -138,9 +138,9 @@
                         y: $report.errorRecordsPercent
                     },
                     {
-                        name: 'Processed',
+                        name: 'Success',
                         color: '#5CB85C',
-                        y: $report.processedRecordsPercent
+                        y: $report.successRecordsPercent
                     }
                 ]
             }]
