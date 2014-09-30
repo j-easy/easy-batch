@@ -44,7 +44,10 @@ public final class EasyBatchEngineBuilder {
         RecordMapper recordMapper = new NoOpRecordMapper();
         RecordValidator recordValidator = new NoOpRecordValidator();
         RecordProcessor recordProcessor = new NoOpRecordProcessor();
-        easyBatchEngine = new EasyBatchEngine(recordReader, recordFilter, recordMapper, recordValidator, recordProcessor);
+        IgnoredRecordHandler ignoredRecordHandler = new NoOpIgnoredRecordHandler();
+        RejectedRecordHandler rejectedRecordHandler = new NoOpRejectedRecordHandler();
+        ErrorRecordHandler errorRecordHandler = new NoOpErrorRecordHandler();
+        easyBatchEngine = new EasyBatchEngine(recordReader, recordFilter, recordMapper, recordValidator, recordProcessor, ignoredRecordHandler, rejectedRecordHandler, errorRecordHandler);
     }
 
     /**
@@ -97,6 +100,36 @@ public final class EasyBatchEngineBuilder {
         return this;
     }
 
+    /**
+     * Register a ignored record handler.
+     * @param ignoredRecordHandler the handler to process ignored record
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder registerIgnoredRecordHandler(final IgnoredRecordHandler ignoredRecordHandler) {
+        easyBatchEngine.setIgnoredRecordHandler(ignoredRecordHandler);
+        return this;
+    }
+    
+    /**
+     * Register a rejected record handler.
+     * @param rejectedRecordHandler the handler to process rejected record
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder registerRejectedRecordHandler(final RejectedRecordHandler rejectedRecordHandler) {
+        easyBatchEngine.setRejectedRecordHandler(rejectedRecordHandler);
+        return this;
+    }
+    
+    /**
+     * Register a rejected record handler.
+     * @param errorRecordHandler the handler to process error record
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder registerErrorRecordHandler(final ErrorRecordHandler errorRecordHandler) {
+        easyBatchEngine.setErrorRecordHandler(errorRecordHandler);
+        return this;
+    }
+    
     /**
      * Enable strict mode : if true, then the execution will be aborted on first mapping, validating or processing error.
      * @param strictMode true if strict mode should be enabled

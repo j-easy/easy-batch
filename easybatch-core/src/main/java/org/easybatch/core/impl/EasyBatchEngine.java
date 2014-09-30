@@ -59,16 +59,27 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
     private EasyBatchMonitor easyBatchMonitor;
 
     private EasyBatchReport easyBatchReport;
+    
+    private IgnoredRecordHandler ignoredRecordHandler;
+
+    private RejectedRecordHandler rejectedRecordHandler;
+    
+    private ErrorRecordHandler errorRecordHandler;
 
     private boolean strictMode;
 
     EasyBatchEngine(final RecordReader recordReader, final RecordFilter recordFilter, final RecordMapper recordMapper,
-                    final RecordValidator recordValidator, final RecordProcessor recordProcessor) {
+                    final RecordValidator recordValidator, final RecordProcessor recordProcessor,
+                    final IgnoredRecordHandler ignoredRecordHandler, final RejectedRecordHandler rejectedRecordHandler, final ErrorRecordHandler errorRecordHandler) {
         this.recordReader = recordReader;
         this.recordFilter = recordFilter;
         this.recordMapper = recordMapper;
         this.recordValidator = recordValidator;
         this.recordProcessor = recordProcessor;
+        this.ignoredRecordHandler = ignoredRecordHandler;
+        this.rejectedRecordHandler = rejectedRecordHandler;
+        this.errorRecordHandler = errorRecordHandler;
+        
         easyBatchReport = new EasyBatchReport();
         easyBatchMonitor = new EasyBatchMonitor(easyBatchReport);
         configureJmxMBean();
@@ -126,8 +137,8 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                 try {
                     typedRecord = recordMapper.mapRecord(currentRecord);
                 } catch (Exception e) {
-                    LOGGER.log(Level.SEVERE, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been ignored. Root exception:", e);
                     easyBatchReport.addIgnoredRecord(currentRecordNumber);
+                    ignoredRecordHandler.handle(currentRecordNumber, currentRecord, e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
@@ -140,17 +151,14 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                     Set<ValidationError> validationsErrors = recordValidator.validateRecord(typedRecord);
 
                     if (!validationsErrors.isEmpty()) {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (ValidationError validationError : validationsErrors) {
-                            stringBuilder.append(validationError.getMessage()).append(" | ");
-                        }
-                        LOGGER.log(Level.SEVERE, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been rejected. Validation error(s): " + stringBuilder.toString());
                         easyBatchReport.addRejectedRecord(currentRecordNumber);
+                        rejectedRecordHandler.handle(currentRecordNumber, currentRecord, validationsErrors);
                         continue;
                     }
                 } catch(Exception e) {
                     LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + currentRecordNumber + " [" + currentRecord + "]", e);
                     easyBatchReport.addRejectedRecord(currentRecordNumber);
+                    rejectedRecordHandler.handle(currentRecordNumber, currentRecord, e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
@@ -163,8 +171,8 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                     recordProcessor.processRecord(typedRecord);
                     easyBatchReport.addSuccessRecord(currentRecordNumber);
                 } catch (Exception e) {
-                    LOGGER.log(Level.SEVERE, "Error while processing record #" + currentRecordNumber + "[" + currentRecord + "]", e);
                     easyBatchReport.addErrorRecord(currentRecordNumber);
+                    errorRecordHandler.handle(currentRecordNumber, currentRecord, e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
@@ -232,6 +240,18 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
         this.recordProcessor = recordProcessor;
     }
 
+    void setIgnoredRecordHandler(final IgnoredRecordHandler ignoredRecordHandler) {
+        this.ignoredRecordHandler = ignoredRecordHandler;
+    }
+    
+    void setRejectedRecordHandler(final RejectedRecordHandler rejectedRecordHandler) {
+        this.rejectedRecordHandler = rejectedRecordHandler;
+    }
+    
+    void setErrorRecordHandler(final ErrorRecordHandler errorRecordHandler) {
+        this.errorRecordHandler = errorRecordHandler;
+    }
+    
     void setStrictMode(final boolean strictMode) {
         this.strictMode = strictMode;
     }
