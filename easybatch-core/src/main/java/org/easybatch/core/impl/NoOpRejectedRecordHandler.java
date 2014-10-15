@@ -15,26 +15,26 @@ import org.easybatch.core.api.ValidationError;
  */
 public class NoOpRejectedRecordHandler implements RejectedRecordHandler {
 
-	private static final Logger LOGGER = Logger.getLogger(EasyBatchEngine.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NoOpRejectedRecordHandler.class.getName());
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void handle(int recordNumber, Record record, Throwable e) {
-		LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + recordNumber + " [" + record + "]", e);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handle(int recordNumber, Record record, Throwable e) {
+        LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + recordNumber + " [" + record + "]", e);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void handle(int recordNumber, Record record, Set<ValidationError> validationsErrors) {
-		StringBuilder stringBuilder = new StringBuilder();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handle(int recordNumber, Record record, Set<ValidationError> validationsErrors) {
+        StringBuilder stringBuilder = new StringBuilder();
         for (ValidationError validationError : validationsErrors) {
             stringBuilder.append(validationError.getMessage()).append(" | ");
         }
         LOGGER.log(Level.SEVERE, "Record #" + recordNumber + " [" + record + "] has been rejected. Validation error(s): " + stringBuilder.toString());
-	}
-	
+    }
+
 }

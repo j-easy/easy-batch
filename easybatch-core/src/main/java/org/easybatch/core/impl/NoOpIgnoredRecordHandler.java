@@ -13,13 +13,14 @@ import org.easybatch.core.api.Record;
  */
 public class NoOpIgnoredRecordHandler implements IgnoredRecordHandler {
 
-	private static final Logger LOGGER = Logger.getLogger(EasyBatchEngine.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NoOpIgnoredRecordHandler.class.getName());
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void handle(int recordNumber, Record record, Throwable e) {
-		LOGGER.log(Level.SEVERE, "Record #" + recordNumber + " [" + record + "] has been ignored. Root exception:", e);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handle(int recordNumber, Record record, Throwable e) {
+        LOGGER.log(Level.SEVERE, "Record #" + recordNumber + " [" + record + "] has been ignored. Root exception:", e);
+    }
+
 }

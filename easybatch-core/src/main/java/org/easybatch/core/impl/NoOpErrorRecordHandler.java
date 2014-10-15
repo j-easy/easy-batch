@@ -13,13 +13,14 @@ import org.easybatch.core.api.Record;
  */
 public class NoOpErrorRecordHandler implements ErrorRecordHandler {
 
-	private static final Logger LOGGER = Logger.getLogger(EasyBatchEngine.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NoOpErrorRecordHandler.class.getName());
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void handle(int recordNumber, Record record, Throwable e) {
-		LOGGER.log(Level.SEVERE, "Error while processing record #" + recordNumber + "[" + record + "]", e);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handle(int recordNumber, Record record, Throwable e) {
+        LOGGER.log(Level.SEVERE, "Error while processing record #" + recordNumber + "[" + record + "]", e);
+    }
+
 }
