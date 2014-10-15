@@ -1,7 +1,6 @@
 package org.easybatch.core.api;
 
 import java.util.Set;
-import java.util.logging.Level;
 
 /**
  * Interface for handling rejected record
