@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
- * Test suite for easy batch core module.
+ * Test suite for easy batch flat file module.
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
@@ -36,5 +36,5 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses( {
         DelimitedRecordMapperTest.class,
         FixedLengthRecordMapperTest.class})
-public class CoreTestsSuite {
+public class FlatFileTestsSuite {
 }
