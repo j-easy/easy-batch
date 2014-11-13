@@ -55,8 +55,8 @@ public class OpenCsvRecordMapperTest {
         StringRecord fooRecord = new StringRecord(1, "'foo\n','bar\n'");
         Foo foo = openCsvRecordMapper.mapRecord(fooRecord);
         Assert.assertNotNull(foo);
-        Assert.assertEquals("foo", foo.getFirstName());
-        Assert.assertEquals("bar", foo.getLastName());
+        Assert.assertEquals("foo\n", foo.getFirstName());
+        Assert.assertEquals("bar\n", foo.getLastName());
     }
 
     @org.junit.After
