@@ -22,21 +22,36 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<T> {
 
     private char qualifier;
 
+    private char escape;
+
+    private int line;
+
+    private boolean strictQualifiers;
+
+    private boolean ignoreLeadingWhitespace;
+
     private ColumnPositionMappingStrategy<T> strategy;
 
-    CsvToBean csvToBean;
+    private CsvToBean csvToBean;
 
     public OpenCsvRecordMapper(Class<? extends T> recordClass, String[] columns) {
         this.strategy = new ColumnPositionMappingStrategy<T>();
         this.strategy.setType((Class<T>) recordClass);
         this.strategy.setColumnMapping(columns);
-        csvToBean = new CsvToBean();
+        this.csvToBean = new CsvToBean();
     }
 
     @Override
     public T mapRecord(Record record) throws Exception {
         String recordContent = (String) record.getRawContent();
-        openCsvReader = new CSVReader(new StringReader(recordContent), delimiter, qualifier);
+        openCsvReader = new CSVReader(
+                new StringReader(recordContent),
+                delimiter,
+                qualifier,
+                escape,
+                line,
+                strictQualifiers,
+                ignoreLeadingWhitespace);
         List list = csvToBean.parse(strategy, openCsvReader);
         return (T) list.get(0);
     }
@@ -47,6 +62,22 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<T> {
 
     public void setQualifier(final char qualifier) {
         this.qualifier = qualifier;
+    }
+
+    public void setEscape(char escape) {
+        this.escape = escape;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }
+
+    public void setStrictQualifiers(boolean strictQualifiers) {
+        this.strictQualifiers = strictQualifiers;
+    }
+
+    public void setIgnoreLeadingWhitespace(boolean ignoreLeadingWhitespace) {
+        this.ignoreLeadingWhitespace = ignoreLeadingWhitespace;
     }
 
 }
