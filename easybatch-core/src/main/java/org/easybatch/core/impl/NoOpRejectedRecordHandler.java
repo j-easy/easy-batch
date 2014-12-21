@@ -13,7 +13,7 @@ import org.easybatch.core.api.ValidationError;
  *
  * @author Chellan https://github.com/chellan
  */
-public class NoOpRejectedRecordHandler implements RejectedRecordHandler {
+class NoOpRejectedRecordHandler implements RejectedRecordHandler {
 
     private static final Logger LOGGER = Logger.getLogger(NoOpRejectedRecordHandler.class.getName());
 

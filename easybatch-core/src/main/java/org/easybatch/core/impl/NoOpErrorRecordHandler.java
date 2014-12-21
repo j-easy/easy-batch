@@ -11,7 +11,7 @@ import org.easybatch.core.api.Record;
  *
  * @author Chellan https://github.com/chellan
  */
-public class NoOpErrorRecordHandler implements ErrorRecordHandler {
+class NoOpErrorRecordHandler implements ErrorRecordHandler {
 
     private static final Logger LOGGER = Logger.getLogger(NoOpErrorRecordHandler.class.getName());
 

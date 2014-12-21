@@ -11,7 +11,7 @@ import org.easybatch.core.api.Record;
  *
  * @author Chellan https://github.com/chellan
  */
-public class NoOpIgnoredRecordHandler implements IgnoredRecordHandler {
+class NoOpIgnoredRecordHandler implements IgnoredRecordHandler {
 
     private static final Logger LOGGER = Logger.getLogger(NoOpIgnoredRecordHandler.class.getName());
 
