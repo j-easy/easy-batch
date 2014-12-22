@@ -62,7 +62,9 @@ public class DefaultEasyBatchReportsAggregator implements EasyBatchReportsAggreg
             rejectedRecords.addAll(easyBatchReport.getRejectedRecords());
             errorRecords.addAll(easyBatchReport.getErrorRecords());
             successRecords.addAll(easyBatchReport.getSuccessRecords());
-            results.add(easyBatchReport.getEasyBatchResult());
+            if (easyBatchReport.getEasyBatchResult() != null) {
+                results.add(easyBatchReport.getEasyBatchResult());
+            }
             datasources.add(easyBatchReport.getDataSource());
         }
 
@@ -85,7 +87,9 @@ public class DefaultEasyBatchReportsAggregator implements EasyBatchReportsAggreg
         for (Integer successRecord : successRecords) {
             easyBatchFinalReport.addSuccessRecord(successRecord);
         }
-        easyBatchFinalReport.setEasyBatchResult(results);
+        if (!results.isEmpty()) {
+            easyBatchFinalReport.setEasyBatchResult(results);
+        }
 
         //data sources
         StringBuilder stringBuilder = new StringBuilder();

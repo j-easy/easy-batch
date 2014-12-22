@@ -170,7 +170,9 @@ public class EasyBatchReport implements Serializable {
         sb.append("\n\tError records = ").append(getFormattedErrorRecords());
         sb.append("\n\tSuccess records = ").append(getFormattedSuccessRecords());
         sb.append("\n\tRecord processing time average = ").append(getFormattedAverageRecordProcessingTime());
-        sb.append("\n\tResult = ").append(easyBatchResult);
+        if (easyBatchResult != null) {
+            sb.append("\n\tResult = ").append(easyBatchResult);
+        }
         return sb.toString();
     }
 
