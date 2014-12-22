@@ -36,15 +36,8 @@ class NoOpRecordProcessor implements RecordProcessor<Object, Object> {
     /**
      * {@inheritDoc}
      */
-    public void processRecord(final Object record) throws Exception {
-        //no op
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Object getEasyBatchResult() {
-        return null;
+    public Object processRecord(Object record) throws Exception {
+        return record;
     }
 
 }

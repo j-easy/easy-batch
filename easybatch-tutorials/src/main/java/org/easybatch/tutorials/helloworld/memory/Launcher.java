@@ -32,6 +32,7 @@ import org.easybatch.core.util.StringRecordReader;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import org.easybatch.tutorials.common.Greeting;
 import org.easybatch.tutorials.common.GreetingProcessor;
+import org.easybatch.tutorials.common.GreetingTransformer;
 
 /**
 * Main class to run the hello world in-memory data source tutorial.
@@ -49,10 +50,11 @@ public class Launcher {
 
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-                .registerRecordReader(new StringRecordReader(dataSource))
-                .registerRecordFilter(new StartsWithStringRecordFilter("#"))
-                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
-                .registerRecordProcessor(new GreetingProcessor())
+                .readRecordsWith(new StringRecordReader(dataSource))
+                .filterRecordsWith(new StartsWithStringRecordFilter("#"))
+                .mapRecordsWith(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
+                .processRecordsWith(new GreetingTransformer())
+                .thenWith(new GreetingProcessor())
                 .build();
 
         // Run easy batch engine

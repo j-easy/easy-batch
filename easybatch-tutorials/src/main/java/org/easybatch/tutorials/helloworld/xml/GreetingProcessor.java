@@ -24,18 +24,19 @@
 
 package org.easybatch.tutorials.helloworld.xml;
 
-import org.easybatch.core.api.AbstractRecordProcessor;
+import org.easybatch.core.api.RecordProcessor;
 
 /**
 * A processor that will generate greeting messages for each record in the input file.
  *
 * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
 */
-public class GreetingProcessor extends AbstractRecordProcessor<Greeting> {
+public class GreetingProcessor implements RecordProcessor<Greeting, Greeting> {
 
     @Override
-    public void processRecord(Greeting greeting) throws Exception {
+    public Greeting processRecord(Greeting greeting) throws Exception {
         System.out.println(greeting.getGreetingMessage());
+        return greeting;
     }
 
 }

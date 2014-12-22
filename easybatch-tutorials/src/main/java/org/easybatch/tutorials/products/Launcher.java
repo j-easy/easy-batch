@@ -25,6 +25,7 @@
 package org.easybatch.tutorials.products;
 
 import org.easybatch.core.api.EasyBatchReport;
+import org.easybatch.core.filter.StartsWithStringRecordFilter;
 import org.easybatch.core.impl.EasyBatchEngine;
 import org.easybatch.core.impl.EasyBatchEngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
@@ -42,16 +43,18 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         // Configure the product record mapper
-        DelimitedRecordMapper<Product> productMapper = new DelimitedRecordMapper<Product>(Product.class);
+        DelimitedRecordMapper<Product> productMapper = new DelimitedRecordMapper<Product>(Product.class, new String[]{"id", "name", "description", "price", "published", "lastUpdate", "origin"});
         productMapper.setDelimiter("|");
         productMapper.setQualifier("\"");
         productMapper.registerTypeConverter(Origin.class, new OriginTypeConverter());
 
+        String inputFilePath = "C:\\Users\\EXI278\\Documents\\eb\\easybatch-tutorials\\src\\main\\resources\\products.csv";
         // Build an easy batch engine
         EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from products.csv
-                .registerRecordMapper(productMapper)
-                .registerRecordProcessor(new ProductProcessor())
+                .readRecordsWith(new FlatFileRecordReader(new File(inputFilePath))) //read data from products.csv
+                .filterRecordsWith(new StartsWithStringRecordFilter("\"id\""))
+                .mapRecordsWith(productMapper)
+                .processRecordsWith(new ProductProcessor())
                 .build();
 
         // Run easy batch engine and get execution report

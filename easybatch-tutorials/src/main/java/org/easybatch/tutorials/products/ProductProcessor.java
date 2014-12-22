@@ -24,31 +24,32 @@
 
 package org.easybatch.tutorials.products;
 
-import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.api.ComputationalRecordProcessor;
 
 /**
  * A product processor that calculates the maximum product price for published products.
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public class ProductProcessor implements RecordProcessor<Product, Double> {
+public class ProductProcessor implements ComputationalRecordProcessor<Product, Product, Double> {
 
     /**
      * The maximum product price that will be returned as batch execution result.
      */
     private double maxProductPrice;
 
-    public void processRecord(final Product product) throws Exception {
+    public Product processRecord(Product product) throws Exception {
         if (product.isPublished() && Origin.NATIONAL.equals(product.getOrigin())) {
             double productPrice = product.getPrice();
             if (productPrice > maxProductPrice) {
                 maxProductPrice = productPrice;
             }
         }
+        return product;
     }
 
     @Override
-    public Double getEasyBatchResult() {
+    public Double getComputationResult() {
         return maxProductPrice;
     }
 

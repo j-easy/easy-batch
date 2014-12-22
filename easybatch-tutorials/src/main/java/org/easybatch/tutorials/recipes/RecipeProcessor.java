@@ -1,15 +1,16 @@
 package org.easybatch.tutorials.recipes;
 
-import org.easybatch.core.api.AbstractRecordProcessor;
+import org.easybatch.core.api.RecordProcessor;
 
 /**
  * Recipe processor.
  */
-public class RecipeProcessor extends AbstractRecordProcessor<Recipe> {
+public class RecipeProcessor implements RecordProcessor<Recipe, Recipe> {
 
     @Override
-    public void processRecord(Recipe recipe) throws Exception {
+    public Recipe processRecord(Recipe recipe) throws Exception {
         System.out.println("recipe = " + recipe);
+        return recipe;
     }
 
 }

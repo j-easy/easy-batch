@@ -35,11 +35,12 @@ import org.easybatch.tutorials.common.GreetingProcessor;
 public class GreetingSlowProcessor extends GreetingProcessor {
 
     @Override
-    public void processRecord(Greeting greeting) throws Exception {
+    public Greeting processRecord(Greeting greeting) throws Exception {
         //slow the processor for demonstration purpose
         Thread.sleep(3000);
 
         System.out.println(greeting.getGreetingMessage());
+        return greeting;
     }
 
 }

@@ -26,26 +26,20 @@ package org.easybatch.core.api;
 
 /**
  * An interface for record processor.
- * This will be used by easy batch to process each input record already mapped to a domain object type.
+ * A record processor performs some business logic on an input object and produces an output object.
  *
- * @param <T> The target domain object type.
- * @param <R> The batch result (if any) type.
+ * @param <I> The input domain object type.
+ * @param <O> The output domain object type.
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public interface RecordProcessor<T, R> {
+public interface RecordProcessor<I, O> {
 
     /**
      * Process a record.
      * @param record the record to process.
      * @throws Exception thrown if an exception occurs during record processing
      */
-    void processRecord(final T record) throws Exception;
-
-    /**
-     * Returns batch execution result. This is useful when one need to return some computation results at the end of batch execution.
-     * @return batch execution result
-     */
-    R getEasyBatchResult();
+    O processRecord(I record) throws Exception;
 
 }

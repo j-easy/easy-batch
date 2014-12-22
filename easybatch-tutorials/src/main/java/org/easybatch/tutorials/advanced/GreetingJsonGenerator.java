@@ -1,6 +1,6 @@
 package org.easybatch.tutorials.advanced;
 
-import org.easybatch.core.api.AbstractRecordProcessor;
+import org.easybatch.core.api.RecordProcessor;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -11,10 +11,10 @@ import javax.json.JsonWriter;
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public class GreetingJsonGenerator extends AbstractRecordProcessor<Greeting> {
+public class GreetingJsonGenerator implements RecordProcessor<Greeting, Greeting> {
 
     @Override
-    public void processRecord(Greeting greeting) throws Exception {
+    public Greeting processRecord(Greeting greeting) throws Exception {
 
         JsonWriter jsonWriter = Json.createWriter(System.out);
         JsonObject greetingModel = Json.createObjectBuilder()
@@ -23,6 +23,8 @@ public class GreetingJsonGenerator extends AbstractRecordProcessor<Greeting> {
                 .build();
 
         jsonWriter.writeObject(greetingModel);
+
+        return greeting;
 
     }
 

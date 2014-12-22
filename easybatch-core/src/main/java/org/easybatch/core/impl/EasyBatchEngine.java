@@ -30,6 +30,7 @@ import org.easybatch.core.api.*;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
@@ -54,28 +55,28 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
     private RecordValidator recordValidator;
 
-    private RecordProcessor recordProcessor;
+    private List<RecordProcessor> processingPipeline;
 
     private EasyBatchMonitor easyBatchMonitor;
 
     private EasyBatchReport easyBatchReport;
-    
+
     private IgnoredRecordHandler ignoredRecordHandler;
 
     private RejectedRecordHandler rejectedRecordHandler;
-    
+
     private ErrorRecordHandler errorRecordHandler;
 
     private boolean strictMode;
 
     EasyBatchEngine(final RecordReader recordReader, final RecordFilter recordFilter, final RecordMapper recordMapper,
-                    final RecordValidator recordValidator, final RecordProcessor recordProcessor,
+                    final RecordValidator recordValidator, final List<RecordProcessor> processingPipeline,
                     final IgnoredRecordHandler ignoredRecordHandler, final RejectedRecordHandler rejectedRecordHandler, final ErrorRecordHandler errorRecordHandler) {
         this.recordReader = recordReader;
         this.recordFilter = recordFilter;
         this.recordMapper = recordMapper;
         this.recordValidator = recordValidator;
-        this.recordProcessor = recordProcessor;
+        this.processingPipeline = processingPipeline;
         this.ignoredRecordHandler = ignoredRecordHandler;
         this.rejectedRecordHandler = rejectedRecordHandler;
         this.errorRecordHandler = errorRecordHandler;
@@ -166,24 +167,39 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                     continue;
                 }
 
-                //process record
-                try {
-                    recordProcessor.processRecord(typedRecord);
-                    easyBatchReport.addSuccessRecord(currentRecordNumber);
-                } catch (Exception e) {
-                    easyBatchReport.addErrorRecord(currentRecordNumber);
-                    errorRecordHandler.handle(currentRecordNumber, currentRecord, e);
+                //execute record processing pipeline
+                boolean processingError = false;
+                for (RecordProcessor recordProcessor : processingPipeline) {
+                    try {
+                        typedRecord = recordProcessor.processRecord(typedRecord);
+                    } catch (Exception e) {
+                        processingError = true;
+                        easyBatchReport.addErrorRecord(currentRecordNumber);
+                        errorRecordHandler.handle(currentRecordNumber, currentRecord, e);
+                        break;
+                    }
+                }
+                if (processingError) {
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
                     }
+                } else { // no processing errors, take into account success record
+                    easyBatchReport.addSuccessRecord(currentRecordNumber);
                 }
 
             }
 
             easyBatchReport.setTotalRecords(currentRecordNumber);
             easyBatchReport.setEndTime(System.currentTimeMillis());
-            easyBatchReport.setEasyBatchResult(recordProcessor.getEasyBatchResult());
+
+            // The batch result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
+            RecordProcessor lastRecordProcessor = processingPipeline.get(processingPipeline.size() - 1);
+            if(lastRecordProcessor instanceof ComputationalRecordProcessor) {
+                ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor)lastRecordProcessor;
+                Object batchResult = computationalRecordProcessor.getComputationResult();
+                easyBatchReport.setEasyBatchResult(batchResult);
+            }
 
         } finally {
             LOGGER.info("Shutting down easy batch engine");
@@ -236,8 +252,8 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
         this.recordValidator = recordValidator;
     }
 
-    void setRecordProcessor(final RecordProcessor recordProcessor) {
-        this.recordProcessor = recordProcessor;
+    void addRecordProcessor(final RecordProcessor recordProcessor) {
+        this.processingPipeline.add(recordProcessor);
     }
 
     void setIgnoredRecordHandler(final IgnoredRecordHandler ignoredRecordHandler) {

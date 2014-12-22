@@ -24,7 +24,7 @@
 
 package org.easybatch.tutorials.customers.etl;
 
-import org.easybatch.core.api.AbstractRecordProcessor;
+import org.easybatch.core.api.RecordProcessor;
 import org.easybatch.tutorials.customers.model.Customer;
 
 import javax.xml.bind.JAXBContext;
@@ -35,7 +35,7 @@ import javax.xml.bind.Marshaller;
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public class CustomerProcessor extends AbstractRecordProcessor<Customer> {
+public class CustomerProcessor implements RecordProcessor<Customer, Customer> {
 
     /**
      * The Jaxb marshaller to write customer xml data.
@@ -54,8 +54,9 @@ public class CustomerProcessor extends AbstractRecordProcessor<Customer> {
     }
 
     @Override
-    public void processRecord(final Customer customer) throws Exception {
+    public Customer processRecord(Customer customer) throws Exception {
         jaxbMarshaller.marshal(customer, System.out);
+        return customer;
     }
 
 }

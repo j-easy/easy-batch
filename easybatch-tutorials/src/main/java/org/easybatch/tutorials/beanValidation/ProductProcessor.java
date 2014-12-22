@@ -24,7 +24,7 @@
 
 package org.easybatch.tutorials.beanValidation;
 
-import org.easybatch.core.api.AbstractRecordProcessor;
+import org.easybatch.core.api.RecordProcessor;
 import org.hibernate.HibernateException;
 
 import java.util.logging.Level;
@@ -38,11 +38,11 @@ import java.util.logging.Logger;
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public class ProductProcessor extends AbstractRecordProcessor<Product> {
+public class ProductProcessor implements RecordProcessor<Product, Product> {
 
     private static final Logger LOGGER = Logger.getLogger(ProductProcessor.class.getName());
 
-    public void processRecord(final Product product) throws Exception {
+    public Product processRecord(Product product) throws Exception {
         DatabaseUtil.getCurrentSession().beginTransaction();
         try {
             DatabaseUtil.getCurrentSession().saveOrUpdate(product);
@@ -52,6 +52,7 @@ public class ProductProcessor extends AbstractRecordProcessor<Product> {
             DatabaseUtil.getCurrentSession().getTransaction().rollback();
             throw new Exception("A database exception occurred during product persisting.", e);
         }
+        return product;
     }
 
 }

@@ -26,6 +26,9 @@ package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Easy batch engine instance builder.
  *
@@ -43,11 +46,12 @@ public final class EasyBatchEngineBuilder {
         RecordFilter recordFilter = new NoOpRecordFilter();
         RecordMapper recordMapper = new NoOpRecordMapper();
         RecordValidator recordValidator = new NoOpRecordValidator();
-        RecordProcessor recordProcessor = new NoOpRecordProcessor();
+        List<RecordProcessor> processingPipeline = new ArrayList<RecordProcessor>();
+        processingPipeline.add(new NoOpRecordProcessor());
         IgnoredRecordHandler ignoredRecordHandler = new NoOpIgnoredRecordHandler();
         RejectedRecordHandler rejectedRecordHandler = new NoOpRejectedRecordHandler();
         ErrorRecordHandler errorRecordHandler = new NoOpErrorRecordHandler();
-        easyBatchEngine = new EasyBatchEngine(recordReader, recordFilter, recordMapper, recordValidator, recordProcessor, ignoredRecordHandler, rejectedRecordHandler, errorRecordHandler);
+        easyBatchEngine = new EasyBatchEngine(recordReader, recordFilter, recordMapper, recordValidator, processingPipeline, ignoredRecordHandler, rejectedRecordHandler, errorRecordHandler);
     }
 
     /**
@@ -61,6 +65,15 @@ public final class EasyBatchEngineBuilder {
     }
 
     /**
+     * Alias for {@link EasyBatchEngineBuilder#registerRecordFilter(org.easybatch.core.api.RecordFilter)}
+     * @param recordFilter the record filter to register
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder filterRecordsWith(final RecordFilter recordFilter) {
+        return registerRecordFilter(recordFilter);
+    }
+
+    /**
      * Register a record reader.
      * @param recordReader the record reader to register
      * @return the engine builder
@@ -68,6 +81,15 @@ public final class EasyBatchEngineBuilder {
     public EasyBatchEngineBuilder registerRecordReader(final RecordReader recordReader) {
         easyBatchEngine.setRecordReader(recordReader);
         return this;
+    }
+
+    /**
+     * Alias for {@link EasyBatchEngineBuilder#registerRecordReader(org.easybatch.core.api.RecordReader)}
+     * @param recordReader the record reader to register
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder readRecordsWith(final RecordReader recordReader) {
+        return registerRecordReader(recordReader);
     }
 
     /**
@@ -81,6 +103,15 @@ public final class EasyBatchEngineBuilder {
     }
 
     /**
+     * Alias for {@link EasyBatchEngineBuilder#registerRecordMapper(org.easybatch.core.api.RecordMapper)}
+     * @param recordMapper the record mapper to register
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder mapRecordsWith(final RecordMapper recordMapper) {
+        return registerRecordMapper(recordMapper);
+    }
+
+    /**
      * Register a record validator.
      * @param recordValidator the record validator to register
      * @return the engine builder
@@ -91,13 +122,40 @@ public final class EasyBatchEngineBuilder {
     }
 
     /**
+     * Alias for {@link EasyBatchEngineBuilder#registerRecordValidator(org.easybatch.core.api.RecordValidator)}
+     * @param recordValidator the record validator to register
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder validateRecordsWith(final RecordValidator recordValidator) {
+        return registerRecordValidator(recordValidator);
+    }
+
+    /**
      * Register a record processor.
      * @param recordProcessor the record processor to register
      * @return the engine builder
      */
     public EasyBatchEngineBuilder registerRecordProcessor(final RecordProcessor recordProcessor) {
-        easyBatchEngine.setRecordProcessor(recordProcessor);
+        easyBatchEngine.addRecordProcessor(recordProcessor);
         return this;
+    }
+
+    /**
+     * Alias for {@link EasyBatchEngineBuilder#registerRecordProcessor(org.easybatch.core.api.RecordProcessor)}
+     * @param recordProcessor the record processor to register
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder processRecordsWith(final RecordProcessor recordProcessor) {
+        return registerRecordProcessor(recordProcessor);
+    }
+
+    /**
+     * Alias for {@link EasyBatchEngineBuilder#registerRecordProcessor(org.easybatch.core.api.RecordProcessor)}
+     * @param recordProcessor the record processor to register
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder thenWith(final RecordProcessor recordProcessor) {
+        return registerRecordProcessor(recordProcessor);
     }
 
     /**
@@ -109,6 +167,15 @@ public final class EasyBatchEngineBuilder {
         easyBatchEngine.setIgnoredRecordHandler(ignoredRecordHandler);
         return this;
     }
+
+    /**
+     * Alias for {@link EasyBatchEngineBuilder#registerIgnoredRecordHandler(org.easybatch.core.api.IgnoredRecordHandler)}
+     * @param ignoredRecordHandler the handler to process ignored record
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder reportIgnoredRecordsWith(final IgnoredRecordHandler ignoredRecordHandler) {
+        return registerIgnoredRecordHandler(ignoredRecordHandler);
+    }
     
     /**
      * Register a rejected record handler.
@@ -119,15 +186,33 @@ public final class EasyBatchEngineBuilder {
         easyBatchEngine.setRejectedRecordHandler(rejectedRecordHandler);
         return this;
     }
+
+    /**
+     * Alias for {@link EasyBatchEngineBuilder#registerRejectedRecordHandler(org.easybatch.core.api.RejectedRecordHandler)}
+     * @param rejectedRecordHandler the handler to process rejected record
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder reportRejectedRecordsWith(final RejectedRecordHandler rejectedRecordHandler) {
+        return registerRejectedRecordHandler(rejectedRecordHandler);
+    }
     
     /**
-     * Register a rejected record handler.
+     * Register a error record handler.
      * @param errorRecordHandler the handler to process error record
      * @return the engine builder
      */
     public EasyBatchEngineBuilder registerErrorRecordHandler(final ErrorRecordHandler errorRecordHandler) {
         easyBatchEngine.setErrorRecordHandler(errorRecordHandler);
         return this;
+    }
+
+    /**
+     * Alias for {@link EasyBatchEngineBuilder#registerErrorRecordHandler(org.easybatch.core.api.ErrorRecordHandler)}
+     * @param errorRecordHandler the handler to process error record
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder reportErrorRecordsWith(final ErrorRecordHandler errorRecordHandler) {
+        return registerErrorRecordHandler(errorRecordHandler);
     }
     
     /**
