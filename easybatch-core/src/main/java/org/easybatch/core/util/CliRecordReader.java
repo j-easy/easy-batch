@@ -1,5 +1,6 @@
 package org.easybatch.core.util;
 
+import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 import java.util.Scanner;
@@ -22,14 +23,14 @@ public class CliRecordReader implements RecordReader {
     private int recordNumber;
 
     /**
-     * The user input.
-     */
-    private String input;
-
-    /**
      * The word to type to terminate reading from the standard input.
      */
     private String terminationInput;
+
+    /**
+     * The stop reading flag.
+     */
+    private boolean stop;
 
     /**
      * Default constructor with default termination input equals to 'quit'.
@@ -53,12 +54,16 @@ public class CliRecordReader implements RecordReader {
 
     @Override
     public boolean hasNextRecord() {
-        return !(input != null && !input.isEmpty() && input.equalsIgnoreCase(terminationInput));
+        return !stop;
     }
 
     @Override
-    public StringRecord readNextRecord() {
-        input = scanner.nextLine();
+    public Record readNextRecord() {
+        String input = scanner.nextLine();
+        stop = input != null && !input.isEmpty() && input.equalsIgnoreCase(terminationInput);
+        if (stop) {
+            return new PoisonRecord();
+        }
         return new StringRecord(++recordNumber, input);
     }
 

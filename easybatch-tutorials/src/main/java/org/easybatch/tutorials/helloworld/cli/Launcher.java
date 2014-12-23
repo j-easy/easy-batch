@@ -25,7 +25,7 @@
 package org.easybatch.tutorials.helloworld.cli;
 
 import org.easybatch.core.api.Report;
-import org.easybatch.core.filter.StartsWithStringRecordFilter;
+import org.easybatch.core.filter.PoisonRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.util.CliRecordReader;
@@ -44,10 +44,10 @@ public class Launcher {
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .registerRecordReader(new CliRecordReader())
-                .registerRecordFilter(new StartsWithStringRecordFilter("#"))
-                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
-                .registerRecordProcessor(new GreetingProcessor())
+                .readRecordsWith(new CliRecordReader())
+                .filterRecordsWith(new PoisonRecordFilter())
+                .mapRecordsWith(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
+                .processRecordsWith(new GreetingProcessor())
                 .build();
 
         // Run batch engine
