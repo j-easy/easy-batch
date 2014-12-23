@@ -111,7 +111,8 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
             easyBatchReport.setTotalRecords(totalRecords);
             easyBatchReport.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
 
-            int currentRecordNumber = 0;
+            int currentRecordNumber; // the physical record number in the data source (can be different from logical record number as seen by the engine in a multi-threaded scenario)
+            int processedRecordsNumber = 0;
 
             while (recordReader.hasNextRecord()) {
 
@@ -123,6 +124,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                     LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record", e);
                     return null;
                 }
+                processedRecordsNumber++;
                 currentRecordNumber = currentRecord.getNumber();
                 easyBatchReport.setCurrentRecordNumber(currentRecordNumber);
 
@@ -184,13 +186,12 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
                     }
-                } else { // no processing errors, take into account success record
-                    easyBatchReport.addSuccessRecord(currentRecordNumber);
                 }
+                easyBatchReport.addSuccessRecord(currentRecordNumber);
 
             }
 
-            easyBatchReport.setTotalRecords(currentRecordNumber);
+            easyBatchReport.setTotalRecords(processedRecordsNumber);
             easyBatchReport.setEndTime(System.currentTimeMillis());
 
             // The batch result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
