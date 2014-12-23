@@ -95,6 +95,7 @@ public final class Engine implements Callable<Report> {
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An exception occurred during opening data source reader", e);
             report.setStatus(Status.ABORTED);
+            report.setEndTime(System.currentTimeMillis());
             return report;
         }
 
@@ -125,6 +126,7 @@ public final class Engine implements Callable<Report> {
                 } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record", e);
                     report.setStatus(Status.ABORTED);
+                    report.setEndTime(System.currentTimeMillis());
                     return report;
                 }
                 processedRecordsNumber++;
