@@ -38,7 +38,7 @@ import java.util.Arrays;
 import java.util.concurrent.*;
 
 /**
-* Main class to run the recording dispatching tutorial.
+* Main class to run the record dispatching tutorial.
  *
 * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
 */

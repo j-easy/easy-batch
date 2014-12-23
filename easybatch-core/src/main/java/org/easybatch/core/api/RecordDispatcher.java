@@ -25,7 +25,7 @@
 package org.easybatch.core.api;
 
 /**
- * A record dispatcher dispatches input record to multiple easy batch engines.
+ * A record dispatcher dispatches input records to multiple worker engines.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
