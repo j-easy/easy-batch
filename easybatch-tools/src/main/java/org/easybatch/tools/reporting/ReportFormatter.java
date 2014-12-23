@@ -22,38 +22,24 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.integration.quartz;
+package org.easybatch.tools.reporting;
 
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.easybatch.core.api.Report;
 
 /**
- * Quartz Job implementation to launch easy batch instances.
+ * Report formatter interface.
+ *
+ * @param <T> the report format type (HTML, PDF, etc)
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public class EasyBatchJob implements Job {
+public interface ReportFormatter<T> {
 
     /**
-     * EAsy batch instance.
+     * Format easy batch report.
+     * @param report the report to format
+     * @return the formatted report
      */
-    private EasyBatchEngine easyBatchEngine;
-
-    public EasyBatchJob(final EasyBatchEngine easyBatchEngine) {
-        this.easyBatchEngine = easyBatchEngine;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void execute(final JobExecutionContext context) throws JobExecutionException {
-        try {
-            easyBatchEngine.call();
-        } catch (Exception e) {
-            throw new JobExecutionException("An exception occurred during easy batch engine execution", e);
-        }
-    }
+    T formatReport(Report report);
 
 }

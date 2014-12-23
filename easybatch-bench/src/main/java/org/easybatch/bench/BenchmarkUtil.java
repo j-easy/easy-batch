@@ -4,8 +4,8 @@ import io.github.benas.jpopulator.api.Populator;
 import io.github.benas.jpopulator.api.Randomizer;
 import io.github.benas.jpopulator.impl.PopulatorBuilder;
 import io.github.benas.jpopulator.randomizers.*;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import org.easybatch.xml.XmlRecordMapper;
@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * Utility class used to generate customer data and build easy batch instance definition.
+ * Utility class used to generate customer data and build a batch instance definition.
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
@@ -66,16 +66,16 @@ public class BenchmarkUtil {
         fileWriter.close();
     }
 
-    public static EasyBatchEngine buildCsvEasyBatchEngine(String customersFile) throws Exception {
-        return new EasyBatchEngineBuilder()
+    public static Engine buildCsvEngine(String customersFile) throws Exception {
+        return new EngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(customersFile)))
                 .registerRecordMapper(new DelimitedRecordMapper<Customer>(Customer.class,
                         new String[]{"id", "firstName", "lastName", "birthDate", "email", "phone", "street", "zipCode", "city", "country"}))
                 .build();
     }
 
-    public static EasyBatchEngine buildXmlEasyBatchEngine(String customersFile) throws Exception {
-        return new EasyBatchEngineBuilder()
+    public static Engine buildXmlEngine(String customersFile) throws Exception {
+        return new EngineBuilder()
                 .registerRecordReader(new XmlRecordReader("customer", new File(customersFile)))
                 .registerRecordMapper(new XmlRecordMapper<Customer>(Customer.class))
                 .build();

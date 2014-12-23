@@ -24,10 +24,10 @@
 
 package org.easybatch.tutorials.products;
 
-import org.easybatch.core.api.EasyBatchReport;
+import org.easybatch.core.api.Report;
 import org.easybatch.core.filter.StartsWithStringRecordFilter;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
 
@@ -48,23 +48,22 @@ public class Launcher {
         productMapper.setQualifier("\"");
         productMapper.registerTypeConverter(Origin.class, new OriginTypeConverter());
 
-        String inputFilePath = "C:\\Users\\EXI278\\Documents\\eb\\easybatch-tutorials\\src\\main\\resources\\products.csv";
-        // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-                .readRecordsWith(new FlatFileRecordReader(new File(inputFilePath))) //read data from products.csv
+        // Build a batch engine
+        Engine engine = new EngineBuilder()
+                .readRecordsWith(new FlatFileRecordReader(new File(args[0]))) //read data from products.csv
                 .filterRecordsWith(new StartsWithStringRecordFilter("\"id\""))
                 .mapRecordsWith(productMapper)
                 .processRecordsWith(new ProductProcessor())
                 .build();
 
-        // Run easy batch engine and get execution report
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+        // Run the batch engine and get execution report
+        Report report = engine.call();
 
-        // Print Easy Batch report
-        System.out.println(easyBatchReport);
+        // Print batch report
+        System.out.println(report);
 
         // Get the batch computation result
-        Double maxProductPrice = (Double) easyBatchReport.getEasyBatchResult();
+        Double maxProductPrice = (Double) report.getEasyBatchResult();
 
         // Print the maximum price
         System.out.println("The maximum product price for national published products is : " + maxProductPrice);

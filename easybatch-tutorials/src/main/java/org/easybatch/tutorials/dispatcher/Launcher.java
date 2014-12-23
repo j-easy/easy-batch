@@ -24,15 +24,15 @@
 
 package org.easybatch.tutorials.dispatcher;
 
-import org.easybatch.core.api.EasyBatchReport;
+import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordDispatcher;
 import org.easybatch.core.filter.PoisonRecordFilter;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.util.*;
-import org.easybatch.tools.reporting.DefaultEasyBatchReportsAggregator;
-import org.easybatch.tools.reporting.EasyBatchReportsAggregator;
+import org.easybatch.tools.reporting.DefaultReportsAggregator;
+import org.easybatch.tools.reporting.ReportsAggregator;
 
 import java.util.Arrays;
 import java.util.concurrent.*;
@@ -51,15 +51,15 @@ public class Launcher {
         BlockingQueue<Record> queue2 = new ArrayBlockingQueue<Record>(32);
 
         // Build easy batch engines
-        EasyBatchEngine easyBatchEngine1 = buildEasyBatchEngine(queue1);
-        EasyBatchEngine easyBatchEngine2 = buildEasyBatchEngine(queue2);
+        Engine engine1 = buildBatchEngine(queue1);
+        Engine engine2 = buildBatchEngine(queue2);
 
         //create a 2 threads pool to call Easy Batch engines in parallel
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
         //submit workers to executor service
-        Future<EasyBatchReport> batchReportFuture1 = executorService.submit(easyBatchEngine1);
-        Future<EasyBatchReport> batchReportFuture2 = executorService.submit(easyBatchEngine2);
+        Future<Report> reportFuture1 = executorService.submit(engine1);
+        Future<Report> reportFuture2 = executorService.submit(engine2);
 
         //create a record dispatcher to dispatch records to previously created queues
         RecordDispatcher recordDispatcher = new QueueRecordDispatcher(Arrays.asList(queue1, queue2));
@@ -78,12 +78,12 @@ public class Launcher {
         recordDispatcher.dispatchRecord(new PoisonRecord());//will be dispatched to queue 2
 
         //wait for easy batch instances termination and get partial reports
-        EasyBatchReport easyBatchReport1 = batchReportFuture1.get();
-        EasyBatchReport easyBatchReport2 = batchReportFuture2.get();
+        Report report1 = reportFuture1.get();
+        Report report2 = reportFuture2.get();
 
         //aggregate partial reports into a global one
-        EasyBatchReportsAggregator reportsAggregator = new DefaultEasyBatchReportsAggregator();
-        EasyBatchReport finalReport = reportsAggregator.aggregateReports(easyBatchReport1, easyBatchReport2);
+        ReportsAggregator reportsAggregator = new DefaultReportsAggregator();
+        Report finalReport = reportsAggregator.aggregateReports(report1, report2);
         System.out.println(finalReport);
 
         //shutdown executor service
@@ -91,8 +91,8 @@ public class Launcher {
 
     }
 
-    public static EasyBatchEngine buildEasyBatchEngine(BlockingQueue<Record> queue) {
-        return new EasyBatchEngineBuilder()
+    public static Engine buildBatchEngine(BlockingQueue<Record> queue) {
+        return new EngineBuilder()
                 .readRecordsWith(new QueueRecordReader(queue))
                 .filterRecordsWith(new PoisonRecordFilter())
                 .build();

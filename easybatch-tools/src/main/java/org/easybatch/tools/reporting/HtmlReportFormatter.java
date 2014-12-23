@@ -1,6 +1,6 @@
 package org.easybatch.tools.reporting;
 
-import org.easybatch.core.api.EasyBatchReport;
+import org.easybatch.core.api.Report;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -10,18 +10,18 @@ import java.io.StringWriter;
 import java.util.Properties;
 
 /**
- * Format an easy batch report into HTML format.
+ * Format a report into HTML format.
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public class EasyBatchHtmlReportFormatter implements EasyBatchReportFormatter<String> {
+public class HtmlReportFormatter implements ReportFormatter<String> {
 
     /**
      * The template engine to render reports.
      */
     private VelocityEngine velocityEngine;
 
-    public EasyBatchHtmlReportFormatter() {
+    public HtmlReportFormatter() {
         Properties properties = new Properties();
         properties.put("resource.loader", "class");
         properties.put("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
@@ -32,11 +32,11 @@ public class EasyBatchHtmlReportFormatter implements EasyBatchReportFormatter<St
     /**
      * {@inheritDoc}
      */
-    public String formatEasyBatchReport(final EasyBatchReport easyBatchReport) {
-        Template template = velocityEngine.getTemplate("/org/easybatch/tools/reporting/easyBatchHtmlReport.vm");
+    public String formatReport(final Report report) {
+        Template template = velocityEngine.getTemplate("/org/easybatch/tools/reporting/HtmlReport.vm");
         StringWriter stringWriter = new StringWriter();
         Context context = new VelocityContext();
-        context.put("report", easyBatchReport);
+        context.put("report", report);
         template.merge(context, stringWriter);
         return stringWriter.toString();
     }

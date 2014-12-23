@@ -24,9 +24,9 @@
 
 package org.easybatch.tutorials.advanced;
 
-import org.easybatch.core.api.EasyBatchReport;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.api.Report;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import org.easybatch.jdbc.JdbcRecordMapper;
@@ -58,14 +58,14 @@ public class Launcher {
         DatabaseUtil.initializeSessionFactory();
 
         // Build an easy batch engine to read greetings from csv file
-        EasyBatchEngine easyBatchCsvEngine = new EasyBatchEngineBuilder()
+        Engine csvEngine = new EngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
                 .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id","name"}))
                 .registerRecordProcessor(new GreetingDataLoader())
                 .build();
 
         // Build an easy batch engine to read greetings from xml file
-        EasyBatchEngine easyBatchXmlEngine = new EasyBatchEngineBuilder()
+        Engine xmlEngine = new EngineBuilder()
                 .registerRecordReader(new XmlRecordReader("greeting", new File(args[1])))
                 .registerRecordMapper(new XmlRecordMapper<Greeting>(Greeting.class))
                 .registerRecordProcessor(new GreetingDataLoader())
@@ -74,22 +74,22 @@ public class Launcher {
         //create a 2 threads pool to call Easy Batch engines in parallel
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-        Future<EasyBatchReport> easyBatchReport1 = executorService.submit(easyBatchCsvEngine);
-        Future<EasyBatchReport> easyBatchReport2 = executorService.submit(easyBatchXmlEngine);
+        Future<Report> batchReport1 = executorService.submit(csvEngine);
+        Future<Report> batchReport2 = executorService.submit(xmlEngine);
 
-        easyBatchReport1.get();
-        easyBatchReport2.get();
+        batchReport1.get();
+        batchReport2.get();
 
         executorService.shutdown();
 
         // Build an easy batch engine to generate JSON products data from the database
-        EasyBatchEngine easyBatchJsonEngine = new EasyBatchEngineBuilder()
+        Engine jsonEngine = new EngineBuilder()
                 .registerRecordReader(new JdbcRecordReader(DatabaseUtil.getDatabaseConnection(), "select * from greeting"))
                 .registerRecordMapper(new JdbcRecordMapper<Greeting>(Greeting.class))
                 .registerRecordProcessor(new GreetingJsonGenerator())
                 .build();
 
-        easyBatchJsonEngine.call();
+        jsonEngine.call();
 
         //close database session factory
         DatabaseUtil.closeSessionFactory();

@@ -24,9 +24,9 @@
 
 package org.easybatch.tutorials.recipes;
 
-import org.easybatch.core.api.EasyBatchReport;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.api.Report;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 
 import java.io.File;
 
@@ -42,18 +42,18 @@ public class Launcher {
         //initialize input file recipes.csv
         File recipes = new File(args[0]);
 
-        // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+        // Build a batch engine
+        Engine engine = new EngineBuilder()
                 .registerRecordReader(new RecipeRecordReader(recipes))
                 .registerRecordMapper(new RecipeMapper())
                 .registerRecordProcessor(new RecipeProcessor())
                 .build();
 
-        // Run easy batch engine and get execution report
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+        // Run the batch engine and get execution report
+        Report report = engine.call();
 
-        // Print Easy Batch report
-        System.out.println(easyBatchReport);
+        // Print batch report
+        System.out.println(report);
 
     }
 

@@ -24,7 +24,7 @@
 
 package org.easybatch.tutorials.spring;
 
-import org.easybatch.core.impl.EasyBatchEngine;
+import org.easybatch.core.impl.Engine;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -38,8 +38,8 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
-        EasyBatchEngine easyBatchEngine = (EasyBatchEngine) context.getBean("easyBatchEngine");
-        easyBatchEngine.call();
+        Engine engine = (Engine) context.getBean("engine");
+        engine.call();
 
     }
 

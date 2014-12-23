@@ -23,7 +23,7 @@ public class XmlBenchmark extends Benchmark {
         super.setup();
         customersFile = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + "customers.xml";
         BenchmarkUtil.generateXmlCustomers(customersFile, customersCount);
-        easyBatchEngine = BenchmarkUtil.buildXmlEasyBatchEngine(customersFile);
+        engine = BenchmarkUtil.buildXmlEngine(customersFile);
     }
 
     public static void main(String[] args) throws RunnerException {

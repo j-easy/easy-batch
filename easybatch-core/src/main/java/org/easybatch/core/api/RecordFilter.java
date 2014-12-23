@@ -26,7 +26,7 @@ package org.easybatch.core.api;
 
 /**
  * Interface for record filter.
- * This will be used by easy batch to skip record from being processed.
+ * This will be used by the engine to skip record from being processed.
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */

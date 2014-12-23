@@ -24,9 +24,9 @@
 
 package org.easybatch.tutorials.helloworld.xml;
 
-import org.easybatch.core.api.EasyBatchReport;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.api.Report;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.xml.XmlRecordMapper;
 import org.easybatch.xml.XmlRecordReader;
 
@@ -41,18 +41,18 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+        // Build a batch engine
+        Engine engine = new EngineBuilder()
                 .registerRecordReader(new XmlRecordReader("greeting", new File(args[0])))
                 .registerRecordMapper(new XmlRecordMapper<Greeting>(Greeting.class, new File(args[1])))
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 
-        // Run easy batch engine
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+        // Run the batch engine
+        Report report = engine.call();
 
         // Print the batch execution report
-        System.out.println(easyBatchReport);
+        System.out.println(report);
 
     }
 

@@ -24,9 +24,9 @@
 
 package org.easybatch.tutorials.customers;
 
-import org.easybatch.core.api.EasyBatchReport;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.api.Report;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.jdbc.JdbcRecordReader;
 import org.easybatch.tutorials.customers.etl.CustomerMapper;
 import org.easybatch.tutorials.customers.etl.CustomerProcessor;
@@ -53,15 +53,15 @@ public class Launcher {
         populateEmbeddedDB(connection);
 
         // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+        Engine engine = new EngineBuilder()
                 .registerRecordReader(new JdbcRecordReader(connection, "select * from customer"))
                 .registerRecordMapper(new CustomerMapper())
                 .registerRecordProcessor(new CustomerProcessor())
                 .build();
 
         // Run easy batch engine
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
-        System.out.println(easyBatchReport);
+        Report report = engine.call();
+        System.out.println(report);
 
     }
 

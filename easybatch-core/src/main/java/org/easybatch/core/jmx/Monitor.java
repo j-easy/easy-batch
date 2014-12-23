@@ -24,41 +24,41 @@
 
 package org.easybatch.core.jmx;
 
-import org.easybatch.core.api.EasyBatchReport;
+import org.easybatch.core.api.Report;
 
 /**
- *  Easy batch JMX MBean implementation of {@link EasyBatchMonitorMBean}.
+ *  JMX MBean implementation of {@link MonitorMBean}.
  *
  *  @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public class EasyBatchMonitor implements EasyBatchMonitorMBean {
+public class Monitor implements MonitorMBean {
 
     /**
      * The batch report holding data exposed as JMX attributes.
      */
-    private EasyBatchReport easyBatchReport;
+    private Report report;
 
-    public EasyBatchMonitor(final EasyBatchReport easyBatchReport) {
-        this.easyBatchReport = easyBatchReport;
+    public Monitor(final Report report) {
+        this.report = report;
     }
 
     @Override
     public String getDataSource() {
-        return easyBatchReport.getDataSource();
+        return report.getDataSource();
     }
 
     /**
      * {@inheritDoc}
      */
     public long getCurrentRecordNumber() {
-        return easyBatchReport.getCurrentRecordNumber();
+        return report.getCurrentRecordNumber();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getTotalRecords() {
-        Integer totalRecords = easyBatchReport.getTotalRecords();
+        Integer totalRecords = report.getTotalRecords();
         return totalRecords == null ? "N/A" : totalRecords.toString();
     }
 
@@ -66,61 +66,61 @@ public class EasyBatchMonitor implements EasyBatchMonitorMBean {
      * {@inheritDoc}
      */
     public String getFilteredRecords() {
-        return easyBatchReport.getFormattedFilteredRecords();
+        return report.getFormattedFilteredRecords();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getIgnoredRecords() {
-        return easyBatchReport.getFormattedIgnoredRecords();
+        return report.getFormattedIgnoredRecords();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getRejectedRecords() {
-        return easyBatchReport.getFormattedRejectedRecords();
+        return report.getFormattedRejectedRecords();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getErrorRecords() {
-        return easyBatchReport.getFormattedErrorRecords();
+        return report.getFormattedErrorRecords();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getSuccessRecords() {
-        return easyBatchReport.getFormattedSuccessRecords();
+        return report.getFormattedSuccessRecords();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getStartTime() {
-        return easyBatchReport.getFormattedStartTime();
+        return report.getFormattedStartTime();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getEndTime() {
-        return (easyBatchReport.getEndTime() == 0) ? "" : easyBatchReport.getFormattedEndTime();
+        return (report.getEndTime() == 0) ? "" : report.getFormattedEndTime();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getProgress() {
-        return easyBatchReport.getFormattedProgress();
+        return report.getFormattedProgress();
     }
 
     @Override
     public String getStatus() {
-        return easyBatchReport.getStatus().toString();
+        return report.getStatus().toString();
     }
 
 }

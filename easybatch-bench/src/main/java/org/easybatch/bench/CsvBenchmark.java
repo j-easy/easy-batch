@@ -23,7 +23,7 @@ public class CsvBenchmark extends Benchmark {
         super.setup();
         customersFile = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + "customers.csv";
         BenchmarkUtil.generateCsvCustomers(customersFile, customersCount);
-        easyBatchEngine = BenchmarkUtil.buildCsvEasyBatchEngine(customersFile);
+        engine = BenchmarkUtil.buildCsvEngine(customersFile);
     }
 
     public static void main(String[] args) throws RunnerException {

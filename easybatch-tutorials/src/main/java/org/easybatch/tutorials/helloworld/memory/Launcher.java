@@ -24,10 +24,10 @@
 
 package org.easybatch.tutorials.helloworld.memory;
 
-import org.easybatch.core.api.EasyBatchReport;
+import org.easybatch.core.api.Report;
 import org.easybatch.core.filter.StartsWithStringRecordFilter;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.util.StringRecordReader;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import org.easybatch.tutorials.common.Greeting;
@@ -48,8 +48,8 @@ public class Launcher {
                 "1,foo\n" +
                 "2,bar";
 
-        // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+        // Build a batch engine
+        Engine engine = new EngineBuilder()
                 .readRecordsWith(new StringRecordReader(dataSource))
                 .filterRecordsWith(new StartsWithStringRecordFilter("#"))
                 .mapRecordsWith(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
@@ -57,11 +57,11 @@ public class Launcher {
                 .thenWith(new GreetingProcessor())
                 .build();
 
-        // Run easy batch engine
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+        // Run the batch engine
+        Report report = engine.call();
 
         // Print the batch execution report
-        System.out.println(easyBatchReport);
+        System.out.println(report);
 
     }
 

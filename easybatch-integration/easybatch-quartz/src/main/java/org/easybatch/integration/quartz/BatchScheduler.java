@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.quartz;
 
-import org.easybatch.core.impl.EasyBatchEngine;
+import org.easybatch.core.impl.Engine;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.spi.JobFactory;
@@ -36,17 +36,17 @@ import java.util.Date;
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public class EasyBatchScheduler {
+public class BatchScheduler {
 
     /**
      * The name of easy batch job trigger.
      */
-    public static final String EASY_BATCH_JOB_TRIGGER = "easy-batch-job-trigger";
+    public static final String BATCH_JOB_TRIGGER = "batch-job-trigger";
 
     /**
      * The name of easy batch job.
      */
-    public static final String EASY_BATCH_JOB = "easy-batch-job";
+    public static final String BATCH_JOB = "batch-job";
 
     /**
      * The trigger used to fire batch execution.
@@ -58,14 +58,14 @@ public class EasyBatchScheduler {
      */
     private Scheduler scheduler;
 
-    public EasyBatchScheduler(EasyBatchEngine easyBatchEngine) throws EasyBatchSchedulerException {
-        JobFactory jobFactory = new EasyBatchJobFactory(easyBatchEngine);
+    public BatchScheduler(Engine engine) throws BatchSchedulerException {
+        JobFactory jobFactory = new BatchJobFactory(engine);
         SchedulerFactory schedulerFactory = new StdSchedulerFactory();
         try {
             scheduler = schedulerFactory.getScheduler();
             scheduler.setJobFactory(jobFactory);
         } catch (SchedulerException e) {
-            throw new EasyBatchSchedulerException("An exception occurred during scheduler setup", e);
+            throw new BatchSchedulerException("An exception occurred during scheduler setup", e);
         }
     }
 
@@ -75,9 +75,9 @@ public class EasyBatchScheduler {
      */
     public void scheduleAt(final Date startTime) {
         trigger = TriggerBuilder.newTrigger()
-                .withIdentity(EASY_BATCH_JOB_TRIGGER)
+                .withIdentity(BATCH_JOB_TRIGGER)
                 .startAt(startTime)
-                .forJob(EASY_BATCH_JOB)
+                .forJob(BATCH_JOB)
                 .build();
     }
 
@@ -90,10 +90,10 @@ public class EasyBatchScheduler {
         SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(interval);
         simpleScheduleBuilder = simpleScheduleBuilder.repeatForever();
         trigger = TriggerBuilder.newTrigger()
-                .withIdentity(EASY_BATCH_JOB_TRIGGER)
+                .withIdentity(BATCH_JOB_TRIGGER)
                 .startAt(startTime)
                 .withSchedule(simpleScheduleBuilder)
-                .forJob(EASY_BATCH_JOB)
+                .forJob(BATCH_JOB)
                 .build();
     }
 
@@ -103,27 +103,27 @@ public class EasyBatchScheduler {
      */
     public void scheduleCron(final String cronExpression) {
         trigger = TriggerBuilder.newTrigger()
-                .withIdentity(EASY_BATCH_JOB_TRIGGER)
+                .withIdentity(BATCH_JOB_TRIGGER)
                 .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
-                .forJob(EASY_BATCH_JOB)
+                .forJob(BATCH_JOB)
                 .build();
     }
 
     /**
      * Start the scheduler.
-     * @throws EasyBatchSchedulerException thrown if the scheduler cannot be started
+     * @throws BatchSchedulerException thrown if the scheduler cannot be started
      */
-    public void start() throws EasyBatchSchedulerException {
+    public void start() throws BatchSchedulerException {
         try {
-            JobDetail job = JobBuilder.newJob(EasyBatchJob.class).withIdentity(EASY_BATCH_JOB).build();
+            JobDetail job = JobBuilder.newJob(BatchJob.class).withIdentity(BATCH_JOB).build();
             scheduler.scheduleJob(job, trigger);
             scheduler.start();
         } catch (SchedulerException e) {
             try {
                 scheduler.shutdown(true);
-                throw new EasyBatchSchedulerException("An exception occurred during scheduler startup", e);
+                throw new BatchSchedulerException("An exception occurred during scheduler startup", e);
             } catch (SchedulerException e1) {
-                throw new EasyBatchSchedulerException("Unable to shutdown the scheduler, the process may be killed", e1);
+                throw new BatchSchedulerException("Unable to shutdown the scheduler, the process may be killed", e1);
             }
         }
     }

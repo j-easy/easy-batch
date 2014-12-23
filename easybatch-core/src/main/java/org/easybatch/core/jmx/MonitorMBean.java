@@ -25,11 +25,11 @@
 package org.easybatch.core.jmx;
 
 /**
- *  Easy Batch JMX MBean interface.
+ *  JMX MBean interface.
  *
  *  @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public interface EasyBatchMonitorMBean {
+public interface MonitorMBean {
 
     /**
      * Get the data source name.

@@ -24,12 +24,12 @@
 
 package org.easybatch.tutorials.jms;
 
-import org.easybatch.core.api.EasyBatchReport;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.api.Report;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
-import org.easybatch.tools.reporting.DefaultEasyBatchReportsAggregator;
-import org.easybatch.tools.reporting.EasyBatchReportsAggregator;
+import org.easybatch.tools.reporting.DefaultReportsAggregator;
+import org.easybatch.tools.reporting.ReportsAggregator;
 import org.easybatch.tutorials.common.Greeting;
 import org.easybatch.tutorials.jmx.GreetingSlowProcessor;
 
@@ -50,22 +50,22 @@ public class Launcher {
         JMSUtil.startBroker();
 
         // Build easy batch engines
-        EasyBatchEngine easyBatchEngine1 = buildEasyBatchEngine(1);
-        EasyBatchEngine easyBatchEngine2 = buildEasyBatchEngine(2);
+        Engine engine1 = buildBatchEngine(1);
+        Engine engine2 = buildBatchEngine(2);
 
         //create a 2 threads pool to call Easy Batch engines in parallel
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-        Future<EasyBatchReport> batchReportFuture1 = executorService.submit(easyBatchEngine1);
-        Future<EasyBatchReport> batchReportFuture2 = executorService.submit(easyBatchEngine2);
+        Future<Report> reportFuture1 = executorService.submit(engine1);
+        Future<Report> reportFuture2 = executorService.submit(engine2);
 
         //wait for easy batch instances termination and get partial reports
-        EasyBatchReport easyBatchReport1 = batchReportFuture1.get();
-        EasyBatchReport easyBatchReport2 = batchReportFuture2.get();
+        Report report1 = reportFuture1.get();
+        Report report2 = reportFuture2.get();
 
         //aggregate partial reports into a global one
-        EasyBatchReportsAggregator reportsAggregator = new DefaultEasyBatchReportsAggregator();
-        EasyBatchReport finalReport = reportsAggregator.aggregateReports(easyBatchReport1, easyBatchReport2);
+        ReportsAggregator reportsAggregator = new DefaultReportsAggregator();
+        Report finalReport = reportsAggregator.aggregateReports(report1, report2);
         System.out.println(finalReport);
 
         //shutdown executor service
@@ -76,8 +76,8 @@ public class Launcher {
 
     }
 
-    public static EasyBatchEngine buildEasyBatchEngine(int id) {
-        return new EasyBatchEngineBuilder()
+    public static Engine buildBatchEngine(int id) {
+        return new EngineBuilder()
                 .registerRecordReader(new GreetingJmsReader(id))
                 .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id","name"}))
                 .registerRecordProcessor(new GreetingSlowProcessor())

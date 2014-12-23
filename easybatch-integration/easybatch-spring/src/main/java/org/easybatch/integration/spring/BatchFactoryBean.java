@@ -1,16 +1,16 @@
 package org.easybatch.integration.spring;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.springframework.beans.factory.FactoryBean;
 
 /**
- * Spring Factory Bean that creates Easy Batch instances.
+ * Spring Factory Bean that creates batch instances.
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public class EasyBatchFactoryBean implements FactoryBean {
+public class BatchFactoryBean implements FactoryBean {
 
     private RecordReader recordReader;
 
@@ -24,28 +24,28 @@ public class EasyBatchFactoryBean implements FactoryBean {
 
     @Override
     public Object getObject() throws Exception {
-        EasyBatchEngineBuilder easyBatchEngineBuilder = new EasyBatchEngineBuilder();
+        EngineBuilder engineBuilder = new EngineBuilder();
         if (recordReader != null) {
-            easyBatchEngineBuilder.registerRecordReader(recordReader);
+            engineBuilder.registerRecordReader(recordReader);
         }
         if (recordFilter != null) {
-            easyBatchEngineBuilder.registerRecordFilter(recordFilter);
+            engineBuilder.registerRecordFilter(recordFilter);
         }
         if (recordMapper != null) {
-            easyBatchEngineBuilder.registerRecordMapper(recordMapper);
+            engineBuilder.registerRecordMapper(recordMapper);
         }
         if (recordValidator != null) {
-            easyBatchEngineBuilder.registerRecordValidator(recordValidator);
+            engineBuilder.registerRecordValidator(recordValidator);
         }
         if (recordProcessor != null) {
-            easyBatchEngineBuilder.registerRecordProcessor(recordProcessor);
+            engineBuilder.registerRecordProcessor(recordProcessor);
         }
-        return easyBatchEngineBuilder.build();
+        return engineBuilder.build();
     }
 
     @Override
     public Class<?> getObjectType() {
-        return EasyBatchEngine.class;
+        return Engine.class;
     }
 
     @Override

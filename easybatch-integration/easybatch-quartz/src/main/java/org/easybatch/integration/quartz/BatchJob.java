@@ -24,31 +24,36 @@
 
 package org.easybatch.integration.quartz;
 
-import org.easybatch.core.impl.EasyBatchEngine;
+import org.easybatch.core.impl.Engine;
 import org.quartz.Job;
-import org.quartz.Scheduler;
-import org.quartz.spi.JobFactory;
-import org.quartz.spi.TriggerFiredBundle;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 /**
- * Quartz Job factory implementation used to create easy batch job instances.
+ * Quartz Job implementation to launch batch instances.
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public class EasyBatchJobFactory implements JobFactory {
+public class BatchJob implements Job {
 
     /**
-     * EAsy batch instance.
+     * Easy batch instance.
      */
-    private EasyBatchEngine easyBatchEngine;
+    private Engine engine;
 
-    public EasyBatchJobFactory(final EasyBatchEngine easyBatchEngine) {
-        this.easyBatchEngine = easyBatchEngine;
+    public BatchJob(final Engine engine) {
+        this.engine = engine;
     }
 
-    @Override
-    public Job newJob(final TriggerFiredBundle bundle, final Scheduler scheduler) {
-        return new EasyBatchJob(easyBatchEngine);
+    /**
+     * {@inheritDoc}
+     */
+    public void execute(final JobExecutionContext context) throws JobExecutionException {
+        try {
+            engine.call();
+        } catch (Exception e) {
+            throw new JobExecutionException("An exception occurred during batch engine execution", e);
+        }
     }
 
 }

@@ -24,10 +24,10 @@
 
 package org.easybatch.tutorials.helloworld.cli;
 
-import org.easybatch.core.api.EasyBatchReport;
+import org.easybatch.core.api.Report;
 import org.easybatch.core.filter.StartsWithStringRecordFilter;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.util.CliRecordReader;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import org.easybatch.tutorials.common.Greeting;
@@ -42,17 +42,17 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+        // Build a batch engine
+        Engine engine = new EngineBuilder()
                 .registerRecordReader(new CliRecordReader())
                 .registerRecordFilter(new StartsWithStringRecordFilter("#"))
                 .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 
-        // Run easy batch engine
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
-        System.out.println(easyBatchReport);
+        // Run batch engine
+        Report report = engine.call();
+        System.out.println(report);
 
     }
 

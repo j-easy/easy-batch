@@ -24,11 +24,11 @@
 
 package org.easybatch.tutorials.parallel;
 
-import org.easybatch.core.api.EasyBatchReport;
+import org.easybatch.core.api.Report;
 import org.easybatch.core.filter.RecordNumberGreaterThanRecordFilter;
 import org.easybatch.core.filter.RecordNumberLowerThanRecordFilter;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
 
 import java.io.File;
@@ -49,49 +49,49 @@ public class SingleFileLauncher {
     public static void main(String[] args) throws Exception {
 
         System.out.println(COMMENT_SEPARATOR);
-        System.out.println("Running a single Easy Batch instance");
+        System.out.println("Running a single batch instance");
         System.out.println(COMMENT_SEPARATOR);
         long singleInstanceStartTime = System.nanoTime();
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+        Engine engine = new EngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
                 .registerRecordProcessor(new MessageEncrypter())
                 .build();
 
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
-        System.out.println(easyBatchReport);
+        Report report = engine.call();
+        System.out.println(report);
 
         long singleInstanceEndTime = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - singleInstanceStartTime);
 
         System.out.println(COMMENT_SEPARATOR);
-        System.out.println("Running two Easy Batch instances in parallel");
+        System.out.println("Running two batch instances in parallel");
         System.out.println(COMMENT_SEPARATOR);
         long parallelInstancesStartTime = System.nanoTime();
 
         // To avoid any thread-safety issues,
         // we will create 2 engines with separate instances of record readers and processors
 
-        // Build an easy batch engine1
-        EasyBatchEngine easyBatchEngine1 = new EasyBatchEngineBuilder()
+        // Build a batch engine1
+        Engine engine1 = new EngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
                 .registerRecordFilter(new RecordNumberGreaterThanRecordFilter(5)) // filter records 6-10
                 .registerRecordProcessor(new MessageEncrypter())
                 .build();
 
-        // Build an easy batch engine2
-        EasyBatchEngine easyBatchEngine2 = new EasyBatchEngineBuilder()
+        // Build a batch engine2
+        Engine engine2 = new EngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
                 .registerRecordFilter(new RecordNumberLowerThanRecordFilter(6)) // filter records 1-5
                 .registerRecordProcessor(new MessageEncrypter())
                 .build();
 
-        //create a 2 threads pool to call Easy Batch engines in parallel
+        //create a 2 threads pool to call batch engines in parallel
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-        Future<EasyBatchReport> easyBatchReport1 = executorService.submit(easyBatchEngine1);
-        Future<EasyBatchReport> easyBatchReport2 = executorService.submit(easyBatchEngine2);
+        Future<Report> batchReport1 = executorService.submit(engine1);
+        Future<Report> batchReport2 = executorService.submit(engine2);
 
-        System.out.println("Easy Batch Report 1 = " + easyBatchReport1.get());
-        System.out.println("Easy Batch Report 2 = " + easyBatchReport2.get());
+        System.out.println("Batch Report 1 = " + batchReport1.get());
+        System.out.println("Batch Report 2 = " + batchReport2.get());
 
         executorService.shutdown();
 

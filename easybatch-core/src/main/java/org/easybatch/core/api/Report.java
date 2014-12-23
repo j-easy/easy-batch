@@ -29,11 +29,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * A class holding easy batch reporting data.
+ * A class holding batch reporting data.
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public class EasyBatchReport implements Serializable {
+public class Report implements Serializable {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 
@@ -45,7 +45,7 @@ public class EasyBatchReport implements Serializable {
 
     private Integer totalRecords;
 
-    // needed only for jmx
+    // needed only for jmx monitoring
     private int currentRecordNumber;
 
     private List<Integer> filteredRecords;
@@ -62,7 +62,7 @@ public class EasyBatchReport implements Serializable {
 
     private Status status;
 
-    public EasyBatchReport() {
+    public Report() {
         filteredRecords = new ArrayList<Integer>();
         ignoredRecords = new ArrayList<Integer>();
         rejectedRecords = new ArrayList<Integer>();
@@ -169,7 +169,7 @@ public class EasyBatchReport implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Easy Batch Report:");
+        final StringBuilder sb = new StringBuilder("Batch Report:");
         sb.append("\n\tStart time = ").append(getFormattedStartTime());
         sb.append("\n\tEnd time = ").append(getFormattedEndTime());
         sb.append("\n\tStatus = ").append(status);

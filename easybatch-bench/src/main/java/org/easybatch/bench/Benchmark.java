@@ -1,6 +1,6 @@
 package org.easybatch.bench;
 
-import org.easybatch.core.impl.EasyBatchEngine;
+import org.easybatch.core.impl.Engine;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.File;
@@ -19,13 +19,13 @@ public class Benchmark {
 
     protected int customersCount;
 
-    protected EasyBatchEngine easyBatchEngine;
+    protected Engine engine;
 
     @GenerateMicroBenchmark
     @BenchmarkMode(Mode.AverageTime)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    public void runEasyBatch() throws Exception {
-        easyBatchEngine.call();
+    public void runBatch() throws Exception {
+        engine.call();
     }
 
     @Setup

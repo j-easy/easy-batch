@@ -1,6 +1,6 @@
 package org.easybatch.tools.reporting;
 
-import org.easybatch.core.api.EasyBatchReport;
+import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
 
 import java.util.*;
@@ -25,14 +25,14 @@ import java.util.*;
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public class DefaultEasyBatchReportsAggregator implements EasyBatchReportsAggregator {
+public class DefaultReportsAggregator implements ReportsAggregator {
 
     /**
      * Merge multiple Easy Batch reports into a consolidated one.
      * @param easyBatchReports reports to merge
      * @return a merged report
      */
-    public EasyBatchReport aggregateReports(EasyBatchReport... easyBatchReports) {
+    public Report aggregateReports(Report... easyBatchReports) {
 
         List<Long> startTimes = new ArrayList<Long>();
 
@@ -55,47 +55,47 @@ public class DefaultEasyBatchReportsAggregator implements EasyBatchReportsAggreg
         List<String> datasources = new ArrayList<String>();
 
         //calculate aggregate results
-        EasyBatchReport easyBatchFinalReport = new EasyBatchReport();
-        easyBatchFinalReport.setStatus(Status.FINISHED);
-        for (EasyBatchReport easyBatchReport : easyBatchReports) {
-            startTimes.add(easyBatchReport.getStartTime());
-            endTimes.add(easyBatchReport.getEndTime());
-            totalRecords += easyBatchReport.getTotalRecords();
-            filteredRecords.addAll(easyBatchReport.getFilteredRecords());
-            ignoredRecords.addAll(easyBatchReport.getIgnoredRecords());
-            rejectedRecords.addAll(easyBatchReport.getRejectedRecords());
-            errorRecords.addAll(easyBatchReport.getErrorRecords());
-            successRecords.addAll(easyBatchReport.getSuccessRecords());
-            if (easyBatchReport.getEasyBatchResult() != null) {
-                results.add(easyBatchReport.getEasyBatchResult());
+        Report finalReport = new Report();
+        finalReport.setStatus(Status.FINISHED);
+        for (Report report : easyBatchReports) {
+            startTimes.add(report.getStartTime());
+            endTimes.add(report.getEndTime());
+            totalRecords += report.getTotalRecords();
+            filteredRecords.addAll(report.getFilteredRecords());
+            ignoredRecords.addAll(report.getIgnoredRecords());
+            rejectedRecords.addAll(report.getRejectedRecords());
+            errorRecords.addAll(report.getErrorRecords());
+            successRecords.addAll(report.getSuccessRecords());
+            if (report.getEasyBatchResult() != null) {
+                results.add(report.getEasyBatchResult());
             }
-            if (Status.ABORTED.equals(easyBatchReport.getStatus())) {
-                easyBatchFinalReport.setStatus(Status.ABORTED);
+            if (Status.ABORTED.equals(report.getStatus())) {
+                finalReport.setStatus(Status.ABORTED);
             }
-            datasources.add(easyBatchReport.getDataSource());
+            datasources.add(report.getDataSource());
         }
 
         //merge results
-        easyBatchFinalReport.setStartTime(Collections.min(startTimes));
-        easyBatchFinalReport.setEndTime(Collections.max(endTimes));
-        easyBatchFinalReport.setTotalRecords(totalRecords);
+        finalReport.setStartTime(Collections.min(startTimes));
+        finalReport.setEndTime(Collections.max(endTimes));
+        finalReport.setTotalRecords(totalRecords);
         for (Integer filteredRecord : filteredRecords) {
-            easyBatchFinalReport.addFilteredRecord(filteredRecord);
+            finalReport.addFilteredRecord(filteredRecord);
         }
         for (Integer ignoredRecord : ignoredRecords) {
-            easyBatchFinalReport.addIgnoredRecord(ignoredRecord);
+            finalReport.addIgnoredRecord(ignoredRecord);
         }
         for (Integer rejectedRecord : rejectedRecords) {
-            easyBatchFinalReport.addRejectedRecord(rejectedRecord);
+            finalReport.addRejectedRecord(rejectedRecord);
         }
         for (Integer errorRecord : errorRecords) {
-            easyBatchFinalReport.addErrorRecord(errorRecord);
+            finalReport.addErrorRecord(errorRecord);
         }
         for (Integer successRecord : successRecords) {
-            easyBatchFinalReport.addSuccessRecord(successRecord);
+            finalReport.addSuccessRecord(successRecord);
         }
         if (!results.isEmpty()) {
-            easyBatchFinalReport.setEasyBatchResult(results);
+            finalReport.setEasyBatchResult(results);
         }
 
         //data sources
@@ -104,9 +104,9 @@ public class DefaultEasyBatchReportsAggregator implements EasyBatchReportsAggreg
             stringBuilder.append(dataSource).append("\n");
 
         }
-        easyBatchFinalReport.setDataSource(stringBuilder.toString());
+        finalReport.setDataSource(stringBuilder.toString());
 
         //return merged report
-        return easyBatchFinalReport;
+        return finalReport;
     }
 }

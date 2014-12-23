@@ -1,24 +1,24 @@
 package org.easybatch.tools.reporting.test;
 
-import org.easybatch.core.api.EasyBatchReport;
-import org.easybatch.tools.reporting.DefaultEasyBatchReportsAggregator;
-import org.easybatch.tools.reporting.EasyBatchReportsAggregator;
+import org.easybatch.core.api.Report;
+import org.easybatch.core.api.Status;
+import org.easybatch.tools.reporting.DefaultReportsAggregator;
+import org.easybatch.tools.reporting.ReportsAggregator;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
- * Test class for {@link org.easybatch.tools.reporting.EasyBatchReportsAggregator}.
+ * Test class for {@link org.easybatch.tools.reporting.ReportsAggregator}.
  */
 public class EasyBatchReportsAggregatorTest {
 
     @Test
     public void testReportsMerging() throws Exception {
 
-        EasyBatchReport report1 = new EasyBatchReport();
+        Report report1 = new Report();
         long startTime1 = 1l;
         long endTime1 = 10l;
         report1.setTotalRecords(5);
@@ -31,8 +31,9 @@ public class EasyBatchReportsAggregatorTest {
         report1.setEndTime(endTime1);
         report1.setEasyBatchResult("result1");
         report1.setDataSource("datasource1");
+        report1.setStatus(Status.ABORTED);
 
-        EasyBatchReport report2 = new EasyBatchReport();
+        Report report2 = new Report();
         long startTime2 = 2l;
         long endTime2 = 11l;
         report2.setTotalRecords(5);
@@ -45,9 +46,10 @@ public class EasyBatchReportsAggregatorTest {
         report2.setEndTime(endTime2);
         report2.setEasyBatchResult("result2");
         report2.setDataSource("datasource2");
+        report2.setStatus(Status.ABORTED);
 
-        EasyBatchReportsAggregator reportsAggregator = new DefaultEasyBatchReportsAggregator();
-        EasyBatchReport finalReport = reportsAggregator.aggregateReports(report1, report2);
+        ReportsAggregator reportsAggregator = new DefaultReportsAggregator();
+        Report finalReport = reportsAggregator.aggregateReports(report1, report2);
 
         assertEquals(new Integer(10), finalReport.getTotalRecords()); //sum of total records
         assertEquals(2, finalReport.getFilteredRecordsCount());// sum of filtered records
@@ -65,6 +67,9 @@ public class EasyBatchReportsAggregatorTest {
 
         //data sources
         assertEquals("datasource1\ndatasource2\n", finalReport.getDataSource());
+
+        //if one partial report has aborted, the final result should be also aborted
+        assertEquals(Status.ABORTED, finalReport.getStatus());
 
     }
 }

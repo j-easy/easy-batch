@@ -24,9 +24,9 @@
 
 package org.easybatch.tutorials.helloworld.jdbc;
 
-import org.easybatch.core.api.EasyBatchReport;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.api.Report;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.jdbc.JdbcRecordMapper;
 import org.easybatch.jdbc.JdbcRecordReader;
 import org.easybatch.tutorials.common.Greeting;
@@ -53,18 +53,18 @@ public class Launcher {
         Connection connection = DriverManager.getConnection("jdbc:hsqldb:mem", "sa", "");
         populateEmbeddedDB(connection);
 
-        // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+        // Build a  batch engine
+        Engine engine = new EngineBuilder()
                 .registerRecordReader(new JdbcRecordReader(connection, "select * from greeting"))
                 .registerRecordMapper(new JdbcRecordMapper<Greeting>(Greeting.class))
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 
-        // Run easy batch engine
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+        // Run the batch engine
+        Report report = engine.call();
 
         // Print the batch execution report
-        System.out.println(easyBatchReport);
+        System.out.println(report);
 
     }
 

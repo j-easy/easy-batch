@@ -24,11 +24,11 @@
 
 package org.easybatch.tutorials.quartz;
 
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
-import org.easybatch.integration.quartz.EasyBatchScheduler;
+import org.easybatch.integration.quartz.BatchScheduler;
 import org.easybatch.tutorials.common.Greeting;
 import org.easybatch.tutorials.common.GreetingProcessor;
 import org.easybatch.validation.BeanValidationRecordValidator;
@@ -39,11 +39,11 @@ import java.util.Date;
 /**
  * Main class to run the Hello World tutorial repeatedly every minute using easy batch - quartz integration module.<br/>
  *
- * The {@link org.easybatch.integration.quartz.EasyBatchScheduler} API lets you schedule easy batch executions as follows :
+ * The {@link org.easybatch.integration.quartz.BatchScheduler} API lets you schedule easy batch executions as follows :
  * <ul>
- * <li>At a fixed point of time using {@link org.easybatch.integration.quartz.EasyBatchScheduler#scheduleAt(java.util.Date)}</li>
- * <li>Repeatedly with predefined interval using {@link org.easybatch.integration.quartz.EasyBatchScheduler#scheduleAtWithInterval(java.util.Date, int)}</li>
- * <li>Using unix cron-like expression with {@link org.easybatch.integration.quartz.EasyBatchScheduler#scheduleCron(String)}</li>
+ * <li>At a fixed point of time using {@link org.easybatch.integration.quartz.BatchScheduler#scheduleAt(java.util.Date)}</li>
+ * <li>Repeatedly with predefined interval using {@link org.easybatch.integration.quartz.BatchScheduler#scheduleAtWithInterval(java.util.Date, int)}</li>
+ * <li>Using unix cron-like expression with {@link org.easybatch.integration.quartz.BatchScheduler#scheduleCron(String)}</li>
  * </ul>
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
@@ -52,8 +52,8 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+        // Build a batch engine
+        Engine engine = new EngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
                 .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
                 .registerRecordValidator(new BeanValidationRecordValidator<Greeting>())
@@ -61,9 +61,9 @@ public class Launcher {
                 .build();
 
         // schedule the engine to start now and run every minute
-        EasyBatchScheduler easyBatchScheduler = new EasyBatchScheduler(easyBatchEngine);
-        easyBatchScheduler.scheduleAtWithInterval(new Date(), 1);
-        easyBatchScheduler.start();
+        BatchScheduler scheduler = new BatchScheduler(engine);
+        scheduler.scheduleAtWithInterval(new Date(), 1);
+        scheduler.start();
 
     }
 

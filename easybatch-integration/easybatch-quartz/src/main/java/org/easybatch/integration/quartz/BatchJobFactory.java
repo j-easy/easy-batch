@@ -22,24 +22,33 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.tools.reporting;
+package org.easybatch.integration.quartz;
 
-import org.easybatch.core.api.EasyBatchReport;
+import org.easybatch.core.impl.Engine;
+import org.quartz.Job;
+import org.quartz.Scheduler;
+import org.quartz.spi.JobFactory;
+import org.quartz.spi.TriggerFiredBundle;
 
 /**
- * Easy batch report formatter interface.
- *
- * @param <T> the report format type (HTML, PDF, etc)
+ * Quartz Job factory implementation used to create batch job instances.
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public interface EasyBatchReportFormatter<T> {
+public class BatchJobFactory implements JobFactory {
 
     /**
-     * Format easy batch report.
-     * @param easyBatchReport the report to format
-     * @return the formatted report
+     * Batch instance.
      */
-    T formatEasyBatchReport(EasyBatchReport easyBatchReport);
+    private Engine engine;
+
+    public BatchJobFactory(final Engine engine) {
+        this.engine = engine;
+    }
+
+    @Override
+    public Job newJob(final TriggerFiredBundle bundle, final Scheduler scheduler) {
+        return new BatchJob(engine);
+    }
 
 }

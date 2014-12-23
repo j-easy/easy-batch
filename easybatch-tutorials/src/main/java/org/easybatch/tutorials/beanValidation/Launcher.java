@@ -24,9 +24,9 @@
 
 package org.easybatch.tutorials.beanValidation;
 
-import org.easybatch.core.api.EasyBatchReport;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.api.Report;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import org.easybatch.validation.BeanValidationRecordValidator;
@@ -57,7 +57,7 @@ public class Launcher {
         productMapper.setQualifier("\"");
 
         // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+        Engine engine = new EngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from products-jsr303.csv
                 .registerRecordMapper(productMapper)
                 .registerRecordValidator(new BeanValidationRecordValidator<Product>())
@@ -65,8 +65,8 @@ public class Launcher {
                 .build();
 
         // Run easy batch engine
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
-        System.out.println(easyBatchReport);
+        Report report = engine.call();
+        System.out.println(report);
 
         /*
          * Dump product table to checks inserted data

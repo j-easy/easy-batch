@@ -24,7 +24,7 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.jmx.EasyBatchMonitor;
+import org.easybatch.core.jmx.Monitor;
 import org.easybatch.core.api.*;
 
 import javax.management.MBeanServer;
@@ -41,9 +41,9 @@ import java.util.logging.Logger;
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
  */
-public final class EasyBatchEngine implements Callable<EasyBatchReport> {
+public final class Engine implements Callable<Report> {
 
-    private static final Logger LOGGER = Logger.getLogger(EasyBatchEngine.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Engine.class.getName());
 
     public static final String STRICT_MODE_MESSAGE = "Strict mode enabled : aborting execution";
 
@@ -57,9 +57,9 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
     private List<RecordProcessor> processingPipeline;
 
-    private EasyBatchMonitor easyBatchMonitor;
+    private Monitor monitor;
 
-    private EasyBatchReport easyBatchReport;
+    private Report report;
 
     private IgnoredRecordHandler ignoredRecordHandler;
 
@@ -69,9 +69,9 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
     private boolean strictMode;
 
-    EasyBatchEngine(final RecordReader recordReader, final RecordFilter recordFilter, final RecordMapper recordMapper,
-                    final RecordValidator recordValidator, final List<RecordProcessor> processingPipeline,
-                    final IgnoredRecordHandler ignoredRecordHandler, final RejectedRecordHandler rejectedRecordHandler, final ErrorRecordHandler errorRecordHandler) {
+    Engine(final RecordReader recordReader, final RecordFilter recordFilter, final RecordMapper recordMapper,
+           final RecordValidator recordValidator, final List<RecordProcessor> processingPipeline,
+           final IgnoredRecordHandler ignoredRecordHandler, final RejectedRecordHandler rejectedRecordHandler, final ErrorRecordHandler errorRecordHandler) {
         this.recordReader = recordReader;
         this.recordFilter = recordFilter;
         this.recordMapper = recordMapper;
@@ -81,37 +81,37 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
         this.rejectedRecordHandler = rejectedRecordHandler;
         this.errorRecordHandler = errorRecordHandler;
         
-        easyBatchReport = new EasyBatchReport();
-        easyBatchMonitor = new EasyBatchMonitor(easyBatchReport);
+        report = new Report();
+        monitor = new Monitor(report);
         configureJmxMBean();
     }
 
     @Override
-    public EasyBatchReport call() {
+    public Report call() {
 
         LOGGER.info("Initializing easy batch engine");
         try {
             recordReader.open();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An exception occurred during opening data source reader", e);
-            easyBatchReport.setStatus(Status.ABORTED);
-            return easyBatchReport;
+            report.setStatus(Status.ABORTED);
+            return report;
         }
 
         String dataSourceName = recordReader.getDataSourceName();
         LOGGER.log(Level.INFO, "Data source: {0}", dataSourceName);
-        easyBatchReport.setDataSource(dataSourceName);
+        report.setDataSource(dataSourceName);
 
         LOGGER.log(Level.INFO, "Strict mode: {0}", strictMode);
         try {
 
             Integer totalRecords = recordReader.getTotalRecords();
             LOGGER.log(Level.INFO, "Total records = {0}", (totalRecords == null ? "N/A" : totalRecords));
-            easyBatchReport.setStatus(Status.RUNNING);
+            report.setStatus(Status.RUNNING);
             LOGGER.info("easy batch engine is running...");
 
-            easyBatchReport.setTotalRecords(totalRecords);
-            easyBatchReport.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
+            report.setTotalRecords(totalRecords);
+            report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
 
             int currentRecordNumber; // the physical record number in the data source (can be different from logical record number as seen by the engine in a multi-threaded scenario)
             int processedRecordsNumber = 0;
@@ -124,17 +124,17 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                     currentRecord = recordReader.readNextRecord();
                 } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record", e);
-                    easyBatchReport.setStatus(Status.ABORTED);
-                    return easyBatchReport;
+                    report.setStatus(Status.ABORTED);
+                    return report;
                 }
                 processedRecordsNumber++;
                 currentRecordNumber = currentRecord.getNumber();
-                easyBatchReport.setCurrentRecordNumber(currentRecordNumber);
+                report.setCurrentRecordNumber(currentRecordNumber);
 
                 //filter record if any
                 if (recordFilter.filterRecord(currentRecord)) {
                     LOGGER.log(Level.INFO, "Record #{0} [{1}] has been filtered.", new Object[]{currentRecordNumber, currentRecord});
-                    easyBatchReport.addFilteredRecord(currentRecordNumber);
+                    report.addFilteredRecord(currentRecordNumber);
                     continue;
                 }
 
@@ -143,7 +143,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                 try {
                     typedRecord = recordMapper.mapRecord(currentRecord);
                 } catch (Exception e) {
-                    easyBatchReport.addIgnoredRecord(currentRecordNumber);
+                    report.addIgnoredRecord(currentRecordNumber);
                     ignoredRecordHandler.handle(currentRecord, e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
@@ -157,13 +157,13 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                     Set<ValidationError> validationsErrors = recordValidator.validateRecord(typedRecord);
 
                     if (!validationsErrors.isEmpty()) {
-                        easyBatchReport.addRejectedRecord(currentRecordNumber);
+                        report.addRejectedRecord(currentRecordNumber);
                         rejectedRecordHandler.handle(currentRecord, validationsErrors);
                         continue;
                     }
                 } catch(Exception e) {
                     LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + currentRecordNumber + " [" + currentRecord + "]", e);
-                    easyBatchReport.addRejectedRecord(currentRecordNumber);
+                    report.addRejectedRecord(currentRecordNumber);
                     rejectedRecordHandler.handle(currentRecord, e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
@@ -179,7 +179,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                         typedRecord = recordProcessor.processRecord(typedRecord);
                     } catch (Exception e) {
                         processingError = true;
-                        easyBatchReport.addErrorRecord(currentRecordNumber);
+                        report.addErrorRecord(currentRecordNumber);
                         errorRecordHandler.handle(currentRecord, e);
                         break;
                     }
@@ -190,20 +190,20 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                         break;
                     }
                 }
-                easyBatchReport.addSuccessRecord(currentRecordNumber);
+                report.addSuccessRecord(currentRecordNumber);
 
             }
 
-            easyBatchReport.setTotalRecords(processedRecordsNumber);
-            easyBatchReport.setEndTime(System.currentTimeMillis());
-            easyBatchReport.setStatus(Status.FINISHED);
+            report.setTotalRecords(processedRecordsNumber);
+            report.setEndTime(System.currentTimeMillis());
+            report.setStatus(Status.FINISHED);
 
             // The batch result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
             RecordProcessor lastRecordProcessor = processingPipeline.get(processingPipeline.size() - 1);
             if(lastRecordProcessor instanceof ComputationalRecordProcessor) {
                 ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor)lastRecordProcessor;
                 Object batchResult = computationalRecordProcessor.getComputationResult();
-                easyBatchReport.setEasyBatchResult(batchResult);
+                report.setEasyBatchResult(batchResult);
             }
 
         } finally {
@@ -217,7 +217,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
             }
         }
 
-        return easyBatchReport;
+        return report;
 
     }
 
@@ -231,8 +231,8 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
         try {
             name = new ObjectName("org.easybatch.core.jmx:type=EasyBatchMonitorMBean");
             if (!mbs.isRegistered(name)) {
-                easyBatchMonitor = new EasyBatchMonitor(easyBatchReport);
-                mbs.registerMBean(easyBatchMonitor, name);
+                monitor = new Monitor(report);
+                mbs.registerMBean(monitor, name);
                 LOGGER.log(Level.INFO, "Easy batch JMX MBean registered successfully as: {0}", name.getCanonicalName());
             }
         } catch (Exception e) {

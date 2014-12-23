@@ -28,7 +28,7 @@ import java.util.Set;
 
 /**
  * An interface for record validator.
- * This is used by easy batch to apply application validation logic to input records.
+ * This is used by the engine to apply validation logic on input records.
  *
  * @param <T> The target domain object type this validator can validate.
  *

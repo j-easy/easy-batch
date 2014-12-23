@@ -24,10 +24,10 @@
 
 package org.easybatch.tutorials.helloworld.flr;
 
-import org.easybatch.core.api.EasyBatchReport;
+import org.easybatch.core.api.Report;
 import org.easybatch.core.filter.StartsWithStringRecordFilter;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
 import org.easybatch.flatfile.flr.FixedLengthRecordMapper;
 import org.easybatch.tutorials.common.Greeting;
@@ -44,8 +44,8 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+        // Build a batch engine
+        Engine engine = new EngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
                 .registerRecordFilter(new StartsWithStringRecordFilter("#"))
                 .registerRecordMapper(new FixedLengthRecordMapper<Greeting>(
@@ -55,11 +55,11 @@ public class Launcher {
                 .registerRecordProcessor(new GreetingProcessor())
                 .build();
 
-        // Run easy batch engine
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+        // Run the batch engine
+        Report report = engine.call();
 
         // Print the batch execution report
-        System.out.println(easyBatchReport);
+        System.out.println(report);
 
     }
 
