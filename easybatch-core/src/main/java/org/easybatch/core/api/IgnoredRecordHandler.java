@@ -8,10 +8,9 @@ package org.easybatch.core.api;
 public interface IgnoredRecordHandler  {
 
     /**
-     * @param recordNumber - the current number of ignored record
-     * @param record - the current ignored record
+     * @param record - the ignored record to handle
      * @param e - the exception that caused the record to be ignored
      */
-    void handle(final int recordNumber, final Record record, final Throwable e);
+    void handle(final Record record, final Throwable e);
 
 }

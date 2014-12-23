@@ -19,8 +19,8 @@ class NoOpErrorRecordHandler implements ErrorRecordHandler {
      * {@inheritDoc}
      */
     @Override
-    public void handle(int recordNumber, Record record, Throwable e) {
-        LOGGER.log(Level.SEVERE, "Error while processing record #" + recordNumber + "[" + record + "]", e);
+    public void handle(final Record record, final Throwable e) {
+        LOGGER.log(Level.SEVERE, "Error while processing record #" + record.getNumber() + "[" + record + "]", e);
     }
 
 }

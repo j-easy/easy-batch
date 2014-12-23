@@ -10,17 +10,15 @@ import java.util.Set;
 public interface RejectedRecordHandler  {
 
     /**
-     * @param recordNumber - the current number of rejected record
-     * @param record - the current rejected record
+     * @param record - the rejected record to handle
      * @param e - the exception that caused the record to be rejected
      */
-    void handle(final int recordNumber, final Record record, final Throwable e);
+    void handle(final Record record, final Throwable e);
     
     /**
-     * @param recordNumber - the current number of rejected record
-     * @param record - the current error rejected number
+     * @param record - the rejected record to handle
      * @param validationsErrors - a set of validationsErrors that caused that record to be rejected
      */
-    void handle(final int recordNumber, final Record record, Set<ValidationError> validationsErrors);
+    void handle(final Record record, Set<ValidationError> validationsErrors);
 
 }

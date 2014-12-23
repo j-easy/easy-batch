@@ -21,20 +21,20 @@ class NoOpRejectedRecordHandler implements RejectedRecordHandler {
      * {@inheritDoc}
      */
     @Override
-    public void handle(int recordNumber, Record record, Throwable e) {
-        LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + recordNumber + " [" + record + "]", e);
+    public void handle(final Record record, final Throwable e) {
+        LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + record.getNumber() + " [" + record + "]", e);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void handle(int recordNumber, Record record, Set<ValidationError> validationsErrors) {
+    public void handle(final Record record, final Set<ValidationError> validationsErrors) {
         StringBuilder stringBuilder = new StringBuilder();
         for (ValidationError validationError : validationsErrors) {
             stringBuilder.append(validationError.getMessage()).append(" | ");
         }
-        LOGGER.log(Level.SEVERE, "Record #{0} [{1}] has been rejected. Validation error(s): {2}", new Object[]{recordNumber, record, stringBuilder.toString()});
+        LOGGER.log(Level.SEVERE, "Record #{0} [{1}] has been rejected. Validation error(s): {2}", new Object[]{record.getNumber(), record, stringBuilder.toString()});
     }
 
 }

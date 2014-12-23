@@ -19,8 +19,8 @@ class NoOpIgnoredRecordHandler implements IgnoredRecordHandler {
      * {@inheritDoc}
      */
     @Override
-    public void handle(int recordNumber, Record record, Throwable e) {
-        LOGGER.log(Level.SEVERE, "Record #" + recordNumber + " [" + record + "] has been ignored. Root exception:", e);
+    public void handle(final Record record, final Throwable e) {
+        LOGGER.log(Level.SEVERE, "Record #" + record.getNumber() + " [" + record + "] has been ignored. Root exception:", e);
     }
 
 }

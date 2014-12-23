@@ -141,7 +141,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                     typedRecord = recordMapper.mapRecord(currentRecord);
                 } catch (Exception e) {
                     easyBatchReport.addIgnoredRecord(currentRecordNumber);
-                    ignoredRecordHandler.handle(currentRecordNumber, currentRecord, e);
+                    ignoredRecordHandler.handle(currentRecord, e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
@@ -155,13 +155,13 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
                     if (!validationsErrors.isEmpty()) {
                         easyBatchReport.addRejectedRecord(currentRecordNumber);
-                        rejectedRecordHandler.handle(currentRecordNumber, currentRecord, validationsErrors);
+                        rejectedRecordHandler.handle(currentRecord, validationsErrors);
                         continue;
                     }
                 } catch(Exception e) {
                     LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + currentRecordNumber + " [" + currentRecord + "]", e);
                     easyBatchReport.addRejectedRecord(currentRecordNumber);
-                    rejectedRecordHandler.handle(currentRecordNumber, currentRecord, e);
+                    rejectedRecordHandler.handle(currentRecord, e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
@@ -177,7 +177,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                     } catch (Exception e) {
                         processingError = true;
                         easyBatchReport.addErrorRecord(currentRecordNumber);
-                        errorRecordHandler.handle(currentRecordNumber, currentRecord, e);
+                        errorRecordHandler.handle(currentRecord, e);
                         break;
                     }
                 }
