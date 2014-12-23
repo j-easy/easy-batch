@@ -118,4 +118,9 @@ public class EasyBatchMonitor implements EasyBatchMonitorMBean {
         return easyBatchReport.getFormattedProgress();
     }
 
+    @Override
+    public String getStatus() {
+        return easyBatchReport.getStatus().toString();
+    }
+
 }

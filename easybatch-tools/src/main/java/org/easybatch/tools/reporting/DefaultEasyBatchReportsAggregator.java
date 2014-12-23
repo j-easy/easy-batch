@@ -1,6 +1,7 @@
 package org.easybatch.tools.reporting;
 
 import org.easybatch.core.api.EasyBatchReport;
+import org.easybatch.core.api.Status;
 
 import java.util.*;
 
@@ -18,6 +19,8 @@ import java.util.*;
  *     <li>The final processing times map is the merge of processing times maps</li>
  *     <li>The final batch result is a list of all batch results</li>
  *     <li>The final data source name is the concatenation (one per line) of data sources names</li>
+ *     <li>The final status is {@link org.easybatch.core.api.Status#FINISHED} (if all partials are finished)
+ *          or {@link org.easybatch.core.api.Status#ABORTED} (if one of partials is aborted).</li>
  * </ul>
  *
  * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
@@ -53,6 +56,7 @@ public class DefaultEasyBatchReportsAggregator implements EasyBatchReportsAggreg
 
         //calculate aggregate results
         EasyBatchReport easyBatchFinalReport = new EasyBatchReport();
+        easyBatchFinalReport.setStatus(Status.FINISHED);
         for (EasyBatchReport easyBatchReport : easyBatchReports) {
             startTimes.add(easyBatchReport.getStartTime());
             endTimes.add(easyBatchReport.getEndTime());
@@ -64,6 +68,9 @@ public class DefaultEasyBatchReportsAggregator implements EasyBatchReportsAggreg
             successRecords.addAll(easyBatchReport.getSuccessRecords());
             if (easyBatchReport.getEasyBatchResult() != null) {
                 results.add(easyBatchReport.getEasyBatchResult());
+            }
+            if (Status.ABORTED.equals(easyBatchReport.getStatus())) {
+                easyBatchFinalReport.setStatus(Status.ABORTED);
             }
             datasources.add(easyBatchReport.getDataSource());
         }

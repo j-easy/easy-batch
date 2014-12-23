@@ -97,4 +97,10 @@ public interface EasyBatchMonitorMBean {
      */
     String getProgress();
 
+    /**
+     * Get engine status.
+     * @return engine status
+     */
+    String getStatus();
+
 }

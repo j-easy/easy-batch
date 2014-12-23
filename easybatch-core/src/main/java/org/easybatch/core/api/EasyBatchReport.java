@@ -60,12 +60,15 @@ public class EasyBatchReport implements Serializable {
 
     private Object easyBatchResult;
 
+    private Status status;
+
     public EasyBatchReport() {
         filteredRecords = new ArrayList<Integer>();
         ignoredRecords = new ArrayList<Integer>();
         rejectedRecords = new ArrayList<Integer>();
         errorRecords = new ArrayList<Integer>();
         successRecords = new ArrayList<Integer>();
+        status = Status.INITIALIZING;
     }
 
     public void addFilteredRecord(final int recordNumber) {
@@ -156,11 +159,20 @@ public class EasyBatchReport implements Serializable {
         this.easyBatchResult = easyBatchResult;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Easy Batch Report:");
         sb.append("\n\tStart time = ").append(getFormattedStartTime());
         sb.append("\n\tEnd time = ").append(getFormattedEndTime());
+        sb.append("\n\tStatus = ").append(status);
         sb.append("\n\tBatch duration = ").append(getFormattedBatchDuration());
         sb.append("\n\tData source = ").append(dataSource);
         sb.append("\n\tTotal records = ").append(totalRecords);

@@ -94,7 +94,8 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
             recordReader.open();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An exception occurred during opening data source reader", e);
-            return null;
+            easyBatchReport.setStatus(Status.ABORTED);
+            return easyBatchReport;
         }
 
         String dataSourceName = recordReader.getDataSourceName();
@@ -106,6 +107,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
             Integer totalRecords = recordReader.getTotalRecords();
             LOGGER.log(Level.INFO, "Total records = {0}", (totalRecords == null ? "N/A" : totalRecords));
+            easyBatchReport.setStatus(Status.RUNNING);
             LOGGER.info("easy batch engine is running...");
 
             easyBatchReport.setTotalRecords(totalRecords);
@@ -122,7 +124,8 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                     currentRecord = recordReader.readNextRecord();
                 } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record", e);
-                    return null;
+                    easyBatchReport.setStatus(Status.ABORTED);
+                    return easyBatchReport;
                 }
                 processedRecordsNumber++;
                 currentRecordNumber = currentRecord.getNumber();
@@ -193,6 +196,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
             easyBatchReport.setTotalRecords(processedRecordsNumber);
             easyBatchReport.setEndTime(System.currentTimeMillis());
+            easyBatchReport.setStatus(Status.FINISHED);
 
             // The batch result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
             RecordProcessor lastRecordProcessor = processingPipeline.get(processingPipeline.size() - 1);
