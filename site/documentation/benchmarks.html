@@ -69,17 +69,17 @@ public class Customer {
 
 <p>
     <kbd><i class="fa fa-terminal"></i> mvn clean install</kbd> <br/>
-    <kbd><i class="fa fa-terminal"></i> java -Dorg.easybatch.bench.count=10000 -cp "easybatch-bench-2.2.0:dependency/*" org.easybatch.bench.CsvBenchmark</kbd>
+    <kbd><i class="fa fa-terminal"></i> java -Dorg.easybatch.bench.count=10000 -cp "easybatch-bench-{{ site.version }}.jar:dependency/*" org.easybatch.bench.CsvBenchmark</kbd>
 </p>
 
 <p>
     <kbd><i class="fa fa-terminal"></i> mvn clean install</kbd> <br/>
-    <kbd><i class="fa fa-terminal"></i> java -Dorg.easybatch.bench.count=10000 -cp "easybatch-bench-2.2.0:dependency/*" org.easybatch.bench.XmlBenchmark</kbd>
+    <kbd><i class="fa fa-terminal"></i> java -Dorg.easybatch.bench.count=10000 -cp "easybatch-bench-{{ site.version }}.jar:dependency/*" org.easybatch.bench.XmlBenchmark</kbd>
 </p>
 
 <div class="alert alert-warning">
     <strong>Note:</strong> If you are using MS Windows, please use the <code>;</code> classpath separator in the previous commands as follows:
-    <p><em><strong>-cp "easybatch-bench-{{ site.version }};dependency/*"</strong></em> <br/></p>
+    <p><em><strong>-cp "easybatch-bench-{{ site.version }}.jar;dependency/*"</strong></em> <br/></p>
 </div>
 
         <p>Use the JVM property <code>-Dorg.easybatch.bench.count</code> to specify the number of records to generate.</p>
