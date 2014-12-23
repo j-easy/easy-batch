@@ -98,14 +98,14 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
         }
 
         String dataSourceName = recordReader.getDataSourceName();
-        LOGGER.info("Data source: " + dataSourceName);
+        LOGGER.log(Level.INFO, "Data source: {0}", dataSourceName);
         easyBatchReport.setDataSource(dataSourceName);
 
-        LOGGER.info("Strict mode: " + strictMode);
+        LOGGER.log(Level.INFO, "Strict mode: {0}", strictMode);
         try {
 
             Integer totalRecords = recordReader.getTotalRecords();
-            LOGGER.info("Total records = " + (totalRecords == null ? "N/A" : totalRecords));
+            LOGGER.log(Level.INFO, "Total records = {0}", (totalRecords == null ? "N/A" : totalRecords));
             LOGGER.info("easy batch engine is running...");
 
             easyBatchReport.setTotalRecords(totalRecords);
@@ -128,7 +128,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
                 //filter record if any
                 if (recordFilter.filterRecord(currentRecord)) {
-                    LOGGER.log(Level.INFO, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been filtered.");
+                    LOGGER.log(Level.INFO, "Record #{0} [{1}] has been filtered.", new Object[]{currentRecordNumber, currentRecord});
                     easyBatchReport.addFilteredRecord(currentRecordNumber);
                     continue;
                 }
@@ -228,11 +228,10 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
             if (!mbs.isRegistered(name)) {
                 easyBatchMonitor = new EasyBatchMonitor(easyBatchReport);
                 mbs.registerMBean(easyBatchMonitor, name);
-                LOGGER.info("Easy batch JMX MBean registered successfully as: " + name.getCanonicalName());
+                LOGGER.log(Level.INFO, "Easy batch JMX MBean registered successfully as: {0}", name.getCanonicalName());
             }
         } catch (Exception e) {
-            String error = "Unable to register Easy batch JMX MBean. Root exception is :" + e.getMessage();
-            LOGGER.log(Level.WARNING, error, e);
+            LOGGER.log(Level.WARNING, "Unable to register Easy batch JMX MBean. Root exception is :" + e.getMessage(), e);
         }
     }
 

@@ -34,7 +34,7 @@ class NoOpRejectedRecordHandler implements RejectedRecordHandler {
         for (ValidationError validationError : validationsErrors) {
             stringBuilder.append(validationError.getMessage()).append(" | ");
         }
-        LOGGER.log(Level.SEVERE, "Record #" + recordNumber + " [" + record + "] has been rejected. Validation error(s): " + stringBuilder.toString());
+        LOGGER.log(Level.SEVERE, "Record #{0} [{1}] has been rejected. Validation error(s): {2}", new Object[]{recordNumber, record, stringBuilder.toString()});
     }
 
 }

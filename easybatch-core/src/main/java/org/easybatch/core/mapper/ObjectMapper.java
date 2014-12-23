@@ -167,8 +167,7 @@ public class ObjectMapper<T> {
                     throw new Exception("Unable to convert '" + content + "' to type " + type + " for field " + headersMapping[index], e);
                 }
             } else {
-                LOGGER.log(Level.WARNING, "Type conversion not supported for type " + type +
-                        ", field " + headersMapping[index] + " will be set to null (if object type) or default value (if primitive type)");
+                LOGGER.log(Level.WARNING, "Type conversion not supported for type {0}, field {1} will be set to null (if object type) or default value (if primitive type)", new Object[]{type, headersMapping[index]});
             }
 
             //set the typed value to the object field
