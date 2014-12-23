@@ -14,10 +14,6 @@
     <description>Easy Batch integration module</description>
     <url>http://www.easybatch.org</url>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <developers>
         <developer>
             <id>benas</id>

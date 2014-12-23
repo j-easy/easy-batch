@@ -45,7 +45,7 @@ public class Benchmark {
 
     protected Engine engine;
 
-    @GenerateMicroBenchmark
+    @org.openjdk.jmh.annotations.Benchmark
     @BenchmarkMode(Mode.AverageTime)
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void runBatch() throws Exception {
