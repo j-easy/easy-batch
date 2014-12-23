@@ -48,6 +48,11 @@
         <tag>HEAD</tag>
     </scm>
 
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/benas/easy-batch/issues</url>
+    </issueManagement>
+
     <licenses>
         <license>
             <name>MIT License</name>
