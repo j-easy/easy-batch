@@ -27,6 +27,7 @@ package org.easybatch.tutorials.dispatcher;
 import org.easybatch.core.api.EasyBatchReport;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordDispatcher;
+import org.easybatch.core.filter.PoisonRecordFilter;
 import org.easybatch.core.impl.EasyBatchEngine;
 import org.easybatch.core.impl.EasyBatchEngineBuilder;
 import org.easybatch.core.util.*;
@@ -93,6 +94,7 @@ public class Launcher {
     public static EasyBatchEngine buildEasyBatchEngine(BlockingQueue<Record> queue) {
         return new EasyBatchEngineBuilder()
                 .readRecordsWith(new QueueRecordReader(queue))
+                .filterRecordsWith(new PoisonRecordFilter())
                 .build();
     }
 
