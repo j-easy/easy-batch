@@ -44,4 +44,9 @@ public class PoisonRecord implements Record<Object> {
         return new Object();
     }
 
+    @Override
+    public String toString() {
+        return "Poison Record";
+    }
+    
 }
