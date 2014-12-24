@@ -53,7 +53,7 @@ public class EasyBatchReportsAggregatorTest {
         report1.addSuccessRecord(5);
         report1.setStartTime(startTime1);
         report1.setEndTime(endTime1);
-        report1.setEasyBatchResult("result1");
+        report1.setBatchResult("result1");
         report1.setDataSource("datasource1");
         report1.setStatus(Status.ABORTED);
 
@@ -68,7 +68,7 @@ public class EasyBatchReportsAggregatorTest {
         report2.addSuccessRecord(10);
         report2.setStartTime(startTime2);
         report2.setEndTime(endTime2);
-        report2.setEasyBatchResult("result2");
+        report2.setBatchResult("result2");
         report2.setDataSource("datasource2");
         report2.setStatus(Status.ABORTED);
 
@@ -85,7 +85,7 @@ public class EasyBatchReportsAggregatorTest {
         assertEquals(11, finalReport.getEndTime());// max of end times
 
         //batch results
-        List<Object> results = (List<Object>) finalReport.getEasyBatchResult();
+        List<Object> results = (List<Object>) finalReport.getBatchResult();
         assertEquals("result1", results.get(0));
         assertEquals("result2", results.get(1));
 

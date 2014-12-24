@@ -205,7 +205,7 @@ public final class Engine implements Callable<Report> {
             if(lastRecordProcessor instanceof ComputationalRecordProcessor) {
                 ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor)lastRecordProcessor;
                 Object batchResult = computationalRecordProcessor.getComputationResult();
-                report.setEasyBatchResult(batchResult);
+                report.setBatchResult(batchResult);
             }
 
         } finally {

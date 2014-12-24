@@ -90,8 +90,8 @@ public class DefaultReportsAggregator implements ReportsAggregator {
             rejectedRecords.addAll(report.getRejectedRecords());
             errorRecords.addAll(report.getErrorRecords());
             successRecords.addAll(report.getSuccessRecords());
-            if (report.getEasyBatchResult() != null) {
-                results.add(report.getEasyBatchResult());
+            if (report.getBatchResult() != null) {
+                results.add(report.getBatchResult());
             }
             if (Status.ABORTED.equals(report.getStatus())) {
                 finalReport.setStatus(Status.ABORTED);
@@ -119,7 +119,7 @@ public class DefaultReportsAggregator implements ReportsAggregator {
             finalReport.addSuccessRecord(successRecord);
         }
         if (!results.isEmpty()) {
-            finalReport.setEasyBatchResult(results);
+            finalReport.setBatchResult(results);
         }
 
         //data sources
