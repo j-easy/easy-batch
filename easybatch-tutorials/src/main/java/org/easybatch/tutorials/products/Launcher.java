@@ -25,7 +25,7 @@
 package org.easybatch.tutorials.products;
 
 import org.easybatch.core.api.Report;
-import org.easybatch.core.filter.StartWithStringRecordFilter;
+import org.easybatch.core.filter.HeaderRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
@@ -51,7 +51,7 @@ public class Launcher {
         // Build a batch engine
         Engine engine = new EngineBuilder()
                 .readRecordsWith(new FlatFileRecordReader(new File(args[0]))) //read data from products.csv
-                .filterRecordsWith(new StartWithStringRecordFilter("\"id\""))
+                .filterRecordsWith(new HeaderRecordFilter())
                 .mapRecordsWith(productMapper)
                 .processRecordsWith(new ProductProcessor())
                 .build();

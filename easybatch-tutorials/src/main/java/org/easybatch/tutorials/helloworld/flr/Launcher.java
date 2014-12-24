@@ -25,7 +25,7 @@
 package org.easybatch.tutorials.helloworld.flr;
 
 import org.easybatch.core.api.Report;
-import org.easybatch.core.filter.StartWithStringRecordFilter;
+import org.easybatch.core.filter.HeaderRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
@@ -47,7 +47,7 @@ public class Launcher {
         // Build a batch engine
         Engine engine = new EngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
-                .registerRecordFilter(new StartWithStringRecordFilter("#"))
+                .registerRecordFilter(new HeaderRecordFilter())
                 .registerRecordMapper(new FixedLengthRecordMapper<Greeting>(
                         Greeting.class,
                         new int[]{3,3},

@@ -25,6 +25,7 @@
 package org.easybatch.tutorials.helloworld.memory;
 
 import org.easybatch.core.api.Report;
+import org.easybatch.core.filter.HeaderRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.util.StringRecordReader;
@@ -44,12 +45,14 @@ public class Launcher {
 
         // Create the String data source
         String dataSource =
+                "id,name\n" +
                 "1,foo\n" +
                 "2,bar";
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
                 .readRecordsWith(new StringRecordReader(dataSource))
+                .filterRecordsWith(new HeaderRecordFilter())
                 .mapRecordsWith(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
                 .processRecordsWith(new GreetingTransformer())
                 .thenWith(new GreetingProcessor())

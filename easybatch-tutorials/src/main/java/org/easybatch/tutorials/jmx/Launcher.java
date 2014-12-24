@@ -25,10 +25,10 @@
 package org.easybatch.tutorials.jmx;
 
 import org.easybatch.core.api.Report;
+import org.easybatch.core.filter.HeaderRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
-import org.easybatch.core.filter.StartWithStringRecordFilter;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import org.easybatch.tutorials.common.Greeting;
 import org.easybatch.validation.BeanValidationRecordValidator;
@@ -47,7 +47,7 @@ public class Launcher {
         // Build a batch engine
         Engine engine = new EngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
-                .registerRecordFilter(new StartWithStringRecordFilter("#"))
+                .registerRecordFilter(new HeaderRecordFilter())
                 .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
                 .registerRecordValidator(new BeanValidationRecordValidator<Greeting>())
                 .registerRecordProcessor(new GreetingSlowProcessor())
