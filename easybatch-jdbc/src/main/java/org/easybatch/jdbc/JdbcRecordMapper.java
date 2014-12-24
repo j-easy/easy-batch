@@ -26,6 +26,7 @@ package org.easybatch.jdbc;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.converter.TypeConverter;
 import org.easybatch.core.mapper.ObjectMapper;
 
 import java.sql.ResultSet;
@@ -83,6 +84,15 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
             fieldsContents[i - 1] = resultSet.getString(i);
         }
         return objectMapper.mapObject(fieldsContents);
+    }
+
+    /**
+     * Register a custom type converter.
+     * @param type the target type
+     * @param typeConverter the type converter to user
+     */
+    public void registerTypeConverter(final Class type, final TypeConverter typeConverter) {
+        objectMapper.registerTypeConverter(type, typeConverter);
     }
 
 }
