@@ -22,19 +22,43 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.test;
+package org.easybatch.core.filter;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import org.easybatch.core.util.PoisonRecord;
+import org.easybatch.core.util.StringRecord;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * Test suite for easy batch core module.
+ * Test class for {@link PoisonRecordFilter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-@RunWith(Suite.class)
-@Suite.SuiteClasses( {
-        ObjectMapperTest.class,
-        RecordFiltersTest.class})
-public class CoreTestsSuite {
+public class PoisonRecordFilterTest {
+
+    private PoisonRecordFilter poisonRecordFilter;
+
+    @Before
+    public void setUp() throws Exception {
+        poisonRecordFilter = new PoisonRecordFilter();
+    }
+
+    @Test
+    public void whenTheRecordIsOfTypePoisonRecordThenItShouldBeFiltered() {
+        assertThat(poisonRecordFilter.filterRecord(new PoisonRecord())).isTrue();
+        assertThat(poisonRecordFilter.filterRecord(new CustomPoisonRecord())).isTrue();
+    }
+
+    @Test
+    public void whenTheRecordIsNotOfTypePoisonRecordThenItNotShouldBeFiltered() {
+        assertThat(poisonRecordFilter.filterRecord(new StringRecord(1, "foo"))).isFalse();
+    }
+
+    class CustomPoisonRecord extends PoisonRecord {
+        public CustomPoisonRecord() {
+        }
+    }
+
 }

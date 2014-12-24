@@ -24,29 +24,22 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
+import org.easybatch.core.util.StringRecord;
+import org.junit.Before;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters records
- * if their number is outside a given range.
+ * Base class for common record filter tests.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordNumberOutsideRangeRecordFilter extends AbstractRecordNumberRangeRecordFilter {
+public class BaseRecordFilterTest {
 
-    /**
-     * @param lowerBound  Record number range lower bound.
-     * @param higherBound Record number range higher bound.
-     */
-    public RecordNumberOutsideRangeRecordFilter(long lowerBound, long higherBound) {
-        super(lowerBound, higherBound);
-    }
+    protected StringRecord stringRecord1, stringRecord2;
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean filterRecord(final Record record) {
-        return record.getNumber() < lowerBound && record.getNumber() > higherBound;
+    @Before
+    public void setUp() throws Exception {
+        stringRecord1 = new StringRecord(1, "prefix1_content1_suffix1");
+        stringRecord2 = new StringRecord(2, "prefix2_content2_suffix2");
     }
 
 }

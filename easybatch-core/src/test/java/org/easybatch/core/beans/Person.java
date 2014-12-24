@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.test;
+package org.easybatch.core.beans;
 
 import java.util.Date;
 

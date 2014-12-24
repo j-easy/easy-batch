@@ -22,22 +22,33 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.test;
+package org.easybatch.core.filter;
+
+import org.junit.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * Extended Person bean.
+ * Test class for {@link org.easybatch.core.filter.RecordNumberLowerThanFilter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ExtendedPerson extends Person {
+public class RecordNumberLowerThanFilterTest extends BaseRecordFilterTest {
 
-    protected String nickName;
+    private RecordNumberLowerThanFilter recordNumberLowerThanFilter;
 
-    public String getNickName() {
-        return nickName;
+    @Test
+    public void whenTheRecordNumberIsLowerThanExpectedNumberThenItShouldBeFiltered() {
+        recordNumberLowerThanFilter = new RecordNumberLowerThanFilter(3);
+        assertThat(recordNumberLowerThanFilter.filterRecord(stringRecord1)).isTrue();
+        assertThat(recordNumberLowerThanFilter.filterRecord(stringRecord2)).isTrue();
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    @Test
+    public void whenTheRecordNumberIsGreaterThanOrEqualToExpectedNumberThenItShouldNotBeFiltered() {
+        recordNumberLowerThanFilter = new RecordNumberLowerThanFilter(1);
+        assertThat(recordNumberLowerThanFilter.filterRecord(stringRecord1)).isFalse();
+        assertThat(recordNumberLowerThanFilter.filterRecord(stringRecord2)).isFalse();
     }
+
 }

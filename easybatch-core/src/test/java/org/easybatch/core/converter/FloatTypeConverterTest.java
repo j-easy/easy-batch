@@ -22,31 +22,29 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.filter;
+package org.easybatch.core.converter;
 
-import org.easybatch.core.api.Record;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters flat records
- * if their number is inside a given range.
+ * Test class for {@link org.easybatch.core.converter.FloatTypeConverter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordNumberInsideRangeRecordFilter extends AbstractRecordNumberRangeRecordFilter {
+public class FloatTypeConverterTest extends BaseConverterTest<Float> {
 
-    /**
-     * @param lowerBound  Record number range lower bound.
-     * @param higherBound Record number range higher bound.
-     */
-    public RecordNumberInsideRangeRecordFilter(final long lowerBound, final long higherBound) {
-        super(lowerBound, higherBound);
+    @Before
+    public void setUp() throws Exception {
+        converter = new FloatTypeConverter();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean filterRecord(final Record record) {
-        return record.getNumber() > lowerBound && record.getNumber() < higherBound;
+    @Test
+    public void whenInputIsLegalValueThenShouldReturnFloat() {
+        assertThat(converter.convert("5")).isNotNull();
+        assertThat(converter.convert("5")).isEqualTo(5);
     }
 
 }
