@@ -31,6 +31,7 @@ import java.util.Date;
 /**
  * java.util.Date type converter.
  * Converts a String date (by default in the "yyyy-MM-dd" format) to a java.util.Date type.
+ * Does not accept null or empty strings.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -47,7 +48,7 @@ public class DateTypeConverter implements TypeConverter<Date> {
     private String dateFormat;
 
     /**
-     * Create a Date converter with the default format {@link DateTypeConverter#DEFAULT_DATE_FORMAT}
+     * Create a Date converter with the default format {@link org.easybatch.core.converter.DateTypeConverter#DEFAULT_DATE_FORMAT}
      */
     public DateTypeConverter() {
         this(DEFAULT_DATE_FORMAT);
@@ -65,6 +66,12 @@ public class DateTypeConverter implements TypeConverter<Date> {
      * {@inheritDoc}
      */
     public Date convert(final String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value to convert must not be null");
+        }
+        if (value.isEmpty()) {
+            throw new IllegalArgumentException("Value to convert must not be empty");
+        }
         try {
             return new SimpleDateFormat(dateFormat).parse(value);
         } catch (ParseException e) {

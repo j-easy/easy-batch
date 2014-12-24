@@ -26,6 +26,8 @@ package org.easybatch.core.converter;
 
 /**
  * Character type converter.
+ * Picks the first character of a string.
+ * Does not accept null or empty strings.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -35,6 +37,12 @@ public class CharacterTypeConverter implements TypeConverter<Character> {
      * {@inheritDoc}
      */
     public Character convert(final String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value to convert must not be null");
+        }
+        if (value.isEmpty()) {
+            throw new IllegalArgumentException("Value to convert must not be empty");
+        }
         return value.charAt(0);
     }
 

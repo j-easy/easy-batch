@@ -28,6 +28,7 @@ import java.math.BigInteger;
 
 /**
  * BigInteger type converter.
+ * Does not accept null or empty strings.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -37,6 +38,12 @@ public class BigIntegerTypeConverter implements TypeConverter<BigInteger> {
      * {@inheritDoc}
      */
     public BigInteger convert(final String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value to convert must not be null");
+        }
+        if (value.isEmpty()) {
+            throw new IllegalArgumentException("Value to convert must not be empty");
+        }
         return new BigInteger(value);
     }
 

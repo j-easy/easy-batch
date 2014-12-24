@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 
 /**
  * BigDecimal type converter.
+ * Does not accept null or empty strings.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -37,6 +38,12 @@ public class BigDecimalTypeConverter implements TypeConverter<BigDecimal> {
      * {@inheritDoc}
      */
     public BigDecimal convert(final String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value to convert must not be null");
+        }
+        if (value.isEmpty()) {
+            throw new IllegalArgumentException("Value to convert must not be empty");
+        }
         return new BigDecimal(value);
     }
 

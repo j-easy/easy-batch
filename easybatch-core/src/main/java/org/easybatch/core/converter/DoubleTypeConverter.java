@@ -26,6 +26,7 @@ package org.easybatch.core.converter;
 
 /**
  * Double type converter.
+ * Does not accept null or empty strings.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -35,6 +36,12 @@ public class DoubleTypeConverter implements TypeConverter<Double> {
      * {@inheritDoc}
      */
     public Double convert(final String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value to convert must not be null");
+        }
+        if (value.isEmpty()) {
+            throw new IllegalArgumentException("Value to convert must not be empty");
+        }
         return Double.valueOf(value);
     }
 

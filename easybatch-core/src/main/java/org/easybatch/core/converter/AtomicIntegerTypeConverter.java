@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * AtomicInteger type converter.
+ * Does not accept null or empty strings.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -37,6 +38,12 @@ public class AtomicIntegerTypeConverter implements TypeConverter<AtomicInteger> 
      * {@inheritDoc}
      */
     public AtomicInteger convert(final String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value to convert must not be null");
+        }
+        if (value.isEmpty()) {
+            throw new IllegalArgumentException("Value to convert must not be empty");
+        }
         return new AtomicInteger(Integer.valueOf(value));
     }
 
