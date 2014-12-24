@@ -28,30 +28,37 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters flat file records
- * if their number is lower than a given number.
+ * A {@link org.easybatch.core.api.RecordFilter} that filters records
+ * if their number is inside (inclusive) a given range.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordNumberLowerThanRecordFilter implements RecordFilter {
+public class RecordNumberBetweenFilter implements RecordFilter {
 
     /**
-     * Record number under which records will be filtered.
+     * Record number range lower bound.
      */
-    private long number;
+    protected long lowerBound;
 
     /**
-     * @param number record number under which records will be filtered.
+     * Record number range higher bound.
      */
-    public RecordNumberLowerThanRecordFilter(final long number) {
-        this.number = number;
+    protected long higherBound;
+
+    /**
+     * @param lowerBound Record number range lower bound.
+     * @param higherBound Record number range higher bound.
+     */
+    public RecordNumberBetweenFilter(final long lowerBound, final long higherBound) {
+        this.lowerBound = lowerBound;
+        this.higherBound = higherBound;
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean filterRecord(final Record record) {
-        return record.getNumber() < number;
+        return record.getNumber() >= lowerBound && record.getNumber() <= higherBound;
     }
 
 }

@@ -28,50 +28,30 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters flat file records based on their number.
- * The parameter negate can be set to true to inverse this behavior :
- * this filter will filter records which number is not equal to any of the given numbers.
+ * A {@link org.easybatch.core.api.RecordFilter} that filters flat file records
+ * if their number is lower than a given number.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordNumberEqualsToRecordFilter implements RecordFilter {
+public class RecordNumberLowerThanFilter implements RecordFilter {
 
     /**
-     * Record numbers that causes the record to be filtered.
+     * Record number under which records will be filtered.
      */
-    private long[] numbers;
+    private long number;
 
     /**
-     * Parameter to filter a record if its number is not equal to one of the given numbers.
+     * @param number record number under which records will be filtered.
      */
-    private boolean negate;
-
-    /**
-     * @param numbers record numbers that cause the record to be filtered.
-     */
-    public RecordNumberEqualsToRecordFilter(final long... numbers) {
-        this(false, numbers);
-    }
-
-    /**
-     * @param negate true if the filter should filter records which number is not equal to any of the given numbers.
-     * @param numbers record numbers that cause the record to be filtered.
-     */
-    public RecordNumberEqualsToRecordFilter(final boolean negate, final long... numbers) {
-        this.negate = negate;
-        this.numbers = numbers;
+    public RecordNumberLowerThanFilter(final long number) {
+        this.number = number;
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean filterRecord(final Record record) {
-        for (long number : numbers) {
-            if (record.getNumber() == number) {
-                return !negate;
-            }
-        }
-        return false;
+        return record.getNumber() < number;
     }
 
 }

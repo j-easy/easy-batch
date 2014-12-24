@@ -25,8 +25,8 @@
 package org.easybatch.tutorials.parallel;
 
 import org.easybatch.core.api.Report;
-import org.easybatch.core.filter.RecordNumberGreaterThanRecordFilter;
-import org.easybatch.core.filter.RecordNumberLowerThanRecordFilter;
+import org.easybatch.core.filter.RecordNumberGreaterThanFilter;
+import org.easybatch.core.filter.RecordNumberLowerThanFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
@@ -73,14 +73,14 @@ public class SingleFileLauncher {
         // Build a batch engine1
         Engine engine1 = new EngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
-                .registerRecordFilter(new RecordNumberGreaterThanRecordFilter(5)) // filter records 6-10
+                .registerRecordFilter(new RecordNumberGreaterThanFilter(5)) // filter records 6-10
                 .registerRecordProcessor(new MessageEncrypter())
                 .build();
 
         // Build a batch engine2
         Engine engine2 = new EngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
-                .registerRecordFilter(new RecordNumberLowerThanRecordFilter(6)) // filter records 1-5
+                .registerRecordFilter(new RecordNumberLowerThanFilter(6)) // filter records 1-5
                 .registerRecordProcessor(new MessageEncrypter())
                 .build();
 

@@ -28,30 +28,51 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters flat file records
- * if their number is greater than a given number.
+ * A {@link org.easybatch.core.api.RecordFilter} that filters string records starting with one of the given prefixes.
+ * The parameter negate can be set to true to inverse this behavior :
+ * this filter will filter records that do not start with one of the given prefixes.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordNumberGreaterThanRecordFilter implements RecordFilter {
+public class StartWithStringRecordFilter implements RecordFilter {
 
     /**
-     * Record number after which records will be filtered.
+     * Prefixes that causes the record to be filtered.
      */
-    private long number;
+    private String[] prefixes;
 
     /**
-     * @param number record number after which records will be filtered.
+     * Parameter to filter a record if it does not start with one of the given prefixes.
      */
-    public RecordNumberGreaterThanRecordFilter(final long number) {
-        this.number = number;
+    private boolean negate;
+
+    /**
+     * @param prefixes prefixes that cause the record to be filtered.
+     */
+    public StartWithStringRecordFilter(final String... prefixes) {
+        this(false, prefixes);
+    }
+
+    /**
+     * @param negate true if the filter should filter records that do not start with any of the given prefixes.
+     * @param prefixes prefixes that cause the record to be filtered.
+     */
+    public StartWithStringRecordFilter(final boolean negate, final String... prefixes) {
+        this.negate = negate;
+        this.prefixes = prefixes;
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean filterRecord(final Record record) {
-        return record.getNumber() > number;
+        String recordRawContent = (String) record.getRawContent();
+        for (String prefix : prefixes) {
+            if (recordRawContent.startsWith(prefix)) {
+                return !negate;
+            }
+        }
+        return false;
     }
 
 }

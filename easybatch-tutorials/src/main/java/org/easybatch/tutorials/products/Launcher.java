@@ -25,7 +25,7 @@
 package org.easybatch.tutorials.products;
 
 import org.easybatch.core.api.Report;
-import org.easybatch.core.filter.StartsWithStringRecordFilter;
+import org.easybatch.core.filter.StartWithStringRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
@@ -51,7 +51,7 @@ public class Launcher {
         // Build a batch engine
         Engine engine = new EngineBuilder()
                 .readRecordsWith(new FlatFileRecordReader(new File(args[0]))) //read data from products.csv
-                .filterRecordsWith(new StartsWithStringRecordFilter("\"id\""))
+                .filterRecordsWith(new StartWithStringRecordFilter("\"id\""))
                 .mapRecordsWith(productMapper)
                 .processRecordsWith(new ProductProcessor())
                 .build();
@@ -63,7 +63,7 @@ public class Launcher {
         System.out.println(report);
 
         // Get the batch computation result
-        Double maxProductPrice = (Double) report.getEasyBatchResult();
+        Double maxProductPrice = (Double) report.getBatchResult();
 
         // Print the maximum price
         System.out.println("The maximum product price for national published products is : " + maxProductPrice);
