@@ -1,0 +1,95 @@
+/*
+ * The MIT License
+ *
+ *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
+
+package org.easybatch.core.util;
+
+import org.easybatch.core.api.Record;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.fest.assertions.Assertions.assertThat;
+
+/**
+ * Test class for {@link ListRecordReader}.
+ *
+ * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ */
+public class ListRecordReaderTest {
+
+    public static final String EXPECTED_DATA_SOURCE_NAME = "In-Memory List";
+
+    public static final String RECORD_CONTENT = "foo";
+
+    private ListRecordReader<String> listRecordReader;
+
+    List<String> dataSource = new ArrayList<String>();
+
+    @Before
+    public void setUp() throws Exception {
+        List<String> dataSource = new ArrayList<String>();
+        dataSource.add(RECORD_CONTENT);
+        listRecordReader = new ListRecordReader<String>(dataSource);
+    }
+
+    @Test
+    public void whenTheDataSourceIsNotEmptyThenItShouldBeANextRecordToRead() throws Exception {
+        assertThat(listRecordReader.hasNextRecord()).isTrue();
+    }
+
+    @Test
+    public void whenTheDataSourceIsEmptyThenItShouldNotBeANextRecordToRead() throws Exception {
+        dataSource.clear();
+        listRecordReader = new ListRecordReader<String>(dataSource);
+        assertThat(listRecordReader.hasNextRecord()).isFalse();
+    }
+
+    @Test
+    public void whenTheDataSourceIsNotEmptyThenTotalRecordsShouldBeEqualToTheListSize() throws Exception {
+        assertThat(listRecordReader.getTotalRecords()).isEqualTo(1);
+    }
+
+    @Test
+    public void whenTheDataSourceIsEmptyThenTotalRecordsShouldBeEqualToZero() throws Exception {
+        dataSource.clear();
+        listRecordReader = new ListRecordReader<String>(dataSource);
+        assertThat(listRecordReader.getTotalRecords()).isEqualTo(0);
+    }
+
+    @Test
+    public void whenTheDataSourceIsNotEmptyThenTheNextRecordShouldBeReadFromTheList() throws Exception {
+        Record<String> record = listRecordReader.readNextRecord();
+        assertThat(record).isInstanceOf(GenericRecord.class);
+        assertThat(record.getNumber()).isEqualTo(1);
+        assertThat(record.getRawContent()).isEqualTo(RECORD_CONTENT);
+    }
+
+    @Test
+    public void theDataSourceNameShouldBeEqualToInMemoryList() throws Exception {
+        assertThat(listRecordReader.getDataSourceName()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
+    }
+
+}
