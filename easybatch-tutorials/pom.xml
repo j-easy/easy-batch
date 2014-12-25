@@ -281,7 +281,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.helloworld.memory.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.helloworld.memory.StringDataSourceTutorialLauncher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>

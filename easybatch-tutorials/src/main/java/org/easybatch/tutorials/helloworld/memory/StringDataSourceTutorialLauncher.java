@@ -35,11 +35,11 @@ import org.easybatch.tutorials.common.GreetingProcessor;
 import org.easybatch.tutorials.common.GreetingTransformer;
 
 /**
-* Main class to run the hello world in-memory data source tutorial.
+* Main class to run the hello world in-memory String data source tutorial.
  *
 * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
 */
-public class Launcher {
+public class StringDataSourceTutorialLauncher {
 
     public static void main(String[] args) throws Exception {
 
