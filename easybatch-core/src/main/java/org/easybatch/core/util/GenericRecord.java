@@ -27,14 +27,42 @@ package org.easybatch.core.util;
 import org.easybatch.core.api.Record;
 
 /**
- * A {@link Record} implementation that has textual data as raw content.
+ * General purpose record implementation.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class StringRecord extends GenericRecord<String> {
+public class GenericRecord<T> implements Record<T> {
 
-    public StringRecord(final int recordNumber, final String rawContent) {
-        super(recordNumber, rawContent);
+    /**
+     * The record number in the data source.
+     */
+    protected int recordNumber;
+
+    /**
+     * The record raw content.
+     */
+    protected T rawContent;
+
+    public GenericRecord(final int recordNumber, final T rawContent) {
+        this.recordNumber = recordNumber;
+        this.rawContent = rawContent;
+    }
+
+    public int getNumber() {
+        return recordNumber;
+    }
+
+    public T getRawContent() {
+        return rawContent;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Record{");
+        sb.append("number=").append(recordNumber);
+        sb.append(", rawContent='").append(rawContent).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 
 }
