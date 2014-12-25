@@ -35,6 +35,11 @@ public class Greeting {
 
     private String name;
 
+    public Greeting(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }
