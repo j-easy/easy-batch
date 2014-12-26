@@ -22,12 +22,11 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tools.reporting.test;
+package org.easybatch.tools.reporting;
 
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
-import org.easybatch.tools.reporting.DefaultReportMerger;
-import org.easybatch.tools.reporting.ReportMerger;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -37,7 +36,14 @@ import static org.junit.Assert.assertEquals;
 /**
  * Test class for {@link org.easybatch.tools.reporting.ReportMerger}.
  */
-public class ReportMergerTest {
+public class DefaultReportMergerTest {
+
+    private ReportMerger reportMerger;
+
+    @Before
+    public void setUp() throws Exception {
+        reportMerger = new DefaultReportMerger();
+    }
 
     @Test
     public void testReportsMerging() throws Exception {
@@ -72,7 +78,6 @@ public class ReportMergerTest {
         report2.setDataSource("datasource2");
         report2.setStatus(Status.ABORTED);
 
-        ReportMerger reportMerger = new DefaultReportMerger();
         Report finalReport = reportMerger.mergerReports(report1, report2);
 
         assertEquals(new Integer(10), finalReport.getTotalRecords()); //sum of total records
