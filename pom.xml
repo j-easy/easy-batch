@@ -19,15 +19,15 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.12</junit.version>
-        <fest-assert-version>1.4</fest-assert-version>
-        <maven-dependency-plugin-version>2.9</maven-dependency-plugin-version>
-        <maven-checkstyle-plugin-version>2.13</maven-checkstyle-plugin-version>
-        <maven-pmd-plugin-version>3.3</maven-pmd-plugin-version>
-        <findbugs-maven-plugin-version>3.0.0</findbugs-maven-plugin-version>
-        <maven-jxr-plugin-version>2.5</maven-jxr-plugin-version>
-        <taglist-maven-plugin-version>2.4</taglist-maven-plugin-version>
-        <maven-project-info-reports-plugin-version>2.7</maven-project-info-reports-plugin-version>
-        <cobertura-maven-plugin-version>2.6</cobertura-maven-plugin-version>
+        <fest-assert.version>1.4</fest-assert.version>
+        <maven-dependency-plugin.version>2.9</maven-dependency-plugin.version>
+        <maven-checkstyle-plugin.version>2.13</maven-checkstyle-plugin.version>
+        <maven-pmd-plugin.version>3.3</maven-pmd-plugin.version>
+        <findbugs-maven-plugin.version>3.0.0</findbugs-maven-plugin.version>
+        <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
+        <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
+        <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
+        <cobertura-maven-plugin.version>2.6</cobertura-maven-plugin.version>
     </properties>
     
     <modules>
@@ -150,7 +150,7 @@
             <dependency>
                 <groupId>org.easytesting</groupId>
                 <artifactId>fest-assert</artifactId>
-                <version>${fest-assert-version}</version>
+                <version>${fest-assert.version}</version>
                 <scope>test</scope>
             </dependency>
 
