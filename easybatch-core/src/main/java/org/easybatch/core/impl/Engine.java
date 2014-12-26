@@ -45,7 +45,7 @@ public final class Engine implements Callable<Report> {
 
     private static final Logger LOGGER = Logger.getLogger(Engine.class.getName());
 
-    public static final String STRICT_MODE_MESSAGE = "Strict mode enabled : aborting execution";
+    private static final String STRICT_MODE_MESSAGE = "Strict mode enabled: aborting execution";
 
     private RecordReader recordReader;
 
@@ -61,6 +61,8 @@ public final class Engine implements Callable<Report> {
 
     private Report report;
 
+    private FilteredRecordHandler filteredRecordHandler;
+
     private IgnoredRecordHandler ignoredRecordHandler;
 
     private RejectedRecordHandler rejectedRecordHandler;
@@ -69,14 +71,21 @@ public final class Engine implements Callable<Report> {
 
     private boolean strictMode;
 
-    Engine(final RecordReader recordReader, final RecordFilter recordFilter, final RecordMapper recordMapper,
-           final RecordValidator recordValidator, final List<RecordProcessor> processingPipeline,
-           final IgnoredRecordHandler ignoredRecordHandler, final RejectedRecordHandler rejectedRecordHandler, final ErrorRecordHandler errorRecordHandler) {
+    Engine(final RecordReader recordReader,
+           final RecordFilter recordFilter,
+           final RecordMapper recordMapper,
+           final RecordValidator recordValidator,
+           final List<RecordProcessor> processingPipeline,
+           final FilteredRecordHandler filteredRecordHandler,
+           final IgnoredRecordHandler ignoredRecordHandler,
+           final RejectedRecordHandler rejectedRecordHandler,
+           final ErrorRecordHandler errorRecordHandler) {
         this.recordReader = recordReader;
         this.recordFilter = recordFilter;
         this.recordMapper = recordMapper;
         this.recordValidator = recordValidator;
         this.processingPipeline = processingPipeline;
+        this.filteredRecordHandler = filteredRecordHandler;
         this.ignoredRecordHandler = ignoredRecordHandler;
         this.rejectedRecordHandler = rejectedRecordHandler;
         this.errorRecordHandler = errorRecordHandler;
@@ -135,8 +144,8 @@ public final class Engine implements Callable<Report> {
 
                 //filter record if any
                 if (recordFilter.filterRecord(currentRecord)) {
-                    LOGGER.log(Level.INFO, "Record #{0} [{1}] has been filtered.", new Object[]{currentRecordNumber, currentRecord});
                     report.addFilteredRecord(currentRecordNumber);
+                    filteredRecordHandler.handle(currentRecord);
                     continue;
                 }
 
@@ -242,6 +251,10 @@ public final class Engine implements Callable<Report> {
         }
     }
 
+    /*
+     * Setters for engine parameters
+     */
+
     void setRecordFilter(final RecordFilter recordFilter) {
         this.recordFilter = recordFilter;
     }
@@ -260,6 +273,10 @@ public final class Engine implements Callable<Report> {
 
     void addRecordProcessor(final RecordProcessor recordProcessor) {
         this.processingPipeline.add(recordProcessor);
+    }
+
+    void setFilteredRecordHandler(final FilteredRecordHandler filteredRecordHandler) {
+        this.filteredRecordHandler = filteredRecordHandler;
     }
 
     void setIgnoredRecordHandler(final IgnoredRecordHandler ignoredRecordHandler) {
