@@ -30,7 +30,7 @@ import org.easybatch.core.api.Status;
 import java.util.*;
 
 /**
- * A report aggregator that generate a merged report defined as follows:
+ * A report merger that generates a merged report defined as follows:
  * <ul>
  *     <li>The start time is the minimum of start times</li>
  *     <li>The end time is the maximum of end times</li>
@@ -49,14 +49,14 @@ import java.util.*;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class DefaultReportsAggregator implements ReportsAggregator {
+public class DefaultReportMerger implements ReportMerger {
 
     /**
-     * Merge multiple Easy Batch reports into a consolidated one.
-     * @param easyBatchReports reports to merge
+     * Merge multiple reports into a consolidated one.
+     * @param reports reports to merge
      * @return a merged report
      */
-    public Report aggregateReports(Report... easyBatchReports) {
+    public Report mergerReports(Report... reports) {
 
         List<Long> startTimes = new ArrayList<Long>();
 
@@ -81,7 +81,7 @@ public class DefaultReportsAggregator implements ReportsAggregator {
         //calculate aggregate results
         Report finalReport = new Report();
         finalReport.setStatus(Status.FINISHED);
-        for (Report report : easyBatchReports) {
+        for (Report report : reports) {
             startTimes.add(report.getStartTime());
             endTimes.add(report.getEndTime());
             totalRecords += report.getTotalRecords();

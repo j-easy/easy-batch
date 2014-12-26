@@ -26,8 +26,8 @@ package org.easybatch.tools.reporting.test;
 
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
-import org.easybatch.tools.reporting.DefaultReportsAggregator;
-import org.easybatch.tools.reporting.ReportsAggregator;
+import org.easybatch.tools.reporting.DefaultReportMerger;
+import org.easybatch.tools.reporting.ReportMerger;
 import org.junit.Test;
 
 import java.util.List;
@@ -35,9 +35,9 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Test class for {@link org.easybatch.tools.reporting.ReportsAggregator}.
+ * Test class for {@link org.easybatch.tools.reporting.ReportMerger}.
  */
-public class EasyBatchReportsAggregatorTest {
+public class ReportMergerTest {
 
     @Test
     public void testReportsMerging() throws Exception {
@@ -72,8 +72,8 @@ public class EasyBatchReportsAggregatorTest {
         report2.setDataSource("datasource2");
         report2.setStatus(Status.ABORTED);
 
-        ReportsAggregator reportsAggregator = new DefaultReportsAggregator();
-        Report finalReport = reportsAggregator.aggregateReports(report1, report2);
+        ReportMerger reportMerger = new DefaultReportMerger();
+        Report finalReport = reportMerger.mergerReports(report1, report2);
 
         assertEquals(new Integer(10), finalReport.getTotalRecords()); //sum of total records
         assertEquals(2, finalReport.getFilteredRecordsCount());// sum of filtered records

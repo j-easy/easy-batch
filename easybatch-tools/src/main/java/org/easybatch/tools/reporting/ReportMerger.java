@@ -31,13 +31,13 @@ import org.easybatch.core.api.Report;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface ReportsAggregator {
+public interface ReportMerger {
 
     /**
      * Merge multiple reports into a consolidated one.
      * @param reports reports to merge
      * @return a merged report
      */
-    Report aggregateReports(Report... reports);
+    Report mergerReports(Report... reports);
 
 }

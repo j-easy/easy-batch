@@ -31,8 +31,8 @@ import org.easybatch.core.filter.PoisonRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.util.*;
-import org.easybatch.tools.reporting.DefaultReportsAggregator;
-import org.easybatch.tools.reporting.ReportsAggregator;
+import org.easybatch.tools.reporting.DefaultReportMerger;
+import org.easybatch.tools.reporting.ReportMerger;
 
 import java.util.Arrays;
 import java.util.concurrent.*;
@@ -81,9 +81,9 @@ public class Launcher {
         Report report1 = reportFuture1.get();
         Report report2 = reportFuture2.get();
 
-        //aggregate partial reports into a global one
-        ReportsAggregator reportsAggregator = new DefaultReportsAggregator();
-        Report finalReport = reportsAggregator.aggregateReports(report1, report2);
+        //merge partial reports into a global one
+        ReportMerger reportMerger = new DefaultReportMerger();
+        Report finalReport = reportMerger.mergerReports(report1, report2);
         System.out.println(finalReport);
 
         //shutdown executor service
