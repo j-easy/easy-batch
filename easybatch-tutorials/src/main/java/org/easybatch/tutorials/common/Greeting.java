@@ -35,6 +35,9 @@ public class Greeting {
 
     private String name;
 
+    public Greeting() {
+    }
+
     public Greeting(int id, String name) {
         this.id = id;
         this.name = name;
