@@ -29,6 +29,8 @@ import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.springframework.beans.factory.FactoryBean;
 
+import java.util.List;
+
 /**
  * Spring Factory Bean that creates batch instances.
  *
@@ -44,7 +46,7 @@ public class BatchFactoryBean implements FactoryBean {
 
     private RecordValidator recordValidator;
 
-    private RecordProcessor recordProcessor;
+    private List<RecordProcessor> processingPipeline;
 
     @Override
     public Object getObject() throws Exception {
@@ -61,8 +63,10 @@ public class BatchFactoryBean implements FactoryBean {
         if (recordValidator != null) {
             engineBuilder.registerRecordValidator(recordValidator);
         }
-        if (recordProcessor != null) {
-            engineBuilder.registerRecordProcessor(recordProcessor);
+        if (processingPipeline != null) {
+            for (RecordProcessor recordProcessor : processingPipeline) {
+                engineBuilder.processor(recordProcessor);
+            }
         }
         return engineBuilder.build();
     }
@@ -95,8 +99,8 @@ public class BatchFactoryBean implements FactoryBean {
         this.recordValidator = recordValidator;
     }
 
-    public void setRecordProcessor(RecordProcessor recordProcessor) {
-        this.recordProcessor = recordProcessor;
+    public void setProcessingPipeline(List<RecordProcessor> processingPipeline) {
+        this.processingPipeline = processingPipeline;
     }
 
 

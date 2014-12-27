@@ -32,7 +32,11 @@
     <bean id="engine" class="org.easybatch.integration.spring.BatchFactoryBean">
         <property name="recordReader" ref="greetingReader"/>
         <property name="recordMapper" ref="greetingMapper"/>
-        <property name="recordProcessor" ref="greetingProcessor"/>
+        <property name="processingPipeline">
+            <list>
+                <ref bean="greetingProcessor"/>
+            </list>
+        </property>
     </bean>
 
     <!--utility beans to create a classpath resource for input file-->
