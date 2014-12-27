@@ -40,7 +40,7 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 
 The current stable version of Easy Batch is 2.2.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/).
 <br/>
-The current development version of Easy Batch is 2.2.1-SNAPSHOT
+The current development version of Easy Batch is 3.0.0-SNAPSHOT
 <br/>
 <a href="https://buildhive.cloudbees.com/job/benas/job/easy-batch/"><img src="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/></a>
 <a href="http://www.jetbrains.com/idea/"><img src="https://raw.github.com/benas/easy-batch/master/site/img/misc/idea.png"/></a>
