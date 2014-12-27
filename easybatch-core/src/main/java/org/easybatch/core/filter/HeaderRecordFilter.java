@@ -28,7 +28,7 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
 
 /**
- * A filter that filters the header record (N° 1 in the data source).
+ * A filter that filters the header record (first record in the data source).
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
