@@ -69,8 +69,31 @@
         </dependency>
 
         <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <version>2.2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>2.2.6</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.easybatch</groupId>
             <artifactId>easybatch-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.easytesting</groupId>
+            <artifactId>fest-assert</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
