@@ -45,10 +45,17 @@ public class BeanValidationRecordValidatorTest {
     }
 
     @org.junit.Test
-    public void testBeanValidation() throws Exception {
+    public void nonValidBeanShouldBeRejected() throws Exception {
         Foo foo = new Foo(-1, null);
         Set<ValidationError> errors = validator.validateRecord(foo);
         assertThat(errors).isNotEmpty();
+    }
+
+    @org.junit.Test
+    public void validBeanShouldBeAccepted() throws Exception {
+        Foo foo = new Foo(1, "bar");
+        Set<ValidationError> errors = validator.validateRecord(foo);
+        assertThat(errors).isEmpty();
     }
 
 }
