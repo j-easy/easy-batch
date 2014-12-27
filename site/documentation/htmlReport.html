@@ -3,74 +3,72 @@
 <head>
     <title>Easy Batch Report</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <style>
         body {
-        padding-top: 20px;
-        padding-bottom: 20px;
+            padding-top: 20px;
+            padding-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
 <div class="container col-md-8 col-md-offset-2">
-
     <div class="row">
-        <h2>Easy Batch Report</h2>
-        <h3>Data source : /data/in/greetings.csv</h3>
+        <h1 class="text-center">Easy Batch Report</h1>
+        <h3>Data source : In-Memory String <span class="pull-right">Status: FINISHED</span></h3>
+        <br>
     </div>
 
     <div class="row">
 
         <div class="col-md-6">
-
             <table class="table table-bordered table-hover table-condensed">
                 <tbody>
                 <tr>
                     <td>Start Time</td>
-                    <td>2014-01-17 04:38:03</td>
+                    <td>2015-01-01 01:00:00</td>
                 </tr>
                 <tr>
                     <td>End Time</td>
-                    <td>2014-01-17 04:38:03</td>
+                    <td>2015-01-01 01:00:10</td>
                 </tr>
                 <tr>
                     <td>Batch duration</td>
-                    <td>100s</td>
+                    <td>10000ms</td>
                 <tr>
                     <td>Total records</td>
-                    <td>100</td>
+                    <td>10</td>
                 </tr>
                 <tr>
                     <td>Record processing time average</td>
-                    <td>1.0s</td>
+                    <td>1000.0ms</td>
                 </tr>
                 </tbody>
             </table>
         </div>
-
         <div class="col-md-6">
             <table class="table table table-bordered table-hover table-condensed">
                 <tbody>
                 <tr>
                     <td>Filtered records</td>
-                    <td><span class="label label-default">10 (10%)</span></td>
+                    <td><span class="label label-default filtered-records" data-total="2">2 (20.0%)</span></td>
                 </tr>
                 <tr>
                     <td>Ignored records</td>
-                    <td><span class="label label-info">10 (10%)</span></td>
+                    <td><span class="label label-info ignored-records" data-total="2">2 (20.0%)</span></td>
                 </tr>
                 <tr>
                     <td>Rejected records</td>
-                    <td><span class="label label-warning">10 (10%)</span></td>
+                    <td><span class="label label-warning rejected-records" data-total="2">2 (20.0%)</span></td>
                 </tr>
                 <tr>
                     <td>Error records</td>
-                    <td><span class="label label-danger">20 (20%)</span></td>
+                    <td><span class="label label-danger error-records" data-total="2">2 (20.0%)</span></td>
                 </tr>
                 <tr>
                     <td>Success records</td>
-                    <td><span class="label label-success">50 (50%)</span></td>
+                    <td><span class="label label-success success-records" data-total="2">2 (20.0%)</span></td>
                 </tr>
                 </tbody>
             </table>
@@ -83,7 +81,7 @@
 </div>
 
 <script src="https://code.jquery.com/jquery.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script>
     jQuery(document).ready(function () {
@@ -97,11 +95,11 @@
                 text: 'Records statistics'
             },
             tooltip: {
-                pointFormat: '<b>{point.y}%</b>'
+                pointFormat: '<b>{point.y}</b>'
             },
             legend: {
                 labelFormatter: function() {
-                    return this.name + ' (' + this.y + '%)';
+                    return this.name + ' (' + this.y + ')';
                 }
             },
             credits: {
@@ -123,27 +121,27 @@
                     {
                         name: 'Filtered',
                         color: '#999999',
-                        y: 10
+                        y: jQuery(".filtered-records").data("total")
                     },
                     {
                         name: 'Ignored',
                         color: '#5BC0DE',
-                        y: 10
+                        y: jQuery(".ignored-records").data("total")
                     },
                     {
                         name: 'Rejected',
                         color: '#F0AD4E',
-                        y: 10
+                        y: jQuery(".rejected-records").data("total")
                     },
                     {
                         name: 'Errors',
                         color: '#D9534F',
-                        y: 20
+                        y: jQuery(".error-records").data("total")
                     },
                     {
                         name: 'Success',
                         color: '#5CB85C',
-                        y: 50
+                        y: jQuery(".success-records").data("total")
                     }
                 ]
             }]
