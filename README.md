@@ -7,34 +7,35 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 
 ## Key features
 
- * Lightweight framework : Easy Batch has no dependencies and hence a small memory footprint : a 42Ko jar file with a lot of features!
+ * Lightweight: The framework's core has no dependencies and hence a small memory footprint : a 42Ko jar file with a lot of features.
 
- * POJO-based development : Map records to your domain objects so you can still work with the Object Oriented aspect of Java.</p>
+ * POJO-oriented development: Map records to your domain objects so you can still work with the Object Oriented aspect of Java.
 
- * Declarative data validation : Easy Batch lets you declare data validation on domain objects and handles the validation code for you.
+ * Declarative data validation: Declare data validation constraints on your domain objects and let Easy Batch handle the validation code for you.
 
- * Easy to learn and use : Easy Batch uses a simple and natural data model and API. You can learn it easily and start using it quickly.
+ * Easy to learn and use: Easy Batch uses a simple and natural data model and API. You can learn it easily and start using it quickly.
 
- * Statistics reporting : Easy Batch provides a simple and customizable reporting tools for common statistics including validation errors and processing time.
+ * Statistics reporting: Easy Batch provides a simple and customizable reporting tools for common statistics including validation errors and processing time.
 
- * JMX monitoring : Monitor your batch execution and progress using JMX at runtime and in real time.
+ * JMX monitoring: Monitor your batch execution and progress using JMX at runtime and in real time.
 
- * Parallel execution : Easy Batch allows you to run multiple engine instances in parallel to speed up execution and reduce the overall processing time!
+ * Parallel execution: Run multiple engine instances in parallel to speed up execution and reduce processing time.
 
 ## Documentation
 
 ### Project Home
-[http://www.easybatch.org][easy-batch-doc]
+[http://www.easybatch.org](http://www.easybatch.org)
 
 ### Presentation slides
-[https://speakerdeck.com/benas/easy-batch][easy-batch-slides]
+[https://speakerdeck.com/benas/easy-batch](https://speakerdeck.com/benas/easy-batch)
 
 ### Articles
-- [Develop a Java batch application in less than 5 minutes using Easy Batch (in french) ][easy-batch-post3]
+- [First batch job on Podcastpedia.org using Easy Batch](http://www.codingpedia.org/ama/first-batch-job-on-podcastpedia-org-with-easybatch/)
+- [Develop a Java batch application in less than 5 minutes using Easy Batch (in french) ](http://benassi.developpez.com/tutoriels/java/developper-batch-easybatch-5-minutes/)
 
 ### Blog posts
-- [How I reduced my Java batch application’s code by 80% using Easy Batch!][easy-batch-post1]
-- [Easy Batch vs Spring Batch : a Hello World comparison][easy-batch-post2]
+- [How I reduced my Java batch application’s code by 80% using Easy Batch](http://mahmoudbenhassine.com/2014/01/21/how-i-reduced-my-java-batch-applications-code-by-80-using-easy-batch/)
+- [Easy Batch vs Spring Batch : a Hello World comparison](http://mahmoudbenhassine.wordpress.com/2014/03/03/spring-batch-vs-easy-batch-a-hello-world-comparison/)
 
 ## Current version
 
@@ -46,21 +47,25 @@ The current development version of Easy Batch is 3.0.0-SNAPSHOT
 <a href="http://www.jetbrains.com/idea/"><img src="https://raw.github.com/benas/easy-batch/master/site/img/misc/idea.png"/></a>
 
 ## License
-Easy Batch is released under the [MIT License][].
+Easy Batch is released under the [MIT License](http://opensource.org/licenses/mit-license.php/).
+
+## Awesome contributors
+
+* [ammachado](https://github.com/ammachado)
+* [anandhi](https://github.com/anandhi)
+* [chellan](https://github.com/chellan)
+* [natlantisprog](https://github.com/natlantisprog)
+* [nicopatch](https://github.com/nicopatch)
+* [nihed](https://github.com/nihed)
+
+Thank you all for your contributions!
 
 ## Contribution
-Your feedback is highly appreciated! For any issue, please use the [issue tracker][].
 
-You can also contribute with pull requests on GitHub, your contribution is welcome!
+To report issues, please use the [issue tracker](https://github.com/benas/easy-batch/issues).
 
-If you have any question, you can use the forum [here](https://groups.google.com/d/forum/easy-batch).
+You can contribute to the project with pull requests on GitHub, your are welcome.
+
+For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or chat with the team on [Gitter](https://gitter.im/benas/easy-batch).
 
 Many thanks upfront!
-
-[easy-batch-doc]: http://www.easybatch.org
-[easy-batch-slides]: https://speakerdeck.com/benas/easy-batch
-[easy-batch-post1]: http://mahmoudbenhassine.com/2014/01/21/how-i-reduced-my-java-batch-applications-code-by-80-using-easy-batch/
-[easy-batch-post2]: http://mahmoudbenhassine.wordpress.com/2014/03/03/spring-batch-vs-easy-batch-a-hello-world-comparison/
-[easy-batch-post3]: http://benassi.developpez.com/tutoriels/java/developper-batch-easybatch-5-minutes/
-[MIT License]: http://opensource.org/licenses/mit-license.php/
-[issue tracker]: https://github.com/benas/easy-batch/issues
