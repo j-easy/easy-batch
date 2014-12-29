@@ -54,7 +54,9 @@ public final class EngineBuilder {
         IgnoredRecordHandler ignoredRecordHandler = new NoOpIgnoredRecordHandler();
         RejectedRecordHandler rejectedRecordHandler = new NoOpRejectedRecordHandler();
         ErrorRecordHandler errorRecordHandler = new NoOpErrorRecordHandler();
+        EventManager eventManager = new LocalEventManager();
         engine = new Engine(recordReader, recordFilter, recordMapper, recordValidator, processingPipeline, filteredRecordHandler, ignoredRecordHandler, rejectedRecordHandler, errorRecordHandler);
+        engine.setEventManager(eventManager);
     }
 
     /**

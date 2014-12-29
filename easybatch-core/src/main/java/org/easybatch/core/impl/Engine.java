@@ -71,8 +71,7 @@ public final class Engine implements Callable<Report> {
 
     private boolean strictMode;
 
-    // TODO: This should be injectable or at least replaceable
-    private EventManager eventManager = new LocalEventManager();
+    private EventManager eventManager;
 
     Engine(final RecordReader recordReader, final RecordFilter recordFilter, final RecordMapper recordMapper,
            final RecordValidator recordValidator,
