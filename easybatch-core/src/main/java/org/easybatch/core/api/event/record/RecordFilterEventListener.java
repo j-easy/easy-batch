@@ -10,7 +10,7 @@ import org.easybatch.core.api.Record;
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordFilterEventListener extends RecordProcessEventListener {
+public interface RecordFilterEventListener {
 
     /**
      * Called before the filter step.

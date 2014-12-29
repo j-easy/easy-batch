@@ -13,7 +13,7 @@ import java.util.Set;
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordValidatorEventListener extends RecordProcessEventListener {
+public interface RecordValidatorEventListener {
 
     /**
      * Called before each validation.

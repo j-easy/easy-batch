@@ -10,7 +10,7 @@ import org.easybatch.core.api.Record;
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordMapperEventListener extends RecordProcessEventListener {
+public interface RecordMapperEventListener {
 
     /**
      * Called before the mapper call.

@@ -10,7 +10,7 @@ import org.easybatch.core.api.Record;
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordReaderEventListener extends RecordProcessEventListener {
+public interface RecordReaderEventListener {
 
     /**
      * Called before the call to {@link org.easybatch.core.api.RecordReader#open()}
@@ -32,6 +32,12 @@ public interface RecordReaderEventListener extends RecordProcessEventListener {
      * @param record The record that has been read.
      */
     public void afterRecordRead(Record record);
+
+    /**
+     * Called when an exception occurs during record reading.
+     * @param throwable the throwable thrown during record reading
+     */
+    public void onRecordReadException(Throwable throwable);
 
     /**
      * Called before the reader gets closed.

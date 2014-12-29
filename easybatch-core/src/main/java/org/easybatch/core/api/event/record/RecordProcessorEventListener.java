@@ -8,7 +8,7 @@ package org.easybatch.core.api.event.record;
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordProcessorEventListener extends RecordProcessEventListener {
+public interface RecordProcessorEventListener {
 
     /**
      * Called before the record gets processed.

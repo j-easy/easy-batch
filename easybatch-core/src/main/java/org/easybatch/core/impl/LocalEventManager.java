@@ -55,51 +55,11 @@ public class LocalEventManager implements EventManager {
         for (BatchProcessEventListener eventListener : batchProcessEventListeners) {
             eventListener.beforeBatchStart();
         }
-
-        for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
-            eventListener.beforeBatchStart();
-        }
-
-        for (RecordMapperEventListener eventListener : recordMapperEventListeners) {
-            eventListener.beforeBatchStart();
-        }
-
-        for (RecordFilterEventListener eventListener : recordFilterEventListeners) {
-            eventListener.beforeBatchStart();
-        }
-
-        for (RecordValidatorEventListener eventListener : recordValidatorEventListeners) {
-            eventListener.beforeBatchStart();
-        }
-
-        for (RecordProcessorEventListener eventListener : recordProcessorEventListeners) {
-            eventListener.beforeBatchStart();
-        }
     }
 
     @Override
     public void fireAfterBatchEnd() {
         for (BatchProcessEventListener eventListener : batchProcessEventListeners) {
-            eventListener.afterBatchEnd();
-        }
-
-        for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
-            eventListener.afterBatchEnd();
-        }
-
-        for (RecordMapperEventListener eventListener : recordMapperEventListeners) {
-            eventListener.afterBatchEnd();
-        }
-
-        for (RecordFilterEventListener eventListener : recordFilterEventListeners) {
-            eventListener.afterBatchEnd();
-        }
-
-        for (RecordValidatorEventListener eventListener : recordValidatorEventListeners) {
-            eventListener.afterBatchEnd();
-        }
-
-        for (RecordProcessorEventListener eventListener : recordProcessorEventListeners) {
             eventListener.afterBatchEnd();
         }
     }
@@ -142,7 +102,7 @@ public class LocalEventManager implements EventManager {
     @Override
     public void fireOnRecordReadException(Throwable throwable) {
         for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
-            eventListener.onException(throwable);
+            eventListener.onRecordReadException(throwable);
         }
     }
 
