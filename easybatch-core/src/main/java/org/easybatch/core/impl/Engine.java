@@ -193,7 +193,7 @@ public final class Engine implements Callable<Report> {
                 boolean processingError = false;
                 for (RecordProcessor recordProcessor : processingPipeline) {
                     try {
-                        processRecord(recordProcessor, currentRecordNumber, typedRecord);
+                        processRecord(recordProcessor, typedRecord);
                     } catch (Exception e) {
                         processingError = true;
                         report.addErrorRecord(currentRecordNumber);
@@ -252,7 +252,7 @@ public final class Engine implements Callable<Report> {
     }
 
     @SuppressWarnings({"unchecked"})
-    private void processRecord(RecordProcessor recordProcessor, int currentRecordNumber, Object typedRecord) throws Exception {
+    private void processRecord(RecordProcessor recordProcessor, Object typedRecord) throws Exception {
         eventManager.fireBeforeProcessRecord(typedRecord);
         Object result = recordProcessor.processRecord(typedRecord);
         eventManager.fireAfterRecordProcessed(typedRecord, result);
