@@ -24,12 +24,14 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.jmx.EasyBatchMonitor;
 import org.easybatch.core.api.*;
+import org.easybatch.core.api.event.global.BatchProcessEventListener;
+import org.easybatch.core.jmx.EasyBatchMonitor;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
@@ -59,14 +61,17 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
     private EasyBatchMonitor easyBatchMonitor;
 
     private EasyBatchReport easyBatchReport;
-    
+
     private IgnoredRecordHandler ignoredRecordHandler;
 
     private RejectedRecordHandler rejectedRecordHandler;
-    
+
     private ErrorRecordHandler errorRecordHandler;
 
     private boolean strictMode;
+
+    // TODO: This should be injectable or at least replaceable
+    private EventManager eventManager = new LocalEventManager();
 
     EasyBatchEngine(final RecordReader recordReader, final RecordFilter recordFilter, final RecordMapper recordMapper,
                     final RecordValidator recordValidator, final RecordProcessor recordProcessor,
@@ -79,20 +84,24 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
         this.ignoredRecordHandler = ignoredRecordHandler;
         this.rejectedRecordHandler = rejectedRecordHandler;
         this.errorRecordHandler = errorRecordHandler;
-        
+
         easyBatchReport = new EasyBatchReport();
         easyBatchMonitor = new EasyBatchMonitor(easyBatchReport);
         configureJmxMBean();
     }
 
     @Override
+    @SuppressWarnings({"unchecked"})
     public EasyBatchReport call() {
-
+        eventManager.fireBeforeBatchStart();
         LOGGER.info("Initializing easy batch engine");
         try {
+            eventManager.fireBeforeReaderOpen();
             recordReader.open();
+            eventManager.fireAfterReaderOpen();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An exception occurred during opening data source reader", e);
+            eventManager.fireOnBatchException(e);
             return null;
         }
 
@@ -117,8 +126,12 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                 //read next record
                 Record currentRecord;
                 try {
+                    eventManager.fireBeforeRecordRead();
                     currentRecord = recordReader.readNextRecord();
+                    eventManager.fireAfterRecordRead(currentRecord);
                 } catch (Exception e) {
+                    eventManager.fireOnBatchException(e);
+                    eventManager.fireOnRecordReadException(e);
                     LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record", e);
                     return null;
                 }
@@ -126,7 +139,10 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                 easyBatchReport.setCurrentRecordNumber(currentRecordNumber);
 
                 //filter record if any
-                if (recordFilter.filterRecord(currentRecord)) {
+                eventManager.fireBeforeFilterRecord(currentRecord);
+                boolean filterRecord = recordFilter.filterRecord(currentRecord);
+                eventManager.fireAfterFilterRecord(currentRecord, filterRecord);
+                if (filterRecord) {
                     LOGGER.log(Level.INFO, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been filtered.");
                     easyBatchReport.addFilteredRecord(currentRecordNumber);
                     continue;
@@ -135,10 +151,13 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                 //map record
                 Object typedRecord;
                 try {
+                    eventManager.fireBeforeMapRecord(currentRecord);
                     typedRecord = recordMapper.mapRecord(currentRecord);
+                    eventManager.fireAfterMapRecord(currentRecord, typedRecord);
                 } catch (Exception e) {
                     easyBatchReport.addIgnoredRecord(currentRecordNumber);
                     ignoredRecordHandler.handle(currentRecordNumber, currentRecord, e);
+                    eventManager.fireOnBatchException(e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
@@ -148,17 +167,19 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
                 //validate record
                 try {
+                    eventManager.fireBeforeValidateRecord(typedRecord);
                     Set<ValidationError> validationsErrors = recordValidator.validateRecord(typedRecord);
-
+                    eventManager.fireAfterValidateRecord(typedRecord, validationsErrors);
                     if (!validationsErrors.isEmpty()) {
                         easyBatchReport.addRejectedRecord(currentRecordNumber);
                         rejectedRecordHandler.handle(currentRecordNumber, currentRecord, validationsErrors);
                         continue;
                     }
-                } catch(Exception e) {
+                } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + currentRecordNumber + " [" + currentRecord + "]", e);
                     easyBatchReport.addRejectedRecord(currentRecordNumber);
                     rejectedRecordHandler.handle(currentRecordNumber, currentRecord, e);
+                    eventManager.fireOnBatchException(e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
@@ -168,11 +189,14 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
                 //process record
                 try {
+                    eventManager.fireBeforeProcessRecord(typedRecord);
                     recordProcessor.processRecord(typedRecord);
+                    eventManager.fireAfterRecordProcessed(typedRecord, recordProcessor.getEasyBatchResult());
                     easyBatchReport.addSuccessRecord(currentRecordNumber);
                 } catch (Exception e) {
                     easyBatchReport.addErrorRecord(currentRecordNumber);
                     errorRecordHandler.handle(currentRecordNumber, currentRecord, e);
+                    eventManager.fireOnBatchException(e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
@@ -193,16 +217,17 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
             } catch (Exception e) {
                 //at this point, there is no need to log a severe message and return null as batch report
                 LOGGER.log(Level.WARNING, "An exception occurred during closing data source reader", e);
+                eventManager.fireOnBatchException(e);
             }
         }
-
+        eventManager.fireAfterBatchEnd();
         return easyBatchReport;
 
     }
 
-    /*
-    * Configure JMX MBean
-    */
+    /**
+     * Configure JMX MBean
+     */
     private void configureJmxMBean() {
 
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
@@ -243,17 +268,24 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
     void setIgnoredRecordHandler(final IgnoredRecordHandler ignoredRecordHandler) {
         this.ignoredRecordHandler = ignoredRecordHandler;
     }
-    
+
     void setRejectedRecordHandler(final RejectedRecordHandler rejectedRecordHandler) {
         this.rejectedRecordHandler = rejectedRecordHandler;
     }
-    
+
     void setErrorRecordHandler(final ErrorRecordHandler errorRecordHandler) {
         this.errorRecordHandler = errorRecordHandler;
     }
-    
+
     void setStrictMode(final boolean strictMode) {
         this.strictMode = strictMode;
     }
 
+    void setEventManager(EventManager eventManager) {
+        this.eventManager = eventManager;
+    }
+
+    EventManager getEventManager() {
+        return eventManager;
+    }
 }

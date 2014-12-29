@@ -25,6 +25,8 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
+import org.easybatch.core.api.event.global.BatchProcessEventListener;
+import org.easybatch.core.api.event.record.*;
 
 /**
  * Easy batch engine instance builder.
@@ -141,11 +143,82 @@ public final class EasyBatchEngineBuilder {
     }
 
     /**
+     * Register a batch process event listener.
+     * See {@link org.easybatch.core.api.event.global.BatchProcessEventListener} for available callback methods.
+     *
+     * @param eventListener The event listener to add.
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder addBatchProcessEventListener(final BatchProcessEventListener eventListener) {
+        easyBatchEngine.getEventManager().addBatchProcessListener(eventListener);
+        return this;
+    }
+
+    /**
+     * Register a batch process event listener.
+     * See {@link org.easybatch.core.api.event.record.RecordReaderEventListener} for available callback methods.
+     *
+     * @param eventListener The event listener to add.
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder addRecordReaderEventListener(final RecordReaderEventListener eventListener) {
+        easyBatchEngine.getEventManager().addRecordReaderListener(eventListener);
+        return this;
+    }
+
+    /**
+     * Register a batch process event listener.
+     * See {@link org.easybatch.core.api.event.record.RecordFilterEventListener} for available callback methods.
+     *
+     * @param eventListener The event listener to add.
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder addRecordFilterEventListener(final RecordFilterEventListener eventListener) {
+        easyBatchEngine.getEventManager().addRecordFilterEventListener(eventListener);
+        return this;
+    }
+
+    /**
+     * Register a batch process event listener.
+     * See {@link org.easybatch.core.api.event.record.RecordMapperEventListener} for available callback methods.
+     *
+     * @param eventListener The event listener to add.
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder addRecordMapperEventListener(final RecordMapperEventListener eventListener) {
+        easyBatchEngine.getEventManager().addRecordMapperListener(eventListener);
+        return this;
+    }
+
+    /**
+     * Register a batch process event listener.
+     * See {@link org.easybatch.core.api.event.record.RecordValidatorEventListener} for available callback methods.
+     *
+     * @param eventListener The event listener to add.
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder addRecordValidatorEventListener(final RecordValidatorEventListener eventListener) {
+        easyBatchEngine.getEventManager().addRecordValidatorEventListener(eventListener);
+        return this;
+    }
+
+    /**
+     * Register a batch process event listener.
+     * See {@link org.easybatch.core.api.event.record.RecordProcessorEventListener} for available callback methods.
+     *
+     * @param eventListener The event listener to add.
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder addRecordProcessorEventListener(final RecordProcessorEventListener eventListener) {
+        easyBatchEngine.getEventManager().addRecordProcessorEventListener(eventListener);
+        return this;
+    }
+
+    /**
      * Build an Easy Batch engine instance.
      * @return an Easy Batch instance
      */
     public EasyBatchEngine build() {
         return easyBatchEngine;
     }
-
 }
