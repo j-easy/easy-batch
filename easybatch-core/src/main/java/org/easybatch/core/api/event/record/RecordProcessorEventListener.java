@@ -19,7 +19,7 @@ public interface RecordProcessorEventListener extends RecordProcessEventListener
     /**
      * Called after the record has been processed.
      * @param record The processed record.
-     * @param processResult The process result, called from {@link org.easybatch.core.api.RecordProcessor#getEasyBatchResult()}
+     * @param processResult The process result, called from {@link org.easybatch.core.api.ComputationalRecordProcessor#getComputationResult()}
      */
     public void afterRecordProcessed(Object record, Object processResult);
 }
