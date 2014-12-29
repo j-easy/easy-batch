@@ -150,6 +150,7 @@ public final class EasyBatchEngineBuilder {
      * @return the engine builder
      */
     public EasyBatchEngineBuilder addBatchProcessEventListener(final BatchProcessEventListener eventListener) {
+        assert eventListener != null;
         easyBatchEngine.getEventManager().addBatchProcessListener(eventListener);
         return this;
     }
@@ -162,6 +163,7 @@ public final class EasyBatchEngineBuilder {
      * @return the engine builder
      */
     public EasyBatchEngineBuilder addRecordReaderEventListener(final RecordReaderEventListener eventListener) {
+        assert eventListener != null;
         easyBatchEngine.getEventManager().addRecordReaderListener(eventListener);
         return this;
     }
@@ -174,6 +176,7 @@ public final class EasyBatchEngineBuilder {
      * @return the engine builder
      */
     public EasyBatchEngineBuilder addRecordFilterEventListener(final RecordFilterEventListener eventListener) {
+        assert eventListener != null;
         easyBatchEngine.getEventManager().addRecordFilterEventListener(eventListener);
         return this;
     }
@@ -186,6 +189,7 @@ public final class EasyBatchEngineBuilder {
      * @return the engine builder
      */
     public EasyBatchEngineBuilder addRecordMapperEventListener(final RecordMapperEventListener eventListener) {
+        assert eventListener != null;
         easyBatchEngine.getEventManager().addRecordMapperListener(eventListener);
         return this;
     }
@@ -198,6 +202,7 @@ public final class EasyBatchEngineBuilder {
      * @return the engine builder
      */
     public EasyBatchEngineBuilder addRecordValidatorEventListener(final RecordValidatorEventListener eventListener) {
+        assert eventListener != null;
         easyBatchEngine.getEventManager().addRecordValidatorEventListener(eventListener);
         return this;
     }
@@ -210,7 +215,19 @@ public final class EasyBatchEngineBuilder {
      * @return the engine builder
      */
     public EasyBatchEngineBuilder addRecordProcessorEventListener(final RecordProcessorEventListener eventListener) {
+        assert eventListener != null;
         easyBatchEngine.getEventManager().addRecordProcessorEventListener(eventListener);
+        return this;
+    }
+
+    /**
+     * Set the event manager.
+     * @param eventManager The event manager to use instead of the {@link org.easybatch.core.impl.LocalEventManager}
+     * @return the engine builder
+     */
+    public EasyBatchEngineBuilder setEventManager(final EventManager eventManager) {
+        assert eventManager != null;
+        easyBatchEngine.setEventManager(eventManager);
         return this;
     }
 

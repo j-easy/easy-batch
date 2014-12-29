@@ -91,14 +91,11 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
     }
 
     @Override
-    @SuppressWarnings({"unchecked"})
     public EasyBatchReport call() {
         eventManager.fireBeforeBatchStart();
         LOGGER.info("Initializing easy batch engine");
         try {
-            eventManager.fireBeforeReaderOpen();
-            recordReader.open();
-            eventManager.fireAfterReaderOpen();
+            openRecordReader();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An exception occurred during opening data source reader", e);
             eventManager.fireOnBatchException(e);
@@ -126,9 +123,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                 //read next record
                 Record currentRecord;
                 try {
-                    eventManager.fireBeforeRecordRead();
-                    currentRecord = recordReader.readNextRecord();
-                    eventManager.fireAfterRecordRead(currentRecord);
+                    currentRecord = readRecord();
                 } catch (Exception e) {
                     eventManager.fireOnBatchException(e);
                     eventManager.fireOnRecordReadException(e);
@@ -139,9 +134,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                 easyBatchReport.setCurrentRecordNumber(currentRecordNumber);
 
                 //filter record if any
-                eventManager.fireBeforeFilterRecord(currentRecord);
-                boolean filterRecord = recordFilter.filterRecord(currentRecord);
-                eventManager.fireAfterFilterRecord(currentRecord, filterRecord);
+                boolean filterRecord = filterRecord(currentRecord);
                 if (filterRecord) {
                     LOGGER.log(Level.INFO, "Record #" + currentRecordNumber + " [" + currentRecord + "] has been filtered.");
                     easyBatchReport.addFilteredRecord(currentRecordNumber);
@@ -151,9 +144,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
                 //map record
                 Object typedRecord;
                 try {
-                    eventManager.fireBeforeMapRecord(currentRecord);
-                    typedRecord = recordMapper.mapRecord(currentRecord);
-                    eventManager.fireAfterMapRecord(currentRecord, typedRecord);
+                    typedRecord = mapRecord(currentRecord);
                 } catch (Exception e) {
                     easyBatchReport.addIgnoredRecord(currentRecordNumber);
                     ignoredRecordHandler.handle(currentRecordNumber, currentRecord, e);
@@ -167,9 +158,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
                 //validate record
                 try {
-                    eventManager.fireBeforeValidateRecord(typedRecord);
-                    Set<ValidationError> validationsErrors = recordValidator.validateRecord(typedRecord);
-                    eventManager.fireAfterValidateRecord(typedRecord, validationsErrors);
+                    Set<ValidationError> validationsErrors = validateRecord(typedRecord);
                     if (!validationsErrors.isEmpty()) {
                         easyBatchReport.addRejectedRecord(currentRecordNumber);
                         rejectedRecordHandler.handle(currentRecordNumber, currentRecord, validationsErrors);
@@ -189,10 +178,7 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
 
                 //process record
                 try {
-                    eventManager.fireBeforeProcessRecord(typedRecord);
-                    recordProcessor.processRecord(typedRecord);
-                    eventManager.fireAfterRecordProcessed(typedRecord, recordProcessor.getEasyBatchResult());
-                    easyBatchReport.addSuccessRecord(currentRecordNumber);
+                    processRecord(currentRecordNumber, typedRecord);
                 } catch (Exception e) {
                     easyBatchReport.addErrorRecord(currentRecordNumber);
                     errorRecordHandler.handle(currentRecordNumber, currentRecord, e);
@@ -223,6 +209,50 @@ public final class EasyBatchEngine implements Callable<EasyBatchReport> {
         eventManager.fireAfterBatchEnd();
         return easyBatchReport;
 
+    }
+
+    private void openRecordReader() throws Exception {
+        eventManager.fireBeforeReaderOpen();
+        recordReader.open();
+        eventManager.fireAfterReaderOpen();
+    }
+
+    @SuppressWarnings({"unchecked"})
+    private void processRecord(int currentRecordNumber, Object typedRecord) throws Exception {
+        eventManager.fireBeforeProcessRecord(typedRecord);
+        recordProcessor.processRecord(typedRecord);
+        eventManager.fireAfterRecordProcessed(typedRecord, recordProcessor.getEasyBatchResult());
+        easyBatchReport.addSuccessRecord(currentRecordNumber);
+    }
+
+    @SuppressWarnings({"unchecked"})
+    private Set<ValidationError> validateRecord(Object typedRecord) {
+        eventManager.fireBeforeValidateRecord(typedRecord);
+        Set<ValidationError> validationsErrors = recordValidator.validateRecord(typedRecord);
+        eventManager.fireAfterValidateRecord(typedRecord, validationsErrors);
+        return validationsErrors;
+    }
+
+    private Object mapRecord(Record currentRecord) throws Exception {
+        Object typedRecord;
+        eventManager.fireBeforeMapRecord(currentRecord);
+        typedRecord = recordMapper.mapRecord(currentRecord);
+        eventManager.fireAfterMapRecord(currentRecord, typedRecord);
+        return typedRecord;
+    }
+
+    private boolean filterRecord(Record currentRecord) {
+        eventManager.fireBeforeFilterRecord(currentRecord);
+        boolean filterRecord = recordFilter.filterRecord(currentRecord);
+        eventManager.fireAfterFilterRecord(currentRecord, filterRecord);
+        return filterRecord;
+    }
+
+    private Record readRecord() throws Exception {
+        eventManager.fireBeforeRecordRead();
+        Record currentRecord = recordReader.readNextRecord();
+        eventManager.fireAfterRecordRead(currentRecord);
+        return currentRecord;
     }
 
     /**

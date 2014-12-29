@@ -6,42 +6,51 @@ import org.easybatch.core.api.event.record.*;
 import java.util.Set;
 
 /**
+ * Interface for the event manager.
+ * <p>
+ * There is one local implementation included. It could also be implemented using JMS or any other distributed
+ * technology to get to know of any event happened while the batch is being processed.
+ * <p>
+ * Please note that if you implement something like a global or singleton event handler you must care for synchronized
+ * access for your self.
  *
+ * @author Mario Mueller (mario@xenji.com)
  */
 public interface EventManager {
 
     /**
-     * @param batchProcessEventListener
+     * Add an event listener.
+     * @param batchProcessEventListener The listener to add.
      */
     public void addBatchProcessListener(final BatchProcessEventListener batchProcessEventListener);
 
     /**
-     *
-     * @param recordReaderEventListener
+     * Add an event listener.
+     * @param recordReaderEventListener The listener to add.
      */
     public void addRecordReaderListener(final RecordReaderEventListener recordReaderEventListener);
 
     /**
-     *
-     * @param recordFilterEventListener
+     * Add an event listener.
+     * @param recordFilterEventListener The listener to add.
      */
     public void addRecordFilterEventListener(final RecordFilterEventListener recordFilterEventListener);
 
     /**
-     *
-     * @param recordMapperEventListener
+     * Add an event listener.
+     * @param recordMapperEventListener The listener to add.
      */
     public void addRecordMapperListener(final RecordMapperEventListener recordMapperEventListener);
 
     /**
-     *
-     * @param recordValidatorEventListener
+     * Add an event listener.
+     * @param recordValidatorEventListener The listener to add.
      */
     public void addRecordValidatorEventListener(final RecordValidatorEventListener recordValidatorEventListener);
 
     /**
-     *
-     * @param recordProcessorEventListener
+     * Add an event listener.
+     * @param recordProcessorEventListener The listener to add.
      */
     public void addRecordProcessorEventListener(final RecordProcessorEventListener recordProcessorEventListener);
 
@@ -57,7 +66,7 @@ public interface EventManager {
 
     /**
      * Called on any exception thrown in the whole process.
-     * @param t The exception
+     * @param t The exception that has been thrown.
      */
     public void fireOnBatchException(Throwable t);
 
@@ -87,6 +96,16 @@ public interface EventManager {
      * @param throwable The exception happened
      */
     public void fireOnRecordReadException(Throwable throwable);
+
+    /**
+     * Called before the record reader has been closed.
+     */
+    public void fireBeforeRecordReaderClose();
+
+    /**
+     * Called after the record reader has been closed.
+     */
+    public void fireAfterRecordReaderClose();
 
     /**
      * Called before the record is passed to the filter.

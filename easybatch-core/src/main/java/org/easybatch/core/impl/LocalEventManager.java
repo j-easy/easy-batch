@@ -147,6 +147,20 @@ public class LocalEventManager implements EventManager {
     }
 
     @Override
+    public void fireBeforeRecordReaderClose() {
+        for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
+            eventListener.beforeReaderClose();
+        }
+    }
+
+    @Override
+    public void fireAfterRecordReaderClose() {
+        for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
+            eventListener.afterReaderClose();
+        }
+    }
+
+    @Override
     public void fireBeforeFilterRecord(Record record) {
         for (RecordFilterEventListener eventListener : recordFilterEventListeners) {
             eventListener.beforeFilterRecord(record);
