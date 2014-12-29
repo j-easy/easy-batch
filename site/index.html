@@ -1,5 +1,6 @@
 ---
 layout: home
+title : batch processing with Java&trade; made easy
 ---
 
         <div id="features" class="block features">
@@ -10,7 +11,7 @@ layout: home
                     <br/>
                     <p>Easy Batch is a framework that aims to simplify batch processing with Java.
                         It's main goal is to take care of the boilerplate code for tedious tasks such as reading, filtering, parsing and validating input data and to let you concentrate on your batch processing business logic.</p>
-                    <p>The motivation behind Easy Batch is to make your life as a developer easier! Easy Batch is a lightweight framework that you can configure easily with an intuitive Java builder API and run without the need to setup an application server.</p>
+                    <p>The motivation behind the framework is to make your life as a developer easier. Easy Batch is a lightweight framework that you can configure easily with an intuitive Java builder API and run without the need to setup an application server.</p>
                 </div>
                 <div class="col-md-8">
                     <img src="./img/eb/eb-motivation.png" class="pull-center" style=" width: 90%">
@@ -24,30 +25,30 @@ layout: home
           <div class="row">
               <div class="feature col-sm-6 col-md-4">
                   <h3 class="title"><i class="fa fa-leaf fa-lg"></i> Lightweight framework</h3>
-                  <p>Easy Batch framework's core has no dependencies and hence a small memory footprint : a 42Ko jar file with a lot of features!</p>
+                  <p>Easy Batch framework's core has no dependencies and hence a small memory footprint : a 42Ko jar file with a lot of features</p>
               </div>
               <div class="feature col-sm-6 col-md-4">
-                  <h3 class="title"><i class="fa fa-coffee fa-lg"></i> POJO-based development</h3>
-                  <p>Easy Batch development is POJO-based. It allows you to map data to domain objects so you can still work with the Object Oriented aspect of Java.</p>
+                  <h3 class="title"><i class="fa fa-coffee fa-lg"></i> POJO-oriented development</h3>
+                  <p>Easy Batch development is POJO-oriented. It allows you to map data to domain objects so you can still work with the Object Oriented aspect of Java</p>
               </div>
               <div class="feature col-sm-6 col-md-4">
                   <h3 class="title"><i class="fa fa-check-square-o fa-lg"></i>  Declarative data validation</h3>
-                  <p>Easy Batch lets you declare data validation constraints on domain objects and handles the validation code for you.</p>
+                  <p>Easy Batch lets you <strong>declare</strong> data validation constraints on domain objects and handles the validation code for you</p>
               </div>
           </div>
 
           <div class="row">
               <div class="feature col-sm-6 col-md-4">
                   <h3 class="title"><i class="fa fa-cogs fa-lg"></i> Parallel execution</h3>
-                  <p>Easy Batch allows you to run multiple engine instances in parallel to speed up execution and reduce the overall processing time!</p>
+                  <p>Easy Batch allows you to run multiple engine instances in parallel to speed up execution and reduce the overall processing time</p>
               </div>
               <div class="feature col-sm-6 col-md-4">
                   <h3 class="title"><i class="fa fa-tachometer fa-lg"></i> JMX monitoring</h3>
-                  <p>With Easy Batch, you can monitor your batch execution and progress using JMX at runtime and in real time.</p>
+                  <p>With Easy Batch, you can monitor your batch execution and progress using JMX at runtime and in real time</p>
               </div>
               <div class="feature col-sm-6 col-md-4">
                   <h3 class="title"><i class="fa fa-puzzle-piece fa-lg"></i> Modular architecture</h3>
-                  <p>Easy Batch architecture is modular and extensible through a consistent API. You can extend its components and integrate your own solutions.</p>
+                  <p>Easy Batch architecture is modular and extensible through a consistent API. You can extend its components and integrate your own solutions</p>
               </div>
           </div>
 
@@ -62,15 +63,15 @@ layout: home
 
     public static void main(String[] args) throws Exception {
 
-        // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-            .registerRecordReader(new FlatFileRecordReader(new File("data.csv")))
-            .registerRecordMapper(new DelimitedRecordMapper(Data.class))
-            .registerRecordProcessor(new DataProcessor())
+        // Build a batch engine
+        Engine easyBatchEngine = new EngineBuilder()
+            .reader(new FlatFileRecordReader(new File("data.csv")))
+            .mapper(new DelimitedRecordMapper(Data.class))
+            .processor(new DataProcessor())
             .build();
 
-        // Run easy batch engine and get the execution report
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+        // Run the batch engine and get execution report
+        Report report = engine.call();
 
     }
 }</code></pre>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2014, Mahmoud Ben Hassine (md.benhassine@gmail.com)
+ *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 package org.easybatch.tutorials.customers.etl;
 
-import org.easybatch.core.api.AbstractRecordProcessor;
+import org.easybatch.core.api.RecordProcessor;
 import org.easybatch.tutorials.customers.model.Customer;
 
 import javax.xml.bind.JAXBContext;
@@ -33,9 +33,9 @@ import javax.xml.bind.Marshaller;
 /**
  * A customer processor implementation that generates customer XML data using JAXB.
  *
- * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
+ * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class CustomerProcessor extends AbstractRecordProcessor<Customer> {
+public class CustomerProcessor implements RecordProcessor<Customer, Customer> {
 
     /**
      * The Jaxb marshaller to write customer xml data.
@@ -54,8 +54,9 @@ public class CustomerProcessor extends AbstractRecordProcessor<Customer> {
     }
 
     @Override
-    public void processRecord(final Customer customer) throws Exception {
+    public Customer processRecord(Customer customer) throws Exception {
         jaxbMarshaller.marshal(customer, System.out);
+        return customer;
     }
 
 }

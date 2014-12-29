@@ -1,7 +1,7 @@
 ---
 layout: template
 menu : tutorial
-name : JMS tutorial
+title : JMS tutorial
 ---
               <h2 id="1">1. Description</h2>
 
@@ -147,9 +147,9 @@ name : JMS tutorial
         EasyBatchReport easyBatchReport1 = batchReportFuture1.get();
         EasyBatchReport easyBatchReport2 = batchReportFuture2.get();
 
-        //aggregate partial reports into a global one
-        EasyBatchReportsAggregator reportsAggregator = new DefaultEasyBatchReportsAggregator();
-        EasyBatchReport finalReport = reportsAggregator.aggregateReports(easyBatchReport1, easyBatchReport2);
+        //merge partial reports into a global one
+        ReportMerger reportMerger = new DefaultReportMerger();
+        Report finalReport = reportMerger.mergeReports(easyBatchReport1, easyBatchReport2);
         System.out.println(finalReport);
 
         //shutdown executor service

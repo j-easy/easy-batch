@@ -1,7 +1,7 @@
 ---
 layout: template
 menu : tutorial
-name : Easy Batch and Spring
+title : Easy Batch and Spring
 ---
 
               <h2>1. Using Spring with Easy Batch</h2>
@@ -97,7 +97,7 @@ EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
 
         &lt;!-- configure Easy Batch engine --&gt;
         &lt;bean id="easyBatchEngine"
-            class="org.easybatch.integration.spring.EasyBatchFactoryBean"&gt;
+            class="org.easybatch.integration.spring.BatchFactoryBean"&gt;
             &lt;property name="recordReader" ref="greetingReader"/&gt;
             &lt;property name="recordMapper" ref="greetingMapper"/&gt;
             &lt;property name="recordProcessor" ref="greetingProcessor"/&gt;

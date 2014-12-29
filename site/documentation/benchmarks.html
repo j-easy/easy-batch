@@ -1,7 +1,7 @@
 ---
 layout: template
 menu : bench
-name : Performance benchmarks
+title : Performance benchmarks
 ---
 
 <h2 id="1" >1. Description</h2>
@@ -14,7 +14,7 @@ name : Performance benchmarks
     <li>Read a CSV flat file containing customer data</li>
     <li>Read an XML file containing customer data</li>
 </ul>
-<p>We will generate random input data with 1 000 , 10 000, 100 000 and 1 000 000 records using <a href="http://benas.github.io/jPopulator/" target="_blank">jPopulator</a>.</p>
+<p>We will generate random input data with 1 000 , 10 000, 100 000 and 1 000 000 records using <a href="https://github.com/benas/jPopulator" target="_blank">jPopulator</a>.</p>
 
 <p>The input Csv file has the following format:</p>
 <pre><code>#id,firstName,lastName,birthDate,email,phone,street,zipCode,city,country
@@ -69,17 +69,17 @@ public class Customer {
 
 <p>
     <kbd><i class="fa fa-terminal"></i> mvn clean install</kbd> <br/>
-    <kbd><i class="fa fa-terminal"></i> java -Dorg.easybatch.bench.count=10000 -cp "easybatch-bench-2.2.0:dependency/*" org.easybatch.bench.CsvBenchmark</kbd>
+    <kbd><i class="fa fa-terminal"></i> java -Dorg.easybatch.bench.count=10000 -cp "easybatch-bench-{{ site.version }}.jar:dependency/*" org.easybatch.bench.CsvBenchmark</kbd>
 </p>
 
 <p>
     <kbd><i class="fa fa-terminal"></i> mvn clean install</kbd> <br/>
-    <kbd><i class="fa fa-terminal"></i> java -Dorg.easybatch.bench.count=10000 -cp "easybatch-bench-2.2.0:dependency/*" org.easybatch.bench.XmlBenchmark</kbd>
+    <kbd><i class="fa fa-terminal"></i> java -Dorg.easybatch.bench.count=10000 -cp "easybatch-bench-{{ site.version }}.jar:dependency/*" org.easybatch.bench.XmlBenchmark</kbd>
 </p>
 
 <div class="alert alert-warning">
     <strong>Note:</strong> If you are using MS Windows, please use the <code>;</code> classpath separator in the previous commands as follows:
-    <p><em><strong>-cp "easybatch-bench-{{ site.version }};dependency/*"</strong></em> <br/></p>
+    <p><em><strong>-cp "easybatch-bench-{{ site.version }}.jar;dependency/*"</strong></em> <br/></p>
 </div>
 
         <p>Use the JVM property <code>-Dorg.easybatch.bench.count</code> to specify the number of records to generate.</p>

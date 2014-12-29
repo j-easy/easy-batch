@@ -10,15 +10,24 @@
 
     <groupId>org.easybatch</groupId>
     <artifactId>easybatch</artifactId>
-    <version>2.2.1-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>easybatch</name>
     <description>Easy Batch parent module</description>
     <url>http://www.easybatch.org</url>
 
     <properties>
-        <junit.version>4.11</junit.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>4.12</junit.version>
+        <fest-assert.version>1.4</fest-assert.version>
+        <maven-dependency-plugin.version>2.9</maven-dependency-plugin.version>
+        <maven-checkstyle-plugin.version>2.13</maven-checkstyle-plugin.version>
+        <maven-pmd-plugin.version>3.3</maven-pmd-plugin.version>
+        <findbugs-maven-plugin.version>3.0.0</findbugs-maven-plugin.version>
+        <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
+        <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
+        <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
+        <cobertura-maven-plugin.version>2.6</cobertura-maven-plugin.version>
     </properties>
     
     <modules>
@@ -37,8 +46,8 @@
         <developer>
             <id>benas</id>
             <name>Mahmoud Ben Hassine</name>
-            <url>http://www.mahmoudbenhassine.com</url>
-            <email>md.benhassine@gmail.com</email>
+            <url>http://www.mahmoud-benhassine.fr</url>
+            <email>mahmoud@benhassine.fr</email>
             <roles>
                 <role>Project founder</role>
             </roles>
@@ -48,7 +57,7 @@
     <contributors>
         <contributor>
             <name>Nihed MBAREK</name>
-            <email>nihedmm@gmail.com</email>
+            <url>https://github.com/nihed</url>
         </contributor>
         <contributor>
             <name>chellan</name>
@@ -63,13 +72,23 @@
         <tag>HEAD</tag>
     </scm>
 
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/benas/easy-batch/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>https://buildhive.cloudbees.com/job/benas/job/easy-batch/</url>
+    </ciManagement>
+
     <licenses>
         <license>
             <name>MIT License</name>
             <url>http://opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
-    
+
     <dependencyManagement>
         <dependencies>
             
@@ -129,34 +148,12 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.velocity</groupId>
-                <artifactId>velocity</artifactId>
-                <version>1.7</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>org.hsqldb</groupId>
-                <artifactId>hsqldb</artifactId>
-                <version>2.3.2</version>
+                <groupId>org.easytesting</groupId>
+                <artifactId>fest-assert</artifactId>
+                <version>${fest-assert.version}</version>
+                <scope>test</scope>
             </dependency>
 
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core</artifactId>
-                <version>4.3.4.Final</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-validator</artifactId>
-                <version>4.3.1.Final</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>javax.xml</groupId>
-                <artifactId>jaxb-impl</artifactId>
-                <version>2.1</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -166,12 +163,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5</version>
+                    <version>2.5.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
+                    <version>3.2</version>
                     <configuration>
                         <verbose>true</verbose>
                         <source>1.6</source>
@@ -182,7 +179,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.17</version>
+                    <version>2.18</version>
                     <configuration>
                         <includes>
                             <include>**/*Test*.java</include>
@@ -193,12 +190,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.3</version>
+                    <version>3.4</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.9.1</version>
+                    <version>2.10.1</version>
                     <configuration>
                         <stylesheet>maven</stylesheet>
                     </configuration>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Easy Batch Report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container col-md-8 col-md-offset-2">
+    <div class="row">
+        <h1 class="text-center">Easy Batch Report</h1>
+        <h3>Data source : $report.dataSource <span class="pull-right">Status: $report.status</span></h3>
+        <br>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <table class="table table-bordered table-hover table-condensed">
+                <tbody>
+                <tr>
+                    <td>Start Time</td>
+                    <td>$report.formattedStartTime</td>
+                </tr>
+                <tr>
+                    <td>End Time</td>
+                    <td>$report.formattedEndTime</td>
+                </tr>
+                <tr>
+                    <td>Batch duration</td>
+                    <td>$report.formattedBatchDuration</td>
+                <tr>
+                    <td>Total records</td>
+                    <td>$report.totalRecords</td>
+                </tr>
+                <tr>
+                    <td>Record processing time average</td>
+                    <td>$report.formattedAverageRecordProcessingTime</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table class="table table table-bordered table-hover table-condensed">
+                <tbody>
+                <tr>
+                    <td>Filtered records</td>
+                    <td><span class="label label-default filtered-records" data-total="$report.filteredRecordsCount">$report.formattedFilteredRecords</span></td>
+                </tr>
+                <tr>
+                    <td>Ignored records</td>
+                    <td><span class="label label-info ignored-records" data-total="$report.ignoredRecordsCount">$report.formattedIgnoredRecords</span></td>
+                </tr>
+                <tr>
+                    <td>Rejected records</td>
+                    <td><span class="label label-warning rejected-records" data-total="$report.rejectedRecordsCount">$report.formattedRejectedRecords</span></td>
+                </tr>
+                <tr>
+                    <td>Error records</td>
+                    <td><span class="label label-danger error-records" data-total="$report.errorRecordsCount">$report.formattedErrorRecords</span></td>
+                </tr>
+                <tr>
+                    <td>Success records</td>
+                    <td><span class="label label-success success-records" data-total="$report.successRecordsCount">$report.formattedSuccessRecords</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script>
+    jQuery(document).ready(function () {
+
+        jQuery('#chart').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: true
+            },title: {
+                text: 'Records statistics'
+            },
+            tooltip: {
+                pointFormat: '<b>{point.y}</b>'
+            },
+            legend: {
+                labelFormatter: function() {
+                    return this.name + ' (' + this.y + ')';
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                type: 'pie',
+                data: [
+                    {
+                        name: 'Filtered',
+                        color: '#999999',
+                        y: jQuery(".filtered-records").data("total")
+                    },
+                    {
+                        name: 'Ignored',
+                        color: '#5BC0DE',
+                        y: jQuery(".ignored-records").data("total")
+                    },
+                    {
+                        name: 'Rejected',
+                        color: '#F0AD4E',
+                        y: jQuery(".rejected-records").data("total")
+                    },
+                    {
+                        name: 'Errors',
+                        color: '#D9534F',
+                        y: jQuery(".error-records").data("total")
+                    },
+                    {
+                        name: 'Success',
+                        color: '#5CB85C',
+                        y: jQuery(".success-records").data("total")
+                    }
+                ]
+            }]
+        });
+    });
+
+</script>
+</body>
+</html>

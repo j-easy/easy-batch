@@ -1,11 +1,35 @@
+/*
+ * The MIT License
+ *
+ *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
+
 package org.easybatch.bench;
 
 import io.github.benas.jpopulator.api.Populator;
 import io.github.benas.jpopulator.api.Randomizer;
 import io.github.benas.jpopulator.impl.PopulatorBuilder;
 import io.github.benas.jpopulator.randomizers.*;
-import org.easybatch.core.impl.EasyBatchEngine;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
 import org.easybatch.xml.XmlRecordMapper;
@@ -22,9 +46,9 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * Utility class used to generate customer data and build easy batch instance definition.
+ * Utility class used to generate customer data and build a batch instance definition.
  *
- * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
+ * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class BenchmarkUtil {
 
@@ -66,16 +90,16 @@ public class BenchmarkUtil {
         fileWriter.close();
     }
 
-    public static EasyBatchEngine buildCsvEasyBatchEngine(String customersFile) throws Exception {
-        return new EasyBatchEngineBuilder()
+    public static Engine buildCsvEngine(String customersFile) throws Exception {
+        return new EngineBuilder()
                 .registerRecordReader(new FlatFileRecordReader(new File(customersFile)))
                 .registerRecordMapper(new DelimitedRecordMapper<Customer>(Customer.class,
                         new String[]{"id", "firstName", "lastName", "birthDate", "email", "phone", "street", "zipCode", "city", "country"}))
                 .build();
     }
 
-    public static EasyBatchEngine buildXmlEasyBatchEngine(String customersFile) throws Exception {
-        return new EasyBatchEngineBuilder()
+    public static Engine buildXmlEngine(String customersFile) throws Exception {
+        return new EngineBuilder()
                 .registerRecordReader(new XmlRecordReader("customer", new File(customersFile)))
                 .registerRecordMapper(new XmlRecordMapper<Customer>(Customer.class))
                 .build();

@@ -1,6 +1,6 @@
 EASY BATCH FRAMEWORK CHANGELOG
 ==============================
-https://github.com/benas/easy-batch
+http://www.easybatch.org
 
 Changes in version 2.2.0 (2014-06-08)
 -------------------------------------
