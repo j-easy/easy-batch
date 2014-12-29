@@ -1,6 +1,5 @@
 package org.easybatch.core.api.event.record;
 
-import org.easybatch.core.api.event.global.BatchProcessEventListener;
 import org.easybatch.core.impl.EngineBuilder;
 
 /**
@@ -10,7 +9,7 @@ import org.easybatch.core.impl.EngineBuilder;
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordProcessEventListener extends BatchProcessEventListener {
+public interface RecordProcessEventListener {
 
     /**
      * Callback after the add to the builder.
