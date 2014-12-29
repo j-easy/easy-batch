@@ -132,7 +132,7 @@ public final class Engine implements Callable<Report> {
                 //read next record
                 Record currentRecord;
                 try {
-                    currentRecord = recordReader.readNextRecord();
+                    currentRecord = readRecord();
                 } catch (Exception e) {
                     eventManager.fireOnBatchException(e);
                     eventManager.fireOnRecordReadException(e);
