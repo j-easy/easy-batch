@@ -24,8 +24,8 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.jmx.Monitor;
 import org.easybatch.core.api.*;
+import org.easybatch.core.jmx.Monitor;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -90,7 +90,7 @@ public final class Engine implements Callable<Report> {
         this.ignoredRecordHandler = ignoredRecordHandler;
         this.rejectedRecordHandler = rejectedRecordHandler;
         this.errorRecordHandler = errorRecordHandler;
-        
+
         report = new Report();
         monitor = new Monitor(report);
         configureJmxMBean();
@@ -178,7 +178,7 @@ public final class Engine implements Callable<Report> {
                         rejectedRecordHandler.handle(currentRecord, validationsErrors);
                         continue;
                     }
-                } catch(Exception e) {
+                } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + currentRecordNumber + " [" + currentRecord + "]", e);
                     report.addRejectedRecord(currentRecordNumber);
                     rejectedRecordHandler.handle(currentRecord, e);
@@ -194,7 +194,7 @@ public final class Engine implements Callable<Report> {
                 boolean processingError = false;
                 for (RecordProcessor recordProcessor : processingPipeline) {
                     try {
-                    processRecord(recordProcessor, currentRecordNumber, typedRecord);
+                        processRecord(recordProcessor, currentRecordNumber, typedRecord);
                     } catch (Exception e) {
                         processingError = true;
                         report.addErrorRecord(currentRecordNumber);
@@ -218,8 +218,8 @@ public final class Engine implements Callable<Report> {
 
             // The batch result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
             RecordProcessor lastRecordProcessor = processingPipeline.get(processingPipeline.size() - 1);
-            if(lastRecordProcessor instanceof ComputationalRecordProcessor) {
-                ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor)lastRecordProcessor;
+            if (lastRecordProcessor instanceof ComputationalRecordProcessor) {
+                ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor) lastRecordProcessor;
                 Object batchResult = computationalRecordProcessor.getComputationResult();
                 report.setBatchResult(batchResult);
             }
@@ -290,8 +290,8 @@ public final class Engine implements Callable<Report> {
     }
 
     /**
-    * Configure JMX MBean
-    */
+     * Configure JMX MBean
+     */
     private void configureJmxMBean() {
 
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
@@ -339,15 +339,15 @@ public final class Engine implements Callable<Report> {
     void setIgnoredRecordHandler(final IgnoredRecordHandler ignoredRecordHandler) {
         this.ignoredRecordHandler = ignoredRecordHandler;
     }
-    
+
     void setRejectedRecordHandler(final RejectedRecordHandler rejectedRecordHandler) {
         this.rejectedRecordHandler = rejectedRecordHandler;
     }
-    
+
     void setErrorRecordHandler(final ErrorRecordHandler errorRecordHandler) {
         this.errorRecordHandler = errorRecordHandler;
     }
-    
+
     void setStrictMode(final boolean strictMode) {
         this.strictMode = strictMode;
     }

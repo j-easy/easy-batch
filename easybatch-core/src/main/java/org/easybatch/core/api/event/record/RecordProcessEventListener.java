@@ -1,7 +1,7 @@
 package org.easybatch.core.api.event.record;
 
 import org.easybatch.core.api.event.global.BatchProcessEventListener;
-import org.easybatch.core.impl.EasyBatchEngineBuilder;
+import org.easybatch.core.impl.EngineBuilder;
 
 /**
  * Enables the implementing class to get an event on different steps within the batch process.
@@ -18,5 +18,5 @@ public interface RecordProcessEventListener extends BatchProcessEventListener {
      *
      * @param batchEngineBuilder The current state of the batch builder after adding this mapper.
      */
-    public void afterAdd(EasyBatchEngineBuilder batchEngineBuilder);
+    public void afterAdd(EngineBuilder batchEngineBuilder);
 }

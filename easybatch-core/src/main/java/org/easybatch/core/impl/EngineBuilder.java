@@ -59,6 +59,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record filter.
+     *
      * @param recordFilter the record filter to register
      * @return the engine builder
      */
@@ -69,6 +70,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerRecordFilter(org.easybatch.core.api.RecordFilter)}
+     *
      * @param recordFilter the record filter to register
      * @return the engine builder
      */
@@ -78,6 +80,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerRecordFilter(org.easybatch.core.api.RecordFilter)}
+     *
      * @param recordFilter the record filter to register
      * @return the engine builder
      */
@@ -87,6 +90,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record reader.
+     *
      * @param recordReader the record reader to register
      * @return the engine builder
      */
@@ -97,6 +101,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerRecordReader(org.easybatch.core.api.RecordReader)}
+     *
      * @param recordReader the record reader to register
      * @return the engine builder
      */
@@ -106,6 +111,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerRecordReader(org.easybatch.core.api.RecordReader)}
+     *
      * @param recordReader the record reader to register
      * @return the engine builder
      */
@@ -115,6 +121,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record mapper.
+     *
      * @param recordMapper the record mapper to register
      * @return the engine builder
      */
@@ -125,6 +132,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerRecordMapper(org.easybatch.core.api.RecordMapper)}
+     *
      * @param recordMapper the record mapper to register
      * @return the engine builder
      */
@@ -134,6 +142,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerRecordMapper(org.easybatch.core.api.RecordMapper)}
+     *
      * @param recordMapper the record mapper to register
      * @return the engine builder
      */
@@ -143,6 +152,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record validator.
+     *
      * @param recordValidator the record validator to register
      * @return the engine builder
      */
@@ -153,6 +163,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerRecordValidator(org.easybatch.core.api.RecordValidator)}
+     *
      * @param recordValidator the record validator to register
      * @return the engine builder
      */
@@ -162,6 +173,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerRecordValidator(org.easybatch.core.api.RecordValidator)}
+     *
      * @param recordValidator the record validator to register
      * @return the engine builder
      */
@@ -171,6 +183,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record processor.
+     *
      * @param recordProcessor the record processor to register
      * @return the engine builder
      */
@@ -181,6 +194,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerRecordProcessor(org.easybatch.core.api.RecordProcessor)}
+     *
      * @param recordProcessor the record processor to register
      * @return the engine builder
      */
@@ -190,6 +204,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerRecordProcessor(org.easybatch.core.api.RecordProcessor)}
+     *
      * @param recordProcessor the record processor to register
      * @return the engine builder
      */
@@ -199,6 +214,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerRecordProcessor(org.easybatch.core.api.RecordProcessor)}
+     *
      * @param recordProcessor the record processor to register
      * @return the engine builder
      */
@@ -208,6 +224,7 @@ public final class EngineBuilder {
 
     /**
      * Register a filtered record handler.
+     *
      * @param filteredRecordHandler the handler to process filtered record
      * @return the engine builder
      */
@@ -218,6 +235,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link org.easybatch.core.impl.EngineBuilder#registerFilteredRecordHandler(org.easybatch.core.api.FilteredRecordHandler)} .
+     *
      * @param filteredRecordHandler the handler to process filtered record
      * @return the engine builder
      */
@@ -228,6 +246,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link org.easybatch.core.impl.EngineBuilder#registerFilteredRecordHandler(org.easybatch.core.api.FilteredRecordHandler)} .
+     *
      * @param filteredRecordHandler the handler to process filtered record
      * @return the engine builder
      */
@@ -238,6 +257,7 @@ public final class EngineBuilder {
 
     /**
      * Register a ignored record handler.
+     *
      * @param ignoredRecordHandler the handler to process ignored record
      * @return the engine builder
      */
@@ -248,6 +268,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerIgnoredRecordHandler(org.easybatch.core.api.IgnoredRecordHandler)}
+     *
      * @param ignoredRecordHandler the handler to process ignored record
      * @return the engine builder
      */
@@ -257,15 +278,17 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerIgnoredRecordHandler(org.easybatch.core.api.IgnoredRecordHandler)}
+     *
      * @param ignoredRecordHandler the handler to process ignored record
      * @return the engine builder
      */
     public EngineBuilder ignoredRecordHandler(final IgnoredRecordHandler ignoredRecordHandler) {
         return registerIgnoredRecordHandler(ignoredRecordHandler);
     }
-    
+
     /**
      * Register a rejected record handler.
+     *
      * @param rejectedRecordHandler the handler to process rejected record
      * @return the engine builder
      */
@@ -276,6 +299,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerRejectedRecordHandler(org.easybatch.core.api.RejectedRecordHandler)}
+     *
      * @param rejectedRecordHandler the handler to process rejected record
      * @return the engine builder
      */
@@ -285,15 +309,17 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerRejectedRecordHandler(org.easybatch.core.api.RejectedRecordHandler)}
+     *
      * @param rejectedRecordHandler the handler to process rejected record
      * @return the engine builder
      */
     public EngineBuilder rejectedRecordHandler(final RejectedRecordHandler rejectedRecordHandler) {
         return registerRejectedRecordHandler(rejectedRecordHandler);
     }
-    
+
     /**
      * Register a error record handler.
+     *
      * @param errorRecordHandler the handler to process error record
      * @return the engine builder
      */
@@ -304,6 +330,7 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerErrorRecordHandler(org.easybatch.core.api.ErrorRecordHandler)}
+     *
      * @param errorRecordHandler the handler to process error record
      * @return the engine builder
      */
@@ -313,15 +340,17 @@ public final class EngineBuilder {
 
     /**
      * Alias for {@link EngineBuilder#registerErrorRecordHandler(org.easybatch.core.api.ErrorRecordHandler)}
+     *
      * @param errorRecordHandler the handler to process error record
      * @return the engine builder
      */
     public EngineBuilder errorRecordHandler(final ErrorRecordHandler errorRecordHandler) {
         return registerErrorRecordHandler(errorRecordHandler);
     }
-    
+
     /**
      * Enable strict mode : if true, then the execution will be aborted on first mapping, validating or processing error.
+     *
      * @param strictMode true if strict mode should be enabled
      * @return the engine builder
      */
@@ -410,6 +439,7 @@ public final class EngineBuilder {
 
     /**
      * Set the event manager.
+     *
      * @param eventManager The event manager to use instead of the {@link org.easybatch.core.impl.LocalEventManager}
      * @return the engine builder
      */
@@ -421,6 +451,7 @@ public final class EngineBuilder {
 
     /**
      * Build an Easy Batch engine instance.
+     *
      * @return an Easy Batch instance
      */
     public Engine build() {
