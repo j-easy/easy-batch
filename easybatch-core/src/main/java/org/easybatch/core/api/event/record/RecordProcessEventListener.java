@@ -14,7 +14,7 @@ public interface RecordProcessEventListener extends BatchProcessEventListener {
 
     /**
      * Callback after the add to the builder.
-     * The events happens in {@link org.easybatch.core.impl.EasyBatchEngineBuilder#registerRecordMapper}.
+     * The events happens in {@link org.easybatch.core.impl.EngineBuilder#registerRecordMapper}.
      *
      * @param batchEngineBuilder The current state of the batch builder after adding this mapper.
      */
