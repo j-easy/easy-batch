@@ -180,7 +180,7 @@
         </profile>
 
         <profile>
-            <id>runDispatcherTutorial</id>
+            <id>runRoundRobinRecordDispatcherTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
                 <plugins>
@@ -189,7 +189,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.dispatcher.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.dispatcher.roundrobin.RoundRobinRecordDispatcherTutorial</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>

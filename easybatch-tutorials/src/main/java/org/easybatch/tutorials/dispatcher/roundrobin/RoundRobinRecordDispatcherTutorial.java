@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.dispatcher;
+package org.easybatch.tutorials.dispatcher.roundrobin;
 
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Record;
@@ -38,11 +38,11 @@ import java.util.Arrays;
 import java.util.concurrent.*;
 
 /**
-* Main class to run the record dispatching tutorial.
+* Main class to run the round robin record dispatching tutorial.
  *
 * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
 */
-public class Launcher {
+public class RoundRobinRecordDispatcherTutorial {
 
     public static void main(String[] args) throws Exception {
 
