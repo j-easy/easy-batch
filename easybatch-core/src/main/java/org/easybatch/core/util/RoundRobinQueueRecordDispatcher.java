@@ -59,6 +59,13 @@ public class RoundRobinQueueRecordDispatcher implements RecordDispatcher {
 
     @Override
     public void dispatchRecord(Record record) throws Exception {
+        // when receiving a poising record, broadcast it to all queues
+        if (record instanceof PoisonRecord) {
+            for (BlockingQueue<Record> queue : queues) {
+                queue.put(record);
+            }
+            return;
+        }
         //dispatch records to queues in round-robin fashion
         queues.get(next++ % queuesNumber).put(record);
     }

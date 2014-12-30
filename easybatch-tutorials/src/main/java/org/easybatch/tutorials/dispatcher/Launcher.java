@@ -74,8 +74,7 @@ public class Launcher {
         stringRecordReader.close();
 
         //send poison records when all input data has been dispatched to workers
-        recordDispatcher.dispatchRecord(new PoisonRecord());//will be dispatched to queue 1
-        recordDispatcher.dispatchRecord(new PoisonRecord());//will be dispatched to queue 2
+        recordDispatcher.dispatchRecord(new PoisonRecord());
 
         //wait for easy batch instances termination and get partial reports
         Report report1 = reportFuture1.get();
