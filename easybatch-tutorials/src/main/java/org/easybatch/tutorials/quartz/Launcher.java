@@ -54,10 +54,10 @@ public class Launcher {
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
-                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
-                .registerRecordValidator(new BeanValidationRecordValidator<Greeting>())
-                .registerRecordProcessor(new GreetingProcessor())
+                .reader(new FlatFileRecordReader(new File(args[0])))
+                .mapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
+                .validator(new BeanValidationRecordValidator<Greeting>())
+                .processor(new GreetingProcessor())
                 .build();
 
         // schedule the engine to start now and run every minute

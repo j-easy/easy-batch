@@ -53,8 +53,8 @@ public class SingleFileLauncher {
         System.out.println(COMMENT_SEPARATOR);
         long singleInstanceStartTime = System.nanoTime();
         Engine engine = new EngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
-                .registerRecordProcessor(new MessageEncrypter())
+                .reader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
+                .processor(new MessageEncrypter())
                 .build();
 
         Report report = engine.call();
@@ -72,16 +72,16 @@ public class SingleFileLauncher {
 
         // Build a batch engine1
         Engine engine1 = new EngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
-                .registerRecordFilter(new RecordNumberGreaterThanFilter(5)) // filter records 6-10
-                .registerRecordProcessor(new MessageEncrypter())
+                .reader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
+                .filter(new RecordNumberGreaterThanFilter(5)) // filter records 6-10
+                .processor(new MessageEncrypter())
                 .build();
 
         // Build a batch engine2
         Engine engine2 = new EngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
-                .registerRecordFilter(new RecordNumberLowerThanFilter(6)) // filter records 1-5
-                .registerRecordProcessor(new MessageEncrypter())
+                .reader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages.txt
+                .filter(new RecordNumberLowerThanFilter(6)) // filter records 1-5
+                .processor(new MessageEncrypter())
                 .build();
 
         //create a 2 threads pool to call batch engines in parallel

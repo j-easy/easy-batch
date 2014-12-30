@@ -58,10 +58,10 @@ public class Launcher {
 
         // Build an easy batch engine
         Engine engine = new EngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from products-jsr303.csv
-                .registerRecordMapper(productMapper)
-                .registerRecordValidator(new BeanValidationRecordValidator<Product>())
-                .registerRecordProcessor(new ProductProcessor())
+                .reader(new FlatFileRecordReader(new File(args[0]))) //read data from products-jsr303.csv
+                .mapper(productMapper)
+                .validator(new BeanValidationRecordValidator<Product>())
+                .processor(new ProductProcessor())
                 .build();
 
         // Run easy batch engine

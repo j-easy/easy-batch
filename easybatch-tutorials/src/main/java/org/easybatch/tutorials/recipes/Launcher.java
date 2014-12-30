@@ -44,9 +44,9 @@ public class Launcher {
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .registerRecordReader(new RecipeRecordReader(recipes))
-                .registerRecordMapper(new RecipeMapper())
-                .registerRecordProcessor(new RecipeProcessor())
+                .reader(new RecipeRecordReader(recipes))
+                .mapper(new RecipeMapper())
+                .processor(new RecipeProcessor())
                 .build();
 
         // Run the batch engine and get execution report

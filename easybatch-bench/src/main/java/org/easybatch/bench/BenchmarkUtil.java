@@ -62,7 +62,7 @@ public class BenchmarkUtil {
     }
 
     public static Customer generateCustomer() {
-        return (Customer) customerPopulator.populateBean(Customer.class);
+        return customerPopulator.populateBean(Customer.class);
     }
 
     public static void generateCsvCustomers(String customersFile, int customersCount) throws Exception {
@@ -92,16 +92,16 @@ public class BenchmarkUtil {
 
     public static Engine buildCsvEngine(String customersFile) throws Exception {
         return new EngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(new File(customersFile)))
-                .registerRecordMapper(new DelimitedRecordMapper<Customer>(Customer.class,
+                .reader(new FlatFileRecordReader(new File(customersFile)))
+                .mapper(new DelimitedRecordMapper<Customer>(Customer.class,
                         new String[]{"id", "firstName", "lastName", "birthDate", "email", "phone", "street", "zipCode", "city", "country"}))
                 .build();
     }
 
     public static Engine buildXmlEngine(String customersFile) throws Exception {
         return new EngineBuilder()
-                .registerRecordReader(new XmlRecordReader("customer", new File(customersFile)))
-                .registerRecordMapper(new XmlRecordMapper<Customer>(Customer.class))
+                .reader(new XmlRecordReader("customer", new File(customersFile)))
+                .mapper(new XmlRecordMapper<Customer>(Customer.class))
                 .build();
     }
 

@@ -43,9 +43,9 @@ public class Launcher {
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .registerRecordReader(new XmlRecordReader("greeting", new File(args[0])))
-                .registerRecordMapper(new XmlRecordMapper<Greeting>(Greeting.class, new File(args[1])))
-                .registerRecordProcessor(new GreetingProcessor())
+                .reader(new XmlRecordReader("greeting", new File(args[0])))
+                .mapper(new XmlRecordMapper<Greeting>(Greeting.class, new File(args[1])))
+                .processor(new GreetingProcessor())
                 .build();
 
         // Run the batch engine

@@ -59,16 +59,16 @@ public class Launcher {
 
         // Build an easy batch engine to read greetings from csv file
         Engine csvEngine = new EngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
-                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id","name"}))
-                .registerRecordProcessor(new GreetingDataLoader())
+                .reader(new FlatFileRecordReader(new File(args[0])))
+                .mapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id","name"}))
+                .processor(new GreetingDataLoader())
                 .build();
 
         // Build an easy batch engine to read greetings from xml file
         Engine xmlEngine = new EngineBuilder()
-                .registerRecordReader(new XmlRecordReader("greeting", new File(args[1])))
-                .registerRecordMapper(new XmlRecordMapper<Greeting>(Greeting.class))
-                .registerRecordProcessor(new GreetingDataLoader())
+                .reader(new XmlRecordReader("greeting", new File(args[1])))
+                .mapper(new XmlRecordMapper<Greeting>(Greeting.class))
+                .processor(new GreetingDataLoader())
                 .build();
 
         //create a 2 threads pool to call Easy Batch engines in parallel
@@ -84,9 +84,9 @@ public class Launcher {
 
         // Build an easy batch engine to generate JSON products data from the database
         Engine jsonEngine = new EngineBuilder()
-                .registerRecordReader(new JdbcRecordReader(DatabaseUtil.getDatabaseConnection(), "select * from greeting"))
-                .registerRecordMapper(new JdbcRecordMapper<Greeting>(Greeting.class))
-                .registerRecordProcessor(new GreetingJsonGenerator())
+                .reader(new JdbcRecordReader(DatabaseUtil.getDatabaseConnection(), "select * from greeting"))
+                .mapper(new JdbcRecordMapper<Greeting>(Greeting.class))
+                .processor(new GreetingJsonGenerator())
                 .build();
 
         jsonEngine.call();

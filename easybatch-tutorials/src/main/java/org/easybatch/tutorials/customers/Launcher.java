@@ -54,9 +54,9 @@ public class Launcher {
 
         // Build an easy batch engine
         Engine engine = new EngineBuilder()
-                .registerRecordReader(new JdbcRecordReader(connection, "select * from customer"))
-                .registerRecordMapper(new CustomerMapper())
-                .registerRecordProcessor(new CustomerProcessor())
+                .reader(new JdbcRecordReader(connection, "select * from customer"))
+                .mapper(new CustomerMapper())
+                .processor(new CustomerProcessor())
                 .build();
 
         // Run easy batch engine

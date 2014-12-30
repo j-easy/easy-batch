@@ -51,11 +51,11 @@ public class StringDataSourceTutorialLauncher {
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .readRecordsWith(new StringRecordReader(dataSource))
-                .filterRecordsWith(new HeaderRecordFilter())
-                .mapRecordsWith(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
-                .processRecordsWith(new GreetingTransformer())
-                .thenWith(new GreetingProcessor())
+                .reader(new StringRecordReader(dataSource))
+                .filter(new HeaderRecordFilter())
+                .mapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
+                .processor(new GreetingTransformer())
+                .processor(new GreetingProcessor())
                 .build();
 
         // Run the batch engine

@@ -45,9 +45,9 @@ public class Launcher {
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
-                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
-                .registerRecordProcessor(new GreetingProcessor())
+                .reader(new FlatFileRecordReader(new File(args[0])))
+                .mapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
+                .processor(new GreetingProcessor())
                 .build();
 
         // Run the batch engine

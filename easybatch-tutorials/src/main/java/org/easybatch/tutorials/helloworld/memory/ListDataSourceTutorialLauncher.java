@@ -52,10 +52,10 @@ public class ListDataSourceTutorialLauncher {
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .readRecordsWith(new ListRecordReader<Greeting>(dataSource))
-                .mapRecordsWith(new GenericRecordMapper())
-                .processRecordsWith(new GreetingTransformer())
-                .thenWith(new GreetingProcessor())
+                .reader(new ListRecordReader<Greeting>(dataSource))
+                .mapper(new GenericRecordMapper())
+                .processor(new GreetingTransformer())
+                .processor(new GreetingProcessor())
                 .build();
 
         // Run the batch engine

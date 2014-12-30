@@ -78,9 +78,9 @@ public class Launcher {
 
     public static Engine buildBatchEngine(int id) {
         return new EngineBuilder()
-                .registerRecordReader(new GreetingJmsReader(id))
-                .registerRecordMapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id","name"}))
-                .registerRecordProcessor(new GreetingSlowProcessor())
+                .reader(new GreetingJmsReader(id))
+                .mapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id","name"}))
+                .processor(new GreetingSlowProcessor())
                 .build();
     }
 

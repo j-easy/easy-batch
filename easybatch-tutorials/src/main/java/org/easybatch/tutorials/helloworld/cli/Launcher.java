@@ -44,10 +44,10 @@ public class Launcher {
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .readRecordsWith(new CliRecordReader())
-                .filterRecordsWith(new PoisonRecordFilter())
-                .mapRecordsWith(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
-                .processRecordsWith(new GreetingProcessor())
+                .reader(new CliRecordReader())
+                .filter(new PoisonRecordFilter())
+                .mapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
+                .processor(new GreetingProcessor())
                 .build();
 
         // Run batch engine

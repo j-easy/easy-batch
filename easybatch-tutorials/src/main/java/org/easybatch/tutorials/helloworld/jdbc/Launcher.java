@@ -55,9 +55,9 @@ public class Launcher {
 
         // Build a  batch engine
         Engine engine = new EngineBuilder()
-                .registerRecordReader(new JdbcRecordReader(connection, "select * from greeting"))
-                .registerRecordMapper(new JdbcRecordMapper<Greeting>(Greeting.class))
-                .registerRecordProcessor(new GreetingProcessor())
+                .reader(new JdbcRecordReader(connection, "select * from greeting"))
+                .mapper(new JdbcRecordMapper<Greeting>(Greeting.class))
+                .processor(new GreetingProcessor())
                 .build();
 
         // Run the batch engine

@@ -52,16 +52,16 @@ public class BatchFactoryBean implements FactoryBean {
     public Object getObject() throws Exception {
         EngineBuilder engineBuilder = new EngineBuilder();
         if (recordReader != null) {
-            engineBuilder.registerRecordReader(recordReader);
+            engineBuilder.reader(recordReader);
         }
         if (recordFilter != null) {
-            engineBuilder.registerRecordFilter(recordFilter);
+            engineBuilder.filter(recordFilter);
         }
         if (recordMapper != null) {
-            engineBuilder.registerRecordMapper(recordMapper);
+            engineBuilder.mapper(recordMapper);
         }
         if (recordValidator != null) {
-            engineBuilder.registerRecordValidator(recordValidator);
+            engineBuilder.validator(recordValidator);
         }
         if (processingPipeline != null) {
             for (RecordProcessor recordProcessor : processingPipeline) {

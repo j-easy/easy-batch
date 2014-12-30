@@ -48,14 +48,14 @@ public class MultipleFilesLauncher {
 
         // Build a  batch engine1
         Engine engine1 = new EngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages-part1.txt
-                .registerRecordProcessor(new MessageEncrypter())
+                .reader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages-part1.txt
+                .processor(new MessageEncrypter())
                 .build();
 
         // Build a batch engine2
         Engine engine2 = new EngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(new File(args[1]))) //read data from secret-messages-part2.txt
-                .registerRecordProcessor(new MessageEncrypter())
+                .reader(new FlatFileRecordReader(new File(args[1]))) //read data from secret-messages-part2.txt
+                .processor(new MessageEncrypter())
                 .build();
 
         //create a 2 threads pool to call Easy Batch engines in parallel

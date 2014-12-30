@@ -92,8 +92,8 @@ public class RoundRobinRecordDispatcherTutorial {
 
     public static Engine buildBatchEngine(BlockingQueue<Record> queue) {
         return new EngineBuilder()
-                .readRecordsWith(new QueueRecordReader(queue))
-                .filterRecordsWith(new PoisonRecordFilter())
+                .reader(new QueueRecordReader(queue))
+                .filter(new PoisonRecordFilter())
                 .build();
     }
 

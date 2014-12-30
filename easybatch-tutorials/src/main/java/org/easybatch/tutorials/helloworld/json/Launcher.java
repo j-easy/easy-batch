@@ -42,9 +42,9 @@ public class Launcher {
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .registerRecordReader(new JsonRecordReader(new File(args[0])))
-                .registerRecordMapper(new JsonRecordMapper())
-                .registerRecordProcessor(new GreetingProcessor())
+                .reader(new JsonRecordReader(new File(args[0])))
+                .mapper(new JsonRecordMapper())
+                .processor(new GreetingProcessor())
                 .build();
 
         // Run the batch engine

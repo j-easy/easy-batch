@@ -50,10 +50,10 @@ public class Launcher {
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .readRecordsWith(new FlatFileRecordReader(new File(args[0]))) //read data from products.csv
-                .filterRecordsWith(new HeaderRecordFilter())
-                .mapRecordsWith(productMapper)
-                .processRecordsWith(new ProductProcessor())
+                .reader(new FlatFileRecordReader(new File(args[0]))) //read data from products.csv
+                .filter(new HeaderRecordFilter())
+                .mapper(productMapper)
+                .processor(new ProductProcessor())
                 .build();
 
         // Run the batch engine and get execution report

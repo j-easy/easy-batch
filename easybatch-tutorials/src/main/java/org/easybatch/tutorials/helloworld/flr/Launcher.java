@@ -46,13 +46,13 @@ public class Launcher {
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
-                .registerRecordFilter(new HeaderRecordFilter())
-                .registerRecordMapper(new FixedLengthRecordMapper<Greeting>(
+                .reader(new FlatFileRecordReader(new File(args[0])))
+                .filter(new HeaderRecordFilter())
+                .mapper(new FixedLengthRecordMapper<Greeting>(
                         Greeting.class,
                         new int[]{3,3},
                         new String[]{"id", "name"}))
-                .registerRecordProcessor(new GreetingProcessor())
+                .processor(new GreetingProcessor())
                 .build();
 
         // Run the batch engine
