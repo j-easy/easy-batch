@@ -197,6 +197,23 @@
         </profile>
 
         <profile>
+            <id>runContentBasedRecordDispatcherTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin-version}</version>
+                        <configuration>
+                            <mainClass>org.easybatch.tutorials.dispatcher.contentbased.ContentBasedRecordDispatcherTutorial</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
             <id>runHelloWorldFLRTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
