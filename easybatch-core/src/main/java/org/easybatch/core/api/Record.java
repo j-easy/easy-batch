@@ -25,7 +25,16 @@
 package org.easybatch.core.api;
 
 /**
- * Interface for record type.
+ * Interface for input record.<br/>
+ *
+ * A record can be:
+ * <ul>
+ *     <li>A line in a flat file</li>
+ *     <li>A tag in a xml file</li>
+ *     <li>A row in a database table</li>
+ *     <li>A file in a directory</li>
+ *     <li>etc</li>
+ * </ul>
  *
  * @param <T> The record raw content type.
  *
@@ -34,7 +43,7 @@ package org.easybatch.core.api;
 public interface Record<T> {
 
     /**
-     * Get the record number in the input data source.
+     * Get the physical record number in the data source.
      * @return the record number in the input data source.
      */
     int getNumber();
