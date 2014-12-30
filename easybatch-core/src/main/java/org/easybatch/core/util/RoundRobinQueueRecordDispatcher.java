@@ -35,7 +35,7 @@ import java.util.concurrent.BlockingQueue;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class QueueRecordDispatcher implements RecordDispatcher {
+public class RoundRobinQueueRecordDispatcher implements RecordDispatcher {
 
     /**
      * The total number of queues this dispatcher operates on.
@@ -52,7 +52,7 @@ public class QueueRecordDispatcher implements RecordDispatcher {
      */
     private List<BlockingQueue<Record>> queues;
 
-    public QueueRecordDispatcher(List<BlockingQueue<Record>> queues) {
+    public RoundRobinQueueRecordDispatcher(List<BlockingQueue<Record>> queues) {
         this.queues = queues;
         this.queuesNumber = queues.size();
     }
