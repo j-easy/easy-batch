@@ -31,11 +31,11 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * A {@link org.easybatch.core.api.RecordDispatcher} that dispatches records to a set of queues in round-robin fashion.
+ * A {@link org.easybatch.core.api.RecordDispatcher} that dispatches records to a list of queues in round-robin fashion.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RoundRobinQueueRecordDispatcher implements RecordDispatcher {
+public class RoundRobinRecordDispatcher implements RecordDispatcher {
 
     /**
      * The total number of queues this dispatcher operates on.
@@ -52,7 +52,7 @@ public class RoundRobinQueueRecordDispatcher implements RecordDispatcher {
      */
     private List<BlockingQueue<Record>> queues;
 
-    public RoundRobinQueueRecordDispatcher(List<BlockingQueue<Record>> queues) {
+    public RoundRobinRecordDispatcher(List<BlockingQueue<Record>> queues) {
         this.queues = queues;
         this.queuesNumber = queues.size();
     }

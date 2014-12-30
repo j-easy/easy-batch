@@ -62,7 +62,7 @@ public class Launcher {
         Future<Report> reportFuture2 = executorService.submit(engine2);
 
         //create a record dispatcher to dispatch records to previously created queues
-        RecordDispatcher recordDispatcher = new RoundRobinQueueRecordDispatcher(Arrays.asList(queue1, queue2));
+        RecordDispatcher recordDispatcher = new RoundRobinRecordDispatcher(Arrays.asList(queue1, queue2));
 
         //read data source and dispatch record to queues in round-robin fashion
         StringRecordReader stringRecordReader = new StringRecordReader("Foo\nBar\nTar\nChar\n");
