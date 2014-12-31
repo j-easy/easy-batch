@@ -36,12 +36,12 @@ public abstract class BaseConverterTest<T> {
     protected TypeConverter<T> converter;
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenInputIsNullThenShouldThrowIllegalArgumentException() {
+    public void whenInputIsNull_ThenShouldThrowIllegalArgumentException() {
         converter.convert(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenInputIsEmptyThenShouldThrowIllegalArgumentException() {
+    public void whenInputIsEmpty_ThenShouldThrowIllegalArgumentException() {
         converter.convert("");
     }
 

@@ -38,13 +38,13 @@ public class StartWithStringRecordFilterTest extends BaseRecordFilterTest {
     private StartWithStringRecordFilter startWithStringRecordFilter;
 
     @Test
-    public void whenTheRecordStartsWithExpectedPrefixThenItShouldBeFiltered() {
+    public void whenTheRecordStartsWithExpectedPrefix_ThenItShouldBeFiltered() {
         startWithStringRecordFilter = new StartWithStringRecordFilter("prefix1");
         assertThat(startWithStringRecordFilter.filterRecord(stringRecord1)).isTrue();
     }
 
     @Test
-    public void whenTheRecordStartsWithOneOfTheExpectedPrefixesThenItShouldBeFiltered() {
+    public void whenTheRecordStartsWithOneOfTheExpectedPrefixes_ThenItShouldBeFiltered() {
         startWithStringRecordFilter = new StartWithStringRecordFilter("prefix1", "prefix2");
         assertThat(startWithStringRecordFilter.filterRecord(stringRecord1)).isTrue();
         assertThat(startWithStringRecordFilter.filterRecord(stringRecord2)).isTrue();
@@ -55,13 +55,13 @@ public class StartWithStringRecordFilterTest extends BaseRecordFilterTest {
      */
 
     @Test
-    public void whenTheRecordStartsWithExpectedPrefixThenItShouldNotBeFiltered() {
+    public void whenTheRecordStartsWithExpectedPrefix_ThenItShouldNotBeFiltered() {
         startWithStringRecordFilter = new StartWithStringRecordFilter(true, "prefix1");
         assertThat(startWithStringRecordFilter.filterRecord(stringRecord1)).isFalse();
     }
 
     @Test
-    public void whenTheRecordStartsWithOneOfTheExpectedPrefixesThenItShouldNotBeFiltered() {
+    public void whenTheRecordStartsWithOneOfTheExpectedPrefixes_ThenItShouldNotBeFiltered() {
         startWithStringRecordFilter = new StartWithStringRecordFilter(true, "prefix1", "prefix2");
         assertThat(startWithStringRecordFilter.filterRecord(stringRecord1)).isFalse();
         assertThat(startWithStringRecordFilter.filterRecord(stringRecord2)).isFalse();

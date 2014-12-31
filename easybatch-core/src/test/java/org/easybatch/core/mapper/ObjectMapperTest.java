@@ -39,7 +39,7 @@ import static org.fest.assertions.Assertions.assertThat;
 public class ObjectMapperTest {
 
     @Test
-    public void whenValuesAreValidThenTheMappedObjectShouldBeCorrectlyPopulated() throws Exception {
+    public void whenValuesAreValid_ThenTheMappedObjectShouldBeCorrectlyPopulated() throws Exception {
 
         ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class,
                 new String[]{"firstName", "lastName", "age", "birthDate", "isMarried"});
@@ -61,7 +61,7 @@ public class ObjectMapperTest {
     }
 
     @Test
-    public void whenValuesAreValidThenInheritedFieldsOfTheMappedObjectShouldBeCorrectlyPopulated() throws Exception {
+    public void whenValuesAreValid_ThenInheritedFieldsOfTheMappedObjectShouldBeCorrectlyPopulated() throws Exception {
 
         ObjectMapper<ExtendedPerson> mapper = new ObjectMapper<ExtendedPerson>(ExtendedPerson.class,
                 new String[]{"firstName", "lastName", "age", "birthDate", "isMarried", "nickName"});

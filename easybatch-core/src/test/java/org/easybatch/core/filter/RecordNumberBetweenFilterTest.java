@@ -38,14 +38,14 @@ public class RecordNumberBetweenFilterTest extends BaseRecordFilterTest {
     private RecordNumberBetweenFilter recordNumberBetweenFilter;
 
     @Test
-    public void whenTheRecordNumberIsInsideRangeThenItShouldBeFiltered() {
+    public void whenTheRecordNumberIsInsideRange_ThenItShouldBeFiltered() {
         recordNumberBetweenFilter = new RecordNumberBetweenFilter(1, 2);
         assertThat(recordNumberBetweenFilter.filterRecord(stringRecord1)).isTrue();
         assertThat(recordNumberBetweenFilter.filterRecord(stringRecord2)).isTrue();
     }
 
     @Test
-    public void whenTheRecordNumberIsOutsideRangeThenItShouldNotBeFiltered() {
+    public void whenTheRecordNumberIsOutsideRange_ThenItShouldNotBeFiltered() {
         recordNumberBetweenFilter = new RecordNumberBetweenFilter(3, 4);
         assertThat(recordNumberBetweenFilter.filterRecord(stringRecord1)).isFalse();
         assertThat(recordNumberBetweenFilter.filterRecord(stringRecord2)).isFalse();

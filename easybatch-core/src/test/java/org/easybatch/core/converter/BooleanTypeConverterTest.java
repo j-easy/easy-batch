@@ -44,7 +44,7 @@ public class BooleanTypeConverterTest {
     }
 
     @Test
-    public void whenInputIsOneOfPredefinedTrueValuesThenShouldReturnBooleanTrueValue() {
+    public void whenInputIsOneOfPredefinedTrueValues_ThenShouldReturnBooleanTrueValue() {
         assertThat(booleanTypeConverter.convert("true")).isTrue();
         assertThat(booleanTypeConverter.convert("TRUE")).isTrue();
         assertThat(booleanTypeConverter.convert("1")).isTrue();
@@ -55,7 +55,7 @@ public class BooleanTypeConverterTest {
     }
 
     @Test
-    public void whenInputIsNotOneOfPredefinedTrueValuesThenShouldReturnBooleanFalseValue() {
+    public void whenInputIsNotOneOfPredefinedTrueValues_ThenShouldReturnBooleanFalseValue() {
         assertThat(booleanTypeConverter.convert("false")).isFalse();
         assertThat(booleanTypeConverter.convert("0")).isFalse();
         assertThat(booleanTypeConverter.convert("off")).isFalse();

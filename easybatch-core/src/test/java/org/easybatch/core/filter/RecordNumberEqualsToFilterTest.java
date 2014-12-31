@@ -38,13 +38,13 @@ public class RecordNumberEqualsToFilterTest extends BaseRecordFilterTest {
     private RecordNumberEqualsToFilter recordNumberEqualsToFilter;
 
     @Test
-    public void whenTheRecordNumberIsEqualToExpectedNumberThenItShouldBeFiltered() {
+    public void whenTheRecordNumberIsEqualToExpectedNumber_ThenItShouldBeFiltered() {
         recordNumberEqualsToFilter = new RecordNumberEqualsToFilter(1);
         assertThat(recordNumberEqualsToFilter.filterRecord(stringRecord1)).isTrue();
     }
 
     @Test
-    public void whenTheRecordNumberIsEqualToOneOfTheExpectedNumbersThenItShouldBeFiltered() {
+    public void whenTheRecordNumberIsEqualToOneOfTheExpectedNumbers_ThenItShouldBeFiltered() {
         recordNumberEqualsToFilter = new RecordNumberEqualsToFilter(1, 2);
         assertThat(recordNumberEqualsToFilter.filterRecord(stringRecord1)).isTrue();
         assertThat(recordNumberEqualsToFilter.filterRecord(stringRecord2)).isTrue();
@@ -55,13 +55,13 @@ public class RecordNumberEqualsToFilterTest extends BaseRecordFilterTest {
      */
 
     @Test
-    public void whenTheRecordNumberIsEqualToExpectedNumberThenItShouldNotBeFiltered() {
+    public void whenTheRecordNumberIsEqualToExpectedNumber_ThenItShouldNotBeFiltered() {
         recordNumberEqualsToFilter = new RecordNumberEqualsToFilter(true, 1);
         assertThat(recordNumberEqualsToFilter.filterRecord(stringRecord1)).isFalse();
     }
 
     @Test
-    public void whenTheRecordNumberIsEqualToOneOfTheExpectedNumbersThenItShouldNotBeFiltered() {
+    public void whenTheRecordNumberIsEqualToOneOfTheExpectedNumbers_ThenItShouldNotBeFiltered() {
         recordNumberEqualsToFilter = new RecordNumberEqualsToFilter(true, 1, 2);
         assertThat(recordNumberEqualsToFilter.filterRecord(stringRecord1)).isFalse();
         assertThat(recordNumberEqualsToFilter.filterRecord(stringRecord2)).isFalse();

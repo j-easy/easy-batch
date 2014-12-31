@@ -42,7 +42,7 @@ public class IntegerTypeConverterTest extends BaseConverterTest<Integer> {
     }
 
     @Test
-    public void whenInputIsLegalValueThenShouldReturnInteger() {
+    public void whenInputIsLegalValue_ThenShouldReturnInteger() {
         assertThat(converter.convert("5")).isNotNull();
         assertThat(converter.convert("5")).isEqualTo(5);
     }

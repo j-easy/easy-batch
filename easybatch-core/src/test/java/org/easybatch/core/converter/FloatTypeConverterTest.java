@@ -42,7 +42,7 @@ public class FloatTypeConverterTest extends BaseConverterTest<Float> {
     }
 
     @Test
-    public void whenInputIsLegalValueThenShouldReturnFloat() {
+    public void whenInputIsLegalValue_ThenShouldReturnFloat() {
         assertThat(converter.convert("5")).isNotNull();
         assertThat(converter.convert("5")).isEqualTo(5);
     }

@@ -104,31 +104,31 @@ public class ReportTest {
     }
 
     @Test
-    public void whenTotalRecordsIsZeroThenFormattedAverageRecordProcessingTimeShouldBeNA() {
+    public void whenTotalRecordsIsZero_ThenFormattedAverageRecordProcessingTimeShouldBeNA() {
         report.setTotalRecords(0);
         assertThat(report.getFormattedAverageRecordProcessingTime()).isEqualTo("N/A");
     }
 
     @Test
-    public void whenTotalRecordsIsZeroThenFormattedProgressShouldBeNA() {
+    public void whenTotalRecordsIsZero_ThenFormattedProgressShouldBeNA() {
         report.setTotalRecords(0);
         assertThat(report.getFormattedAverageRecordProcessingTime()).isEqualTo("N/A");
     }
 
     @Test
-    public void whenTotalRecordsIsNullThenFormattedAverageRecordProcessingTimeShouldBeNA() {
+    public void whenTotalRecordsIsNull_ThenFormattedAverageRecordProcessingTimeShouldBeNA() {
         report.setTotalRecords(null);
         assertThat(report.getFormattedProgress()).isEqualTo("N/A");
     }
 
     @Test
-    public void whenTotalRecordsIsNullThenFormattedProgressShouldBeNA() {
+    public void whenTotalRecordsIsNull_ThenFormattedProgressShouldBeNA() {
         report.setTotalRecords(null);
         assertThat(report.getFormattedProgress()).isEqualTo("N/A");
     }
 
     @Test
-    public void whenBatchResultIsNullThenITShouldNotBePrintedOut() {
+    public void whenBatchResultIsNull_ThenITShouldNotBePrintedOut() {
         report.setBatchResult(null);
         assertThat(report.toString()).doesNotContain("Result");
     }

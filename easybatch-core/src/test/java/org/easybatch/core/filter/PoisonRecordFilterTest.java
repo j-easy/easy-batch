@@ -46,13 +46,13 @@ public class PoisonRecordFilterTest {
     }
 
     @Test
-    public void whenTheRecordIsOfTypePoisonRecordThenItShouldBeFiltered() {
+    public void whenTheRecordIsOfTypePoisonRecord_ThenItShouldBeFiltered() {
         assertThat(poisonRecordFilter.filterRecord(new PoisonRecord())).isTrue();
         assertThat(poisonRecordFilter.filterRecord(new CustomPoisonRecord())).isTrue();
     }
 
     @Test
-    public void whenTheRecordIsNotOfTypePoisonRecordThenItNotShouldBeFiltered() {
+    public void whenTheRecordIsNotOfTypePoisonRecord_ThenItNotShouldBeFiltered() {
         assertThat(poisonRecordFilter.filterRecord(new StringRecord(1, "foo"))).isFalse();
     }
 

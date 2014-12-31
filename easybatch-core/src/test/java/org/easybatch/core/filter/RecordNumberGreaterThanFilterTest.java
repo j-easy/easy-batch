@@ -38,14 +38,14 @@ public class RecordNumberGreaterThanFilterTest extends BaseRecordFilterTest {
     private RecordNumberGreaterThanFilter recordNumberGreaterThanFilter;
 
     @Test
-    public void whenTheRecordNumberIsGreaterThanExpectedNumberThenItShouldBeFiltered() {
+    public void whenTheRecordNumberIsGreaterThanExpectedNumber_ThenItShouldBeFiltered() {
         recordNumberGreaterThanFilter = new RecordNumberGreaterThanFilter(0);
         assertThat(recordNumberGreaterThanFilter.filterRecord(stringRecord1)).isTrue();
         assertThat(recordNumberGreaterThanFilter.filterRecord(stringRecord2)).isTrue();
     }
 
     @Test
-    public void whenTheRecordNumberIsLowerThanOrEqualToExpectedNumberThenItShouldNotBeFiltered() {
+    public void whenTheRecordNumberIsLowerThanOrEqualToExpectedNumber_ThenItShouldNotBeFiltered() {
         recordNumberGreaterThanFilter = new RecordNumberGreaterThanFilter(2);
         assertThat(recordNumberGreaterThanFilter.filterRecord(stringRecord1)).isFalse();
         assertThat(recordNumberGreaterThanFilter.filterRecord(stringRecord2)).isFalse();

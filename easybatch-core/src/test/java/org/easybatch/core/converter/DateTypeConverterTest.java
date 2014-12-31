@@ -47,7 +47,7 @@ public class DateTypeConverterTest extends BaseConverterTest<Date> {
 
     @Ignore("todo: fix problem with date comparison")
     @Test
-    public void whenInputValueIsLegalValueThenShouldReturnValidDate() {
+    public void whenInputValueIsLegalValue_ThenShouldReturnValidDate() {
         Date convertedDate = converter.convert("2015-01-01 00:00:00");
         assertThat(convertedDate).isNotNull();
         Calendar calendar = Calendar.getInstance();
@@ -57,7 +57,7 @@ public class DateTypeConverterTest extends BaseConverterTest<Date> {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenValueIsIllegalThenShouldThrowAnIllegalArgumentException() {
+    public void whenValueIsIllegal_ThenShouldThrowAnIllegalArgumentException() {
         converter.convert("foo");
     }
 

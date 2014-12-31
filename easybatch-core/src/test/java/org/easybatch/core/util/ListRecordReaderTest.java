@@ -56,31 +56,31 @@ public class ListRecordReaderTest {
     }
 
     @Test
-    public void whenTheDataSourceIsNotEmptyThenItShouldBeANextRecordToRead() throws Exception {
+    public void whenTheDataSourceIsNotEmpty_ThenItShouldBeANextRecordToRead() throws Exception {
         assertThat(listRecordReader.hasNextRecord()).isTrue();
     }
 
     @Test
-    public void whenTheDataSourceIsEmptyThenItShouldNotBeANextRecordToRead() throws Exception {
+    public void whenTheDataSourceIsEmpty_ThenItShouldNotBeANextRecordToRead() throws Exception {
         dataSource.clear();
         listRecordReader = new ListRecordReader<String>(dataSource);
         assertThat(listRecordReader.hasNextRecord()).isFalse();
     }
 
     @Test
-    public void whenTheDataSourceIsNotEmptyThenTotalRecordsShouldBeEqualToTheListSize() throws Exception {
+    public void whenTheDataSourceIsNotEmpty_ThenTotalRecordsShouldBeEqualToTheListSize() throws Exception {
         assertThat(listRecordReader.getTotalRecords()).isEqualTo(1);
     }
 
     @Test
-    public void whenTheDataSourceIsEmptyThenTotalRecordsShouldBeEqualToZero() throws Exception {
+    public void whenTheDataSourceIsEmpty_ThenTotalRecordsShouldBeEqualToZero() throws Exception {
         dataSource.clear();
         listRecordReader = new ListRecordReader<String>(dataSource);
         assertThat(listRecordReader.getTotalRecords()).isEqualTo(0);
     }
 
     @Test
-    public void whenTheDataSourceIsNotEmptyThenTheNextRecordShouldBeReadFromTheList() throws Exception {
+    public void whenTheDataSourceIsNotEmpty_ThenTheNextRecordShouldBeReadFromTheList() throws Exception {
         Record<String> record = listRecordReader.readNextRecord();
         assertThat(record).isInstanceOf(GenericRecord.class);
         assertThat(record.getNumber()).isEqualTo(1);

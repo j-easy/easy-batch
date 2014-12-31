@@ -44,7 +44,7 @@ public class AtomicIntegerTypeConverterTest extends BaseConverterTest<AtomicInte
     }
 
     @Test
-    public void whenInputIsLegalValueThenShouldReturnAtomicInteger() {
+    public void whenInputIsLegalValue_ThenShouldReturnAtomicInteger() {
         assertThat(converter.convert("5")).isNotNull();
         assertThat(converter.convert("5").get()).isEqualTo(5);
     }

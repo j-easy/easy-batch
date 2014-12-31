@@ -45,12 +45,12 @@ public class ContentBasedRecordDispatcherBuilderTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void whenPredicateToQueueMapIsEmpty_thenShouldThrowIllegalStateException() throws Exception {
+    public void whenPredicateToQueueMapIsEmpty_ThenShouldThrowIllegalStateException() throws Exception {
         builder.build();
     }
 
     @Test(expected = IllegalStateException.class)
-    public void whenCallDispatchToWithoutCallingWhen_thenShouldThrowIllegalStateException() throws Exception {
+    public void whenCallDispatchToWithoutCallingWhen_ThenShouldThrowIllegalStateException() throws Exception {
         builder.dispatchTo(new ArrayBlockingQueue<Record>(10));
     }
 

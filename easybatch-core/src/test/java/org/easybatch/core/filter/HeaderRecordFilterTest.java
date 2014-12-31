@@ -46,12 +46,12 @@ public class HeaderRecordFilterTest extends BaseRecordFilterTest {
     }
 
     @Test
-    public void whenTheRecordNumberIsEqualToOneThenItShouldBeFiltered() {
+    public void whenTheRecordNumberIsEqualToOne_ThenItShouldBeFiltered() {
         assertThat(headerRecordFilter.filterRecord(stringRecord1)).isTrue();
     }
 
     @Test
-    public void whenTheRecordNumberIsDifferentFromOneThenItShouldNotBeFiltered() {
+    public void whenTheRecordNumberIsDifferentFromOne_ThenItShouldNotBeFiltered() {
         assertThat(headerRecordFilter.filterRecord(stringRecord2)).isFalse();
     }
 

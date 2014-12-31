@@ -42,7 +42,7 @@ public class ShortTypeConverterTest extends BaseConverterTest<Short> {
     }
 
     @Test
-    public void whenInputIsLegalValueThenShouldReturnShort() {
+    public void whenInputIsLegalValue_ThenShouldReturnShort() {
         assertThat(converter.convert("5")).isNotNull();
         assertThat(converter.convert("5")).isEqualTo((short) 5);
     }

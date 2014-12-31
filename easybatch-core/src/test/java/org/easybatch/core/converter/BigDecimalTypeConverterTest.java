@@ -44,7 +44,7 @@ public class BigDecimalTypeConverterTest extends BaseConverterTest<BigDecimal> {
     }
 
     @Test
-    public void whenInputIsLegalValueThenShouldReturnBigDecimal() {
+    public void whenInputIsLegalValue_ThenShouldReturnBigDecimal() {
         assertThat(converter.convert("5")).isNotNull();
         assertThat(converter.convert("5").intValue()).isEqualTo(5);
     }

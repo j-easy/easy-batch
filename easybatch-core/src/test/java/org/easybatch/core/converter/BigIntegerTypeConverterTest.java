@@ -44,7 +44,7 @@ public class BigIntegerTypeConverterTest extends BaseConverterTest<BigInteger> {
     }
 
     @Test
-    public void whenInputIsLegalValueThenShouldReturnBigInteger() {
+    public void whenInputIsLegalValue_ThenShouldReturnBigInteger() {
         assertThat(converter.convert("5")).isNotNull();
         assertThat(converter.convert("5").intValue()).isEqualTo(5);
     }

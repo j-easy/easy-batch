@@ -44,7 +44,7 @@ public class AtomicLongTypeConverterTest extends BaseConverterTest<AtomicLong> {
     }
 
     @Test
-    public void whenInputIsLegalValueThenShouldReturnAtomicLong() {
+    public void whenInputIsLegalValue_ThenShouldReturnAtomicLong() {
         assertThat(converter.convert("5")).isNotNull();
         assertThat(converter.convert("5").get()).isEqualTo(5);
     }

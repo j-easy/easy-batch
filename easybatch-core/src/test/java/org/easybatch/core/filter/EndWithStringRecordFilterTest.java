@@ -38,13 +38,13 @@ public class EndWithStringRecordFilterTest extends BaseRecordFilterTest {
     private EndWithStringRecordFilter endWithStringRecordFilter;
 
     @Test
-    public void whenTheRecordEndsWithExpectedSuffixThenItShouldBeFiltered() {
+    public void whenTheRecordEndsWithExpectedSuffix_ThenItShouldBeFiltered() {
         endWithStringRecordFilter = new EndWithStringRecordFilter("suffix1");
         assertThat(endWithStringRecordFilter.filterRecord(stringRecord1)).isTrue();
     }
 
     @Test
-    public void whenTheRecordEndsWithOneOfTheExpectedSuffixesThenItShouldBeFiltered() {
+    public void whenTheRecordEndsWithOneOfTheExpectedSuffixes_ThenItShouldBeFiltered() {
         endWithStringRecordFilter = new EndWithStringRecordFilter("suffix1", "suffix2");
         assertThat(endWithStringRecordFilter.filterRecord(stringRecord1)).isTrue();
         assertThat(endWithStringRecordFilter.filterRecord(stringRecord2)).isTrue();
@@ -55,13 +55,13 @@ public class EndWithStringRecordFilterTest extends BaseRecordFilterTest {
      */
 
     @Test
-    public void whenTheRecordEndsWithExpectedSuffixThenItShouldNotBeFiltered() {
+    public void whenTheRecordEndsWithExpectedSuffix_ThenItShouldNotBeFiltered() {
         endWithStringRecordFilter = new EndWithStringRecordFilter(true, "suffix2");
         assertThat(endWithStringRecordFilter.filterRecord(stringRecord1)).isFalse();
     }
 
     @Test
-    public void whenTheRecordEndsWithOneOfTheExpectedSuffixesThenItShouldNotBeFiltered() {
+    public void whenTheRecordEndsWithOneOfTheExpectedSuffixes_ThenItShouldNotBeFiltered() {
         endWithStringRecordFilter = new EndWithStringRecordFilter(true, "suffix1", "suffix2");
         assertThat(endWithStringRecordFilter.filterRecord(stringRecord1)).isFalse();
         assertThat(endWithStringRecordFilter.filterRecord(stringRecord2)).isFalse();

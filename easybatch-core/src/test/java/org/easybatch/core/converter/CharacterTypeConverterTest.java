@@ -42,7 +42,7 @@ public class CharacterTypeConverterTest extends BaseConverterTest {
     }
 
     @Test
-    public void whenInputIsNotEmptyThenShouldReturnFirstCharacter() {
+    public void whenInputIsNotEmpty_ThenShouldReturnFirstCharacter() {
         assertThat(converter.convert("foo")).isEqualTo('f');
     }
 
