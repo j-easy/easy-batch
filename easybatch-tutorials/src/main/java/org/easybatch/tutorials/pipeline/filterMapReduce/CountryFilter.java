@@ -42,7 +42,7 @@ public class CountryFilter implements RecordFilter {
 
     @Override
     public boolean filterRecord(Record record) {
-        Person person = (Person) record.getRawContent();
+        Person person = (Person) record.getPayload();
         return !country.equalsIgnoreCase(person.getCountry());
     }
 

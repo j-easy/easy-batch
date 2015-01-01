@@ -35,7 +35,7 @@ public class RecipeMapper implements RecordMapper<Recipe> {
     @Override
     public Recipe mapRecord(Record record) throws Exception {
         RecipeRecord recipeRecord = (RecipeRecord) record;
-        return recipeRecord.getRawContent();
+        return recipeRecord.getPayload();
     }
 
 }

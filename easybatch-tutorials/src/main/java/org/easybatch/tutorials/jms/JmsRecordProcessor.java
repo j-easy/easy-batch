@@ -38,7 +38,7 @@ public class JmsRecordProcessor implements RecordProcessor<JmsRecord, JmsRecord>
 
     @Override
     public JmsRecord processRecord(JmsRecord record) throws Exception {
-        TextMessage message = (TextMessage) record.getRawContent();
+        TextMessage message = (TextMessage) record.getPayload();
         System.out.println("JMS message '" + message.getText() + "' processed");
         return record;
     }

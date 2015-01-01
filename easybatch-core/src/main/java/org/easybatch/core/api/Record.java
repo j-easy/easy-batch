@@ -33,25 +33,26 @@ package org.easybatch.core.api;
  *     <li>A tag in a xml file</li>
  *     <li>A row in a database table</li>
  *     <li>A file in a directory</li>
+ *     <li>A message in a queue</li>
  *     <li>etc</li>
  * </ul>
  *
- * @param <T> The record raw content type.
+ * @param <T> The record's payload type.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public interface Record<T> {
 
     /**
-     * Get the physical record number in the data source.
-     * @return the record number in the input data source.
+     * Return the physical record number in the data source.
+     * @return the record's physical number in the input data source.
      */
     int getNumber();
 
     /**
-     * Get the record raw content.
-     * @return the record raw content.
+     * Return the payload of the record.
+     * @return the record's payload.
      */
-    T getRawContent();
+    T getPayload();
 
 }

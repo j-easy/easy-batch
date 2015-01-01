@@ -34,33 +34,33 @@ import org.easybatch.core.api.Record;
 public class GenericRecord<T> implements Record<T> {
 
     /**
-     * The record number in the data source.
+     * The physical record number in the data source.
      */
-    protected int recordNumber;
+    protected int number;
 
     /**
-     * The record raw content.
+     * The record's payload.
      */
-    protected T rawContent;
+    protected T payload;
 
-    public GenericRecord(final int recordNumber, final T rawContent) {
-        this.recordNumber = recordNumber;
-        this.rawContent = rawContent;
+    public GenericRecord(final int number, final T payload) {
+        this.number = number;
+        this.payload = payload;
     }
 
     public int getNumber() {
-        return recordNumber;
+        return number;
     }
 
-    public T getRawContent() {
-        return rawContent;
+    public T getPayload() {
+        return payload;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Record{");
-        sb.append("number=").append(recordNumber);
-        sb.append(", rawContent='").append(rawContent).append('\'');
+        sb.append("number=").append(number);
+        sb.append(", payload='").append(payload).append('\'');
         sb.append('}');
         return sb.toString();
     }

@@ -36,7 +36,7 @@ public class AgeMapper implements RecordMapper<Integer> {
 
     @Override
     public Integer mapRecord(Record record) throws Exception {
-        Person person = (Person) record.getRawContent();
+        Person person = (Person) record.getPayload();
         return person.getAge();
     }
 

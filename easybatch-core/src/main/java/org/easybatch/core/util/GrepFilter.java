@@ -22,8 +22,8 @@ public class GrepFilter implements RecordFilter {
     @Override
     public boolean filterRecord(Record record) {
         StringRecord stringRecord = (StringRecord) record;
-        String recordContent = stringRecord.getRawContent();
-        return !recordContent.contains(pattern);
+        String payload = stringRecord.getPayload();
+        return !payload.contains(pattern);
     }
 
 }

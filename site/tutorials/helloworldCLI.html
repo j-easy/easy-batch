@@ -117,16 +117,16 @@ INFO: Strict mode: false
 INFO: Total records = N/A
 INFO: easy batch engine is running...
 #id,name
-INFO: Record #1 [StringRecord{number=1, rawContent='#id,name'}] has been filtered.
+INFO: Record #1 [StringRecord{number=1, payload='#id,name'}] has been filtered.
 1,foo
 Hi foo! Your id is 1
 2,bar
 Hi bar! Your id is 2
 x,baz
-<span class="text-danger"><strong>SEVERE: Record #4 [StringRecord{number=4, rawContent='x,baz'}] has been ignored. Root exception:
+<span class="text-danger"><strong>SEVERE: Record #4 [StringRecord{number=4, payload='x,baz'}] has been ignored. Root exception:
     Unable to convert 'x' to type long for field id</strong></span>
 4,foo,bar
-<span class="text-danger"><strong>SEVERE: Record #5 [StringRecord{number=5, rawContent='4,foo,bar'}] has been ignored. Root exception:
+<span class="text-danger"><strong>SEVERE: Record #5 [StringRecord{number=5, payload='4,foo,bar'}] has been ignored. Root exception:
     record length (3 fields) not equal to expected length of 2 fields</strong></span>
 quit
 INFO: Shutting down easy batch engine</code></pre>

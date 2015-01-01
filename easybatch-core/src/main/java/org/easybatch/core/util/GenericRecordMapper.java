@@ -28,7 +28,10 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 
 /**
- * Convenient no-op record mapper that returns the record <strong>raw content</strong> as is.
+ * Convenient no-op record mapper that returns the record's <strong>payload</strong> as is.
+ *
+ * Note that this is different from {@link org.easybatch.core.impl.NoOpRecordProcessor} that
+ * is used internally by the engine and which returns the <strong>record</strong> as is.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -36,7 +39,7 @@ public class GenericRecordMapper implements RecordMapper<Object> {
 
     @Override
     public Object mapRecord(Record record) throws Exception {
-        return record.getRawContent();
+        return record.getPayload();
     }
 
 }

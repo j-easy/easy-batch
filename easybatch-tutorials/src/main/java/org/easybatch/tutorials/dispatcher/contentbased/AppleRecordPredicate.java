@@ -38,7 +38,7 @@ public class AppleRecordPredicate implements Predicate {
     @Override
     public boolean matches(Record record) {
         StringRecord stringRecord = (StringRecord) record;
-        return stringRecord.getRawContent().contains("apple");
+        return stringRecord.getPayload().contains("apple");
     }
 
 }

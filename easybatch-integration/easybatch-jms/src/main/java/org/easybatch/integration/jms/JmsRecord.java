@@ -35,8 +35,8 @@ import javax.jms.Message;
  */
 public class JmsRecord extends GenericRecord<Message> {
 
-    public JmsRecord(int recordNumber, Message rawContent) {
-        super(recordNumber, rawContent);
+    public JmsRecord(int number, Message payload) {
+        super(number, payload);
     }
 
 }

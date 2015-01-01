@@ -41,8 +41,8 @@ public class FlatFileRecord extends StringRecord {
      */
     private List<FlatFileField> flatFileFields;
 
-    public FlatFileRecord(final int number, final String rawContent) {
-        super(number, rawContent);
+    public FlatFileRecord(final int number, final String payload) {
+        super(number, payload);
         flatFileFields = new ArrayList<FlatFileField>();
     }
 

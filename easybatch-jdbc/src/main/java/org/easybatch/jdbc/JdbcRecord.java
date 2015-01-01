@@ -25,6 +25,7 @@
 package org.easybatch.jdbc;
 
 import org.easybatch.core.api.Record;
+import org.easybatch.core.util.GenericRecord;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -35,31 +36,10 @@ import java.sql.SQLException;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JdbcRecord implements Record<ResultSet> {
+public class JdbcRecord extends GenericRecord<ResultSet> {
 
-    /**
-     * The record number.
-     */
-    private int recordNumber;
-
-    /**
-     * The record raw content.
-     */
-    private ResultSet resultSet;
-
-    public JdbcRecord(final int recordNumber, final ResultSet resultSet) {
-        this.recordNumber = recordNumber;
-        this.resultSet = resultSet;
-    }
-
-    @Override
-    public int getNumber() {
-        return recordNumber;
-    }
-
-    @Override
-    public ResultSet getRawContent() {
-        return resultSet;
+    public JdbcRecord(final int number, final ResultSet payload) {
+        super(number, payload);
     }
 
     // override toString because it is used by easy batch engine for logging errors if any
@@ -67,14 +47,14 @@ public class JdbcRecord implements Record<ResultSet> {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder("");
         try {
-            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+            ResultSetMetaData resultSetMetaData = payload.getMetaData();
             int columnCount = resultSetMetaData.getColumnCount();
             for (int i = 1; i < columnCount + 1; i++) {
                 String name = resultSetMetaData.getColumnName(i);
-                stringBuilder.append(name).append("=").append(resultSet.getString(i)).append("|");
+                stringBuilder.append(name).append("=").append(payload.getString(i)).append("|");
             }
         } catch (SQLException e) {
-            throw new RuntimeException("An exception occurred during toString of record " + resultSet, e);
+            throw new RuntimeException("An exception occurred during toString of record " + payload, e);
         }
         return stringBuilder.toString();
 

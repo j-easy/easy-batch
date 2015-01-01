@@ -43,7 +43,7 @@ public class JmsPoisonRecordFilter implements RecordFilter {
     @Override
     public boolean filterRecord(Record record) {
         JmsRecord jmsRecord = (JmsRecord) record;
-        return jmsRecord.getRawContent() instanceof JmsPoisonMessage;
+        return jmsRecord.getPayload() instanceof JmsPoisonMessage;
     }
 
 }

@@ -42,7 +42,7 @@ public class PoisonRecord implements Record<Object>, Serializable {
     }
 
     @Override
-    public Object getRawContent() {
+    public Object getPayload() {
         return new Object();
     }
 

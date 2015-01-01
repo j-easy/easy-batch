@@ -66,9 +66,9 @@ public class StartWithStringRecordFilter implements RecordFilter {
      * {@inheritDoc}
      */
     public boolean filterRecord(final Record record) {
-        String recordRawContent = (String) record.getRawContent();
+        String payload = (String) record.getPayload();
         for (String prefix : prefixes) {
-            if (recordRawContent.startsWith(prefix)) {
+            if (payload.startsWith(prefix)) {
                 return !negate;
             }
         }

@@ -33,8 +33,8 @@ import org.easybatch.core.api.Record;
  */
 public class StringRecord extends GenericRecord<String> {
 
-    public StringRecord(final int recordNumber, final String rawContent) {
-        super(recordNumber, rawContent);
+    public StringRecord(final int number, final String payload) {
+        super(number, payload);
     }
 
 }

@@ -33,13 +33,8 @@ import org.easybatch.core.util.StringRecord;
  */
 public class JsonRecord extends StringRecord {
 
-    /**
-     * Constructs a JsonRecord instance.
-     * @param recordNumber the record number
-     * @param rawContent the record raw Json content
-     */
-    public JsonRecord(int recordNumber, String rawContent) {
-        super(recordNumber, rawContent);
+    public JsonRecord(int number, String payload) {
+        super(number, payload);
     }
 
 }

@@ -94,7 +94,7 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
         XmlRecord xmlRecord = (XmlRecord) record;
 
         //return mapped object
-        return (T) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(xmlRecord.getRawContent().getBytes()));
+        return (T) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(xmlRecord.getPayload().getBytes()));
 
     }
 

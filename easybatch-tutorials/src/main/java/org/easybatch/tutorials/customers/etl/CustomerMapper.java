@@ -43,7 +43,7 @@ public class CustomerMapper implements RecordMapper<Customer> {
     public Customer mapRecord(final Record record) throws Exception {
 
         JdbcRecord jdbcRecord = (JdbcRecord) record;
-        ResultSet resultSet = jdbcRecord.getRawContent();
+        ResultSet resultSet = jdbcRecord.getPayload();
 
         Customer customer = new Customer();
         customer.setId(resultSet.getInt("id"));

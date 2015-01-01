@@ -66,7 +66,7 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
     @Override
     public T mapRecord(final Record record) throws Exception {
         JdbcRecord jdbcRecord = (JdbcRecord) record;
-        ResultSet resultSet = jdbcRecord.getRawContent();
+        ResultSet resultSet = jdbcRecord.getPayload();
         int columnCount = resultSet.getMetaData().getColumnCount();
 
         // if fields mapping is not specified, retrieve it from the result set meta data (done only once)

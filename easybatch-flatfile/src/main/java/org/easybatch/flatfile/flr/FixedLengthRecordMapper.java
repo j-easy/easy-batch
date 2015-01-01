@@ -85,16 +85,16 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
 
     public FlatFileRecord parseRecord(final Record record) throws Exception {
 
-        String recordRawContent = (String) record.getRawContent();
-        int recordLength = recordRawContent.length();
+        String payload = (String) record.getPayload();
+        int recordLength = payload.length();
 
         if (recordLength != recordExpectedLength) {
             throw new Exception("record length " + recordLength + " not equal to expected length of " + recordExpectedLength);
         }
 
-        FlatFileRecord flatFileRecord = new FlatFileRecord(record.getNumber(), recordRawContent);
+        FlatFileRecord flatFileRecord = new FlatFileRecord(record.getNumber(), payload);
         for (int i = 0; i < fieldsLength.length; i++) {
-            String token = recordRawContent.substring(fieldsOffsets[i], fieldsOffsets[i + 1]);
+            String token = payload.substring(fieldsOffsets[i], fieldsOffsets[i + 1]);
             FlatFileField flatFileField = new FlatFileField(i, token);
             flatFileRecord.getFlatFileFields().add(flatFileField);
         }

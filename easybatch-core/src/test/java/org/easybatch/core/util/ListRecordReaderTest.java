@@ -42,7 +42,7 @@ public class ListRecordReaderTest {
 
     public static final String EXPECTED_DATA_SOURCE_NAME = "In-Memory List";
 
-    public static final String RECORD_CONTENT = "foo";
+    public static final String PAYLOAD = "foo";
 
     private ListRecordReader<String> listRecordReader;
 
@@ -51,7 +51,7 @@ public class ListRecordReaderTest {
     @Before
     public void setUp() throws Exception {
         List<String> dataSource = new ArrayList<String>();
-        dataSource.add(RECORD_CONTENT);
+        dataSource.add(PAYLOAD);
         listRecordReader = new ListRecordReader<String>(dataSource);
     }
 
@@ -84,7 +84,7 @@ public class ListRecordReaderTest {
         Record<String> record = listRecordReader.readNextRecord();
         assertThat(record).isInstanceOf(GenericRecord.class);
         assertThat(record.getNumber()).isEqualTo(1);
-        assertThat(record.getRawContent()).isEqualTo(RECORD_CONTENT);
+        assertThat(record.getPayload()).isEqualTo(PAYLOAD);
     }
 
     @Test

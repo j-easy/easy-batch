@@ -45,7 +45,7 @@ public class JsonRecordMapper implements RecordMapper<Greeting> {
 
     @Override
     public Greeting mapRecord(Record record) throws Exception {
-        String jsonRecord = (String) record.getRawContent();
+        String jsonRecord = (String) record.getPayload();
         return gson.fromJson(jsonRecord, Greeting.class);
     }
 

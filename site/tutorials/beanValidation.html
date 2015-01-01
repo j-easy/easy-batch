@@ -157,17 +157,17 @@ INFO: Strict mode: false
 INFO: Total records = 5
 INFO: easy batch engine is running...
 <span class="text-danger"><strong>SEVERE: Record #1
-    [StringRecord{number=1, rawContent='"id"|"name"|"description"|"price"|"published"|"lastUpdate"'}] has been ignored
+    [StringRecord{number=1, payload='"id"|"name"|"description"|"price"|"published"|"lastUpdate"'}] has been ignored
     Root exception: Unable to convert 'id' to type int for field id</strong></span>
 INFO: Product [id:1|name:product1] successfully persisted in the database
 SEVERE: Record #3
-    [StringRecord{number=3, rawContent='"0002"|""|"description2"|"2400"|"false"|"2014-01-02"'}] has been rejected
+    [StringRecord{number=3, payload='"0002"|""|"description2"|"2400"|"false"|"2014-01-02"'}] has been rejected
     Validation error(s): <span class="text-danger"><strong>Invalid value '' for property 'name' : may not be empty</strong></span>
 SEVERE: Record #4
-    [StringRecord{number=4, rawContent='"0003"|"product3"|"description3"|"-2300"|"true"|"2014-01-03"'}] has been rejected
+    [StringRecord{number=4, payload='"0003"|"product3"|"description3"|"-2300"|"true"|"2014-01-03"'}] has been rejected
     Validation error(s): <span class="text-danger"><strong>Invalid value '-2300.0' for property 'price' : must be greater than or equal to 0</strong></span>
 SEVERE: Record #5
-    [StringRecord{number=5, rawContent='"0004"|"product4"|"description4"|"2200"|"false"|"2024-01-04"'}] has been rejected
+    [StringRecord{number=5, payload='"0004"|"product4"|"description4"|"2200"|"false"|"2024-01-04"'}] has been rejected
     Validation error(s): <span class="text-danger"><strong>Invalid value 'Thu Jan 04 00:00:00 CET 2024' for property 'lastUpdate' : must be in the past</strong></span>
 INFO: Shutting down easy batch engine
 Easy Batch Report:

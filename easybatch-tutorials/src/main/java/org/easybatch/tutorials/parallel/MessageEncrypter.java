@@ -36,7 +36,7 @@ public class MessageEncrypter implements RecordProcessor<StringRecord, StringRec
     @Override
     public StringRecord processRecord(StringRecord record) throws Exception {
         Thread.sleep(1000);//simulating a long encryption algorithm
-        System.out.println(new StringBuilder(record.getRawContent()).reverse().toString());
+        System.out.println(new StringBuilder(record.getPayload()).reverse().toString());
         return record;
     }
 

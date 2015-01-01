@@ -94,7 +94,7 @@ public class ContentBasedRecordDispatcherTest {
         @Override
         public boolean matches(Record record) {
             StringRecord stringRecord = (StringRecord) record;
-            return stringRecord.getRawContent().contains("orange");
+            return stringRecord.getPayload().contains("orange");
         }
 
     }

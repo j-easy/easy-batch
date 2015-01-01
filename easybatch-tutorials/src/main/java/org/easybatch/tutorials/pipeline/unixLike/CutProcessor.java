@@ -21,7 +21,7 @@ public class CutProcessor implements RecordProcessor<StringRecord, String> {
 
     @Override
     public String processRecord(StringRecord record) throws Exception {
-        return record.getRawContent().split(delimiter)[fieldNumber];
+        return record.getPayload().split(delimiter)[fieldNumber];
     }
 
 }

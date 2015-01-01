@@ -116,10 +116,10 @@ INFO: Data source: /data/greetings.flr
 INFO: Strict mode: false
 INFO: Total records = 4
 INFO: easy batch engine is running...
-INFO: Record #1 [StringRecord{number=1, rawContent='#[3:id][3:name]'}] has been filtered.
+INFO: Record #1 [StringRecord{number=1, payload='#[3:id][3:name]'}] has been filtered.
 Hi foo! Your id is 1
 Hi bar! Your id is 2
-<span class="text-danger"><strong>SEVERE: Record #4 [StringRecord{number=4, rawContent='00xbaz'}] has been ignored. Root exception:
+<span class="text-danger"><strong>SEVERE: Record #4 [StringRecord{number=4, payload='00xbaz'}] has been ignored. Root exception:
     Unable to convert '00x' to type int for field id</strong></span>
 INFO: Shutting down easy batch engine
 </code></pre>

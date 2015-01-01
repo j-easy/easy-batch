@@ -183,8 +183,8 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
 
     public FlatFileRecord parseRecord(final Record record) throws Exception {
 
-        String recordRawContent = (String) record.getRawContent();
-        String[] tokens = recordRawContent.split(delimiter, -1);
+        String payload = (String) record.getPayload();
+        String[] tokens = payload.split(delimiter, -1);
 
         // convention over configuration : if expected record size is not specified, calculate it from the header record
         if (this.recordExpectedLength == 0) {
@@ -235,7 +235,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
             }
         }
 
-        FlatFileRecord flatFileRecord = new FlatFileRecord(record.getNumber(), recordRawContent);
+        FlatFileRecord flatFileRecord = new FlatFileRecord(record.getNumber(), payload);
         int i = 0;
         int j = 0;
         for (String token : tokens) {
