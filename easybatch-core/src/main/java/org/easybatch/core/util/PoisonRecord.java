@@ -26,13 +26,15 @@ package org.easybatch.core.util;
 
 import org.easybatch.core.api.Record;
 
+import java.io.Serializable;
+
 /**
  * A marker record that serves as End-Of-Stream record or Poison Record.
  * This is useful to mark the end of reading in a queue based record pulling system.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class PoisonRecord implements Record<Object> {
+public class PoisonRecord implements Record<Object>, Serializable {
 
     @Override
     public int getNumber() {
