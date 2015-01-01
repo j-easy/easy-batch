@@ -22,27 +22,28 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.jms;
+package org.easybatch.integration.jms;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.util.PoisonRecord;
 
 import javax.jms.*;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import java.util.Properties;
 
 /**
- * Reader that reads greetings from a JMS queue.
+ * A record reader that reads records from a JMS queue.
+ *
+ * This reader produces {@link JmsRecord} instances of type {@link javax.jms.Message}.
+ *
+ * It will stop reading records when a {@link JmsPoisonMessage} is sent to the queue.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class GreetingJmsReader implements RecordReader {
-
-    private int id;
+public class JmsRecordReader implements RecordReader {
 
     private int currentRecordNumber;
+
+    QueueConnectionFactory queueConnectionFactory;
 
     QueueConnection queueConnection;
 
@@ -54,23 +55,22 @@ public class GreetingJmsReader implements RecordReader {
 
     private boolean stop;
 
-    public GreetingJmsReader(int id) {
-        this.id = id;
+    /**
+     * Create a Jms queue record reader.
+     *
+     * @param queueConnectionFactory the queue connection factory
+     * @param queue the jms queue to read records from
+     */
+    public JmsRecordReader(final QueueConnectionFactory queueConnectionFactory, final Queue queue) {
+        this.queueConnectionFactory = queueConnectionFactory;
+        this.queue = queue;
     }
 
     @Override
     public void open() throws Exception {
-        Properties p = new Properties();
-        p.load(GreetingJmsReader.class.getResourceAsStream(("/jndi.properties")));
-
-        Context jndiContext = new InitialContext(p);
-        QueueConnectionFactory queueConnectionFactory = (QueueConnectionFactory) jndiContext.lookup("QueueConnectionFactory");
-        queue = (Queue) jndiContext.lookup("q");
-
         queueConnection = queueConnectionFactory.createQueueConnection();
         queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
         queueReceiver = queueSession.createReceiver(queue);
-
         queueConnection.start();
     }
 
@@ -81,18 +81,14 @@ public class GreetingJmsReader implements RecordReader {
 
     @Override
     public Record readNextRecord() throws Exception {
-        String record;
-        Message m = queueReceiver.receive();
-        TextMessage message = (TextMessage) m;
-        record = message.getText();
-        stop = record.equalsIgnoreCase("quit");
-        System.out.println("Greeting Reader " + id + " : received JMS message: " + record);
-        return new StringRecord(++currentRecordNumber, record);
+        Message message = queueReceiver.receive();
+        stop = message instanceof JmsPoisonMessage;
+        return new JmsRecord(++currentRecordNumber, message);
     }
 
     @Override
     public Integer getTotalRecords() {
-        //undefined, cannot be calculated in advance
+        //undefined, cannot be calculated upfront
         return null;
     }
 
@@ -101,7 +97,7 @@ public class GreetingJmsReader implements RecordReader {
         try {
             return "JMS queue: " + queue.getQueueName();
         } catch (JMSException e) {
-            throw new RuntimeException("Unable to get queue name", e);
+            throw new RuntimeException("Unable to get jms queue name", e);
         }
     }
 
@@ -117,4 +113,5 @@ public class GreetingJmsReader implements RecordReader {
             queueReceiver.close();
         }
     }
+
 }

@@ -65,6 +65,7 @@
         <module>easybatch-quartz</module>
         <module>easybatch-spring</module>
         <module>easybatch-opencsv</module>
+        <module>easybatch-jms</module>
     </modules>
 
 
