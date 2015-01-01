@@ -38,6 +38,7 @@
         <module>easybatch-tutorials</module>
         <module>easybatch-jdbc</module>
         <module>easybatch-xml</module>
+        <module>easybatch-json</module>
         <module>easybatch-integration</module>
         <module>easybatch-bench</module>
     </modules>

@@ -1,0 +1,12 @@
+[
+    {
+        "id": "1",
+        "name": "foo",
+        "isMarried": true
+    }   ,
+    {
+        "id": "2",
+        "name": "bar",
+        "isMarried": false
+    }
+]
