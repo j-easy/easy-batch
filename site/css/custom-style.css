@@ -51,6 +51,21 @@ pre {
     background-color: transparent;
 }
 
+.affix {
+
+}
+
+.affix-top {
+    top: 40px;
+    position: relative;
+}
+
+.affix-bottom {
+    bottom: 300px;
+    position: relative;
+
+}
+
 .floatright,.right { float: right }
 
 .back-top-wrapper { width: 100%; position: absolute; overflow: hidden; height: 50px; display: block; }
