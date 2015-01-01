@@ -25,8 +25,9 @@
 package org.easybatch.core.api;
 
 /**
- * An interface for computational record processor.<br/>
- * This is useful when one need to return some computation results at the end of batch execution.
+ * A computational record processor is a processor that performs some computation on input records.<br/>
+ * The result of computation is returned at the end of batch execution.
+ * Usually it is placed at the end of a pipeline.
  *
  * @param <I> The input domain object type.
  * @param <O> The output domain object type.
@@ -37,8 +38,8 @@ package org.easybatch.core.api;
 public interface ComputationalRecordProcessor<I, O, R> extends RecordProcessor<I, O> {
 
     /**
-     * Returns the computed result.
-     * @return the computed result
+     * Returns the computation result.
+     * @return the computation result
      */
     R getComputationResult();
 
