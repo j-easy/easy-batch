@@ -136,6 +136,12 @@
 
             <dependency>
                 <groupId>org.easybatch</groupId>
+                <artifactId>easybatch-jms</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-quartz</artifactId>
                 <version>${project.version}</version>
             </dependency>

@@ -25,6 +25,7 @@
 package org.easybatch.tutorials.jms;
 
 import org.apache.activemq.broker.BrokerService;
+import org.easybatch.integration.jms.JmsPoisonMessage;
 
 import javax.jms.*;
 import javax.naming.Context;
@@ -36,11 +37,13 @@ import java.util.Properties;
  */
 public class JMSUtil {
 
+    public static QueueConnectionFactory queueConnectionFactory;
+
+    public static Queue queue;
+
     private static QueueSender queueSender;
 
     private static QueueSession queueSession;
-
-    private static QueueConnection queueConnection;
 
     private static BrokerService broker;
 
@@ -50,40 +53,35 @@ public class JMSUtil {
         p.load(JMSUtil.class.getResourceAsStream(("/jndi.properties")));
         Context jndiContext = new InitialContext(p);
 
-        QueueConnectionFactory queueConnectionFactory = (QueueConnectionFactory) jndiContext.lookup("QueueConnectionFactory");
-        Queue queue = (Queue) jndiContext.lookup("q");
+        queueConnectionFactory = (QueueConnectionFactory) jndiContext.lookup("QueueConnectionFactory");
+        queue = (Queue) jndiContext.lookup("q");
 
-        queueConnection = queueConnectionFactory.createQueueConnection();
+        QueueConnection queueConnection = queueConnectionFactory.createQueueConnection();
         queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
         queueSender = queueSession.createSender(queue);
         queueConnection.start();
 
     }
 
-    public static void startBroker() throws Exception {
+    public static void startEmbeddedBroker() throws Exception {
         broker = new BrokerService();
         broker.addConnector("tcp://localhost:61616");
         broker.start();
-        initJMSFactory();
     }
 
-    public static void sendJmsMessage(String jmsMessage) throws JMSException {
+    public static void sendStringRecord(String jmsMessage) throws JMSException {
         TextMessage message = queueSession.createTextMessage();
         message.setText(jmsMessage);
         queueSender.send(message);
         System.out.println("Message '" + jmsMessage + "' sent to JMS queue");
     }
 
-    public static void closeJMSSession() throws JMSException {
-        queueConnection.close();
-        queueSender.close();
-        queueSession.close();
+    public static void sendPoisonRecord() throws JMSException {
+        queueSender.send(new JmsPoisonMessage());
+        System.out.println("Poison record sent to JMS queue");
     }
 
-    public static void stopBroker() throws Exception {
-        queueConnection.close();
-        queueSender.close();
-        queueSession.close();
+    public static void stopEmbeddedBroker() throws Exception {
         broker.stop();
     }
 

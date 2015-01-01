@@ -24,32 +24,23 @@
 
 package org.easybatch.tutorials.jms;
 
-import java.util.Scanner;
+import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.integration.jms.JmsRecord;
+
+import javax.jms.TextMessage;
 
 /**
-* Main class to run the JMS message sender.
+ * The JMS record processor.
  *
-* @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
-*/
-public class JMSSenderLauncher {
+ * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ */
+public class JmsRecordProcessor implements RecordProcessor<JmsRecord, JmsRecord> {
 
-    public static void main(String[] args) throws Exception {
-
-        //init JMS factory
-        JMSUtil.initJMSFactory();
-
-        // Send some messages to JMS queue
-        Scanner scanner = new Scanner(System.in);
-        String input;
-        do {
-            input = scanner.nextLine();
-            JMSUtil.sendStringRecord(input);
-        } while (!input.equalsIgnoreCase("quit"));
-
-        //send a poison record at the end to stop the engine
-        JMSUtil.sendPoisonRecord();
-
-        System.exit(0);
+    @Override
+    public JmsRecord processRecord(JmsRecord record) throws Exception {
+        TextMessage message = (TextMessage) record.getRawContent();
+        System.out.println("JMS message '" + message.getText() + "' processed");
+        return record;
     }
 
 }

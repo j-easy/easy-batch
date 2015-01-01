@@ -27,15 +27,8 @@ package org.easybatch.tutorials.jms;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
-import org.easybatch.tools.reporting.DefaultReportMerger;
-import org.easybatch.tools.reporting.ReportMerger;
-import org.easybatch.tutorials.common.Greeting;
-import org.easybatch.tutorials.jmx.GreetingSlowProcessor;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import org.easybatch.integration.jms.JmsPoisonRecordFilter;
+import org.easybatch.integration.jms.JmsRecordReader;
 
 /**
 * Main class to run the JMS tutorial.
@@ -46,42 +39,24 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        //start embedded JMS broker
-        JMSUtil.startBroker();
+        JMSUtil.startEmbeddedBroker();
+
+        JMSUtil.initJMSFactory();
 
         // Build easy batch engines
-        Engine engine1 = buildBatchEngine(1);
-        Engine engine2 = buildBatchEngine(2);
-
-        //create a 2 threads pool to call Easy Batch engines in parallel
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
-
-        Future<Report> reportFuture1 = executorService.submit(engine1);
-        Future<Report> reportFuture2 = executorService.submit(engine2);
-
-        //wait for easy batch instances termination and get partial reports
-        Report report1 = reportFuture1.get();
-        Report report2 = reportFuture2.get();
-
-        //merge partial reports into a global one
-        ReportMerger reportMerger = new DefaultReportMerger();
-        Report finalReport = reportMerger.mergerReports(report1, report2);
-        System.out.println(finalReport);
-
-        //shutdown executor service
-        executorService.shutdown();
-
-        //stop embedded JMS broker
-        JMSUtil.stopBroker();
-
-    }
-
-    public static Engine buildBatchEngine(int id) {
-        return new EngineBuilder()
-                .reader(new GreetingJmsReader(id))
-                .mapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id","name"}))
-                .processor(new GreetingSlowProcessor())
+        Engine engine = new EngineBuilder()
+                .reader(new JmsRecordReader(JMSUtil.queueConnectionFactory, JMSUtil.queue))
+                .filter(new JmsPoisonRecordFilter())
+                .processor(new JmsRecordProcessor())
                 .build();
+
+        //run engine and get report
+        Report report = engine.call();
+
+        System.out.println(report);
+
+        JMSUtil.stopEmbeddedBroker();
+
     }
 
 }
