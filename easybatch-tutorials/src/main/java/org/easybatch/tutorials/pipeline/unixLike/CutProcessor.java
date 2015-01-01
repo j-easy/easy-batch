@@ -1,13 +1,14 @@
 package org.easybatch.tutorials.pipeline.unixLike;
 
 import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.util.StringRecord;
 
 /**
  * A processor that mimics "cut" unix command.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class CutProcessor implements RecordProcessor<String, String> {
+public class CutProcessor implements RecordProcessor<StringRecord, String> {
 
     private String delimiter;
 
@@ -19,8 +20,8 @@ public class CutProcessor implements RecordProcessor<String, String> {
     }
 
     @Override
-    public String processRecord(String record) throws Exception {
-        return record.split(delimiter)[fieldNumber];
+    public String processRecord(StringRecord record) throws Exception {
+        return record.getRawContent().split(delimiter)[fieldNumber];
     }
 
 }

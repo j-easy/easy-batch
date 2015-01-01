@@ -25,25 +25,26 @@
 package org.easybatch.tutorials.pipeline.unixLike;
 
 import org.easybatch.core.api.ComputationalRecordProcessor;
+import org.easybatch.core.api.Record;
 
 /**
  * A processor that mimics "wc -l" unix command.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class LineCountProcessor implements ComputationalRecordProcessor<String, String, Integer> {
+public class LineCountProcessor implements ComputationalRecordProcessor<Record, Record, Integer> {
 
     private Integer count = 0;
 
     @Override
-    public Integer getComputationResult() {
-        return count;
+    public Record processRecord(Record record) throws Exception {
+        count ++;
+        return record;
     }
 
     @Override
-    public String processRecord(String record) throws Exception {
-        count ++;
-        return record;
+    public Integer getComputationResult() {
+        return count;
     }
 
 }

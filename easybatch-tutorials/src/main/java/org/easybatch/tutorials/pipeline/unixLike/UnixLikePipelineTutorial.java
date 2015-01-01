@@ -27,7 +27,6 @@ package org.easybatch.tutorials.pipeline.unixLike;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.core.util.GenericRecordMapper;
 import org.easybatch.core.util.GrepFilter;
 import org.easybatch.core.util.StringRecordReader;
 
@@ -41,8 +40,9 @@ public class UnixLikePipelineTutorial {
     public static void main(String[] args) throws Exception {
 
         /*
-         * Example 1: Count the number of line containing the word java
-         * Goal: implement the equivalent of cat input.txt | grep java | wc -l
+         * Example 1: Count the number of lines containing the word java
+         * The goal is to implement the equivalent of:
+         * cat input.txt | grep java | wc -l
          */
 
         // Create the String data source (to keep it simple, use in-memory string instead of input.txt file)
@@ -51,14 +51,12 @@ public class UnixLikePipelineTutorial {
                 "C++ sucks :-)\n" +
                 "Javascript rocks!\n" +
                 "Scala is fine.\n" +
-                "Java rocks!\n" +
                 "Swift? ...";
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
                 .reader(new StringRecordReader(dataSource1))
                 .filter(new GrepFilter("Java"))
-                .mapper(new GenericRecordMapper())
                 .processor(new LineCountProcessor())
                 .build();
 
@@ -69,8 +67,9 @@ public class UnixLikePipelineTutorial {
         System.out.println("Total number of lines containing java = " + report.getBatchResult());
 
         /*
-         * Example 2: Print (in capital) the name of french peoples
-         * Goal: implement the equivalent of cat input.txt | grep "france" | cut -d',' -f2 | tr 'a-z' 'A-Z' > output.txt
+         * Example 2: Print the name of french peoples
+         * The goal is to implement the equivalent of:
+         * cat input.txt | grep "france" | cut -d',' -f2 > output.txt
          */
 
         // Create the String data source (to keep it simple, use in-memory string instead of input.txt file, same for output)
@@ -85,9 +84,7 @@ public class UnixLikePipelineTutorial {
         engine = new EngineBuilder()
                 .reader(new StringRecordReader(dataSource2))
                 .filter(new GrepFilter("france"))
-                .mapper(new GenericRecordMapper())
                 .processor(new CutProcessor(",", 1))
-                .processor(new TranslateProcessor("a-z", "A-Z"))
                 .processor(new OutputProcessor(System.out))
                 .build();
 
