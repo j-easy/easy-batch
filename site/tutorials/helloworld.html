@@ -1,66 +1,52 @@
 ---
 layout: template
 menu : tutorial
-title : Hello World In-Memory Datasource Tutorial
+title : Hello World Tutorial
 ---
 
               <h2 id="1">1. Description</h2>
 
-        <p>This tutorial is the same as the <a href="helloworldCSV.html" target="_blank">Hello World CSV tutorial</a> except that greetings are read from a String in memory rather than a CSV flat file.
-            We will process a String containing greeting records and generate greeting messages.
-            To keep the tutorial simple, the input String has the following content:</p>
+        <p>This tutorial will show you how to build a very simple batch application to process a in-memory data source.
+            We will process text records containing tweets and simply print them out to the console (remember, it is a hello world sample <i class="fa fa-smile-o"></i>)
+            Here are the tweets:</p>
 
-<pre><code class="java">1,foo
-2,bar</code></pre>
+<pre><code>1,foo,easy batch rocks! #EasyBatch
+2,bar,@foo I do confirm :-)</code></pre>
 
-        <p>Each record is composed of 2 fields :</p>
+        <p>Each record is composed of:</p>
         <ul>
-            <li>an id</li>
-            <li>a person name</li>
+            <li>The tweet id</li>
+            <li>The user name</li>
+            <li>The tweet content</li>
         </ul>
 
-        <p>For each record, the batch application should print to the console a greeting of the format : <em>Hi foo! Your id is 1</em> .</p>
+        <p>Let's get started!</p>
 
-        <p>Easy Batch development is POJO-based, so we would like to map each String record to an instance of the following <code>Greeting</code> bean:</p>
+        <h2 id="2">2. Implementing the Tweet processor</h2>
 
-<pre><code class="java">public class Greeting {
+        <p>With Easy Batch, you only write your batch processing logic and let the framework take care of the boilerplate code of reading, parsing, logging, reporting, etc.</p>
+        <p>In this tutorial, we need to read records from a String, we can use the built-in <code>StringRecordReader</code>. This reader will read data from the data source and produce
+        <code>StringRecord</code> instances which, as you may have guessed, contain strings as payload, or tweets in our case.</p>
+        <p>We will write a <code>RecordProcessor</code> to process these records and implement our business logic:</p>
 
-    private int id;
+<pre><code class="java">public class TweetProcessor implements RecordProcessor&lt;StringRecord, StringRecord&gt; {
 
-    private String name;
-
-    // Getters and Setters omitted
-
-    public String getGreetingMessage() {
-        return "Hi " + name + "! Your id is " + id;
+    public StringRecord processRecord(StringRecord record) throws Exception {
+        System.out.println(record.getPayload());
+        return record;
     }
 
 }</code></pre>
 
-        <p>The id and name fields in String records should be mapped respectively to the id and name fields in the <code>Greeting</code> bean.</p>
+        <p>This processor will simply print out tweets to the console as required.</p>
 
-        <p>You will see that all these requirements can be easily implemented using Easy Batch, so let's get started!</p>
+        <p>Note that the processor returns the record at the end of <code>processRecord()</code> method. This allows the record to be piped out to the next processor in the pipeline if any.
+            It is not the case in this tutorial but you can see an example of processing pipeline <a href="./pipeline.html">here</a>.</p>
 
-        <h2 id="2">2. Implementation using Easy Batch</h2>
-
-        <p>The goal of Easy Batch is to let you concentrate on your batch processing logic and to take care of the boilerplate code of reading, filtering, parsing and mapping records to domain objects.</p>
-        <p>First, let's implement our batch processing logic by extending the <code>AbstractRecordProcessor</code> class:</p>
-
-<pre><code class="java">public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
-
-    @Override
-    public void processRecord(Greeting greeting) throws Exception {
-        System.out.println(greeting.getGreetingMessage());
-    }
-
-}</code></pre>
-
-        <p>This processor will print the greeting message for each input record as required.</p>
-        <p>Actually, we have almost finished our batch implementation! We should now configure Easy Batch engine to :<p>
+        <p>That's all for the business logic, we should now configure Easy Batch engine to:<p>
         <ol>
-            <li>Read records from the input String</li>
-            <li>Map each record to an instance of the <code>Greeting</code> bean</li>
-            <li>Process each record using our <code>GreetingProcessor</code></li>
+            <li>Read records from the String data source</li>
+            <li>Process each record using our <code>TweetProcessor</code></li>
         </ol>
 
         <p>The following listing provides this configuration:</p>
@@ -71,98 +57,70 @@ title : Hello World In-Memory Datasource Tutorial
 
         // Create the String data source
         String dataSource =
-                "1,foo\n" +
-                "2,bar";
+            "1,foo,easy batch rocks! #EasyBatch\n" +
+            "2,bar,@foo I do confirm :-)";
 
-        // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-            .registerRecordReader(new StringRecordReader(dataSource))
-            .registerRecordMapper(
-                new DelimitedRecordMapper(Greeting.class, new String[]{"id", "name"}))
-            .registerRecordProcessor(new GreetingProcessor())
+        // Build a batch engine
+        Engine engine = new EngineBuilder()
+            .reader(new StringRecordReader(dataSource))
+            .processor(new TweetProcessor())
             .build();
 
-        // Run easy batch engine
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+        // Run the batch engine
+        Report report = engine.call();
 
         // Print the batch execution report
-        System.out.println(easyBatchReport);
+        System.out.println(report);
+
     }
+
 }</code></pre>
 
-        <p>That's all, we can now run the batch and see the results.</p>
+        <p>Easy Batch returns a report at the end of execution containing various metrics and statistics.
+            We will print its content to the console to examine it.</p>
+        <p>Time to run the tutorial and see the result.</p>
 
-        <h2 id="3">3. Running the batch</h2>
+        <h2 id="3">3. Running the tutorial</h2>
 
         <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/helloworld/memory" target="_blank">here</a>.
 
         <p>To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
 
           <p>
-            <kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunHelloWorldInMemoryTutorial</kbd>
+            <kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunHelloWorldTutorial</kbd>
           </p>
 
-        <p>If everything is ok, you should see something like the following output in the console :</p>
+        <p>If you run the tutorial as described above, you should see something like the following output in the console :</p>
 
 <pre><code>INFO: Initializing easy batch engine
-INFO: Data source: In-Memory
+INFO: Data source: In-Memory String
 INFO: Strict mode: false
 INFO: Total records = 2
 INFO: easy batch engine is running...
-Hi foo! Your id is 1
-Hi bar! Your id is 2
+1,foo,easy batch rocks! #EasyBatch
+2,bar,@foo I do confirm :-)
 INFO: Shutting down easy batch engine</code></pre>
-
-        <p>As expected, Easy Batch generated a greeting message for each person.</p>
 
         <h2 id="4">4. Conclusion</h2>
 
-        <p>In this tutorial, you have learned how to process data from an in-memory data source using Easy Batch.</p>
+        <p>In this tutorial, you have learned how create, configure and run a Easy Batch engine to process data from a data source.</p>
 
-        <p>With Easy Batch, all we have done is :</p>
+        <p>All we have done is:</p>
         <ul>
-            <li>Implementing the business logic of our batch</li>
+            <li>Implementing the business logic of our batch application</li>
             <li>Providing configuration meta data</li>
         </ul>
 
-        <p>Easy Batch handled all the boilerplate code of reading, filtering, parsing and mapping String records to
-            instances of our domain object <code>Greeting</code> and actually has reduced this boilerplate code from hundred lines to only a very few lines! (listing above)</p>
+        <p>Easy Batch handled all the boilerplate code of reading, parsing, logging and reporting.</p>
 
-        <p>The following table summarizes what we have done and what Easy Batch has done for us :</p>
+        <h2 id="5">5. What's next?</h2>
 
-        <table class="table table-bordered table-condensed table-striped">
-            <thead>
-            <tr class="info">
-                <th>Task</th>
-                <th class="pull-center">You</th>
-                <th class="pull-center">Easy Batch</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Provide configuration meta data</td>
-                <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Provide record processing logic</td>
-                <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Read input String record by record</td>
-                <td></td>
-                <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
-            </tr>
-            <tr>
-                <td>Map records to domain objects</td>
-                <td></td>
-                <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
-            </tr>
-            <tr>
-                <td>Apply business processing logic</td>
-                <td></td>
-                <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
-            </tr>
-            </tbody>
-        </table>
+        <p>In the next tutorial, you will learn how to filter tweets, how to map them to a domain object <code>Tweet</code>
+        and how to validate them using the <a href="http://www.beanvalidation.org">Bean Validation API</a>. You will see how
+        much boilerplate code you can get rid of using Easy Batch.</p>
+
+        <nav>
+            <ul class="pager">
+                <li class="next"><a href="./key-apis.html">Key APIs tutorial <span aria-hidden="true">&rarr;</span></a></li>
+            </ul>
+        </nav>

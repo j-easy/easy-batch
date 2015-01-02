@@ -4,7 +4,7 @@
 
 <hibernate-mapping>
 
-    <class name="org.easybatch.tutorials.advanced.Greeting" table="greeting">
+    <class name="org.easybatch.tutorials.advanced.etl.Greeting" table="greeting">
         <id column="id" name="id">
             <generator class="assigned"/>
         </id>

@@ -211,7 +211,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.dispatcher.roundrobin.RoundRobinRecordDispatcherTutorial</mainClass>
+                            <mainClass>org.easybatch.tutorials.advanced.dispatcher.roundrobin.RoundRobinRecordDispatcherTutorial</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -228,7 +228,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.pipeline.unixLike.UnixLikePipelineTutorial</mainClass>
+                            <mainClass>org.easybatch.tutorials.basic.pipeline.unixLike.UnixLikePipelineTutorial</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -245,7 +245,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.pipeline.filterMapReduce.FilterMapReducePipelineTutorial</mainClass>
+                            <mainClass>org.easybatch.tutorials.basic.pipeline.filterMapReduce.FilterMapReducePipelineTutorial</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -262,7 +262,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.dispatcher.contentbased.ContentBasedRecordDispatcherTutorial</mainClass>
+                            <mainClass>org.easybatch.tutorials.advanced.dispatcher.contentbased.ContentBasedRecordDispatcherTutorial</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -405,7 +405,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.products.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.intermediate.products.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/products.csv</argument>
                             </arguments>
@@ -425,7 +425,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.customers.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.intermediate.extract.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -442,7 +442,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.beanValidation.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.intermediate.load.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/products-jsr303.csv</argument>
                             </arguments>
@@ -462,7 +462,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.parallel.SingleFileLauncher</mainClass>
+                            <mainClass>org.easybatch.tutorials.advanced.parallel.SingleFileLauncher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/secret-messages.txt</argument>
                             </arguments>
@@ -482,7 +482,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.parallel.MultipleFilesLauncher</mainClass>
+                            <mainClass>org.easybatch.tutorials.advanced.parallel.MultipleFilesLauncher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/secret-messages-part1.txt</argument>
                                 <argument>${project.basedir}/src/main/resources/secret-messages-part2.txt</argument>
@@ -503,7 +503,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.quartz.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.advanced.quartz.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/greetings.csv</argument>
                             </arguments>
@@ -523,7 +523,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.spring.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.advanced.spring.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -540,7 +540,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.jmx.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.advanced.jmx.Launcher</mainClass>
                             <arguments>
                                 <argument>/tmp/greetings-jmx.csv</argument>
                             </arguments>
@@ -560,7 +560,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.advanced.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.advanced.etl.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/greetings-adv.csv</argument>
                                 <argument>${project.basedir}/src/main/resources/greetings-adv.xml</argument>
@@ -581,7 +581,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.recipes.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.intermediate.recipes.Launcher</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/recipes.csv</argument>
                             </arguments>
@@ -601,7 +601,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.jms.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.advanced.jms.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -618,7 +618,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.jms.JMSSenderLauncher</mainClass>
+                            <mainClass>org.easybatch.tutorials.advanced.jms.JMSSenderLauncher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
