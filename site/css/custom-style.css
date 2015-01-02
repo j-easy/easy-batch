@@ -46,10 +46,28 @@
  *--------------------------------------------------
  */
 pre {
-    padding: 0px;
-    border-radius: 10px;
+    border: none;
     background-color: transparent;
+    font-family: "Courier New", Courier, monospace;
+    margin: 0;
+    padding: 0;
 }
+
+code {
+    background-color: transparent;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 100%;
+    padding: 0;
+    color: #000000;
+}
+
+/*.caption{
+    margin-top: 5px;
+    padding: 0;
+    text-align: center;
+    border: 1px;
+    font-family: "Courier New", Courier, monospace;
+}*/
 
 .affix {
 
@@ -74,3 +92,71 @@ pre {
 .back-top a:hover { background-color: #00adbb } /* arrow icon (span tag) */
 .back-top span { width: 50px; nowhitespace: afterproperty; height: 50px; display: block; border-radius: 10px; /* transition */ -webkit-transition: 1s;-moz-transition:1s;transition:1s; ; }
 
+
+/* callout styles */
+.bs-callout {
+    padding: 12px;
+    margin: 0 0 12px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 5px;
+}
+.bs-callout h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+.bs-callout p:last-child {
+    margin-bottom: 0;
+}
+.bs-callout code {
+    border-radius: 3px;
+}
+.bs-callout+.bs-callout {
+    margin-top: -5px;
+}
+.bs-callout-default {
+    border-left-color: #777;
+}
+.bs-callout-default h4 {
+    color: #777;
+}
+.bs-callout-primary {
+    border-left-color: #428bca;
+}
+.bs-callout-primary h4 {
+    color: #428bca;
+}
+.bs-callout-success {
+    border-left-color: #5cb85c;
+}
+.bs-callout-success h4 {
+    color: #5cb85c;
+}
+.bs-callout-danger {
+    border-left-color: #d9534f;
+    background-color: #FFF4F4;
+}
+.bs-callout-danger h4 {
+    color: #d9534f;
+}
+.bs-callout-warning {
+    border-left-color: #f0ad4e;
+    background-color: #FFFAF2;
+}
+.bs-callout-warning h4 {
+    color: #f0ad4e;
+}
+.bs-callout-info {
+    border-left-color: #00ADBB;
+}
+.bs-callout-info h5 {
+    color: #00ADBB;
+}
+
+.bs-callout-code {
+    border-left-color: #00ADBB;
+    background-color: #FAFAFA;
+}
+.bs-callout-code h5 {
+    color: #00ADBB;
+}

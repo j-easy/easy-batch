@@ -4,24 +4,62 @@ menu : tutorial
 title : Key APIs Tutorial
 ---
 
-<h2 id="1">1. Description</h2>
+<h2>1. Introduction</h2>
 
-<p>This tutorial will show you how to build a very simple batch application to process a in-memory data source.
-    We will process text records containing tweets and simply print them out to the console (remember, it is a hello world sample ;-))
-    Here are the tweets:</p>
+<p>After reading the <a href="./helloworld.html">Hello world tutorial</a>, you should be familiar with basic blocs to create an application with Easy Batch.
+    This tutorial will guide you step by step through the key APIs to show you how to use them efficiently. We will continue our journey with processing the same tweets
+    but this time we will be reading them from a CSV file:</p>
 
-<pre><code class="java">1,foo,easy batch rocks! #EasyBatch
-    2,bar,@foo I do confirm :-)</code></pre>
+<div class="bs-callout bs-callout-code">
+    <h5>tweets.csv</h5>
+<pre><code>id,user,message
+1,foo,easy batch rocks! #EasyBatch
+2,bar,@foo I do confirm :-)
+</code></pre>
+</div>
 
-<p>Each record is composed of:</p>
-<ul>
-    <li>The tweet id</li>
-    <li>The user name</li>
-    <li>The tweet content</li>
-</ul>
+This tutorial is divided into 5 parts. Each part will introduce a new API and give an example of how to use it.
 
-<p>Easy Batch development is POJO-centric, so we would like to map each record to an instance of the following <code>Tweet</code> bean:</p>
+        <h2>2. Reading records</h2>
 
+        <p>Unlike the hello world tutorial where tweets were read from a in-memory string, in this tutorial we will read data from a CSV flat file.</p>
+        <p>Easy Batch provides the <code><em>FlatFileRecordReader</em></code> to read records from a flat file. So let's use this reader:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code>Engine engine = new EngineBuilder()
+    <strong>.reader(new FlatFileRecordReader(new File("tweets.csv")))</strong>
+    .build();</code></pre>
+</div>
+
+        <h2>3. Filtering records</h2>
+        <p>The <code><em>RecordFilter</em></code> allows you to filter records from being processed.
+            In this tutorial, we would like to filter the header record containing field names.</p>
+        <p>Easy Batch comes with several built-in filters for common use cases and you can implement your own filter as well.
+        To filter the header record, we will use the <code><em>HeaderRecordFilter</em></code> designed speifically for that:</p>
+
+<div class="bs-callout bs-callout-code"><pre><code>Engine engine = new EngineBuilder()
+    .reader(new FlatFileRecordReader(new File("tweets.csv")))
+    <strong>.filter(new HeaderRecordFilter())</strong>
+    .build();</code></pre>
+</div>
+
+        <p>This snippet will tell the engine to skip the first record.</p>
+
+        <h2>4. Mapping records</h2>
+
+        <div class="row">
+
+        <div class="col-md-6">
+            <p>Easy Batch development is POJO-centric, so we would like to map each tweet to an instance of the following <code><em>Tweet</em></code> bean.</p>
+            <p>Each field in the text record should be mapped to the corresponding field of the <code>Tweet</code> bean.</p>
+            <p>You can provide object mapping logic by implementing the <code><em>RecordMapper</em></code> interface.</p>
+            <p>Easy Batch comes with a built-in <code><em>DelimitedRecordMapper</em></code> that is able to map delimited values to a java bean.
+                It sounds like this is exactly what we want since we will be reading data from a CSV file.</p>
+        </div>
+
+        <div class="col-md-6">
+            <div class="bs-callout bs-callout-code">
+                <h5>Tweet.java</h5>
 <pre><code class="java">public class Tweet {
 
     private int id;
@@ -32,98 +70,206 @@ title : Key APIs Tutorial
 
     // Getters, Setters and toString omitted
 
-    }</code></pre>
+}</code></pre>
 
-<p>Each field in the text record should be mapped to the corresponding field of the <code>Tweet</code> bean.</p>
+        </div>
+        </div>
 
-<p>Let's get started!</p>
+        </div>
 
-<h2 id="2">2. Implementing the Tweet processor</h2>
+<p>Let's register the <code><em>DelimitedRecordMapper</em></code>:</p>
+<div class="bs-callout bs-callout-code"><pre><code>Engine engine = new EngineBuilder()
+    .reader(new FlatFileRecordReader(new File("tweets.csv")))
+    .filter(new HeaderRecordFilter())
+    <strong>.mapper(new DelimitedRecordMapper&lt;Tweet&gt;(Tweet.class, new String[]{"id", "name", "message"}))</strong>
+    .build();</code></pre>
+</div>
 
-<p>With Easy Batch, you only write your batch processing logic and let the framework take care of the boilerplate code of reading, filtering, parsing and mapping records to domain objects.</p>
-<p>Let's implement our batch processing logic:</p>
+        <p>We must specify the type of the target bean and an array of fields name in the same order as in the CSV file
+        so that the mapper can bind data respectively to each field. By default, this mapper uses the comma <code><em>","</em></code>
+            as delimiter which is fine in our case. You can also configure a custom delimiter if you want.</p>
+            <p>Note that the mapper also converts raw textual data
+        to typed data in the <code><em>Tweet</em></code> instance.</p>
 
-<pre><code class="java">public class TweetProcessor implements RecordProcessor&lt;StringRecord, StringRecord&gt; {
+        <div class="bs-callout bs-callout-warning">
+            <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
+            <p>If the mapper is not able to map a record to an instance of the <code><em>Tweet</em></code> class, it will throw
+            an exception that will cause the engine to ignore it and move to the next one.</p>
 
-    public StringRecord processRecord(StringRecord record) throws Exception {
-    System.out.println(record.getPayload());
-    return record;
+        </div>
+
+<h2>5. Validating records</h2>
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <p>We all know that tweets can have at most 140 characters, and we would like to process only valid tweets.</p>
+
+                <p>How to declare this constraint on our <code><em>Tweet</em></code> bean?
+                    The <a href="http://www.beanvalidation.org">Bean Validation API</a> is the way to go since it provides an elegant solution to declare
+                    validation constraints on domain objects using annotations.</p>
+
+                    <p>Easy Batch provides support for Bean Validation API so we can just annotate our
+                    <code><em>Tweet</em></code> class with constraint annotations.</p>
+                <p>Now that we placed validation constraints on the <code><em>Tweet</em></code> bean, let configure the engine
+                to validate records according to these constraints:</p>
+            </div>
+
+            <div class="col-md-6">
+                <div class="bs-callout bs-callout-code">
+                    <h5>Tweet.java</h5>
+<pre><code class="java">public class Tweet {
+
+    private int id;
+
+    @NotNull
+    private String user;
+
+    @Size(min=0, max=140)
+    private String message;
+
+    // Getters, Setters and toString omitted
+
+}</code></pre>
+            </div>
+
+        </div>
+
+        </div>
+
+<div class="bs-callout bs-callout-code"><pre><code>Engine engine = new EngineBuilder()
+    .reader(new FlatFileRecordReader(new File("tweets.csv")))
+    .filter(new HeaderRecordFilter())
+    .mapper(new DelimitedRecordMapper&lt;Tweet&gt;(Tweet.class, new String[]{"id", "name", "message"}))
+    <strong>.validator(new BeanValidationRecordValidator&lt;Tweet&gt;())</strong>
+    .build();</code></pre>
+</div>
+
+        <p>The <code><em>BeanValidationRecordValidator</em></code> is provided by Easy Batch and is the component that will validate records.
+        When a record is not valid, the engine will reject it and move to the next one.</p>
+
+
+<h2 id="2">6. Processing tweets, finally!</h2>
+
+        <p>At this stage, we have filtered undesired data, mapped tweets to our domain object and validated them.
+        We should now be able to process tweets quietly.</p>
+
+        <p>We have seen in the hello world tutorial a simple <code><em>RecordProcessor</em></code> implementation that prints out tweets to the console.
+            In this tutorial, we will introduce the <code><em>ComputationalRecordProcessor</em></code> API, that is, a record processor that performs a computation.</p>
+
+        <p>We would like to count the number of tweets containing the hash tag <code>#EasyBatch</code>, this is the business logic of our application.
+            It is time write some code <i class="fa fa-smile-o"></i>:</p>
+
+        <div class="bs-callout bs-callout-code">
+<pre><code class="java">public class TweetCountProcessor implements ComputationalRecordProcessor&lt;Tweet, Tweet, Integer&gt; {
+
+    private int count;
+
+    @Override
+    public Tweet processRecord(Tweet tweet) throws Exception {
+        if (tweet.getMessage().contains("#EasyBatch")) {
+            count++;
+        }
+        return tweet;
     }
 
-    }</code></pre>
+    @Override
+    public Integer getComputationResult() {
+        return count;
+    }
+}</code></pre>
+        </div>
 
-<p>This processor will print out tweets to the console as required.</p>
-<p>That's all for the business logic, we should now configure Easy Batch engine to:<p>
-<ol>
-    <li>Read records from the String data source</li>
-    <li>Map each record to an instance of the <code>Tweet</code> bean</li>
-    <li>Process each record using our <code>TweetProcessor</code></li>
-</ol>
+<p>This processor is straightforward and will do the trick. The result of computation can be obtained at the end of the batch from the execution report.
+    We will see how to do that in a second, for now lets register this processor within the engine:</p>
 
-<p>The following listing provides this configuration:</p>
+<div class="bs-callout bs-callout-code"><pre><code>Engine engine = new EngineBuilder()
+    .reader(new FlatFileRecordReader(new File("tweets.csv")))
+    .filter(new HeaderRecordFilter())
+    .mapper(new DelimitedRecordMapper&lt;Tweet&gt;(Tweet.class, new String[]{"id", "name", "message"}))
+    .validator(new BeanValidationRecordValidator&lt;Tweet&gt;())
+    <strong>.processor(new TweetCountProcessor())</strong>
+    .build();</code></pre>
+</div>
 
+<h2 id="7">7. Putting it all together</h2>
+
+<p>To launch the tutorial, we will use the following class:<p>
+
+<div class="bs-callout bs-callout-code">
 <pre><code class="java">public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-    // Create the String data source
-    String dataSource =
-    "1,foo,easy batch rocks! #EasyBatch\n" +
-    "2,bar,@foo I do confirm :-)";
+        // Build a batch engine
+        Engine engine = new EngineBuilder()
+            .reader(new FlatFileRecordReader(new File("tweets.csv")))
+            .filter(new HeaderRecordFilter())
+            .mapper(new DelimitedRecordMapper(Tweet.class, new String[]{"id", "name", "message"}))
+            .validator(new BeanValidationRecordValidator&lt;Tweet&gt;())
+            .processor(new TweetProcessor())
+            .build();
 
-    // Build a batch engine
-    Engine engine = new EngineBuilder()
-    .reader(new StringRecordReader(dataSource))
-    .processor(new TweetProcessor())
-    .build();
+        // Run the batch engine
+        Report report = engine.call();
 
-    // Run the batch engine
-    Report report = engine.call();
-
-    // Print the batch execution report
-    System.out.println(report);
-
+        // Print the batch execution report
+        System.out.println("Total tweets containing #EasyBatch: " + report.getBatchResult());
     }
+}</code></pre>
+</div>
 
-    }</code></pre>
+        <div class="row">
 
-<p>That's all, let's run the tutorial and see the result.</p>
+            <div class="col-md-6">
+                <p>To run the tutorial, proceed as follow:</p>
+                <div class="bs-callout bs-callout-code">
+<pre><code>$>git clone https://github.com/benas/easy-batch.git
+$>cd easy-batch
+$>mvn install
+$>cd easybatch-tutorials
+$>mvn exec:java -PrunKeyAPIsTutorial
 
-<h2 id="3">3. Running the batch</h2>
 
-<p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/helloworld/memory" target="_blank">here</a>.
 
-<p>To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
 
-<p>
-    <kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunHelloWorldTutorial</kbd>
-</p>
+</code></pre>
+                </div>
+            </div>
 
-<p>If you run the tutorial as described above, you should see something like the following output in the console :</p>
-
+            <div class="col-md-6">
+                <p>You should see the following output:</p>
+                <div class="bs-callout bs-callout-code">
 <pre><code>INFO: Initializing easy batch engine
-    INFO: Data source: In-Memory String
-    INFO: Strict mode: false
-    INFO: Total records = 2
-    INFO: easy batch engine is running...
-    INFO: Shutting down easy batch engine
-    1,foo,easy batch rocks! #EasyBatch
-    2,bar,@foo I do confirm :-)</code></pre>
+INFO: Data source: tweets.csv
+INFO: Strict mode: false
+INFO: Total records = 3
+INFO: easy batch engine is running...
+INFO: Record #1
+  [Record{number=1, payload='id,user,message'}]
+  has been filtered.
+Total tweets containing #EasyBatch: 1
+INFO: Shutting down easy batch engine</code></pre>
+                </div>
+            </div>
 
-<h2 id="4">4. Conclusion</h2>
+        </div>
 
-<p>In this tutorial, you have learned how create, configure and run a Easy Batch engine to process data from a data source.</p>
+<h2 id="8">8. Summary</h2>
 
-<p>All we have done is :</p>
+<p>In this tutorial, you have learned how to use most of the common APIs of Easy Batch.
+You have seen how to filter, map and validate tweets before processing them.</p>
+
+<p>All you have done is:</p>
 <ul>
-    <li>Implementing the business logic of our batch</li>
+    <li>Implementing the business logic of your application</li>
+    <li>Providing data validation constraints</li>
     <li>Providing configuration meta data</li>
 </ul>
 
-<p>Easy Batch handled all the boilerplate code of reading, filtering, parsing and mapping String records to
-    instances of our domain object <code>Tweet</code>.</p>
+<p>Easy Batch handled all the boilerplate code of reading, filtering, parsing, mapping and validating records.</p>
 
-<p>The following table summarizes what we have done and what Easy Batch has done for us:</p>
+<p>The following table summarizes what you have done and what Easy Batch has done for you:</p>
 
 <table class="table table-bordered table-condensed table-striped">
     <thead>
@@ -140,12 +286,22 @@ title : Key APIs Tutorial
         <td></td>
     </tr>
     <tr>
-        <td>Provide record processing logic</td>
+        <td>Provide validation constraints</td>
         <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
         <td></td>
     </tr>
     <tr>
-        <td>Read input String record by record</td>
+        <td>Provide business processing logic</td>
+        <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Read input file record by record</td>
+        <td></td>
+        <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+    </tr>
+    <tr>
+        <td>Filter undesired records</td>
         <td></td>
         <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
     </tr>
@@ -155,9 +311,36 @@ title : Key APIs Tutorial
         <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
     </tr>
     <tr>
+        <td>Validate records</td>
+        <td></td>
+        <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+    </tr>
+    <tr>
         <td>Apply business processing logic</td>
+        <td></td>
+        <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+    </tr>
+    <tr>
+        <td>Log errors</td>
+        <td></td>
+        <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
+    </tr>
+    <tr>
+        <td>Report metrics and statistics</td>
         <td></td>
         <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
     </tr>
     </tbody>
 </table>
+
+<h2 id="9">9. What's next?</h2>
+
+<p>Until now, you have always registered only one record processor.
+    In the next tutorial, you will learn how to build a unix-like data processing pipeline using Easy Batch.</p>
+
+<nav>
+    <ul class="pager">
+        <li class="previous"><a href="./helloworld.html"><span aria-hidden="true">&larr;</span> Hello world tutorial</a></li>
+        <li class="next"><a href="./pipeline.html">Pipeline tutorial <span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+</nav>

@@ -25,10 +25,15 @@
 package org.easybatch.tutorials.basic.keyapis;
 
 import org.easybatch.core.api.Report;
+import org.easybatch.core.filter.HeaderRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.core.util.StringRecordReader;
-import org.easybatch.tutorials.basic.helloworld.TweetProcessor;
+import org.easybatch.flatfile.FlatFileRecordReader;
+import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
+import org.easybatch.tutorials.common.Tweet;
+import org.easybatch.validation.BeanValidationRecordValidator;
+
+import java.io.File;
 
 /**
 * Main class to run the Key APIs tutorial.
@@ -39,22 +44,20 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        // Create the String data source
-        String dataSource =
-                "1,foo,easy batch rocks! #EasyBatch\n" +
-                "2,bar,@foo I do confirm :-)";
-
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .reader(new StringRecordReader(dataSource))
-                .processor(new TweetProcessor())
+                .reader(new FlatFileRecordReader(new File(args[0])))
+                .filter(new HeaderRecordFilter())
+                .mapper(new DelimitedRecordMapper<Tweet>(Tweet.class, new String[]{"id", "user", "message"}))
+                .validator(new BeanValidationRecordValidator<Tweet>())
+                .processor(new TweetCountProcessor())
                 .build();
 
         // Run the batch engine
         Report report = engine.call();
 
         // Print the batch execution report
-        System.out.println(report);
+        System.out.println("Total tweets containing #EasyBatch: " + report.getBatchResult());
 
     }
 

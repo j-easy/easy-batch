@@ -182,7 +182,7 @@
     <profiles>
 
         <profile>
-            <id>runHelloWorldCSVTutorial</id>
+            <id>runHelloWorldTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
                 <plugins>
@@ -191,10 +191,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.helloworld.csv.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/greetings.csv</argument>
-                            </arguments>
+                            <mainClass>org.easybatch.tutorials.basic.helloworld.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -219,7 +216,7 @@
         </profile>
 
         <profile>
-            <id>runUnixLikePipelineTutorial</id>
+            <id>runPipelineTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
                 <plugins>
@@ -228,7 +225,30 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.basic.pipeline.unixLike.UnixLikePipelineTutorial</mainClass>
+                            <mainClass>org.easybatch.tutorials.basic.pipeline.unixLike.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/basic/keyapis/tweets.csv</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>runKeyAPIsTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin-version}</version>
+                        <configuration>
+                            <mainClass>org.easybatch.tutorials.basic.keyapis.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/basic/keyapis/tweets.csv</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -263,189 +283,6 @@
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
                             <mainClass>org.easybatch.tutorials.advanced.dispatcher.contentbased.ContentBasedRecordDispatcherTutorial</mainClass>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runHelloWorldFLRTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.helloworld.flr.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/greetings.flr</argument>
-                            </arguments>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runHelloWorldJDBCTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.helloworld.jdbc.Launcher</mainClass>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runJsonTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.helloworld.json.Launcher</mainClass>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runHelloWorldXMLTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.helloworld.xml.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/greetings.xml</argument>
-                                <argument>${project.basedir}/src/main/resources/greetings.xsd</argument>
-                            </arguments>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runHelloWorldInMemoryTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.helloworld.memory.StringDataSourceTutorialLauncher</mainClass>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runListDataSourceTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.helloworld.memory.ListDataSourceTutorialLauncher</mainClass>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runHelloWorldCLITutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.helloworld.cli.Launcher</mainClass>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runProductsTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.intermediate.products.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/products.csv</argument>
-                            </arguments>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runCustomersTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.intermediate.extract.Launcher</mainClass>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runBeanValidationTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.intermediate.load.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/products-jsr303.csv</argument>
-                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>

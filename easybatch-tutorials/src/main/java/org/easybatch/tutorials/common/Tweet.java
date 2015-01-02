@@ -24,6 +24,9 @@
 
 package org.easybatch.tutorials.common;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * Java bean representing a tweet.
  *
@@ -33,9 +36,14 @@ public class Tweet {
 
     private int id;
 
+    @NotNull
     private String user;
 
+    @Size(min=0, max=140)
     private String message;
+
+    public Tweet() {
+    }
 
     public Tweet(int id, String user, String message) {
         this.id = id;

@@ -4,165 +4,184 @@ menu : tutorial
 title : Data processing pipeline
 ---
 
-<h2 id="1">1. Description</h2>
+<h2>1. Introduction</h2>
 
-        <p>This tutorial is the same as the <a href="helloworldCSV.html" target="_blank">Hello World CSV tutorial</a> except that greetings are read from a String in memory rather than a CSV flat file.
-            We will process a String containing greeting records and generate greeting messages.
-            To keep the tutorial simple, the input String has the following content:</p>
+        <p>We all love the power and elegance of the unix pipeline concept.
+            In this tutorial, you will see that Easy Batch allows you to bring this power to the java world.
+            You will build a unix like data processing pipeline on tweets. Here is our tweets data source:</p>
 
-<pre><code class="java">1,foo
-2,bar</code></pre>
+<div class="bs-callout bs-callout-code">
+    <h5>tweets.csv</h5>
+<pre><code>1,foo,easy batch rocks #EasyBatch
+2,bar,@foo I do confirm :-)
+</code></pre>
+</div>
 
-        <p>Each record is composed of 2 fields :</p>
-        <ul>
-            <li>an id</li>
-            <li>a person name</li>
-        </ul>
+        <p>The goal is to implement the equivalent of the following unix command:</p>
 
-        <p>For each record, the batch application should print to the console a greeting of the format : <em>Hi foo! Your id is 1</em> .</p>
+<div class="bs-callout bs-callout-code">
+<pre><code>cat tweets.csv | grep #EasyBatch | cut -d',' f3 | wc</code></pre>
+</div>
 
-        <p>Easy Batch development is POJO-based, so we would like to map each String record to an instance of the following <code>Greeting</code> bean:</p>
+        <p>This will count the number of words in tweets containing the hash tag <code>#EasyBatch</code>.</p>
 
-<pre><code class="java">public class Greeting {
+        <p>Let's get your hands dirty!</p>
 
-    private int id;
+<h2>2. Reading tweets</h2>
 
-    private String name;
+        <p>As in previous tutorial, we will use the <code><em>FlatFileRecordReader</em></code> to read tweets from the <code>tweets.csv</code> file:</p>
 
-    // Getters and Setters omitted
+<div class="bs-callout bs-callout-code">
+<pre><code>Engine engine = new EngineBuilder()
+    <strong>.reader(new FlatFileRecordReader(new File("tweets.csv")))</strong>
+    .build();</code></pre>
+</div>
 
-    public String getGreetingMessage() {
-        return "Hi " + name + "! Your id is " + id;
+        <p>This reader will produce <code><em>StringRecord</em></code> with string payloads. We will implement several processor to operate on these strings.</p>
+
+<h2>3. Grepping tweets</h2>
+
+        <p>The <code>RecordFilter</code> API is a perfect candidate to implement the <code>grep</code> command.</p>
+        <p>Easy Batch provides a built-in filter that mimics the <code>grep</code> command, it is called <code><em>GrepFilter</em></code>.</p>
+        <p>This filter uses a pattern and filters string records if their content does not contain the pattern:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code>Engine engine = new EngineBuilder()
+    .reader(new FlatFileRecordReader(new File("tweets.csv")))
+    <strong>.filter(new GrepFilter("#EasyBatch"))</strong>
+    .build();</code></pre>
+</div>
+
+<h2>4. Splitting tweets</h2>
+
+<p>The next step is to implement the command <code><em>cut -d',' f3</em></code>. Here is a processor that does the trick:</p>
+
+<div class="bs-callout bs-callout-code">
+    <h5>CutProcessor.java</h5>
+<pre><code class="java">public class CutProcessor implements RecordProcessor&lt;StringRecord, String&gt; {
+
+    private String delimiter;
+
+    private int fieldNumber;
+
+    public CutProcessor(String delimiter, int fieldNumber) {
+        this.delimiter = delimiter;
+        this.fieldNumber = fieldNumber;
     }
-
-}</code></pre>
-
-        <p>The id and name fields in String records should be mapped respectively to the id and name fields in the <code>Greeting</code> bean.</p>
-
-        <p>You will see that all these requirements can be easily implemented using Easy Batch, so let's get started!</p>
-
-        <h2 id="2">2. Implementation using Easy Batch</h2>
-
-        <p>The goal of Easy Batch is to let you concentrate on your batch processing logic and to take care of the boilerplate code of reading, filtering, parsing and mapping records to domain objects.</p>
-        <p>First, let's implement our batch processing logic by extending the <code>AbstractRecordProcessor</code> class:</p>
-
-<pre><code class="java">public class GreetingProcessor extends AbstractRecordProcessor&lt;Greeting&gt; {
 
     @Override
-    public void processRecord(Greeting greeting) throws Exception {
-        System.out.println(greeting.getGreetingMessage());
+    public String processRecord(StringRecord record) throws Exception {
+        return record.getPayload().split(delimiter)[fieldNumber];
     }
 
 }</code></pre>
 
-        <p>This processor will print the greeting message for each input record as required.</p>
-        <p>Actually, we have almost finished our batch implementation! We should now configure Easy Batch engine to :<p>
-        <ol>
-            <li>Read records from the input String</li>
-            <li>Map each record to an instance of the <code>Greeting</code> bean</li>
-            <li>Process each record using our <code>GreetingProcessor</code></li>
-        </ol>
+</div>
 
-        <p>The following listing provides this configuration:</p>
+<p>No magic, it splits the input record using the delimiter and returns the desired field.
+    Note that error handling is not implemented for simplicity sake <i class="fa fa-smile-o"></i>.</p>
 
+<div class="bs-callout bs-callout-warning">
+    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
+    <p>Note that the type of output object is different from the type of input object. The record can be transformed
+        during its journey in the processing pipeline.</p>
+
+</div>
+
+<h2>5. Counting words</h2>
+
+<p>The next step is to implement the <code>wc</code> command. Here is a processor that does the trick:</p>
+
+<div class="bs-callout bs-callout-code">
+    <h5>WordCountProcessor.java</h5>
+<pre><code class="java">public class WordCountProcessor implements ComputationalRecordProcessor&lt;String, String, Integer&gt; {
+
+    private Integer count = 0;
+
+    @Override
+    public String processRecord(String record) throws Exception {
+        count += record.split(" ").length;
+        return record;
+    }
+
+    @Override
+    public Integer getComputationResult() {
+    return count;
+    }
+
+}</code></pre>
+</div>
+
+<p>Another time, no magic, simply count the number of words in the input string.</p>
+        <p>Note that this is a <em>computational</em> processor since it does some computation.
+            It should be placed at the end of the pipeline.</p>
+
+<h2>7. Putting it all together</h2>
+
+<p>To launch the tutorial, we will use the following class:<p>
+
+<div class="bs-callout bs-callout-code">
 <pre><code class="java">public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        // Create the String data source
-        String dataSource =
-                "1,foo\n" +
-                "2,bar";
-
-        // Build an easy batch engine
-        EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-            .registerRecordReader(new StringRecordReader(dataSource))
-            .registerRecordMapper(
-                new DelimitedRecordMapper(Greeting.class, new String[]{"id", "name"}))
-            .registerRecordProcessor(new GreetingProcessor())
+        // Build a batch engine
+        Engine engine = new EngineBuilder()
+            .reader(new FlatFileRecordReader(new File(args[0])))
+            .filter(new GrepFilter("#EasyBatch"))
+            .processor(new CutProcessor(",", 2))
+            .processor(new WordCountProcessor())
             .build();
 
-        // Run easy batch engine
-        EasyBatchReport easyBatchReport = easyBatchEngine.call();
+        // Run the batch engine
+        Report report = engine.call();
 
         // Print the batch execution report
-        System.out.println(easyBatchReport);
+        System.out.println("the number of words in tweets containing #EasyBatch = "
+                + report.getBatchResult());
+
     }
 }</code></pre>
+</div>
 
-        <p>That's all, we can now run the batch and see the results.</p>
+<p>To run the tutorial, proceed as follow:</p>
+<div class="bs-callout bs-callout-code">
+<pre><code>$>git clone https://github.com/benas/easy-batch.git
+$>cd easy-batch
+$>mvn install
+$>cd easybatch-tutorials
+$>mvn exec:java -PrunPipelineTutorial
+</code></pre>
+</div>
 
-        <h2 id="3">3. Running the batch</h2>
+        <p>You should see the following output:</p>
 
-        <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/helloworld/memory" target="_blank">here</a>.
-
-        <p>To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
-
-          <p>
-            <kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunHelloWorldInMemoryTutorial</kbd>
-          </p>
-
-        <p>If everything is ok, you should see something like the following output in the console :</p>
-
+<div class="bs-callout bs-callout-code">
 <pre><code>INFO: Initializing easy batch engine
-INFO: Data source: In-Memory
+INFO: Data source: tweets.csv
 INFO: Strict mode: false
-INFO: Total records = 2
+INFO: Total records = 3
 INFO: easy batch engine is running...
-Hi foo! Your id is 1
-Hi bar! Your id is 2
+INFO: Record #1 [Record{number=1, payload='id,user,message'}] has been filtered.
+INFO: Record #3 [Record{number=3, payload='2,bar,@foo I do confirm :-)'}] has been filtered.
+the number of words in tweets containing #EasyBatch = 4
 INFO: Shutting down easy batch engine</code></pre>
+</div>
 
-        <p>As expected, Easy Batch generated a greeting message for each person.</p>
+<h2 id="8">8. Summary</h2>
 
-        <h2 id="4">4. Conclusion</h2>
+<p>In this tutorial, you have learned how to build a unix like data processing pipeline using Easy Batch.
+    This is actually a sort of filter-map-reduce implementation.
+    All the power is now in your hands to imagine and build all sorts of pipeline, easily!</p>
 
-        <p>In this tutorial, you have learned how to process data from an in-memory data source using Easy Batch.</p>
+<h2 id="9">9. What's next?</h2>
 
-        <p>With Easy Batch, all we have done is :</p>
-        <ul>
-            <li>Implementing the business logic of our batch</li>
-            <li>Providing configuration meta data</li>
-        </ul>
+<p>That was all for basic tutorials, you can now move on to the next level to see how to build real world enterprise
+    batch applications using Easy Batch.</p>
 
-        <p>Easy Batch handled all the boilerplate code of reading, filtering, parsing and mapping String records to
-            instances of our domain object <code>Greeting</code> and actually has reduced this boilerplate code from hundred lines to only a very few lines! (listing above)</p>
-
-        <p>The following table summarizes what we have done and what Easy Batch has done for us :</p>
-
-        <table class="table table-bordered table-condensed table-striped">
-            <thead>
-            <tr class="info">
-                <th>Task</th>
-                <th class="pull-center">You</th>
-                <th class="pull-center">Easy Batch</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Provide configuration meta data</td>
-                <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Provide record processing logic</td>
-                <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Read input String record by record</td>
-                <td></td>
-                <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
-            </tr>
-            <tr>
-                <td>Map records to domain objects</td>
-                <td></td>
-                <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
-            </tr>
-            <tr>
-                <td>Apply business processing logic</td>
-                <td></td>
-                <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
-            </tr>
-            </tbody>
-        </table>
+<nav>
+    <ul class="pager">
+        <li class="previous"><a href="./key-apis.html"><span aria-hidden="true">&larr;</span> Key APIs tutorial</a></li>
+        <li class="next"><a href="./pipeline.html">Loading data into a database <span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+</nav>

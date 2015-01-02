@@ -4,14 +4,17 @@ menu : tutorial
 title : Hello World Tutorial
 ---
 
-              <h2 id="1">1. Description</h2>
+              <h2 id="1">1. Introduction</h2>
 
         <p>This tutorial will show you how to build a very simple batch application to process a in-memory data source.
             We will process text records containing tweets and simply print them out to the console (remember, it is a hello world sample <i class="fa fa-smile-o"></i>)
             Here are the tweets:</p>
 
+<div class="bs-callout bs-callout-code">
 <pre><code>1,foo,easy batch rocks! #EasyBatch
-2,bar,@foo I do confirm :-)</code></pre>
+2,bar,@foo I do confirm :-)
+</code></pre>
+</div>
 
         <p>Each record is composed of:</p>
         <ul>
@@ -25,32 +28,38 @@ title : Hello World Tutorial
         <h2 id="2">2. Implementing the Tweet processor</h2>
 
         <p>With Easy Batch, you only write your batch processing logic and let the framework take care of the boilerplate code of reading, parsing, logging, reporting, etc.</p>
-        <p>In this tutorial, we need to read records from a String, we can use the built-in <code>StringRecordReader</code>. This reader will read data from the data source and produce
-        <code>StringRecord</code> instances which, as you may have guessed, contain strings as payload, or tweets in our case.</p>
-        <p>We will write a <code>RecordProcessor</code> to process these records and implement our business logic:</p>
+        <p>In this tutorial, we need to read records from a String, we can use the built-in <code><em>StringRecordReader</em></code>. This reader will read data from the data source and produce
+        <code><em>StringRecord</em></code> instances which, as you may have guessed, contain strings as payload, or tweets in our case.</p>
+        <p>We will write a <code><em>RecordProcessor</em></code> to process this type of records and implement our business logic:</p>
 
+<div class="bs-callout bs-callout-code">
 <pre><code class="java">public class TweetProcessor implements RecordProcessor&lt;StringRecord, StringRecord&gt; {
 
+    @Override
     public StringRecord processRecord(StringRecord record) throws Exception {
         System.out.println(record.getPayload());
         return record;
     }
-
 }</code></pre>
+</div>
 
         <p>This processor will simply print out tweets to the console as required.</p>
 
-        <p>Note that the processor returns the record at the end of <code>processRecord()</code> method. This allows the record to be piped out to the next processor in the pipeline if any.
-            It is not the case in this tutorial but you can see an example of processing pipeline <a href="./pipeline.html">here</a>.</p>
+        <div class="bs-callout bs-callout-warning">
+            <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
+            <p>The record processor returns the record at the end of <code><em>processRecord()</em></code> method. This allows the record to be piped out to the next processor in the pipeline if any.
+                We have only one processor in this tutorial, you will see how to build a data processing pipeline later on in <a href="./pipeline.html">this tutorial</a>.</p>
+        </div>
 
         <p>That's all for the business logic, we should now configure Easy Batch engine to:<p>
         <ol>
             <li>Read records from the String data source</li>
-            <li>Process each record using our <code>TweetProcessor</code></li>
+            <li>Process each record using our <code><em>TweetProcessor</em></code></li>
         </ol>
 
         <p>The following listing provides this configuration:</p>
 
+<div class="bs-callout bs-callout-code">
 <pre><code class="java">public class Launcher {
 
     public static void main(String[] args) throws Exception {
@@ -71,10 +80,9 @@ title : Hello World Tutorial
 
         // Print the batch execution report
         System.out.println(report);
-
     }
-
 }</code></pre>
+</div>
 
         <p>Easy Batch returns a report at the end of execution containing various metrics and statistics.
             We will print its content to the console to examine it.</p>
@@ -82,16 +90,23 @@ title : Hello World Tutorial
 
         <h2 id="3">3. Running the tutorial</h2>
 
-        <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/helloworld/memory" target="_blank">here</a>.
+        <div class="row">
+        <div class="col-md-6">
+            <p>To run the tutorial from scratch, you can follow these instructions:</p>
+            <div class="bs-callout bs-callout-code">
+<pre><code>$>git clone https://github.com/benas/easy-batch.git
+$>cd easy-batch
+$>mvn install
+$>cd easybatch-tutorials
+$>mvn exec:java -PrunHelloWorldTutorial
 
-        <p>To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
 
-          <p>
-            <kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunHelloWorldTutorial</kbd>
-          </p>
-
-        <p>If you run the tutorial as described above, you should see something like the following output in the console :</p>
-
+</code></pre>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <p>You should see something like the following output in the console:</p>
+<div class="bs-callout bs-callout-code">
 <pre><code>INFO: Initializing easy batch engine
 INFO: Data source: In-Memory String
 INFO: Strict mode: false
@@ -100,24 +115,30 @@ INFO: easy batch engine is running...
 1,foo,easy batch rocks! #EasyBatch
 2,bar,@foo I do confirm :-)
 INFO: Shutting down easy batch engine</code></pre>
+</div>
 
-        <h2 id="4">4. Conclusion</h2>
+        </div>
+        </div>
 
-        <p>In this tutorial, you have learned how create, configure and run a Easy Batch engine to process data from a data source.</p>
+<p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/helloworld/memory" target="_blank">here</a>.
 
-        <p>All we have done is:</p>
+        <h2 id="4">4. Summary</h2>
+
+        <p>Congratulations! You built your first batch application with Easy Batch.
+            You learned how create, configure and run a batch engine to process data from a data source.</p>
+
+        <p>All you have done is:</p>
         <ul>
             <li>Implementing the business logic of our batch application</li>
             <li>Providing configuration meta data</li>
         </ul>
 
-        <p>Easy Batch handled all the boilerplate code of reading, parsing, logging and reporting.</p>
+        <p>Easy Batch handled the boilerplate code of reading, parsing, logging and reporting for you.</p>
 
         <h2 id="5">5. What's next?</h2>
 
-        <p>In the next tutorial, you will learn how to filter tweets, how to map them to a domain object <code>Tweet</code>
-        and how to validate them using the <a href="http://www.beanvalidation.org">Bean Validation API</a>. You will see how
-        much boilerplate code you can get rid of using Easy Batch.</p>
+        <p>In the next tutorial, you will learn how to filter tweets, how to map them to a domain object <code><em>Tweet</em></code>
+        and how to validate them using the <a href="http://www.beanvalidation.org">Bean Validation API</a>.</p>
 
         <nav>
             <ul class="pager">

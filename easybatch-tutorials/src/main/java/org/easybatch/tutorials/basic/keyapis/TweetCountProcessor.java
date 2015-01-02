@@ -22,16 +22,33 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.intermediate.products;
+package org.easybatch.tutorials.basic.keyapis;
+
+import org.easybatch.core.api.ComputationalRecordProcessor;
+import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.util.StringRecord;
+import org.easybatch.tutorials.common.Tweet;
 
 /**
- * Enumeration for product origin.
+ * A computational processor that counts the number of tweets containing #EasyBatch.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public enum Origin {
+public class TweetCountProcessor implements ComputationalRecordProcessor<Tweet, Tweet, Integer> {
 
-    NATIONAL,
+    private int count;
 
-    INTERNATIONAL
+    @Override
+    public Tweet processRecord(Tweet tweet) throws Exception {
+        if (tweet.getMessage().contains("#EasyBatch")) {
+            count++;
+        }
+        return tweet;
+    }
+
+    @Override
+    public Integer getComputationResult() {
+        return count;
+    }
+
 }

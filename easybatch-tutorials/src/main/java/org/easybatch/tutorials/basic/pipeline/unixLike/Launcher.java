@@ -22,20 +22,39 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.intermediate.products;
+package org.easybatch.tutorials.basic.pipeline.unixLike;
 
-import org.easybatch.core.converter.TypeConverter;
+import org.easybatch.core.api.Report;
+import org.easybatch.core.impl.Engine;
+import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.util.GrepFilter;
+import org.easybatch.flatfile.FlatFileRecordReader;
+
+import java.io.File;
 
 /**
- * Custom converter that convert string origin to a value of the {@link Origin} enumeration.
+* Main class to run the unix-like processing pipeline tutorial.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
-public class OriginTypeConverter implements TypeConverter<Origin> {
+* @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+*/
+public class Launcher {
 
-    @Override
-    public Origin convert(String value) {
-        return "0".equals(value) ? Origin.NATIONAL : Origin.INTERNATIONAL;
+    public static void main(String[] args) throws Exception {
+
+        // Build a batch engine
+        Engine engine = new EngineBuilder()
+                .reader(new FlatFileRecordReader(new File(args[0])))
+                .filter(new GrepFilter("#EasyBatch"))
+                .processor(new CutProcessor(",", 2))
+                .processor(new WordCountProcessor())
+                .build();
+
+        // Run the batch engine
+        Report report = engine.call();
+
+        // Print the batch execution report
+        System.out.println("the number of words in tweets containing #EasyBatch = " + report.getBatchResult());
+
     }
 
 }
