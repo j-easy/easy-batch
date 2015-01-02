@@ -32,8 +32,7 @@ import javax.json.JsonValue;
 import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
 import javax.json.stream.JsonParser;
-import java.io.InputStream;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,10 +98,10 @@ public class JsonRecordReader implements RecordReader {
 
     private String key;
 
-    public JsonRecordReader(InputStream inputStream, InputStream inspectionInputStream, InputStream totalRecordsCountingInputStream) {
+    public JsonRecordReader(InputStream inputStream) {
         this.inputStream = inputStream;
-        this.inspectionInputStream = inspectionInputStream;
-        this.totalRecordsCountingInputStream = totalRecordsCountingInputStream;
+        this.inspectionInputStream = cloneInputStream(inputStream);
+        this.totalRecordsCountingInputStream = cloneInputStream(inputStream);
         this.jsonGeneratorFactory = Json.createGeneratorFactory(new HashMap<String, Object>());
     }
 
@@ -229,5 +228,13 @@ public class JsonRecordReader implements RecordReader {
                 break;
         }
     }
+
+    /*
+     * TODO TO REMOVE AS SOON AS JSR353 BUG IS RESOLVED!!
+     */
+    private InputStream cloneInputStream(InputStream inputStream) {
+        return null;
+    }
+
 
 }

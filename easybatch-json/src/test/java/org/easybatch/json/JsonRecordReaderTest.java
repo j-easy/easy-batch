@@ -41,9 +41,7 @@ public class JsonRecordReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/persons.json"),
-                this.getClass().getResourceAsStream("/persons.json"),
-                this.getClass().getResourceAsStream("/persons.json"));
+        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/persons.json"));
         jsonRecordReader.open();
     }
 
@@ -84,9 +82,7 @@ public class JsonRecordReaderTest {
     @Test
     public void whenTheInputFileIsEmpty_ThenTheJsonRecordReaderShouldNotHaveNextRecord() throws Exception {
         jsonRecordReader.close();
-        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/empty.json"),
-                this.getClass().getResourceAsStream("/empty.json"),
-                this.getClass().getResourceAsStream("/empty.json"));
+        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/empty.json"));
         jsonRecordReader.open();
         assertThat(jsonRecordReader.hasNextRecord()).isFalse();
     }
@@ -94,9 +90,7 @@ public class JsonRecordReaderTest {
     @Test
     public void whenTheInputFileIsEmpty_ThenTheTotalRecordsCountShouldBeEqualToZero() throws Exception {
         jsonRecordReader.close();
-        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/empty.json"),
-                this.getClass().getResourceAsStream("/empty.json"),
-                this.getClass().getResourceAsStream("/empty.json"));
+        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/empty.json"));
         jsonRecordReader.open();
         Integer totalRecords = jsonRecordReader.getTotalRecords();
         assertThat(totalRecords).isNotNull();
