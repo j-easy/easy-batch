@@ -39,11 +39,6 @@ public interface RecordProcessor<I, O> {
     /**
      * Process a record.
      * @param record the record to process.
-     * @throws Exception thrown if an exception occurs during record processing
-     */
-    /**
-     * Process a record.
-     * @param record the record to process.
      * @return the processed record, may be of another type of the input object
      * @throws Exception thrown if an exception occurs during record processing
      */
