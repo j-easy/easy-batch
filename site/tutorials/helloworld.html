@@ -4,7 +4,7 @@ menu : tutorial
 title : Hello World Tutorial
 ---
 
-              <h2 id="1">1. Introduction</h2>
+              <h2>1. Introduction</h2>
 
         <p>This tutorial will show you how to build a very simple batch application to process a in-memory data source.
             We will process text records containing tweets and simply print them out to the console (remember, it is a hello world sample <i class="fa fa-smile-o"></i>)
@@ -25,12 +25,25 @@ title : Hello World Tutorial
 
         <p>Let's get started!</p>
 
-        <h2 id="2">2. Implementing the Tweet processor</h2>
+        <h2>2. Reading tweets</h2>
 
-        <p>With Easy Batch, you only write your batch processing logic and let the framework take care of the boilerplate code of reading, parsing, logging, reporting, etc.</p>
-        <p>In this tutorial, we need to read records from a String, we can use the built-in <code><em>StringRecordReader</em></code>. This reader will read data from the data source and produce
-        <code><em>StringRecord</em></code> instances which, as you may have guessed, contain strings as payload, or tweets in our case.</p>
-        <p>We will write a <code><em>RecordProcessor</em></code> to process this type of records and implement our business logic:</p>
+<p>In this tutorial, we need to read records from a String, we can use the built-in <code><em>StringRecordReader</em></code>. This reader will read the data source line by line and produce
+    <code><em>StringRecord</em></code> instances which, as you may have guessed, contain strings as payload, or tweets in our case. Let's configure an engine to use this reader:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code>String dataSource = "1,foo,easy batch rocks! #EasyBatch\n" +
+                    "2,bar,@foo I do confirm :-)";
+
+Engine engine = new EngineBuilder()
+    <strong>.reader(new StringRecordReader(dataSource))</strong>
+    .build();</code></pre>
+</div>
+
+        <h2>3. Processing tweets</h2>
+
+        <p>With Easy Batch, you only write your application's logic and let the framework take care of the boilerplate code of reading, parsing, logging, reporting, etc.</p>
+
+        <p>We will write a <code><em>RecordProcessor</em></code> to process <code><em>StringRecord</em></code> and implement our business logic:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class TweetProcessor implements RecordProcessor&lt;StringRecord, StringRecord&gt; {
@@ -51,7 +64,9 @@ title : Hello World Tutorial
                 We have only one processor in this tutorial, you will see how to build a data processing pipeline later on in <a href="./pipeline.html">this tutorial</a>.</p>
         </div>
 
-        <p>That's all for the business logic, we should now configure Easy Batch engine to:<p>
+        <h2>4. Putting it all together</h2>
+
+        <p>Now that we have implemented the application's business logic, we should configure Easy Batch engine to:<p>
         <ol>
             <li>Read records from the String data source</li>
             <li>Process each record using our <code><em>TweetProcessor</em></code></li>
@@ -84,11 +99,12 @@ title : Hello World Tutorial
 }</code></pre>
 </div>
 
+        <p>To run the engine, you call the <code><em>call</em></code> method.</p>
         <p>Easy Batch returns a report at the end of execution containing various metrics and statistics.
             We will print its content to the console to examine it.</p>
         <p>Time to run the tutorial and see the result.</p>
 
-        <h2 id="3">3. Running the tutorial</h2>
+        <h2>5. Running the tutorial</h2>
 
         <div class="row">
         <div class="col-md-6">
@@ -122,20 +138,20 @@ INFO: Shutting down easy batch engine</code></pre>
 
 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/helloworld/memory" target="_blank">here</a>.
 
-        <h2 id="4">4. Summary</h2>
+        <h2>6. Summary</h2>
 
         <p>Congratulations! You built your first batch application with Easy Batch.
             You learned how create, configure and run a batch engine to process data from a data source.</p>
 
         <p>All you have done is:</p>
         <ul>
-            <li>Implementing the business logic of our batch application</li>
+            <li>Implementing the business logic of your application</li>
             <li>Providing configuration meta data</li>
         </ul>
 
         <p>Easy Batch handled the boilerplate code of reading, parsing, logging and reporting for you.</p>
 
-        <h2 id="5">5. What's next?</h2>
+        <h2>7. What's next?</h2>
 
         <p>In the next tutorial, you will learn how to filter tweets, how to map them to a domain object <code><em>Tweet</em></code>
         and how to validate them using the <a href="http://www.beanvalidation.org">Bean Validation API</a>.</p>
