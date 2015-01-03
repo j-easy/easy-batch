@@ -457,7 +457,7 @@
                         <configuration>
                             <mainClass>org.easybatch.tutorials.intermediate.recipes.Launcher</mainClass>
                             <arguments>
-                                <argument>${project.basedir}/src/main/resources/recipes.csv</argument>
+                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/intermediate/recipes/recipes.txt</argument>
                             </arguments>
                         </configuration>
                     </plugin>

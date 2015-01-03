@@ -27,7 +27,7 @@ package org.easybatch.tutorials.intermediate.recipes;
 import org.easybatch.core.util.GenericRecord;
 
 /**
- * Recipe record. This logical record represents a set of physical records in recipes.csv file.
+ * Recipe record. This logical record represents a set of physical records in recipes.txt file.
  */
 public class RecipeRecord extends GenericRecord<Recipe> {
 

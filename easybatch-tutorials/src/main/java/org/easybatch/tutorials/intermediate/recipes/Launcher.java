@@ -24,9 +24,9 @@
 
 package org.easybatch.tutorials.intermediate.recipes;
 
-import org.easybatch.core.api.Report;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.util.GenericRecordMapper;
 
 import java.io.File;
 
@@ -39,21 +39,18 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        //initialize input file recipes.csv
+        // Initialize input file recipes.txt
         File recipes = new File(args[0]);
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
                 .reader(new RecipeRecordReader(recipes))
-                .mapper(new RecipeMapper())
+                .mapper(new GenericRecordMapper())
                 .processor(new RecipeProcessor())
                 .build();
 
-        // Run the batch engine and get execution report
-        Report report = engine.call();
-
-        // Print batch report
-        System.out.println(report);
+        // Run the batch engine
+        engine.call();
 
     }
 

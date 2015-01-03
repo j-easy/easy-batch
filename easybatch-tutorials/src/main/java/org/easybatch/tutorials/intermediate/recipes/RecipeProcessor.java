@@ -33,7 +33,7 @@ public class RecipeProcessor implements RecordProcessor<Recipe, Recipe> {
 
     @Override
     public Recipe processRecord(Recipe recipe) throws Exception {
-        System.out.println("recipe = " + recipe);
+        System.out.println(recipe);
         return recipe;
     }
 
