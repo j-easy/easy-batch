@@ -26,14 +26,10 @@ package org.easybatch.tutorials.advanced.quartz;
 
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.flatfile.FlatFileRecordReader;
-import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
+import org.easybatch.core.util.StringRecordReader;
 import org.easybatch.integration.quartz.BatchScheduler;
-import org.easybatch.tutorials.common.Greeting;
-import org.easybatch.tutorials.common.GreetingProcessor;
-import org.easybatch.validation.BeanValidationRecordValidator;
+import org.easybatch.tutorials.basic.helloworld.TweetProcessor;
 
-import java.io.File;
 import java.util.Date;
 
 /**
@@ -52,15 +48,18 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
+        // Create the data source
+        String dataSource =
+                "1,foo,easy batch rocks! #EasyBatch\n" +
+                "2,bar,@foo I do confirm :-)";
+
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .reader(new FlatFileRecordReader(new File(args[0])))
-                .mapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
-                .validator(new BeanValidationRecordValidator<Greeting>())
-                .processor(new GreetingProcessor())
+                .reader(new StringRecordReader(dataSource))
+                .processor(new TweetProcessor())
                 .build();
 
-        // schedule the engine to start now and run every minute
+        // Schedule the engine to start now and run every minute
         BatchScheduler scheduler = new BatchScheduler(engine);
         scheduler.scheduleAtWithInterval(new Date(), 1);
         scheduler.start();
