@@ -31,7 +31,7 @@
     </bean>
 
     <!-- configure record processor -->
-    <bean id="tweetProcessor" class="org.easybatch.tutorials.basic.helloworld.TweetProcessor"/>
+    <bean id="tweetProcessor" class="org.easybatch.tutorials.common.TweetProcessor"/>
 
     <!-- configure Easy Batch engine -->
     <bean id="engine" class="org.easybatch.integration.spring.BatchFactoryBean">
