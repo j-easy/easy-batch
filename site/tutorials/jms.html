@@ -1,185 +1,103 @@
 ---
 layout: template
 menu : tutorial
-title : JMS tutorial
+title : Asynchronous jobs
 ---
-              <h2 id="1">1. Description</h2>
+              <h2>1. Introduction</h2>
 
-              <p>In this tutorial, we will see how to use Easy Batch to asynchronously process data in parallel from a JMS queue:</p>
+              <p>In this tutorial, you will learn how process data asynchronously using Easy Batch and JMS.</p>
+        <p>We will reuse the same data source as in previous tutorial containing tweets except that we will be reading tweets from a JMS queue:</p>
 
-              <p class="pull-center"><img src="../img/eb/jms.png"/></p>
 
-              <p>We will also show how to use the <code>EasyBatchReportsAggregator</code> API to merge partial reports into a global and final one.</p>
-              <p>We will create a custom record reader that pulls data from the JMS queue. To distribute the work, messages posted to the queue will be processed by several Easy Batch engines.
-                  We will use the same resources as in the <a href="../tutorials/helloworldCSV.html" target="_blank">Hello World tutorial</a> (greetings CSV data and <code>Greeting</code> POJO) to create the application:</p>
+            <p class="pull-center"><img src="../img/eb/jms.png"/></p>
 
-              <div>
-                  <div class="col-md-6">
-<pre><code class="java">id,name
-1,foo
-2,bar
-3,bax
-4,baz</code></pre>
-                  </div>
-                  <div class="col-md-6">
+        <p>Easy Batch provides the built-in <code><em>JmsQueueRecordReader</em></code> that is able to read data from a JMS queue.</p>
 
-<pre><code class="java">public class Greeting {
-    private int id;
-    private String name;
-    //Getters and setters omitted
-}</code></pre>
-                  </div>
-              </div>
+<div class="bs-callout bs-callout-warning">
+    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
+    <p>Poison records serve as End-Of-Stream messages, they kill the engine.
+        Easy Batch provides the <code><em>JmsPoisonMessage</em></code> to stop the engine whenever it receives a message of this type.
+        Poison records have no business value, we will filter them using the built-in <code><em>JmsPoisonRecordFilter</em></code>.</p>
+</div>
 
-              <p>As in the <a href="../tutorials/helloworldCSV.html" target="_blank">Hello World tutorial</a>, the goal is to simply write a greeting message to the console for each CSV record.
-                  We will use the same <code>GreetingProcessor</code> in this tutorial.</p>
+        <p>Let's get started.</p>
 
-              <p>So let's get started!</p>
+        <h2>2. Reading tweets from JMS queue</h2>
 
-              <h2 id="2">2. Implementation using Easy Batch</h2>
+        <p>The <code><em>JmsQueueRecordReader</em></code> needs to be configured with the JMS queue connection factory and the queue to read data from. It will produce <code><em>JmsRecord</em></code> instances with a <code><em>javax.jms.Message</em></code> as payload.</p>
 
-              <p>The main point in this tutorial is how to read data from the JMS queue. We will implement a custom record reader that will pull data from the queue. So here is the implementation:</p>
+        <div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    .reader(new JmsRecordReader(JMSUtil.queueConnectionFactory, JMSUtil.queue))
+    .build();
+</code></pre>
+        </div>
 
-<pre><code class="java">public class GreetingJmsReader implements RecordReader {
+        <p>The <code><em>JMSUtil</em></code> class is used to start an embedded broker and to provide JMS utilities.
+            The broker setup details are not shown here for readability's sake.</p>
 
-    private int id;
+        <h2>3. Processing tweets</h2>
 
-    private int currentRecordNumber;
+        <p>To process <code><em>JmsRecord</em></code> instances, we will use the following <code><em>RecordProcessor</em></code>:</p>
 
-    QueueConnection queueConnection;
-
-    QueueSession queueSession;
-
-    QueueReceiver queueReceiver;
-
-    Queue queue;
-
-    private boolean stop;
-
-    public GreetingJmsReader(int id) {
-        this.id = id;
-    }
+        <div class="bs-callout bs-callout-code">
+            <h5>JmsRecordProcessor.java</h5>
+<pre><code class="java">public class JmsRecordProcessor implements RecordProcessor&lt;JmsRecord, JmsRecord&gt; {
 
     @Override
-    public void open() throws Exception {
-        Properties p = new Properties();
-        p.load(GreetingJmsReader.class.getResourceAsStream(("/jndi.properties")));
-
-        Context jndiContext = new InitialContext(p);
-        QueueConnectionFactory queueConnectionFactory =
-                (QueueConnectionFactory) jndiContext.lookup("QueueConnectionFactory");
-        queue = (Queue) jndiContext.lookup("q");
-
-        queueConnection = queueConnectionFactory.createQueueConnection();
-        queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-        queueReceiver = queueSession.createReceiver(queue);
-
-        queueConnection.start();
+    public JmsRecord processRecord(JmsRecord record) throws Exception {
+        TextMessage message = (TextMessage) record.getPayload();
+        System.out.println("JMS message '" + message.getText() + "' processed");
+        return record;
     }
+}
+</code></pre>
+        </div>
 
-    @Override
-    public boolean hasNextRecord() {
-        return !stop;
-    }
+        <p>This processor will extract the message payload and print it out to the console.</p>
 
-    <strong>@Override
-        public Record readNextRecord() throws Exception {
-        String record;
-        Message m = queueReceiver.receive();
-        TextMessage message = (TextMessage) m;
-        record = message.getText();
-        stop = record.equalsIgnoreCase("quit");
-        System.out.println("Greeting Reader " + id + " : received JMS message: " + record);
-        return new StringRecord(++currentRecordNumber, record);
-        } </strong>
+        <h2>4. Putting it all together</h2>
 
-    @Override
-    public Long getTotalRecords() {
-        //undefined, cannot be calculated in advance
-        return null;
-    }
+        <p>To lauch the tutorial, you will use the following class:</p>
 
-    @Override
-    public String getDataSourceName() {
-        try {
-            return "JMS queue: " + queue.getQueueName();
-        } catch (JMSException e) {
-            throw new RuntimeException("Unable to get queue name", e);
-        }
-    }
-
-    @Override
-    public void close() throws Exception {
-        if (queueConnection != null) {
-            queueConnection.close();
-        }
-        if (queueSession != null) {
-            queueSession.close();
-        }
-        if (queueReceiver != null) {
-            queueReceiver.close();
-        }
-    }
-}</code></pre>
-
-              <p>The implementation is self explanatory: the reader uses a JMS connection factory and reads greetings records from the queue named <code>q</code> until it receives the message <code>quit</code>.</p>
-
-              <p>Now let's create 2 Easy Batch instances to process data posted to the JMS queue:</p>
-
+        <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        //start embedded JMS broker
-        JMSUtil.startBroker();
+        JMSUtil.startEmbeddedBroker();
 
-        // Build 2 easy batch engines
-        EasyBatchEngine easyBatchEngine1 = buildEasyBatchEngine(1);
-        EasyBatchEngine easyBatchEngine2 = buildEasyBatchEngine(2);
+        JMSUtil.initJMSFactory();
 
-        //create a 2 threads pool to call Easy Batch engines in parallel
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        // Build easy batch engines
+        Engine engine = new EngineBuilder()
+            .reader(new JmsRecordReader(JMSUtil.queueConnectionFactory, JMSUtil.queue))
+            .filter(new JmsPoisonRecordFilter())
+            .processor(new JmsRecordProcessor())
+            .build();
 
-        Future&lt;EasyBatchReport&gt; batchReportFuture1 = executorService.submit(easyBatchEngine1);
-        Future&lt;EasyBatchReport&gt; batchReportFuture2 = executorService.submit(easyBatchEngine2);
+        //run engine and get report
+        Report report = engine.call();
 
-        //wait for easy batch instances termination and get partial reports
-        EasyBatchReport easyBatchReport1 = batchReportFuture1.get();
-        EasyBatchReport easyBatchReport2 = batchReportFuture2.get();
+        System.out.println(report);
 
-        //merge partial reports into a global one
-        ReportMerger reportMerger = new DefaultReportMerger();
-        Report finalReport = reportMerger.mergeReports(easyBatchReport1, easyBatchReport2);
-        System.out.println(finalReport);
+        JMSUtil.stopEmbeddedBroker();
 
-        //shutdown executor service
-        executorService.shutdown();
-
-        //stop embedded JMS broker
-        JMSUtil.stopBroker();
-
-    }
-
-    public static EasyBatchEngine buildEasyBatchEngine(int id) {
-        return new EasyBatchEngineBuilder()
-                .registerRecordReader(new GreetingJmsReader(id))
-                .registerRecordMapper(new DelimitedRecordMapper(Greeting.class, new String[]{"id","name"}))
-                .registerRecordProcessor(new GreetingSlowProcessor())
-                .build();
     }
 
 }</code></pre>
+        </div>
+        <p>This class will start an embedded JMS Broker to listen to incoming tweets.</p>
 
-              <p>To keep the tutorial simple, we have used an embedded message broker. The broker setup details are not shown here for readability sake.</p>
-              <p>To launch Easy Batch instances in parallel, we have used a <code>java.util.concurrent.ExecutorService</code> with a thread pool of 2 workers.</p>
+       <p>In order to send tweets JMS messages to the queue,
+           we will use the following utility class:</p>
 
-              <p>To send greetings records as JMS messages to the queue, we will use the following utility class:</p>
-
+        <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class JMSSenderLauncher {
 
     public static void main(String[] args) throws Exception {
 
-        //init JMS factory and session
+        //init JMS factory
         JMSUtil.initJMSFactory();
 
         // Send some messages to JMS queue
@@ -187,62 +105,94 @@ title : JMS tutorial
         String input;
         do {
             input = scanner.nextLine();
-            JMSUtil.sendJmsMessage(input);
+            JMSUtil.sendStringRecord(input);
         } while (!input.equalsIgnoreCase("quit"));
 
-        //close JMS session
-        JMSUtil.closeJMSSession();
+        //send a poison record at the end to stop the engine
+        JMSUtil.sendPoisonRecord();
+
+        System.exit(0);
     }
 
 }</code></pre>
+        </div>
 
-              <p>This class makes the tutorial interactive : we will type in data in the console to send it to the JMS queue and see how and which Easy Batch instance will process it.
-                  To stop the execution, we have to send <em>quit</em> message to the queue.</p>
+<p>The <code><em>JMSSenderLauncher</em></code> class makes the tutorial interactive: you will be able to send tweets to the queue by typing in tweets in the console.
+    To stop the execution, you have to type in <em>quit</em> in the console. This will send a poison record to the queue which will cause the engine to stop execution.</p>
+
               <p>That's all, we can now run the tutorial and see the results.</p>
 
               <h2 id="3">3. Running the tutorial</h2>
 
-              <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/jms" target="_blank">here</a>.
-                  To run the tutorial with maven, first launch the following command in the <code>easybatch-tutorials</code> directory :</p>
+<p>To run the tutorial, proceed as follow:</p>
+<div class="bs-callout bs-callout-code">
+<pre><code>$>git clone https://github.com/benas/easy-batch.git
+$>cd easy-batch
+$>mvn install
+$>cd easybatch-tutorials
+$>mvn exec:java -PrunJmsTutorial
+</code></pre>
+</div>
 
-              <p>
-                  <kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunJmsTutorial</kbd>
-              </p>
+        <p>This will start an embedded JMS broker listening to incoming messages.</p>
 
-              <p>This will start the embedded broker and Easy Batch instances that will listen to JMS messages posted to the queue. Then launch the JMS sender utility class in a separate console to be able to send data to the queue:</p>
+        <p>To start the message sender class, fire up a second terminal and run the following command:</p>
+<div class="bs-callout bs-callout-code">
+<pre><code>$>mvn exec:java -PrunJmsSender
+</code></pre>
+</div>
 
-              <p>
-                  <kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunJmsSender</kbd>
-              </p>
-
-              <p>You will be able to type in CSV greetings records in the console and see which Easy Batch engine has processed the record and what was the processing result. Here is a sample output:</p>
+              <p>You will be able to type in tweets in the console to post them to the JMS queue and see how the engine will process them as they come. Here is a sample output:</p>
 
               <div>
                   <div class="col-md-6">
-<pre><code class="java">1,foo
-Message '1,foo' sent to JMS queue
-2,bar
-Message '2,bar' sent to JMS queue
+                      <div class="bs-callout bs-callout-code">
+<pre><code>1,foo,easy batch rocks! #EasyBatch
+Message '1,foo,easy batch rocks! #EasyBatch' sent to JMS queue
+2,bar,@foo I do confirm :-)
+Message '2,bar,@foo I do confirm :-)' sent to JMS queue
 quit
-Message 'quit' sent to JMS queue</code></pre>
-                  </div>
-                  <div class="col-md-6">
+Message 'quit' sent to JMS queue
 
-<pre><code class="java">INFO: Initializing easy batch engine
+</code></pre>
+                  </div>
+              </div>
+
+<div class="col-md-6">
+
+                      <div class="bs-callout bs-callout-code">
+<pre><code>INFO: Initializing easy batch engine
 INFO: Data source: JMS queue: q
 INFO: Strict mode: false
 INFO: Total records = N/A
 INFO: easy batch engine is running...
-Greeting Reader 2 : received JMS message: 1,foo
-Hi foo! Your id is 1
-Greeting Reader 1 : received JMS message: 2,bar
-Hi bar! Your id is 2</code></pre>
+Received JMS message:
+1,foo,easy batch rocks! #EasyBatch
+Received JMS message:
+2,bar,@foo I do confirm :-)</code></pre>
                   </div>
+                  </div>
+
               </div>
 
-              <h2 id="4">4. Conclusion</h2>
-              <p> In this tutorial, we have seen how to use Easy Batch along with JMS to create an asynchronous batch application.</p>
-              <p>We have implemented a custom record reader that reads data from a JMS queue. To distribute the work across multiple Easy Batch instances, we have used
-                  a thread pool through the <code>ExecutorService</code> and submitted Easy Batch instances to it. This tutorial shows a powerful technique to distribute data processing
-                  across multiple Easy Batch "workers" asynchronously.</p>
-              <p>Finally, we have also seen how to use the <code>EasyBatchReportsAggregator</code> API to merge partial reports into a global one.</p>
+<p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/jms" target="_blank">here</a>.</p>
+
+              <h2 id="4">4. Summary</h2>
+
+              <p> In this tutorial, you have learned how to use Easy Batch along with JMS to create an asynchronous batch application.</p>
+              <p>As you have seen in the <a href="./parallel.html">Parallel jobs tutorial</a>, you can also distribute the work across multiple Easy Batch worker instances.</p>
+
+        <div class="bs-callout bs-callout-success">
+            <p><i class="fa fa-info-circle"></i> When combined together, asynchronous and parallel processing provide an extremely powerful technique of data processing! Easy Batch makes it a breeze <i class="fa fa-smile-o"></i></p>
+        </div>
+
+<h2 id="9">9. What's next?</h2>
+
+<p>That was all for advanced tutorials, you are now ready to develop any kind of batch application using Easy Batch.
+    Congratulations!</p>
+
+<nav>
+    <ul class="pager">
+        <li class="previous"><a href="./parallel.html"><span aria-hidden="true">&larr;</span> Parallel jobs</a></li>
+    </ul>
+</nav>
