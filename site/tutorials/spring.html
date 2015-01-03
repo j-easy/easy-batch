@@ -4,114 +4,131 @@ menu : tutorial
 title : Easy Batch and Spring
 ---
 
-              <h2>1. Using Spring with Easy Batch</h2>
+          <h2>1. Introduction</h2>
 
-              <p>You may want to reuse existing Spring beans along with Easy Batch. This does not require to write any specific integration code to use both frameworks together.</p>
-              <p>You can simply proceed as follows:</p>
-              <ul>
-                  <li>Configure your Spring beans as usual (using Xml, Annotations or Java)</li>
-                  <li>Instantiate a Spring container to manage your beans</li>
-                  <li>Register your Spring beans with Easy Batch</li>
-              </ul>
-              <p>That's it! Your registered beans will be configured and managed by Spring and used by Easy Batch to execute your batch business logic.</p>
+          <p>You may want to use Spring dependency injection to configure Easy Batch components like record mapper or processor and declare Easy Batch engine as a Spring bean. This can be done using the provided <code><em>EasyBatchFactoryBean</em></code> factory bean.</p>
+           <p>In this tutorial, you will learn how to use this custom factory bean.</p>
 
-              <p>Let's see an example. We will rewrite the <a href="../tutorials/helloworldCSV.html" target="_blank">Hello World tutorial</a> to use Spring to manage the <code>GreetingProcessor</code> object.</p>
+              <h2>2. Try it out</h2>
 
-              <p>First, we will create a Spring Xml configuration file called <code>application-context.xml</code> to define the <code>GreetingProcessor</code> bean as follows:</p>
+        <p>You will implement the same application developed in the <a href="./helloworld.html">Hello world tutorial</a> but you will use Spring to configure Easy Batch.</p>
+              <p>First, you need to add the <code>easybatch-spring</code> module to your dependencies:</p>
 
-<pre><code class="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd"&gt;
-
-  &lt;bean id="greetingProcessor"
-        class="org.easybatch.tutorials.common.GreetingProcessor"/&gt;
-
-&lt;/beans&gt;</code></pre>
-
-              <p>Then, we will create a Spring container to manage this bean:</p>
-
-<pre><code class="java">ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");</code></pre>
-
-              <p>Finally, we register as usual the <code>GreetingProcessor</code> bean to be used by Easy Batch:</p>
-
-<pre><code class="java">GreetingProcessor recordProcessor = (GreetingProcessor) context.getBean("greetingProcessor");
-
-EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordProcessor(recordProcessor)
-    .build();</code></pre>
-
-              <p>That's all! <code>GreetingProcessor</code> bean is now managed by Spring and used by Easy Batch to process records.</p>
-              <p>As you can see, no specific integration code is necessary to use Spring along with Easy Batch.</p>
-
-          <h2>2. Using Easy Batch with Spring</h2>
-
-          <p>You may want to use Spring dependency injection to configure Easy Batch components like record mapper or processor and declare Easy Batch engine as a Spring bean. This can be done using the provided <code>EasyBatchFactoryBean</code> factory bean.
-              To use this factory bean, first, you need to add the <code>easybatch-spring</code> module to your dependencies:</p>
-
+        <div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-spring&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
+        </div>
 
-          <p>Then, you can configure Easy Batch components and declare Easy Batch engine as a Spring bean:</p>
+          <p>Then, you can configure Easy Batch components and declare the engine as a Spring bean:</p>
 
+        <div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
     &lt;beans xmlns="http://www.springframework.org/schema/beans"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:util="http://www.springframework.org/schema/util"
            xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd"&gt;
-
-        &lt;!-- input file bean --&gt;
-        &lt;bean id="file" class="java.io.File"&gt;
-            &lt;constructor-arg value="/data/in/greetings.csv"/&gt;
-        &lt;/bean>
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd"&gt;
 
         &lt;!-- configure record reader --&gt;
-        &lt;bean id="greetingReader"
-                class="org.easybatch.flatfile.FlatFileRecordReader"&gt;
+        &lt;bean id="tweetReader" class="org.easybatch.flatfile.FlatFileRecordReader"&gt;
             &lt;constructor-arg ref="file"/&gt;
-        &lt;/bean>
+        &lt;/bean&gt;
 
+        &lt;!-- configure record filter --&gt;
+        &lt;bean id="headerRecordFilter" class="org.easybatch.core.filter.HeaderRecordFilter"&gt;
+
+        &lt;/bean&gt;
         &lt;!-- configure record mapper --&gt;
-        &lt;bean id="greetingMapper"
-                class="org.easybatch.flatfile.dsv.DelimitedRecordMapper"&gt;
+        &lt;bean id="tweetMapper" class="org.easybatch.flatfile.dsv.DelimitedRecordMapper"&gt;
             &lt;constructor-arg&gt;
-                &lt;value type="java.lang.Class"&gt;
-                    Greeting
-                &lt;/value&gt;
+                &lt;value type="java.lang.Class"&gt;org.easybatch.tutorials.common.Tweet&lt;/value&gt;
             &lt;/constructor-arg&gt;
             &lt;constructor-arg&gt;
                 &lt;list&gt;
                     &lt;value&gt;id&lt;/value&gt;
-                    &lt;value&gt;name&lt;/value&gt;
+                    &lt;value&gt;user&lt;/value&gt;
+                    &lt;value&gt;message&lt;/value&gt;
                 &lt;/list&gt;
             &lt;/constructor-arg&gt;
         &lt;/bean&gt;
 
         &lt;!-- configure record processor --&gt;
-        &lt;bean id="greetingProcessor"
-            class="GreetingProcessor"/&gt;
+        &lt;bean id="tweetProcessor" class="org.easybatch.tutorials.basic.helloworld.TweetProcessor"/&gt;
 
         &lt;!-- configure Easy Batch engine --&gt;
-        &lt;bean id="easyBatchEngine"
-            class="org.easybatch.integration.spring.BatchFactoryBean"&gt;
-            &lt;property name="recordReader" ref="greetingReader"/&gt;
-            &lt;property name="recordMapper" ref="greetingMapper"/&gt;
-            &lt;property name="recordProcessor" ref="greetingProcessor"/&gt;
+        &lt;bean id="engine" class="org.easybatch.integration.spring.BatchFactoryBean"&gt;
+            &lt;property name="recordReader" ref="tweetReader"/&gt;
+            &lt;property name="recordFilter" ref="headerRecordFilter"/&gt;
+            &lt;property name="recordMapper" ref="tweetMapper"/&gt;
+            &lt;property name="processingPipeline"&gt;
+                &lt;list&gt;
+                    &lt;ref bean="tweetProcessor"/&gt;
+                &lt;/list&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+
+        &lt;!--utility beans to create a classpath resource for input file--&gt;
+        &lt;bean id="resource" class="org.springframework.core.io.ClassPathResource"&gt;
+            &lt;constructor-arg value="/org/easybatch/tutorials/basic/keyapis/tweets.csv" /&gt;
+        &lt;/bean&gt;
+
+        &lt;util:property-path id="uri" path="resource.URI"/&gt;
+
+        &lt;!-- input file bean --&gt;
+        &lt;bean id="file" class="java.io.File"&gt;
+            &lt;constructor-arg type="java.net.URI" ref="uri"/&gt;
         &lt;/bean&gt;
 
     &lt;/beans&gt;</code></pre>
+        </div>
 
-          <p>Finally, you can get and use Easy Batch engine bean as follows:</p>
+<p>Finally, you can get and use Easy Batch engine bean as follows:</p>
 
-<pre><code class="java">ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
-EasyBatchEngine easyBatchEngine = (EasyBatchEngine) context.getBean("easyBatchEngine");
-easyBatchEngine.call();</code></pre>
+        <div class="bs-callout bs-callout-code">
+<pre><code class="java">public class Launcher {
 
-          <p>You can find the complete source code of this tutorial <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/spring" target="_blank">here</a>.</p>
-          <p>To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
+    public static void main(String[] args) throws Exception {
 
-          <p><kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunSpringTutorial</kbd></p>
+        ApplicationContext context =
+                new ClassPathXmlApplicationContext("application-context.xml");
+        Engine engine = (Engine) context.getBean("engine");
+        engine.call();
+
+    }
+}</code></pre>
+        </div>
+
+        <h3>3. Run the tutorial</h3>
+
+<p>To run this tutorial, proceed as follow:</p>
+<div class="bs-callout bs-callout-code">
+<pre><code>$>git clone https://github.com/benas/easy-batch.git
+$>cd easy-batch
+$>mvn install
+$>cd easybatch-tutorials
+$>mvn exec:java -PrunSpringTutorial
+</code></pre>
+</div>
+
+<p>You can find the complete source code of this tutorial <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/spring" target="_blank">here</a>.</p>
+
+<h2>4. Summary</h2>
+
+<p>In this tutorial, you have learned how to configure Easy Batch using Spring framework.
+Note that you can change the processing pipeline by adding/removing processors without recompiling your application thanks to Spring's dependency injection.</p>
+
+<h2>5. What's next?</h2>
+
+        <p>In the next tutorial, you will see how to process data in parallel using Easy Batch.</p>
+
+<nav>
+    <ul class="pager">
+        <li class="previous"><a href="./quartz.html"><span aria-hidden="true">&larr;</span> Scheduling jobs</a></li>
+        <li class="next"><a href="./parallel.html">Parallel jobs tutorial <span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+</nav>

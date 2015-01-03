@@ -37,7 +37,7 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("org/easybatch/tutorials/advanced/spring/application-context.xml");
         Engine engine = (Engine) context.getBean("engine");
         engine.call();
 
