@@ -47,7 +47,9 @@ public class DatabaseUtil {
     }
 
     public static void initializeSessionFactory() {
-        sessionFactory = new Configuration().configure().buildSessionFactory();
+        sessionFactory = new Configuration()
+                .configure("/org/easybatch/tutorials/intermediate/load/hibernate.cfg.xml")
+                .buildSessionFactory();
     }
 
     public static Session getCurrentSession() {
@@ -63,37 +65,33 @@ public class DatabaseUtil {
      */
 
     public static void startEmbeddedDatabase() throws Exception {
-            Connection connection = DriverManager.getConnection(DATABASE_URL, "sa", "pwd");
-            Statement statement = connection.createStatement();
+        //do not let hsqldb reconfigure java.util.logging used by easy batch
+        System.setProperty("hsqldb.reconfig_logging", "false");
+        Connection connection = DriverManager.getConnection(DATABASE_URL, "sa", "pwd");
+        Statement statement = connection.createStatement();
 
-            String query = "CREATE TABLE if not exists product (\n" +
-                    "  id varchar(4) NOT NULL PRIMARY KEY,\n" +
-                    "  name varchar(32) NOT NULL,\n" +
-                    "  description varchar(32) NOT NULL,\n" +
-                    "  price decimal NOT NULL,\n" +
-                    "  published boolean NOT NULL,\n" +
-                    "  lastUpdate date NOT NULL,\n" +
-                    ");";
+        String query = "CREATE TABLE if not exists tweet (\n" +
+                "  id integer NOT NULL PRIMARY KEY,\n" +
+                "  user varchar(32) NOT NULL,\n" +
+                "  message varchar(140) NOT NULL,\n" +
+                ");";
 
-            statement.executeUpdate(query);
-            statement.close();
-            connection.close();
+        statement.executeUpdate(query);
+        statement.close();
+        connection.close();
     }
 
-    public static void dumpProductTable() throws Exception {
-        System.out.println("Loading products from the database...");
+    public static void dumpTweetTable() throws Exception {
+        System.out.println("Loading tweets from the database...");
             Connection connection = DriverManager.getConnection(DATABASE_URL, "sa", "pwd");
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from product");
+            ResultSet resultSet = statement.executeQuery("select * from tweet");
 
             while (resultSet.next()) {
                 System.out.println(
-                        "Product : id= " + resultSet.getString("id") + " | " +
-                                "name= " + resultSet.getString("name") + " | " +
-                                "description= " + resultSet.getString("description") + " | " +
-                                "price= " + resultSet.getDouble("price") + " | " +
-                                "published= " + resultSet.getBoolean("published") + " | " +
-                                "lastUpdate= " + resultSet.getDate("lastUpdate")
+                        "Tweet : id= " + resultSet.getString("id") + " | " +
+                                "user= " + resultSet.getString("user") + " | " +
+                                "message= " + resultSet.getString("message")
                 );
             }
 

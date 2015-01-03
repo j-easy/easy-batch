@@ -24,17 +24,18 @@
 
 package org.easybatch.tutorials.intermediate.load;
 
-import org.easybatch.core.api.Report;
+import org.easybatch.core.filter.HeaderRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
+import org.easybatch.tutorials.common.Tweet;
 import org.easybatch.validation.BeanValidationRecordValidator;
 
 import java.io.File;
 
 /**
-* Main class to run the bean validation tutorial.
+* Main class to run the data loading tutorial.
  *
 * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
 */
@@ -42,37 +43,29 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        //do not let hsqldb reconfigure java.util.logging used by easy batch
-        System.setProperty("hsqldb.reconfig_logging", "false");
-
         /*
          * Start embedded database server
          */
         DatabaseUtil.startEmbeddedDatabase();
         DatabaseUtil.initializeSessionFactory();
 
-        // Configure the product record mapper
-        DelimitedRecordMapper<Product> productMapper = new DelimitedRecordMapper<Product>(Product.class);
-        productMapper.setDelimiter("|");
-        productMapper.setQualifier("\"");
-
-        // Build an easy batch engine
+        // Build a batch engine
         Engine engine = new EngineBuilder()
-                .reader(new FlatFileRecordReader(new File(args[0]))) //read data from products-jsr303.csv
-                .mapper(productMapper)
-                .validator(new BeanValidationRecordValidator<Product>())
-                .processor(new ProductProcessor())
+                .reader(new FlatFileRecordReader(new File(args[0])))
+                .filter(new HeaderRecordFilter())
+                .mapper(new DelimitedRecordMapper<Tweet>(Tweet.class, new String[]{"id", "user", "message"}))
+                .validator(new BeanValidationRecordValidator<Tweet>())
+                .processor(new TweetLoader())
                 .build();
 
         // Run easy batch engine
-        Report report = engine.call();
-        System.out.println(report);
+        engine.call();
 
         /*
-         * Dump product table to checks inserted data
+         * Dump tweet table to check inserted data
          */
         DatabaseUtil.closeSessionFactory();
-        DatabaseUtil.dumpProductTable();
+        DatabaseUtil.dumpTweetTable();
 
     }
 

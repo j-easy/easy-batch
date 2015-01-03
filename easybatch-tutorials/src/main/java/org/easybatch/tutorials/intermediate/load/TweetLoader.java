@@ -25,34 +25,35 @@
 package org.easybatch.tutorials.intermediate.load;
 
 import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.tutorials.common.Tweet;
 import org.hibernate.HibernateException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A product processor that inserts Product objects in a database.<br/>
+ * Processor that inserts tweets in a database.<br/>
  *
  * <strong>This implementation is kept simple for demonstration purpose. In production environment, you may define a
  * commit interval to avoid performance issues of committing the transaction after each record insertion.</strong>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ProductProcessor implements RecordProcessor<Product, Product> {
+public class TweetLoader implements RecordProcessor<Tweet, Tweet> {
 
-    private static final Logger LOGGER = Logger.getLogger(ProductProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TweetLoader.class.getName());
 
-    public Product processRecord(Product product) throws Exception {
+    public Tweet processRecord(Tweet tweet) throws Exception {
         DatabaseUtil.getCurrentSession().beginTransaction();
         try {
-            DatabaseUtil.getCurrentSession().saveOrUpdate(product);
+            DatabaseUtil.getCurrentSession().saveOrUpdate(tweet);
             DatabaseUtil.getCurrentSession().getTransaction().commit();
-            LOGGER.log(Level.INFO, "Product {0} successfully persisted in the database", product);
+            LOGGER.log(Level.INFO, "Tweet {0} successfully persisted in the database", tweet);
         } catch (HibernateException e) {
             DatabaseUtil.getCurrentSession().getTransaction().rollback();
-            throw new Exception("A database exception occurred during product persisting.", e);
+            throw new Exception("A database exception occurred during tweet persisting.", e);
         }
-        return product;
+        return tweet;
     }
 
 }
