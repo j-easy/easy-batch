@@ -6,7 +6,7 @@ title : JMX tutorial
 
               <h2>1. Introduction</h2>
 
-              <p>Easy Batch allows you to monitor batch execution and progress at runtime using JMX. By default, Easy Batch enables at startup a JMX MBean named <code>org.easybatch.core.jmx:type=EasyBatchMonitorMBean</code>
+              <p>Easy Batch allows you to monitor job execution and progress at runtime using JMX. By default, Easy Batch enables at startup a JMX MBean named <code>org.easybatch.core.jmx:type=EasyBatchMonitorMBean</code>
                   exposing the following attributes:</p>
 
               <ul>
@@ -20,29 +20,68 @@ title : JMX tutorial
 
               <p>To monitor Easy Batch JMX MBean attributes, you can use any standard JMX compliant tool such as <a href="http://visualvm.java.net/" target="_blank">VisualVM</a>.</p>
 
-              <p>The screenshot below shows an example of Easy Batch monitoring using VisualVM :</p>
+              <p>The screenshot below shows an example of Easy Batch monitoring using VisualVM:</p>
 
               <p class="pull-center">
                   <img src="../img/eb/jmx.png"/>
               </p>
               <br/>
 
-              <h2>2. JMX tutorial</h2>
+              <h2>2. Try it out</h2>
 
-              <h3 id="jmxTutorial">2.1 Description</h3>
+              <p>In this tutorial, you will use the same application developed in the <a href="../tutorials/helloworld.html" target="_blank">Hello World tutorial</a>.
+                  The main difference is that you will build a new slow processor to simulate long running processing:</p>
 
-              <p>This tutorial is the same as the <a href="../tutorials/helloworldCSV.html" target="_blank">Hello World tutorial</a> but with higher amount of input data and a slow processor for demonstration purpose.</p>
-              <p>In this tutorial, we will show how to use VisualVM to monitor the core engine execution progress in real time.</p>
-              <p>The complete source code of this tutorial can be found <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/jmx" target="_blank">here</a>.</p>
+      <div class="bs-callout bs-callout-code">
+<pre><code class="java">
+    public class TweetSlowProcessor implements RecordProcessor&lt;StringRecord, StringRecord&gt; {
 
-              <h3>2.2 Running the batch</h3>
+    @Override
+    public StringRecord processRecord(StringRecord record) throws Exception {
 
-              <p>To launch the core batch with maven, execute the following command in the <code>easybatch-tutorials</code> directory :</p>
+        //slow down the processor for demonstration purpose
+        Thread.sleep(3000);
 
-              <p><kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunJmxTutorial</kbd></p>
+        System.out.println(record.getPayload());
+        return record;
+    }
 
-              <p>This will launch the core batch to process the <code>greetings-jmx.csv</code> file containing about 100 lines which will take about 3 minutes to finish.
-                  You should have enough time to launch VisualVM and monitor progress in real time.</p>
+}</code></pre>
+      </div>
+
+              <p>The complete source code of this tutorial can be found <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/jmx" target="_blank">here</a>.</p>
+
+              <p>To run the tutorial, follow these steps:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code>$>git clone https://github.com/benas/easy-batch.git
+$>cd easy-batch
+$>mvn install
+$>cd easybatch-tutorials
+$>mvn exec:java -PrunJmxTutorial
+</code></pre>
+</div>
+
+              <p>This will launch the engine and you should have enough time to launch VisualVM and monitor progress in real time.</p>
+
               <p>Once you have launched the tutorial, open VisualVM, connect to the jvm process running your batch and navigate to the MBeans tab
                   (if you don't see the MBeans tab, <a href="http://visualvm.java.net/mbeans_tab.html" target="_blank">here</a> is how to install the plugin).</p>
+
               <p>As described in the screen shot above, navigate to the <code>org.easybatch.core.jmx:type=EasyBatchMonitorMBean</code> MBean and you will be able to monitor the execution progress of the slow Hello World tutorial in real time.</p>
+
+<h2>3. Summary</h2>
+
+        <p>In this tutorial, you have learned how to monitor job execution at runtime. Real time monitoring is an
+        essential requirement for every production application and Easy Batch provides you this feature with no cost.</p>
+
+<h2>4. What's next?</h2>
+
+<p>In the next tutorial, you will tackle another production requirement which is scheduling job executions.
+Easy Batch provides integration with <a href="http://www.quartz-scheduler.org" target="_blank">Quartz</a> to schedule job execution.</p>
+
+<nav>
+    <ul class="pager">
+        <li class="previous"><a href="./custom-data-format.html"><span aria-hidden="true">&larr;</span> Recipes tutorial</a></li>
+        <li class="next"><a href="./quartz.html">Job scheduling <span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+</nav>

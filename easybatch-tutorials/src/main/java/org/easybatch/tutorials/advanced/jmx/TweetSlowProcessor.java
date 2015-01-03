@@ -24,23 +24,23 @@
 
 package org.easybatch.tutorials.advanced.jmx;
 
-import org.easybatch.tutorials.common.Greeting;
-import org.easybatch.tutorials.common.GreetingProcessor;
+import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.util.StringRecord;
 
 /**
-* A processor that will generate (slooowly :-) ) a greeting message for each record.
+ * A processor that prints out tweets to the console slowwwwly :-).
  *
-* @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
-*/
-public class GreetingSlowProcessor extends GreetingProcessor {
+ * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ */
+public class TweetSlowProcessor implements RecordProcessor<StringRecord, StringRecord> {
 
     @Override
-    public Greeting processRecord(Greeting greeting) throws Exception {
-        //slow the processor for demonstration purpose
+    public StringRecord processRecord(StringRecord record) throws Exception {
+        //slow down the processor for demonstration purpose
         Thread.sleep(3000);
 
-        System.out.println(greeting.getGreetingMessage());
-        return greeting;
+        System.out.println(record.getPayload());
+        return record;
     }
 
 }

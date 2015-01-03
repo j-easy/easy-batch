@@ -24,19 +24,13 @@
 
 package org.easybatch.tutorials.advanced.jmx;
 
-import org.easybatch.core.api.Report;
-import org.easybatch.core.filter.HeaderRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.flatfile.FlatFileRecordReader;
-import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
-import org.easybatch.tutorials.common.Greeting;
-import org.easybatch.validation.BeanValidationRecordValidator;
-
-import java.io.File;
+import org.easybatch.core.util.StringRecordReader;
+import org.easybatch.tutorials.basic.helloworld.TweetProcessor;
 
 /**
-* Main class to run the hello world tutorial with a slow processor.
+* Main class to run the JMX tutorial.
  *
 * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
 */
@@ -44,20 +38,25 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
+        // Create the String data source
+        String dataSource =
+                "1,foo,easy batch rocks! #EasyBatch\n" +
+                "2,foo,easy batch rocks! #EasyBatch\n" +
+                "3,foo,easy batch rocks! #EasyBatch\n" +
+                "4,foo,easy batch rocks! #EasyBatch\n" +
+                "5,foo,easy batch rocks! #EasyBatch\n" +
+                "6,foo,easy batch rocks! #EasyBatch\n" +
+                "7,foo,easy batch rocks! #EasyBatch\n" +
+                "8,bar,@foo I do confirm :-)";
+
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .reader(new FlatFileRecordReader(new File(args[0])))
-                .filter(new HeaderRecordFilter())
-                .mapper(new DelimitedRecordMapper<Greeting>(Greeting.class, new String[]{"id", "name"}))
-                .validator(new BeanValidationRecordValidator<Greeting>())
-                .processor(new GreetingSlowProcessor())
+                .reader(new StringRecordReader(dataSource))
+                .processor(new TweetProcessor())
                 .build();
 
         // Run the batch engine
-        Report report = engine.call();
-
-        // Print the batch execution report
-        System.out.println(report);
+        engine.call();
 
     }
 
