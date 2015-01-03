@@ -25,28 +25,25 @@
 package org.easybatch.tutorials.intermediate.elasticsearch;
 
 import org.easybatch.core.api.RecordProcessor;
-import org.easybatch.json.JsonRecord;
 import org.elasticsearch.client.Client;
 
 /**
- * A record processor that will index each json record in elastic search.
+ * Processor that indexes tweets in elastic search.
  *
  * For production use, prefer elastic search <a href="http://www.elasticsearch.org/guide/en/elasticsearch/client/java-api/current/bulk.html">bulk API</a> for better performance.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ElasticSearchIndexer implements RecordProcessor<JsonRecord, JsonRecord>{
+public class TweetIndexer implements RecordProcessor<String, String>{
 
     private Client client;
 
-    public ElasticSearchIndexer(Client client) {
+    public TweetIndexer(Client client) {
         this.client = client;
     }
 
     @Override
-    public JsonRecord processRecord(JsonRecord record) throws Exception {
-        //get record payload
-        String tweet = record.getPayload();
+    public String processRecord(String tweet) throws Exception {
 
         //index the tweet in the twitter index
         client.prepareIndex("twitter", "tweet")
@@ -54,8 +51,7 @@ public class ElasticSearchIndexer implements RecordProcessor<JsonRecord, JsonRec
                 .execute()
                 .actionGet();
 
-        //return the record to next processor in the pipeline (if any)
-        return record;
+        return tweet;
     }
 
 }

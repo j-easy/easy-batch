@@ -199,6 +199,23 @@
         </profile>
 
         <profile>
+            <id>runElasticSearchTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin-version}</version>
+                        <configuration>
+                            <mainClass>org.easybatch.tutorials.intermediate.elasticsearch.ElasticSearchTutorial</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
             <id>runRoundRobinRecordDispatcherTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>

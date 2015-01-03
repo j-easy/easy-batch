@@ -64,10 +64,15 @@ public class DatabaseUtil {
      * HSQL utility methods
      */
 
-    public static void startEmbeddedDatabase() throws Exception {
+    public static Connection startEmbeddedDatabase() throws Exception {
         //do not let hsqldb reconfigure java.util.logging used by easy batch
         System.setProperty("hsqldb.reconfig_logging", "false");
         Connection connection = DriverManager.getConnection(DATABASE_URL, "sa", "pwd");
+        createTweetTable(connection);
+        return connection;
+    }
+
+    public static void createTweetTable(Connection connection) throws Exception{
         Statement statement = connection.createStatement();
 
         String query = "CREATE TABLE if not exists tweet (\n" +
@@ -78,7 +83,6 @@ public class DatabaseUtil {
 
         statement.executeUpdate(query);
         statement.close();
-        connection.close();
     }
 
     public static void dumpTweetTable() throws Exception {
@@ -98,5 +102,28 @@ public class DatabaseUtil {
             resultSet.close();
             statement.close();
             connection.close();
+    }
+
+    public static void populateTweetTable(Connection connection) throws Exception {
+        executeQuery(connection,
+                "INSERT INTO tweet VALUES (1,'foo','easy batch rocks! #EasyBatch');");
+        executeQuery(connection,
+                "INSERT INTO tweet VALUES (2,'bar','@foo I do confirm :-)');");
+
+    }
+
+    public static void executeQuery(Connection connection, String query) throws SQLException {
+
+        Statement statement;
+        statement = connection.createStatement();
+        int i = statement.executeUpdate(query);
+        if (i == -1) {
+            System.err.println("database error : " + query);
+        }
+        statement.close();
+    }
+
+    public static void shutDown(Connection connection) throws SQLException {
+        connection.close();
     }
 }

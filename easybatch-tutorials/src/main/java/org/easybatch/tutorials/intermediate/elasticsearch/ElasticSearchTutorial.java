@@ -26,15 +26,17 @@ package org.easybatch.tutorials.intermediate.elasticsearch;
 
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.json.JsonRecordReader;
+import org.easybatch.jdbc.JdbcRecordMapper;
+import org.easybatch.jdbc.JdbcRecordReader;
+import org.easybatch.tutorials.common.Tweet;
+import org.easybatch.tutorials.intermediate.load.DatabaseUtil;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.search.SearchHit;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.sql.Connection;
 
 /**
  * Main class to launch Elastic search tutorial.
@@ -43,18 +45,24 @@ import java.io.InputStream;
  */
 public class ElasticSearchTutorial {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
 
-        InputStream tweetsInputStream = ElasticSearchTutorial.class.getResourceAsStream("tweets.json");
+        /*
+         * Start embedded database server
+         */
+        Connection connection = DatabaseUtil.startEmbeddedDatabase();
+        DatabaseUtil.populateTweetTable(connection);
 
-        //start an embedded elastic search node
+        //start embedded elastic search node
         Node node = ElasticSearchUtils.startEmbeddedNode();
         Client client = node.client();
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .reader(new JsonRecordReader(tweetsInputStream))
-                .processor(new ElasticSearchIndexer(client))
+                .reader(new JdbcRecordReader(connection, "select * from tweet"))
+                .mapper(new JdbcRecordMapper<Tweet>(Tweet.class))
+                .processor(new TweetTransformer())
+                .processor(new TweetIndexer(client))
                 .build();
 
         // Run the batch engine
@@ -73,6 +81,9 @@ public class ElasticSearchTutorial {
 
         //shutdown elastic search node
         ElasticSearchUtils.stopEmbeddedNode(node);
+
+        //shutdown embedded database
+        DatabaseUtil.shutDown(connection);
     }
 
 }
