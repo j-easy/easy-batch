@@ -22,23 +22,23 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.advanced.dispatcher.contentbased;
+package org.easybatch.tutorials.advanced.cbrd;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.util.Predicate;
 import org.easybatch.core.util.StringRecord;
 
 /**
- * A predicate that matches string records containing "apple".
+ * A predicate that matches string records containing "orange".
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class AppleRecordPredicate implements Predicate {
+public class OrangeRecordPredicate implements Predicate {
 
     @Override
     public boolean matches(Record record) {
         StringRecord stringRecord = (StringRecord) record;
-        return stringRecord.getPayload().contains("apple");
+        return stringRecord.getPayload().contains("orange");
     }
 
 }
