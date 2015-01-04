@@ -62,7 +62,7 @@ public class Customer {
     //Getters and setters omitted
 
 }
-``
+```
 
 # Run the CSV benchmark
 
