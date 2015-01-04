@@ -181,6 +181,7 @@
 
     <profiles>
 
+        <!-- profiles to run basic tutorials -->
         <profile>
             <id>runHelloWorldTutorial</id>
             <build>
@@ -192,6 +193,84 @@
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
                             <mainClass>org.easybatch.tutorials.basic.helloworld.Launcher</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>runKeyAPIsTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin-version}</version>
+                        <configuration>
+                            <mainClass>org.easybatch.tutorials.basic.keyapis.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/basic/keyapis/tweets.csv</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>runPipelineTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin-version}</version>
+                        <configuration>
+                            <mainClass>org.easybatch.tutorials.basic.pipeline.unixLike.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/basic/keyapis/tweets.csv</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>runFilterMapReducePipelineTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin-version}</version>
+                        <configuration>
+                            <mainClass>org.easybatch.tutorials.basic.pipeline.filterMapReduce.FilterMapReducePipelineTutorial</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- profiles to run intermediate tutorials -->
+        <profile>
+            <id>runLoadDataTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin-version}</version>
+                        <configuration>
+                            <mainClass>org.easybatch.tutorials.intermediate.load.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/basic/keyapis/tweets.csv</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -215,6 +294,27 @@
             </build>
         </profile>
 
+        <profile>
+            <id>runRecipesTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin-version}</version>
+                        <configuration>
+                            <mainClass>org.easybatch.tutorials.intermediate.recipes.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/intermediate/recipes/recipes.txt</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- profiles to run advanced tutorials -->
         <profile>
             <id>runParallelTutorialWithRecordDispatching</id>
             <build>
@@ -276,82 +376,6 @@
             </build>
         </profile>
 
-        <profile>
-            <id>runPipelineTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.basic.pipeline.unixLike.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/basic/keyapis/tweets.csv</argument>
-                            </arguments>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runKeyAPIsTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.basic.keyapis.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/basic/keyapis/tweets.csv</argument>
-                            </arguments>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runLoadDataTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.intermediate.load.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/basic/keyapis/tweets.csv</argument>
-                            </arguments>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runFilterMapReducePipelineTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.basic.pipeline.filterMapReduce.FilterMapReducePipelineTutorial</mainClass>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
 
         <profile>
             <id>runContentBasedRecordDispatcherTutorial</id>
@@ -420,26 +444,6 @@
                             <mainClass>org.easybatch.tutorials.advanced.jmx.Launcher</mainClass>
                             <arguments>
                                 <argument>/tmp/greetings-jmx.csv</argument>
-                            </arguments>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>runRecipesTutorial</id>
-            <build>
-                <defaultGoal>exec:java</defaultGoal>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
-                        <configuration>
-                            <mainClass>org.easybatch.tutorials.intermediate.recipes.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/intermediate/recipes/recipes.txt</argument>
                             </arguments>
                         </configuration>
                     </plugin>
