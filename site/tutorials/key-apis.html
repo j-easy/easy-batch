@@ -81,7 +81,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
 <div class="bs-callout bs-callout-code"><pre><code>Engine engine = new EngineBuilder()
     .reader(new FlatFileRecordReader(new File("tweets.csv")))
     .filter(new HeaderRecordFilter())
-    <strong>.mapper(new DelimitedRecordMapper&lt;Tweet&gt;(Tweet.class, new String[]{"id", "name", "message"}))</strong>
+    <strong>.mapper(new DelimitedRecordMapper(Tweet.class, new String[]{"id", "name", "message"}))</strong>
     .build();</code></pre>
 </div>
 
@@ -139,7 +139,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
 <div class="bs-callout bs-callout-code"><pre><code>Engine engine = new EngineBuilder()
     .reader(new FlatFileRecordReader(new File("tweets.csv")))
     .filter(new HeaderRecordFilter())
-    .mapper(new DelimitedRecordMapper&lt;Tweet&gt;(Tweet.class, new String[]{"id", "name", "message"}))
+    .mapper(new DelimitedRecordMapper(Tweet.class, new String[]{"id", "name", "message"}))
     <strong>.validator(new BeanValidationRecordValidator&lt;Tweet&gt;())</strong>
     .build();</code></pre>
 </div>
@@ -186,7 +186,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
 <div class="bs-callout bs-callout-code"><pre><code>Engine engine = new EngineBuilder()
     .reader(new FlatFileRecordReader(new File("tweets.csv")))
     .filter(new HeaderRecordFilter())
-    .mapper(new DelimitedRecordMapper&lt;Tweet&gt;(Tweet.class, new String[]{"id", "name", "message"}))
+    .mapper(new DelimitedRecordMapper(Tweet.class, new String[]{"id", "name", "message"}))
     .validator(new BeanValidationRecordValidator&lt;Tweet&gt;())
     <strong>.processor(new TweetCountProcessor())</strong>
     .build();</code></pre>

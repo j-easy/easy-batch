@@ -44,7 +44,7 @@ title : Indexing ElasticSearch tutorial
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">Engine engine = new EngineBuilder()
     .reader(new JdbcRecordReader(connection, "select * from tweet"))
-    <strong>.reader(new JdbcRecordMapper(Tweet.class)</strong>
+    <strong>.mapper(new JdbcRecordMapper(Tweet.class)</strong>
     .build();
 </code></pre>
 </div>

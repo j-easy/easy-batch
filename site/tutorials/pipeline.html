@@ -20,7 +20,7 @@ title : Data processing pipeline
         <p>The goal is to implement the equivalent of the following unix command pipeline:</p>
 
 <div class="bs-callout bs-callout-code">
-<pre><code>cat tweets.csv | grep #EasyBatch | cut -d',' f3 | wc</code></pre>
+<pre><code>cat tweets.csv | grep '#EasyBatch' | cut -d',' -f3 | wc</code></pre>
 </div>
 
         <p>This will count the number of words in tweets containing the hash tag <code>#EasyBatch</code>.</p>
@@ -55,7 +55,7 @@ title : Data processing pipeline
 
 <h2>4. Splitting tweets</h2>
 
-<p>The next step is to implement the command <code><em>cut -d',' f3</em></code>. Here is a processor that does the trick:</p>
+<p>The next step is to implement the command <code><em>cut -d',' -f3</em></code>. Here is a processor that does the trick:</p>
 
 <div class="bs-callout bs-callout-code">
     <h5>CutProcessor.java</h5>
@@ -106,7 +106,7 @@ title : Data processing pipeline
 
     @Override
     public Integer getComputationResult() {
-    return count;
+        return count;
     }
 
 }</code></pre>
@@ -118,16 +118,19 @@ title : Data processing pipeline
 
 <h2>7. Putting it all together</h2>
 
-<p>To launch the tutorial, we will use the following class:<p>
+<p>To launch the tutorial, you can use the following class:<p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
+        // Input file tweets.csv
+        File tweets = new File(args[0]);
+
         // Build a batch engine
         Engine engine = new EngineBuilder()
-            .reader(new FlatFileRecordReader(new File(args[0])))
+            .reader(new FlatFileRecordReader(tweets))
             .filter(new GrepFilter("#EasyBatch"))
             .processor(new CutProcessor(",", 2))
             .processor(new WordCountProcessor())

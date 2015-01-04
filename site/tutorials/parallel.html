@@ -50,7 +50,7 @@ title : Parallel jobs
 
 <div class="bs-callout bs-callout-warning">
     <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
-    <p>Poison records serve as End-Of-Stream messages, they are used to "kill" the engine (graciously).</p>
+    <p>Poison records serve as End-Of-Stream messages, they are used to "kill" the engine (gracefully).</p>
     <p>Easy Batch provides the <code><em>PoisonRecord</em></code> utility class to stop the engine when all data has been read.
         Poison records have no business value, you should filter them using the convenient built-in <code><em>PoisonRecordFilter</em></code>.</p>
 </div>

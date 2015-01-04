@@ -119,12 +119,12 @@ title : Asynchronous jobs
 
 <div class="bs-callout bs-callout-warning">
     <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
-    <p>Poison records serve as End-Of-Stream messages, they kill the engine.
+    <p>Poison records serve as End-Of-Stream messages, they are used to "kill" the engine (gracefully).
         Easy Batch provides the <code><em>JmsPoisonMessage</em></code> to stop the engine whenever it receives a message of this type.
         Poison records have no business value,  filter them using the built-in <code><em>JmsPoisonRecordFilter</em></code>.</p>
 </div>
 
-              <p>That's all, we can now run the tutorial and see the results.</p>
+              <p>That's all, you can now run the tutorial and see the results.</p>
 
               <h2 id="3">3. Running the tutorial</h2>
 
