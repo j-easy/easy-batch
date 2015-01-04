@@ -1,0 +1,203 @@
+<h2 id="4">4. Mapping records to domain objects</h2>
+
+<p>Easy Batch development is POJO-based and lets you map input records to your domain objects. To map records to your POJO instances, you should register an implementation of the <code>RecordMapper</code> interface as follows:</p>
+
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordMapper(new myRecordMapper())
+    .build();</code></pre>
+
+<p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record mapper that returns the record as is (no mapping logic).</p>
+
+<h3>4.1 Mapping flat file records</h3>
+
+<p>Easy Batch comes with two implementations of the <code>RecordMapper</code> interface to map flat file records to your domain objects :</p>
+<ul>
+    <li><code>DelimitedRecordMapper</code> : allows you to map delimiter-separated-values to domain objects</li>
+    <li><code>FixedLengthRecordMapper</code> : allows you to map fixed-length records to domain objects</li>
+</ul>
+
+<p>These two mappers also convert raw textual data in flat file records to typed data in your domain objects.
+    Easy Batch supports all built-in Java primitive and wrapper types (please refer to the javadoc of the <code>org.easybatch.core.converter</code> package for all details about Easy Batch built-in type converters).
+    If you want to provide a custom type converter, you can implement the <code>TypeConverter</code> interface and register your implementation using
+    <code>DelimitedRecordMapper.registerTypeConverter</code> and <code>FixedLengthRecordMapper.registerTypeConverter</code> methods.</p>
+
+<p>To use these two mappers, you need to add the <code>easybatch-flatfile</code> module to your dependencies.</p>
+
+<div class="alert alert-warning">
+    <p>Note that these flat file record mappers should be used in conjunction with the <code>FlatFileRecordReader</code>.</p>
+</div>
+
+<h4>4.1.1 Mapping delimiter-separated values</h4>
+
+<p>To register the <code>DelimitedRecordMapper</code>, use the following snippet:</p>
+
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordMapper(new DelimitedRecordMapper(MyPojoType.class))
+    .build();</code></pre>
+
+<p>By default, the <code>DelimiterRecordMapper</code> will use the header record to map delimited fields to domain object fields with the same name.
+    If you use this convention of configuration, you should not skip the header record with a record filter.</p>
+<p>If you want to use a custom mapping strategy, you can specify field names as follows:</p>
+
+<pre><code class="java">RecordMapper&lt;MyPojo&gt; myPojoMapper =
+    new DelimitedRecordMapper(MyPojo.class, new String[]{"myPojoField1", "myPojoField2"});</code></pre>
+
+<p>Field names should be in the same order as they appear in the delimited record.</p>
+
+<p>You can also map only some fields to your domain object. For example: </p>
+<pre><code class="java">RecordMapper&lt;MyPojo&gt; myPojoMapper =
+    new DelimitedRecordMapper(MyPojo.class, new Integer[]{1, 4, 7});</code></pre>
+
+<p>With this constructor, the <code>DelimitedRecordMapper</code> will only map fields 1, 4 and 7 to your domain objects fields.
+    Field names will be retrieved from the header record. If you want to use a custom mapping strategy, you can specify field names
+    in the third constructor parameter. For example:</p>
+
+<pre><code class="java">RecordMapper&lt;MyPojo&gt; myPojoMapper =
+    new DelimitedRecordMapper(MyPojoType.class,
+    new Integer[]{1, 4, 7},
+    new String[]{"id", "name", "description"});</code></pre>
+
+<p>This will map delimited fields to your POJO fields as described in the table below:</p>
+<table class="table table-bordered table-condensed table-striped  ">
+    <thead>
+    <tr>
+        <th>Delimited field index</th>
+        <th>POJO field</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>1</td>
+        <td class="center-td">id</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td class="center-td">name</td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td class="center-td">description</td>
+    </tr>
+    </tbody>
+</table>
+
+<p>You can also configure the <code>DelimitedRecordMapper</code> with custom parameters:</p>
+<table class="table table-bordered table-condensed table-striped ">
+    <thead>
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Default value</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>delimiter</td>
+        <td class="center-td">false</td>
+        <td>","</td>
+    </tr>
+    <tr>
+        <td>qualifier</td>
+        <td class="center-td">false</td>
+        <td>""</td>
+    </tr>
+    <tr>
+        <td>trimWhitespaces</td>
+        <td>false</td>
+        <td class="center-td">true</td>
+    </tr>
+    </tbody>
+</table>
+
+<p>For example, to use the <em>pipe</em> character as a delimiter, use the following snippet:</p>
+
+<pre><code class="java">DelimitedRecordMapper&lt;MyPojo&gt; myPojoMapper = new DelimitedRecordMapper&lt;MyPojo&gt;(MyPojo.class);
+    myPojoMapper.setDelimiter("|");</code></pre>
+
+<p>You can use other setters to provide custom parameters.</p>
+<p>If a delimited record is not well formed, the <code>DelimitedRecordMapper</code> throws an exception that causes the record to be ignored by the engine in the following cases:</p>
+<ul>
+    <li>Fields number is not equal to the expected fields number (missing field, extra field, etc) as specified in the
+        <a href="http://www.ietf.org/rfc/rfc4180.txt" target="_blank">CSV RFC (section 2.4).</a></li>
+    <li>A field is not enclosed as expected with the data qualifier</li>
+</ul>
+
+<p>You can find examples of how to use the <code>DelimitedRecordMapper</code> in the <a href="../tutorials/helloworldCSV.html" target="_blank">Hello World CSV tutorial</a>
+    and in the <a href="../tutorials/products.html" target="_blank">Products statistics tutorial</a>.</p>
+
+<h4>4.1.2 Mapping fixed-length records</h4>
+
+<p>To register the <code>FixedLengthRecordMapper</code>, use the following snippet:</p>
+
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordMapper(new FixedLengthRecordMapper(
+    MyPojoType.class,
+    new int[]{filed1Length, filed2Length},
+    new String[]{"filed1Name", "filed2Name"}))
+    .build();</code></pre>
+
+<p>When you create a <code>FixedLengthRecordMapper</code>, you should specify your domain object type, an array of field lengths and an array of field names in the same order as they appear in the fixed length record.</p>
+
+<p>If a fixed length record is not well formed, the <code>FixedLengthRecordMapper</code> throws an exception that causes the record to be ignored by the engine.
+    A fixed length record is not well formed if its length is not equal to expected record length.</p>
+
+<p>You can find an example of how to use the <code>FixedLengthRecordMapper</code> in the <a href="../tutorials/helloworldFLR.html" target="_blank">Hello World FLR tutorial.</a>
+
+<h3>4.2 Mapping xml records</h3>
+
+<p>Easy Batch comes with a built-in implementation of the <code>RecordMapper</code> interface named <code>XmlRecordMapper</code> to map xml records to your domain objects using the <a href="https://jaxb.java.net/" target="_blank">JAXB</a> technology.</p>
+
+<p>To use this mapper, you should annotate your POJO with JAXB annotations to be able to map xml records.</p>
+
+<p>To use the <code>XmlRecordMapper</code>, first you need to add the <code>easybatch-xml</code> module to your dependencies, then you can register this mapper as follows:</p>
+
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordMapper(new XmlRecordMapper(MyPojoType.class, myXsdFile))
+    .build();</code></pre>
+
+<p>When you create an <code>XmlRecordMapper</code>, you should specify your domain object type and an xsd file against which the xml record should be validated (if no xsd is specified, no validation will be applied).</p>
+
+<p>You can find an example of how to use the <code>XmlRecordMapper</code> in the <a href="../tutorials/helloworldXML.html" target="_blank">Hello World XML tutorial</a>.</p>
+
+<div class="alert alert-warning">
+    <p>The <code>XmlRecordMapper</code> should be used in conjunction with the <code>XmlRecordReader</code>.</p>
+</div>
+
+<div class="alert alert-info">
+    <p>If you want to register a custom JAXB adapter, or listener, etc you can create an instance of the <code>javax.xml.bind.Unmarshaller</code>,
+        register your custom components and then use the constructor <code>org.easybatch.xml.XmlRecordMapper(javax.xml.bind.Unmarshaller unmarshaller)</code>.</p>
+</div>
+
+<h3>4.3 Mapping database records</h3>
+
+<p>Easy Batch comes with a built-in implementation of the <code>RecordMapper</code> interface named <code>JdbcRecordMapper</code> to map database records to your domain objects.</p>
+
+<p>To use the <code>JdbcRecordMapper</code>, first you need to add the <code>easybatch-jdbc</code> module to your dependencies, then you can register this mapper as follows:</p>
+
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordMapper(new JdbcRecordMapper(MyPojoType.class))
+    .build();</code></pre>
+
+<p>When you create a <code>JdbcRecordMapper</code>, you should specify your domain object type. Easy Batch will introspect your bean and the jdbc record result set and then map columns to fields with the same name.</p>
+
+<p>If column names are different from your Pojo field names, you can specify an array of field names in the same order as in the database record as follows:</p>
+
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordMapper(
+    new JdbcRecordMapper(MyPojoType.class, new String[]{"myPojoField1", "myPojoField2"}))
+    .build();</code></pre>
+
+<p>Easy Batch will then use this array of field names to map data from columns in the same order as in the jdbc record.</p>
+
+<p>You can find an example of how to use the <code>JdbcRecordMapper</code> in the <a href="../tutorials/helloworldJDBC.html" target="_blank">Hello World JDBC tutorial</a>.</p>
+
+<div class="alert alert-warning">
+    <p>The <code>JdbcRecordMapper</code> should be used in conjunction with the <code>JdbcRecordReader</code>.</p>
+</div>
+
+<nav>
+    <ul class="pager">
+        <li class="previous"><a href="#filtering" data-toggle="tab"><span aria-hidden="true">&larr;</span> Filtering data</a></li>
+        <li class="next"><a href="#validation" data-toggle="tab">Validating data <span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+</nav>

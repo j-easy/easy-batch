@@ -1,0 +1,88 @@
+<h2 id="7">7. Easy Batch report</h2>
+<h3 id="7.1">7.1 Getting an Easy Batch report</h3>
+
+<p>Easy Batch engine records several metrics during record processing and provides a complete report at the end of execution.
+    This report is an instance of the <code>EasyBatchReport</code> class and contains the following information:</p>
+<ul>
+    <li>The batch start and end times</li>
+    <li>The batch duration</li>
+    <li>The data source name</li>
+    <li>The total records number</li>
+    <li>The number of filtered, ignored and rejected records</li>
+    <li>The number of records processed with errors</li>
+    <li>The number of records successfully processed</li>
+    <li>The record processing time average</li>
+    <li>And the computation result if any</li>
+</ul>
+
+<p>You can get Easy Batch report as follows:</p>
+
+<pre><code class="java">EasyBatchReport easyBatchReport = easyBatchEngine.call();</code></pre>
+
+<h3 id="7.2">7.2 Formatting Easy Batch report</h3>
+<p>You can format Easy Batch reports using the <code>EasyBatchFormatter</code> interface.</p>
+<p>Easy Batch comes with a built-in implementation named <code>EasyBatchHtmlReportFormatter</code> that formats Easy Batch reports to HTML format which you can use as follows:</p>
+
+<pre><code class="java">String htmlReport = new EasyBatchHtmlReportFormatter().formatEasyBatchReport(easyBatchReport);</code></pre>
+
+<p>The following is a sample HTML report (click on the image for a live HTML demo):</p>
+
+<div class="pull-center">
+    <a href="../documentation/htmlReport.html" target="_blank">
+        <img src="../img/eb/htmlReport.png" alt="htmlReport" style="width: 80%"/>
+    </a>
+</div>
+<br/>
+<p>To use the <code>EasyBatchHtmlReportFormatter</code>, you should add the <code>easybatch-tools</code> module to your dependencies:</p>
+
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-tools&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+    &lt;/dependency&gt;</code></pre>
+
+<h3 id="7.3">7.3 Merging Easy Batch reports</h3>
+<p>When you run multiple Easy Batch instances to process a data source, each engine will generate a partial report for the data partition it has processed.</p>
+<p>You may want to aggregate partial reports into a merged and consolidated one. This is where the <code>EasyBatchReportsAggregator</code> comes to play:</p>
+
+        <!--
+<p class="text-center">
+    <img src="../img/eb/reportAggregator.png" alt="reports aggregator"/>
+</p>
+-->
+
+<p>The merged report is defined as follows:</p>
+<ul>
+    <li>The start time is the minimum of start times</li>
+    <li>The end time is the maximum of end times</li>
+    <li>The total records is the sum of total records</li>
+    <li>The total filtered records is the sum of total filtered records</li>
+    <li>The total ignored records is the sum of total ignored records</li>
+    <li>The total rejected records is the sum of total rejected records</li>
+    <li>The total error records is the sum of total error records</li>
+    <li>The total success records is the sum of total success records</li>
+    <li>The final batch result is a list of all batch partial results</li>
+    <li>The final data source name is the concatenation (one per line) of partial data sources names</li>
+</ul>
+
+<p>To use the report aggregator, first you need to add the <code>easybatch-tools</code> module to your dependencies:</p>
+
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-tools&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+    &lt;/dependency&gt;</code></pre>
+
+<p>Then you can use the following snippet to get a merged result:</p>
+
+<pre><code class="java">ReportMerger reportMerger = new DefaultReportMerger();
+    Report finalReport = reportMerger.mergeReports(report1, report2);</code></pre>
+
+<p>You can find an example of how to use the report aggregator in the <a href="../tutorials/jms.html" target="_blank">JMS tutorial</a>.</p>
+
+<nav>
+    <ul class="pager">
+        <li class="previous"><a href="#processing" data-toggle="tab"><span aria-hidden="true">&larr;</span> Processing data</a></li>
+        <li class="next"><a href="#miscellaneous" data-toggle="tab">Miscellaneous <span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+</nav>

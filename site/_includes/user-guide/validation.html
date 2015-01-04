@@ -1,0 +1,38 @@
+<h2 id="5">5. Validating records</h2>
+
+<p>Validating input data is an essential step in every batch application. With Easy Batch, you can validate records by registering a <code>RecordValidator</code> implementation as follows:</p>
+
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordValidator(new myRecordValidator())
+    .build();</code></pre>
+
+<p>Easy Batch comes with a built-in implementation of the <code>RecordValidtor</code> interface using the <a href="http://jcp.org/en/jsr/detail?id=303" target="_blank">Bean Validation API (JSR 303)</a> reference implementation <a href="http://hibernate.org/validator/" target="_blank">Hibernate validator</a>.</p>
+<p>The following steps describe how to use the Bean Validation API record validator with Easy Batch :</p>
+
+<ul>
+    <li>Add the <code>easybatch-validation</code> module to your dependencies :</br></br>
+
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-validation&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+    &lt;/dependency&gt;</code></pre>
+
+    </li>
+    <li>Annotate your POJO with Bean Validation API annotations</li>
+    <li>Register the <code>BeanValidationRecordValidator</code> within Easy Batch engine:</br></br>
+
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordValidator(new BeanValidationRecordValidator&lt;YourPojoType&gt;())
+    .build();</code></pre>
+
+    </li>
+</ul>
+<p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record validator that does not apply any validation logic.</p>
+
+<nav>
+    <ul class="pager">
+        <li class="previous"><a href="#mapping" data-toggle="tab"><span aria-hidden="true">&larr;</span> Mapping data to domain objects</a></li>
+        <li class="next"><a href="#processing" data-toggle="tab">Processing data <span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+</nav>

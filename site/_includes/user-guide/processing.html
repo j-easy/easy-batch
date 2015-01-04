@@ -1,0 +1,21 @@
+<h2 id="6">6. Processing records</h2>
+
+<p>Easy Batch lets you define your batch processing business logic through the <code>RecordProcessor</code> interface.
+    This is where you define what to do for each record. To register your record processor, use the following snippet:</p>
+
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordProcessor(new myRecordProcessor())
+    .build();</code></pre>
+
+<p>With Easy Batch, you can also do some computation on input records and hold a batch result that will be returned at the end of execution.</p>
+<p>This can be done through the <code>getEasyBatchResult</code> method of the <code>RecordProcessor</code> interface : Your record processor can hold the computation result in an instance variable and return it using this method.</p>
+<p>You can find an example of how to return a computation result in the <a href="../tutorials/products.html" target="_blank">Products statistics tutorial</a>.</p>
+
+<p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record processor that logs an information message about the record being processed.</p>
+
+<nav>
+    <ul class="pager">
+        <li class="previous"><a href="#validation" data-toggle="tab"><span aria-hidden="true">&larr;</span> Validating data</a></li>
+        <li class="next"><a href="#reporting" data-toggle="tab">Reporting <span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+</nav>

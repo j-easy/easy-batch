@@ -1,0 +1,120 @@
+<h2 id="2">2. Reading records</h2>
+
+<p>To read records from a data source, you should register an implementation of the <code>RecordReader</code> interface :</p>
+
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordReader(new MyRecordReader(myDataSource))
+    .build(); </code></pre>
+
+<p>Easy Batch comes with built-in record readers that allow you to read records from a variety of data sources :</p>
+<ul>
+    <li>flat files</li>
+    <li>xml files</li>
+    <li>in-memory strings</li>
+    <li>and databases</li>
+</ul>
+
+<h3>2.1 Reading data from a flat file</h3>
+
+<p>Easy Batch comes with a built-in <code>FlatFileRecordReader</code> that allows you to read records from a flat file.</p>
+<p>To use the flat file record reader, first you need to add the <code>easybatch-flatfile</code> module to your dependencies:</p>
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-flatfile&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+    &lt;/dependency&gt;</code></pre>
+
+<p>Then, you can register the <code>FlatFileRecordReader</code> with the following snippet:</p>
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordReader(new FlatFileRecordReader(myFlatFile))
+    .build();</code></pre>
+
+<h3>2.2 Reading data from an xml file</h3>
+
+<p>Easy Batch comes with a built-in <code>XmlRecordReader</code> that allows you to read records from an xml file using the
+    <a href="https://www.jcp.org/en/jsr/detail?id=173" target="_blank">Stax</a> API.</p>
+<p>Since Easy Batch development is Pojo-Based, Xml records correspond to instances of your domain objects. Let's consider the following xml file:</p>
+
+<pre><code class="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;beans&gt;
+    &lt;bean&gt;
+    &lt;id&gt;1&lt;/id&gt;
+    &lt;name&gt;foo&lt;/name&gt;
+    &lt;/bean&gt;
+    &lt;bean&gt;
+    &lt;id&gt;2&lt;/id&gt;
+    &lt;name&gt;bar&lt;/name&gt;
+    &lt;/bean&gt;
+    &lt;/beans&gt;</code></pre>
+
+<p>For this xml file, if your domain object is an object representing a <code>bean</code> tag, then for Easy Batch the first record is:</p>
+
+<pre><code class="xml">&lt;bean&gt;
+    &lt;id&gt;1&lt;/id&gt;
+    &lt;name&gt;foo&lt;/name&gt;
+    &lt;/bean&gt; </code></pre>
+
+<p>The second record is:</p>
+
+<pre><code class="xml">&lt;bean&gt;
+    &lt;id&gt;2&lt;/id&gt;
+    &lt;name&gt;bar&lt;/name&gt;
+    &lt;/bean&gt;</code></pre>
+
+<p>and so on.. To use the <code>XmlRecordReader</code>, first you need to add the <code>easybatch-xml</code> module to your dependencies:</p>
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-xml&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+    &lt;/dependency&gt;</code></pre>
+
+<p>Then, you can register the <code>XmlRecordReader</code> with the following snippet:</p>
+
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordReader(new XmlRecordReader(myRootElementName, myXmlFile))
+    .build();</code></pre>
+
+<p> When you create an <code>XmlRecordReader</code>, you should specify the xml root element name, and the input xml file path.</p>
+
+<p><span class="label label-info">Heads up!</span> Easy Batch uses the <a href="http://stax.codehaus.org/" target="_blank">StAX</a> API to stream data from the input XML file.</p>
+
+<h3>2.3 Reading data from an in-memory String</h3>
+
+<p>Easy Batch allows you to read data from a String using the <code>StringRecordReader</code> API. You can register this record reader as follows:</p>
+
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordReader(new StringRecordReader(myString))
+    .build();</code></pre>
+
+<p> When you create a <code>StringRecordReader</code>, you should specify the String reference representing the data source.</p>
+
+<h3>2.4 Reading data from a database</h3>
+
+<p>Easy Batch comes with a built-in <code>JdbcRecordReader</code> that allows you to read records from a database using the
+    <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/jdbc/" target="_blank">JDBC</a> technology.</p>
+<p>To use the database record reader, first you need to add the <code>easybatch-jdbc</code> module to your dependencies:</p>
+
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+    &lt;/dependency&gt;</code></pre>
+
+<p>Then, you can register the <code>JdbcRecordReader</code> with the following snippet:</p>
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    .registerRecordReader(new JdbcRecordReader(myDatabaseConnection, myQuery))
+    .build();</code></pre>
+
+<p> When you create a <code>JdbcRecordReader</code>, you should specify the jdbc database connection and the sql query to use to fetch the data.</p>
+
+<div class="alert alert-danger">
+    <strong>Warning:</strong> The <code>JdbcRecordReader</code> loads all data fetched by the sql query you provide into a <code>java.sql.ResultSet</code> object.
+    You should pay attention to large data sets with the sql query you specify to the <code>JdbcRecordReader</code>.
+</div>
+
+<nav>
+    <ul class="pager">
+        <li class="previous"><a href="#generalities" data-toggle="tab"><span aria-hidden="true">&larr;</span> Generalities</a></li>
+        <li class="next"><a href="#filtering" data-toggle="tab">Filtering data <span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+</nav>
