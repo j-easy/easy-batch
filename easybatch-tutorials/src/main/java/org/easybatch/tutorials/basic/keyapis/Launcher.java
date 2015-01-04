@@ -44,9 +44,12 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
+        // Input file tweets.csv
+        File tweets = new File(args[0]);
+
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .reader(new FlatFileRecordReader(new File(args[0])))
+                .reader(new FlatFileRecordReader(tweets))
                 .filter(new HeaderRecordFilter())
                 .mapper(new DelimitedRecordMapper<Tweet>(Tweet.class, new String[]{"id", "user", "message"}))
                 .validator(new BeanValidationRecordValidator<Tweet>())
