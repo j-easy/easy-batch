@@ -30,13 +30,14 @@ title : Indexing ElasticSearch tutorial
 </code></pre>
     </div>
 
+        <p>The <code><em>JdbcRecordReader</em></code> must be configured with a JDBC connection and the query to be used to fetch data.</p>
         <p>This reader produces <code><em>JdbcRecord</em></code> instances having a <code><em>java.sql.ResultSet</em></code> payload.
-        You can access data of the current read record using this payload.</p>
+        You can access data of the current record using this payload.</p>
 
 <h2>3. Transforming tweets to Json objects</h2>
 
-        <p>Before transforming tweets to Json, we would like to map relational data to instances of <code><em>Tweet</em></code> bean. This is the Pojo-centric approach Easy Batch is all about.
-            Once you get tweet object, it will be easy to use ElasticSearch's APIs to index data in Json format.</p>
+        <p>Before transforming tweets to Json, you would like to map relational data to instances of <code><em>Tweet</em></code> bean. This is the Pojo-centric approach Easy Batch is all about.
+            Once you get tweet objects, it will be easy to use ElasticSearch's APIs to index data in Json format.</p>
 
         <p>The <code><em>JdbcRecordMapper</em></code> provided by Easy Batch allows to you to map relational records to domain objects:</p>
 
@@ -51,7 +52,7 @@ title : Indexing ElasticSearch tutorial
         <p>You must specify the target domain object type the mapper should map data to. This mapper will use
         the table meta-data to determine column names and map values to corresponding fields of the domain object.</p>
 
-        <p>This mapper will now produces <code><em>Tweet</em></code> objects that we can use to index ElasticSearch.</p>
+        <p>This mapper will now produce <code><em>Tweet</em></code> objects that you can use to index ElasticSearch.</p>
 
 <h2>4. Loading tweets in ElasticSearch</h2>
 
@@ -78,7 +79,7 @@ title : Indexing ElasticSearch tutorial
 }</code></pre>
         </div>
 
-        <p>No magic, the processor transform tweet object into strings on Json format ready to be indexed in ElasticSearch.</p>
+        <p>No magic, the processor transform tweet object into strings in Json format ready to be indexed in ElasticSearch.</p>
 
         <p>Now, it is time to write the code to index tweets in Json format into ElasticSearch.
             To keep the tutorial simple, we will use an embedded ElasticSearch server holding a <code>twitter</code> index.
@@ -88,6 +89,7 @@ title : Indexing ElasticSearch tutorial
     <h5>TweetIndexer.java</h5>
 <pre><code class="java">public class TweetIndexer implements RecordProcessor&lt;String, String&gt; {
 
+    /** Elastic search client */
     private Client client;
 
     public TweetIndexer(Client client) {
@@ -99,9 +101,9 @@ title : Indexing ElasticSearch tutorial
 
         //index the tweet in the twitter index
         client.prepareIndex("twitter", "tweet")
-        .setSource(tweet)
-        .execute()
-        .actionGet();
+            .setSource(tweet)
+            .execute()
+            .actionGet();
 
         return tweet;
     }
@@ -114,7 +116,7 @@ title : Indexing ElasticSearch tutorial
     <p>We could have merged the <code>TweetTransformer</code> and <code>TweetIndexer</code> together, but it is not encouraged to do so for many reasons:</p>
     <ul>
         <li>The merged processor will have two responsibilities at the same time, mapping and indexing, which violates the Single Responsibility Principle</li>
-        <li>The mapping logic will be impossible to reuse into another application</li>
+        <li>The mapping logic will be impossible to reuse in another application</li>
         <li>Both features could not be unit-tested</li>
     </ul>
 </div>
@@ -172,14 +174,7 @@ title : Indexing ElasticSearch tutorial
         <p>The code is self explanatory, the main part (in bold) is how to configure Easy Batch to read data form the database and index it in ElasticSearch.
         The remaining code is just for starting/stopping the embedded database and ElasticSearch servers.</p>
 
-<div class="bs-callout bs-callout-warning">
-    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
-    <p>Note that you have not to iterate yourself on the JDBC <code>ResultSet</code>, Easy Batch will do it for you.</p>
-</div>
-
         <h2>6. Running the tutorial</h2>
-
-
 
         <p>To run the tutorial, proceed as follow:</p>
         <div class="bs-callout bs-callout-code">

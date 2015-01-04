@@ -101,7 +101,7 @@ title : Loading data in a database
         commit interval to avoid performance issues of committing the transaction after each record insertion.</p>
 </div>
 
-                <p>That's all, we can now run the application using the following class:</p>
+                <p>That's all, you can now run the application using the following class:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class Launcher {
@@ -112,7 +112,7 @@ title : Loading data in a database
         DatabaseUtil.startEmbeddedDatabase();
         DatabaseUtil.initializeSessionFactory();
 
-        // Build a batch engine
+        <strong>// Build a batch engine
         Engine engine = new EngineBuilder()
             .reader(new FlatFileRecordReader(new File(args[0])))
             .filter(new HeaderRecordFilter())
@@ -122,7 +122,7 @@ title : Loading data in a database
             .build();
 
         // Run easy batch engine
-        engine.call();
+        engine.call();</strong>
 
         //Dump tweet table to check inserted data
         DatabaseUtil.closeSessionFactory();
@@ -171,11 +171,12 @@ INFO: Shutting down easy batch engine</code></pre>
 
 <p>In the next tutorial, you will learn how to build a <a
         href="http://fr.wikipedia.org/wiki/Extract_Transform_Load">Extract-Transform-Load</a> application using Easy Batch.
-    You will extract tweets from the database and transform them to JSON format.</p>
+    You will extract tweets from the database, transform them to JSON format and load them in an <a
+            href="http://www.elasticsearch.org" target="_blank">ElasticSearch</a> index.</p>
 
 <nav>
     <ul class="pager">
         <li class="previous"><a href="./pipeline.html"><span aria-hidden="true">&larr;</span> Processing pipeline tutorial</a></li>
-        <li class="next"><a href="./extracting-data.html">Extracting data from a database <span aria-hidden="true">&rarr;</span></a></li>
+        <li class="next"><a href="./elasticsearch.html">ETL tutorial<span aria-hidden="true">&rarr;</span></a></li>
     </ul>
 </nav>

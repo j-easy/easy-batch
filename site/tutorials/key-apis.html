@@ -33,9 +33,9 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
 
         <h2>3. Filtering records</h2>
         <p>The <code><em>RecordFilter</em></code> allows you to filter records from being processed.
-            In this tutorial, we would like to filter the header record containing field names.</p>
+            In this tutorial, you would like to filter the header record containing field names.</p>
         <p>Easy Batch comes with several built-in filters for common use cases and you can implement your own filter as well.
-        To filter the header record, we will use the <code><em>HeaderRecordFilter</em></code> designed speifically for that:</p>
+        To filter the header record, you canuse the built-in <code><em>HeaderRecordFilter</em></code> designed specifically for that:</p>
 
 <div class="bs-callout bs-callout-code"><pre><code>Engine engine = new EngineBuilder()
     .reader(new FlatFileRecordReader(new File("tweets.csv")))
@@ -50,11 +50,11 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
         <div class="row">
 
         <div class="col-md-6">
-            <p>Easy Batch development is POJO-centric, so we would like to map each tweet to an instance of the following <code><em>Tweet</em></code> bean.</p>
-            <p>Each field in the text record should be mapped to the corresponding field of the <code>Tweet</code> bean.</p>
+            <p>Easy Batch development is POJO-centric, you would like to map each tweet to an instance of the <code><em>Tweet</em></code> bean.</p>
+            <p>Each field in the text record should be mapped to the corresponding field in the <code>Tweet</code> bean.</p>
             <p>You can provide object mapping logic by implementing the <code><em>RecordMapper</em></code> interface.</p>
-            <p>Easy Batch comes with a built-in <code><em>DelimitedRecordMapper</em></code> that is able to map delimited values to a java bean.
-                It sounds like this is exactly what we want since we will be reading data from a CSV file.</p>
+            <p>Easy Batch comes with a built-in <code><em>DelimitedRecordMapper</em></code> which is able to map delimited values to a java bean.
+                It sounds like this is exactly what you want since you will be reading data from a CSV file.</p>
         </div>
 
         <div class="col-md-6">
@@ -85,7 +85,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
     .build();</code></pre>
 </div>
 
-        <p>We must specify the type of the target bean and an array of fields name in the same order as in the CSV file
+        <p>You must specify the type of the target bean and an array of field names in the same order as in the CSV file
         so that the mapper can bind data respectively to each field. By default, this mapper uses the comma <code><em>","</em></code>
             as delimiter which is fine in our case. You can also configure a custom delimiter if you want.</p>
             <p>Note that the mapper also converts raw textual data
@@ -94,8 +94,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
         <div class="bs-callout bs-callout-warning">
             <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
             <p>If the mapper is not able to map a record to an instance of the <code><em>Tweet</em></code> class, it will throw
-            an exception that will cause the engine to ignore it and move to the next one.</p>
-
+            an exception that will cause the engine to ignore this record and move to the next one.</p>
         </div>
 
 <h2>5. Validating records</h2>
@@ -109,9 +108,9 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
                     The <a href="http://www.beanvalidation.org">Bean Validation API</a> is the way to go since it provides an elegant solution to declare
                     validation constraints on domain objects using annotations.</p>
 
-                    <p>Easy Batch provides support for Bean Validation API so we can just annotate our
+                    <p>Easy Batch provides support for Bean Validation API so you can just annotate your
                     <code><em>Tweet</em></code> class with constraint annotations.</p>
-                <p>Now that we placed validation constraints on the <code><em>Tweet</em></code> bean, let configure the engine
+                <p>Now that you placed validation constraints on the <code><em>Tweet</em></code> bean, let's configure the engine
                 to validate records according to these constraints:</p>
             </div>
 
@@ -122,10 +121,10 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
 
     private int id;
 
-    @NotNull
+    <strong>@NotNull</strong>
     private String user;
 
-    @Size(min=0, max=140)
+    <strong>@Size(min=0, max=140)</strong>
     private String message;
 
     // Getters, Setters and toString omitted
@@ -145,22 +144,23 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
     .build();</code></pre>
 </div>
 
-        <p>The <code><em>BeanValidationRecordValidator</em></code> is provided by Easy Batch and is the component that will validate records.
+        <p>The <code><em>BeanValidationRecordValidator</em></code> is provided by Easy Batch and is responsible of validating records.
         When a record is not valid, the engine will reject it and move to the next one.</p>
 
 
 <h2 id="2">6. Processing tweets, finally!</h2>
 
-        <p>At this stage, we have filtered undesired data, mapped tweets to our domain object and validated them.
-        We should now be able to process tweets quietly.</p>
+        <p>At this stage, you have filtered undesired data, mapped tweets to domain objects and validated them.
+        You should now be able to process tweets quietly.</p>
 
-        <p>We have seen in the hello world tutorial a simple <code><em>RecordProcessor</em></code> implementation that prints out tweets to the console.
-            In this tutorial, we will introduce the <code><em>ComputationalRecordProcessor</em></code> API, that is, a record processor that performs a computation.</p>
+        <p>You have seen in the hello world tutorial a simple <code><em>RecordProcessor</em></code> implementation that prints out tweets to the console.
+            In this tutorial, you will learn the <code><em>ComputationalRecordProcessor</em></code> API, that is, a record processor that performs a computation.</p>
 
-        <p>We would like to count the number of tweets containing the hash tag <code>#EasyBatch</code>, this is the business logic of our application.
+        <p>You would like to count the number of tweets containing the hash tag <code>#EasyBatch</code>, this is the business logic of your application.
             It is time write some code <i class="fa fa-smile-o"></i>:</p>
 
         <div class="bs-callout bs-callout-code">
+            <h5>TweetCountProcessor.java</h5>
 <pre><code class="java">public class TweetCountProcessor implements ComputationalRecordProcessor&lt;Tweet, Tweet, Integer&gt; {
 
     private int count;
@@ -181,7 +181,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
         </div>
 
 <p>This processor is straightforward and will do the trick. The result of computation can be obtained at the end of the batch from the execution report.
-    We will see how to do that in a second, for now lets register this processor within the engine:</p>
+    You will see how to do that in a second, for now let's register this processor within the engine:</p>
 
 <div class="bs-callout bs-callout-code"><pre><code>Engine engine = new EngineBuilder()
     .reader(new FlatFileRecordReader(new File("tweets.csv")))
@@ -192,9 +192,9 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
     .build();</code></pre>
 </div>
 
-<h2 id="7">7. Putting it all together</h2>
+<h2>7. Putting it all together</h2>
 
-<p>To launch the tutorial, we will use the following class:<p>
+<p>To launch the tutorial, you will use the following class:<p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class Launcher {
@@ -207,7 +207,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
             .filter(new HeaderRecordFilter())
             .mapper(new DelimitedRecordMapper(Tweet.class, new String[]{"id", "name", "message"}))
             .validator(new BeanValidationRecordValidator&lt;Tweet&gt;())
-            .processor(new TweetProcessor())
+            .processor(new TweetCountProcessor())
             .build();
 
         // Run the batch engine
@@ -255,7 +255,7 @@ INFO: Shutting down easy batch engine</code></pre>
 
         </div>
 
-<h2 id="8">8. Summary</h2>
+<h2>8. Summary</h2>
 
 <p>In this tutorial, you have learned how to use most of the common APIs of Easy Batch.
 You have seen how to filter, map and validate tweets before processing them.</p>
@@ -333,10 +333,10 @@ You have seen how to filter, map and validate tweets before processing them.</p>
     </tbody>
 </table>
 
-<h2 id="9">9. What's next?</h2>
+<h2>9. What's next?</h2>
 
 <p>Until now, you have always registered only one record processor.
-    In the next tutorial, you will learn how to build a unix-like data processing pipeline using Easy Batch.</p>
+    In the next tutorial, you will learn how to build a unix-like data processing pipeline with several processors.</p>
 
 <nav>
     <ul class="pager">

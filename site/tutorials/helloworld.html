@@ -27,7 +27,7 @@ title : Hello World Tutorial
 
         <h2>2. Reading tweets</h2>
 
-<p>In this tutorial, we need to read records from a String, we can use the built-in <code><em>StringRecordReader</em></code>. This reader will read the data source line by line and produce
+<p>You need to read records from a String, you can use the built-in <code><em>StringRecordReader</em></code>. This reader will read the data source line by line and produce
     <code><em>StringRecord</em></code> instances which, as you may have guessed, contain strings as payload, or tweets in our case. Let's configure an engine to use this reader:</p>
 
 <div class="bs-callout bs-callout-code">
@@ -43,7 +43,7 @@ Engine engine = new EngineBuilder()
 
         <p>With Easy Batch, you only write your application's logic and let the framework take care of the boilerplate code of reading, parsing, logging, reporting, etc.</p>
 
-        <p>We will write a <code><em>RecordProcessor</em></code> to process <code><em>StringRecord</em></code> and implement our business logic:</p>
+        <p>You will write a <code><em>RecordProcessor</em></code> to process <code><em>StringRecord</em></code> and implement business logic:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class TweetProcessor implements RecordProcessor&lt;StringRecord, StringRecord&gt; {
@@ -66,10 +66,10 @@ Engine engine = new EngineBuilder()
 
         <h2>4. Putting it all together</h2>
 
-        <p>Now that we have implemented the application's business logic, we should configure Easy Batch engine to:<p>
+        <p>Now that you have implemented the application's business logic, you should configure Easy Batch engine to:<p>
         <ol>
             <li>Read records from the String data source</li>
-            <li>Process each record using our <code><em>TweetProcessor</em></code></li>
+            <li>Process each record using the <code><em>TweetProcessor</em></code></li>
         </ol>
 
         <p>The following listing provides this configuration:</p>
@@ -101,8 +101,7 @@ Engine engine = new EngineBuilder()
 
         <p>To run the engine, you call the <code><em>call</em></code> method.</p>
         <p>Easy Batch returns a report at the end of execution containing various metrics and statistics.
-            We will print its content to the console to examine it.</p>
-        <p>Time to run the tutorial and see the result.</p>
+            Its content is printed to the console to examine it. Time to run the tutorial and see the result.</p>
 
         <h2>5. Running the tutorial</h2>
 

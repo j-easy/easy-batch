@@ -6,11 +6,21 @@ title : Recipes tutorial
 
               <h2>1. Introduction</h2>
 
-              <p>In this tutorial, you will learn how to create custom Easy Batch components to process data in a non standard format.
-                  The goal is to process recipes defined in the following <code>recipes.txt</code> file:</p>
 
-        <div class="bs-callout bs-callout-code">
-            <h5>recipes.txt</h5>
+
+        <div class="row">
+            <div class="col-md-6">
+                <p>In this tutorial, you will learn how to create custom Easy Batch components to process data in a non standard format.</p>
+                <p>The goal is to process recipes defined in the following <code>recipes.txt</code> file. Each recipe is defined on multiple physical records:</p>
+                <ul>
+                    <li>R record: marks the beginning of a recipe</li>
+                    <li>I record: marks an ingredient of the current recipe</li>
+                    <li>END record: marks the end of the current recipe, the next recipe (if any) begins on the next line</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <div class="bs-callout bs-callout-code">
+                    <h5>recipes.txt</h5>
 <pre><code class="java">R,Easy chocolate cake
 I,chocolate,500g
 I,sugar,100g
@@ -20,20 +30,29 @@ R,Ice cream
 I,ice,100g
 I,cream,50g
 END</code></pre>
+                </div>
+            </div>
         </div>
 
-              <p>Each recipe is defined on multiple physical records:</p>
-              <ul>
-                  <li>R record: marks the beginning of a recipe</li>
-                  <li>I record: marks an ingredient of the current recipe</li>
-                  <li>END record: marks the end of the current recipe, the next recipe (if any) begins on the next line</li>
-              </ul>
 
-              <p>We would like to map each set of physical records to the following domain model classes:</p>
+              <p>Each set of physical records representing a recipe should be mapped to the following domain model classes:</p>
 
               <div class="row">
                   <div class="col-md-6">
                    <div class="bs-callout bs-callout-code">
+<pre><code class="java">public class Recipe {
+
+    private String name;
+
+    private List&lt;Ingredient&gt; ingredients;
+
+    //Getters and setters omitted
+}</code></pre>
+                  </div>
+                  </div>
+
+                  <div class="col-md-6">
+                      <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class Ingredient {
 
     private String name;
@@ -44,20 +63,6 @@ END</code></pre>
 }</code></pre>
                   </div>
                   </div>
-
-                  <div class="col-md-6">
-                      <div class="bs-callout bs-callout-code">
-<pre><code class="java">public class Recipe {
-
-    private String name;
-
-    private List&lt;Ingredient&gt; ingredients;
-
-    //Getters and setters omitted
-}</code></pre>
-
-                  </div>
-                  </div>
               </div>
 
               <p>To keep the tutorial simple, processing logic should simply write recipes data to the console.</p>
@@ -66,7 +71,7 @@ END</code></pre>
 
               <h2>2. Reading recipes</h2>
 
-              <p>First, we will define a <code>logical</code> recipe record that represent multiple physical records in the flat file:</p>
+              <p>First, you will define a <code>logical</code> recipe record that represent multiple physical records in the flat file:</p>
 
         <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class RecipeRecord extends GenericRecord&lt;Recipe&gt; {
@@ -80,7 +85,7 @@ END</code></pre>
 
               <p>This <code>logical</code> record holds the record number and an instance of the recipe as its payload.
 
-                  Next, we will implement a custom <code>RecordReader</code> to read multiple physical records and produce a logical <code>RecipeRecord</code>, so here is the implementation:</p>
+                  Next, you will implement a custom <code>RecordReader</code> to read multiple physical records and produce logical <code>RecipeRecord</code> instances, so here is the implementation:</p>
 
         <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class RecipeRecordReader implements RecordReader {
@@ -156,7 +161,7 @@ END</code></pre>
 }</code></pre>
         </div>
 
-              <p>The implementation is pretty straightforward. The devil is in the <code><em>readNextRecord</em></code> method: this is where we iterate on physical records until finding a "END" record to create a recipe instance.</p>
+              <p>The implementation is pretty straightforward. The devil is in the <code><em>readNextRecord</em></code> method: this is where you should iterate on physical records until finding a <em>END</em> record to create a recipe instance.</p>
 
 <h2>2. Mapping recipes</h2>
 
@@ -164,14 +169,14 @@ END</code></pre>
                   Mapping data to domain objects is the role of the <code><em>RecordMapper</em></code> component.</p>
 
               <p>We could have implemented the record reader to only read data and create a <code><em>RecipeRecord</em></code> with a String containing physical records to be mapped by a <code><em>RecipeRecordMapper</em></code>,
-                  but in this case, we would iterate twice on physical records: a first time to read data and a second time to map data. That's why we have implemented the recipe reader to read and map data at the same time.</p>
+                  but in this case, we would iterate twice on physical records: a first time to read data and a second time to map data. That's why we have implemented the recipe reader to read and map data at the same time, since it is more efficient approach.</p>
 
                 <p>Easy Batch provides the <code><em>GenericRecordMapper</em></code> that returns the record payload object as is. We can use this mapper to return recipes from the <code><em>RecipeRecord</em></code>.</p>
 
 <h2>3. Processing recipes</h2>
 
-              <p>No that we have mapped flat data to our domain object <code><em>Recipe</em></code>,
-                  we will implement a <code>RecipeProcessor</code> that simply writes recipes to the console as required:</p>
+              <p>No that you have mapped flat data to domain objects of type <code><em>Recipe</em></code>,
+                  you will implement a <code>RecipeProcessor</code> that simply writes recipes to the console as required:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class RecipeProcessor implements RecordProcessor&lt;Recipe, Recipe&gt;  {
@@ -189,7 +194,7 @@ END</code></pre>
               <p>Let's configure an Easy Batch engine to:</p>
 
               <ol>
-                  <li>Read recipes from <code>recipes.txt</code> file using our custom <code>RecipeRecordReader</code></li>
+                  <li>Read recipes from <code>recipes.txt</code> file using the custom <code>RecipeRecordReader</code></li>
                   <li>Map physical records in flat file to the logical <code>RecipeRecord</code></li>
                   <li>Process each recipe using the <code>RecipeProcessor</code></li>
               </ol>
@@ -217,7 +222,7 @@ END</code></pre>
 }</code></pre>
         </div>
 
-              <p>That's all, we can now run the tutorial and see the results.</p>
+              <p>That's all, you can now run the tutorial and see the results.</p>
 
 <h2>5. Running the tutorial</h2>
 

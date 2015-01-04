@@ -17,7 +17,7 @@ title : Data processing pipeline
 </code></pre>
 </div>
 
-        <p>The goal is to implement the equivalent of the following unix command:</p>
+        <p>The goal is to implement the equivalent of the following unix command pipeline:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code>cat tweets.csv | grep #EasyBatch | cut -d',' f3 | wc</code></pre>
@@ -29,7 +29,7 @@ title : Data processing pipeline
 
 <h2>2. Reading tweets</h2>
 
-        <p>As in previous tutorial, we will use the <code><em>FlatFileRecordReader</em></code> to read tweets from the <code>tweets.csv</code> file:</p>
+        <p>As in previous tutorial, you can use the <code><em>FlatFileRecordReader</em></code> to read tweets from the <code>tweets.csv</code> file:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code>Engine engine = new EngineBuilder()
@@ -37,13 +37,12 @@ title : Data processing pipeline
     .build();</code></pre>
 </div>
 
-        <p>This reader will produce <code><em>StringRecord</em></code> with string payloads. We will implement several processor to operate on these strings.</p>
+        <p>This reader will produce <code><em>StringRecord</em></code> with string payloads. You will implement several processor to operate on these strings.</p>
 
 <h2>3. Grepping tweets</h2>
 
         <p>The <code>RecordFilter</code> API is a perfect candidate to implement the <code>grep</code> command.</p>
-        <p>Easy Batch provides a built-in filter that mimics the <code>grep</code> command, it is called <code><em>GrepFilter</em></code>.</p>
-        <p>This filter uses a pattern and filters string records if their content does not contain the pattern:</p>
+        <p>Easy Batch provides a built-in filter that mimics the <code>grep</code> command, it is called <code><em>GrepFilter</em></code>:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code>Engine engine = new EngineBuilder()
@@ -51,6 +50,8 @@ title : Data processing pipeline
     <strong>.filter(new GrepFilter("#EasyBatch"))</strong>
     .build();</code></pre>
 </div>
+
+<p>This filter will filter records that does not contain the hash tag #EasyBatch.</p>
 
 <h2>4. Splitting tweets</h2>
 
@@ -79,18 +80,17 @@ title : Data processing pipeline
 </div>
 
 <p>No magic, it splits the input record using the delimiter and returns the desired field.
-    Note that error handling is not implemented for simplicity sake <i class="fa fa-smile-o"></i>.</p>
+    Note that error handling is not implemented for simplicity's sake <i class="fa fa-smile-o"></i>.</p>
 
 <div class="bs-callout bs-callout-warning">
     <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
     <p>Note that the type of output object is different from the type of input object. The record can be transformed
         during its journey in the processing pipeline.</p>
-
 </div>
 
 <h2>5. Counting words</h2>
 
-<p>The next step is to implement the <code>wc</code> command. Here is a processor that does the trick:</p>
+<p>The next step is to implement the <code>wc</code> command. Here is a processor to do it:</p>
 
 <div class="bs-callout bs-callout-code">
     <h5>WordCountProcessor.java</h5>
@@ -172,7 +172,7 @@ INFO: Shutting down easy batch engine</code></pre>
 
 <p>In this tutorial, you have learned how to build a unix like data processing pipeline using Easy Batch.
     This is actually a sort of filter-map-reduce implementation.
-    All the power is now in your hands to imagine and build all sorts of pipeline, easily!</p>
+    All the power is now in your hands to imagine and build all sorts of pipelines, easily!</p>
 
 <h2 id="9">9. What's next?</h2>
 
@@ -182,6 +182,6 @@ INFO: Shutting down easy batch engine</code></pre>
 <nav>
     <ul class="pager">
         <li class="previous"><a href="./key-apis.html"><span aria-hidden="true">&larr;</span> Key APIs tutorial</a></li>
-        <li class="next"><a href="./pipeline.html">Loading data into a database <span aria-hidden="true">&rarr;</span></a></li>
+        <li class="next"><a href="./loading-data.html">Loading data into a database <span aria-hidden="true">&rarr;</span></a></li>
     </ul>
 </nav>
