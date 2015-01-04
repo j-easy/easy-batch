@@ -2,6 +2,33 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
+Changes in version 3.0.0 (2015-01-31)
+-------------------------------------
+
+* Introduced the processing pipeline in the framework's core
+* Added pre/post processing before and after each step of the workflow: PR #35
+* Added custom ignored/rejected/error record handlers: PR #34
+* Added support for JMS
+* Added support for JSON
+* Added integration module with OpenCSV, Apache commons CSV, Apache bindy and Super CSV
+* Added integration module with Xstream
+* Added integration module with Jackson and Gson
+* Added integration module with Spring JDBC
+* Added the RecordDispatcher, RoundRobinRecordDispatcher and ContentBasedRecordDispatcher APIs for more efficient parallel processing
+* Added the QueueRecordReader API to read data from a BlockingQueue
+* Added the ListRecordReader API to read data from a List
+* Added report Status enumeration for reporting
+* Added the HeaderRecordFilter, PoisonRecordFilter and GrepFilter utility filters
+* Added the GenericRecord API
+* Added convenient PoisonRecordFilter
+* Renamed the ReportAggregator interface with ReportMerger
+* Removed 'EasyBatch' prefix from all public APIs
+* Fixed issue #32 : Missing placeHolder value when generating an EasyBatchReport
+* Improved test coverage
+* Improved tutorials to be more readable and understandable
+* Updated documentation and Javadoc
+* Refactored the Builder API with more meaningful method names
+
 Changes in version 2.2.0 (2014-06-08)
 -------------------------------------
 
