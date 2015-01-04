@@ -6,19 +6,16 @@ title : Asynchronous jobs
               <h2>1. Introduction</h2>
 
               <p>In this tutorial, you will learn how process data asynchronously using Easy Batch and JMS.</p>
-        <p>You will reuse the same data source as in previous tutorials containing tweets except that you will be reading tweets from a JMS queue:</p>
+        <p>Suppose you have a stream of tweets that you would like to process asynchronously using a JMS queue:</p>
 
 
-            <p class="pull-center"><img src="../img/eb/jms.png"/></p>
-
-        <p>Easy Batch provides the built-in <code><em>JmsQueueRecordReader</em></code> that is able to read data from a JMS queue.</p>
-
-<div class="bs-callout bs-callout-warning">
-    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
-    <p>Poison records serve as End-Of-Stream messages, they kill the engine.
-        Easy Batch provides the <code><em>JmsPoisonMessage</em></code> to stop the engine whenever it receives a message of this type.
-        Poison records have no business value, we will filter them using the built-in <code><em>JmsPoisonRecordFilter</em></code>.</p>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/jms.jpg"/></p>
+    </div>
 </div>
+
+        <p>Easy Batch provides the <code><em>JmsQueueRecordReader</em></code> that is able to read data from a JMS queue.</p>
 
         <p>Let's get started.</p>
 
@@ -38,7 +35,7 @@ title : Asynchronous jobs
 
         <h2>3. Processing tweets</h2>
 
-        <p>To process <code><em>JmsRecord</em></code> instances, we will use the following <code><em>RecordProcessor</em></code>:</p>
+        <p>To process <code><em>JmsRecord</em></code> instances, you will use the following <code><em>RecordProcessor</em></code>:</p>
 
         <div class="bs-callout bs-callout-code">
             <h5>JmsRecordProcessor.java</h5>
@@ -58,7 +55,7 @@ title : Asynchronous jobs
 
         <h2>4. Putting it all together</h2>
 
-        <p>To lauch the tutorial, you will use the following class:</p>
+        <p>To launch the tutorial, you will use the following class:</p>
 
         <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class Launcher {
@@ -89,8 +86,8 @@ title : Asynchronous jobs
         </div>
         <p>This class will start an embedded JMS Broker to listen to incoming tweets.</p>
 
-       <p>In order to send tweets JMS messages to the queue,
-           we will use the following utility class:</p>
+       <p>In order to send tweets as JMS messages to the queue,
+           you will use the following utility class:</p>
 
         <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class JMSSenderLauncher {
@@ -119,6 +116,13 @@ title : Asynchronous jobs
 
 <p>The <code><em>JMSSenderLauncher</em></code> class makes the tutorial interactive: you will be able to send tweets to the queue by typing in tweets in the console.
     To stop the execution, you have to type in <em>quit</em> in the console. This will send a poison record to the queue which will cause the engine to stop execution.</p>
+
+<div class="bs-callout bs-callout-warning">
+    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
+    <p>Poison records serve as End-Of-Stream messages, they kill the engine.
+        Easy Batch provides the <code><em>JmsPoisonMessage</em></code> to stop the engine whenever it receives a message of this type.
+        Poison records have no business value,  filter them using the built-in <code><em>JmsPoisonRecordFilter</em></code>.</p>
+</div>
 
               <p>That's all, we can now run the tutorial and see the results.</p>
 

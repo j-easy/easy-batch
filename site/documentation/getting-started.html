@@ -4,40 +4,41 @@ menu : gettingStarted
 title : Getting started
 ---
 
-              <h2 id="1">1. Prerequisite</h2>
+              <h2>1. Prerequisite</h2>
 
               <p>Easy Batch requires a Java 1.6+ runtime.</p>
 
-              <h2 id="2">2. Build Easy Batch</h2>
+              <h2>2. Build Easy Batch</h2>
 
-              <h3 id="2.1">2.1 Get source code</h3>
+              <h3>2.1 Get source code</h3>
 
-              <p>Easy Batch uses <a href="http://git-scm.com/" target="_blank">Git</a> as source control manager and is hosted on GitHub. To download Easy Batch source code, clone it's git repository as follows :</p>
+              <p>Easy Batch uses <a href="http://git-scm.com/" target="_blank">Git</a> as source control management tool and is hosted on GitHub. To download Easy Batch source code, clone it's git repository as follows:</p>
 
+<div class="bs-callout bs-callout-code">
+<pre><code class="bash">$>git clone https://github.com/benas/easy-batch.git</code></pre>
+</div>
 
-              <p>
-                  <kbd><i class="fa fa-terminal"></i> git clone https://github.com/benas/easy-batch.git</kbd>
-              </p>
+              <p>You can also get the source code in a zip file from the <a href="https://github.com/benas/easy-batch" target="_blank">home page</a> of the project on GitHub.
 
-              <p>You can also get the source code in a zip file from the home page of the project on GitHub:
-                  <a href="https://github.com/benas/easy-batch" target="_blank">https://github.com/benas/easy-batch</a></p>
+              <h3>2.2 Build with Maven</h3>
 
-              <h3 id="2.2">2.2 Build with Maven</h3>
+              <p>Easy Batch uses <a href="http://maven.apache.org/" target="_blank">maven</a> as build tool. To build Easy Batch binaries, use the following command from the root directory of the project:</p>
 
-              <p>Easy Batch uses <a href="http://maven.apache.org/" target="_blank">maven</a> as build tool. To build Easy Batch with maven, use the following command from the root directory of the project :</p>
+<div class="bs-callout bs-callout-code">
+    <pre><code class="bash">$>cd easy-batch
+$>mvn install</code></pre>
+</div>
 
-              <p>
-                  <kbd><i class="fa fa-terminal"></i> mvn install</kbd>
-              </p>
-
-              <h2 id="3">3. Use Easy Batch</h2>
+              <h2>3. Use Easy Batch</h2>
 
               <p>To use Easy Batch, you have to add <strong>easybatch-core-{{ site.version }}.jar</strong> to your application's classpath.</p>
 
-              <p>If you use maven, add  the following dependency to your project pom :</p>
+              <p>If you use maven, add  the following dependency to your project's pom :</p>
 
+        <div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-core&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
+        </div>

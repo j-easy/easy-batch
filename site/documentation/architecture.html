@@ -4,33 +4,59 @@ menu : architecture
 title : Architecture
 ---
 
-              <h2 id="1" >1. Main components</h2>
+              <h2 id="1" >1. Framework overview</h2>
 
-              <p>The next figure describes Easy Batch main components and gives an overview of the framework architecture:</p>
-
-              <p>
-                  <img style="width: 100%;" src="../img/eb/architecture.png"/>
-              </p>
+              <p>The next figure describes Easy Batch main components and gives you an overview of the framework architecture:</p>
+               <br>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/architecture.jpg"/></p>
+    </div>
+</div>
 
               <p>The main components are:</p>
               <ul>
-                  <li>Record Reader : reads record sequentially from the data source</li>
+                  <li>Record Reader : reads records <em>sequentially</em> from the data source</li>
                   <li>Record Filter : filters records to be skipped from being processed</li>
                   <li>Record Mapper : maps records to Java objects</li>
                   <li>Record Validator : applies declared validation constraints on records</li>
-                  <li>Record Processor : applies business processing logic for each record</li>
+                  <li>Processing pipeline : applies business processing logic for each record</li>
               </ul>
 
-              <p>All these components are optional. Easy Batch provides a No Operation implementation for each component.</p>
+            <p>All these components are optional. Easy Batch provides a No Operation implementation for each component.
+                You can find all details about these components in the <a href="user-guide.html">user guide</a>.</p>
 
-              <p>All details about these components can be found in the <a href="../documentation/userGuide.html">user guide section</a>.</p>
+<div class="bs-callout bs-callout-warning">
+    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
+    <p>You can extend this workflow by registering custom listeners to do pre/post processing before and after each step.</p>
+</div>
 
-              <h2 id="2">2. Processing workflow</h2>
+            <p>At the end of execution, you get a report containing several metrics and statistics.
+                Easy Batch also gives you a detailed log about what happened in case of failure in any of these steps.</p>
+
+              <h2 id="2">2. Processing pipeline</h2>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/pipeline.jpg"/></p>
+    </div>
+</div>
+
+        <p>After filtering, parsing, mapping and validating data, records enter the processing pipeline where they are
+        submitted to a chain of processors. Record type can change from one processor to another.</p>
+
+        <p> When all the processing pipeline has been applied, the engine moves to the next record.
+        Easy Batch processes records one by one, the unix way.</p>
+
+              <h2 id="3">3. Processing workflow</h2>
 
               <p>The workflow used internally by Easy Batch is illustrated by the next figure and described below :</p>
 
-              <div>
-                  <img src="../img/eb/workflow.png"/>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/workflow.jpg"/></p>
+    </div>
+</div>
                   <ol>
                       <li>The engine reads records one by one from the data source.
                           If the record should be filtered, then the engine skips it and moves to the next one.</li>
@@ -42,4 +68,3 @@ title : Architecture
                       <li>Finally, the business logic is executed by the record processor on the domain object correctly populated with valid data.
                           If an exception occurs during record processing, the engine logs the exception and moves to the next record.</li>
                   </ol>
-              </div>

@@ -33,7 +33,11 @@ title : Parallel jobs
 
 <p>In order to distribute work to multiple engines, Easy Batch provides the <code><em>RecordDispatcher</em></code> API:</p>
 
-<p class="pull-center"><img src="../img/eb/jms.png"/></p>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <p class="pull-center"><img class="ebi" src="../img/eb/dispatcher.jpg"/></p>
+            </div>
+        </div>
 
         <p>Easy Batch comes with two implementations of the <code><em>RecordDispatcher</em></code> API:</p>
 <ul>
@@ -41,7 +45,17 @@ title : Parallel jobs
     <li><code><em>ContentBasedRecordDispatcher</em></code>: dispatches records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues based on record content</li>
 </ul>
 
-        <p>In this tutorial, you will learn how to use the <code><em>RoundRobinRecordDispatcher</em></code> to distribute tweets to 2 queues:</p>
+<p>In this tutorial, you will learn how to use the <code><em>RoundRobinRecordDispatcher</em></code> to distribute tweets to 2 queues.</p>
+
+
+<div class="bs-callout bs-callout-warning">
+    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
+    <p>Poison records serve as End-Of-Stream messages, they are used to "kill" the engine (graciously).</p>
+    <p>Easy Batch provides the <code><em>PoisonRecord</em></code> utility class to stop the engine when all data has been read.
+        Poison records have no business value, you should filter them using the convenient built-in <code><em>PoisonRecordFilter</em></code>.</p>
+</div>
+
+        <p>Here is the code to setup such a configuration:</p>
 
         <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class ParallelTutorialWithRecordDispatching {
@@ -110,27 +124,24 @@ title : Parallel jobs
         </div>
 
         <p>Since the <code><em>RecordDispatcher</em></code> dispatches records to a <code><em>java.util.concurrent.BlockingQueue</em></code>,
-        you should be able to read data from this type of queue. Easy Batch comes with a built-in <code><em>QueueRecordReader</em></code> to
+        you should be able to read data from this type of queues. Easy Batch comes with a built-in <code><em>QueueRecordReader</em></code> to
         save you from writing the reading code yourself.</p>
 
         <p>When the reader finishes reading the data source, it sends a <code><em>PoisonRecord</em></code> to stop engines.</p>
 
-<div class="bs-callout bs-callout-warning">
-    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
-    <p>Poison records serve as End-Of-Stream messages, they are used to "kill" the engine (graciously).</p>
-        <p>Easy Batch provides the <code><em>PoisonRecord</em></code> utility class to stop the engine when all data has been read.
-        Poison records have no business value, you should filter them using the convenient built-in <code><em>PoisonRecordFilter</em></code>.</p>
-</div>
-
-        <p>Since you have distributed the work across multiple engines, you will get partial reports at the end of execution of each worker engine.
-        But how do you get a single global report for all the work? This is where the <code><em>ReportMerger</em></code> comes into the picture,
+        <p>You have distributed the work across multiple engines, so you will get partial reports at the end of execution of each worker engine.
+        How do you get a single global report for all the work? This is where the <code><em>ReportMerger</em></code> comes to play,
             that is, to merge partial reports into a global one.</p>
 
         <h2>3. Splitting the data source</h2>
 
         <p>It is a common technique to split the data source into multiple slices as follow:</p>
 
-<p class="pull-center"><img src="../img/eb/parallelMultipleParts.png"/></p>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/split.jpg"/></p>
+    </div>
+</div>
 
         <p>Easy Batch does not provide a feature to partition input data. If you decided to split your data source into multiples parts,
         you can still use Easy Batch to process them in parallel using a <code><em>java.util.concurrent.ExecutorService</em></code>.
@@ -179,24 +190,26 @@ title : Parallel jobs
 <div class="bs-callout bs-callout-warning">
     <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
     <p>In this example, you have used multiple threads within the same JVM to process data in parallel. You can also launch separate JVMs for each part.</p>
-    <p>On the other hand, we have created two engines with separate instances of record readers and processors
+    <p>The second point to pay attention to, you should consider as in this sample creating two engines with separate instances of record readers and processors
         to avoid any thread-safety issues.</p>
 </div>
 
 <h2>3. Filtering the data source</h2>
 
-        <p>Sometimes it is just impossible to split the data source into multiple parts. The third technique is to use a single data data source
+        <p>Sometimes it is just impossible to split the data source into multiple parts. The third technique is to use a single data source
         but to instruct worker engines to process separate parts and filter the rest of the data source.</p>
 
         <p>Let's see an example:</p>
 
-<p class="pull-center">
-    <img src="../img/eb/partitioning.png"/>
-</p>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/filter.jpg"/></p>
+    </div>
+</div>
 
               <ul>
-                  <li>The first engine instance will read data from <code>tweets.csv</code> file, process records 1-5000 and filter records 5001-10000.</li>
-                  <li>The second engine instance will also read data from <code>tweets.csv</code> file, process records 5001-10000 and filter records 1-5000.</li>
+                  <li>The first engine instance will read data from <code>tweets.csv</code> file, process records 1-2 and filter records 3-4.</li>
+                  <li>The second engine instance will also read data from <code>tweets.csv</code> file, process records 3-4 and filter records 1-2.</li>
               </ul>
 
               <p>The following listing shows the code to achieve this configuration:</p>
@@ -211,11 +224,11 @@ title : Parallel jobs
         // Input file tweets.csv
         File tweets = new File(args[0]);
 
-        <strong>// worker engine 1: process data from tweets.csv, filter records 6-10
-        Engine engine1 = buildEngine(tweets, new RecordNumberGreaterThanFilter(5));
+        <strong>// worker engine 1: process data from tweets.csv, filter records 3-4
+        Engine engine1 = buildEngine(tweets, new RecordNumberGreaterThanFilter(2));
 
-        // worker engine 2: process data from tweets.csv, filter records 1-5
-        Engine engine2 = buildEngine(tweets, new RecordNumberLowerThanFilter(6));</strong>
+        // worker engine 2: process data from tweets.csv, filter records 1-2
+        Engine engine2 = buildEngine(tweets, new RecordNumberLowerThanFilter(3));</strong>
 
         //create a 2 threads pool to call worker engines in parallel
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
@@ -256,9 +269,12 @@ $>mvn exec:java -PrunParallelTutorialWithDataFiltering
 </code></pre>
 </div>
 
-              <h2>4. Summary</h2>
+<p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/parallel" target="_blank">here</a>.
 
-              <p>In this tutorial, you have seen at least 3 ways of how to process data in parallel using multiple worker engines to speed up the overall processing time.</p>
+<h2>4. Summary</h2>
+
+              <p>In this tutorial, you have seen at least 3 ways of how to process data in parallel using multiple worker engines
+                  in order to speed up the overall processing time.</p>
               <p>The following table summarizes the advantages and drawbacks for each approach:</p>
               <table class="table table-bordered table-condensed ">
                   <thead>

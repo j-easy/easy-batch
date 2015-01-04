@@ -3,24 +3,29 @@ layout: home
 title : batch processing with Java&trade; made easy
 ---
 
-        <div id="features" class="block features">
+        <div id="motivation" class="block features">
             <h2 class="title-divider"><span>What is <span class="de-em">Easy Batch?</span></span></h2>
 
             <div class="row">
-                <div class="col-md-4">
-                    <br/>
-                    <p>Easy Batch is a framework that aims to simplify batch processing with Java.
-                        It's main goal is to take care of the boilerplate code for tedious tasks such as reading, filtering, parsing and validating input data and to let you concentrate on your batch processing business logic.</p>
-                    <p>The motivation behind the framework is to make your life as a developer easier. Easy Batch is a lightweight framework that you can configure easily with a fluent Java API and run without the need to setup an application server.</p>
+                <div class="col-md-5">
+                        <p>Easy Batch is a framework that aims to simplify batch processing with Java.
+                            It's main goal is to take care of the boilerplate code for tedious tasks such as reading, filtering, parsing and validating input data and to let you concentrate on your batch processing business logic.</p>
+
+                        <p>The motivation behind the framework is to make your life as a developer easier. Easy Batch is a lightweight framework that you can configure easily with a fluent Java API and run without the need to setup an application server.</p>
+                    <br>
+                        <p class="pull-center">
+                            <button id="showFeatures" class="btn btn-lg btn-primary">Core features</button>
+                            <button id="showCode" class="btn btn-lg btn-primary">Show me the code!</button>
+                        </p>
                 </div>
-                <div class="col-md-8">
-                    <img src="./img/eb/eb-motivation.png" class="pull-center" style=" width: 90%">
+                <div class="col-md-7">
+                    <img class="ebi" src="./img/eb/motivation.jpg">
                 </div>
             </div>
 
         </div>
 
-      <div class="block features">
+      <div id="features" class="block features">
           <h2 class="title-divider"><span>Core <span class="de-em">Features</span></span></h2>
           <div class="row">
               <div class="feature col-sm-6 col-md-4">
@@ -54,7 +59,7 @@ title : batch processing with Java&trade; made easy
 
       </div>
 
-            <div class="block features">
+            <div id="code" class="block features">
                 <h2 class="title-divider"><span>Show me <span class="de-em"> the code!</span></span></h2>
 
                 <div class="row">
@@ -79,7 +84,7 @@ title : batch processing with Java&trade; made easy
                         </div>
                     </div>
                     <div class="col-md-4">
-                    <p>You write your business logic in the <code>DataProcessor</code> and Easy Batch will take care of the rest:</p>
+                    <p>You write your business logic in the <code>DataProcessor</code> and Easy Batch will:</p>
                 <ul>
                     <li>Read data from your data source</li>
                     <li>Parse data according to the specified format</li>
