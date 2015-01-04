@@ -50,7 +50,7 @@ public class JMSUtil {
     public static void initJMSFactory() throws Exception {
 
         Properties p = new Properties();
-        p.load(JMSUtil.class.getResourceAsStream(("/jndi.properties")));
+        p.load(JMSUtil.class.getResourceAsStream(("/org/easybatch/tutorials/advanced/jms/jndi.properties")));
         Context jndiContext = new InitialContext(p);
 
         queueConnectionFactory = (QueueConnectionFactory) jndiContext.lookup("QueueConnectionFactory");
