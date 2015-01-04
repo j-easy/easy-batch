@@ -28,6 +28,7 @@ import org.easybatch.core.api.Report;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.FlatFileRecordReader;
+import org.easybatch.tutorials.basic.helloworld.TweetProcessor;
 
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -35,40 +36,44 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * Main class to run the crypto tutorial with multiple input files in parallel.
+ * Main class to run the parallel tutorial with data source splitting.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class MultipleFilesLauncher {
+public class ParallelTutorialWithDataSplitting {
+
+    private static final int THREAD_POOL_SIZE = 2;
 
     public static void main(String[] args) throws Exception {
 
-        // To avoid any thread-safety issues,
-        // we will create 2 engines with separate instances of record readers and processors
+        // Input file tweets-part1.csv
+        File tweetsPart1 = new File(args[0]);
 
-        // Build a  batch engine1
-        Engine engine1 = new EngineBuilder()
-                .reader(new FlatFileRecordReader(new File(args[0]))) //read data from secret-messages-part1.txt
-                .processor(new MessageEncrypter())
-                .build();
+        // Input file tweets-part2.csv
+        File tweetsPart2 = new File(args[1]);
 
-        // Build a batch engine2
-        Engine engine2 = new EngineBuilder()
-                .reader(new FlatFileRecordReader(new File(args[1]))) //read data from secret-messages-part2.txt
-                .processor(new MessageEncrypter())
-                .build();
+        // Build worker engines
+        Engine engine1 = buildEngine(tweetsPart1);
+        Engine engine2 = buildEngine(tweetsPart2);
 
-        //create a 2 threads pool to call Easy Batch engines in parallel
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        //create a 2 threads pool to call worker engines in parallel
+        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
         Future<Report> report1 = executorService.submit(engine1);
         Future<Report> report2 = executorService.submit(engine2);
 
-        System.out.println("Batch Report 1 = " + report1.get());
-        System.out.println("Batch Report 2 = " + report2.get());
+        System.out.println("Report 1 = " + report1.get());
+        System.out.println("Report 2 = " + report2.get());
 
         executorService.shutdown();
 
+    }
+
+    private static Engine buildEngine(File file) throws Exception{
+        return new EngineBuilder()
+                .reader(new FlatFileRecordReader(file))
+                .processor(new TweetProcessor())
+                .build();
     }
 
 }

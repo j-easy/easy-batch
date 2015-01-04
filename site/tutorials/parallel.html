@@ -1,192 +1,303 @@
 ---
 layout: template
 menu : tutorial
-title : Processing data in parallel
+title : Parallel jobs
 ---
 
               <h2 id="1">1. Introduction</h2>
 
-              <p>Easy Batch was designed with data processing parallelism in mind.
-                  Easy Batch Engine implements the <code>java.util.concurrent.Callable</code> interface which turns it into a unit of work that can be submitted to a <code>java.util.concurrent.ExecutorService</code>.</p>
-              <p>Using the <code>java.util.concurrent.ExecutorService</code> with a pool of threads allows you to run multiple Easy Batch instances in parallel.</p>
-              <p>Usually, there are two main use cases for processing input data in parallel:</p>
-              <ul>
-                  <li>Split the data source into multiple parts which will be processed by separated threads (or JVMs)</li>
-                  <li>Use a single data source and filter records to be processed by each thread</li>
-              </ul>
-              <p>Easy Batch does not provide a feature to partition input data but allows you to process data in parallel for both cases above.
-                  So let's see how to achieve this with Easy Batch on a real use case!</p>
+              <p>Easy Batch was designed with data processing parallelism in mind. The core <code><em>Engine</em></code> implements the <code><em>java.util.concurrent.Callable</em></code> interface which turns it into a unit of work that can be submitted to a <code>java.util.concurrent.ExecutorService</code>.</p>
+              <p>Using the <code><em>java.util.concurrent.ExecutorService</em></code> with a pool of threads allows you
+                  to run multiple Easy Batch instances in parallel. There are at least 3 ways to process data in parallel:</p>
+              <ol>
+                  <li>Distributing input records to multiple batch engines</li>
+                  <li>Splitting the data source into multiple parts which will be processed by separate engines</li>
+                  <li>Filtering input records</li>
+              </ol>
 
-              <p>In this tutorial, the goal is to encrypt an input text file containing a sensible set of data. The input file named <code>secret-messages.txt</code> has the following content:</p>
+                <p>In this tutorial, you will see an example of implementing each of these techniques using Easy Batch.</p>
 
-<pre><code class="java">This is a secret message1!
-This is a secret message2!
-This is a secret message3!
-This is a secret message4!
-This is a secret message5!
-This is a secret message6!
-This is a secret message7!
-This is a secret message8!
-This is a secret message9!
-This is a secret message10!</code></pre>
+              <p>You will reuse the same application developed in the <a href="./helloworld.html">Hello world tutorial</a> but with a huge tweets data source:</p>
 
-              <p>In a real use case, we suppose that this input file is a huge text file with millions of records and we would like to encrypt data in parallel.To keep the tutorial simple, we will only process 10 records.</p>
-              <p>We would like to run two Easy Batch instances to process records 1-5 and records 6-10 in parallel with two methods:</p>
-              <ul>
-                  <li>The first one is by partitioning the input file into multiple parts.</li>
-                  <li>The second one is by using a single input file with record filtering.</li>
-              </ul>
+<div class="bs-callout bs-callout-code">
+    <h5>tweets.csv</h5>
+<pre><code>id,user,message
+1,foo,easy batch rocks! #EasyBatch
+2,bar,@foo I do confirm :-)
+...
+10000000,baz,@foo @bar what are you talking about? Am I in trouble?
+</code></pre>
+</div>
 
-              <p>To keep the tutorial simple, the encryption algorithm should simply reverse each record raw text. We will simulate a long encryption operation (1sec/record) with the following <code>RecordProcessor</code> implementation:</p>
+        <h2>2. Dispatching records</h2>
 
-<pre><code class="java">public class MessageEncrypter extends AbstractRecordProcessor&lt;StringRecord&gt; {
+<p>In order to distribute work to multiple engines, Easy Batch provides the <code><em>RecordDispatcher</em></code> API:</p>
 
-    @Override
-    public void processRecord(final StringRecord record) throws Exception {
-        Thread.sleep(1000);//simulating a long encryption algorithm
-        System.out.println(new StringBuilder(record.getRawContent()).reverse().toString());
+<p class="pull-center"><img src="../img/eb/jms.png"/></p>
+
+        <p>Easy Batch comes with two implementations of the <code><em>RecordDispatcher</em></code> API:</p>
+<ul>
+    <li><code><em>RoundRobinRecordDispatcher</em></code>: dispatches records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues in a round robin fashion</li>
+    <li><code><em>ContentBasedRecordDispatcher</em></code>: dispatches records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues based on record content</li>
+</ul>
+
+        <p>In this tutorial, you will learn how to use the <code><em>RoundRobinRecordDispatcher</em></code> to distribute tweets to 2 queues:</p>
+
+        <div class="bs-callout bs-callout-code">
+<pre><code class="java">public class ParallelTutorialWithRecordDispatching {
+
+    private static final int QUEUE_SIZE = 32;
+
+    private static final int THREAD_POOL_SIZE = 2;
+
+    public static void main(String[] args) throws Exception {
+
+        // Input file tweets.csv
+        File tweets = new File(args[0]);
+
+        //Create queues
+        BlockingQueue&lt;Record&gt; queue1 = new ArrayBlockingQueue&lt;Record&gt;(QUEUE_SIZE);
+        BlockingQueue&lt;Record&gt; queue2 = new ArrayBlockingQueue&lt;Record&gt;(QUEUE_SIZE);
+
+        // Build easy batch engines
+        Engine engine1 = buildBatchEngine(queue1);
+        Engine engine2 = buildBatchEngine(queue2);
+
+        //create a 2 threads pool to call engines in parallel
+        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+
+        //submit workers to executor service
+        Future&lt;Report&gt; reportFuture1 = executorService.submit(engine1);
+        Future&lt;Report&gt; reportFuture2 = executorService.submit(engine2);
+
+        <strong>//create a record dispatcher to dispatch records to previously created queues
+        RecordDispatcher recordDispatcher
+                    = new RoundRobinRecordDispatcher(Arrays.asList(queue1, queue2));
+
+        //read data source and dispatch records to queues in round-robin fashion
+        FlatFileRecordReader flatFileRecordReader = new FlatFileRecordReader(tweets);
+        flatFileRecordReader.open();
+        while (flatFileRecordReader.hasNextRecord()) {
+            Record record = flatFileRecordReader.readNextRecord();
+            recordDispatcher.dispatchRecord(record);
+        }
+        flatFileRecordReader.close();
+
+        //send poison records when all input data has been dispatched to workers
+        recordDispatcher.dispatchRecord(new PoisonRecord());</strong>
+
+        //wait for easy batch instances termination and get partial reports
+        Report report1 = reportFuture1.get();
+        Report report2 = reportFuture2.get();
+
+        <strong>//merge partial reports into a global one
+        ReportMerger reportMerger = new DefaultReportMerger();
+        Report finalReport = reportMerger.mergerReports(report1, report2);
+        System.out.println(finalReport);</strong>
+
+        //shutdown executor service
+        executorService.shutdown();
     }
 
+    public static Engine buildBatchEngine(BlockingQueue&lt;Record&gt; queue) {
+        return new EngineBuilder()
+            .reader(new QueueRecordReader(queue))
+            .filter(new PoisonRecordFilter())
+            .processor(new TweetProcessor())
+            .build();
+    }
 }</code></pre>
-              <p>Note that in this tutorial, we do not need to map each record to a domain object, nor validate records against any constraint.</p>
+        </div>
 
-              <p>So let's get started!</p>
+        <p>Since the <code><em>RecordDispatcher</em></code> dispatches records to a <code><em>java.util.concurrent.BlockingQueue</em></code>,
+        you should be able to read data from this type of queue. Easy Batch comes with a built-in <code><em>QueueRecordReader</em></code> to
+        save you from writing the reading code yourself.</p>
 
-              <h2 id="2">2. Reading data from multiple input files</h2>
+        <p>When the reader finishes reading the data source, it sends a <code><em>PoisonRecord</em></code> to stop engines.</p>
 
-              <p>In this part, we have split the input file <code>secret-messages.txt</code> into two slices: <code>secret-messages-part1.txt</code> containing records 1-5 and <code>secret-messages-part2.txt</code> containing records 6-10:</p>
+<div class="bs-callout bs-callout-warning">
+    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
+    <p>Poison records serve as End-Of-Stream messages, they are used to "kill" the engine (graciously).</p>
+        <p>Easy Batch provides the <code><em>PoisonRecord</em></code> utility class to stop the engine when all data has been read.
+        Poison records have no business value, you should filter them using the convenient built-in <code><em>PoisonRecordFilter</em></code>.</p>
+</div>
 
-              <p class="pull-center"><img src="../img/eb/parallelMultipleParts.png"/></p>
+        <p>Since you have distributed the work across multiple engines, you will get partial reports at the end of execution of each worker engine.
+        But how do you get a single global report for all the work? This is where the <code><em>ReportMerger</em></code> comes into the picture,
+            that is, to merge partial reports into a global one.</p>
 
-              <p>The following listing shows how to run two Easy Batch instances to process these two parts in parallel:</p>
+        <h2>3. Splitting the data source</h2>
 
-<pre><code class="java">// To avoid any thread-safety issues,
-// we will create 2 engines with separate instances of record readers and processors
+        <p>It is a common technique to split the data source into multiple slices as follow:</p>
 
-// Build an Easy Batch engine 1
-EasyBatchEngine easyBatchEngine1 = new EasyBatchEngineBuilder()
-        //read data from secret-messages-part1.txt
-        .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
-        .registerRecordProcessor(new MessageEncrypter())
-        .build();
+<p class="pull-center"><img src="../img/eb/parallelMultipleParts.png"/></p>
 
-// Build an Easy Batch engine 2
-EasyBatchEngine easyBatchEngine2 = new EasyBatchEngineBuilder()
-        //read data from secret-messages-part2.txt
-        .registerRecordReader(new FlatFileRecordReader(new File(args[1])))
-        .registerRecordProcessor(new MessageEncrypter())
-        .build();
+        <p>Easy Batch does not provide a feature to partition input data. If you decided to split your data source into multiples parts,
+        you can still use Easy Batch to process them in parallel using a <code><em>java.util.concurrent.ExecutorService</em></code>.
+            This would not have been possible if Easy Batch's engine wouldn't implement the <code><em>java.util.concurrent.Callable</em></code> interface.</p>
 
-// Create a 2 threads pool to call Easy Batch engines in parallel
-ExecutorService executorService = Executors.newFixedThreadPool(2);
+              <p>Here is a sample of how to use multiple engines to process data source parts in parallel:</p>
 
-Future&lt;EasyBatchReport&gt; easyBatchReport1 = executorService.submit(easyBatchEngine1);
-Future&lt;EasyBatchReport&gt; easyBatchReport2 = executorService.submit(easyBatchEngine2);
+        <div class="bs-callout bs-callout-code">
+<pre><code class="java">public class ParallelTutorialWithDataSplitting {
 
-executorService.shutdown();</code></pre>
+    private static final int THREAD_POOL_SIZE = 2;
 
-              <p class="text-success">The advantage of this approach is that each Easy Batch engine reads only its own part and not the whole data source.</p>
-              <p class="text-danger">The drawback of this approach is that you should split the data source into multiple parts since Easy Batch does not provide data partitioning feature and then merge results.</p>
-              <p>Note that the merge operation is optional (it depends on the use case) and can be avoided if your <code>RecordProcessor</code> implementation can write data concurrently in a destination data source (a database for instance).</p>
-              <p>Note also that Easy Batch engines run in the same JVM. You can also run multiple instances in separate JVMs if you want.</p>
-              <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/parallel" target="_blank">here</a>.
-                  To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
+    public static void main(String[] args) throws Exception {
 
-              <p><kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunParallelMultipleFilesTutorial</kbd></p>
+        // Input file tweets-part1.csv
+        File tweetsPart1 = new File(args[0]);
 
-              <p>At the end of execution, you should see all the secret messages encrypted in the console.</p>
+        // Input file tweets-part2.csv
+        File tweetsPart2 = new File(args[1]);
 
-              <h2 id="3">3. Reading data from a single input file</h2>
+        // Build worker engines
+        Engine engine1 = buildEngine(tweetsPart1);
+        Engine engine2 = buildEngine(tweetsPart2);
 
-              <p>Easy Batch does not provide a feature to partition input data, but you will see how to achieve this using the record filtering technique.</p>
-              <p>In this part of the tutorial, we will configure two Easy Batch instances as follows:</p>
+        //create a 2 threads pool to call worker engines in parallel
+        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+
+        Future&lt;Report&gt; report1 = executorService.submit(engine1);
+        Future&lt;Report&gt; report2 = executorService.submit(engine2);
+
+        System.out.println("Report 1 = " + report1.get());
+        System.out.println("Report 2 = " + report2.get());
+
+        executorService.shutdown();
+    }
+
+    private static Engine buildEngine(File file) throws Exception{
+        return new EngineBuilder()
+            .reader(new FlatFileRecordReader(file))
+            .processor(new TweetProcessor())
+            .build();
+    }
+}</code></pre>
+        </div>
+
+<div class="bs-callout bs-callout-warning">
+    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
+    <p>In this example, you have used multiple threads within the same JVM to process data in parallel. You can also launch separate JVMs for each part.</p>
+    <p>On the other hand, we have created two engines with separate instances of record readers and processors
+        to avoid any thread-safety issues.</p>
+</div>
+
+<h2>3. Filtering the data source</h2>
+
+        <p>Sometimes it is just impossible to split the data source into multiple parts. The third technique is to use a single data data source
+        but to instruct worker engines to process separate parts and filter the rest of the data source.</p>
+
+        <p>Let's see an example:</p>
+
+<p class="pull-center">
+    <img src="../img/eb/partitioning.png"/>
+</p>
+
               <ul>
-                  <li>The first engine instance will read data from the <code>secret-messages.txt</code> file and filter records which numbers are greater than 5</li>
-                  <li>The second engine instance will also read data from the <code>secret-messages.txt</code> file and will filter records which numbers are lower than 6</li>
+                  <li>The first engine instance will read data from <code>tweets.csv</code> file, process records 1-5000 and filter records 5001-10000.</li>
+                  <li>The second engine instance will also read data from <code>tweets.csv</code> file, process records 5001-10000 and filter records 1-5000.</li>
               </ul>
-              <p>The figure below illustrates this configuration:</p>
-
-              <p class="pull-center">
-                  <img src="../img/eb/partitioning.png"/>
-              </p>
 
               <p>The following listing shows the code to achieve this configuration:</p>
 
-<pre><code class="java">// To avoid any thread-safety issues,
-// we will create 2 engines with separate instances of record readers and processors
+        <div class="bs-callout bs-callout-code">
+<pre><code class="java">public class ParallelTutorialWithDataFiltering {
 
-// Build an Easy Batch engine 1
-EasyBatchEngine easyBatchEngine1 = new EasyBatchEngineBuilder()
-        //read data from secret-messages.txt
-        .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
-        <strong>.registerRecordFilter(new RecordNumberGreaterThanRecordFilter(5)) // filter records 6-10</strong>
-        .registerRecordProcessor(new MessageEncrypter())
-        .build();
+    private static final int THREAD_POOL_SIZE = 2;
 
-// Build an Easy Batch engine 2
-EasyBatchEngine easyBatchEngine2 = new EasyBatchEngineBuilder()
-        //read data from secret-messages.txt
-        .registerRecordReader(new FlatFileRecordReader(new File(args[0])))
-        <strong>.registerRecordFilter(new RecordNumberLowerThanRecordFilter(6)) // filter records 1-5</strong>
-        .registerRecordProcessor(new MessageEncrypter())
-        .build();
+    public static void main(String[] args) throws Exception {
 
-//create a 2 threads pool to call Easy Batch engines in parallel
-ExecutorService executorService = Executors.newFixedThreadPool(2);
+        // Input file tweets.csv
+        File tweets = new File(args[0]);
 
-Future&lt;EasyBatchReport&gt; easyBatchReport1 = executorService.submit(easyBatchEngine1);
-Future&lt;EasyBatchReport&gt; easyBatchReport2 = executorService.submit(easyBatchEngine2);
+        <strong>// worker engine 1: process data from tweets.csv, filter records 6-10
+        Engine engine1 = buildEngine(tweets, new RecordNumberGreaterThanFilter(5));
 
-executorService.shutdown();</code></pre>
+        // worker engine 2: process data from tweets.csv, filter records 1-5
+        Engine engine2 = buildEngine(tweets, new RecordNumberLowerThanFilter(6));</strong>
 
-              <p class="text-success">The advantage of this approach is that you don't need to split the input data source into multiple parts.</p>
-              <p class="text-danger">The drawback of this approach is that each Easy Batch instance will read the whole data source which can be costly but remains negligible comparing to the overall speedup you can achieve with this technique.</p>
-              <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/parallel" target="_blank">here</a>.</p>
+        //create a 2 threads pool to call worker engines in parallel
+        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
-              <p>To be able to compare results and speed up, first we run a single Easy Batch instance to process the input file <code>secret-messages.txt</code> and record the total processing time (not shown in the listing above).</p>
-              <p>Then, we run two Easy Batch instances that will read data from the same <code>secret-messages.txt</code> file but operate on separate parts (listing above).</p>
-              <p>Finally, we will compare performance results and speed up based on the overall processing time of each method.</p>
+        Future&lt;Report&gt; report1 = executorService.submit(engine1);
+        Future&lt;Report&gt; report2 = executorService.submit(engine2);
 
-              <p>To run the tutorial with maven, launch the following command in the <code>easybatch-tutorials</code> directory :</p>
+        System.out.println("Report 1 = " + report1.get());
+        System.out.println("Report 2 = " + report2.get());
 
-              <p><kbd><i class="fa fa-terminal"></i> mvn exec:java -PrunParallelSingleFileTutorial</kbd></p>
+        executorService.shutdown();
+    }
 
-              <p>At the end of execution, you should see all the secret messages encrypted in the console and the following output at the end:</p>
+    private static Engine buildEngine(File file, RecordFilter recordFilter) throws Exception{
+        return new EngineBuilder()
+            .reader(new FlatFileRecordReader(file))
+            .filter(recordFilter)
+            .processor(new TweetProcessor())
+            .build();
+    }
+}</code></pre>
+        </div>
 
-<pre><code>###############################################################################
-Processing the input file with two Easy Batch instances in parallel took 5049ms
-Processing the input file with a single Easy Batch instance took 10806ms
-###############################################################################</code></pre>
+              <h2>4. Running the tutorial</h2>
 
-              <p>As expected, running two instances of Easy Batch in parallel on separate parts of the input file is twice faster than a single instance. This 200% speed up can actually be increased to <code>x * 100%</code> if you use the same technique with x threads! :</p>
+<p>To run the tutorials, proceed as follow:</p>
+<div class="bs-callout bs-callout-code">
+<pre><code>$>git clone https://github.com/benas/easy-batch.git
+$>cd easy-batch
+$>mvn install
+$>cd easybatch-tutorials
+$> # Launch the record dispatching tutorial
+$>mvn exec:java -PrunParallelTutorialWithRecordDispatching
+$> # Launch the data source splitting tutorial
+$>mvn exec:java -PrunParallelTutorialWithDataSplitting
+$> # Launch the data source filtering tutorial
+$>mvn exec:java -PrunParallelTutorialWithDataFiltering
+</code></pre>
+</div>
 
-                <p class="pull-center">
-                    <img src="../img/eb/parallelChart.png" style="width: 60%"/>
-                </p>
+              <h2>4. Summary</h2>
 
-              <h2 id="4">4. Conclusion</h2>
-              <p>In this tutorial, we have seen how to run multiple Easy Batch instances in parallel to speed up the data processing and decrease the overall processing time.</p>
-              <p>The following table summarizes the advantages and drawbacks for each approach of parallelism:</p>
+              <p>In this tutorial, you have seen at least 3 ways of how to process data in parallel using multiple worker engines to speed up the overall processing time.</p>
+              <p>The following table summarizes the advantages and drawbacks for each approach:</p>
               <table class="table table-bordered table-condensed ">
                   <thead>
                   <tr class="alert-info">
-                      <th>Parallelism approach</th>
+                      <th>Approach</th>
                       <th>Advantages</th>
                       <th>Drawbacks</th>
                   </tr>
                   </thead>
                   <tbody>
                   <tr>
-                      <td>* Multiple data source parts<br/>* Multiple Easy Batch instances</td>
-                      <td><span class="text-success">Each Easy Batch engine reads only its own part and not the whole data source</span></td>
-                      <td><span class="text-danger">Need to split the data source into multiple parts since Easy Batch does not provide data partitioning feature</span></td>
+                      <td>Dispatching records</td>
+                      <td><span class="text-success">Best way to distribute work across multiple worker engines.</span></td>
+                      <td><span class="text-danger">Need to setup an additional record reader and queues.</span></td>
                   </tr>
                   <tr>
-                      <td>* Single data source<br/>* Multiple Easy Batch instances (with record filtering technique)</td>
+                      <td>Splitting the data source</td>
+                      <td><span class="text-success">Each engine reads only its own part and not the whole data source</span></td>
+                      <td><span class="text-danger">Need to split the data source into multiple parts</span></td>
+                  </tr>
+                  <tr>
+                      <td>Filtering the data source</td>
                       <td><span class="text-success">No need to split the input data source into multiple parts</span></td>
-                      <td><span class="text-danger">Each Easy Batch instance will read the whole data source</span></td>
+                      <td><span class="text-danger">Each engine will read the whole data source</span></td>
                   </tr>
                   </tbody>
               </table>
-              <p>Even though the tutorial was about processing an input flat file, the same technique of record filtering can be used with any type of data source.</p>
+
+        <p>Using the <code><em>RecordDispatcher</em></code> API should be your first choice when dealing with data processing in parallel
+            because it is more efficient than other techniques and provides the most natural way of distributing the work across multiple engines.</p>
+
+<h2>9. What's next?</h2>
+
+<p>In the next, you will learn how to process data asynchronously using a JMS queue.</p>
+
+<nav>
+    <ul class="pager">
+        <li class="previous"><a href="./spring.html"><span aria-hidden="true">&larr;</span> Spring tutorial</a></li>
+        <li class="next"><a href="./jms.html">Asynchronous jobs tutorial<span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+</nav>
 
