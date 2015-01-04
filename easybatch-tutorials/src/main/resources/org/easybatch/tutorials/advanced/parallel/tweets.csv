@@ -1,10 +1,10 @@
 1,foo,easy batch rocks! #EasyBatch
 2,bar,@foo I do confirm :-)
 3,baz,@foo @bar what are you talking about? Am I in trouble?
-4,foo,@baz yes, you are in trouble!
-5,bar,@baz It's about easy batch, see in here: http://www.easybatch.org cc @md_benhassine
-6,baz,@foo @bar @md_benhassine Oh damn, that's really easy!
+4,foo,@baz yes you are in trouble!
+5,bar,@baz It's about easy batch. See in here: http://www.easybatch.org cc @md_benhassine
+6,baz,@foo @bar @md_benhassine Oh damn that's really easy!
 7,md_benhassine,Thank you all! your feedback is welcome :-)
 8,foo,@md_benhassine Have you some benchmarks out there?
-9,md_benhassine,@foo yep, check it out here: https://github.com/benas/easy-batch/tree/master/easybatch-bench
-10,foo,@md_benhassine I'll see there, thx!
+9,md_benhassine,@foo yep check them out here: https://github.com/benas/easy-batch/tree/master/easybatch-bench
+10,foo,@md_benhassine I'll see there thx!
