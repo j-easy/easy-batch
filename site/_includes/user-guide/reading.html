@@ -1,117 +1,264 @@
 <h2 id="2">2. Reading records</h2>
 
-<p>To read records from a data source, you should register an implementation of the <code>RecordReader</code> interface :</p>
+<p>To read records from a data source, you should register an implementation of the <code><em>RecordReader</em></code> interface:</p>
 
-<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordReader(new MyRecordReader(myDataSource))
-    .build(); </code></pre>
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.reader(new MyRecordReader(myDataSource))</strong>
+    .build();</code></pre>
+</div>
 
-<p>Easy Batch comes with built-in record readers that allow you to read records from a variety of data sources :</p>
+<p>Easy Batch comes with built-in record readers that allow you to read records from a variety of data sources:</p>
+
 <ul>
-    <li>flat files</li>
+    <li>flat files (delimited and fixed length)</li>
     <li>xml files</li>
+    <li>json files</li>
     <li>in-memory strings</li>
-    <li>and databases</li>
+    <li>databases</li>
+    <li>JMS queues</li>
+    <li>List of objects</li>
+    <li>Queue of objects</li>
+    <li>and standard input</li>
 </ul>
 
-<h3>2.1 Reading data from a flat file</h3>
+<h3>2.1 Reading data from flat files</h3>
 
-<p>Easy Batch comes with a built-in <code>FlatFileRecordReader</code> that allows you to read records from a flat file.</p>
-<p>To use the flat file record reader, first you need to add the <code>easybatch-flatfile</code> module to your dependencies:</p>
+<p>The <code><em>FlatFileRecordReader</em></code> allows you to read records from a flat file.</p>
+
+<p>First you need to add the <code><em>easybatch-flatfile</em></code> module to your dependencies:</p>
+
+<div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-flatfile&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
-    &lt;/dependency&gt;</code></pre>
+&lt;/dependency&gt;</code></pre>
+</div>
 
-<p>Then, you can register the <code>FlatFileRecordReader</code> with the following snippet:</p>
-<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordReader(new FlatFileRecordReader(myFlatFile))
+<p>Then, you can register the <code><em>FlatFileRecordReader</em></code> suing the <code><em>EngineBuilder</em></code>:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder().build();
+    <strong>.reader(new FlatFileRecordReader(myFlatFile))</strong>
     .build();</code></pre>
+</div>
 
-<h3>2.2 Reading data from an xml file</h3>
 
-<p>Easy Batch comes with a built-in <code>XmlRecordReader</code> that allows you to read records from an xml file using the
-    <a href="https://www.jcp.org/en/jsr/detail?id=173" target="_blank">Stax</a> API.</p>
-<p>Since Easy Batch development is Pojo-Based, Xml records correspond to instances of your domain objects. Let's consider the following xml file:</p>
+<p>The <code><em>FlatFileRecordReader</em></code> produces <code><em>StringRecord</em></code> instances with a string representation of the record as payload.</p>
 
+<h3>2.2 Reading data from xml files</h3>
+
+<p>The <code><em>XmlRecordReader</em></code> allows you to read records from a xml file. It uses the
+    <a href="https://www.jcp.org/en/jsr/detail?id=173" target="_blank">Stax</a> API behind the scene to stream records one by one.</p>
+
+<p>Let's consider the following <em>tweets.xml</em> file:</p>
+
+<div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-    &lt;beans&gt;
-    &lt;bean&gt;
-    &lt;id&gt;1&lt;/id&gt;
-    &lt;name&gt;foo&lt;/name&gt;
-    &lt;/bean&gt;
-    &lt;bean&gt;
-    &lt;id&gt;2&lt;/id&gt;
-    &lt;name&gt;bar&lt;/name&gt;
-    &lt;/bean&gt;
-    &lt;/beans&gt;</code></pre>
+&lt;tweets&gt;
+    &lt;tweet&gt;
+        &lt;id&gt;1&lt;/id&gt;
+        &lt;user&gt;foo&lt;/user&gt;
+        &lt;message&gt;Hello&lt;/message&gt;
+    &lt;/tweet&gt;
+    &lt;tweet&gt;
+        &lt;id&gt;2&lt;/id&gt;
+        &lt;user&gt;bar&lt;/user&gt;
+        &lt;message&gt;Hi!&lt;/message&gt;
+    &lt;/tweet&gt;
+&lt;/tweets&gt;</code></pre>
+</div>
 
-<p>For this xml file, if your domain object is an object representing a <code>bean</code> tag, then for Easy Batch the first record is:</p>
+<p>For Easy Batch the first record is:</p>
 
-<pre><code class="xml">&lt;bean&gt;
+<div class="bs-callout bs-callout-code">
+<pre><code class="xml">&lt;tweet&gt;
     &lt;id&gt;1&lt;/id&gt;
-    &lt;name&gt;foo&lt;/name&gt;
-    &lt;/bean&gt; </code></pre>
+    &lt;user&gt;foo&lt;/user&gt;
+    &lt;message&gt;Hello&lt;/message&gt;
+&lt;/tweet&gt;</code></pre>
+</div>
 
 <p>The second record is:</p>
 
-<pre><code class="xml">&lt;bean&gt;
+<div class="bs-callout bs-callout-code">
+<pre><code class="xml">&lt;tweet&gt;
     &lt;id&gt;2&lt;/id&gt;
-    &lt;name&gt;bar&lt;/name&gt;
-    &lt;/bean&gt;</code></pre>
+    &lt;user&gt;bar&lt;/user&gt;
+    &lt;message&gt;Hi!&lt;/message&gt;
+&lt;/tweet&gt;</code></pre>
+</div>
 
-<p>and so on.. To use the <code>XmlRecordReader</code>, first you need to add the <code>easybatch-xml</code> module to your dependencies:</p>
+<p>and so on.. To use the <code><em>XmlRecordReader</em></code>, first you need to add the <code><em>easybatch-xml</em></code> module to your dependencies:</p>
+
+<div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-xml&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
-    &lt;/dependency&gt;</code></pre>
+&lt;/dependency&gt;</code></pre>
+</div>
 
-<p>Then, you can register the <code>XmlRecordReader</code> with the following snippet:</p>
+<p>Then, you can register it with the <code><em>EngineBuilder</em></code>:</p>
 
-<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordReader(new XmlRecordReader(myRootElementName, myXmlFile))
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder().build();
+    <strong>.reader(new XmlRecordReader("tweets", "tweets.xml"))</strong>
     .build();</code></pre>
+</div>
 
-<p> When you create an <code>XmlRecordReader</code>, you should specify the xml root element name, and the input xml file path.</p>
+<p> You should specify the xml root element name, and the input xml file.</p>
 
-<p><span class="label label-info">Heads up!</span> Easy Batch uses the <a href="http://stax.codehaus.org/" target="_blank">StAX</a> API to stream data from the input XML file.</p>
+<p>The <code><em>XmlRecordReader</em></code> produces <code><em>XmlRecord</em></code> instances with a string representation of the record as payload.</p>
 
-<h3>2.3 Reading data from an in-memory String</h3>
+<h3>2.3 Reading data from Json files</h3>
 
-<p>Easy Batch allows you to read data from a String using the <code>StringRecordReader</code> API. You can register this record reader as follows:</p>
+<p>The <code><em>JsonRecordReader</em></code> allows you to read records from a Json file. It uses the
+    <a href="https://www.jcp.org/en/jsr/detail?id=353" target="_blank">JSON-P</a> API behind the scene to stream records one by one.</p>
 
-<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordReader(new StringRecordReader(myString))
+<p>Let's consider the following <em>tweets.json</em> file:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="json">[
+    {
+        "id": 1,
+        "user": "foo",
+        "message": "Hello"
+    },
+    {
+        "id": 2,
+        "user": "bar",
+        "message": "Hi!"
+    }
+]</code></pre>
+</div>
+
+<p>For Easy Batch the first record is:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="json">{
+    "id": 1,
+    "user": "foo",
+    "message": "Hello"
+}</code></pre>
+</div>
+
+<p>The second record is:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="json">{
+    "id": 2,
+    "user": "bar",
+    "message": "Hi!"
+}</code></pre>
+</div>
+
+<p>and so on.. To use the <code>JsonRecordReader</code>, first you need to add the <code><em>easybatch-json</em></code> module to your dependencies:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-json&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+
+<p>Then, you can register it with the <code><em>EngineBuilder</em></code>:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder().build();
+    <strong>.reader(new JsonRecordReader("tweets.json"))</strong>
     .build();</code></pre>
+</div>
 
-<p> When you create a <code>StringRecordReader</code>, you should specify the String reference representing the data source.</p>
+<p> You should specify the input json file at construction time.</p>
+
+<p>The <code><em>JsonRecordReader</em></code> produces <code><em>JsonRecord</em></code> instances with a string representation of the record as payload.</p>
 
 <h3>2.4 Reading data from a database</h3>
 
-<p>Easy Batch comes with a built-in <code>JdbcRecordReader</code> that allows you to read records from a database using the
-    <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/jdbc/" target="_blank">JDBC</a> technology.</p>
-<p>To use the database record reader, first you need to add the <code>easybatch-jdbc</code> module to your dependencies:</p>
+<p>The <code><em>JdbcRecordReader</em></code> allows you to read records from a database using the
+    <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/jdbc/" target="_blank">JDBC</a> API.</p>
 
+<p>To use the JDBC record reader, first you need to add the <code><em>easybatch-jdbc</em></code> module to your dependencies:</p>
+
+<div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-jdbc&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
-    &lt;/dependency&gt;</code></pre>
-
-<p>Then, you can register the <code>JdbcRecordReader</code> with the following snippet:</p>
-<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordReader(new JdbcRecordReader(myDatabaseConnection, myQuery))
-    .build();</code></pre>
-
-<p> When you create a <code>JdbcRecordReader</code>, you should specify the jdbc database connection and the sql query to use to fetch the data.</p>
-
-<div class="alert alert-danger">
-    <strong>Warning:</strong> The <code>JdbcRecordReader</code> loads all data fetched by the sql query you provide into a <code>java.sql.ResultSet</code> object.
-    You should pay attention to large data sets with the sql query you specify to the <code>JdbcRecordReader</code>.
+&lt;/dependency&gt;</code></pre>
 </div>
 
+<p>Then, you can register it with the <code><em>EngineBuilder</em></code>:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+    <strong>.reader(new JdbcRecordReader(myDatabaseConnection, myQuery))</strong>
+.build();</code></pre>
+</div>
+
+<p> When you create a <code>JdbcRecordReader</code>, you should specify the JDBC database connection and the sql query to use to fetch data.</p>
+
+<div class="bs-callout bs-callout-warning">
+    <p><strong>Heads up!:</strong> The <code>JdbcRecordReader</code> loads all data fetched by the sql query into a <code>java.sql.ResultSet</code> object.
+        You should pay attention to large data sets with the sql query you specify to the <code>JdbcRecordReader</code>.</p>
+
+    <p>Easy Batch does not provide a "PagingJdbcRecordReader" because the JDBC API does not provide a vendor-neutral way of doing pagination.
+        The SQL syntax differs from one RDBMS to another.</p>
+</div>
+
+<h3>2.3 Reading data from a JMS queue</h3>
+
+<p>The <code><em>JmsQueueRecordReader</em></code> allows to read records from a JMS queue.</p>
+
+<p>When you create a <code><em>JmsQueueRecordReader</em></code>, you need to be provide the JMS queue connection factory and the queue to read data from:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.reader(new JmsRecordReader(queueConnectionFactory, queue))</strong>
+    .build();
+</code></pre>
+</div>
+
+<p>The <code><em>JmsQueueRecordReader</em></code> will produce <code><em>JmsRecord</em></code> instances with a <code><em>javax.jms.Message</em></code> as payload.</p>
+
+<h3>Other data source type readers</h3>
+
+<p>You have seen common data sources types and how you can read them using readers provided by Easy Batch.</p>
+        <p>Easy Batch provides also other less common readers that are summarized in the following table:</p>
+        <table class="table table-bordered table-condensed table-striped">
+            <thead>
+                <tr class="info">
+                    <th>Data source</th>
+                    <th>Record reader</th>
+                    <th>record type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>In-memory String</td>
+                    <td>StringRecordReader</td>
+                    <td>StringRecord</td>
+                </tr>
+                <tr>
+                    <td>Standard input</td>
+                    <td>CliRecordReader</td>
+                    <td>StringRecord</td>
+                </tr>
+                <tr>
+                    <td>List of objects</td>
+                    <td>ListRecordReader</td>
+                    <td>GenericRecord</td>
+                </tr>
+                <tr>
+                    <td>Queue of objects</td>
+                    <td>QueueRecordReader</td>
+                    <td>Type of objects in the queue</td>
+                </tr>
+            </tbody>
+        </table>
 <nav>
     <ul class="pager">
         <li class="previous"><a href="#generalities" data-toggle="tab"><span aria-hidden="true">&larr;</span> Generalities</a></li>

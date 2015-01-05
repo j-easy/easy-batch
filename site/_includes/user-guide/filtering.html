@@ -1,25 +1,35 @@
 <h2 id="3">3. Filtering records</h2>
 
-<p>With Easy Batch, you can filter records through the <code>RecordFilter</code> API. This interface allows you to skip records from being processed if they obey to some criteria.</p>
-<p>A typical example is to filter comment records (that begin with # for example) in a flat file.</p>
-<p>To register a record filter within Easy Batch, you can use the following snippet:</p>
+<p>You can filter records through the <code>RecordFilter</code> API. This interface allows you to skip records from being processed if they satisfy a given predicate.</p>
 
-<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordFilter(new myRecordFilter())
+<p>A typical example is to filter comment records (those begining with # for example) in a flat file.</p>
+
+<p>To register a record filter, you can use the <code><em>EngineBuilder</em></code> API as follow:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.filter(new myRecordFilter())</strong>
     .build();</code></pre>
+</div>
 
-<p>Easy Batch comes with built-in implementations of commonly used record filters :</p>
+
+<p>Easy Batch comes with built-in implementations of commonly used filters:</p>
+
 <ul>
-    <li><code>StartsWithStringRecordFilter</code> : filters a string record if it starts with one of the given prefixes. You can also set the constructor parameter <code>negate</code> to true to inverse this behavior.</li>
-    <li><code>EndsWithStringRecordFilter</code> : filters a string record if it ends with one of the given suffixes. You can also set the constructor parameter <code>negate</code> to true to inverse this behavior.</li>
-    <li><code>RecordNumberEqualsToRecordFilter</code> : filters a record if its number is equal to one of the given numbers. You can also set the constructor parameter <code>negate</code> to true to inverse this behavior.</li>
-    <li><code>RecordNumberGreaterThanRecordFilter</code> : filters a record if its number is greater than a given number</li>
-    <li><code>RecordNumberLowerThanRecordFilter</code> : filters a record if its number is lower than a given number</li>
-    <li><code>RecordNumberInsideRangeRecordFilter</code> : filters a record if its number is inside a given number range</li>
-    <li><code>RecordNumberOutsideRangeRecordFilter</code> : filters a record if its number is outside a given number range</li>
+    <li><code>StartWithStringRecordFilter</code> : filters a string record if its payload starts with one of the given prefixes.</li>
+    <li><code>EndWithStringRecordFilter</code> : filters a string record if its payload ends with one of the given suffixes.</li>
+    <li><code>RecordNumberEqualsToFilter</code> : filters a record if its number is equal to one of the given numbers.</li>
+    <li><code>RecordNumberGreaterThanFilter</code> : filters a record if its number is greater than a given number</li>
+    <li><code>RecordNumberLowerThanFilter</code> : filters a record if its number is lower than a given number</li>
+    <li><code>RecordNumberBetweenFilter</code> : filters a record if its number is inside a given number range</li>
 </ul>
 
-<p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record filter that does not filter any input record.</p>
+<p>Please refer to the Javadoc of the <code><em>org.easybatch.core.filter</em></code> package for all details about built-in record filters.</p>
+
+<div class="bs-callout bs-callout-warning">
+    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
+    <p>Registering a record filter is <strong>optional</strong>. By default, Easy Batch registers a NoOp record filter that does not filter any input record.</p>
+</div>
 
 <nav>
     <ul class="pager">

@@ -2,33 +2,47 @@
 
 <p>Validating input data is an essential step in every batch application. With Easy Batch, you can validate records by registering a <code>RecordValidator</code> implementation as follows:</p>
 
-<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordValidator(new myRecordValidator())
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.validator(new myRecordValidator())</strong>
     .build();</code></pre>
+</div>
 
-<p>Easy Batch comes with a built-in implementation of the <code>RecordValidtor</code> interface using the <a href="http://jcp.org/en/jsr/detail?id=303" target="_blank">Bean Validation API (JSR 303)</a> reference implementation <a href="http://hibernate.org/validator/" target="_blank">Hibernate validator</a>.</p>
-<p>The following steps describe how to use the Bean Validation API record validator with Easy Batch :</p>
+<p>Easy Batch comes with a built-in implementation of the <code>RecordValidator</code> interface using the <a href="http://jcp.org/en/jsr/detail?id=303" target="_blank">Bean Validation API (JSR 303)</a> reference implementation which is <a href="http://hibernate.org/validator/" target="_blank">Hibernate validator</a>.</p>
 
-<ul>
-    <li>Add the <code>easybatch-validation</code> module to your dependencies :</br></br>
+<p>In order to use the built-in <code><em>BeanValidationRecordValidator</em></code>, you should proceed as follows:
 
+        <h4>5.1 Add maven dependency</h4>
+    <p>Add the <code>easybatch-validation</code> module to your dependencies:</p>
+
+<div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-validation&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
-    &lt;/dependency&gt;</code></pre>
+&lt;/dependency&gt;</code></pre>
+</div>
 
-    </li>
-    <li>Annotate your POJO with Bean Validation API annotations</li>
-    <li>Register the <code>BeanValidationRecordValidator</code> within Easy Batch engine:</br></br>
+        <h4>5.2 declare validation constraints</h4>
 
-<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordValidator(new BeanValidationRecordValidator&lt;YourPojoType&gt;())
+    <p>In order to use the Bean Validation API with Easy Batch, you should annotate your domain object with Bean Validation API annotations.</p>
+
+        <h4>5.3 Register the validator</h4>
+
+    <p>Finally, register the <code>BeanValidationRecordValidator</code> using the <code><em>EngineBuilder</em></code> API:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    .validator(new BeanValidationRecordValidator&lt;YourPojoType&gt;())
     .build();</code></pre>
+</div>
 
-    </li>
-</ul>
-<p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record validator that does not apply any validation logic.</p>
+        <p>Easy Batch will then apply validation logic that you declared using annotations for each input record during the process.</p>
+
+<div class="bs-callout bs-callout-warning">
+    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
+    <p>Registering a record validator is <strong>optional</strong>. By default, Easy Batch registers a NoOp record validator that does not apply any validation logic on input records.</p>
+</div>
 
 <nav>
     <ul class="pager">

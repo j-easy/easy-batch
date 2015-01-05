@@ -1,12 +1,15 @@
 <h2 id="7">7. Easy Batch report</h2>
-<h3 id="7.1">7.1 Getting an Easy Batch report</h3>
 
-<p>Easy Batch engine records several metrics during record processing and provides a complete report at the end of execution.
-    This report is an instance of the <code>EasyBatchReport</code> class and contains the following information:</p>
+<h3>7.1 Getting an execution report</h3>
+
+<p>Easy Batch engine records several metrics and statistics during record processing and provides a complete report at the end of execution.
+
+    This report is an instance of the <code><em>Report</em></code> class and contains the following information:</p>
 <ul>
     <li>The batch start and end times</li>
     <li>The batch duration</li>
     <li>The data source name</li>
+    <li>The batch execution status</li>
     <li>The total records number</li>
     <li>The number of filtered, ignored and rejected records</li>
     <li>The number of records processed with errors</li>
@@ -15,41 +18,56 @@
     <li>And the computation result if any</li>
 </ul>
 
-<p>You can get Easy Batch report as follows:</p>
+<p>You can get a batch report as follows:</p>
 
-<pre><code class="java">EasyBatchReport easyBatchReport = easyBatchEngine.call();</code></pre>
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder().build();
 
-<h3 id="7.2">7.2 Formatting Easy Batch report</h3>
-<p>You can format Easy Batch reports using the <code>EasyBatchFormatter</code> interface.</p>
-<p>Easy Batch comes with a built-in implementation named <code>EasyBatchHtmlReportFormatter</code> that formats Easy Batch reports to HTML format which you can use as follows:</p>
+<strong>Report report = engine.call();</strong></code></pre>
+</div>
 
-<pre><code class="java">String htmlReport = new EasyBatchHtmlReportFormatter().formatEasyBatchReport(easyBatchReport);</code></pre>
+<h3>7.2 Formatting reports</h3>
+
+<p>You can format reports using the <code><em>ReportFormatter</em></code> interface.</p>
+
+<p>Easy Batch comes with a built-in implementation named <code><em>HtmlReportFormatter</em></code> that formats reports to HTML:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">String htmlReport = new HtmlReportFormatter().formatReport(report);</code></pre>
+</div>
 
 <p>The following is a sample HTML report (click on the image for a live HTML demo):</p>
 
 <div class="pull-center">
     <a href="../documentation/htmlReport.html" target="_blank">
-        <img src="../img/eb/htmlReport.png" alt="htmlReport" style="width: 80%"/>
+        <img src="../img/eb/report-thumbnail.jpg" alt="htmlReport" style="width: 80%"/>
     </a>
 </div>
 <br/>
-<p>To use the <code>EasyBatchHtmlReportFormatter</code>, you should add the <code>easybatch-tools</code> module to your dependencies:</p>
 
+<p>To use the <code><em>HtmlReportFormatter</em></code>, you should add the <code><em>easybatch-tools</em></code> module to your dependencies:</p>
+
+<div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-tools&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
-    &lt;/dependency&gt;</code></pre>
+&lt;/dependency&gt;</code></pre>
+</div>
 
-<h3 id="7.3">7.3 Merging Easy Batch reports</h3>
-<p>When you run multiple Easy Batch instances to process a data source, each engine will generate a partial report for the data partition it has processed.</p>
-<p>You may want to aggregate partial reports into a merged and consolidated one. This is where the <code>EasyBatchReportsAggregator</code> comes to play:</p>
+<p>You can also provide your own implementation of the <code><em>ReportFormatter</em></code> interface to format reports to custom formats.</p>
 
-        <!--
-<p class="text-center">
-    <img src="../img/eb/reportAggregator.png" alt="reports aggregator"/>
-</p>
--->
+<h3>7.3 Merging reports</h3>
+
+<p>When you run multiple batch instances to process a data source in parallel, each engine will generate a partial report for the data partition it has processed.</p>
+
+<p>You may want to merge partial reports into a consolidated one. This is where the <code><em>ReportMerger</em></code> comes to the rescue:</p>
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <p class="pull-center"><img class="ebi" src="../img/eb/report-merger.jpg"/></p>
+    </div>
+</div>
 
 <p>The merged report is defined as follows:</p>
 <ul>
@@ -65,20 +83,24 @@
     <li>The final data source name is the concatenation (one per line) of partial data sources names</li>
 </ul>
 
-<p>To use the report aggregator, first you need to add the <code>easybatch-tools</code> module to your dependencies:</p>
+<p>To use the report merger, first you need to add the <code><em>easybatch-tools</em></code> module to your dependencies:</p>
 
+<div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
     &lt;artifactId&gt;easybatch-tools&lt;/artifactId&gt;
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
-    &lt;/dependency&gt;</code></pre>
+&lt;/dependency&gt;</code></pre>
+</div>
 
-<p>Then you can use the following snippet to get a merged result:</p>
+<p>Then you can use the following snippet to get a merged report:</p>
 
+<div class="bs-callout bs-callout-code">
 <pre><code class="java">ReportMerger reportMerger = new DefaultReportMerger();
-    Report finalReport = reportMerger.mergeReports(report1, report2);</code></pre>
+<strong>Report finalReport = reportMerger.mergeReports(report1, report2);</strong></code></pre>
+</div>
 
-<p>You can find an example of how to use the report aggregator in the <a href="../tutorials/jms.html" target="_blank">JMS tutorial</a>.</p>
+<p>You can find an example of how to use the report merger in the <a href="../tutorials/parallel.html" target="_blank">Parallel jobs tutorial</a>.</p>
 
 <nav>
     <ul class="pager">

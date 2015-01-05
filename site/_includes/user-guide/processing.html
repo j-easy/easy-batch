@@ -1,17 +1,49 @@
 <h2 id="6">6. Processing records</h2>
 
-<p>Easy Batch lets you define your batch processing business logic through the <code>RecordProcessor</code> interface.
-    This is where you define what to do for each record. To register your record processor, use the following snippet:</p>
+<p>Easy Batch lets you define your batch processing business logic through the <code><em>RecordProcessor</em></code> interface.
+    This is where you implement what to do for each record.</p>
 
-<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
-    .registerRecordProcessor(new myRecordProcessor())
+<p>Once the pre processing phase (filtering, parsing, mapping and validating records) is finished, input records enter the processing pipeline:</p>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/pipeline.jpg"/></p>
+    </div>
+</div>
+
+<p>Records are submitted to a chain of processors. Record type can change from one processor to another.</p>
+
+        <p>you can define as much processors as you want in the pipeline:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.processor(new myRecordProcessor1())</strong>
+    <strong>.processor(new myRecordProcessor2())</strong>
     .build();</code></pre>
+</div>
 
-<p>With Easy Batch, you can also do some computation on input records and hold a batch result that will be returned at the end of execution.</p>
-<p>This can be done through the <code>getEasyBatchResult</code> method of the <code>RecordProcessor</code> interface : Your record processor can hold the computation result in an instance variable and return it using this method.</p>
-<p>You can find an example of how to return a computation result in the <a href="../tutorials/products.html" target="_blank">Products statistics tutorial</a>.</p>
+<p>Easy Batch will call these processors in the order in which they are registered.</p>
 
-<p><span class="label label-info">Heads up!</span> By default, Easy Batch registers a NoOp record processor that logs an information message about the record being processed.</p>
+        <p>You can also do some computation on input records that will be returned at the end of execution.
+        This is the role of <code><em>ComputationalRecordProcessor</em></code> API, that is, do some computation on inputs records.</p>
+
+        <p>This type of processor should be placed at the end of the pipeline so that Easy Batch can call its <code><em>getComputationResult</em></code>
+        method to get the computation result at the end of execution. You obtain this result from the execution report as follows:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.processor(new myComputationalRecordProcessor())</strong>
+    .build();
+
+Report report = engine.call();
+
+<strong>MyResultType myResult = report.getBatchResult();</strong></code></pre>
+</div>
+
+<div class="bs-callout bs-callout-warning">
+    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
+    <p>Registering a record processor is <strong>optional</strong>. By default, Easy Batch registers a NoOp record processor that returns the record as is without any processing logic.</p>
+</div>
 
 <nav>
     <ul class="pager">
