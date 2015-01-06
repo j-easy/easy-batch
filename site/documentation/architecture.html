@@ -6,8 +6,47 @@ title : Architecture
 
               <h2 id="1" >1. Framework overview</h2>
 
-              <p>The next figure describes Easy Batch main components and gives you an overview of the framework architecture:</p>
-               <br>
+        <p>This section will give you high level and detailed views of Easy Batch internals.</p>
+
+        <h3>1.1 Macroscopic view</h3>
+
+        <p>The next figure describes Easy Batch from a 10000 foot view:</p>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/overview.jpg"/></p>
+    </div>
+</div>
+
+        <p>Easy Batch is all about processing a data source in batch mode. You can configure its behavior in many ways.</p>
+        <p>At the end of execution, the engine gives you a report with metrics and statistics as well as a detailed log file
+        about the job run.</p>
+
+        <h3>1.2 Mesoscopic view</h3>
+
+        <p>Let's zoom in to see a bit more details about Easy Batch's internals:</p>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/overview-meso.jpg"/></p>
+    </div>
+</div>
+
+        <p>Data read from the data source is first submitted to a pre-processing phase. Here is where data is:</p>
+        <ul>
+            <li>Filtered to keep only relevant parts to be processed</li>
+            <li>Parsed to a specific format if necessary</li>
+            <li>Mapped to domain object</li>
+            <li>Validated according to application logic constraints</li>
+        </ul>
+
+        <p>After this pre-processing stage, the data is ready to be processed quietly. It is then submitted to a processing
+        pipeline where successive operations are performed on it.</p>
+
+        <h3>1.3 Microscopic view</h3>
+
+        <p>Let's zoom in to the third level. The next figure describes Easy Batch's main components and gives you an overview of the framework architecture:</p>
+
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
         <p class="pull-center"><img class="ebi" src="../img/eb/architecture.jpg"/></p>
@@ -17,8 +56,8 @@ title : Architecture
               <p>The main components are:</p>
               <ul>
                   <li>Record Reader : reads records <em>sequentially</em> from the data source</li>
-                  <li>Record Filter : filters records to be skipped from being processed</li>
-                  <li>Record Mapper : maps records to Java objects</li>
+                  <li>Record Filter chain : a chain of filters to skip undesired records from being processed</li>
+                  <li>Record Mapper : maps records to domain objects</li>
                   <li>Record Validator : applies declared validation constraints on records</li>
                   <li>Processing pipeline : applies business processing logic for each record</li>
               </ul>
@@ -34,7 +73,8 @@ title : Architecture
             <p>At the end of execution, you get a report containing several metrics and statistics.
                 Easy Batch also gives you a detailed log about what happened in case of failure in any of these steps.</p>
 
-              <h2 id="2">2. Processing pipeline</h2>
+        <p>After a pre-processing phase (filtering, parsing, mapping and validating data), records enter the processing pipeline where they are
+        submitted to a chain of processors:</p>
 
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
@@ -42,15 +82,12 @@ title : Architecture
     </div>
 </div>
 
-        <p>After a pre processing phase (filtering, parsing, mapping and validating data), records enter the processing pipeline where they are
-        submitted to a chain of processors. Record type can change from one processor to another.</p>
-
-        <p> When all the processing pipeline has been applied, the engine moves to the next record.
-        Easy Batch processes records one by one, the unix way.</p>
+        <p>Record type can change from one processor to another. When all the processing pipeline has been applied, the engine moves to the next record.
+        Easy Batch processes records one by one.</p>
 
               <h2 id="3">3. Processing workflow</h2>
 
-              <p>The workflow used internally by Easy Batch is illustrated by the next figure and described below :</p>
+              <p>The workflow used internally by Easy Batch is illustrated by the next figure and described below:</p>
 
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
