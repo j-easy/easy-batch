@@ -56,12 +56,12 @@ public class ListRecordReaderTest {
     }
 
     @Test
-    public void whenTheDataSourceIsNotEmpty_ThenItShouldBeANextRecordToRead() throws Exception {
+    public void whenTheDataSourceIsNotEmpty_ThenThereShouldBeANextRecordToRead() throws Exception {
         assertThat(listRecordReader.hasNextRecord()).isTrue();
     }
 
     @Test
-    public void whenTheDataSourceIsEmpty_ThenItShouldNotBeANextRecordToRead() throws Exception {
+    public void whenTheDataSourceIsEmpty_ThenThereShouldBeNoNextRecordToRead() throws Exception {
         dataSource.clear();
         listRecordReader = new ListRecordReader<String>(dataSource);
         assertThat(listRecordReader.hasNextRecord()).isFalse();
