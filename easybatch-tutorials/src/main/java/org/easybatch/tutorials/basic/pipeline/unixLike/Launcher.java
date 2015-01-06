@@ -55,8 +55,8 @@ public class Launcher {
         // Run the batch engine
         Report report = engine.call();
 
-        // Print the batch execution report
-        System.out.println("the number of words in tweets containing #EasyBatch = " + report.getBatchResult());
+        // Print the batch execution result
+        System.out.println("The number of words in tweets containing #EasyBatch = " + report.getBatchResult());
 
     }
 

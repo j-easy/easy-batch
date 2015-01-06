@@ -27,7 +27,7 @@ package org.easybatch.tutorials.basic.pipeline.unixLike;
 import org.easybatch.core.api.ComputationalRecordProcessor;
 
 /**
- * A processor that mimics "wc" unix command.
+ * A processor that mimics "wc -w" unix command.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

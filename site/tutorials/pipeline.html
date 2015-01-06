@@ -20,7 +20,7 @@ title : Data processing pipeline
         <p>The goal is to implement the equivalent of the following unix command pipeline:</p>
 
 <div class="bs-callout bs-callout-code">
-<pre><code>cat tweets.csv | grep '#EasyBatch' | cut -d',' -f3 | wc</code></pre>
+<pre><code>cat tweets.csv | grep '#EasyBatch' | cut -d',' -f3 | wc -w</code></pre>
 </div>
 
         <p>This will count the number of words in tweets containing the hash tag <code>#EasyBatch</code>.</p>
@@ -90,7 +90,7 @@ title : Data processing pipeline
 
 <h2>5. Counting words</h2>
 
-<p>The next step is to implement the <code>wc</code> command. Here is a processor to do it:</p>
+<p>The next step is to implement the <code><em>wc -w</em></code> command. Here is a processor to do it:</p>
 
 <div class="bs-callout bs-callout-code">
     <h5>WordCountProcessor.java</h5>
@@ -139,8 +139,8 @@ title : Data processing pipeline
         // Run the batch engine
         Report report = engine.call();
 
-        // Print the batch execution report
-        System.out.println("the number of words in tweets containing #EasyBatch = "
+        // Print the batch execution result
+        System.out.println("The number of words in tweets containing #EasyBatch = "
                 + report.getBatchResult());
 
     }
@@ -167,7 +167,7 @@ INFO: Total records = 3
 INFO: easy batch engine is running...
 INFO: Record #1 [Record{number=1, payload='id,user,message'}] has been filtered.
 INFO: Record #3 [Record{number=3, payload='2,bar,@foo I do confirm :-)'}] has been filtered.
-the number of words in tweets containing #EasyBatch = 4
+The number of words in tweets containing #EasyBatch = 4
 INFO: Shutting down easy batch engine</code></pre>
 </div>
 
