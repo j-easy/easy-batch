@@ -22,15 +22,17 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.util;
+package org.easybatch.core.filter;
 
+import org.easybatch.core.util.GrepFilter;
+import org.easybatch.core.util.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * Test class for {@link GrepFilter}.
+ * Test class for {@link org.easybatch.core.util.GrepFilter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
