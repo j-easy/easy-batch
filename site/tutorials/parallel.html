@@ -194,6 +194,19 @@ title : Parallel jobs
         to avoid any thread-safety issues.</p>
 </div>
 
+        <p>Another possibility to process multiple input files in parallel is to use the <code><em>FileRecordReader</em></code> API coupled to a <code><em>RecordDispatcher</em></code>:</p>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/files.jpg"/></p>
+    </div>
+</div>
+
+        <p>This gives the same setup as in section 2. The <code><em>FileRecordReader</em></code> reads files from a directory and produces <code><em>FileRecord</em></code> instances having <code><em>java.io.File</em></code> as payload.</p>
+        <p>The record dispatcher can then distribute files to worker engines. You can use a <code><em>RoundRobinRecordDispatcher</em></code> to distribute workload in a uniform way or use a <code><em>ContentBasedRecordDispatcher</em></code>
+        to distribute files according to their type for example (CSV files go to worker1, XML files to worker2, etc)</p>
+        <p>This configuration is not implemented in this tutorial.</p>
+
 <h2>3. Filtering the data source</h2>
 
         <p>Sometimes it is just impossible to split the data source into multiple parts. The third technique is to use a single data source
