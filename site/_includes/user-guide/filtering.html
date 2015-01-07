@@ -12,8 +12,10 @@
     .build();</code></pre>
 </div>
 
+<p>Easy Batch applies a filter chain on each record, so you can register as many filters as you want. They will be applied
+on the same order in which you register them. the engine will stop the chain on first applied filter.</p>
 
-<p>Easy Batch comes with built-in implementations of commonly used filters:</p>
+<p>There are several built-in implementations for commonly used filters:</p>
 
 <ul>
     <li><code>StartWithStringRecordFilter</code> : filters a string record if its payload starts with one of the given prefixes.</li>

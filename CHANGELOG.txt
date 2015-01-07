@@ -6,7 +6,8 @@ Changes in version 3.0.0 (2015-01-31)
 -------------------------------------
 
 * Introduced the processing pipeline in the framework's core
-* Added pre/post processing before and after each step of the workflow: PR #35
+* Introduced the filter chain in the framework's core
+* Added pre/post processing before/after each step of the workflow: PR #35
 * Added custom ignored/rejected/error record handlers: PR #34
 * Added support for JMS
 * Added support for JSON

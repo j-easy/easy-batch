@@ -49,7 +49,7 @@ public final class Engine implements Callable<Report> {
 
     private RecordReader recordReader;
 
-    private RecordFilter recordFilter;
+    private List<RecordFilter> filterChain;
 
     private RecordMapper recordMapper;
 
@@ -72,7 +72,7 @@ public final class Engine implements Callable<Report> {
     private boolean strictMode;
 
     Engine(final RecordReader recordReader,
-           final RecordFilter recordFilter,
+           final List<RecordFilter> filterChain,
            final RecordMapper recordMapper,
            final RecordValidator recordValidator,
            final List<RecordProcessor> processingPipeline,
@@ -81,7 +81,7 @@ public final class Engine implements Callable<Report> {
            final RejectedRecordHandler rejectedRecordHandler,
            final ErrorRecordHandler errorRecordHandler) {
         this.recordReader = recordReader;
-        this.recordFilter = recordFilter;
+        this.filterChain = filterChain;
         this.recordMapper = recordMapper;
         this.recordValidator = recordValidator;
         this.processingPipeline = processingPipeline;
@@ -142,14 +142,21 @@ public final class Engine implements Callable<Report> {
                 currentRecordNumber = currentRecord.getNumber();
                 report.setCurrentRecordNumber(currentRecordNumber);
 
-                //filter record if any
-                if (recordFilter.filterRecord(currentRecord)) {
+                //apply filter chain on the record, stop on first applied filter
+                boolean filtered = false;
+                for (RecordFilter recordFilter : filterChain) {
+                    if (recordFilter.filterRecord(currentRecord)) {
+                        filtered = true;
+                        break;
+                    }
+                }
+                if (filtered) {
                     report.addFilteredRecord(currentRecordNumber);
                     filteredRecordHandler.handle(currentRecord);
                     continue;
                 }
 
-                //map record
+                //map record to domain object
                 Object typedRecord;
                 try {
                     typedRecord = recordMapper.mapRecord(currentRecord);
@@ -255,8 +262,8 @@ public final class Engine implements Callable<Report> {
      * Setters for engine parameters
      */
 
-    void setRecordFilter(final RecordFilter recordFilter) {
-        this.recordFilter = recordFilter;
+    void addRecordFilter(final RecordFilter recordFilter) {
+        this.filterChain.add(recordFilter);
     }
 
     void setRecordReader(final RecordReader recordReader) {
