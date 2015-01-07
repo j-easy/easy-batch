@@ -1,4 +1,231 @@
-TODO
+<h2>1. The RecordDispatcher API</h2>
+
+        <p>Easy Batch does not provide a feature to partition input data.
+            Instead of that, it comes with the <code><em>RecordDispatcher</em></code> abstraction that allows you to
+        dispatch records to multiple worker engines.</p>
+
+        <p>There are two implementation of the <code><em>RecordDispatcher</em></code> interface.</p>
+
+        <h3>1.1 The RoundRobinRecordDispatcher</h3>
+        <p>The <code><em>RoundRobinRecordDispatcher</em></code> dispatches input records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues in a round robin fashion:</p>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/rrrd.jpg"/></p>
+    </div>
+</div>
+
+        <p>In order to use the <code><em>RoundRobinRecordDispatcher</em></code>, you should specify the list of <code><em>java.util.concurrent.BlockingQueue</em></code> the dispatcher will distribute records to:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">//Create queues
+BlockingQueue&lt;Record&gt; queue1 = new ArrayBlockingQueue&lt;Record&gt;(10);
+BlockingQueue&lt;Record&gt; queue2 = new ArrayBlockingQueue&lt;Record&gt;(10);
+
+//create a record dispatcher to dispatch records to queues
+<strong>RecordDispatcher recordDispatcher = new RoundRobinRecordDispatcher(Arrays.asList(queue1, queue2));</strong></code></pre>
+</div>
+
+        <p>You can then read records from these queues using the <code><em>QueueRecordReader</em></code> provided by Easy Batch.</p>
+
+        <p>You can find a usage sample of this API in the <a href="../tutorials/parallel.html">Parallel jobs tutorial</a>.</p>
+
+        <h3>1.2 The ContentBasedRecordDispatcher</h3>
+        <p>The <code><em>ContentBasedRecordDispatcher</em></code> dispatches records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues based on record content:</p>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/cbrd.jpg"/></p>
+    </div>
+</div>
+
+<p>In the figure above, the dispatcher distributes records based on their shape. See <a href="http://www.enterpriseintegrationpatterns.com/ContentBasedRouter.html" target="_blank">here</a> for more detail about this pattern.</p>
+
+<p>In order to use the <code><em>ContentBasedRecordDispatcher</em></code>, you should specify the list of <code><em>java.util.concurrent.BlockingQueue</em></code> the dispatcher will distribute records to:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">//Create queues
+BlockingQueue&lt;Record&gt; queue1 = new ArrayBlockingQueue&lt;Record&gt;(10);
+BlockingQueue&lt;Record&gt; queue2 = new ArrayBlockingQueue&lt;Record&gt;(10);
+BlockingQueue&lt;Record&gt; defaultQueue = new ArrayBlockingQueue&lt;Record&gt;(10);
+
+
+//create a content based record dispatcher to dispatch records to previously created queues
+<strong>RecordDispatcher recordDispatcher = new ContentBasedRecordDispatcherBuilder()
+    .when(new CircleRecordPredicate()).dispatchTo(queue1)
+    .when(new SquareRecordPredicate()).dispatchTo(queue2)
+    .otherwise(defaultQueue)
+    .build();</strong>
+</code></pre>
+
+</div>
+
+        <p>The <code><em>Predicate</em></code> interface is used to select records that match a given criteria:</p>
+
+        <div class="bs-callout bs-callout-code">
+<pre><code class="java">public interface Predicate {
+    boolean matches(Record record);
+}</code></pre>
+        </div>
+
+        <p>You should implement this interface to specify on which criteria records will be selected.</p>
+        <p>The <code><em>ContentBasedRecordDispatcherBuilder</em></code> allows you to easily create
+        correctly configured <code><em>ContentBasedRecordDispatcher</em></code> instances. You can use the <code><em>when</em></code>,
+        <code><em>dispatchTo</em></code> and <code><em>otherwise</em></code> methods to specify which type of record should be
+        dispatched to which queue, and a default queue for which unmatched records will be dispatched to.</p>
+
+<p>Once you have dispatched records to the queues, you should be able to read them using the <code><em>QueueRecordReader</em></code> provided by Easy Batch.</p>
+
+<p>You can find a usage sample of this API <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/cbrd" target="_blank">here</a>.</p>
+
+<h2>2. Extension points</h2>
+
+        <h3>2.1 Workflow extension points</h3>
+
+        <p>Easy Batch's workflow is extensible. You can register listeners to do pre/post processing before and after each step.</p>
+        <p>There are two types of listeners:</p>
+        <ul>
+            <li><strong>Batch job listener</strong>: This is a listener for global batch events (start, end, exception). Several use cases can be implemented using this listener:
+                <ul>
+                    <li>Lock/Unlock working directory at job start/stop</li>
+                    <li>Archive log files at the end of Job</li>
+                    <li>Send job report by email at the end of execution</li>
+                    <li>etc</li>
+                </ul>
+            </li>
+            <li><strong>Batch step listeners</strong>: These are listeners bound to batch steps (before/after each step). Here are some use cases:
+                <ul>
+                    <li>Define transaction boundaries and commit interval in a transactional batch application</li>
+                    <li>Calculate the processing time for each step/record</li>
+                    <li>etc</li>
+                </ul>
+            </li>
+        </ul>
+
+        <p>The central piece of event handling in Easy Batch is the <code><em>EventManager</em></code> interface.
+        This is where all events handling logic is implemented.</p>
+
+    <p> By default, there is one local implementation included. It could also be implemented using JMS or any other distributed
+    technology to get to know of any event happened while the batch is being executed.<p>
+
+<div class="bs-callout bs-callout-warning">
+    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
+    <p>Please note that if you implement something like a global or singleton event handler you must ensure that
+        your implementation is thread safe.</p>
+</div>
+
+        <p>In order to provide your custom <code><em>EventManager</em></code> implementation, you can use the <code><em>EngineBuilder</em></code> API as follow:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.setEventManager(new MyEventManager())</strong>
+    .build();</code></pre>
+</div>
+
+        <h4>2.1.1 Batch job listener</h4>
+
+        <p>The batch job listener is defined in the <code><em>BatchProcessEventListener</em></code> interface:</p>
+
+        <div class="bs-callout bs-callout-code">
+<pre><code class="java">public interface BatchProcessEventListener {
+
+    public void beforeBatchStart();
+
+    public void afterBatchEnd();
+
+    public void onException(Throwable throwable);
+
+}</code></pre>
+        </div>
+
+        <p>You can implement this interface to provide custom init/shutdown hooks and register your implementation using the <code><em>EngineBuilder</em></code> API:</p>
+
+        <div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.addBatchProcessEventListener(new MyBatchProcessEventListener())</strong>
+    .build();</code></pre>
+        </div>
+
+        <h4>2.1.2 Batch step listeners</h4>
+
+        <p>Step listeners work the same as the global batch job event listener. For each step of the workflow, there is an interface that you can implement to
+        provide custom pre/post processing. The following table summarizes these listeners and how to use them:</p>
+
+<table class="table table-bordered table-condensed table-striped">
+    <thead>
+    <tr class="info">
+        <th>Step</th>
+        <th>Listener</th>
+        <th>How to use</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Record reading</td>
+        <td><code><em>RecordReaderEventListener</em></code></td>
+        <td>Register your custom implementation with <code><em>EngineBuilder.addRecordReaderEventListener</em></code> method</td>
+    </tr>
+    <tr>
+        <td>Record filtering</td>
+        <td><code><em>RecordFilterEventListener</em></code></td>
+        <td>Register your custom implementation with <code><em>EngineBuilder.addRecordFilterEventListener</em></code> method</td>
+    </tr>
+    <tr>
+        <td>Record mapping</td>
+        <td><code><em>RecordMapperEventListener</em></code></td>
+        <td>Register your custom implementation with <code><em>EngineBuilder.addRecordMapperEventListener</em></code> method</td>
+    </tr>
+    <tr>
+        <td>Record validation</td>
+        <td><code><em>RecordValidatorEventListener</em></code></td>
+        <td>Register your custom implementation with <code><em>EngineBuilder.addRecordValidatorEventListener</em></code> method</td>
+    </tr>
+    <tr>
+        <td>Record processing</td>
+        <td><code><em>RecordProcessorEventListener</em></code></td>
+        <td>Register your custom implementation with <code><em>EngineBuilder.addRecordProcessorEventListener</em></code> method</td>
+    </tr>
+    </tbody>
+</table>
+
+
+        <h3>2.2 Reporting extension points</h3>
+
+        <p>By default, when an exception occurs during record filtering, mapping, validation or processing, Easy Batch
+        logs the exception and updates report statistics. You may want to add custom behaviour of logging and reporting.
+        This is where the reporting and logging extension points come to the picture. You can find here the list of extension points and how to use them:</p>
+
+        <table class="table table-bordered table-condensed table-striped">
+            <thead>
+            <tr class="info">
+                <th>Extension point</th>
+                <th>Role</th>
+                <th>How to use</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><code><em>FilteredRecordHandler</em></code></td>
+                <td>Provide custom reporting of filtered records</td>
+                <td>Register your custom implementation with <code><em>EngineBuilder.filteredRecordHandler</em></code> method</td>
+            </tr>
+            <tr>
+                <td><code><em>IgnoredRecordHandler</em></code></td>
+                <td>Provide custom reporting of ignored records</td>
+                <td>Register your custom implementation with <code><em>EngineBuilder.ignoredRecordHandler</em></code> method</td>
+            </tr>
+            <tr>
+                <td><code><em>RejectedRecordHandler</em></code></td>
+                <td>Provide custom reporting of rejected records</td>
+                <td>Register your custom implementation with <code><em>EngineBuilder.rejectedRecordHandler</em></code> method</td>
+            </tr>
+            <tr>
+                <td><code><em>ErrorRecordHandler</em></code></td>
+                <td>Provide custom reporting of error records</td>
+                <td>Register your custom implementation with <code><em>EngineBuilder.errorRecordHandler</em></code> method</td>
+            </tr>
+            </tbody>
+        </table>
 
 <nav>
     <ul class="pager">
