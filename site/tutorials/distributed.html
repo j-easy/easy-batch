@@ -1,0 +1,147 @@
+---
+layout: template
+menu : tutorial
+title : Distributed jobs
+---
+
+<h2>1. Introduction</h2>
+
+              <p>In this tutorial, you will learn how to implement a custom <code><em>RecordDispatcher</em></code>
+                  in order to balance a heavy workload to a distributed army of worker engines deployed on a cluster of machines.</p>
+
+<p>Let's suppose you have an E-commerce web application and you would like to process orders
+    separately on different machines to support a high number of concurrent order placing requests.</p>
+
+<p>You have already setup a RESTful API listening to incoming http PUT requests to place orders:</p>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/distributed.jpg"/></p>
+    </div>
+</div>
+
+        <p>We will turn this REST endpoint into a <code><em>RecordDispatcher</em></code> that will distribute incoming
+        requests (or records) to several worker engines. Each worker has its own JMS queue in which order records will be placed
+        waiting to be processed asynchronously. So let's get started.</p>
+
+        <h2>2. Implementing the RecordDispatcher</h2>
+
+        <p>To keep the tutorial simple, we will use the JDK built-in HTTP server instead of a RESTful framework.</p>
+
+        <p>Here is the implementation of the <code><em>RecordDispatcher</em></code>:</p>
+
+        <div class="bs-callout bs-callout-code">
+<pre><code class="java">public class RestEndpointRecordDispatcher implements RecordDispatcher, HttpHandler {
+
+    private int recordNumber;
+
+    @Override
+    public void dispatchRecord(Record record) throws Exception {
+        JMSUtil.sendStringRecord((StringRecord)record);
+    }
+
+    @Override
+    public void handle(HttpExchange httpExchange) throws IOException {
+        //should check if request == PUT && path = /api/orders ..
+        InputStream requestBody = httpExchange.getRequestBody();
+        String body = IOUtils.toString(requestBody);
+        try {
+            dispatchRecord(new StringRecord(++recordNumber, body));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}</code></pre>
+        </div>
+
+        <p>This dispatcher will be used as a HTTP handler of the embedded server that will be used to run the tutorial.</p>
+
+        <p>Here, a single JMS queue is used for simplicity's sake, you should use multiple queues in a production use case
+        and dispatch records either in a round robin fashion, based on record content (for example, separate orders placed from a mobile device and orders placed from a web browser) or any other strategy.</p>
+
+        <p>The <code><em>JMSUtil</em></code> class is the same class used in the <a href="./jms.html">Asynchronous jobs tutorial</a> and is used to start an embedded JMS broker
+            and send JMS messages to the queue.</p>
+
+        <h2>4. Putting it all together</h2>
+
+        <p>To launch the tutorial, we will use the following class:</p>
+
+        <div class="bs-callout bs-callout-code">
+<pre><code class="java">public class RestEndpointRecordDispatcherLauncher {
+
+    public static void main(String[] args) throws Exception {
+
+        JMSUtil.initJMSFactory();
+
+        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+        server.createContext("/api/orders", new RestEndpointRecordDispatcher());
+        server.setExecutor(null); // create a default executor
+        server.start();
+
+        System.out.println("Record dispatcher started.\n" +
+        "Listening for incoming records on http://localhost:8000/api/orders\n" +
+        "Hit enter to stop the application...");
+
+        System.in.read();
+        server.stop(0);
+        JMSUtil.sendPoisonRecord();
+        System.exit(0);
+    }
+
+}</code></pre>
+        </div>
+
+        <p>This class starts an embedded HTTP server and registers the <code><em>RestEndpointRecordDispatcher</em></code>
+        to listen to incoming requests on <code><em>http://localhost:8000/api/orders</em></code>.</p>
+
+              <h2 id="3">3. Running the tutorial</h2>
+
+<p>To run the tutorial, proceed as follow:</p>
+<div class="bs-callout bs-callout-code">
+<pre><code>$>git clone https://github.com/benas/easy-batch.git
+$>cd easy-batch
+$>mvn install
+$>cd easybatch-tutorials
+$>mvn exec:java -PrunJmsTutorial
+</code></pre>
+</div>
+
+        <p>This will launch an embedded broker with a JMS queue to which records will be dispatched and processed by a worker engine.<p>
+
+        <p>Now, you should launch the REST endpoint serving as record dispatcher. Open a separate terminal and run the following command:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code>$>mvn exec:java -PrunDistributedTutorial
+</code></pre>
+</div>
+
+        <p>The REST endpoint should be listening to incoming requests on <code><em>http://localhost:8000/api/orders</em></code>:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code>Record dispatcher started.
+Listening for incoming records on http://localhost:8000/api/orders
+Hit enter to stop the application...</code></pre>
+</div>
+
+        <p>You can send arbitrary requests to <code><em>http://localhost:8000/api/orders</em></code> using
+            <code><em>curl -XPUT http://localhost:8000/api/orders -d '{orderData}'</em></code> for example
+        and see that the worker engine has processed the record.</p>
+
+<p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/distributed" target="_blank">here</a>.</p>
+
+              <h2 id="4">4. Summary</h2>
+
+        <p>In this tutorial, you have seen one possible way of load balancing the work across multiple worker engines.
+        Even though the tutorial uses a single worker engine on the local machine, you can configure the record dispatcher
+        with several JMS queues deployed on a cluster of distributed machines.</p>
+
+<h2 id="9">9. What's next?</h2>
+
+<p>That was all for advanced tutorials, you are now ready to develop any kind of batch application using Easy Batch.
+    Congratulations!</p>
+
+<nav>
+    <ul class="pager">
+        <li class="previous"><a href="./jms.html"><span aria-hidden="true">&larr;</span> Asynchronous jobs tutorial</a></li>
+    </ul>
+</nav>

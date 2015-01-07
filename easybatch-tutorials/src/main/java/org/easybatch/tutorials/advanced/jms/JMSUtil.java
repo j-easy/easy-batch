@@ -25,6 +25,7 @@
 package org.easybatch.tutorials.advanced.jms;
 
 import org.apache.activemq.broker.BrokerService;
+import org.easybatch.core.util.StringRecord;
 import org.easybatch.integration.jms.JmsPoisonMessage;
 
 import javax.jms.*;
@@ -74,6 +75,13 @@ public class JMSUtil {
         message.setText(jmsMessage);
         queueSender.send(message);
         System.out.println("Message '" + jmsMessage + "' sent to JMS queue");
+    }
+
+    public static void sendStringRecord(StringRecord stringRecord) throws JMSException {
+        TextMessage message = queueSession.createTextMessage();
+        message.setText(stringRecord.getPayload());
+        queueSender.send(message);
+        System.out.println("Message '" + stringRecord.getPayload() + "' sent to JMS queue");
     }
 
     public static void sendPoisonRecord() throws JMSException {
