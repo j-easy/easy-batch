@@ -37,11 +37,11 @@ package org.easybatch.core.api;
  *     <li>etc</li>
  * </ul>
  *
- * @param <T> The record's payload type.
+ * @param <P> The record's payload type.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface Record<T> {
+public interface Record<P> {
 
     /**
      * Return the physical record number in the data source.
@@ -53,6 +53,6 @@ public interface Record<T> {
      * Return the payload of the record.
      * @return the record's payload.
      */
-    T getPayload();
+    P getPayload();
 
 }
