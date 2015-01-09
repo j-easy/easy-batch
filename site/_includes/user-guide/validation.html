@@ -1,6 +1,7 @@
 <h2 id="5">5. Validating records</h2>
 
-<p>Validating input data is an essential step in every batch application. With Easy Batch, you can validate records by registering a <code>RecordValidator</code> implementation as follows:</p>
+<p>Validating input data is an essential step in every batch application.
+    With Easy Batch, you can validate records by registering a <code><em>RecordValidator</em></code> implementation as follows:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">Engine engine = new EngineBuilder()
@@ -8,12 +9,14 @@
     .build();</code></pre>
 </div>
 
-<p>Easy Batch comes with a built-in implementation of the <code>RecordValidator</code> interface using the <a href="http://jcp.org/en/jsr/detail?id=303" target="_blank">Bean Validation API (JSR 303)</a> reference implementation which is <a href="http://hibernate.org/validator/" target="_blank">Hibernate validator</a>.</p>
+<p>Easy Batch comes with a built-in implementation of the <code><em>RecordValidator</em></code> interface
+    using the <a href="http://jcp.org/en/jsr/detail?id=303" target="_blank">Bean Validation API</a> reference implementation which is <a href="http://hibernate.org/validator/" target="_blank">Hibernate validator</a>.</p>
 
 <p>In order to use the built-in <code><em>BeanValidationRecordValidator</em></code>, you should proceed as follows:
 
         <h4>5.1 Add maven dependency</h4>
-    <p>Add the <code>easybatch-validation</code> module to your dependencies:</p>
+
+    <p>Add the <code><em>easybatch-validation</em></code> module to your dependencies:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;dependency&gt;
@@ -29,7 +32,7 @@
 
         <h4>5.3 Register the validator</h4>
 
-    <p>Finally, register the <code>BeanValidationRecordValidator</code> using the <code><em>EngineBuilder</em></code> API:</p>
+    <p>Finally, register the <code><em>BeanValidationRecordValidator</em></code> using the <code><em>EngineBuilder</em></code> API:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">Engine engine = new EngineBuilder()

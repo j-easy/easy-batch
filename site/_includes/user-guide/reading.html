@@ -213,7 +213,18 @@
 
 <p>The <code><em>JmsQueueRecordReader</em></code> allows to read records from a JMS queue.</p>
 
-<p>When you create a <code><em>JmsQueueRecordReader</em></code>, you need to be provide the JMS queue connection factory and the queue to read data from:</p>
+<p>To use the <code><em>JmsQueueRecordReader</em></code>, first you need to add the <code><em>easybatch-jms</em></code> module to your dependencies:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-jms&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+
+
+<p>Then, you can register it with the <code><em>EngineBuilder</em></code>:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">Engine engine = new EngineBuilder()
@@ -222,12 +233,13 @@
 </code></pre>
 </div>
 
-<p>The <code><em>JmsQueueRecordReader</em></code> will produce <code><em>JmsRecord</em></code> instances with a <code><em>javax.jms.Message</em></code> as payload.</p>
+<p>When you create a <code><em>JmsQueueRecordReader</em></code>, you need to be provide the JMS queue connection factory and the queue to read data from.
+The <code><em>JmsQueueRecordReader</em></code> will produce <code><em>JmsRecord</em></code> instances with a <code><em>javax.jms.Message</em></code> as payload.</p>
 
 <h3>Other data source type readers</h3>
 
 <p>You have seen common data sources types and how you can read them using readers provided by Easy Batch.</p>
-        <p>Easy Batch provides also other less common readers that are summarized in the following table:</p>
+        <p>Easy Batch also provides other less common readers that are summarized in the following table:</p>
         <table class="table table-bordered table-condensed table-striped">
             <thead>
                 <tr class="info">

@@ -2,9 +2,10 @@
 
         <p>Easy Batch does not provide a feature to partition input data.
             Instead of that, it comes with the <code><em>RecordDispatcher</em></code> abstraction that allows you to
-        dispatch records to multiple worker engines.</p>
+        dispatch records to multiple worker engines in several ways according to your requirements.</p>
 
-        <p>There are two implementation of the <code><em>RecordDispatcher</em></code> interface.</p>
+        <p>There are 4 built-in implementations of the <code><em>RecordDispatcher</em></code> interface and you can
+            provide a custom record dispatching strategy as well.</p>
 
         <h3>1.1 The RoundRobinRecordDispatcher</h3>
         <p>The <code><em>RoundRobinRecordDispatcher</em></code> dispatches input records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues in a round robin fashion:</p>
@@ -74,9 +75,45 @@ BlockingQueue&lt;Record&gt; defaultQueue = new ArrayBlockingQueue&lt;Record&gt;(
         <code><em>dispatchTo</em></code> and <code><em>otherwise</em></code> methods to specify which type of record should be
         dispatched to which queue, and a default queue for which unmatched records will be dispatched to.</p>
 
-<p>Once you have dispatched records to the queues, you should be able to read them using the <code><em>QueueRecordReader</em></code> provided by Easy Batch.</p>
+<p>Once you have dispatched records to the queues, you should be able to read them using the <code><em>QueueRecordReader</em></code> provided by Easy Batch.
+    You can find a usage sample of this API <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/cbrd" target="_blank">here</a>.</p>
 
-<p>You can find a usage sample of this API <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/cbrd" target="_blank">here</a>.</p>
+<h3>1.3 The BroadcastRecordDispatcher</h3>
+<p>The <code><em>BroadcastRecordDispatcher</em></code> broadcasts input records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues:</p>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/brd.jpg"/></p>
+    </div>
+</div>
+
+<p>In order to use the <code><em>BroadcastRecordDispatcher</em></code>, you should specify the list of <code><em>java.util.concurrent.BlockingQueue</em></code> to which records should be broadcast to:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">//Create queues
+    BlockingQueue&lt;Record&gt; queue1 = new ArrayBlockingQueue&lt;Record&gt;(10);
+    BlockingQueue&lt;Record&gt; queue2 = new ArrayBlockingQueue&lt;Record&gt;(10);
+
+    //create a record broadcaster
+    <strong>BroadcastRecordDispatcher broadcastRecordDispatcher
+                = new BroadcastRecordDispatcher(Arrays.asList(queue1, queue2));</strong></code></pre>
+</div>
+
+<p>You can then read records from these queues using the <code><em>QueueRecordReader</em></code> provided by Easy Batch.</p>
+
+<h3>1.4 The RandomRecordDispatcher</h3>
+
+        <p>As its name implies, the <code><em>RandomRecordDispatcher</em></code> dispatches records randomly to one of the queues it operates on.</p>
+
+        <p>To use this dispatcher, you can proceed the same way as other dispatchers:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">//Create queues
+    BlockingQueue&lt;Record&gt; queue1 = new ArrayBlockingQueue&lt;Record&gt;(10);
+    BlockingQueue&lt;Record&gt; queue2 = new ArrayBlockingQueue&lt;Record&gt;(10);
+
+    <strong>RecordDispatcher recordDispatcher = new RandomRecordDispatcher(Arrays.asList(queue1, queue2));</strong></code></pre>
+</div>
 
 <h2>2. Extension points</h2>
 
@@ -206,22 +243,22 @@ BlockingQueue&lt;Record&gt; defaultQueue = new ArrayBlockingQueue&lt;Record&gt;(
             <tbody>
             <tr>
                 <td><code><em>FilteredRecordHandler</em></code></td>
-                <td>Provide custom reporting of filtered records</td>
+                <td>Provide custom reporting strategy for filtered records</td>
                 <td>Register your custom implementation with <code><em>EngineBuilder.filteredRecordHandler</em></code> method</td>
             </tr>
             <tr>
                 <td><code><em>IgnoredRecordHandler</em></code></td>
-                <td>Provide custom reporting of ignored records</td>
+                <td>Provide custom reporting strategy for ignored records</td>
                 <td>Register your custom implementation with <code><em>EngineBuilder.ignoredRecordHandler</em></code> method</td>
             </tr>
             <tr>
                 <td><code><em>RejectedRecordHandler</em></code></td>
-                <td>Provide custom reporting of rejected records</td>
+                <td>Provide custom reporting strategy for rejected records</td>
                 <td>Register your custom implementation with <code><em>EngineBuilder.rejectedRecordHandler</em></code> method</td>
             </tr>
             <tr>
                 <td><code><em>ErrorRecordHandler</em></code></td>
-                <td>Provide custom reporting of error records</td>
+                <td>Provide custom reporting strategy for error records</td>
                 <td>Register your custom implementation with <code><em>EngineBuilder.errorRecordHandler</em></code> method</td>
             </tr>
             </tbody>

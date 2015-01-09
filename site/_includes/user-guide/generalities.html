@@ -33,13 +33,13 @@
 
 <h2>2. The <em>Record</em> abstraction</h2>
 
-<p>Easy Batch streams data record by record from the data source, the unix way.
+<p>Easy Batch streams data record by record from the data source.
     Depending on the data source type, a record can be a line in a flat file, an tag in an Xml file, a record in a database table, a message in a queue, an object in a list, a file in a folder, etc.</p>
 
         <p>The <code><em>Record</em></code> interface is an abstraction of records as seen by Easy Batch:</p>
 
 <div class="bs-callout bs-callout-code">
-<pre><code class="java">public interface Record&lt;T&gt; {
+<pre><code class="java">public interface Record&lt;P&gt; {
 
     /**
     * Return the physical record number in the data source.
@@ -51,7 +51,7 @@
     * Return the payload of the record.
     * @return the record's payload.
     */
-    T getPayload();
+    P getPayload();
 
 }</code></pre>
 </div>
