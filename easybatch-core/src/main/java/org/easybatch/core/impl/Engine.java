@@ -71,6 +71,8 @@ public final class Engine implements Callable<Report> {
 
     private boolean strictMode;
 
+    private EventManager eventManager;
+
     Engine(final RecordReader recordReader,
            final List<RecordFilter> filterChain,
            final RecordMapper recordMapper,
@@ -97,12 +99,13 @@ public final class Engine implements Callable<Report> {
 
     @Override
     public Report call() {
-
+        eventManager.fireBeforeBatchStart();
         LOGGER.info("Initializing easy batch engine");
         try {
-            recordReader.open();
+            openRecordReader();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An exception occurred during opening data source reader", e);
+            eventManager.fireOnBatchException(e);
             report.setStatus(Status.ABORTED);
             report.setEndTime(System.currentTimeMillis());
             return report;
@@ -131,8 +134,10 @@ public final class Engine implements Callable<Report> {
                 //read next record
                 Record currentRecord;
                 try {
-                    currentRecord = recordReader.readNextRecord();
+                    currentRecord = readRecord();
                 } catch (Exception e) {
+                    eventManager.fireOnBatchException(e);
+                    eventManager.fireOnRecordReadException(e);
                     LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record", e);
                     report.setStatus(Status.ABORTED);
                     report.setEndTime(System.currentTimeMillis());
@@ -142,14 +147,8 @@ public final class Engine implements Callable<Report> {
                 currentRecordNumber = currentRecord.getNumber();
                 report.setCurrentRecordNumber(currentRecordNumber);
 
-                //apply filter chain on the record, stop on first applied filter
-                boolean filtered = false;
-                for (RecordFilter recordFilter : filterChain) {
-                    if (recordFilter.filterRecord(currentRecord)) {
-                        filtered = true;
-                        break;
-                    }
-                }
+                //apply filter chain on the record
+                boolean filtered = filterRecord(currentRecord);
                 if (filtered) {
                     report.addFilteredRecord(currentRecordNumber);
                     filteredRecordHandler.handle(currentRecord);
@@ -159,10 +158,11 @@ public final class Engine implements Callable<Report> {
                 //map record to domain object
                 Object typedRecord;
                 try {
-                    typedRecord = recordMapper.mapRecord(currentRecord);
+                    typedRecord = mapRecord(currentRecord);
                 } catch (Exception e) {
                     report.addIgnoredRecord(currentRecordNumber);
                     ignoredRecordHandler.handle(currentRecord, e);
+                    eventManager.fireOnBatchException(e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
@@ -172,17 +172,18 @@ public final class Engine implements Callable<Report> {
 
                 //validate record
                 try {
-                    Set<ValidationError> validationsErrors = recordValidator.validateRecord(typedRecord);
+                    Set<ValidationError> validationsErrors = validateRecord(typedRecord);
 
                     if (!validationsErrors.isEmpty()) {
                         report.addRejectedRecord(currentRecordNumber);
                         rejectedRecordHandler.handle(currentRecord, validationsErrors);
                         continue;
                     }
-                } catch(Exception e) {
+                } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + currentRecordNumber + " [" + currentRecord + "]", e);
                     report.addRejectedRecord(currentRecordNumber);
                     rejectedRecordHandler.handle(currentRecord, e);
+                    eventManager.fireOnBatchException(e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
                         break;
@@ -194,11 +195,12 @@ public final class Engine implements Callable<Report> {
                 boolean processingError = false;
                 for (RecordProcessor recordProcessor : processingPipeline) {
                     try {
-                        typedRecord = recordProcessor.processRecord(typedRecord);
+                        typedRecord = processRecord(recordProcessor, typedRecord);
                     } catch (Exception e) {
                         processingError = true;
                         report.addErrorRecord(currentRecordNumber);
                         errorRecordHandler.handle(currentRecord, e);
+                        eventManager.fireOnBatchException(e);
                         break;
                     }
                 }
@@ -209,7 +211,6 @@ public final class Engine implements Callable<Report> {
                     }
                 }
                 report.addSuccessRecord(currentRecordNumber);
-
             }
 
             report.setTotalRecords(processedRecordsNumber);
@@ -218,8 +219,8 @@ public final class Engine implements Callable<Report> {
 
             // The batch result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
             RecordProcessor lastRecordProcessor = processingPipeline.get(processingPipeline.size() - 1);
-            if(lastRecordProcessor instanceof ComputationalRecordProcessor) {
-                ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor)lastRecordProcessor;
+            if (lastRecordProcessor instanceof ComputationalRecordProcessor) {
+                ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor) lastRecordProcessor;
                 Object batchResult = computationalRecordProcessor.getComputationResult();
                 report.setBatchResult(batchResult);
             }
@@ -228,20 +229,77 @@ public final class Engine implements Callable<Report> {
             LOGGER.info("Shutting down easy batch engine");
             //close the record reader
             try {
-                recordReader.close();
+                closeRecordReader();
             } catch (Exception e) {
                 //at this point, there is no need to log a severe message and return null as batch report
                 LOGGER.log(Level.WARNING, "An exception occurred during closing data source reader", e);
+                eventManager.fireOnBatchException(e);
             }
         }
-
+        eventManager.fireAfterBatchEnd();
         return report;
 
     }
 
-    /*
-    * Configure JMX MBean
-    */
+    private void closeRecordReader() throws Exception {
+        eventManager.fireBeforeRecordReaderClose();
+        recordReader.close();
+        eventManager.fireAfterRecordReaderClose();
+    }
+
+    private void openRecordReader() throws Exception {
+        eventManager.fireBeforeReaderOpen();
+        recordReader.open();
+        eventManager.fireAfterReaderOpen();
+    }
+
+    @SuppressWarnings({"unchecked"})
+    private Object processRecord(RecordProcessor recordProcessor, Object typedRecord) throws Exception {
+        eventManager.fireBeforeProcessRecord(typedRecord);
+        Object result = recordProcessor.processRecord(typedRecord);
+        eventManager.fireAfterRecordProcessed(typedRecord, result);
+        return result;
+    }
+
+    @SuppressWarnings({"unchecked"})
+    private Set<ValidationError> validateRecord(Object typedRecord) {
+        eventManager.fireBeforeValidateRecord(typedRecord);
+        Set<ValidationError> validationsErrors = recordValidator.validateRecord(typedRecord);
+        eventManager.fireAfterValidateRecord(typedRecord, validationsErrors);
+        return validationsErrors;
+    }
+
+    private Object mapRecord(Record currentRecord) throws Exception {
+        Object typedRecord;
+        eventManager.fireBeforeMapRecord(currentRecord);
+        typedRecord = recordMapper.mapRecord(currentRecord);
+        eventManager.fireAfterMapRecord(currentRecord, typedRecord);
+        return typedRecord;
+    }
+
+    private boolean filterRecord(Record currentRecord) {
+        eventManager.fireBeforeFilterRecord(currentRecord);
+        boolean filtered = false;
+        for (RecordFilter recordFilter : filterChain) {
+            if (recordFilter.filterRecord(currentRecord)) {
+                filtered = true;
+                break;
+            }
+        }
+        eventManager.fireAfterFilterRecord(currentRecord, filtered);
+        return filtered;
+    }
+
+    private Record readRecord() throws Exception {
+        eventManager.fireBeforeRecordRead();
+        Record currentRecord = recordReader.readNextRecord();
+        eventManager.fireAfterRecordRead(currentRecord);
+        return currentRecord;
+    }
+
+    /**
+     * Configure JMX MBean
+     */
     private void configureJmxMBean() {
 
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
@@ -289,17 +347,24 @@ public final class Engine implements Callable<Report> {
     void setIgnoredRecordHandler(final IgnoredRecordHandler ignoredRecordHandler) {
         this.ignoredRecordHandler = ignoredRecordHandler;
     }
-    
+
     void setRejectedRecordHandler(final RejectedRecordHandler rejectedRecordHandler) {
         this.rejectedRecordHandler = rejectedRecordHandler;
     }
-    
+
     void setErrorRecordHandler(final ErrorRecordHandler errorRecordHandler) {
         this.errorRecordHandler = errorRecordHandler;
     }
-    
+
     void setStrictMode(final boolean strictMode) {
         this.strictMode = strictMode;
     }
 
+    void setEventManager(EventManager eventManager) {
+        this.eventManager = eventManager;
+    }
+
+    EventManager getEventManager() {
+        return eventManager;
+    }
 }

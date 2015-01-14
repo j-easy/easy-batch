@@ -25,6 +25,8 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
+import org.easybatch.core.api.event.global.BatchProcessEventListener;
+import org.easybatch.core.api.event.record.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,7 @@ public final class EngineBuilder {
         IgnoredRecordHandler ignoredRecordHandler = new NoOpIgnoredRecordHandler();
         RejectedRecordHandler rejectedRecordHandler = new NoOpRejectedRecordHandler();
         ErrorRecordHandler errorRecordHandler = new NoOpErrorRecordHandler();
+        EventManager eventManager = new LocalEventManager();
         engine = new Engine(
                         recordReader,
                         filterChain,
@@ -64,6 +67,7 @@ public final class EngineBuilder {
                         ignoredRecordHandler,
                         rejectedRecordHandler,
                         errorRecordHandler);
+        engine.setEventManager(eventManager);
     }
 
     /**
@@ -155,7 +159,7 @@ public final class EngineBuilder {
         engine.setErrorRecordHandler(errorRecordHandler);
         return this;
     }
-    
+
     /**
      * Enable strict mode : if true, then the execution will be aborted on first mapping, validating or processing error.
      * @param strictMode true if strict mode should be enabled
@@ -163,6 +167,96 @@ public final class EngineBuilder {
      */
     public EngineBuilder enableStrictMode(final boolean strictMode) {
         engine.setStrictMode(strictMode);
+        return this;
+    }
+
+    /**
+     * Register a batch process event listener.
+     * See {@link org.easybatch.core.api.event.global.BatchProcessEventListener} for available callback methods.
+     *
+     * @param eventListener The event listener to add.
+     * @return the engine builder
+     */
+    public EngineBuilder batchProcessEventListener(final BatchProcessEventListener eventListener) {
+        assert eventListener != null;
+        engine.getEventManager().addBatchProcessListener(eventListener);
+        return this;
+    }
+
+    /**
+     * Register a record reader event listener.
+     * See {@link org.easybatch.core.api.event.record.RecordReaderEventListener} for available callback methods.
+     *
+     * @param eventListener The record reader listener to add.
+     * @return the engine builder
+     */
+    public EngineBuilder recordReaderEventListener(final RecordReaderEventListener eventListener) {
+        assert eventListener != null;
+        engine.getEventManager().addRecordReaderEventListener(eventListener);
+        return this;
+    }
+
+    /**
+     * Register a record filter event listener.
+     * See {@link org.easybatch.core.api.event.record.RecordFilterEventListener} for available callback methods.
+     *
+     * @param eventListener The event listener to add.
+     * @return the engine builder
+     */
+    public EngineBuilder recordFilterEventListener(final RecordFilterEventListener eventListener) {
+        assert eventListener != null;
+        engine.getEventManager().addRecordFilterEventListener(eventListener);
+        return this;
+    }
+
+    /**
+     * Register a record mapper event listener.
+     * See {@link org.easybatch.core.api.event.record.RecordMapperEventListener} for available callback methods.
+     *
+     * @param eventListener The event listener to add.
+     * @return the engine builder
+     */
+    public EngineBuilder recordMapperEventListener(final RecordMapperEventListener eventListener) {
+        assert eventListener != null;
+        engine.getEventManager().addRecordMapperEventListener(eventListener);
+        return this;
+    }
+
+    /**
+     * Register a record validator event listener.
+     * See {@link org.easybatch.core.api.event.record.RecordValidatorEventListener} for available callback methods.
+     *
+     * @param eventListener The event listener to add.
+     * @return the engine builder
+     */
+    public EngineBuilder recordValidatorEventListener(final RecordValidatorEventListener eventListener) {
+        assert eventListener != null;
+        engine.getEventManager().addRecordValidatorEventListener(eventListener);
+        return this;
+    }
+
+    /**
+     * Register a record processor event listener.
+     * See {@link org.easybatch.core.api.event.record.RecordProcessorEventListener} for available callback methods.
+     *
+     * @param eventListener The event listener to add.
+     * @return the engine builder
+     */
+    public EngineBuilder recordProcessorEventListener(final RecordProcessorEventListener eventListener) {
+        assert eventListener != null;
+        engine.getEventManager().addRecordProcessorEventListener(eventListener);
+        return this;
+    }
+
+    /**
+     * Set the event manager.
+     *
+     * @param eventManager The event manager to use instead of the default {@link org.easybatch.core.impl.LocalEventManager}
+     * @return the engine builder
+     */
+    public EngineBuilder setEventManager(final EventManager eventManager) {
+        assert eventManager != null;
+        engine.setEventManager(eventManager);
         return this;
     }
 
