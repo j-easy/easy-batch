@@ -204,11 +204,9 @@ public final class Engine implements Callable<Report> {
                         break;
                     }
                 }
-                if (processingError) {
-                    if (strictMode) {
-                        LOGGER.info(STRICT_MODE_MESSAGE);
-                        break;
-                    }
+                if (processingError && strictMode) {
+                    LOGGER.info(STRICT_MODE_MESSAGE);
+                    break;
                 }
                 report.addSuccessRecord(currentRecordNumber);
             }
