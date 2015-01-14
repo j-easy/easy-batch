@@ -24,21 +24,38 @@
 
 package org.easybatch.tutorials.intermediate.load;
 
-import org.easybatch.core.api.RecordProcessor;
-import org.easybatch.tutorials.common.Tweet;
+import org.easybatch.core.api.event.record.RecordProcessorEventListener;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * Processor that inserts tweets in a database.<br/>
+ * A record processing event listener that handles database transactions.
+ *
+ * <strong>This implementation is kept simple for demonstration purpose. In production environment, you may define a
+ * commit interval to avoid performance issues of committing the transaction after each record insertion.</strong>
+ *
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class TweetLoader implements RecordProcessor<Tweet, Tweet> {
+public class TransactionProcessingEventListener implements RecordProcessorEventListener {
 
-    public Tweet processRecord(Tweet tweet) throws Exception {
+    private static final Logger LOGGER = Logger.getLogger(TweetLoader.class.getName());
 
-        DatabaseUtil.getCurrentSession().saveOrUpdate(tweet);
-        return tweet;
+    @Override
+    public void beforeProcessingRecord(Object record) {
+        DatabaseUtil.getCurrentSession().beginTransaction();
+    }
 
+    @Override
+    public void afterProcessingRecord(Object record, final Object processingResult) {
+        DatabaseUtil.getCurrentSession().getTransaction().commit();
+        LOGGER.log(Level.INFO, "Tweet {0} successfully persisted in the database", record);
+    }
+
+    @Override
+    public void onRecordProcessingException(Object record, Throwable throwable) {
+        DatabaseUtil.getCurrentSession().getTransaction().rollback();
     }
 
 }

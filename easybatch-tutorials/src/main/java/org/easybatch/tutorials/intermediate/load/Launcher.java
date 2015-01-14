@@ -43,27 +43,27 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        /*
-         * Start embedded database server
-         */
+        //load tweets from tweets.csv
+        File tweets = new File(args[0]);
+
+        //Start embedded database server
         DatabaseUtil.startEmbeddedDatabase();
         DatabaseUtil.initializeSessionFactory();
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
-                .reader(new FlatFileRecordReader(new File(args[0])))
+                .reader(new FlatFileRecordReader(tweets))
                 .filter(new HeaderRecordFilter())
                 .mapper(new DelimitedRecordMapper<Tweet>(Tweet.class, new String[]{"id", "user", "message"}))
                 .validator(new BeanValidationRecordValidator<Tweet>())
                 .processor(new TweetLoader())
+                .recordProcessorEventListener(new TransactionProcessingEventListener())
                 .build();
 
         // Run easy batch engine
         engine.call();
 
-        /*
-         * Dump tweet table to check inserted data
-         */
+        //Dump tweet table to check inserted data
         DatabaseUtil.closeSessionFactory();
         DatabaseUtil.dumpTweetTable();
 

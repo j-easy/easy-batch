@@ -78,58 +78,92 @@ title : Loading data in a database
     <h5>TweetLoader.java</h5>
 <pre><code class="java">public class TweetLoader implements RecordProcessor&lt;Tweet, Tweet&gt; {
 
-    private static final Logger LOGGER = Logger.getLogger(TweetLoader.class.getName());
-
     public Tweet processRecord(Tweet tweet) throws Exception {
-        DatabaseUtil.getCurrentSession().beginTransaction();
-        try {
-            DatabaseUtil.getCurrentSession().saveOrUpdate(tweet);
-            DatabaseUtil.getCurrentSession().getTransaction().commit();
-            LOGGER.log(Level.INFO, "Tweet {0} successfully persisted in the database", tweet);
-        } catch (HibernateException e) {
-            DatabaseUtil.getCurrentSession().getTransaction().rollback();
-            throw new Exception("A database exception occurred during tweet persisting.", e);
-        }
+
+        DatabaseUtil.getCurrentSession().saveOrUpdate(tweet);
         return tweet;
     }
 }</code></pre>
     </div>
 
+        <p>The <code><em>DatabaseUtil</em></code> class provides some utilities to facilitate the usage of hibernate APIs.
+            It is not shown here for simplicity's sake.</p>
+
+        <p>Now, we would like to start a transaction before processing the record, commit it if everything is ok and roll it back when an exception occurs.
+        You could write this transaction handling code directly in the <code><em>TweetLoader</em></code> above, but this would
+        pollute your business logic with technical code to handle transactions</p>
+        <p>In order to introduce cross cutting behavior into the processing workflow, Easy Batch provides listeners that
+        are fired before and after each step. In this case, we need a listener bound to the record processing step.
+        We can implement the <code><em>RecordProcessorEventListener</em></code> interface:</p>
+
+        <div class="bs-callout bs-callout-code">
+            <h5>TransactionProcessingEventListener.java</h5>
+<pre><code class="java">public class TransactionProcessingEventListener implements RecordProcessorEventListener {
+
+    private static final Logger LOGGER = Logger.getLogger(TweetLoader.class.getName());
+
+    @Override
+    public void beforeProcessingRecord(Object record) {
+        DatabaseUtil.getCurrentSession().beginTransaction();
+    }
+
+    @Override
+    public void afterProcessingRecord(Object record, final Object processingResult) {
+        DatabaseUtil.getCurrentSession().getTransaction().commit();
+        LOGGER.log(Level.INFO, "Tweet {0} successfully persisted in the database", record);
+    }
+
+    @Override
+    public void onRecordProcessingException(Object record, Throwable throwable) {
+        DatabaseUtil.getCurrentSession().getTransaction().rollback();
+    }
+}</code></pre>
+        </div>
+
+        <p>This listener will start, commit and rollback the transaction when needed.
+        This is a kind of aspect-oriented programming that allows you to benefit from separating business logic from
+        cross cutting concerns.</p>
+
 <div class="bs-callout bs-callout-danger">
     <h5><i class="fa fa-exclamation-triangle"></i> Heads up!</h5>
-    <p>This implementation is kept simple for demonstration purpose. In production use case, you should define a
+    <p>The implementation of <code><em>TransactionProcessingEventListener</em></code> is kept simple for demonstration purpose. In production use case, you should define a
         commit interval to avoid performance issues of committing the transaction after each record insertion.</p>
 </div>
 
-                <p>That's all, you can now run the application using the following class:</p>
+        <p>You should now register the new record processor and the transaction listener as follows:</p>
 
-<div class="bs-callout bs-callout-code">
+        <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        //Start embedded database server
-        DatabaseUtil.startEmbeddedDatabase();
-        DatabaseUtil.initializeSessionFactory();
+    //load tweets from tweets.csv
+    File tweets = new File(args[0]);
 
-        <strong>// Build a batch engine
-        Engine engine = new EngineBuilder()
-            .reader(new FlatFileRecordReader(new File(args[0])))
-            .filter(new HeaderRecordFilter())
-            .mapper(new DelimitedRecordMapper(Tweet.class, new String[]{"id", "user", "message"}))
-            .validator(new BeanValidationRecordValidator&lt;Tweet&gt;())
-            .processor(new TweetLoader())
-            .build();
+    //Start embedded database server
+    DatabaseUtil.startEmbeddedDatabase();
+    DatabaseUtil.initializeSessionFactory();
 
-        // Run easy batch engine
-        engine.call();</strong>
+    // Build a batch engine
+    Engine engine = new EngineBuilder()
+        .reader(new FlatFileRecordReader(tweets))
+        .filter(new HeaderRecordFilter())
+        .mapper(new DelimitedRecordMapper(Tweet.class, new String[]{"id", "user", "message"}))
+        .validator(new BeanValidationRecordValidator&lt;Tweet&gt;())
+        <strong>.processor(new TweetLoader())
+        .recordProcessorEventListener(new TransactionProcessingEventListener())</strong>
+        .build();
 
-        //Dump tweet table to check inserted data
-        DatabaseUtil.closeSessionFactory();
-        DatabaseUtil.dumpTweetTable();
+    // Run easy batch engine
+    engine.call();
+
+    //Dump tweet table to check inserted data
+    DatabaseUtil.closeSessionFactory();
+    DatabaseUtil.dumpTweetTable();
+
     }
 }</code></pre>
-</div>
+        </div>
 
                 <h2 id="3">3. Running the tutorial</h2>
 
