@@ -174,7 +174,7 @@ public interface EventManager {
      * Called before the record gets processed.
      * @param record The record to be processed.
      */
-    public void fireBeforeProcessRecord(final Object record);
+    public void fireBeforeProcessingRecord(final Object record);
 
     /**
      * Called after the processing is done.
@@ -184,5 +184,12 @@ public interface EventManager {
      * @param record The record that has been processed.
      * @param processResult The processing result, if any. This can be a null reference.
      */
-    public void fireAfterRecordProcessed(final Object record, final Object processResult);
+    public void fireAfterProcessingRecord(final Object record,  final Object processResult);
+
+    /**
+     * Called when an exception occurs during record processing
+     * @param record the current processed record
+     * @param throwable the exception occurred during record processing
+     */
+    public void fireOnRecordProcessingException(final Object record, final Throwable throwable);
 }

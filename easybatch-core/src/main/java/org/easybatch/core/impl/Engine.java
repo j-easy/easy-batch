@@ -201,6 +201,7 @@ public final class Engine implements Callable<Report> {
                         report.addErrorRecord(currentRecordNumber);
                         errorRecordHandler.handle(currentRecord, e);
                         eventManager.fireOnBatchException(e);
+                        eventManager.fireOnRecordProcessingException(typedRecord, e);
                         break;
                     }
                 }
@@ -253,10 +254,14 @@ public final class Engine implements Callable<Report> {
 
     @SuppressWarnings({"unchecked"})
     private Object processRecord(RecordProcessor recordProcessor, Object typedRecord) throws Exception {
-        eventManager.fireBeforeProcessRecord(typedRecord);
-        Object result = recordProcessor.processRecord(typedRecord);
-        eventManager.fireAfterRecordProcessed(typedRecord, result);
-        return result;
+        eventManager.fireBeforeProcessingRecord(typedRecord);
+        Object processedRecord = recordProcessor.processRecord(typedRecord);
+        Object processingResult = null;
+        if (recordProcessor instanceof ComputationalRecordProcessor) {
+            processingResult = ((ComputationalRecordProcessor) recordProcessor).getComputationResult();
+        }
+        eventManager.fireAfterProcessingRecord(processedRecord, processingResult);
+        return processedRecord;
     }
 
     @SuppressWarnings({"unchecked"})

@@ -185,16 +185,22 @@ public class LocalEventManager implements EventManager {
     }
 
     @Override
-    public void fireBeforeProcessRecord(Object record) {
+    public void fireBeforeProcessingRecord(Object record) {
         for (RecordProcessorEventListener eventListener : recordProcessorEventListeners) {
-            eventListener.beforeProcessRecord(record);
+            eventListener.beforeProcessingRecord(record);
         }
     }
 
     @Override
-    public void fireAfterRecordProcessed(Object record, Object processResult) {
+    public void fireAfterProcessingRecord(Object record,Object processingResult) {
         for (RecordProcessorEventListener eventListener : recordProcessorEventListeners) {
-            eventListener.afterRecordProcessed(record, processResult);
+            eventListener.afterProcessingRecord(record, processingResult);
+        }
+    }
+
+    public void fireOnRecordProcessingException(final Object record, final Throwable throwable) {
+        for (RecordProcessorEventListener eventListener : recordProcessorEventListeners) {
+            eventListener.onRecordProcessingException(record, throwable);
         }
     }
 }
