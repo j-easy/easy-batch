@@ -70,6 +70,7 @@
         <module>easybatch-spring</module>
         <module>easybatch-opencsv</module>
         <module>easybatch-jms</module>
+        <module>easybatch-spring-jdbc</module>
     </modules>
 
 
