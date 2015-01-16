@@ -22,14 +22,17 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.flatfile.test;
+package org.easybatch.flatfile.dsv;
 
+import org.easybatch.flatfile.FlatFileField;
 import org.easybatch.flatfile.FlatFileRecord;
 import org.easybatch.core.util.StringRecord;
-import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
+import org.easybatch.flatfile.Person;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -52,8 +55,12 @@ public class DelimitedRecordMapperTest {
         stringRecord = new StringRecord(1, "foo,bar,30,1990-12-12,true");
     }
 
+    /*
+     * Record parsing tests
+     */
+
     @Test(expected = Exception.class)
-    public void testRecordWellFormednessKO() throws Exception {
+    public void testIllFormedRecord() throws Exception {
         stringRecord = new StringRecord(1, "foo,bar,30,1990-12-12");// incorrect record size
         delimitedRecordMapper.parseRecord(stringRecord);
     }
@@ -114,27 +121,46 @@ public class DelimitedRecordMapperTest {
     }
 
     @Test
-    public void testFieldFilteringMapping() throws Exception {
+    public void testFieldSubsetMapping() throws Exception {
         delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class,
                 new Integer[]{1, 5},
                 new String[]{"firstName", "married"}
         );
-        assertNotNull(delimitedRecordMapper.parseRecord(stringRecord));
         FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(stringRecord);
+        assertNotNull(flatFileRecord);
         assertEquals(2, flatFileRecord.getFlatFileFields().size());
         assertEquals("foo",flatFileRecord.getFlatFileFields().get(0).getRawContent());
         assertEquals("true",flatFileRecord.getFlatFileFields().get(1).getRawContent());
     }
 
     private void validateRecord(final StringRecord stringRecord) throws Exception {
-        assertNotNull(delimitedRecordMapper.parseRecord(stringRecord));
         FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(stringRecord);
-        assertEquals(5, flatFileRecord.getFlatFileFields().size());
-        assertEquals("foo",flatFileRecord.getFlatFileFields().get(0).getRawContent());
-        assertEquals("bar",flatFileRecord.getFlatFileFields().get(1).getRawContent());
-        assertEquals("30",flatFileRecord.getFlatFileFields().get(2).getRawContent());
-        assertEquals("1990-12-12",flatFileRecord.getFlatFileFields().get(3).getRawContent());
-        assertEquals("true",flatFileRecord.getFlatFileFields().get(4).getRawContent());
+        assertNotNull(flatFileRecord);
+        List<FlatFileField> flatFileFields = flatFileRecord.getFlatFileFields();
+        assertEquals(5, flatFileFields.size());
+        assertEquals("foo", flatFileFields.get(0).getRawContent());
+        assertEquals("bar", flatFileFields.get(1).getRawContent());
+        assertEquals("30", flatFileFields.get(2).getRawContent());
+        assertEquals("1990-12-12", flatFileFields.get(3).getRawContent());
+        assertEquals("true", flatFileFields.get(4).getRawContent());
+    }
+
+     /*
+     * Record mapping tests
+     */
+
+    @Test
+    public void testFiledNamesConventionOverConfiguration() throws Exception {
+        delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class);
+
+        delimitedRecordMapper.parseRecord(new StringRecord(1, "firstName,lastName,age,birthDate,married"));
+        Person person = (Person) delimitedRecordMapper.mapRecord(stringRecord);
+        assertNotNull(person);
+        assertEquals("foo", person.getFirstName());
+        assertEquals("bar", person.getLastName());
+        assertEquals(30, person.getAge());
+        //assertEquals(new Date(), person.getBirthDate()); // TODO Fix when DateTypeConverterTest#whenInputValueIsLegalValue_ThenShouldReturnValidDate is fixed
+        assertEquals(true, person.isMarried());
     }
 
     @After

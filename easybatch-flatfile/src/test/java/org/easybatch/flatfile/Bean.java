@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.flatfile.test;
+package org.easybatch.flatfile;
 
 /**
  * Bean used for tests.

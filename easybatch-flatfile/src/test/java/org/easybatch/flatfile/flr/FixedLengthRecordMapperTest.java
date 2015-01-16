@@ -22,11 +22,11 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.flatfile.test;
+package org.easybatch.flatfile.flr;
 
 import org.easybatch.flatfile.FlatFileRecord;
 import org.easybatch.core.util.StringRecord;
-import org.easybatch.flatfile.flr.FixedLengthRecordMapper;
+import org.easybatch.flatfile.Bean;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +53,7 @@ public class FixedLengthRecordMapperTest {
     }
 
     @Test (expected = Exception.class)
-    public void testRecordWellFormednessKO() throws Exception {
+    public void testIllFormedRecord() throws Exception {
         stringRecord = new StringRecord(1, "aaaabbcccd"); // unexpected record size
         fixedLengthRecordMapper.parseRecord(stringRecord);
     }

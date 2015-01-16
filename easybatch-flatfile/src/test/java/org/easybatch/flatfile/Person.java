@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.flatfile.test;
+package org.easybatch.flatfile;
 
 import java.util.Date;
 
@@ -46,7 +46,7 @@ public class Person {
     /**
      * Default constructor needed by default mapper
      */
-    Person() {
+    public Person() {
     }
 
     public String getFirstName() {

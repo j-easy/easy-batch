@@ -31,6 +31,9 @@ import org.easybatch.flatfile.FlatFileField;
 import org.easybatch.flatfile.FlatFileRecord;
 import org.easybatch.core.converter.TypeConverter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Fixed Length Record to Object mapper implementation.
  *
@@ -53,6 +56,11 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
     private int[] fieldsOffsets;
 
     /**
+     * Array of field names.
+     */
+    private String[] fieldNames;
+
+    /**
      * Total number of characters expected based on declared fields length
      */
     private int recordExpectedLength;
@@ -61,11 +69,12 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
      * Constructs a FixedLengthRecordMapper instance.
      * @param recordClass the target domain object class
      * @param fieldsLength an array of fields length in the same order in the FLR flat file.
-     * @param fieldsMapping a String array representing fields name in the same order in the FLR flat file.
+     * @param fieldNames a String array representing fields name in the same order in the FLR flat file.
      */
-    public FixedLengthRecordMapper(Class<? extends T> recordClass, int[] fieldsLength, String[] fieldsMapping) {
+    public FixedLengthRecordMapper(Class<? extends T> recordClass, int[] fieldsLength, String[] fieldNames) {
         this.fieldsLength = fieldsLength.clone();
-        objectMapper = new ObjectMapper<T>(recordClass, fieldsMapping);
+        this.fieldNames = fieldNames.clone();
+        objectMapper = new ObjectMapper<T>(recordClass);
         for (int fieldLength : fieldsLength) {
             recordExpectedLength += fieldLength;
         }
@@ -76,14 +85,16 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
     public T mapRecord(final Record record) throws Exception {
 
         FlatFileRecord flatFileRecord = parseRecord(record);
-        String[] fieldsContents = new String[flatFileRecord.getFlatFileFields().size()];
+        Map<String, String> fieldsContents = new HashMap<String, String>();
         for (FlatFileField flatFileField : flatFileRecord.getFlatFileFields()) {
-            fieldsContents[flatFileField.getIndex()] = flatFileField.getRawContent();
+            String fieldName = fieldNames[flatFileField.getIndex()];
+            String fieldValue = flatFileField.getRawContent();
+            fieldsContents.put(fieldName, fieldValue);
         }
         return objectMapper.mapObject(fieldsContents);
     }
 
-    public FlatFileRecord parseRecord(final Record record) throws Exception {
+    FlatFileRecord parseRecord(final Record record) throws Exception {
 
         String payload = (String) record.getPayload();
         int recordLength = payload.length();

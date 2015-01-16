@@ -41,7 +41,7 @@ public class Person {
 
     protected Date birthDate;
 
-    protected boolean isMarried;
+    protected boolean married;
 
     public String getFirstName() {
         return firstName;
@@ -76,11 +76,11 @@ public class Person {
     }
 
     public boolean isMarried() {
-        return isMarried;
+        return married;
     }
 
-    public void setIsMarried(boolean isMarried) {
-        this.isMarried = isMarried;
+    public void setMarried(boolean married) {
+        this.married = married;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class Person {
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", age=").append(age);
         sb.append(", birthDate=").append(birthDate);
-        sb.append(", isMarried=").append(isMarried);
+        sb.append(", isMarried=").append(married);
         sb.append('}');
         return sb.toString();
     }

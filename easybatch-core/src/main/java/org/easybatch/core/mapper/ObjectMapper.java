@@ -60,14 +60,9 @@ public class ObjectMapper<T> {
     private Class<? extends T> recordClass;
 
     /**
-     * An array of methods holding setters that will be used to populate the returned instance of the domain object.
+     * A map holding setter methods for each field.
      */
-    private Method[] recordClassSetters;
-
-    /**
-     * An array of the names of the properties of the domain object in the same order in which they appear in the record.
-     */
-    private String[] headersMapping;
+    private Map<String, Method> setters;
 
     /**
      * Type converters map.
@@ -77,37 +72,10 @@ public class ObjectMapper<T> {
     /**
      * Construct an object mapper.
      * @param recordClass the target object type
-     * @param headersMapping field names array
-     */
-    public ObjectMapper(final Class<? extends T> recordClass, final String[] headersMapping) {
-        this(recordClass);
-        this.headersMapping = headersMapping.clone();
-        initializeSetters();
-    }
-
-    /**
-     * Construct an object mapper.
-     * @param recordClass the target object type
      */
     public ObjectMapper(final Class<? extends T> recordClass) {
-        initTypeConverters();
         this.recordClass = recordClass;
-    }
-
-    /**
-     * Getter for headers mapping.
-     * @return headers mapping
-     */
-    public String[] getHeadersMapping() {
-        return headersMapping;
-    }
-
-    /**
-     * Setter for header mapping.
-     * @param headersMapping headers mapping to set
-     */
-    public void setHeadersMapping(String[] headersMapping) {
-        this.headersMapping = headersMapping.clone();
+        initTypeConverters();
         initializeSetters();
     }
 
@@ -115,25 +83,15 @@ public class ObjectMapper<T> {
      * Initialize setters methods array from headers mapping.
      */
     private void initializeSetters() {
-        recordClassSetters = new Method[headersMapping.length];
-
+        setters = new HashMap<String, Method>();
         try {
             BeanInfo beanInfo = Introspector.getBeanInfo(recordClass);
             PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-
-            // Initialize setters that will be used to populate the returned instance.
-            for (int i = 0; i < headersMapping.length; i++) {
-                for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-                    if (propertyDescriptor.getName().equalsIgnoreCase(headersMapping[i])) {
-                        recordClassSetters[i] = propertyDescriptor.getWriteMethod();
-                    }
-                }
-                if (recordClassSetters[i] == null) {
-                    throw new RuntimeException("Unable to find a setter for property '" + headersMapping[i] +
-                            "' of type '" + recordClass.getName() +
-                            "'. Please check that this property exist and that a setter is provided.");
-                }
+            for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+                setters.put(propertyDescriptor.getName(), propertyDescriptor.getWriteMethod());
             }
+            //exclude property "class"
+            setters.remove("class");
         } catch (IntrospectionException e) {
             LOGGER.log(Level.SEVERE, "Unable to introspect target type " + recordClass.getName(), e);
             throw new RuntimeException(e);
@@ -141,38 +99,40 @@ public class ObjectMapper<T> {
     }
 
     /**
-     * Map a list of field contents to fields of the target object type.
-     * @param fieldsContents fields content values
+     * Map a values to fields of the target object type.
+     *
+     * @param values fields values
      * @return A populated instance of the target type.
-     * @throws Exception thrown if field contents cannot be mapped to target object fields
+     * @throws Exception thrown if values cannot be mapped to target object fields
      */
-    public T mapObject(final String[] fieldsContents) throws Exception {
+    public T mapObject(final Map<String, String> values) throws Exception {
 
         T result = recordClass.newInstance();
 
         // for each field
-        for (int index = 0; index < recordClassSetters.length; index++) {
+        for (String field : setters.keySet()) {
 
-            //get field content and index
-            String content = fieldsContents[index];
+            //get field raw value
+            String value = values.get(field);
 
             //convert the String raw value to the field type
             Object typedValue = null;
-            Class<?> type = recordClassSetters[index].getParameterTypes()[0];
+            Class<?> type = setters.get(field).getParameterTypes()[0];
             TypeConverter typeConverter = typeConverters.get(type);
             if (typeConverter != null) {
                 try {
-                    typedValue = typeConverter.convert(content);
+                    typedValue = typeConverter.convert(value);
                 } catch (Exception e) {
-                    throw new Exception("Unable to convert '" + content + "' to type " + type + " for field " + headersMapping[index], e);
+                    throw new Exception("Unable to convert '" + value + "' to type " + type + " for field " + field, e);
                 }
             } else {
-                LOGGER.log(Level.WARNING, "Type conversion not supported for type {0}, field {1} will be set to null (if object type) or default value (if primitive type)", new Object[]{type, headersMapping[index]});
+                LOGGER.log(Level.WARNING,
+                           "Type conversion not supported for type {0}, field {1} will be set to null (if object type) or default value (if primitive type)",
+                            new Object[]{type, field});
             }
 
             //set the typed value to the object field
-            recordClassSetters[index].invoke(result, typedValue);
-
+            setters.get(field).invoke(result, typedValue);
         }
 
         return result;

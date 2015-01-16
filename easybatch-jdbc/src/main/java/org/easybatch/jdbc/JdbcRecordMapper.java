@@ -30,6 +30,8 @@ import org.easybatch.core.converter.TypeConverter;
 import org.easybatch.core.mapper.ObjectMapper;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A {@link org.easybatch.core.api.RecordMapper} that maps database rows to domain objects.
@@ -54,36 +56,18 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
         objectMapper = new ObjectMapper<T>(recordClass);
     }
 
-    /**
-     * Constructs a JdbcRecordMapper instance.
-     * @param recordClass the target domain object class
-     * @param fieldsMapping a String array representing fields name of the target object in the same order as in the jdbc record.
-     */
-    public JdbcRecordMapper(final Class<? extends T> recordClass, final String[] fieldsMapping) {
-        objectMapper = new ObjectMapper<T>(recordClass, fieldsMapping);
-    }
-
     @Override
     public T mapRecord(final Record record) throws Exception {
+
         JdbcRecord jdbcRecord = (JdbcRecord) record;
         ResultSet resultSet = jdbcRecord.getPayload();
         int columnCount = resultSet.getMetaData().getColumnCount();
 
-        // if fields mapping is not specified, retrieve it from the result set meta data (done only once)
-        if (objectMapper.getHeadersMapping() == null) {
-            String[] fieldsMapping = new String[columnCount];
-            for (int i = 1; i < columnCount + 1; i++) {
-                fieldsMapping[i - 1] = resultSet.getMetaData().getColumnLabel(i).toLowerCase();
-            }
-            objectMapper.setHeadersMapping(fieldsMapping);
-        }
-
-        // get result set data and map it to domain object instance
-        String[] fieldsContents = new String[columnCount];
+        Map<String, String> values = new HashMap<String, String>();
         for (int i = 1; i < columnCount + 1; i++) {
-            fieldsContents[i - 1] = resultSet.getString(i);
+            values.put(resultSet.getMetaData().getColumnLabel(i).toLowerCase(), resultSet.getString(i));
         }
-        return objectMapper.mapObject(fieldsContents);
+        return objectMapper.mapObject(values);
     }
 
     /**

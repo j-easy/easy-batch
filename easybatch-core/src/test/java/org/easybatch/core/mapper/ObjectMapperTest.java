@@ -29,6 +29,8 @@ import org.easybatch.core.beans.Person;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -41,13 +43,17 @@ public class ObjectMapperTest {
     @Test
     public void whenValuesAreValid_ThenTheMappedObjectShouldBeCorrectlyPopulated() throws Exception {
 
-        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class,
-                new String[]{"firstName", "lastName", "age", "birthDate", "isMarried"});
+        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class);
 
         // input values
-        String[] fields = new String[]{"foo", "bar", "30", "1990-12-12", "true"};
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("firstName", "foo");
+        values.put("lastName", "bar");
+        values.put("age", "30");
+        values.put("birthDate", "1990-12-12");
+        values.put("married", "true");
 
-        Person person = mapper.mapObject(fields);
+        Person person = mapper.mapObject(values);
 
         // person bean must be not null
         assertThat(person).isNotNull();
@@ -63,14 +69,19 @@ public class ObjectMapperTest {
     @Test
     public void whenValuesAreValid_ThenInheritedFieldsOfTheMappedObjectShouldBeCorrectlyPopulated() throws Exception {
 
-        ObjectMapper<ExtendedPerson> mapper = new ObjectMapper<ExtendedPerson>(ExtendedPerson.class,
-                new String[]{"firstName", "lastName", "age", "birthDate", "isMarried", "nickName"});
+        ObjectMapper<ExtendedPerson> mapper = new ObjectMapper<ExtendedPerson>(ExtendedPerson.class);
 
         // input values
-        String[] fields = new String[]{"foo", "bar", "30", "1990-12-12", "true", "FB"};
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("firstName", "foo");
+        values.put("lastName", "bar");
+        values.put("age", "30");
+        values.put("birthDate", "1990-12-12");
+        values.put("married", "true");
+        values.put("nickName", "FB");
 
         // map record to extended person bean
-        ExtendedPerson extendedPerson = mapper.mapObject(fields);
+        ExtendedPerson extendedPerson = mapper.mapObject(values);
 
         // extended person bean must be not null
         assertThat(extendedPerson).isNotNull();

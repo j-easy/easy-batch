@@ -22,8 +22,10 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.flatfile.test;
+package org.easybatch.flatfile;
 
+import org.easybatch.flatfile.dsv.DelimitedRecordMapperTest;
+import org.easybatch.flatfile.flr.FixedLengthRecordMapperTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
