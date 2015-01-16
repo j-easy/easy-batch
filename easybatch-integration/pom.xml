@@ -74,6 +74,7 @@
         <module>easybatch-apache-commons-csv</module>
         <module>easybatch-gson</module>
         <module>easybatch-xstream</module>
+        <module>easybatch-jackson</module>
     </modules>
 
 
