@@ -159,7 +159,7 @@ public class DelimitedRecordMapperTest {
         assertEquals("foo", person.getFirstName());
         assertEquals("bar", person.getLastName());
         assertEquals(30, person.getAge());
-        //assertEquals(new Date(), person.getBirthDate()); // TODO Fix when DateTypeConverterTest#whenInputValueIsLegalValue_ThenShouldReturnValidDate is fixed
+        assertEquals(java.sql.Date.valueOf("1990-12-12"), person.getBirthDate());
         assertEquals(true, person.isMarried());
     }
 

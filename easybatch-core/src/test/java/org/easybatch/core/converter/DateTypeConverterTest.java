@@ -25,10 +25,8 @@
 package org.easybatch.core.converter;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -45,14 +43,12 @@ public class DateTypeConverterTest extends BaseConverterTest<Date> {
         converter = new DateTypeConverter();
     }
 
-    @Ignore("todo: fix problem with date comparison")
     @Test
     public void whenInputValueIsLegalValue_ThenShouldReturnValidDate() {
-        Date convertedDate = converter.convert("2015-01-01 00:00:00");
+        String date = "2015-01-01";
+        Date convertedDate = converter.convert(date);
         assertThat(convertedDate).isNotNull();
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2015, Calendar.JANUARY, 1, 0, 0, 0);
-        Date expectedDate = calendar.getTime();
+        Date expectedDate = java.sql.Date.valueOf(date);
         assertThat(convertedDate.getTime()).isEqualTo(expectedDate.getTime());
     }
 
