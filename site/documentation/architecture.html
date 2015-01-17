@@ -6,7 +6,7 @@ title : Architecture
 
               <h2 id="1" >1. Framework overview</h2>
 
-        <p>This section will give you high level and detailed views of Easy Batch internals.</p>
+        <p>This section will give you high level as well as a detailed view of Easy Batch's internals.</p>
 
         <h3>1.1 Macroscopic view</h3>
 
@@ -19,8 +19,8 @@ title : Architecture
 </div>
 
         <p>Easy Batch is all about processing a data source in batch mode. You can configure its behavior in many ways.</p>
-        <p>At the end of execution, the engine gives you a report with metrics and statistics as well as a detailed log file
-        about the job run.</p>
+        <p>At the end of execution, the engine gives you a report with several metrics and statistics as well as a detailed log file
+        about the job execution.</p>
 
         <h3>1.2 Mesoscopic view</h3>
 
@@ -53,7 +53,7 @@ title : Architecture
     </div>
 </div>
 
-              <p>The main components are:</p>
+              <p>Easy Batch processes data record by record. Depending on the data source type, a record can be a line in a flat file, a row in database, a tag in a XML file, a file in a folder, etc. The main components of the processing engine are:</p>
               <ul>
                   <li>Record Reader : reads records <em>sequentially</em> from the data source</li>
                   <li>Record Filter chain : a chain of filters to skip undesired records from being processed</li>

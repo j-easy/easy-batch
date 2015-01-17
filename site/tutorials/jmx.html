@@ -33,6 +33,7 @@ title : Job monitoring with JMX
                   The main difference is that you will build a new slow processor to simulate long running processing:</p>
 
       <div class="bs-callout bs-callout-code">
+          <h5>TweetSlowProcessor.java</h5>
 <pre><code class="java">
     public class TweetSlowProcessor implements RecordProcessor&lt;StringRecord, StringRecord&gt; {
 

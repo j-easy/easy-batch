@@ -5,7 +5,13 @@
         dispatch records to multiple worker engines in several ways according to your requirements.</p>
 
         <p>There are 4 built-in implementations of the <code><em>RecordDispatcher</em></code> interface and you can
-            provide a custom record dispatching strategy as well.</p>
+            provide a custom record dispatching strategy as well:</p>
+
+<div class="row">
+    <div class="col-md-12">
+        <p class="pull-center"><img class="ebi" src="../img/eb/dispatcher-uml.jpg"/></p>
+    </div>
+</div>
 
         <h3>1.1 The RoundRobinRecordDispatcher</h3>
         <p>The <code><em>RoundRobinRecordDispatcher</em></code> dispatches input records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues in a round robin fashion:</p>
@@ -20,8 +26,8 @@
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">//Create queues
-BlockingQueue&lt;Record&gt; queue1 = new ArrayBlockingQueue&lt;Record&gt;(10);
-BlockingQueue&lt;Record&gt; queue2 = new ArrayBlockingQueue&lt;Record&gt;(10);
+BlockingQueue&lt;Record&gt; queue1 = new LinkedBlockingQueue&lt;Record&gt;();
+BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
 
 //create a record dispatcher to dispatch records to queues
 <strong>RecordDispatcher recordDispatcher = new RoundRobinRecordDispatcher(Arrays.asList(queue1, queue2));</strong></code></pre>
@@ -46,9 +52,9 @@ BlockingQueue&lt;Record&gt; queue2 = new ArrayBlockingQueue&lt;Record&gt;(10);
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">//Create queues
-BlockingQueue&lt;Record&gt; queue1 = new ArrayBlockingQueue&lt;Record&gt;(10);
-BlockingQueue&lt;Record&gt; queue2 = new ArrayBlockingQueue&lt;Record&gt;(10);
-BlockingQueue&lt;Record&gt; defaultQueue = new ArrayBlockingQueue&lt;Record&gt;(10);
+BlockingQueue&lt;Record&gt; queue1 = new LinkedBlockingQueue&lt;Record&gt;();
+BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
+BlockingQueue&lt;Record&gt; defaultQueue = new LinkedBlockingQueue&lt;Record&gt;();
 
 
 //create a content based record dispatcher to dispatch records to previously created queues
@@ -73,7 +79,7 @@ BlockingQueue&lt;Record&gt; defaultQueue = new ArrayBlockingQueue&lt;Record&gt;(
         <p>The <code><em>ContentBasedRecordDispatcherBuilder</em></code> allows you to easily create
         correctly configured <code><em>ContentBasedRecordDispatcher</em></code> instances. You can use the <code><em>when</em></code>,
         <code><em>dispatchTo</em></code> and <code><em>otherwise</em></code> methods to specify which type of record should be
-        dispatched to which queue, and a default queue for which unmatched records will be dispatched to.</p>
+        dispatched to which queue, and a default queue to which unmatched records will be dispatched.</p>
 
 <p>Once you have dispatched records to the queues, you should be able to read them using the <code><em>QueueRecordReader</em></code> provided by Easy Batch.
     You can find a usage sample of this API <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/cbrd" target="_blank">here</a>.</p>
@@ -87,12 +93,13 @@ BlockingQueue&lt;Record&gt; defaultQueue = new ArrayBlockingQueue&lt;Record&gt;(
     </div>
 </div>
 
-<p>In order to use the <code><em>BroadcastRecordDispatcher</em></code>, you should specify the list of <code><em>java.util.concurrent.BlockingQueue</em></code> to which records should be broadcast to:</p>
+<p>In order to use the <code><em>BroadcastRecordDispatcher</em></code>, you should specify the list of
+    <code><em>java.util.concurrent.BlockingQueue</em></code> to which records should be broadcast:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">//Create queues
-    BlockingQueue&lt;Record&gt; queue1 = new ArrayBlockingQueue&lt;Record&gt;(10);
-    BlockingQueue&lt;Record&gt; queue2 = new ArrayBlockingQueue&lt;Record&gt;(10);
+    BlockingQueue&lt;Record&gt; queue1 = new LinkedBlockingQueue&lt;Record&gt;();
+    BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
 
     //create a record broadcaster
     <strong>BroadcastRecordDispatcher broadcastRecordDispatcher
@@ -109,8 +116,8 @@ BlockingQueue&lt;Record&gt; defaultQueue = new ArrayBlockingQueue&lt;Record&gt;(
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">//Create queues
-    BlockingQueue&lt;Record&gt; queue1 = new ArrayBlockingQueue&lt;Record&gt;(10);
-    BlockingQueue&lt;Record&gt; queue2 = new ArrayBlockingQueue&lt;Record&gt;(10);
+    BlockingQueue&lt;Record&gt; queue1 = new LinkedBlockingQueue&lt;Record&gt;();
+    BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
 
     <strong>RecordDispatcher recordDispatcher = new RandomRecordDispatcher(Arrays.asList(queue1, queue2));</strong></code></pre>
 </div>
