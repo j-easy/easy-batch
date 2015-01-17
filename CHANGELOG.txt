@@ -9,26 +9,26 @@ Changes in version 3.0.0 (2015-01-31)
 * Introduced the filter chain in the framework's core
 * Added pre/post processing before/after each step of the workflow: PR #35
 * Added custom ignored/rejected/error record handlers: PR #34
-* Added support for JMS
-* Added support for JSON
-* Added integration module with OpenCSV, Apache commons CSV, Apache bindy and Super CSV
-* Added integration module with Xstream
-* Added integration module with Jackson and Gson
-* Added integration module with Spring JDBC
-* Added the RecordDispatcher, RoundRobinRecordDispatcher and ContentBasedRecordDispatcher APIs for more efficient parallel processing
+* Added support for reading data from a JMS queue
+* Added support for reading data from a JSON data source
+* Added integration module with OpenCSV and Apache commons CSV for flat file parsing
+* Added integration module with Xstream for Xml -> Object mapping
+* Added integration module with Jackson and Gson for Json -> Object mapping
+* Added integration module with Spring JDBC for ResultSet -> Object mapping
+* Added the RecordDispatcher API with 4 convenient implementations for more efficient parallel processing
 * Added the QueueRecordReader API to read data from a BlockingQueue
 * Added the ListRecordReader API to read data from a List
-* Added report Status enumeration for reporting
+* Added Status enumeration to report batch execution final status
 * Added the HeaderRecordFilter, PoisonRecordFilter and GrepFilter utility filters
 * Added the GenericRecord API
-* Added convenient PoisonRecordFilter
+* Added convenient PoisonRecordFilter to filter poison records
+* Refactored the Builder API with more meaningful method names
 * Renamed the ReportAggregator interface with ReportMerger
 * Removed 'EasyBatch' prefix from all public APIs
 * Fixed issue #32 : Missing placeHolder value when generating an EasyBatchReport
 * Improved test coverage
-* Improved tutorials to be more readable and understandable
+* Improved tutorials
 * Updated documentation and Javadoc
-* Refactored the Builder API with more meaningful method names
 
 Changes in version 2.2.0 (2014-06-08)
 -------------------------------------
