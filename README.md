@@ -34,8 +34,8 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 - [Develop a Java batch application in less than 5 minutes using Easy Batch (in french) ](http://benassi.developpez.com/tutoriels/java/developper-batch-easybatch-5-minutes/)
 
 ### Blog posts
-- [How I reduced my Java batch application’s code by 80% using Easy Batch](http://mahmoudbenhassine.com/2014/01/21/how-i-reduced-my-java-batch-applications-code-by-80-using-easy-batch/)
-- [Easy Batch vs Spring Batch : a Hello World comparison](http://mahmoudbenhassine.wordpress.com/2014/03/03/spring-batch-vs-easy-batch-a-hello-world-comparison/)
+- [How I reduced my Java batch application’s code by 80% using Easy Batch](http://blog.mahmoud-benhassine.fr/2014/01/21/how-i-reduced-my-java-app-code-by-80%25-using-easy-batch.html)
+- [Easy Batch vs Spring Batch : a Hello World comparison](http://blog.mahmoud-benhassine.fr/2014/03/03/spring-batch-vs-easy-batch:-a-hello-world-comparison.html)
 
 ## Current version
 
@@ -67,6 +67,6 @@ To report issues, please use the [issue tracker](https://github.com/benas/easy-b
 
 You can contribute to the project with pull requests on GitHub, your are welcome.
 
-For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or chat with the team on [Gitter](https://gitter.im/benas/easy-batch).
+If you believe you found a bug, please consider sending a pull request with a JUnit test that fails.
 
-Many thanks upfront!
+For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or chat with the team on [Gitter](https://gitter.im/benas/easy-batch).
