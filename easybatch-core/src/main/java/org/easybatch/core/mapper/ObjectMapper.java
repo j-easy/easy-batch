@@ -164,6 +164,8 @@ public class ObjectMapper<T> {
         typeConverters.put(Short.class, new ShortTypeConverter());
         typeConverters.put(Short.TYPE, new ShortTypeConverter());
         typeConverters.put(java.util.Date.class, new DateTypeConverter());
+        typeConverters.put(java.util.Calendar.class, new GregorianCalendarTypeConverter());
+        typeConverters.put(java.util.GregorianCalendar.class, new GregorianCalendarTypeConverter());
         typeConverters.put(java.sql.Date.class, new SqlDateTypeConverter());
         typeConverters.put(java.sql.Time.class, new SqlTimeTypeConverter());
         typeConverters.put(java.sql.Timestamp.class, new SqlTimestampTypeConverter());
