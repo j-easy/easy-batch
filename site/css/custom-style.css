@@ -74,6 +74,65 @@ code {
     height: auto;
 }
 
+ul.list-lg li {
+    border: 1px solid #eee;
+    margin-bottom: -1px;
+
+}
+
+ul.list-lg li.sidebar-separator {
+    border: 1px solid #f5f5f5;
+    margin-bottom: -1px;
+    text-transform: uppercase;
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+ul.list-lg li.sidebar-separator:hover {
+    background-color: #f5f5f5;
+    border: 1px solid #f5f5f5;
+    margin-bottom: -1px;
+    cursor: default;
+}
+
+ul.list-lg >li:first-child {
+    border: 1px solid #eee;
+    margin-bottom: -1px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+ul.list-lg >li:last-child {
+    border: 1px solid #eee;
+    margin-bottom: -1px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+ul.list-lg li.active {
+    border-left-width: 4px;
+    border-color: #00adbb;
+    margin-bottom: 0;
+}
+
+ul.list-lg li.active a {
+    pointer-events: none;
+    cursor: default;
+}
+
+ul.list-lg li:hover {
+    background:transparent;
+    border: 1px solid #00adbb;
+    border-left-width: 4px;
+    margin-bottom: 0;
+}
+
+ul.list-lg li:hover a {
+    text-decoration: none;
+    text-decoration-color: #00adbb;
+    text-emphasis-color: #00adbb;
+}
+
 .affix {
 
 }
