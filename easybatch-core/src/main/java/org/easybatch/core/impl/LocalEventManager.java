@@ -33,6 +33,11 @@ import org.easybatch.core.api.event.record.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * Local implementation of {@link EventManager}.
+ *
+ * @author Mario Mueller (mario@xenji.com)
+ */
 public class LocalEventManager implements EventManager {
 
     private Set<BatchProcessEventListener> batchProcessEventListeners = new LinkedHashSet<BatchProcessEventListener>();

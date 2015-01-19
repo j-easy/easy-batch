@@ -24,15 +24,14 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.util.GrepFilter;
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * Test class for {@link org.easybatch.core.util.GrepFilter}.
+ * Test class for {@link GrepFilter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

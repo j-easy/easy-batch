@@ -27,7 +27,7 @@ package org.easybatch.tutorials.basic.pipeline.filterMapReduce;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.core.util.ListRecordReader;
+import org.easybatch.core.reader.ListRecordReader;
 
 import java.util.ArrayList;
 import java.util.List;

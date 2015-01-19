@@ -25,7 +25,7 @@
 package org.easybatch.core;
 
 import org.easybatch.core.api.ReportTest;
-import org.easybatch.core.converter.*;
+import org.easybatch.core.mapper.converter.*;
 import org.easybatch.core.filter.*;
 import org.easybatch.core.mapper.ObjectMapperTest;
 import org.junit.runner.RunWith;

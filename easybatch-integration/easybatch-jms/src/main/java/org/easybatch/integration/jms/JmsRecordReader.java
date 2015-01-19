@@ -26,7 +26,6 @@ package org.easybatch.integration.jms;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.util.PoisonRecord;
 
 import javax.jms.*;
 

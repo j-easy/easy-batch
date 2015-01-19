@@ -24,7 +24,7 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.util.FileRecord;
+import org.easybatch.core.record.FileRecord;
 import org.junit.Before;
 import org.junit.Test;
 

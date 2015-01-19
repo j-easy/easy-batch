@@ -24,7 +24,7 @@
 
 package org.easybatch.json;
 
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.record.StringRecord;
 
 /**
  * A record containing a string Json object.

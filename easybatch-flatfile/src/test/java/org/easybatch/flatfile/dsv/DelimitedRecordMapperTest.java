@@ -26,7 +26,7 @@ package org.easybatch.flatfile.dsv;
 
 import org.easybatch.flatfile.FlatFileField;
 import org.easybatch.flatfile.FlatFileRecord;
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.record.StringRecord;
 import org.easybatch.flatfile.Person;
 import org.junit.After;
 import org.junit.Before;

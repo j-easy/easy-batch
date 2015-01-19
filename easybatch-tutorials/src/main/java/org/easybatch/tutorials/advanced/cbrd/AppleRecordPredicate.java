@@ -25,8 +25,8 @@
 package org.easybatch.tutorials.advanced.cbrd;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.util.Predicate;
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.dispatcher.Predicate;
+import org.easybatch.core.record.StringRecord;
 
 /**
  * A predicate that matches string records containing "apple".

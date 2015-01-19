@@ -25,7 +25,7 @@
 package org.easybatch.flatfile.flr;
 
 import org.easybatch.flatfile.FlatFileRecord;
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.record.StringRecord;
 import org.easybatch.flatfile.Bean;
 import org.junit.After;
 import org.junit.Before;

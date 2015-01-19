@@ -25,7 +25,7 @@
 package org.easybatch.tutorials.basic.helloworld;
 
 import org.easybatch.core.api.RecordProcessor;
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.record.StringRecord;
 
 /**
  * A processor that prints out tweets to the console.

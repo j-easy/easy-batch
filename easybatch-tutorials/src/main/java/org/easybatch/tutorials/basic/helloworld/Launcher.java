@@ -27,7 +27,7 @@ package org.easybatch.tutorials.basic.helloworld;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.core.util.StringRecordReader;
+import org.easybatch.core.reader.StringRecordReader;
 
 /**
 * Main class to run the hello world tutorial.

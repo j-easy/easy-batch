@@ -25,7 +25,7 @@
 package org.easybatch.flatfile;
 
 import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.record.StringRecord;
 
 import java.io.File;
 import java.io.FileNotFoundException;

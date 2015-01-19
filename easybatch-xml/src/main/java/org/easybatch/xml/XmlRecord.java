@@ -24,7 +24,7 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.record.StringRecord;
 
 /**
  * A record in a xml file.

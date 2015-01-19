@@ -24,7 +24,7 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.record.StringRecord;
 
 import java.util.ArrayList;
 import java.util.List;

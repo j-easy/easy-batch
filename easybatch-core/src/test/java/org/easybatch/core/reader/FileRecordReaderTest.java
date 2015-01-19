@@ -1,0 +1,108 @@
+/*
+ * The MIT License
+ *
+ *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
+
+package org.easybatch.core.reader;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.File;
+
+import static org.fest.assertions.Assertions.assertThat;
+
+/**
+ * Test class for {@link FileRecordReaderTest}.
+ *
+ * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ */
+public class FileRecordReaderTest {
+
+    private FileRecordReader fileRecordReader;
+
+    private File dataSource;
+
+    private File emptyDataSource;
+
+    private File nonExistentDataSource;
+
+    @Before
+    public void setUp() throws Exception {
+        dataSource = new File(System.getProperty("java.io.tmpdir"));
+        fileRecordReader = new FileRecordReader(dataSource);
+        fileRecordReader.open();
+
+        nonExistentDataSource = new File(System.getProperty("java.io.tmpdir") +
+                        System.getProperty("file.separator") +
+                        "ImSureThisDirectoryDoesNotExist");
+
+        //create empty directory
+        emptyDataSource = new File("ebTestEmptyDirectory");
+        emptyDataSource.mkdir();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        emptyDataSource.delete();
+        fileRecordReader.close();
+    }
+
+    @Test
+    public void whenTheDataSourceIsNotEmpty_ThenThereShouldBeANextRecordToRead() throws Exception {
+        assertThat(fileRecordReader.hasNextRecord()).isTrue();
+    }
+
+    @Test
+    public void theDataSourceNameShouldBeEqualToTheDirectoryAbsolutePath() throws Exception {
+        assertThat(fileRecordReader.getDataSourceName()).isEqualTo(dataSource.getAbsolutePath());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenTheDirectoryDoesNotExist_ThenShouldThrowAnIllegalArgumentException() throws Exception {
+        fileRecordReader.close();
+        fileRecordReader = new FileRecordReader(nonExistentDataSource);
+        fileRecordReader.open();
+    }
+
+    /*
+     * Empty directory tests
+     */
+
+    @Test
+    public void whenTheDataSourceIsEmpty_ThenThereShouldBeNoNextRecordToRead() throws Exception {
+        fileRecordReader.close();
+        fileRecordReader = new FileRecordReader(emptyDataSource);
+        fileRecordReader.open();
+        assertThat(fileRecordReader.hasNextRecord()).isFalse();
+    }
+
+    @Test
+    public void whenTheDataSourceIsEmpty_ThenTotalRecordsShouldBeEqualToZero() throws Exception {
+        fileRecordReader.close();
+        fileRecordReader = new FileRecordReader(emptyDataSource);
+        fileRecordReader.open();
+        assertThat(fileRecordReader.getTotalRecords()).isEqualTo(0);
+    }
+
+}

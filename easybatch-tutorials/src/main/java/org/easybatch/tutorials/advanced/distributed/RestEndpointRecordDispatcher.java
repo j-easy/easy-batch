@@ -29,7 +29,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.apache.commons.io.IOUtils;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordDispatcher;
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.record.StringRecord;
 import org.easybatch.tutorials.advanced.jms.JMSUtil;
 
 import java.io.IOException;

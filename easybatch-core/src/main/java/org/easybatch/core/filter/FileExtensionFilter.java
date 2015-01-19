@@ -26,7 +26,7 @@ package org.easybatch.core.filter;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
-import org.easybatch.core.util.FileRecord;
+import org.easybatch.core.record.FileRecord;
 
 import java.util.List;
 

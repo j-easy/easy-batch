@@ -25,7 +25,7 @@
 package org.easybatch.jdbc;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.util.GenericRecord;
+import org.easybatch.core.record.GenericRecord;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;

@@ -30,7 +30,10 @@ import org.easybatch.core.api.Report;
 import org.easybatch.core.filter.PoisonRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.core.util.*;
+import org.easybatch.core.reader.QueueRecordReader;
+import org.easybatch.core.reader.StringRecordReader;
+import org.easybatch.core.dispatcher.ContentBasedRecordDispatcherBuilder;
+import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.tools.reporting.DefaultReportMerger;
 import org.easybatch.tools.reporting.ReportMerger;
 

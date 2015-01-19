@@ -25,7 +25,7 @@
 package org.easybatch.tutorials.advanced.jms;
 
 import org.apache.activemq.broker.BrokerService;
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.record.StringRecord;
 import org.easybatch.integration.jms.JmsPoisonMessage;
 
 import javax.jms.*;

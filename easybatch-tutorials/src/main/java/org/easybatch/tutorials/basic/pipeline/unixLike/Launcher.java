@@ -27,7 +27,7 @@ package org.easybatch.tutorials.basic.pipeline.unixLike;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.core.util.GrepFilter;
+import org.easybatch.core.filter.GrepFilter;
 import org.easybatch.flatfile.FlatFileRecordReader;
 
 import java.io.File;

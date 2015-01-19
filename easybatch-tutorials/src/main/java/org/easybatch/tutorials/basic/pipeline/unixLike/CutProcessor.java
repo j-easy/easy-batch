@@ -1,7 +1,7 @@
 package org.easybatch.tutorials.basic.pipeline.unixLike;
 
 import org.easybatch.core.api.RecordProcessor;
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.record.StringRecord;
 
 /**
  * A processor that mimics "cut" unix command.

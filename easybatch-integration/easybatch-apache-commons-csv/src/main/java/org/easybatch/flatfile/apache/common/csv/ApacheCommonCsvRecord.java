@@ -25,7 +25,7 @@
 package org.easybatch.flatfile.apache.common.csv;
 
 import org.apache.commons.csv.CSVRecord;
-import org.easybatch.core.util.GenericRecord;
+import org.easybatch.core.record.GenericRecord;
 
 /**
  * Record having as payload a {@link CSVRecord}.

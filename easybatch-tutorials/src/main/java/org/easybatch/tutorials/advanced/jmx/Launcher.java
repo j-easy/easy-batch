@@ -26,7 +26,7 @@ package org.easybatch.tutorials.advanced.jmx;
 
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.core.util.StringRecordReader;
+import org.easybatch.core.reader.StringRecordReader;
 import org.easybatch.tutorials.basic.helloworld.TweetProcessor;
 
 /**

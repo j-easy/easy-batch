@@ -24,7 +24,7 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.util.StringRecord;
+import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 
 /**

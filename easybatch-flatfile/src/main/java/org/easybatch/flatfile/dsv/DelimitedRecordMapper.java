@@ -29,7 +29,7 @@ import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.mapper.ObjectMapper;
 import org.easybatch.flatfile.FlatFileField;
 import org.easybatch.flatfile.FlatFileRecord;
-import org.easybatch.core.converter.TypeConverter;
+import org.easybatch.core.api.TypeConverter;
 
 import java.util.Arrays;
 import java.util.HashMap;
