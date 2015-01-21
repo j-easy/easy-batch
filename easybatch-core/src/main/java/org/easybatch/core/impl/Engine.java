@@ -165,6 +165,7 @@ public final class Engine implements Callable<Report> {
                     eventManager.fireOnBatchException(e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
+                        report.setStatus(Status.ABORTED);
                         break;
                     }
                     continue;
@@ -186,6 +187,7 @@ public final class Engine implements Callable<Report> {
                     eventManager.fireOnBatchException(e);
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
+                        report.setStatus(Status.ABORTED);
                         break;
                     }
                     continue;
@@ -207,6 +209,7 @@ public final class Engine implements Callable<Report> {
                 }
                 if (processingError && strictMode) {
                     LOGGER.info(STRICT_MODE_MESSAGE);
+                    report.setStatus(Status.ABORTED);
                     break;
                 }
                 report.addSuccessRecord(currentRecordNumber);
@@ -214,7 +217,9 @@ public final class Engine implements Callable<Report> {
 
             report.setTotalRecords(processedRecordsNumber);
             report.setEndTime(System.currentTimeMillis());
-            report.setStatus(Status.FINISHED);
+            if (!report.getStatus().equals(Status.ABORTED)) {
+                report.setStatus(Status.FINISHED);
+            }
 
             // The batch result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
             RecordProcessor lastRecordProcessor = processingPipeline.get(processingPipeline.size() - 1);
