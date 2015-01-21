@@ -25,9 +25,13 @@
 package org.easybatch.core;
 
 import org.easybatch.core.api.ReportTest;
+import org.easybatch.core.dispatcher.*;
+import org.easybatch.core.impl.EngineTest;
 import org.easybatch.core.mapper.converter.*;
 import org.easybatch.core.filter.*;
 import org.easybatch.core.mapper.ObjectMapperTest;
+import org.easybatch.core.reader.FileRecordReaderTest;
+import org.easybatch.core.reader.ListRecordReaderTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -38,13 +42,11 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses( {
+        // reader
+        FileRecordReaderTest.class,
+        ListRecordReaderTest.class,
+        // mapper
         ObjectMapperTest.class,
-        EndWithStringRecordFilterTest.class,
-        StartWithStringRecordFilterTest.class,
-        RecordNumberBetweenFilterTest.class,
-        RecordNumberEqualsToFilterTest.class,
-        RecordNumberGreaterThanFilterTest.class,
-        RecordNumberLowerThanFilterTest.class,
         AtomicIntegerTypeConverterTest.class,
         AtomicLongTypeConverterTest.class,
         BigDecimalTypeConverterTest.class,
@@ -53,12 +55,33 @@ import org.junit.runners.Suite;
         ByteTypeConverterTest.class,
         CharacterTypeConverterTest.class,
         DateTypeConverterTest.class,
+        GregorianCalendarTypeConverterTest.class,
         DoubleTypeConverterTest.class,
         FloatTypeConverterTest.class,
         IntegerTypeConverterTest.class,
         LongTypeConverterTest.class,
         ShortTypeConverterTest.class,
-        ReportTest.class
+        // filter
+        StartWithStringRecordFilterTest.class,
+        EndWithStringRecordFilterTest.class,
+        FileExtensionFilterTest.class,
+        GrepFilterTest.class,
+        HeaderRecordFilterTest.class,
+        PoisonRecordFilterTest.class,
+        RecordNumberBetweenFilterTest.class,
+        RecordNumberEqualsToFilterTest.class,
+        RecordNumberGreaterThanFilterTest.class,
+        RecordNumberLowerThanFilterTest.class,
+        // dispatcher
+        BroadcastRecordDispatcherTest.class,
+        ContentBasedRecordDispatcherTest.class,
+        ContentBasedRecordDispatcherBuilderTest.class,
+        RandomRecordDispatcherTest.class,
+        RoundRobinRecordDispatcherTest.class,
+        // api
+        ReportTest.class,
+        // impl
+        EngineTest.class
 })
 public class CoreTestsSuite {
 }
