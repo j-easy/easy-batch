@@ -1,5 +1,12 @@
 $(document).ready(function(){
 
+    $('.top-link').click(function () {
+        $('body,html').animate({
+            scrollTop: 0
+        }, 500);
+        return false;
+    });
+
 	// hide #back-top first
 	$(".back-top").hide();
 	
