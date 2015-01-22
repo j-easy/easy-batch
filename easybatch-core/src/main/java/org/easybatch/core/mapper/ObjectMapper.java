@@ -42,7 +42,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A helper class that maps a record to a domain object.
+ * A helper class that maps a record to a domain object instance.
  *
  * @param <T> the target domain object type
  *
@@ -76,12 +76,12 @@ public class ObjectMapper<T> {
      */
     public ObjectMapper(final Class<? extends T> recordClass) {
         this.recordClass = recordClass;
-        initTypeConverters();
+        InitializeTypeConverters();
         initializeSetters();
     }
 
     /**
-     * Initialize setters methods array from headers mapping.
+     * Initialize setters methods.
      */
     private void initializeSetters() {
         setters = new HashMap<String, Method>();
@@ -142,7 +142,7 @@ public class ObjectMapper<T> {
     /**
      * Initialize default type converters.
      */
-    private void initTypeConverters() {
+    private void InitializeTypeConverters() {
         typeConverters = new HashMap<Class, TypeConverter>();
         typeConverters.put(AtomicInteger.class, new AtomicIntegerTypeConverter());
         typeConverters.put(AtomicLong.class, new AtomicLongTypeConverter());
@@ -175,11 +175,10 @@ public class ObjectMapper<T> {
 
     /**
      * Register a custom type converter.
-     * @param type the target type
      * @param typeConverter the type converter to user
      */
-    public void registerTypeConverter(final Class type, final TypeConverter typeConverter) {
-        typeConverters.put(type, typeConverter);
+    public void registerTypeConverter(final TypeConverter typeConverter) {
+        typeConverters.put(recordClass, typeConverter);
     }
 
 }

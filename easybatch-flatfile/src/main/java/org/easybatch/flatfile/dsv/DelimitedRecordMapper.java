@@ -277,11 +277,10 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Register a custom type converter.
-     * @param type the target type
      * @param typeConverter the type converter to user
      */
-    public void registerTypeConverter(final Class type, final TypeConverter typeConverter) {
-        objectMapper.registerTypeConverter(type, typeConverter);
+    public void registerTypeConverter(final TypeConverter typeConverter) {
+        objectMapper.registerTypeConverter(typeConverter);
     }
 
 }
