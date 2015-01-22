@@ -32,7 +32,7 @@ package org.easybatch.flatfile;
 public class FlatFileField {
 
     /**
-     * Field index in the record (starting at 0).
+     * Field index in the record (starting at 1).
      */
     private int index;
 

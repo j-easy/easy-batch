@@ -27,11 +27,9 @@ package org.easybatch.flatfile.flr;
 import org.easybatch.flatfile.FlatFileRecord;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.flatfile.Bean;
-import org.junit.After;
+import org.fest.assertions.Assertions;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Unit test class for {@link org.easybatch.flatfile.flr.FixedLengthRecordMapper}.
@@ -46,8 +44,8 @@ public class FixedLengthRecordMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        int[] fieldsLength = {4, 2, 3};
-        fixedLengthRecordMapper = new FixedLengthRecordMapper<Bean>(Bean.class, fieldsLength,
+        fixedLengthRecordMapper = new FixedLengthRecordMapper<Bean>(Bean.class,
+                new int[]{4, 2, 3},
                 new String[]{"field1", "field2", "field3"});
         stringRecord = new StringRecord(1, "aaaabbccc");
     }
@@ -61,16 +59,10 @@ public class FixedLengthRecordMapperTest {
     @Test
     public void testRecordParsing() throws Exception {
         FlatFileRecord flatFileRecord = fixedLengthRecordMapper.parseRecord(stringRecord);
-        assertEquals(3, flatFileRecord.getFlatFileFields().size());
-        assertEquals("aaaa",flatFileRecord.getFlatFileFields().get(0).getRawContent());
-        assertEquals("bb",flatFileRecord.getFlatFileFields().get(1).getRawContent());
-        assertEquals("ccc",flatFileRecord.getFlatFileFields().get(2).getRawContent());
+        Assertions.assertThat(flatFileRecord.getFlatFileFields().size()).isEqualTo(3);
+        Assertions.assertThat(flatFileRecord.getFlatFileFields().get(0).getRawContent()).isEqualTo("aaaa");
+        Assertions.assertThat(flatFileRecord.getFlatFileFields().get(1).getRawContent()).isEqualTo("bb");
+        Assertions.assertThat(flatFileRecord.getFlatFileFields().get(2).getRawContent()).isEqualTo("ccc");
     }
 
-    @After
-    public void tearDown() throws Exception {
-        fixedLengthRecordMapper = null;
-        stringRecord = null;
-        System.gc();
-    }
 }

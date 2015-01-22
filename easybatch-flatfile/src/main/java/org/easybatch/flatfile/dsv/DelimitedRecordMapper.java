@@ -31,10 +31,7 @@ import org.easybatch.flatfile.FlatFileField;
 import org.easybatch.flatfile.FlatFileRecord;
 import org.easybatch.core.api.TypeConverter;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * DSV to Object mapper implementation.
@@ -105,7 +102,8 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
     }
 
     /**
-     * Constructs a default DelimitedRecordMapper instance. Column names and expected record size will be calculated from the header record.
+     * Constructs a default DelimitedRecordMapper instance.
+     * Column names and expected record size will be calculated from the header record.
      * and set to fields with the same name of the target object.
      * @param recordClass the target domain object class
      */
@@ -115,7 +113,8 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
     }
 
     /**
-     * Constructs a DelimitedRecordMapper instance. Expected record size will be calculated from the header record.
+     * Constructs a DelimitedRecordMapper instance.
+     * Expected record size will be calculated from the header record.
      * @param recordClass the target domain object class
      * @param fieldNames a String array containing target type field names in the same order as in the delimited flat file.
      */
@@ -126,7 +125,19 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
     }
 
     /**
-     * Constructs a DelimitedRecordMapper instance. Column names and expected record size will be calculated from the header record.
+     * Constructs a DelimitedRecordMapper instance.
+     * @param recordClass the target domain object class
+     * @param fieldNames a String array containing target type field names in the same order as in the delimited flat file.
+     * @param recordExpectedLength record expected length
+     */
+    public DelimitedRecordMapper(final Class<? extends T> recordClass, final String[] fieldNames, final int recordExpectedLength) {
+        this(recordClass, fieldNames);
+        this.recordExpectedLength = recordExpectedLength;
+    }
+
+    /**
+     * Constructs a DelimitedRecordMapper instance.
+     * Expected record size will be calculated from the header record.
      * @param recordClass the target domain object class
      * @param fieldsPositions array of indexes of fields to retain
      */
@@ -136,25 +147,16 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
     }
 
     /**
-     * Constructs a DelimitedRecordMapper instance. Column names will be calculated from the header record.
-     * @param recordClass the target domain object class
-     * @param fieldsPositions array of indexes of fields to retain
-     * @param recordExpectedLength record expected length
-     */
-    public DelimitedRecordMapper(final Class<? extends T> recordClass, final Integer[] fieldsPositions, final int recordExpectedLength) {
-        this(recordClass, fieldsPositions);
-        this.recordExpectedLength = recordExpectedLength;
-    }
-
-    /**
-     * Constructs a DelimitedRecordMapper instance. Expected record size will be calculated from the header record.
+     * Constructs a DelimitedRecordMapper instance.
+     * Expected record size will be calculated from the header record.
      * @param recordClass the target domain object class
      * @param fieldsPositions array of indexes of fields to retain
      * @param fieldNames a String array representing fields name in the same order in the DSV flat file.
      */
     public DelimitedRecordMapper(final Class<? extends T> recordClass, final Integer[] fieldsPositions, final String[] fieldNames) {
-        this(recordClass, fieldsPositions);
+        this(recordClass);
         this.fieldNames = fieldNames;
+        this.fieldsPositions = Arrays.asList(fieldsPositions);
     }
 
     /**
@@ -175,7 +177,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
         FlatFileRecord flatFileRecord = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<String, String>();
         for (FlatFileField flatFileField : flatFileRecord.getFlatFileFields()) {
-            String fieldName = fieldNames[flatFileField.getIndex()];
+            String fieldName = fieldNames[flatFileField.getIndex() - 1];
             String fieldValue = flatFileField.getRawContent();
             fieldsContents.put(fieldName, fieldValue);
         }
@@ -216,19 +218,30 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
             }
         }
 
-        FlatFileRecord flatFileRecord = new FlatFileRecord(record.getNumber(), payload);
-        int i = 0;
-        int j = 0;
+        List<FlatFileField> fields = new ArrayList<FlatFileField>();
+        int index = 0;
         for (String token : tokens) {
             token = trimWhitespaces(token);
             token = removeQualifier(token);
-            if (fieldsPositions != null && !fieldsPositions.contains(++j)) {
-                continue;
-            }
-            flatFileRecord.getFlatFileFields().add(new FlatFileField(i++, token));
+            fields.add(new FlatFileField(++index, token));
         }
 
+        FlatFileRecord flatFileRecord = new FlatFileRecord(record.getNumber(), payload);
+        if (fieldsPositions != null) {
+            filterFields(fields);
+        }
+        flatFileRecord.getFlatFileFields().addAll(fields);
         return flatFileRecord;
+    }
+
+    private void filterFields(List<FlatFileField> fields) {
+        Iterator<FlatFileField> iterator = fields.iterator();
+        while(iterator.hasNext()) {
+            int index = iterator.next().getIndex();
+            if (!fieldsPositions.contains(index)) {
+                iterator.remove();
+            }
+        }
     }
 
     private String trimWhitespaces(String token) {
