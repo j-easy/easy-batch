@@ -111,7 +111,7 @@ public class ObjectMapper<T> {
         T result = recordClass.newInstance();
 
         // for each field
-        for (String field : setters.keySet()) {
+        for (String field : values.keySet()) {
 
             //get field raw value
             String value = values.get(field);
