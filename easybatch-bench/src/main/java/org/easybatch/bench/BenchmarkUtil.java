@@ -39,6 +39,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
@@ -100,7 +101,7 @@ public class BenchmarkUtil {
 
     public static Engine buildXmlEngine(String customersFile) throws Exception {
         return new EngineBuilder()
-                .reader(new XmlRecordReader("customer", new File(customersFile)))
+                .reader(new XmlRecordReader("customer", new FileInputStream(customersFile)))
                 .mapper(new XmlRecordMapper<Customer>(Customer.class))
                 .build();
     }

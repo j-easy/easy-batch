@@ -24,7 +24,6 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 import javax.xml.stream.XMLEventReader;
@@ -32,9 +31,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.EndDocument;
 import javax.xml.stream.events.XMLEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,9 +50,9 @@ public class XmlRecordReader implements RecordReader {
     private String rootElementName;
 
     /**
-     * The xml input file.
+     * The xml input stream.
      */
-    private File xmlFile;
+    private InputStream xmlInputStream;
 
     /**
      * The xml reader.
@@ -67,15 +64,15 @@ public class XmlRecordReader implements RecordReader {
      */
     private int currentRecordNumber;
 
-    public XmlRecordReader(final String rootElementName, final File xmlFile) {
+    public XmlRecordReader(final String rootElementName, final InputStream xmlInputStream) {
         this.rootElementName = rootElementName;
-        this.xmlFile = xmlFile;
+        this.xmlInputStream = xmlInputStream;
     }
 
     @Override
     public void open() throws Exception {
         currentRecordNumber = 0;
-        xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(new FileInputStream(xmlFile));
+        xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream);
     }
 
     @Override
@@ -95,7 +92,7 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readNextRecord() throws Exception {
+    public XmlRecord readNextRecord() throws Exception {
         StringBuilder stringBuilder = new StringBuilder("");
         while (!nextTagIsRootElementEnd()) {
             stringBuilder.append(xmlEventReader.nextEvent().toString());
@@ -112,7 +109,7 @@ public class XmlRecordReader implements RecordReader {
         XMLEventReader totalRecordsXmlEventReader = null;
         try {
             totalRecordsXmlEventReader =
-                    XMLInputFactory.newInstance().createXMLEventReader(new FileInputStream(xmlFile));
+                    XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream);
             XMLEvent event;
             while (totalRecordsXmlEventReader.hasNext()) {
                 event = totalRecordsXmlEventReader.nextEvent();
@@ -121,10 +118,7 @@ public class XmlRecordReader implements RecordReader {
                 }
             }
         } catch (XMLStreamException e) {
-            LOGGER.log(Level.SEVERE, "Unable to read data from xml file " + xmlFile, e);
-            return null;
-        } catch (FileNotFoundException e) {
-            LOGGER.log(Level.SEVERE, "File not found " + xmlFile, e);
+            LOGGER.log(Level.SEVERE, "Unable to read data from xml stream " + xmlInputStream, e);
             return null;
         } finally {
             if (totalRecordsXmlEventReader != null) {
@@ -140,12 +134,14 @@ public class XmlRecordReader implements RecordReader {
 
     @Override
     public String getDataSourceName() {
-        return xmlFile.getAbsolutePath();
+        return "XML stream: " + xmlInputStream;
     }
 
     @Override
     public void close() throws Exception {
-        xmlEventReader.close();
+        if (xmlEventReader != null) {
+            xmlEventReader.close();
+        }
     }
 
     /**
