@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.xml.test;
+package org.easybatch.xml;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
