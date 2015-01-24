@@ -12,7 +12,7 @@
     <artifactId>easybatch-mongodb</artifactId>
     <packaging>jar</packaging>
 
-    <name>easybatch-quartz</name>
+    <name>easybatch-mongodb</name>
     <description>Easy Batch - MongoDB integration module</description>
     <url>http://www.easybatch.org</url>
 

@@ -12,7 +12,7 @@
     <artifactId>easybatch-spring-jdbc</artifactId>
     <packaging>jar</packaging>
 
-    <name>easybatch-quartz</name>
+    <name>easybatch-spring-jdbc</name>
     <description>Easy Batch - Spring JDBC integration module</description>
     <url>http://www.easybatch.org</url>
 

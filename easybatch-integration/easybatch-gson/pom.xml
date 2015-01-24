@@ -12,7 +12,7 @@
     <artifactId>easybatch-gson</artifactId>
     <packaging>jar</packaging>
 
-    <name>easybatch-quartz</name>
+    <name>easybatch-gson</name>
     <description>Easy Batch - Google Gson integration module</description>
     <url>http://www.easybatch.org</url>
 

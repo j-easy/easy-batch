@@ -12,7 +12,7 @@
     <artifactId>easybatch-xstream</artifactId>
     <packaging>jar</packaging>
 
-    <name>easybatch-quartz</name>
+    <name>easybatch-xstream</name>
     <description>Easy Batch - XStream integration module</description>
     <url>http://www.easybatch.org</url>
 
