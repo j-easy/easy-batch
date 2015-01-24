@@ -76,6 +76,7 @@
         <module>easybatch-xstream</module>
         <module>easybatch-jackson</module>
         <module>easybatch-mongodb</module>
+        <module>easybatch-jpa</module>
     </modules>
 
 
