@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<race type="human">
+    <header> <!-- it makes no sense, just for testing purpose -->
+        <century>21</century>
+    </header>
+    <persons>
+        <person>
+            <id>1</id>
+            <firstName>foo</firstName>
+            <lastName>bar</lastName>
+            <birthDate>2000-01-01</birthDate>
+            <married>true</married>
+        </person>
+        <person>
+            <id>2</id>
+            <firstName>bar</firstName>
+            <lastName>foo</lastName>
+            <birthDate>2014-01-01</birthDate>
+            <married>false</married>
+        </person>
+    </persons>
+</race>

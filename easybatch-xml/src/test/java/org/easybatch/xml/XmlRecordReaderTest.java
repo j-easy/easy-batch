@@ -85,6 +85,28 @@ public class XmlRecordReaderTest {
         assertThat(xmlRecordReader.hasNextRecord()).isFalse();
     }
 
+     /*
+     * Test "non standard" files
+     */
+
+    @Test
+    public void testReadNextNestedRecord() throws Exception {
+        xmlRecordReader.close();
+        xmlRecordReader = new XmlRecordReader("person", this.getClass().getResourceAsStream("/persons-nested.xml"));
+        xmlRecordReader.open();
+        xmlRecordReader.hasNextRecord(); //should call this method to move the cursor forward to the first tag
+        XmlRecord xmlRecord = xmlRecordReader.readNextRecord();
+        String expectedPayload = getXmlFromFile("/person.xml");
+        String actualPayload = xmlRecord.getPayload();
+
+        XMLUnit.setIgnoreWhitespace(true);
+        Diff diff = new Diff(expectedPayload, actualPayload);
+
+        assertThat(xmlRecord.getNumber()).isEqualTo(1);
+        assertThat(diff.similar()).isTrue();
+    }
+
+
     @After
     public void tearDown() throws Exception {
         xmlRecordReader.close();
