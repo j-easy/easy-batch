@@ -63,6 +63,14 @@ public class JdbcRecordReaderTest {
     }
 
     @Test
+    public void testMaxRowsParameter() throws Exception {
+        jdbcRecordReader = new JdbcRecordReader(connection, query);
+        jdbcRecordReader.setMaxRows(1);
+        jdbcRecordReader.open();
+        assertThat(jdbcRecordReader.getTotalRecords()).isEqualTo(1);
+    }
+
+    @Test
     public void testGetDataSourceName() throws Exception {
         System.out.println(jdbcRecordReader.getDataSourceName());
         assertThat(jdbcRecordReader.getDataSourceName()).isEqualTo(DATA_SOURCE_NAME);
@@ -110,4 +118,5 @@ public class JdbcRecordReaderTest {
         statement.executeUpdate(query);
         statement.close();
     }
+
 }
