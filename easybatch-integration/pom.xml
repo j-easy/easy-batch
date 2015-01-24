@@ -75,6 +75,7 @@
         <module>easybatch-gson</module>
         <module>easybatch-xstream</module>
         <module>easybatch-jackson</module>
+        <module>easybatch-mongodb</module>
     </modules>
 
 
