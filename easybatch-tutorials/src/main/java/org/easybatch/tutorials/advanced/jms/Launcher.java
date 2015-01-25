@@ -56,6 +56,7 @@ public class Launcher {
         System.out.println(report);
 
         JMSUtil.stopEmbeddedBroker();
+        System.exit(0);
 
     }
 
