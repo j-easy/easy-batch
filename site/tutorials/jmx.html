@@ -6,8 +6,9 @@ title : Job monitoring with JMX
 
               <h2>1. Introduction</h2>
 
-              <p>Easy Batch allows you to monitor job execution and progress at runtime using JMX. By default, Easy Batch enables at startup a JMX MBean named <code>org.easybatch.core.jmx:type=EasyBatchMonitorMBean</code>
-                  exposing the following attributes:</p>
+              <p>Easy Batch allows you to monitor job execution and progress at runtime using JMX.
+                 The JMX MBean named <code><em>org.easybatch.core.jmx:type=EasyBatchMonitorMBean</em></code>
+                  exposes the following attributes:</p>
 
               <ul>
                   <li>The batch start and end times</li>
@@ -18,7 +19,15 @@ title : Job monitoring with JMX
                   <li>And the execution progress</li>
               </ul>
 
-              <p>To monitor Easy Batch JMX MBean attributes, you can use any standard JMX compliant tool such as <a href="http://visualvm.java.net/" target="_blank">VisualVM</a>.</p>
+                <p>In order to register this JMX MBean at application's startup, you should enable it using the following API:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.enableJMX(true)</strong>
+    .build();</code></pre>
+</div>
+
+              <p>You can then use any standard JMX compliant tool such as <a href="http://visualvm.java.net/" target="_blank">VisualVM</a> to visualize monitoring attributes.</p>
 
               <p>The screenshot below shows an example of Easy Batch monitoring using VisualVM:</p>
 

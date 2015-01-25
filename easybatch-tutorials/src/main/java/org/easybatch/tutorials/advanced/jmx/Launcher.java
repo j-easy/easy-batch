@@ -27,7 +27,6 @@ package org.easybatch.tutorials.advanced.jmx;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.reader.StringRecordReader;
-import org.easybatch.tutorials.basic.helloworld.TweetProcessor;
 
 /**
 * Main class to run the JMX tutorial.
@@ -52,7 +51,8 @@ public class Launcher {
         // Build a batch engine
         Engine engine = new EngineBuilder()
                 .reader(new StringRecordReader(dataSource))
-                .processor(new TweetProcessor())
+                .processor(new TweetSlowProcessor())
+                .enableJMX(true)
                 .build();
 
         // Run the batch engine
