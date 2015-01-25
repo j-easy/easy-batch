@@ -27,12 +27,19 @@ package org.easybatch.integration.jms;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Filter jms poison records.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JmsPoisonRecordFilter implements RecordFilter {
+
+    private static final Logger LOGGER = Logger.getLogger(JmsPoisonRecordFilter.class.getName());
 
     /**
      * Return true if the record should be filtered (skipped).
@@ -43,7 +50,18 @@ public class JmsPoisonRecordFilter implements RecordFilter {
     @Override
     public boolean filterRecord(Record record) {
         JmsRecord jmsRecord = (JmsRecord) record;
-        return jmsRecord.getPayload() instanceof JmsPoisonMessage;
+        boolean isPoison = false;
+        Message payload = jmsRecord.getPayload();
+        try {
+            String type = payload.getStringProperty("type");
+            if (type != null && !type.isEmpty()) {
+                isPoison = type.equals("poison");
+            }
+        } catch (JMSException e) {
+            LOGGER.log(Level.WARNING, "Unable to get property type form JMS message " + payload, e);
+            return false;
+        }
+        return isPoison || payload instanceof JmsPoisonMessage;
     }
 
 }

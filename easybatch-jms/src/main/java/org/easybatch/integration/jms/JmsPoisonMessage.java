@@ -28,8 +28,8 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Properties;
 
 /**
  * A End-Of-Stream {@link Message} implementation .
@@ -37,6 +37,12 @@ import java.util.Enumeration;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JmsPoisonMessage implements Message, Serializable {
+
+    private Properties properties = new Properties();
+
+    public JmsPoisonMessage() {
+        properties.setProperty("type", "poison");
+    }
 
     @Override
     public String getJMSMessageID() throws JMSException {
@@ -143,7 +149,7 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public boolean propertyExists(String s) throws JMSException {
-        return false;
+        return properties.contains(s);
     }
 
     @Override
@@ -183,17 +189,17 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public String getStringProperty(String s) throws JMSException {
-        return "";
+        return properties.getProperty(s);
     }
 
     @Override
     public Object getObjectProperty(String s) throws JMSException {
-        return "";
+        return properties.getProperty(s);
     }
 
     @Override
     public Enumeration getPropertyNames() throws JMSException {
-        return Collections.emptyEnumeration();
+        return properties.propertyNames();
     }
 
     @Override
