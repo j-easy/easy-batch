@@ -254,6 +254,7 @@ public class EngineTest {
 
     @Test
     public void jmxMBeanShouldBeRegisteredAtEngineCreation() throws MalformedObjectNameException {
+        engine = new EngineBuilder().enableJMX(true).build();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         assertThat(mbs.isRegistered(new ObjectName("org.easybatch.core.jmx:type=EasyBatchMonitorMBean"))).isTrue();
     }
