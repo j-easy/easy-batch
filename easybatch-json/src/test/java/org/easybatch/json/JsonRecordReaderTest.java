@@ -26,7 +26,6 @@ package org.easybatch.json;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -36,14 +35,13 @@ import static org.fest.assertions.Assertions.assertThat;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-@Ignore("Json tests are ignored until the JSR 353 bug is fixed")
 public class JsonRecordReaderTest {
 
     private JsonRecordReader jsonRecordReader;
 
     @Before
     public void setUp() throws Exception {
-        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/persons.json"));
+        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/tweets.json"));
         jsonRecordReader.open();
     }
 
@@ -52,7 +50,7 @@ public class JsonRecordReaderTest {
 
         assertThat(jsonRecordReader.hasNextRecord()).isTrue();
 
-        String expectedJson1 = "{\"id\":\"1\",\"name\":\"foo\",\"isMarried\":true}";
+        String expectedJson1 = "{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}";
         JsonRecord jsonRecord1 = jsonRecordReader.readNextRecord();
         assertThat(jsonRecord1).isNotNull();
         assertThat(jsonRecord1.getNumber()).isEqualTo(1);
@@ -60,7 +58,7 @@ public class JsonRecordReaderTest {
 
         assertThat(jsonRecordReader.hasNextRecord()).isTrue();
 
-        String expectedJson2 = "{\"id\":\"2\",\"name\":\"bar\",\"isMarried\":false}";
+        String expectedJson2 = "{\"id\":2,\"user\":\"bar\",\"message\":\"Hi!\"}";
         JsonRecord jsonRecord2 = jsonRecordReader.readNextRecord();
         assertThat(jsonRecord2).isNotNull();
         assertThat(jsonRecord2.getNumber()).isEqualTo(2);
@@ -81,8 +79,12 @@ public class JsonRecordReaderTest {
         assertThat(totalRecords).isEqualTo(2);
     }
 
+    /*
+     * Empty file tests
+     */
+
     @Test
-    public void whenTheInputFileIsEmpty_ThenTheJsonRecordReaderShouldNotHaveNextRecord() throws Exception {
+    public void whenTheInputFileIsEmpty_ThenTheJsonRecordReaderShouldHaveNoNextRecord() throws Exception {
         jsonRecordReader.close();
         jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/empty.json"));
         jsonRecordReader.open();

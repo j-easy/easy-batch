@@ -65,25 +65,6 @@ public class JsonRecordReader implements RecordReader {
      */
     private JsonParser parser;
 
-    /*
-     *  The JsonParser API does not provide an equivalent of XMLEventReader.peek() ..
-     *  So it is impossible to check the next element without reading it from the stream
-     *  That's why a second parser is used to inspect next element at each iteration.. to be peer-reviewed!
-     */
-    /**
-     * The json parser used to inspect the json stream.
-     */
-    private JsonParser inspectionParser;
-
-    /*
-     * JSR 353 is bogus: When you create 2 JSON parsers on the same input stream, it crashes.
-     * See JSR353Test class to reproduce issues
-     * That's why separate InputStream references are needed.. to review!
-     */
-    private InputStream inspectionInputStream;
-
-    private InputStream totalRecordsCountingInputStream;
-
     /**
      * The Json generator factory.
      */
@@ -94,86 +75,109 @@ public class JsonRecordReader implements RecordReader {
      */
     private int currentRecordNumber;
 
+    private JsonParser.Event currentEvent;
+
+    private JsonParser.Event nextEvent;
+
+    private int arrayDepth;
+
     private int objectDepth;
 
     private String key;
 
     public JsonRecordReader(InputStream inputStream) {
         this.inputStream = inputStream;
-        this.inspectionInputStream = cloneInputStream(inputStream);
-        this.totalRecordsCountingInputStream = cloneInputStream(inputStream);
         this.jsonGeneratorFactory = Json.createGeneratorFactory(new HashMap<String, Object>());
     }
 
     @Override
     public void open() throws Exception {
-        inspectionParser = Json.createParser(inspectionInputStream);
         parser = Json.createParser(inputStream);
-        parser.next();//move cursor to root array start
     }
 
     @Override
     public boolean hasNextRecord() {
-        int depth = 0;
-        while(inspectionParser.hasNext()) {
-            JsonParser.Event event = inspectionParser.next();
-            switch(event) {
-                case START_OBJECT:
-                    depth++;
-                    break;
-                case END_OBJECT:
-                    depth--;
-                    break;
+        if(parser.hasNext()) {
+            currentEvent = parser.next();
+            if (JsonParser.Event.START_ARRAY.equals(currentEvent)) {
+                arrayDepth++;
             }
-            if (JsonParser.Event.END_OBJECT.equals(event) && depth == 0) {
-                return true;
+            if (JsonParser.Event.END_ARRAY.equals(currentEvent)) {
+                arrayDepth--;
+            }
+            if (JsonParser.Event.KEY_NAME.equals(currentEvent)) {
+                key = parser.getString();
             }
         }
-        return false;
+
+        if(parser.hasNext()) {
+            nextEvent = parser.next();
+            if (JsonParser.Event.START_ARRAY.equals(nextEvent)) {
+                arrayDepth++;
+            }
+            if (JsonParser.Event.END_ARRAY.equals(nextEvent)) {
+                arrayDepth--;
+            }
+            if (JsonParser.Event.KEY_NAME.equals(nextEvent)) {
+                key = parser.getString();
+            }
+        }
+        if (JsonParser.Event.START_ARRAY.equals(currentEvent) && JsonParser.Event.END_ARRAY.equals(nextEvent) && arrayDepth == 0) {
+            return false;
+        }
+        if (JsonParser.Event.END_ARRAY.equals(currentEvent) && arrayDepth == 1 && objectDepth == 0) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public JsonRecord readNextRecord() throws Exception {
         StringWriter stringWriter = new StringWriter();
         JsonGenerator jsonGenerator = jsonGeneratorFactory.createGenerator(stringWriter);
+        writeRecordStart(jsonGenerator);
         do {
             moveToNextElement(jsonGenerator);
         } while(!isEndRootObject());
+        if (arrayDepth != 2) {
+            jsonGenerator.writeEnd();
+        }
         jsonGenerator.close();
         return new JsonRecord(++currentRecordNumber, stringWriter.toString());
     }
 
     @Override
     public Integer getTotalRecords() {
+        //Unable to use the same (or even another) json parser to calculate total record number of the input stream.
+        int data;
+        int objectDepth = 0;
         int totalRecords = 0;
-        int depth = 0;
-        JsonParser parser = null;
         try {
-            parser = Json.createParser(totalRecordsCountingInputStream);
-            parser.next();//move cursor to root array start
-            while(parser.hasNext()) {
-                JsonParser.Event event = parser.next();
-                switch(event) {
-                    case START_OBJECT:
-                        depth++;
-                        break;
-                    case END_OBJECT:
-                        depth--;
-                        break;
+            data = inputStream.read();
+            while(data != -1) {
+                char currentChar = (char)data;
+                if('{' == currentChar) {
+                    objectDepth++;
                 }
-                if (JsonParser.Event.END_OBJECT.equals(event) && depth == 0) {
-                    totalRecords++;
+                if('}' == currentChar) {
+                    objectDepth--;
+                    if (objectDepth == 0) {
+                        totalRecords++;
+                    }
                 }
+                data = inputStream.read();
             }
-            return totalRecords;
-        }   catch (JsonException e) {
-            LOGGER.log(Level.SEVERE, "Unable to read data from json stream", e);
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Unable to calculate total records number in JSON stream.", e);
             return null;
-        }   finally {
-            if (parser != null) {
-                parser.close();
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "Unable to close JSON stream when calculating total records number.", e);
             }
         }
+        return totalRecords;
     }
 
     @Override
@@ -184,11 +188,31 @@ public class JsonRecordReader implements RecordReader {
     @Override
     public void close() throws Exception {
         parser.close();
-        inspectionParser.close();
     }
 
     private boolean isEndRootObject() {
         return objectDepth == 0;
+    }
+
+    private void writeRecordStart(JsonGenerator jsonGenerator) {
+        if (currentEvent.equals(JsonParser.Event.START_ARRAY)) {
+            if(arrayDepth != 1) {
+                jsonGenerator.writeStartArray();
+            }
+            arrayDepth++;
+        }
+        if (currentEvent.equals(JsonParser.Event.START_OBJECT)) {
+            jsonGenerator.writeStartObject();
+            objectDepth++;
+        }
+        if (nextEvent.equals(JsonParser.Event.START_ARRAY)) {
+            jsonGenerator.writeStartArray();
+            arrayDepth++;
+        }
+        if (nextEvent.equals(JsonParser.Event.START_OBJECT)) {
+            jsonGenerator.writeStartObject();
+            objectDepth++;
+        }
     }
 
     private void moveToNextElement(JsonGenerator jsonGenerator) {
@@ -224,17 +248,9 @@ public class JsonRecordReader implements RecordReader {
                 jsonGenerator.write(key, parser.getString());
                 break;
             case VALUE_NUMBER:
-                jsonGenerator.write(key, parser.getString());
+                jsonGenerator.write(key, parser.getBigDecimal());
                 break;
         }
     }
-
-    /*
-     * TODO TO REMOVE AS SOON AS JSR353 BUG IS RESOLVED!!
-     */
-    private InputStream cloneInputStream(InputStream inputStream) {
-        return null;
-    }
-
 
 }
