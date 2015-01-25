@@ -26,6 +26,7 @@ package org.easybatch.core.impl;
 
 import org.easybatch.core.jmx.Monitor;
 import org.easybatch.core.api.*;
+import org.easybatch.core.util.Utils;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -375,4 +376,11 @@ public final class Engine implements Callable<Report> {
     EventManager getEventManager() {
         return eventManager;
     }
+
+    void setSilentMode(boolean silentMode) {
+        if (silentMode) {
+            Utils.muteLoggers();
+        }
+    }
+
 }

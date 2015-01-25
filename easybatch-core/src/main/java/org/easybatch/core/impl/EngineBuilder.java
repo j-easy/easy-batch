@@ -171,6 +171,16 @@ public final class EngineBuilder {
     }
 
     /**
+     * Parameter to mute all loggers.
+     * @param silentMode true to enable silent mode
+     * @return the engine builder
+     */
+    public EngineBuilder silentMode(final boolean silentMode) {
+        engine.setSilentMode(silentMode);
+        return this;
+    }
+
+    /**
      * Register a batch process event listener.
      * See {@link org.easybatch.core.api.event.global.BatchProcessEventListener} for available callback methods.
      *
