@@ -50,6 +50,11 @@ public class RandomRecordDispatcher implements RecordDispatcher {
     private List<BlockingQueue<Record>> queues;
 
     /**
+     * A delegate dispatcher used to broadcast poison records to all queues.
+     */
+    private BroadcastRecordDispatcher broadcastRecordDispatcher;
+
+    /**
      * The random generator.
      */
     private Random random;
@@ -58,15 +63,14 @@ public class RandomRecordDispatcher implements RecordDispatcher {
         this.queues = queues;
         this.queuesNumber = queues.size();
         this.random = new Random();
+        this.broadcastRecordDispatcher = new BroadcastRecordDispatcher(queues);
     }
 
     @Override
     public void dispatchRecord(Record record) throws Exception {
         // when receiving a poising record, broadcast it to all queues
         if (record instanceof PoisonRecord) {
-            for (BlockingQueue<Record> queue : queues) {
-                queue.put(record);
-            }
+            broadcastRecordDispatcher.dispatchRecord(record);
             return;
         }
         //dispatch record randomly to one of the queues

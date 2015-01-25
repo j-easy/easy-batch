@@ -28,6 +28,8 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordDispatcher;
 import org.easybatch.core.record.PoisonRecord;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
@@ -44,18 +46,25 @@ public class ContentBasedRecordDispatcher implements RecordDispatcher {
      */
     private Map<Predicate, BlockingQueue<Record>> queueMap;
 
+    /**
+     * A delegate dispatcher used to broadcast poison records to all queues.
+     */
+    private BroadcastRecordDispatcher broadcastRecordDispatcher;
 
     ContentBasedRecordDispatcher(Map<Predicate, BlockingQueue<Record>> queueMap) {
         this.queueMap = queueMap;
+        List<BlockingQueue<Record>> queues = new ArrayList<BlockingQueue<Record>>();
+        for (BlockingQueue<Record> queue : queueMap.values()) {
+            queues.add(queue);
+        }
+        broadcastRecordDispatcher = new BroadcastRecordDispatcher(queues);
     }
 
     @Override
     public void dispatchRecord(Record record) throws Exception {
         // when receiving a poising record, broadcast it to all queues
         if (record instanceof PoisonRecord) {
-            for (BlockingQueue<Record> queue : queueMap.values()) {
-                queue.put(record);
-            }
+            broadcastRecordDispatcher.dispatchRecord(record);
             return;
         }
 

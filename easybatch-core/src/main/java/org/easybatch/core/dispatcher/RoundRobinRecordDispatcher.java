@@ -53,18 +53,22 @@ public class RoundRobinRecordDispatcher implements RecordDispatcher {
      */
     private List<BlockingQueue<Record>> queues;
 
+    /**
+     * A delegate dispatcher used to broadcast poison records to all queues.
+     */
+    private BroadcastRecordDispatcher broadcastRecordDispatcher;
+
     public RoundRobinRecordDispatcher(List<BlockingQueue<Record>> queues) {
         this.queues = queues;
         this.queuesNumber = queues.size();
+        this.broadcastRecordDispatcher = new BroadcastRecordDispatcher(queues);
     }
 
     @Override
     public void dispatchRecord(Record record) throws Exception {
         // when receiving a poising record, broadcast it to all queues
         if (record instanceof PoisonRecord) {
-            for (BlockingQueue<Record> queue : queues) {
-                queue.put(record);
-            }
+            broadcastRecordDispatcher.dispatchRecord(record);
             return;
         }
         //dispatch records to queues in round-robin fashion
