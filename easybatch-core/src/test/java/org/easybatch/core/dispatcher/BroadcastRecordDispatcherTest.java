@@ -25,14 +25,13 @@
 package org.easybatch.core.dispatcher;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.dispatcher.BroadcastRecordDispatcher;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -49,8 +48,8 @@ public class BroadcastRecordDispatcherTest {
 
     @Before
     public void setUp() throws Exception {
-        queue1 = new ArrayBlockingQueue<Record>(5);
-        queue2 = new ArrayBlockingQueue<Record>(5);
+        queue1 = new LinkedBlockingQueue<Record>();
+        queue2 = new LinkedBlockingQueue<Record>();
         broadcastRecordDispatcher = new BroadcastRecordDispatcher(Arrays.asList(queue1, queue2));
     }
 

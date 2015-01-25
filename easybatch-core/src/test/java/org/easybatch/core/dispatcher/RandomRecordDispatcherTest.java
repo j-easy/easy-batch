@@ -31,8 +31,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -49,8 +49,8 @@ public class RandomRecordDispatcherTest {
 
     @Before
     public void setUp() throws Exception {
-        queue1 = new ArrayBlockingQueue<Record>(5);
-        queue2 = new ArrayBlockingQueue<Record>(5);
+        queue1 = new LinkedBlockingQueue<Record>();
+        queue2 = new LinkedBlockingQueue<Record>();
         randomRecordDispatcher = new RandomRecordDispatcher(Arrays.asList(queue1, queue2));
     }
 

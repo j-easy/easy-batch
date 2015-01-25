@@ -28,7 +28,7 @@ import org.easybatch.core.api.Record;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Test class for {@link org.easybatch.core.dispatcher.ContentBasedRecordDispatcherBuilder}.
@@ -51,7 +51,7 @@ public class ContentBasedRecordDispatcherBuilderTest {
 
     @Test(expected = IllegalStateException.class)
     public void whenCallDispatchToWithoutCallingWhen_ThenShouldThrowIllegalStateException() throws Exception {
-        builder.dispatchTo(new ArrayBlockingQueue<Record>(10));
+        builder.dispatchTo(new LinkedBlockingQueue<Record>());
     }
 
 }

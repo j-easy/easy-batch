@@ -49,8 +49,6 @@ import java.util.concurrent.*;
 */
 public class ParallelTutorialWithRecordDispatching {
 
-    private static final int QUEUE_SIZE = 32;
-
     private static final int THREAD_POOL_SIZE = 2;
 
     public static void main(String[] args) throws Exception {
@@ -59,8 +57,8 @@ public class ParallelTutorialWithRecordDispatching {
         File tweets = new File(args[0]);
 
         //Create queues
-        BlockingQueue<Record> queue1 = new ArrayBlockingQueue<Record>(QUEUE_SIZE);
-        BlockingQueue<Record> queue2 = new ArrayBlockingQueue<Record>(QUEUE_SIZE);
+        BlockingQueue<Record> queue1 = new LinkedBlockingQueue<Record>();
+        BlockingQueue<Record> queue2 = new LinkedBlockingQueue<Record>();
 
         // Build easy batch engines
         Engine engine1 = buildBatchEngine(queue1);

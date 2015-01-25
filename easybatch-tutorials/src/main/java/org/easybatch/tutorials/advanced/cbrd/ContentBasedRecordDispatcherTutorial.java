@@ -49,9 +49,9 @@ public class ContentBasedRecordDispatcherTutorial {
     public static void main(String[] args) throws Exception {
 
         //Create queues
-        BlockingQueue<Record> appleQueue = new ArrayBlockingQueue<Record>(32);
-        BlockingQueue<Record> orangeQueue = new ArrayBlockingQueue<Record>(32);
-        BlockingQueue<Record> defaultQueue = new ArrayBlockingQueue<Record>(32);
+        BlockingQueue<Record> appleQueue = new LinkedBlockingQueue<Record>();
+        BlockingQueue<Record> orangeQueue = new LinkedBlockingQueue<Record>();
+        BlockingQueue<Record> defaultQueue = new LinkedBlockingQueue<Record>();
 
         // Build easy batch engines
         Engine engine1 = buildBatchEngine(appleQueue);
@@ -74,7 +74,7 @@ public class ContentBasedRecordDispatcherTutorial {
                 .build();
 
         //read data source and dispatch record to queues based on their content
-        StringRecordReader stringRecordReader = new StringRecordReader("1,apple\n2,orange\n3,banana\n4,apple\n");
+        StringRecordReader stringRecordReader = new StringRecordReader("1,apple\n2,orange\n3,banana\n4,apple\n5,pear");
         stringRecordReader.open();
         while (stringRecordReader.hasNextRecord()) {
             Record record = stringRecordReader.readNextRecord();

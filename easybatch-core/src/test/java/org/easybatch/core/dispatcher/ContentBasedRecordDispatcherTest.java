@@ -31,7 +31,7 @@ import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -51,8 +51,8 @@ public class ContentBasedRecordDispatcherTest {
 
     @Before
     public void setUp() throws Exception {
-        orangeQueue = new ArrayBlockingQueue<Record>(10);
-        defaultQueue = new ArrayBlockingQueue<Record>(10);
+        orangeQueue = new LinkedBlockingQueue<Record>();
+        defaultQueue = new LinkedBlockingQueue<Record>();
         recordDispatcher =
                 new ContentBasedRecordDispatcherBuilder()
                     .when(new OrangePredicate()).dispatchTo(orangeQueue)
