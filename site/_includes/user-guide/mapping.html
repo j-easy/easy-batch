@@ -43,7 +43,7 @@
 
 <div class="bs-callout bs-callout-warning">
     <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
-    <p>Note that these mappers should be used in conjunction with the <code><em>FlatFileRecordReader</em></code>.</p>
+    <p>These mappers should be used in conjunction with the <code><em>FlatFileRecordReader</em></code>.</p>
 </div>
 
 <h4>4.1.1 Mapping delimiter-separated values</h4>
@@ -68,7 +68,7 @@
 
 <p>Field names should be <em>in the same order</em> as they appear in the delimited record.</p>
 
-<p>You can also map only some fields to your domain object. For example: </p>
+<p>You can also map a subset of fields to your domain object. For example:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">RecordMapper&lt;MyPojo&gt; myPojoMapper =
@@ -243,6 +243,12 @@
 </div>
 
 <p>Easy Batch will then use this array of field names to map data from columns in the same order as in the JDBC record.</p>
+
+<p>The <code><em>JdbcRecordMapper</em></code> also convert data in JDBC records to typed data in your domain objects.
+
+    Easy Batch supports all built-in Java primitive and wrapper types.
+    If you want to provide a custom type converter, you can implement the <code><em>TypeConverter</em></code> interface and register your implementation using
+    the <code><em>JdbcRecordMapper.registerTypeConverter</em></code> method.</p>
 
 <div class="bs-callout bs-callout-warning">
     <h5><i class="fa fa-info-circle"></i> Heads up!</h5>

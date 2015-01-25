@@ -2,7 +2,7 @@
 
 <h3 id="1.1">1.1 Creating a batch engine</h3>
 
-<p>Creating a batch engine is straightforward and can be done through the <code>EngineBuilder</code> API:</p>
+<p>Creating a batch engine is straightforward and can be done through the <code><em>EngineBuilder</em></code> API:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">Engine engine = new EngineBuilder().build();</code></pre>
@@ -30,6 +30,47 @@
 </div>
 
 <p>Strict mode is disabled by default.</p>
+
+<h3 id="1.4">1.2 Enabling silent mode</h3>
+
+<p>Easy Batch silent mode is a parameter that allows you to mute all loggers.
+    To enable silent mode, you can use the following snippet:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.silentMode(true)</strong>
+    .build();</code></pre>
+</div>
+
+<p>Silent mode is disabled by default.</p>
+
+<h3 id="1.5">1.2 Enabling JMX monitoring</h3>
+
+<p>Easy Batch allows you to monitor job execution and progress at runtime using JMX.
+    The JMX MBean named <code><em>org.easybatch.core.jmx:type=EasyBatchMonitorMBean</em></code>
+    exposes the following attributes:</p>
+
+<ul>
+    <li>The batch start and end times</li>
+    <li>The data source being processed</li>
+    <li>The total number of records to process</li>
+    <li>The total number of filtered, ignored, rejected, error and successfully processed records</li>
+    <li>The current record being processed</li>
+    <li>And the execution progress</li>
+</ul>
+
+<p>In order to register this JMX MBean at application's startup, you should enable it using the following API:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.enableJMX(true)</strong>
+    .build();</code></pre>
+</div>
+
+<p>You can then use any standard JMX compliant tool such as <a href="http://visualvm.java.net/" target="_blank">VisualVM</a> to visualize monitoring attributes.</p>
+
+<p>JMX monitoring is disabled by default. You can find a complete tutorial about this feature in the
+            <a href="../tutorials/jmx.html" target="_blank">JMX tutorial</a>.</p>
 
 <h2>2. The <em>Record</em> abstraction</h2>
 
