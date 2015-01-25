@@ -203,7 +203,7 @@ public class EngineTest {
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
-                .enableStrictMode(true)
+                .strictMode(true)
                 .build();
         Report report = engine.call();
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
@@ -221,7 +221,7 @@ public class EngineTest {
         engine = new EngineBuilder()
                 .reader(reader)
                 .mapper(mapper)
-                .enableStrictMode(true)
+                .strictMode(true)
                 .build();
         Report report = engine.call();
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
@@ -240,7 +240,7 @@ public class EngineTest {
         engine = new EngineBuilder()
                 .reader(reader)
                 .validator(validator)
-                .enableStrictMode(true)
+                .strictMode(true)
                 .build();
         Report report = engine.call();
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);

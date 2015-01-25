@@ -165,7 +165,7 @@ public final class EngineBuilder {
      * @param strictMode true if strict mode should be enabled
      * @return the engine builder
      */
-    public EngineBuilder enableStrictMode(final boolean strictMode) {
+    public EngineBuilder strictMode(final boolean strictMode) {
         engine.setStrictMode(strictMode);
         return this;
     }
