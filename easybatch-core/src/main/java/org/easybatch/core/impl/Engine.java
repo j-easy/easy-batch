@@ -24,13 +24,9 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.jmx.Monitor;
 import org.easybatch.core.api.*;
 import org.easybatch.core.util.Utils;
 
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-import java.lang.management.ManagementFactory;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -58,10 +54,6 @@ public final class Engine implements Callable<Report> {
 
     private List<RecordProcessor> processingPipeline;
 
-    private Monitor monitor;
-
-    private Report report;
-
     private FilteredRecordHandler filteredRecordHandler;
 
     private IgnoredRecordHandler ignoredRecordHandler;
@@ -73,6 +65,8 @@ public final class Engine implements Callable<Report> {
     private boolean strictMode;
 
     private EventManager eventManager;
+
+    private Report report;
 
     Engine(final RecordReader recordReader,
            final List<RecordFilter> filterChain,
@@ -94,8 +88,6 @@ public final class Engine implements Callable<Report> {
         this.errorRecordHandler = errorRecordHandler;
         
         report = new Report();
-        monitor = new Monitor(report);
-        configureJmxMBean();
     }
 
     @Override
@@ -306,25 +298,6 @@ public final class Engine implements Callable<Report> {
         return currentRecord;
     }
 
-    /**
-     * Configure JMX MBean
-     */
-    private void configureJmxMBean() {
-
-        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        ObjectName name;
-        try {
-            name = new ObjectName("org.easybatch.core.jmx:type=EasyBatchMonitorMBean");
-            if (!mbs.isRegistered(name)) {
-                monitor = new Monitor(report);
-                mbs.registerMBean(monitor, name);
-                LOGGER.log(Level.INFO, "Easy batch JMX MBean registered successfully as: {0}", name.getCanonicalName());
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Unable to register Easy batch JMX MBean. Root exception is :" + e.getMessage(), e);
-        }
-    }
-
     /*
      * Setters for engine parameters
      */
@@ -365,10 +338,6 @@ public final class Engine implements Callable<Report> {
         this.errorRecordHandler = errorRecordHandler;
     }
 
-    void setStrictMode(final boolean strictMode) {
-        this.strictMode = strictMode;
-    }
-
     void setEventManager(EventManager eventManager) {
         this.eventManager = eventManager;
     }
@@ -377,9 +346,19 @@ public final class Engine implements Callable<Report> {
         return eventManager;
     }
 
+    void setStrictMode(final boolean strictMode) {
+        this.strictMode = strictMode;
+    }
+
     void setSilentMode(boolean silentMode) {
         if (silentMode) {
             Utils.muteLoggers();
+        }
+    }
+
+    public void enableJMX(boolean jmx) {
+        if (jmx) {
+            Utils.registerJmxMBean(report);
         }
     }
 

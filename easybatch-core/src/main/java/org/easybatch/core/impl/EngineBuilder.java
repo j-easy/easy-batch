@@ -181,6 +181,16 @@ public final class EngineBuilder {
     }
 
     /**
+     * Activate JMX monitoring.
+     * @param jmx true to enable jmx monitoring
+     * @return the engine builder
+     */
+    public EngineBuilder enableJMX(final boolean jmx) {
+        engine.enableJMX(jmx);
+        return this;
+    }
+
+    /**
      * Register a batch process event listener.
      * See {@link org.easybatch.core.api.event.global.BatchProcessEventListener} for available callback methods.
      *
