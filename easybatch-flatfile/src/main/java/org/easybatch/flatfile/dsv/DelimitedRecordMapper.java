@@ -55,7 +55,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
     /**
      * Default whitespace trimming value.
      */
-    public static final boolean DEFAULT_WHITESPACE_TRIMMING = true;
+    public static final boolean DEFAULT_WHITESPACE_TRIMMING = false;
 
     /**
      * Fields delimiter.
