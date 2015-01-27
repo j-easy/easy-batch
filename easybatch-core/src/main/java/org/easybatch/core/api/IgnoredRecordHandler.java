@@ -33,6 +33,11 @@ public interface IgnoredRecordHandler  {
 
     /**
      * @param record - the ignored record to handle
+     */
+    void handle(final Record record);
+
+    /**
+     * @param record - the ignored record to handle
      * @param e - the exception that caused the record to be ignored
      */
     void handle(final Record record, final Throwable e);

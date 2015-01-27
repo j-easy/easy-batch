@@ -40,11 +40,21 @@ class NoOpIgnoredRecordHandler implements IgnoredRecordHandler {
     private static final Logger LOGGER = Logger.getLogger(NoOpIgnoredRecordHandler.class.getName());
 
     /**
+     * @param record - the ignored record to handle
+     */
+    @Override
+    public void handle(final Record record) {
+        LOGGER.log(Level.SEVERE,
+                "The record mapper returned null for record {0}, it will be ignored",
+                new Object[]{record});
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public void handle(final Record record, final Throwable e) {
-        LOGGER.log(Level.SEVERE, "Record #" + record.getNumber() + " [" + record + "] has been ignored. Root exception:", e);
+        LOGGER.log(Level.SEVERE, "Record " + record + " has been ignored. Root exception:", e);
     }
 
 }
