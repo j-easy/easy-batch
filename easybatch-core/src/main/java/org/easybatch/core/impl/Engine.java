@@ -158,6 +158,11 @@ public final class Engine implements Callable<Report> {
                 Object typedRecord;
                 try {
                     typedRecord = mapRecord(currentRecord);
+                    if(typedRecord == null) {
+                        report.addIgnoredRecord(currentRecordNumber);
+                        ignoredRecordHandler.handle(currentRecord);
+                        continue;
+                    }
                 } catch (Exception e) {
                     report.addIgnoredRecord(currentRecordNumber);
                     ignoredRecordHandler.handle(currentRecord, e);
