@@ -21,6 +21,8 @@ public abstract class Utils {
 
     private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
 
+    public static final String JMX_MBEAN_NAME = "org.easybatch.core.jmx:type=EasyBatchMonitorMBean";
+
     private Utils() {
 
     }
@@ -50,7 +52,7 @@ public abstract class Utils {
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
         try {
-            name = new ObjectName("org.easybatch.core.jmx:type=EasyBatchMonitorMBean");
+            name = new ObjectName(JMX_MBEAN_NAME);
             if (!mbs.isRegistered(name)) {
                 Monitor monitor = new Monitor(report);
                 mbs.registerMBean(monitor, name);

@@ -4,6 +4,7 @@ import org.easybatch.core.api.*;
 import org.easybatch.core.api.event.global.BatchProcessEventListener;
 import org.easybatch.core.api.event.record.*;
 import org.easybatch.core.record.StringRecord;
+import org.easybatch.core.util.Utils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -256,7 +257,7 @@ public class EngineTest {
     public void jmxMBeanShouldBeRegisteredAtEngineCreation() throws MalformedObjectNameException {
         engine = new EngineBuilder().enableJMX(true).build();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName("org.easybatch.core.jmx:type=EasyBatchMonitorMBean"))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME))).isTrue();
     }
 
     /*
