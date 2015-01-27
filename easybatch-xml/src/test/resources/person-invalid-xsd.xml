@@ -1,0 +1,7 @@
+<person>
+    <id>1</id>
+    <fn>foo</fn>
+    <lastName>bar</lastName>
+    <birthDate>2000-01-01</birthDate>
+    <married>true</married>
+</person>

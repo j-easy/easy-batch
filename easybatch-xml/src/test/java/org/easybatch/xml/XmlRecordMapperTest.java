@@ -28,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.xml.bind.UnmarshalException;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
@@ -89,6 +90,17 @@ public class XmlRecordMapperTest {
     public void testInvalidXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(1, getXmlFromFile("/person-invalid.xml"));
         xmlRecordMapper.mapRecord(xmlRecord);
+    }
+
+    @Test(expected = UnmarshalException.class)
+    public void testMappingOfInvalidXmlAccordingToXsd() throws Exception {
+        xmlRecordMapper = new XmlRecordMapper<Person>(Person.class, getFile("/person.xsd"));
+        xmlRecord = new XmlRecord(1, getXmlFromFile("/person-invalid-xsd.xml"));
+        xmlRecordMapper.mapRecord(xmlRecord);
+    }
+
+    private File getFile(String fileName) {
+        return new File(this.getClass().getResource(fileName).getFile());
     }
 
     private String getXmlFromFile(String file) {
