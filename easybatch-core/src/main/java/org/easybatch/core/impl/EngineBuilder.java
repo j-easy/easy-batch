@@ -71,6 +71,14 @@ public final class EngineBuilder {
     }
 
     /**
+     * Static method to create a new {@link EngineBuilder}.
+     * @return a new engine builder.
+     */
+    public static EngineBuilder aNewEngine() {
+        return new EngineBuilder();
+    }
+
+    /**
      * Register a record reader.
      * @param recordReader the record reader to register
      * @return the engine builder
