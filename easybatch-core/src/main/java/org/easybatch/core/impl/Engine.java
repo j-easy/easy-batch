@@ -128,6 +128,12 @@ public final class Engine implements Callable<Report> {
                 Record currentRecord;
                 try {
                     currentRecord = readRecord();
+                    if(currentRecord == null) {
+                        LOGGER.log(Level.SEVERE, "The record reader returned null for next record, next steps will be skipped.");
+                        report.setStatus(Status.ABORTED);
+                        report.setEndTime(System.currentTimeMillis());
+                        return report;
+                    }
                 } catch (Exception e) {
                     eventManager.fireOnBatchException(e);
                     eventManager.fireOnRecordReadException(e);
