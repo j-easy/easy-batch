@@ -25,12 +25,14 @@
 package org.easybatch.tutorials.advanced.jms;
 
 import org.apache.activemq.broker.BrokerService;
+import org.apache.commons.io.FileUtils;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.integration.jms.JmsPoisonMessage;
 
 import javax.jms.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import java.io.File;
 import java.util.Properties;
 
 /**
@@ -90,7 +92,9 @@ public class JMSUtil {
     }
 
     public static void stopEmbeddedBroker() throws Exception {
+        File brokerDataDirectoryFile = broker.getDataDirectoryFile();
         broker.stop();
+        FileUtils.deleteDirectory(brokerDataDirectoryFile);
     }
 
 }
