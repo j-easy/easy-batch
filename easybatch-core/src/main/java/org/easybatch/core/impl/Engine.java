@@ -200,12 +200,15 @@ public final class Engine implements Callable<Report> {
                         break;
                     }
                 }
-                if (processingError && strictMode) {
-                    LOGGER.info(STRICT_MODE_MESSAGE);
-                    report.setStatus(Status.ABORTED);
-                    break;
+                if (processingError) {
+                    if (strictMode) {
+                        LOGGER.info(STRICT_MODE_MESSAGE);
+                        report.setStatus(Status.ABORTED);
+                        break;
+                    }
+                } else {
+                    report.addSuccessRecord(currentRecordNumber);
                 }
-                report.addSuccessRecord(currentRecordNumber);
             }
 
             report.setTotalRecords(processedRecordsNumber);
