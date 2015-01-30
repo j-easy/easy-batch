@@ -199,9 +199,14 @@ public final class Engine implements Callable<Report> {
 
                 //execute record processing pipeline
                 boolean processingError = false;
+                Object processingResult = null;
+                eventManager.fireBeforeProcessingRecord(typedRecord);
                 for (RecordProcessor recordProcessor : processingPipeline) {
                     try {
-                        typedRecord = processRecord(recordProcessor, typedRecord);
+                        typedRecord = recordProcessor.processRecord(typedRecord);
+                        if (recordProcessor instanceof ComputationalRecordProcessor) {
+                            processingResult = ((ComputationalRecordProcessor) recordProcessor).getComputationResult();
+                        }
                     } catch (Exception e) {
                         processingError = true;
                         report.addErrorRecord(currentRecordNumber);
@@ -211,6 +216,7 @@ public final class Engine implements Callable<Report> {
                         break;
                     }
                 }
+                eventManager.fireAfterProcessingRecord(typedRecord, processingResult);
                 if (processingError) {
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
@@ -262,18 +268,6 @@ public final class Engine implements Callable<Report> {
         eventManager.fireBeforeReaderOpen();
         recordReader.open();
         eventManager.fireAfterReaderOpen();
-    }
-
-    @SuppressWarnings({"unchecked"})
-    private Object processRecord(RecordProcessor recordProcessor, Object typedRecord) throws Exception {
-        eventManager.fireBeforeProcessingRecord(typedRecord);
-        Object processedRecord = recordProcessor.processRecord(typedRecord);
-        Object processingResult = null;
-        if (recordProcessor instanceof ComputationalRecordProcessor) {
-            processingResult = ((ComputationalRecordProcessor) recordProcessor).getComputationResult();
-        }
-        eventManager.fireAfterProcessingRecord(processedRecord, processingResult);
-        return processedRecord;
     }
 
     @SuppressWarnings({"unchecked"})
