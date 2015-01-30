@@ -28,6 +28,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.io.File;
 import java.sql.*;
 
 /**
@@ -58,6 +59,12 @@ public class DatabaseUtil {
 
     public static void closeSessionFactory() {
         sessionFactory.close();
+
+        //delete hsqldb tmp files
+        new File("mem.log").delete();
+        new File("mem.properties").delete();
+        new File("mem.script").delete();
+        new File("mem.tmp").delete();
     }
 
     /*
