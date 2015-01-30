@@ -44,9 +44,7 @@ class NoOpIgnoredRecordHandler implements IgnoredRecordHandler {
      */
     @Override
     public void handle(final Record record) {
-        LOGGER.log(Level.SEVERE,
-                "The record mapper returned null for record {0}, it will be ignored",
-                new Object[]{record});
+        LOGGER.log(Level.SEVERE, "The record mapper returned null for record {0}, it will be ignored", record);
     }
 
     /**
