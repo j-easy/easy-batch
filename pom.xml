@@ -44,6 +44,7 @@
         <module>easybatch-json</module>
         <module>easybatch-integration</module>
         <module>easybatch-bench</module>
+        <module>easybatch-archetype</module>
     </modules>
 
     <developers>

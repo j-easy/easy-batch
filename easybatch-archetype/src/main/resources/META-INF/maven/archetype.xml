@@ -1,0 +1,7 @@
+<archetype>
+  <id>easybatch-archetype</id>
+  <sources>
+    <source>src/main/java/App.java</source>
+    <source>src/main/java/TweetProcessor.java</source>
+  </sources>
+</archetype>
