@@ -13,17 +13,10 @@ title : Frequently Asked Questions
         </div>
         <div id="faq1" class="panel-collapse collapse">
             <div class="panel-body">
-                <p>Easy Batch streams data record by record from the data source. Depending on the data source type, a record can be a line in a flat file, an tag in an Xml file, a record in a database table, etc.</p>
-                <p>The <code>RecordReader</code> abstraction is intended to be implemented with a Streaming API so that the data source is not read as a whole (which is the main cause of <code>java.lang.OutOfMemoryError</code> of many batch applications).</p>
-                <p>Easy Batch comes with several built-in implementations of the <code>RecordReader</code> interface to read data from a variety of data sources:</p>
-                <ul>
-                    <li>Flat files (delimited and fixed length) are streamed using JDK built-in APIs.</li>
-                    <li>Xml files are streamed using the  <a href="https://www.jcp.org/en/jsr/detail?id=173">Stax</a> API.</li>
-                    <li>Json files are streamed using the  <a href="https://www.jcp.org/en/jsr/detail?id=353">Json-P</a> API.</li>
-                    <li>Database tables are read using the <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/jdbc/" target="_blank">JDBC</a> API.
-                        Easy Batch uses the cursor based <code>java.sql.ResultSet</code> API to read database table records one by one. Easy Batch does not provide
-                    a paging record reader because the JDBC API does not provide a vendor neutral way to do pagination.</li>
-                </ul>
+                <p>Easy Batch <strong>streams</strong> data record by record from the data source. Depending on the data source type, a record can be a line in a flat file, an tag in an Xml file, a record in a database table, etc.</p>
+                <p>The <code>RecordReader</code> abstraction is intended to be implemented with a <strong>Streaming API</strong> so that the data source is not read as a whole (which is the main cause of <code>java.lang.OutOfMemoryError</code> of many batch applications).</p>
+                <p>Easy Batch comes with several built-in implementations of the <code>RecordReader</code> interface to read data from a variety of data sources.
+                    Please refer to the <a href="./user-guide.html">user guide</a> for all details about available record readers.</p>
             </div>
         </div>
     </div>
@@ -52,7 +45,7 @@ title : Frequently Asked Questions
                 <p>Yes. Easy Batch uses the reference implementation <a href="http://hibernate.org/validator/" target="_blank">Hibernate validator</a> to validate domain objects.</p>
 
                 <p>For all details about how to validate data using Bean Validation API with Easy Batch, please refer to the
-                    <a href="user-guide.html#data-validation">user guide</a>. You can also find a complete tutorial of this feature <a href="../tutorials/key-apis.html">here</a>.</p>
+                    <a href="user-guide.html">user guide</a> (see "Validating data" section). You can also find a complete tutorial of this feature <a href="../tutorials/key-apis.html">here</a>.</p>
             </div>
         </div>
     </div>
@@ -64,8 +57,7 @@ title : Frequently Asked Questions
         </div>
         <div id="faq4" class="panel-collapse collapse">
             <div class="panel-body">
-                <p>No. Easy Batch has been designed and implemented before the young JSR 352 has been submitted. Easy Batch will not implement the JSR 352
-                    because its ultimate goal is to be a lightweight solution that does not require you to setup a whole application server to run a batch application.
+                <p>No. Easy Batch has been designed and implemented before the JSR 352 has been submitted.
                 </p>
             </div>
         </div>
@@ -107,7 +99,7 @@ title : Frequently Asked Questions
                 <p> Spring Batch is an advanced batch processing framework with a steep learning curve. Entire books have been written on Spring Batch because of its very rich and advanced features set such as remoting, partitioning, automatic retry on failure, etc.
                     Easy Batch is a simple and lightweight framework that can be learned quickly an used easily for the majority of batch processing use cases.</p>
                 <p>The main difference between Easy Batch and Spring batch is in the processing workflow: Spring Batch is "Chunk Oriented" (a set of Read-Process-Write steps on a chunk of input data) while Easy Batch is "One Shot" (the data source is processed entirely record by record, the unix way, with a predefined
-                    and extensible <a href="../documentation/architecture.html#2" target="_blank">workflow</a>).</p>
+                    and extensible <a href="../documentation/architecture.html#3" target="_blank">workflow</a>).</p>
                 <p>The second difference is that Easy Batch does not use concepts such as Job, JobExecution, JobInstance, Step, StepExecution used by Spring Batch and the JSR 352 in general.
                     Easy Batch is not intended to compete with Spring Batch but to provide a lightweight alternative that is easy to learn and use.</p>
             </div>

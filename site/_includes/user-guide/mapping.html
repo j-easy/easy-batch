@@ -1,7 +1,7 @@
 <h2 id="4">4. Mapping records to domain objects</h2>
 
-<p>Easy Batch development is POJO-centric and has been designed with the idea that input data records
-    should be projected into the object oriented world of Java and not used in their original format.</p>
+<p>Easy Batch development is POJO-centric and has been designed with the idea that input records
+    should be projected in the object oriented world of Java and not used in their original format.</p>
 
     <p>It is the <code><em>RecordMapper</em></code> that lets you map input records to your domain objects.
     You can register an implementation of the <code><em>RecordMapper</em></code> interface as follows:</p>
@@ -17,9 +17,17 @@
     <p>Registering a record mapper is <strong>optional</strong>. By default, Easy Batch registers a NoOp record mapper that returns the record as is (no mapping logic).</p>
 </div>
 
+        <p>Easy Batch comes with built-in record mappers that allow you to map records from a variety of data formats:</p>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/mapper-uml.jpg"/></p>
+    </div>
+</div>
+
 <h3>4.1 Mapping flat file records</h3>
 
-<p>Easy Batch comes with two implementations of the <code><em>RecordMapper</em></code> interface to map flat file records to your domain objects:</p>
+<p>Easy Batch comes with two implementations of the <code><em>RecordMapper</em></code> interface to map flat file records to domain objects:</p>
 <ul>
     <li><code><em>DelimitedRecordMapper</em></code>: maps delimiter-separated-values to domain objects</li>
     <li><code><em>FixedLengthRecordMapper</em></code>: maps fixed-length records to domain objects</li>
@@ -28,7 +36,7 @@
 <p>These two mappers also convert raw textual data in flat file records to typed data in your domain objects.
 
     Easy Batch supports all built-in Java primitive and wrapper types.
-    If you want to provide a custom type converter, you can implement the <code><em>TypeConverter</em></code> interface and register your implementation using
+    If you want to provide a custom type converter, you can implement the <code><em>org.easybatch.core.api.TypeConverter</em></code> interface and register your implementation using
     <code><em>DelimitedRecordMapper.registerTypeConverter</em></code> and <code><em>FixedLengthRecordMapper.registerTypeConverter</em></code> methods.</p>
 
 <p>To use these two mappers, you need to add the <code><em>easybatch-flatfile</em></code> module to your dependencies:</p>
@@ -151,16 +159,83 @@
 <pre><code class="java">DelimitedRecordMapper&lt;MyPojo&gt; myPojoMapper = new DelimitedRecordMapper&lt;MyPojo&gt;(MyPojo.class);
     myPojoMapper.setDelimiter("|");</code></pre>
 </div>
-
 <p>You can use other setters to provide custom parameters.</p>
+
+<div class="bs-callout bs-callout-danger">
+<h5><i class="fa fa-info-circle"></i> Heads up!</h5>
 <p>If a delimited record is not well formed, the <code><em>DelimitedRecordMapper</em></code> throws an exception that causes the record to be ignored by the engine in the following cases:</p>
 <ul>
     <li>Fields number is not equal to the expected fields number (missing field, extra field, etc) as specified in the
         <a href="http://www.ietf.org/rfc/rfc4180.txt" target="_blank">CSV RFC (section 2.4).</a></li>
-    <li>A field is not enclosed as expected with the data qualifier</li>
+    <li>A field is not enclosed as expected with the data qualifier, which means that the <code><em>DelimitedRecordMapper</em></code> expects
+    that all fields are qualified when a qualifier is specified.</li>
 </ul>
 
-<h4>4.1.2 Mapping fixed-length records</h4>
+    <h5><i class="fa fa-info-circle"></i> Note:</h5>
+    <p>The <code><em>DelimitedRecordMapper</em></code> is intended to cover <strong>basic</strong> requirements of delimited-values parsing.
+        It does <strong>not</strong> provide support for detecting delimiters and line breaks in a qualified field.
+        If you need support for these features, you can use the <code><em>ApacheCommonCsvRecordReader</em></code> that provides all of them.
+        Just add the dependency <code><em>easybatch-apache-commons-csv</em></code> to project and you are ready to go!</p>
+</div>
+
+<h4>4.1.2 Mapping CSV records using Apache Common CSV</h4>
+
+<p>When you use the <code><em>ApacheCommonCsvRecordReader</em></code>, you get instances of <code><em>ApacheCommonCsvRecord</em></code> which have
+<code><em>org.apache.commons.csv.CSVRecord</em></code> as payload.
+    Apache common CSV does not provide a mapping feature between <code><em>org.apache.commons.csv.CSVRecord</em></code> instances and Java Objects.
+    Easy Batch provides this feature through the <code><em>ApacheCommonCsvRecordMapper</em></code>.</p>
+
+<p>To use this mapper, first you need to add the following maven dependency to your project:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-apache-commons-csv&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+
+<p>Then, you can register the <code><em>ApacheCommonCsvRecordMapper</em></code> as follows:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    .mapper(new ApacheCommonCsvRecordReader())
+    .build();</code></pre>
+</div>
+
+<h4>4.1.3 Mapping CSV records using OpenCSV</h4>
+
+<p>The <code><em>OpenCsvRecordMapper</em></code> uses <a href="http://opencsv.sourceforge.net">Open CSV</a> to map a delimited <code><em>StringRecord</em></code> to domain object.</p>
+
+<p>In order to use this mapper, first you need to add the following maven dependency to your project:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-opencsv&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+
+<p>Then, you can register the <code><em>OpenCsvRecordMapper</em></code> as follows:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    .mapper(new OpenCsvRecordMapper(MyPojoType.class, new String[]{"field1", "field2"});)
+    .build();</code></pre>
+</div>
+
+<p>You should specify your domain object type and an array of field names <em>in the same order</em> as they appear in the CSV record.</p>
+
+<p>You can configure the <code><em>OpenCsvRecordMapper</em></code> to parse and map a <code><em>StringRecord</em></code> with the following parameters:</p>
+
+<ul>
+    <li><strong>delimiter</strong>: the delimiter that separates values</li>
+    <li><strong>qualifier</strong>: the qualifier that surrounds values</li>
+    <li><strong>strictQualifiers</strong>: true if the qualifier should be present on all fields</li>
+</ul>
+
+<h4>4.1.4 Mapping fixed-length records</h4>
 
 <p>To register the <code><em>FixedLengthRecordMapper</em></code>, use the following snippet:</p>
 
@@ -180,11 +255,12 @@
 
 <h3>4.2 Mapping xml records</h3>
 
+<h4>4.2.1 Mapping XML records using JAXB</h4>
+
 <p>Easy Batch comes with a built-in implementation of the <code><em>RecordMapper</em></code> interface named <code><em>XmlRecordMapper</em></code> to map xml records to your domain objects using <a href="https://jaxb.java.net/" target="_blank">JAXB</a>.</p>
 
-<p>To use this mapper, you should annotate your POJO with JAXB annotations to be able to map xml records to instances of your POJO.</p>
-
-<p>First you need to add the <code><em>easybatch-xml</em></code> module to your dependencies:<p>
+<p>To use this mapper, you should annotate your POJO with JAXB annotations to be able to map xml records to instances of your POJO.
+    First you need to add the <code><em>easybatch-xml</em></code> module to your dependencies:<p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;dependency&gt;
@@ -211,11 +287,94 @@
         register your custom components and then use the constructor <code><em>org.easybatch.xml.XmlRecordMapper(javax.xml.bind.Unmarshaller unmarshaller)</em></code>.
 </div>
 
-<h3>4.3 Mapping database records</h3>
+<h4>4.2.1 Mapping XML records using XStream</h4>
 
-<p>The <code><em>JdbcRecordMapper</em></code> allows you to map database records to your domain objects.</p>
+<p>Easy Batch provides an integration module with <a href="http://xstream.codehaus.org/" target="_blank">XStream</a> to map XML records to domain objects.</p>
 
-<p>To use the <code><em>JdbcRecordMapper</em></code>, first you need to add the <code><em>easybatch-jdbc</em></code> module to your dependencies:</p>
+<p>In order to use the <code><em>XstreamRecordMapper</em></code>, first, add the following maven dependency to your project:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-xstream&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+
+<p>Then, you can register it as follow:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.mapper(new XstreamRecordMapper&lt;MyPojoType&gt;(xstreamMapper))</strong>
+    .build();</code></pre>
+</div>
+
+<p>You should provide a pre-configured instance of the XStream mapper and the type of the target object.</p>
+
+<h3>4.3 Mapping JSON records</h3>
+
+<p>Easy Batch does not provide a built-in JSON record mapper yet.
+    The goal of Easy Batch is to use the reference implementation of <a href="https://jcp.org/en/jsr/detail?id=367" target="_blank">JSON-B</a>.
+    As of version {{ site.version }} of Easy Batch, the reference implementation of JSON-B is not available yet.
+    Built-in support for JSON mapping will be provided as soon as the reference implementation of JSON-B will become available.
+</p>
+
+<p>That said, Easy Batch provides integration modules with third party JSON mappers like
+    <a href="http://jackson.codehaus.org/" target="_blank">Jackson</a> or <a href="https://code.google.com/p/google-gson/" target="_blank">Gson</a>.</p>
+
+<h4>4.3.1 Mapping JSON records with Jackson</h4>
+
+<p>First, add the following maven dependency to your project:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-jackson&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+
+<p>Then, you can register the <code><em>JacksonRecordMapper</em></code> as follows:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.mapper(new JacksonRecordMapper(jacksonMapper, MyPojoType.class))</strong>
+    .build();</code></pre>
+</div>
+
+<p>You should provide a pre-configured instance of the Jackson mapper and the type of the target object.</p>
+
+<h4>4.3.2 Mapping JSON records with Gson</h4>
+
+<p>First, add the following maven dependency to your project:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-gson&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+
+<p>Then, you can register the <code><em>GsonRecordMapper</em></code> as follows:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.mapper(new GsonRecordMapper(gsonMapper, MyPojoType.class))</strong>
+    .build();</code></pre>
+</div>
+
+<p>You should provide a pre-configured instance of the Gson mapper and the type of the target object.</p>
+
+<h3>4.4 Mapping database records</h3>
+
+<h4>4.4.1 Mapping JDBC records</h4>
+
+<p>When you use the <code><em>JdbcRecordReader</em></code> to read data from a database, you get <code><em>JdbcRecord</em></code> instances
+which have <code><em>java.sql.ResultSet</em></code> as payload. In order to map <code><em>JdbcRecord</em></code> to domain objects,
+you can use the <code><em>JdbcRecordMapper</em></code>.</p>
+
+<p>First you need to add the <code><em>easybatch-jdbc</em></code> module to your dependencies:</p>
 
         <div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;dependency&gt;
@@ -232,7 +391,8 @@
     .build();</code></pre>
 </div>
 
-<p>When you create a <code><em>JdbcRecordMapper</em></code>, you should specify your domain object type. Easy Batch will introspect your bean and use the JDBC result set meta-data to map JDBC columns to fields with the same name.</p>
+<p>When you create a <code><em>JdbcRecordMapper</em></code>, you should specify your domain object type.
+    Easy Batch will introspect your bean and use the JDBC result set meta-data to map JDBC columns to fields with the same name.</p>
 
 <p>If column names are different from your Pojo field names, you can specify an array of field names <em>in the same order</em> as in the database record:</p>
 
@@ -250,7 +410,59 @@
     If you want to provide a custom type converter, you can implement the <code><em>TypeConverter</em></code> interface and register your implementation using
     the <code><em>JdbcRecordMapper.registerTypeConverter</em></code> method.</p>
 
-<div class="bs-callout bs-callout-warning">
-    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
-    <p>The <code><em>JdbcRecordMapper</em></code> should be used in conjunction with the <code><em>JdbcRecordReader</em></code>.</p>
+<p>Easy Batch provides also an integration module with
+    <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/jdbc.html" target="_blank">Spring JDBC</a>
+    in order to map JDBC records to domain objects.</p>
+<p>This module provides the <code><em>SpringJdbcRecordMapper</em></code> that you can use as follows:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.mapper(new SpringJdbcRecordMapper(MyPojoType.class))</strong>
+    .build();</code></pre>
 </div>
+
+<p>You have to specify the target domain object type at construction time.
+Note that to use this mapper, you should add the following maven dependency to your project:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-spring-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+
+<h4>4.4.2 Mapping JPA records</h4>
+
+<p>When you use the <code><em>JpaRecordReader</em></code>, you get a <code><em>GenericRecord</em></code> having
+    an instance of your domain object as payload. In fact, the mapping is already done by the JPA provider.</p>
+
+<p>In order to get the payload of <code><em>GenericRecord</em></code>, you can use the <code><em>GenericRecordMapper</em></code>.
+This mapper simply returns the payload of the <code><em>GenericRecord</em></code> which is the instance of your domain object.</p>
+
+<h4>4.4.3 Mapping MongoDB records</h4>
+
+<p>When you use the <code><em>MongoDBRecordReader</em></code> to read data from a Mongo DB instance, you get <code><em>MongoRecord</em></code>
+    instances having <code><em>com.mongodb.DBObject</em></code> as payload. In order to map <code><em>MongoRecord</em></code> to domain objects,
+    you can use the <code><em>MongoDBRecordMapper</em></code>.</p>
+
+<p>First you need to add the <code><em>easybatch-mongodb</em></code> module to your dependencies:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-mongodb&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+
+<p>Then you can register it as follows:</p>
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.mapper(new MongoDBRecordMapper(MyPojoType.class))</strong>
+    .build();</code></pre>
+</div>
+
+<p>The <code><em>MongoDBRecordMapper</em></code> uses <a href="https://github.com/mongodb/morphia" target="_blank">Morphia</a> behind the scene
+    to map <code><em>com.mongodb.DBObject</em></code> to domain objects.
+    Note that your domain object should be annotated with Morphia's annotations.</p>

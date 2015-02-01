@@ -19,13 +19,11 @@
 <p>These readers allow you to read data form:</p>
 <ul>
     <li>flat files (delimited and fixed length)</li>
-    <li>xml files</li>
-    <li>json files</li>
+    <li>xml and json files</li>
     <li>in-memory strings</li>
     <li>databases</li>
     <li>JMS queues</li>
-    <li>List of objects</li>
-    <li>Queue of objects</li>
+    <li>Lists and Queues of objects</li>
     <li>and standard input</li>
 </ul>
 
@@ -43,10 +41,10 @@
 &lt;/dependency&gt;</code></pre>
 </div>
 
-<p>Then, you can register the <code><em>FlatFileRecordReader</em></code> suing the <code><em>EngineBuilder</em></code>:</p>
+<p>Then, you can register the <code><em>FlatFileRecordReader</em></code> using the <code><em>EngineBuilder</em></code>:</p>
 
 <div class="bs-callout bs-callout-code">
-<pre><code class="java">Engine engine = new EngineBuilder().build();
+<pre><code class="java">Engine engine = new EngineBuilder()
     <strong>.reader(new FlatFileRecordReader(myFlatFile))</strong>
     .build();</code></pre>
 </div>
@@ -77,24 +75,32 @@
 &lt;/tweets&gt;</code></pre>
 </div>
 
-<p>For Easy Batch the first record is:</p>
+<div class="row">
 
-<div class="bs-callout bs-callout-code">
+    <div class="col-md-6">
+        <p>For Easy Batch the first record is:</p>
+
+        <div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;tweet&gt;
     &lt;id&gt;1&lt;/id&gt;
     &lt;user&gt;foo&lt;/user&gt;
     &lt;message&gt;Hello&lt;/message&gt;
 &lt;/tweet&gt;</code></pre>
-</div>
+        </div>
+    </div>
 
-<p>The second record is:</p>
+    <div class="col-md-6">
+        <p>The second record is:</p>
 
-<div class="bs-callout bs-callout-code">
+        <div class="bs-callout bs-callout-code">
 <pre><code class="xml">&lt;tweet&gt;
     &lt;id&gt;2&lt;/id&gt;
     &lt;user&gt;bar&lt;/user&gt;
     &lt;message&gt;Hi!&lt;/message&gt;
 &lt;/tweet&gt;</code></pre>
+        </div>
+    </div>
+
 </div>
 
 <p>and so on.. To use the <code><em>XmlRecordReader</em></code>, first you need to add the <code><em>easybatch-xml</em></code> module to your dependencies:</p>
@@ -110,12 +116,12 @@
 <p>Then, you can register it with the <code><em>EngineBuilder</em></code>:</p>
 
 <div class="bs-callout bs-callout-code">
-<pre><code class="java">Engine engine = new EngineBuilder().build();
-    <strong>.reader(new XmlRecordReader("tweets", "tweets.xml"))</strong>
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.reader(new XmlRecordReader("tweet", new FileInputStream("tweets.xml")))</strong>
     .build();</code></pre>
 </div>
 
-<p> You should specify the xml root element name, and the input xml file.</p>
+<p>You should specify the xml element name and the input xml file.</p>
 
 <p>The <code><em>XmlRecordReader</em></code> produces <code><em>XmlRecord</em></code> instances with a string representation of the record as payload.</p>
 
@@ -141,24 +147,32 @@
 ]</code></pre>
 </div>
 
-<p>For Easy Batch the first record is:</p>
+<div class="row">
 
-<div class="bs-callout bs-callout-code">
+    <div class="col-md-6">
+        <p>For Easy Batch the first record is:</p>
+
+        <div class="bs-callout bs-callout-code">
 <pre><code class="json">{
     "id": 1,
     "user": "foo",
     "message": "Hello"
 }</code></pre>
-</div>
+        </div>
+    </div>
 
-<p>The second record is:</p>
+    <div class="col-md-6">
+        <p>The second record is:</p>
 
-<div class="bs-callout bs-callout-code">
+        <div class="bs-callout bs-callout-code">
 <pre><code class="json">{
     "id": 2,
     "user": "bar",
     "message": "Hi!"
 }</code></pre>
+        </div>
+</div>
+
 </div>
 
 <p>and so on.. To use the <code>JsonRecordReader</code>, first you need to add the <code><em>easybatch-json</em></code> module to your dependencies:</p>
@@ -174,7 +188,7 @@
 <p>Then, you can register it with the <code><em>EngineBuilder</em></code>:</p>
 
 <div class="bs-callout bs-callout-code">
-<pre><code class="java">Engine engine = new EngineBuilder().build();
+<pre><code class="java">Engine engine = new EngineBuilder()
     <strong>.reader(new JsonRecordReader("tweets.json"))</strong>
     .build();</code></pre>
 </div>
@@ -184,6 +198,8 @@
 <p>The <code><em>JsonRecordReader</em></code> produces <code><em>JsonRecord</em></code> instances with a string representation of the record as payload.</p>
 
 <h3>2.4 Reading data from a database</h3>
+
+<h4>2.4.1. Reading data using the JDBC API</h4>
 
 <p>The <code><em>JdbcRecordReader</em></code> allows you to read records from a database using the
     <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/jdbc/" target="_blank">JDBC</a> API.</p>
@@ -201,20 +217,78 @@
 <p>Then, you can register it with the <code><em>EngineBuilder</em></code>:</p>
 
 <div class="bs-callout bs-callout-code">
-<pre><code class="java">EasyBatchEngine easyBatchEngine = new EasyBatchEngineBuilder()
+<pre><code class="java">Engine engine = new EngineBuilder()
     <strong>.reader(new JdbcRecordReader(myDatabaseConnection, myQuery))</strong>
-.build();</code></pre>
+    .build();</code></pre>
 </div>
 
 <p> When you create a <code>JdbcRecordReader</code>, you should specify the JDBC database connection and the sql query to use to fetch data.</p>
 
 <div class="bs-callout bs-callout-warning">
     <p><strong>Heads up!:</strong> The <code>JdbcRecordReader</code> loads all data fetched by the sql query into a <code>java.sql.ResultSet</code> object.
-        You should pay attention to large data sets with the sql query you specify to the <code>JdbcRecordReader</code>.</p>
+        You should pay attention to large data sets with the sql query you specify to the <code>JdbcRecordReader</code>. You can specify the maximum number of rows
+    to fetch using the <code><em>maxRows</em></code> parameter of the <code><em>JdbcRecordReader</em></code>.</p>
 
     <p>Easy Batch does not provide a "PagingJdbcRecordReader" because the JDBC API does not provide a vendor-neutral way of doing pagination.
-        The SQL syntax differs from one RDBMS to another.</p>
+        The SQL syntax differs from one RDBMS to another..</p>
 </div>
+
+<h4>2.4.2. Reading data using the Java Persistence API</h4>
+
+<p>The <code><em>JpaRecordReader</em></code> allows you to read records from a database using the
+    <a href="http://docs.oracle.com/javaee/6/tutorial/doc/bnbpz.html" target="_blank">Java Persistence API</a>.</p>
+
+<p>To use the JPA record reader, first you need to add the <code><em>easybatch-jpa</em></code> module to your dependencies:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-jpa&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+
+<p>Then, you can register it with the <code><em>EngineBuilder</em></code>:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder()
+    <strong>.reader(new JpaRecordReader(myEntityManagerFactory, myQuery, myObjectType))</strong>
+    .build();</code></pre>
+</div>
+
+<p> When you create a <code>JpaRecordReader</code>, you should specify the <code><em>EntityManagerFactory</em></code> that will be used to create the <code><em>EntityManager</em></code>,
+    your JPQL query and the type of object to return by the reader (which usually is your domain object type).</p>
+
+<div class="bs-callout bs-callout-warning">
+    <p><strong>Heads up!:</strong> The <code>JpaRecordReader</code> loads all data fetched by the JPQL query into a <code>java.util.List</code> object.
+        You should pay attention to large data sets with the JPQL query you specify to the <code>JpaRecordReader</code>. You can specify the maximum number of rows
+        to fetch using the <code><em>maxResults</em></code> parameter of the <code><em>JpaRecordReader</em></code>.</p>
+</div>
+
+<h4>2.4.3. Reading data from Mongo DB</h4>
+
+<p>Easy Batch provides the <code><em>MongoDBRecordReader</em></code> that allows you to read data from a
+    <a href="http://www.mongodb.org" target="_blank">Mongo DB</a> instance.</p>
+
+<p>First, add the following maven dependency to your project:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.easybatch&lt;/groupId&gt;
+    &lt;artifactId&gt;easybatch-mongodb&lt;/artifactId&gt;
+    &lt;version&gt;{{ site.version }}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+
+<p>The <code><em>MongoDBRecordReader</em></code> produces <code><em>MongoRecord</em></code> instances
+    having <code><em>com.mongodb.DBObject</em></code> as payload.</p>
+
+<p>You can configure the <code><em>MongoDBRecordReader</em></code> with the following parameters:</p>
+<ul>
+    <li><strong>limit</strong>: the maximum number of documents to fetch</li>
+    <li><strong>skip</strong>: the number of documents to skip</li>
+    <li><strong>sort</strong>: the sort criteria</li>
+</ul>
 
 <h3>2.3 Reading data from a JMS queue</h3>
 
@@ -229,7 +303,6 @@
     &lt;version&gt;{{ site.version }}&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-
 
 <p>Then, you can register it with the <code><em>EngineBuilder</em></code>:</p>
 
@@ -246,35 +319,40 @@ The <code><em>JmsQueueRecordReader</em></code> will produce <code><em>JmsRecord<
 <h3>Other data source type readers</h3>
 
 <p>You have seen common data sources types and how you can read them using readers provided by Easy Batch.</p>
-        <p>Easy Batch also provides other less common readers that are summarized in the following table:</p>
-        <table class="table table-bordered table-condensed table-striped">
-            <thead>
-                <tr class="info">
-                    <th>Data source</th>
-                    <th>Record reader</th>
-                    <th>record type</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>In-memory String</td>
-                    <td>StringRecordReader</td>
-                    <td>StringRecord</td>
-                </tr>
-                <tr>
-                    <td>Standard input</td>
-                    <td>CliRecordReader</td>
-                    <td>StringRecord</td>
-                </tr>
-                <tr>
-                    <td>List of objects</td>
-                    <td>ListRecordReader</td>
-                    <td>GenericRecord</td>
-                </tr>
-                <tr>
-                    <td>Queue of objects</td>
-                    <td>QueueRecordReader</td>
-                    <td>Type of objects in the queue</td>
-                </tr>
-            </tbody>
-        </table>
+<p>Easy Batch provides other readers that are summarized in the following table:</p>
+<table class="table table-bordered table-condensed table-striped">
+    <thead>
+        <tr class="info">
+            <th>Data source</th>
+            <th>Record reader</th>
+            <th>record type</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>In-memory String</td>
+            <td>StringRecordReader</td>
+            <td>StringRecord</td>
+        </tr>
+        <tr>
+            <td>Flat file (delimited values)</td>
+            <td>ApacheCommonCsvRecordReader</td>
+            <td>ApacheCommonCsvRecord</td>
+        </tr>
+        <tr>
+            <td>Standard input</td>
+            <td>CliRecordReader</td>
+            <td>StringRecord</td>
+        </tr>
+        <tr>
+            <td>List of objects</td>
+            <td>ListRecordReader</td>
+            <td>GenericRecord</td>
+        </tr>
+        <tr>
+            <td>Queue of objects</td>
+            <td>QueueRecordReader</td>
+            <td>Type of objects in the queue</td>
+        </tr>
+    </tbody>
+</table>
