@@ -46,13 +46,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<T> {
 
     private char qualifier;
 
-    private char escape;
-
-    private int line;
-
     private boolean strictQualifiers;
-
-    private boolean ignoreLeadingWhitespace;
 
     private ColumnPositionMappingStrategy<T> strategy;
 
@@ -72,10 +66,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<T> {
                 new StringReader(payload),
                 delimiter,
                 qualifier,
-                escape,
-                line,
-                strictQualifiers,
-                ignoreLeadingWhitespace);
+                strictQualifiers);
         List list = csvToBean.parse(strategy, openCsvReader);
         return (T) list.get(0);
     }
@@ -88,20 +79,8 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<T> {
         this.qualifier = qualifier;
     }
 
-    public void setEscape(char escape) {
-        this.escape = escape;
-    }
-
-    public void setLine(int line) {
-        this.line = line;
-    }
-
     public void setStrictQualifiers(boolean strictQualifiers) {
         this.strictQualifiers = strictQualifiers;
-    }
-
-    public void setIgnoreLeadingWhitespace(boolean ignoreLeadingWhitespace) {
-        this.ignoreLeadingWhitespace = ignoreLeadingWhitespace;
     }
 
 }
