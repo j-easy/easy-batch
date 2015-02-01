@@ -2,7 +2,7 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
-Changes in version 3.0.0 (2015-01-31)
+Changes in version 3.0.0 (2015-02-08)
 -------------------------------------
 
 * Introduced the processing pipeline in the framework's core
@@ -24,6 +24,7 @@ Changes in version 3.0.0 (2015-01-31)
 * Added the HeaderRecordFilter, PoisonRecordFilter and GrepFilter utility filters
 * Added the GenericRecord API
 * Added convenient PoisonRecordFilter to filter poison records
+* Added a maven archetype to generate a pre-configured Easy Batch project
 * Refactored the Builder API with more meaningful method names
 * Renamed the ReportAggregator interface with ReportMerger
 * Removed 'EasyBatch' prefix from all public APIs
