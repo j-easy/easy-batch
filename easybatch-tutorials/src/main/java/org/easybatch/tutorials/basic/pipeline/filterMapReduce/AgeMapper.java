@@ -28,7 +28,7 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 
 /**
- * A custom mapper that maps a perosn to it's age.
+ * A custom mapper that maps a person to it's age.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
