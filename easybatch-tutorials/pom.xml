@@ -253,7 +253,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.basic.pipeline.filterMapReduce.FilterMapReducePipelineTutorial</mainClass>
+                            <mainClass>org.easybatch.tutorials.basic.pipeline.filterMapReduce.FilterMapReduceTutorial</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>

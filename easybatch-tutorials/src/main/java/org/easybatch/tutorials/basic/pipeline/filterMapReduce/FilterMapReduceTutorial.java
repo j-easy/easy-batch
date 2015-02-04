@@ -26,20 +26,19 @@ package org.easybatch.tutorials.basic.pipeline.filterMapReduce;
 
 import org.easybatch.core.api.Report;
 import org.easybatch.core.impl.Engine;
-import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.reader.ListRecordReader;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+
 /**
-* Main class to run the filter-map-reduce processing pipeline tutorial.
+ * Main class to run the filter-map-reduce tutorial.
  *
- * The goal is to find the youngest french person's age from a list of persons.
- *
-* @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
-*/
-public class FilterMapReducePipelineTutorial {
+ * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ */
+public class FilterMapReduceTutorial {
 
     public static void main(String[] args) throws Exception {
 
@@ -49,8 +48,12 @@ public class FilterMapReducePipelineTutorial {
         dataSource.add(new Person("bar", "belgium", 20));
         dataSource.add(new Person("jacques", "france", 40));
 
+        /*
+         * Example 1: find the youngest french person's age from the list of persons
+         */
+
         // Build a batch engine
-        Engine engine = new EngineBuilder()
+        Engine engine = aNewEngine()
                 .reader(new ListRecordReader<Person>(dataSource))
                 .filter(new CountryFilter("france"))
                 .mapper(new AgeMapper())
@@ -62,6 +65,17 @@ public class FilterMapReducePipelineTutorial {
 
         // Print the batch execution report
         System.out.println("The youngest french person's age is: " + report.getBatchResult());
+
+        /*
+         * Example 2: group persons by country
+         */
+
+        report = aNewEngine()
+                .reader(new ListRecordReader<Person>(dataSource))
+                .processor(new GroupByCountry())
+                .build().call();
+
+        System.out.println("Persons grouped by country: " + report.getBatchResult());
 
     }
 
