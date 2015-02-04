@@ -13,9 +13,9 @@ title : Recipes tutorial
                 <p>In this tutorial, you will learn how to create custom Easy Batch components to process data in a non standard format.</p>
                 <p>The goal is to process recipes defined in the following <code>recipes.txt</code> file. Each recipe is defined on multiple physical records:</p>
                 <ul>
-                    <li>R record: marks the beginning of a recipe</li>
-                    <li>I record: marks an ingredient of the current recipe</li>
-                    <li>END record: marks the end of the current recipe, the next recipe (if any) begins on the next line</li>
+                    <li><strong>R</strong> record: marks the beginning of a recipe</li>
+                    <li><strong>I</strong> record: marks an ingredient of the current recipe</li>
+                    <li><strong>END</strong> record: marks the end of the current recipe, the next recipe (if any) begins on the next line</li>
                 </ul>
             </div>
             <div class="col-md-6">
@@ -174,8 +174,8 @@ END</code></pre>
 
 <h2>3. Processing recipes</h2>
 
-              <p>No that you have mapped flat data to domain objects of type <code><em>Recipe</em></code>,
-                  you will implement a <code>RecipeProcessor</code> that simply writes recipes to the console as required:</p>
+              <p>Now that you have mapped flat data to domain objects of type <code><em>Recipe</em></code>,
+                  you will implement a <code><em>RecipeProcessor</em></code> that simply prints out recipes to the console as required:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class RecipeProcessor implements RecordProcessor&lt;Recipe, Recipe&gt;  {

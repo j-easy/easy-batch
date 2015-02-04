@@ -6,7 +6,7 @@ title : Architecture
 
               <h2 id="1" >1. Framework overview</h2>
 
-        <p>This section will give you high level as well as a detailed view of Easy Batch's internals.</p>
+        <p>This section will give you both a high level and a detailed view of Easy Batch's internals.</p>
 
         <h3>1.1 Macroscopic view</h3>
 
@@ -32,12 +32,12 @@ title : Architecture
     </div>
 </div>
 
-        <p>Data read from the data source is first submitted to a pre-processing phase. Here is where data is:</p>
+        <p>Data read from the data source is first submitted to a pre-processing phase. Here, data is:</p>
         <ul>
             <li>Filtered to keep only relevant parts to be processed</li>
             <li>Parsed to a specific format if necessary</li>
             <li>Mapped to domain objects</li>
-            <li>Validated according to application logic constraints</li>
+            <li>Validated against the application's constraints</li>
         </ul>
 
         <p>After this pre-processing stage, the data is ready to be processed quietly. It is then submitted to a processing
@@ -45,7 +45,8 @@ title : Architecture
 
         <h3>1.3 Microscopic view</h3>
 
-        <p>Let's zoom in to the third level. The next figure describes Easy Batch's main components and gives you an overview of the framework architecture:</p>
+        <p>Let's zoom in to the third level.
+            The next figure describes Easy Batch's main components and gives you an overview of the framework's architecture:</p>
 
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
@@ -55,11 +56,11 @@ title : Architecture
 
               <p>Easy Batch processes data record by record. Depending on the data source type, a record can be a line in a flat file, a row in database, a tag in a XML file, a file in a folder, etc. The main components of the processing engine are:</p>
               <ul>
-                  <li>Record Reader : reads records <em>sequentially</em> from the data source</li>
-                  <li>Record Filter chain : a chain of filters to skip undesired records from being processed</li>
-                  <li>Record Mapper : maps records to domain objects</li>
-                  <li>Record Validator : applies declared validation constraints on records</li>
-                  <li>Processing pipeline : applies business processing logic for each record</li>
+                  <li>Record reader: reads records <em>sequentially one by one</em> from the data source</li>
+                  <li>Record filter chain: a chain of filters to skip undesired records from being processed</li>
+                  <li>Record mapper: maps records to domain objects</li>
+                  <li>Record validator: applies declared validation constraints on records</li>
+                  <li>Processing pipeline: applies business processing logic for each record</li>
               </ul>
 
             <p>All these components are optional. Easy Batch provides a No Operation implementation for each component.
@@ -73,8 +74,7 @@ title : Architecture
             <p>At the end of execution, you get a report containing several metrics and statistics.
                 Easy Batch also gives you a detailed log about what happened in case of failure in any of these steps.</p>
 
-        <p>After a pre-processing phase (filtering, parsing, mapping and validating data), records enter the processing pipeline where they are
-        submitted to a chain of processors:</p>
+        <p>When a record survives the pre-processing phase, it enters the processing pipeline where it is submitted to a chain of processors:</p>
 
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
@@ -84,7 +84,7 @@ title : Architecture
 
         <p>Record type can change from one processor to another. When all the processing pipeline has been applied, the engine moves to the next record.</p>
 
-              <h2 id="3">3. Processing workflow</h2>
+              <h2 id="workflow">2. Processing workflow</h2>
 
               <p>The workflow used internally by Easy Batch is illustrated by the next figure and described below:</p>
 

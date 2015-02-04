@@ -91,7 +91,7 @@ title : Loading data in a database
 
         <p>Now, we would like to start a transaction before processing the record, commit it if everything is ok and roll it back when an exception occurs.
         You could write this transaction handling code directly in the <code><em>TweetLoader</em></code> above, but this would
-        pollute your business logic with technical code to handle transactions</p>
+        pollute your business logic with technical code to handle transactions.</p>
         <p>In order to introduce cross cutting behavior into the processing workflow, Easy Batch provides listeners that
         are fired before and after each step. In this case, we need a listener bound to the record processing step.
         We can implement the <code><em>RecordProcessorEventListener</em></code> interface:</p>
@@ -167,7 +167,7 @@ title : Loading data in a database
 
                 <h2 id="3">3. Running the tutorial</h2>
 
-        <p>To run the tutorial, proceed as follow:</p>
+        <p>To run the tutorial, proceed as follows:</p>
         <div class="bs-callout bs-callout-code">
 <pre><code>$>git clone https://github.com/benas/easy-batch.git
 $>cd easy-batch

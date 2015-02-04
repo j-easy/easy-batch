@@ -5,8 +5,16 @@ title : Job scheduling with Quartz
 ---
               <h2>1. Introduction</h2>
 
-              <p>Easy Batch engine implements the <code><em>java.util.concurrent.Callable</em></code> interface so it can be easily scheduled using the <code><em>java.util.concurrent.ScheduledExecutorService</em></code> API.
-                  Nevertheless, this service is limited in terms of scheduling features that's why Easy Batch provides an integration module with the popular Java scheduler <a href="http://quartz-scheduler.org/" target="_blank">Quartz</a>.</p>
+              <p>Easy Batch engine implements the <code><em>java.util.concurrent.Callable</em></code> interface so it can be easily scheduled
+                  using the <code><em>java.util.concurrent.ScheduledExecutorService</em></code> API. Here is a quick example:</p>
+
+<div class="bs-callout bs-callout-code">
+<pre><code class="java">Engine engine = new EngineBuilder().build();
+ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
+ScheduledFuture scheduledFuture = scheduledExecutorService.schedule(engine, 5, TimeUnit.SECONDS);</code></pre>
+</div>
+
+              <p>The <code><em>java.util.concurrent.ScheduledExecutorService</em></code> is limited in terms of scheduling features, that's why Easy Batch provides an integration module with the popular Java scheduler <a href="http://quartz-scheduler.org/" target="_blank">Quartz</a>.</p>
 
               <p>In this tutorial, you will learn how to schedule an Easy Batch instance using the built-in <code><em>EasyBatchScheduler</em></code> API.</p>
              <p>This API acts as a bridge so that you do not need to deal with Quartz low level APIs.</p>

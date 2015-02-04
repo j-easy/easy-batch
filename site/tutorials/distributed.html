@@ -28,9 +28,10 @@ title : Distributed jobs
 
         <p>To keep the tutorial simple, we will use the JDK built-in HTTP server instead of a RESTful framework.</p>
 
-        <p>Here is the implementation of the <code><em>RecordDispatcher</em></code>:</p>
+        <p>Here is the implementation of the custom <code><em>RecordDispatcher</em></code>:</p>
 
         <div class="bs-callout bs-callout-code">
+            <h5>RestEndpointRecordDispatcher.java</h5>
 <pre><code class="java">public class RestEndpointRecordDispatcher implements RecordDispatcher, HttpHandler {
 
     private int recordNumber;
@@ -54,9 +55,9 @@ title : Distributed jobs
 }</code></pre>
         </div>
 
-        <p>This dispatcher will be used as a HTTP handler of the embedded server that will be used to run the tutorial.</p>
+        <p>This dispatcher will be used as a HTTP handler of the embedded server.</p>
 
-        <p>Here, a single JMS queue is used for simplicity's sake, you should use multiple queues in a production use case
+        <p>A single JMS queue is used for simplicity's sake, you should use multiple queues in a production use case
         and dispatch records either in a round robin fashion, based on record content (for example, separate orders placed from a mobile device and orders placed from a web browser) or any other strategy.</p>
 
         <p>The <code><em>JMSUtil</em></code> class is the same class used in the <a href="./jms.html">Asynchronous jobs tutorial</a> and is used to start an embedded JMS broker

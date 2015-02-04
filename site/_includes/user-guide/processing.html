@@ -17,8 +17,8 @@
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">Engine engine = new EngineBuilder()
-    <strong>.processor(new myRecordProcessor1())</strong>
-    <strong>.processor(new myRecordProcessor2())</strong>
+    <strong>.processor(myRecordProcessor1)</strong>
+    <strong>.processor(myRecordProcessor2)</strong>
     .build();</code></pre>
 </div>
 
@@ -27,13 +27,14 @@
         <p>You can also do some computation on input records that will be returned at the end of execution.
         This is the role of <code><em>ComputationalRecordProcessor</em></code> API, that is, do some computation on inputs records.</p>
 
-        <p>A <code><em>ComputationalRecordProcessor</em></code> is used for terminal operations, like aggregating results for instance.
-            Hence, it should be placed <em>at the end</em> of the pipeline so that Easy Batch can call its <code><em>getComputationResult</em></code>
-        method to get the computation result at the end of execution. You obtain this result from the execution report as follows:</p>
+        <p>Unlike <code><em>ComputationalRecordProcessor</em></code>s that are used for <strong>intermediate</strong> operations,
+            a <code><em>ComputationalRecordProcessor</em></code> is used for <strong>terminal</strong> operations, like aggregating results for instance.
+            Hence, it should be placed <em>at the end</em> of the pipeline. Easy Batch will call its <code><em>getComputationResult</em></code>
+        method to get the computation result at the end of execution. You can obtain this result from the execution report as follows:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">Engine engine = new EngineBuilder()
-    <strong>.processor(new myComputationalRecordProcessor())</strong>
+    <strong>.processor(myComputationalRecordProcessor)</strong>
     .build();
 
 Report report = engine.call();

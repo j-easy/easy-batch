@@ -7,7 +7,7 @@ title : Hello World Tutorial
               <h2>1. Introduction</h2>
 
         <p>This tutorial will show you how to build a very simple batch application to process a in-memory data source.
-            We will process text records containing tweets and simply print them out to the console (remember, it is a hello world sample <i class="fa fa-smile-o"></i>)
+            We will process text records containing tweets and simply print them out to the console (remember, it is a hello world sample <i class="fa fa-smile-o"></i>).
             Here are the tweets:</p>
 
 <div class="bs-callout bs-callout-code">
@@ -43,9 +43,10 @@ Engine engine = new EngineBuilder()
 
         <p>With Easy Batch, you only write your application's logic and let the framework take care of the boilerplate code of reading, parsing, logging, reporting, etc.</p>
 
-        <p>You will write a <code><em>RecordProcessor</em></code> to process <code><em>StringRecord</em></code> and implement business logic:</p>
+        <p>Let's implement the business logic with a <code><em>RecordProcessor</em></code> to process <code><em>StringRecord</em></code>s:</p>
 
 <div class="bs-callout bs-callout-code">
+    <h5>TweetProcessor.java</h5>
 <pre><code class="java">public class TweetProcessor implements RecordProcessor&lt;StringRecord, StringRecord&gt; {
 
     @Override
@@ -101,7 +102,7 @@ Engine engine = new EngineBuilder()
 
         <p>To run the engine, you call the <code><em>call</em></code> method.</p>
         <p>Easy Batch returns a report at the end of execution containing various metrics and statistics.
-            Its content is printed to the console to examine it. Time to run the tutorial and see the result.</p>
+            In this example, its content is printed out to the console to examine it. Time to run the tutorial and see the result.</p>
 
         <h2>5. Running the tutorial</h2>
 
@@ -139,7 +140,7 @@ INFO: Shutting down easy batch engine</code></pre>
 
         <h2>6. Summary</h2>
 
-        <p>Congratulations! You built your first batch application with Easy Batch.
+        <p>Congratulations! You have built your first batch application with Easy Batch.
             You learned how create, configure and run a batch engine to process data from a data source.</p>
 
         <p>All you have done is:</p>

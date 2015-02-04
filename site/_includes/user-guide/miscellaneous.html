@@ -182,6 +182,14 @@ BlockingQueue&lt;Record&gt; defaultQueue = new LinkedBlockingQueue&lt;Record&gt;
 }</code></pre>
         </div>
 
+        <p>The next figure shows when each method (in orange) of the <code><em>BatchProcessEventListener</em></code> is called in the processing workflow:</p>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/batch-listener.jpg"/></p>
+    </div>
+</div>
+
         <p>You can implement this interface to provide custom init/shutdown hooks and register your implementation using the <code><em>EngineBuilder</em></code> API:</p>
 
         <div class="bs-callout bs-callout-code">

@@ -21,7 +21,7 @@ title : Indexing ElasticSearch tutorial
         Easy Batch provides the <code><em>JdbcRecordReader</em></code> that is designed to read data from a relational database using the
 <a href="http://docs.oracle.com/javase/tutorial/jdbc/" target="_blank">JDBC</a> API.
 
-        <p>You will use this reader to read tweets form the database:</p>
+        <p>You will use this reader to read tweets from the database:</p>
 
     <div class="bs-callout bs-callout-code">
 <pre><code class="java">Engine engine = new EngineBuilder()
@@ -36,7 +36,7 @@ title : Indexing ElasticSearch tutorial
 
 <h2>3. Transforming tweets to Json objects</h2>
 
-        <p>Before transforming tweets to Json, you would like to map relational data to instances of <code><em>Tweet</em></code> bean. This is the Pojo-centric approach Easy Batch is all about.
+        <p>Before transforming tweets to Json, you would like to map relational data to instances of the <code><em>Tweet</em></code> bean. This is the Pojo-centric approach Easy Batch is all about.
             Once you get tweet objects, it will be easy to use ElasticSearch's APIs to index data in Json format.</p>
 
         <p>The <code><em>JdbcRecordMapper</em></code> provided by Easy Batch allows to you to map relational records to domain objects:</p>
@@ -50,9 +50,9 @@ title : Indexing ElasticSearch tutorial
 </div>
 
         <p>You must specify the target domain object type the mapper should map data to. This mapper will use
-        the table meta-data to determine column names and map values to corresponding fields of the domain object.</p>
+        the table's meta-data to determine column names and map values to corresponding fields of the domain object.</p>
 
-        <p>This mapper will now produce <code><em>Tweet</em></code> objects that you can use to index ElasticSearch.</p>
+        <p>This mapper will produce <code><em>Tweet</em></code> objects that you can use to index ElasticSearch.</p>
 
 <h2>4. Loading tweets in ElasticSearch</h2>
 

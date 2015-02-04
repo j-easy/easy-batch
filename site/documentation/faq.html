@@ -14,7 +14,7 @@ title : Frequently Asked Questions
         <div id="faq1" class="panel-collapse collapse">
             <div class="panel-body">
                 <p>Easy Batch <strong>streams</strong> data record by record from the data source. Depending on the data source type, a record can be a line in a flat file, an tag in an Xml file, a record in a database table, etc.</p>
-                <p>The <code>RecordReader</code> abstraction is intended to be implemented with a <strong>Streaming API</strong> so that the data source is not read as a whole (which is the main cause of <code>java.lang.OutOfMemoryError</code> of many batch applications).</p>
+                <p>The <code>RecordReader</code> abstraction is intended to be implemented with a <strong>Streaming API</strong> so that the data source is not entirely loaded in memory (which is the main cause of <code>java.lang.OutOfMemoryError</code> of many batch applications).</p>
                 <p>Easy Batch comes with several built-in implementations of the <code>RecordReader</code> interface to read data from a variety of data sources.
                     Please refer to the <a href="./user-guide.html">user guide</a> for all details about available record readers.</p>
             </div>
@@ -99,7 +99,7 @@ title : Frequently Asked Questions
                 <p> Spring Batch is an advanced batch processing framework with a steep learning curve. Entire books have been written on Spring Batch because of its very rich and advanced features set such as remoting, partitioning, automatic retry on failure, etc.
                     Easy Batch is a simple and lightweight framework that can be learned quickly an used easily for the majority of batch processing use cases.</p>
                 <p>The main difference between Easy Batch and Spring batch is in the processing workflow: Spring Batch is "Chunk Oriented" (a set of Read-Process-Write steps on a chunk of input data) while Easy Batch is "One Shot" (the data source is processed entirely record by record, the unix way, with a predefined
-                    and extensible <a href="../documentation/architecture.html#3" target="_blank">workflow</a>).</p>
+                    and extensible <a href="../documentation/architecture.html#workflow" target="_blank">workflow</a>).</p>
                 <p>The second difference is that Easy Batch does not use concepts such as Job, JobExecution, JobInstance, Step, StepExecution used by Spring Batch and the JSR 352 in general.
                     Easy Batch is not intended to compete with Spring Batch but to provide a lightweight alternative that is easy to learn and use.</p>
             </div>

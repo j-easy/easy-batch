@@ -49,11 +49,6 @@
 &lt;/dependency&gt;</code></pre>
 </div>
 
-<div class="bs-callout bs-callout-warning">
-    <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
-    <p>These mappers should be used in conjunction with the <code><em>FlatFileRecordReader</em></code>.</p>
-</div>
-
 <h4>4.1.1 Mapping delimiter-separated values</h4>
 
 <p>To register the <code><em>DelimitedRecordMapper</em></code>, use the following snippet:</p>
@@ -64,8 +59,8 @@
     .build();</code></pre>
 </div>
 
-<p>By default, the <code>DelimiterRecordMapper</code> will use the header record to map delimited fields to domain object fields with the same name.
-    If you use this convention of configuration, you <em>should not skip</em> the header record with a record filter.</p>
+<p>By default, the <code>DelimiterRecordMapper</code> will infer field names from the header record and map data to matching fields in the domain object.
+    Obviously, if you use this convention of configuration, you <em>should not skip</em> the header record with a record filter.</p>
 
 <p>If you want to use a custom mapping strategy, you can specify field names:</p>
 
@@ -159,7 +154,7 @@
 <pre><code class="java">DelimitedRecordMapper&lt;MyPojo&gt; myPojoMapper = new DelimitedRecordMapper&lt;MyPojo&gt;(MyPojo.class);
     myPojoMapper.setDelimiter("|");</code></pre>
 </div>
-<p>You can use other setters to provide custom parameters.</p>
+<p>There are other setters to provide custom parameters.</p>
 
 <div class="bs-callout bs-callout-danger">
 <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
@@ -167,15 +162,15 @@
 <ul>
     <li>Fields number is not equal to the expected fields number (missing field, extra field, etc) as specified in the
         <a href="http://www.ietf.org/rfc/rfc4180.txt" target="_blank">CSV RFC (section 2.4).</a></li>
-    <li>A field is not enclosed as expected with the data qualifier, which means that the <code><em>DelimitedRecordMapper</em></code> expects
-    that all fields are qualified when a qualifier is specified.</li>
+    <li>A field is not qualified as expected with the data qualifier, which means that the <code><em>DelimitedRecordMapper</em></code> expects
+    all fields to be qualified when a qualifier is specified.</li>
 </ul>
 
     <h5><i class="fa fa-info-circle"></i> Note:</h5>
-    <p>The <code><em>DelimitedRecordMapper</em></code> is intended to cover <strong>basic</strong> requirements of delimited-values parsing.
-        It does <strong>not</strong> provide support for detecting delimiters and line breaks in a qualified field.
-        If you need support for these features, you can use the <code><em>ApacheCommonCsvRecordReader</em></code> that provides all of them.
-        Just add the dependency <code><em>easybatch-apache-commons-csv</em></code> to project and you are ready to go!</p>
+    <p>The <code><em>DelimitedRecordMapper</em></code> is intended to cover <strong>basic</strong> requirements of delimited-values mapping.
+        It does <strong>not</strong> support detecting delimiters and line breaks in a qualified field.
+        If you need these features, you can use the <code><em>ApacheCommonCsvRecordMapper</em></code>.
+        These mappers are detailed in next sections.</p>
 </div>
 
 <h4>4.1.2 Mapping CSV records using Apache Common CSV</h4>
@@ -253,13 +248,13 @@
 <p>If a fixed length record is not well formed, the <code><em>FixedLengthRecordMapper</em></code> throws an exception that causes the record to be ignored by the engine.
     A fixed length record is not well formed if its length is not equal to expected record length.</p>
 
-<h3>4.2 Mapping xml records</h3>
+<h3>4.2 Mapping XML records</h3>
 
 <h4>4.2.1 Mapping XML records using JAXB</h4>
 
 <p>Easy Batch comes with a built-in implementation of the <code><em>RecordMapper</em></code> interface named <code><em>XmlRecordMapper</em></code> to map xml records to your domain objects using <a href="https://jaxb.java.net/" target="_blank">JAXB</a>.</p>
 
-<p>To use this mapper, you should annotate your POJO with JAXB annotations to be able to map xml records to instances of your POJO.
+<p>To use this mapper, you should annotate your POJO with JAXB annotations to be able to map XML records to instances of your POJO.
     First you need to add the <code><em>easybatch-xml</em></code> module to your dependencies:<p>
 
 <div class="bs-callout bs-callout-code">
@@ -278,7 +273,8 @@
     .build();</code></pre>
 </div>
 
-<p>When you create an <code>XmlRecordMapper</code>, you should specify your domain object type and an xsd file against which the xml record should be validated (if no xsd is specified, no validation will be applied).</p>
+<p>When you create an <code>XmlRecordMapper</code>, you should specify your domain object type and
+    a XSD file against which the XML record should be validated (if no XSD is specified, no validation will be applied).</p>
 
 <div class="bs-callout bs-callout-warning">
     <h5><i class="fa fa-info-circle"></i> Heads up!</h5>

@@ -11,8 +11,8 @@ title : Parallel jobs
                   to run multiple Easy Batch instances in parallel. There are at least 3 ways to process data in parallel:</p>
               <ol>
                   <li>Distributing input records to multiple batch engines</li>
-                  <li>Splitting the data source into multiple parts which will be processed by separate engines</li>
-                  <li>Filtering input records</li>
+                  <li>Physical partitioning of the data source into multiple physical parts which will be processed by separate engines</li>
+                  <li>Logical partitioning of the data source into multiple logical parts which will be processed by separate engines</li>
               </ol>
 
                 <p>In this tutorial, you will see an example of implementing each of these techniques using Easy Batch.</p>
@@ -39,14 +39,10 @@ title : Parallel jobs
             </div>
         </div>
 
-        <p>Easy Batch comes with two implementations of the <code><em>RecordDispatcher</em></code> API:</p>
-<ul>
-    <li><code><em>RoundRobinRecordDispatcher</em></code>: dispatches records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues in a round robin fashion</li>
-    <li><code><em>ContentBasedRecordDispatcher</em></code>: dispatches records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues based on record content</li>
-</ul>
+        <p>Easy Batch comes with 4 implementations of the <code><em>RecordDispatcher</em></code> API. Please refer to the
+            <a href="../documentation/user-guide.html">user guide</a> (section "miscellaneaous") for all details about available record dispatchers.</p>
 
 <p>In this tutorial, you will learn how to use the <code><em>RoundRobinRecordDispatcher</em></code> to distribute tweets to 2 queues.</p>
-
 
 <div class="bs-callout bs-callout-warning">
     <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
@@ -60,8 +56,6 @@ title : Parallel jobs
         <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class ParallelTutorialWithRecordDispatching {
 
-    private static final int QUEUE_SIZE = 32;
-
     private static final int THREAD_POOL_SIZE = 2;
 
     public static void main(String[] args) throws Exception {
@@ -70,8 +64,8 @@ title : Parallel jobs
         File tweets = new File(args[0]);
 
         //Create queues
-        BlockingQueue&lt;Record&gt; queue1 = new ArrayBlockingQueue&lt;Record&gt;(QUEUE_SIZE);
-        BlockingQueue&lt;Record&gt; queue2 = new ArrayBlockingQueue&lt;Record&gt;(QUEUE_SIZE);
+        BlockingQueue&lt;Record&gt; queue1 = new LinkedBlockingQueue&lt;Record&gt;();
+        BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
 
         // Build easy batch engines
         Engine engine1 = buildBatchEngine(queue1);
@@ -125,13 +119,11 @@ title : Parallel jobs
 
         <p>Since the <code><em>RecordDispatcher</em></code> dispatches records to a <code><em>java.util.concurrent.BlockingQueue</em></code>,
         you should be able to read data from this type of queues. Easy Batch comes with a built-in <code><em>QueueRecordReader</em></code> to
-        save you from writing the reading code yourself.</p>
+        save you from writing the reading code yourself. When the reader finishes reading the data source, it sends a <code><em>PoisonRecord</em></code> to stop engines.</p>
 
-        <p>When the reader finishes reading the data source, it sends a <code><em>PoisonRecord</em></code> to stop engines.</p>
-
-        <p>You have distributed the work across multiple engines, so you will get partial reports at the end of execution of each worker engine.
+        <p>A quick note on reporting in a multi-threaded job: You have distributed the work across multiple engines, so you will get partial reports at the end of execution of each worker engine.
         How do you get a single global report for all the work? This is where the <code><em>ReportMerger</em></code> comes to play,
-            that is, to merge partial reports into a global one.</p>
+            that is, to merge partial reports into a global one. A usage example of the <code><em>ReportMerger</em></code> in this tutorial.</p>
 
         <h2>3. Splitting the data source</h2>
 
@@ -147,7 +139,7 @@ title : Parallel jobs
         you can still use Easy Batch to process them in parallel using a <code><em>java.util.concurrent.ExecutorService</em></code>.
             This would not have been possible if Easy Batch's engine wouldn't implement the <code><em>java.util.concurrent.Callable</em></code> interface.</p>
 
-              <p>Here is a sample of how to use multiple engines to process data source parts in parallel:</p>
+              <p>Here is a sample of how to use multiple engines to process multiple data source parts in parallel:</p>
 
         <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class ParallelTutorialWithDataSplitting {
@@ -172,8 +164,10 @@ title : Parallel jobs
         Future&lt;Report&gt; report1 = executorService.submit(engine1);
         Future&lt;Report&gt; report2 = executorService.submit(engine2);
 
-        System.out.println("Report 1 = " + report1.get());
-        System.out.println("Report 2 = " + report2.get());
+        //merge partial reports into a global one
+        ReportMerger reportMerger = new DefaultReportMerger();
+        Report finalReport = reportMerger.mergerReports(report1.get(), report2.get());
+        System.out.println(finalReport);
 
         executorService.shutdown();
     }
@@ -189,7 +183,8 @@ title : Parallel jobs
 
 <div class="bs-callout bs-callout-warning">
     <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
-    <p>In this example, you have used multiple threads within the same JVM to process data in parallel. You can also launch separate JVMs for each part.</p>
+    <p>In this example, you have used multiple threads within the same JVM to process data in parallel.
+        You could also launch separate JVMs for each part.</p>
     <p>The second point to pay attention to, you should consider as in this sample creating two engines with separate instances of record readers and processors
         to avoid any thread-safety issues.</p>
 </div>
@@ -207,9 +202,9 @@ title : Parallel jobs
         to distribute files according to their type for example (CSV files go to worker1, XML files to worker2, etc)</p>
         <p>This configuration is not implemented in this tutorial.</p>
 
-<h2>3. Filtering the data source</h2>
+<h2>4. Filtering the data source</h2>
 
-        <p>Sometimes it is just impossible to split the data source into multiple parts. The third technique is to use a single data source
+        <p>Sometimes it is just impossible to split the data source into multiple physical parts. The third technique is to use a single data source
         but to instruct worker engines to process separate parts and filter the rest of the data source.</p>
 
         <p>Let's see an example:</p>
@@ -249,8 +244,10 @@ title : Parallel jobs
         Future&lt;Report&gt; report1 = executorService.submit(engine1);
         Future&lt;Report&gt; report2 = executorService.submit(engine2);
 
-        System.out.println("Report 1 = " + report1.get());
-        System.out.println("Report 2 = " + report2.get());
+        //merge partial reports into a global one
+        ReportMerger reportMerger = new DefaultReportMerger();
+        Report finalReport = reportMerger.mergerReports(report1.get(), report2.get());
+        System.out.println(finalReport);
 
         executorService.shutdown();
     }
@@ -265,7 +262,7 @@ title : Parallel jobs
 }</code></pre>
         </div>
 
-              <h2>4. Running the tutorial</h2>
+              <h2>5. Running the tutorial</h2>
 
 <p>To run the tutorials, proceed as follow:</p>
 <div class="bs-callout bs-callout-code">
@@ -284,7 +281,7 @@ $>mvn exec:java -PrunParallelTutorialWithDataFiltering
 
 <p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/parallel" target="_blank">here</a>.
 
-<h2>4. Summary</h2>
+<h2>6. Summary</h2>
 
               <p>In this tutorial, you have seen at least 3 ways of how to process data in parallel using multiple worker engines
                   in order to speed up the overall processing time.</p>
@@ -299,19 +296,19 @@ $>mvn exec:java -PrunParallelTutorialWithDataFiltering
                   </thead>
                   <tbody>
                   <tr>
-                      <td>Dispatching records</td>
+                      <td>Dispatching records (no partitioning)</td>
                       <td><span class="text-success">Best way to distribute work across multiple worker engines.</span></td>
                       <td><span class="text-danger">Need to setup an additional record reader and queues.</span></td>
                   </tr>
                   <tr>
-                      <td>Splitting the data source</td>
-                      <td><span class="text-success">Each engine reads only its own part and not the whole data source</span></td>
+                      <td>Splitting the data source<br>(physical partitioning)</td>
+                      <td><span class="text-success">Each engine reads only its own part and not the entire data source</span></td>
                       <td><span class="text-danger">Need to split the data source into multiple parts</span></td>
                   </tr>
                   <tr>
-                      <td>Filtering the data source</td>
+                      <td>Filtering the data source<br>(logical partitioning)</td>
                       <td><span class="text-success">No need to split the input data source into multiple parts</span></td>
-                      <td><span class="text-danger">Each engine will read the whole data source</span></td>
+                      <td><span class="text-danger">Each engine will read the entire data source</span></td>
                   </tr>
                   </tbody>
               </table>
@@ -319,7 +316,7 @@ $>mvn exec:java -PrunParallelTutorialWithDataFiltering
         <p>Using the <code><em>RecordDispatcher</em></code> API should be your first choice when dealing with data processing in parallel
             because it is more efficient than other techniques and provides the most natural way of distributing the work across multiple engines.</p>
 
-<h2>9. What's next?</h2>
+<h2>7. What's next?</h2>
 
 <p>In the next, you will learn how to process data asynchronously using a JMS queue.</p>
 

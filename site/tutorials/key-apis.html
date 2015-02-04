@@ -35,7 +35,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
         <p>The <code><em>RecordFilter</em></code> allows you to filter records from being processed.
             In this tutorial, you would like to filter the header record containing field names.</p>
         <p>Easy Batch comes with several built-in filters for common use cases and you can implement your own filter as well.
-        To filter the header record, you canuse the built-in <code><em>HeaderRecordFilter</em></code> designed specifically for that:</p>
+        To filter the header record, you can use the built-in <code><em>HeaderRecordFilter</em></code> designed specifically for that:</p>
 
 <div class="bs-callout bs-callout-code"><pre><code>Engine engine = new EngineBuilder()
     .reader(new FlatFileRecordReader(new File("tweets.csv")))
@@ -154,10 +154,10 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
         You should now be able to process tweets quietly.</p>
 
         <p>You have seen in the hello world tutorial a simple <code><em>RecordProcessor</em></code> implementation that prints out tweets to the console.
-            In this tutorial, you will learn the <code><em>ComputationalRecordProcessor</em></code> API, that is, a record processor that performs a computation.</p>
+            In this tutorial, you will learn how to use the <code><em>ComputationalRecordProcessor</em></code> API, that is, a record processor that performs a computation.</p>
 
         <p>You would like to count the number of tweets containing the hash tag <code>#EasyBatch</code>, this is the business logic of your application.
-            It is time write some code <i class="fa fa-smile-o"></i>:</p>
+            It is time write some code <i class="fa fa-smile-o"></i> :</p>
 
         <div class="bs-callout bs-callout-code">
             <h5>TweetCountProcessor.java</h5>
@@ -298,6 +298,11 @@ You have seen how to filter, map and validate tweets before processing them.</p>
         <td>Provide business processing logic</td>
         <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
         <td></td>
+    </tr>
+    <tr>
+        <td>Handle input file I/O</td>
+        <td></td>
+        <td class="pull-center"><i class="fa fa-check-circle-o"></i></td>
     </tr>
     <tr>
         <td>Read input file record by record</td>

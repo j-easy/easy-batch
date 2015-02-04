@@ -125,6 +125,17 @@
 
 <p>The <code><em>XmlRecordReader</em></code> produces <code><em>XmlRecord</em></code> instances with a string representation of the record as payload.</p>
 
+<div class="bs-callout bs-callout-warning">
+    <p><strong>Hint:</strong> if your XML file in flattened (with no wrapping <em>tweets</em> tag), let's say in this format:</p>
+    <p>
+        &lt;tweet&gt;&lt;id&gt;1&lt;/id&gt;&lt;user&gt;foo&lt;/user&gt;&lt;message&gt;Hello&lt;/message&gt;&lt;/tweet&gt;<br>
+        &lt;tweet&gt;&lt;id&gt;2&lt;/id&gt;&lt;user&gt;bar&lt;/user&gt;&lt;message&gt;Hi&lt;/message&gt;&lt;/tweet&gt;<br>
+        ... <br>
+        &lt;tweet&gt;&lt;id&gt;1000&lt;/id&gt;&lt;user&gt;baz&lt;/user&gt;&lt;message&gt;Yep&lt;/message&gt;&lt;/tweet&gt;<br>
+    </p>
+    <p>you can use the <code><em>FlatFileRecordReader</em></code> that will read XML records line by line.</p>
+</div>
+
 <h3>2.3 Reading data from Json files</h3>
 
 <p>The <code><em>JsonRecordReader</em></code> allows you to read records from a Json file. It uses the
@@ -196,6 +207,18 @@
 <p> You should specify the input json file at construction time.</p>
 
 <p>The <code><em>JsonRecordReader</em></code> produces <code><em>JsonRecord</em></code> instances with a string representation of the record as payload.</p>
+
+<div class="bs-callout bs-callout-warning">
+    <p><strong>Heads up!:</strong> The <code>JsonRecordReader</code> expects an array of JSON objects in the input file: [ {object1}, {object2}, ..., {objectN} ] .</p>
+    <p>if your JSON file in flattened (no wrapping array), let's say in this format:</p>
+        <p>
+            {object1}<br>
+            {object2}<br>
+            ...      <br>
+            {objectN}<br>
+        </p>
+        <p>you can use the <code><em>FlatFileRecordReader</em></code> that will read JSON records line by line.</p>
+</div>
 
 <h3>2.4 Reading data from a database</h3>
 
