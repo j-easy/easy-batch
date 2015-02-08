@@ -25,7 +25,6 @@
 package org.easybatch.core.dispatcher;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordDispatcher;
 import org.easybatch.core.record.PoisonRecord;
 
 import java.util.ArrayList;
@@ -34,11 +33,11 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * A {@link org.easybatch.core.api.RecordDispatcher} that dispatches records to a list of queues based on their content.
+ * A record dispatcher that dispatches records to a list of queues based on their content.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ContentBasedRecordDispatcher extends AbstractRecordDispatcher implements RecordDispatcher {
+public class ContentBasedRecordDispatcher extends AbstractRecordDispatcher {
 
     /**
      * Map a predicate to a queue: when the record content matches the predicate,

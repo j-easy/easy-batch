@@ -25,7 +25,6 @@
 package org.easybatch.core.dispatcher;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordDispatcher;
 import org.easybatch.core.record.PoisonRecord;
 
 import java.util.List;
@@ -33,11 +32,11 @@ import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * A {@link org.easybatch.core.api.RecordDispatcher} that dispatches records randomly to a list of queues.
+ * A record dispatcher that dispatches records randomly to a list of queues.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RandomRecordDispatcher extends AbstractRecordDispatcher implements RecordDispatcher {
+public class RandomRecordDispatcher extends AbstractRecordDispatcher {
 
     /**
      * The total number of queues this dispatcher operates on.

@@ -25,17 +25,16 @@
 package org.easybatch.core.dispatcher;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordDispatcher;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * A {@link org.easybatch.core.api.RecordDispatcher} that broadcasts input records to a list of queues.
+ * A record dispatcher that broadcasts input records to a list of queues.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BroadcastRecordDispatcher extends AbstractRecordDispatcher implements RecordDispatcher {
+public class BroadcastRecordDispatcher extends AbstractRecordDispatcher {
 
     /**
      * List of queues to which records should be dispatched.

@@ -25,7 +25,6 @@
 package org.easybatch.core.dispatcher;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordDispatcher;
 import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
@@ -43,7 +42,7 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class ContentBasedRecordDispatcherTest {
 
-    private RecordDispatcher recordDispatcher;
+    private ContentBasedRecordDispatcher recordDispatcher;
 
     private BlockingQueue<Record> orangeQueue;
 

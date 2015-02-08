@@ -28,7 +28,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.apache.commons.io.IOUtils;
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordDispatcher;
+import org.easybatch.core.dispatcher.AbstractRecordDispatcher;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.tutorials.advanced.jms.JMSUtil;
 
@@ -47,7 +47,7 @@ import java.io.InputStream;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RestEndpointRecordDispatcher implements RecordDispatcher, HttpHandler {
+public class RestEndpointRecordDispatcher extends AbstractRecordDispatcher implements HttpHandler {
 
     private int recordNumber;
 

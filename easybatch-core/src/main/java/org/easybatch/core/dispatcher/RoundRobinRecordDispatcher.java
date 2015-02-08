@@ -25,18 +25,17 @@
 package org.easybatch.core.dispatcher;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordDispatcher;
 import org.easybatch.core.record.PoisonRecord;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * A {@link org.easybatch.core.api.RecordDispatcher} that dispatches records to a list of queues in round-robin fashion.
+ * A record dispatcher that dispatches records to a list of queues in round-robin fashion.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RoundRobinRecordDispatcher extends AbstractRecordDispatcher implements RecordDispatcher {
+public class RoundRobinRecordDispatcher extends AbstractRecordDispatcher {
 
     /**
      * The total number of queues this dispatcher operates on.
