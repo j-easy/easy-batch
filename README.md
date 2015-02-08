@@ -54,6 +54,7 @@ Easy Batch is released under the [MIT License](http://opensource.org/licenses/mi
 * [ammachado](https://github.com/ammachado)
 * [anandhi](https://github.com/anandhi)
 * [chellan](https://github.com/chellan)
+* [jawher] (https://github.com/jawher)
 * [natlantisprog](https://github.com/natlantisprog)
 * [nicopatch](https://github.com/nicopatch)
 * [nihed](https://github.com/nihed)
