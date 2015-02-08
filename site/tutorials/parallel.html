@@ -6,7 +6,8 @@ title : Parallel jobs
 
               <h2 id="1">1. Introduction</h2>
 
-              <p>Easy Batch was designed with data processing parallelism in mind. The core <code><em>Engine</em></code> implements the <code><em>java.util.concurrent.Callable</em></code> interface which turns it into a unit of work that can be submitted to a <code>java.util.concurrent.ExecutorService</code>.</p>
+              <p>The core engine of Easy Batch implements the <code><em>java.util.concurrent.Callable</em></code> interface.
+                  This turns it into a unit of work that can be submitted to a <code><em>java.util.concurrent.ExecutorService</em></code>.</p>
               <p>Using the <code><em>java.util.concurrent.ExecutorService</em></code> with a pool of threads allows you
                   to run multiple Easy Batch instances in parallel. There are at least 3 ways to process data in parallel:</p>
               <ol>
@@ -39,91 +40,78 @@ title : Parallel jobs
             </div>
         </div>
 
-        <p>Easy Batch comes with 4 implementations of the <code><em>RecordDispatcher</em></code> API. Please refer to the
-            <a href="../documentation/user-guide.html">user guide</a> (section "miscellaneaous") for all details about available record dispatchers.</p>
-
-<p>In this tutorial, you will learn how to use the <code><em>RoundRobinRecordDispatcher</em></code> to distribute tweets to 2 queues.</p>
+        <p>There are 4 built-in implementations of the <code><em>RecordDispatcher</em></code> API. Please refer to the
+            <a href="../documentation/user-guide.html">user guide</a> (section "miscellaneaous") for all details about available record dispatchers.
+        In this tutorial, you will learn how to use the <code><em>RoundRobinRecordDispatcher</em></code> to distribute tweets to 2 queues.</p>
 
 <div class="bs-callout bs-callout-warning">
     <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
-    <p>Poison records serve as End-Of-Stream messages, they are used to "kill" the engine (gracefully).</p>
+    <p>Poison records serve as End-Of-Stream messages, they are used to stop the engine (gracefully).</p>
     <p>Easy Batch provides the <code><em>PoisonRecord</em></code> utility class to stop the engine when all data has been read.
         Poison records have no business value, you should filter them using the convenient built-in <code><em>PoisonRecordFilter</em></code>.</p>
 </div>
 
-        <p>Here is the code to setup such a configuration:</p>
+        <p>We will create a "master" engine that will read data from the input file and use a <code><em>RoundRobinRecordDispatcher</em></code>
+        to distribute records to "worker" engines. Each worker engine will read data from a queue which holds the work that is assigned to it:</p>
 
         <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class ParallelTutorialWithRecordDispatching {
 
-    private static final int THREAD_POOL_SIZE = 2;
+        private static final int THREAD_POOL_SIZE = 3;
 
-    public static void main(String[] args) throws Exception {
+        public static void main(String[] args) throws Exception {
 
         // Input file tweets.csv
         File tweets = new File(args[0]);
 
-        //Create queues
+        // Create queues
         BlockingQueue&lt;Record&gt; queue1 = new LinkedBlockingQueue&lt;Record&gt;();
         BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
 
-        // Build easy batch engines
-        Engine engine1 = buildBatchEngine(queue1);
-        Engine engine2 = buildBatchEngine(queue2);
+        // Create a round robin record dispatcher
+        RoundRobinRecordDispatcher roundRobinRecordDispatcher
+                = new RoundRobinRecordDispatcher(Arrays.asList(queue1, queue2));
 
-        //create a 2 threads pool to call engines in parallel
+        // Build a master engine that will read records from the data source
+        // and dispatch them to worker engines
+        Engine masterEngine = aNewEngine()
+            .reader(new FlatFileRecordReader(tweets))
+            .processor(roundRobinRecordDispatcher)
+            .batchProcessEventListener(new PoisonRecordBroadcaster(roundRobinRecordDispatcher))
+            .build();
+
+        // Build worker engines
+        Engine workerEngine1 = buildWorkerEngine(queue1);
+        Engine workerEngine2 = buildWorkerEngine(queue2);
+
+        // Create a thread pool to call master and worker engines in parallel
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
-        //submit workers to executor service
-        Future&lt;Report&gt; reportFuture1 = executorService.submit(engine1);
-        Future&lt;Report&gt; reportFuture2 = executorService.submit(engine2);
+        // Submit workers to executor service
+        executorService.submit(masterEngine);
+        executorService.submit(workerEngine1);
+        executorService.submit(workerEngine2);
 
-        <strong>//create a record dispatcher to dispatch records to previously created queues
-        RecordDispatcher recordDispatcher
-                    = new RoundRobinRecordDispatcher(Arrays.asList(queue1, queue2));
-
-        //read data source and dispatch records to queues in round-robin fashion
-        FlatFileRecordReader flatFileRecordReader = new FlatFileRecordReader(tweets);
-        flatFileRecordReader.open();
-        while (flatFileRecordReader.hasNextRecord()) {
-            Record record = flatFileRecordReader.readNextRecord();
-            recordDispatcher.dispatchRecord(record);
-        }
-        flatFileRecordReader.close();
-
-        //send poison records when all input data has been dispatched to workers
-        recordDispatcher.dispatchRecord(new PoisonRecord());</strong>
-
-        //wait for easy batch instances termination and get partial reports
-        Report report1 = reportFuture1.get();
-        Report report2 = reportFuture2.get();
-
-        <strong>//merge partial reports into a global one
-        ReportMerger reportMerger = new DefaultReportMerger();
-        Report finalReport = reportMerger.mergerReports(report1, report2);
-        System.out.println(finalReport);</strong>
-
-        //shutdown executor service
+        // Shutdown executor service
         executorService.shutdown();
+
     }
 
-    public static Engine buildBatchEngine(BlockingQueue&lt;Record&gt; queue) {
-        return new EngineBuilder()
+    public static Engine buildWorkerEngine(BlockingQueue&lt;Record&gt; queue) {
+        return aNewEngine()
             .reader(new QueueRecordReader(queue))
             .filter(new PoisonRecordFilter())
             .processor(new TweetProcessor())
             .build();
     }
+
 }</code></pre>
-        </div>
+</div>
 
-        <p>Since the <code><em>RecordDispatcher</em></code> dispatches records to a <code><em>java.util.concurrent.BlockingQueue</em></code>,
-        you should be able to read data from this type of queues. Easy Batch comes with a built-in <code><em>QueueRecordReader</em></code> to
-        save you from writing the reading code yourself. When the reader finishes reading the data source, it sends a <code><em>PoisonRecord</em></code> to stop engines.</p>
-
-        <p>A quick note on reporting in a multi-threaded job: You have distributed the work across multiple engines, so you will get partial reports at the end of execution of each worker engine.
-        How do you get a single global report for all the work? This is where the <code><em>ReportMerger</em></code> comes to play,
-            that is, to merge partial reports into a global one. A usage example of the <code><em>ReportMerger</em></code> in this tutorial.</p>
+        <p>The <code><em>RecordDispatcher</em></code> dispatches records to a <code><em>java.util.concurrent.BlockingQueue</em></code>.
+        We should be able to read data from this type of queues. Easy Batch comes with a built-in <code><em>QueueRecordReader</em></code> to
+        save you from writing the reading code yourself. When the master engine finishes reading the data source, it sends a <code><em>PoisonRecord</em></code>
+            using the <code><em>PoisonRecordBroadcaster</em></code> to stop worker engines.</p>
 
         <h2>3. Splitting the data source</h2>
 
@@ -137,9 +125,7 @@ title : Parallel jobs
 
         <p>Easy Batch does not provide a feature to partition input data. If you decided to split your data source into multiples parts,
         you can still use Easy Batch to process them in parallel using a <code><em>java.util.concurrent.ExecutorService</em></code>.
-            This would not have been possible if Easy Batch's engine wouldn't implement the <code><em>java.util.concurrent.Callable</em></code> interface.</p>
-
-              <p>Here is a sample of how to use multiple engines to process multiple data source parts in parallel:</p>
+            Here is a sample of how to use multiple engines to process multiple data source parts in parallel:</p>
 
         <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class ParallelTutorialWithDataSplitting {
@@ -181,15 +167,17 @@ title : Parallel jobs
 }</code></pre>
         </div>
 
+<p>In this example, we have distributed the work across multiple engines, so we will get partial reports at the end of execution of each worker engine.
+    How do we get a global report for all the work? This is where the <code><em>ReportMerger</em></code> comes to play,
+    that is, to merge partial reports into a global one.</p>
+
 <div class="bs-callout bs-callout-warning">
     <h5><i class="fa fa-info-circle"></i> Heads up!</h5>
     <p>In this example, you have used multiple threads within the same JVM to process data in parallel.
         You could also launch separate JVMs for each part.</p>
-    <p>The second point to pay attention to, you should consider as in this sample creating two engines with separate instances of record readers and processors
-        to avoid any thread-safety issues.</p>
 </div>
 
-        <p>Another possibility to process multiple input files in parallel is to use the <code><em>FileRecordReader</em></code> API coupled to a <code><em>RecordDispatcher</em></code>:</p>
+        <p>Another possibility to process multiple input files in parallel is to use a master engine with a <code><em>FileRecordReader</em></code> coupled to a <code><em>RecordDispatcher</em></code>:</p>
 
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
@@ -199,7 +187,7 @@ title : Parallel jobs
 
         <p>This gives the same setup as in section 2. The <code><em>FileRecordReader</em></code> reads files from a directory and produces <code><em>FileRecord</em></code> instances having <code><em>java.io.File</em></code> as payload.</p>
         <p>The record dispatcher can then distribute files to worker engines. You can use a <code><em>RoundRobinRecordDispatcher</em></code> to distribute workload in a uniform way or use a <code><em>ContentBasedRecordDispatcher</em></code>
-        to distribute files according to their type for example (CSV files go to worker1, XML files to worker2, etc)</p>
+        to distribute files according to their type (for example: CSV files go to worker1, XML files to worker2, etc)</p>
         <p>This configuration is not implemented in this tutorial.</p>
 
 <h2>4. Filtering the data source</h2>

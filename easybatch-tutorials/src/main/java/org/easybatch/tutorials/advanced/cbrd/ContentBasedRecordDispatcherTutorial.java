@@ -25,19 +25,20 @@
 package org.easybatch.tutorials.advanced.cbrd;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordDispatcher;
-import org.easybatch.core.api.Report;
+import org.easybatch.core.dispatcher.ContentBasedRecordDispatcher;
+import org.easybatch.core.dispatcher.ContentBasedRecordDispatcherBuilder;
 import org.easybatch.core.filter.PoisonRecordFilter;
 import org.easybatch.core.impl.Engine;
-import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.reader.QueueRecordReader;
 import org.easybatch.core.reader.StringRecordReader;
-import org.easybatch.core.dispatcher.ContentBasedRecordDispatcherBuilder;
-import org.easybatch.core.record.PoisonRecord;
-import org.easybatch.tools.reporting.DefaultReportMerger;
-import org.easybatch.tools.reporting.ReportMerger;
+import org.easybatch.core.util.PoisonRecordBroadcaster;
 
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 
 /**
 * Main class to run the content based record dispatching tutorial.
@@ -46,62 +47,52 @@ import java.util.concurrent.*;
 */
 public class ContentBasedRecordDispatcherTutorial {
 
+    private static final int THREAD_POOL_SIZE = 4;
+
     public static void main(String[] args) throws Exception {
 
-        //Create queues
+        String fruits = "1,apple\n2,orange\n3,banana\n4,apple\n5,pear";
+
+        // Create queues
         BlockingQueue<Record> appleQueue = new LinkedBlockingQueue<Record>();
         BlockingQueue<Record> orangeQueue = new LinkedBlockingQueue<Record>();
         BlockingQueue<Record> defaultQueue = new LinkedBlockingQueue<Record>();
 
-        // Build easy batch engines
-        Engine engine1 = buildBatchEngine(appleQueue);
-        Engine engine2 = buildBatchEngine(orangeQueue);
-        Engine engine3 = buildBatchEngine(defaultQueue);
-
-        //create a 3 threads pool to call Easy Batch engines in parallel
-        ExecutorService executorService = Executors.newFixedThreadPool(3);
-
-        //submit workers to executor service
-        Future<Report> reportFuture1 = executorService.submit(engine1);
-        Future<Report> reportFuture2 = executorService.submit(engine2);
-        Future<Report> reportFuture3 = executorService.submit(engine3);
-
-        //create a content based record dispatcher to dispatch records to previously created queues
-        RecordDispatcher recordDispatcher = new ContentBasedRecordDispatcherBuilder()
+        // Create a content based record dispatcher to dispatch records to according queues based on their content
+        ContentBasedRecordDispatcher recordDispatcher = new ContentBasedRecordDispatcherBuilder()
                 .when(new AppleRecordPredicate()).dispatchTo(appleQueue)
                 .when(new OrangeRecordPredicate()).dispatchTo(orangeQueue)
                 .otherwise(defaultQueue)
                 .build();
 
-        //read data source and dispatch record to queues based on their content
-        StringRecordReader stringRecordReader = new StringRecordReader("1,apple\n2,orange\n3,banana\n4,apple\n5,pear");
-        stringRecordReader.open();
-        while (stringRecordReader.hasNextRecord()) {
-            Record record = stringRecordReader.readNextRecord();
-            recordDispatcher.dispatchRecord(record);
-        }
-        stringRecordReader.close();
+        // Build a master engine that will read records from the data source and dispatch them to worker engines
+        Engine masterEngine = aNewEngine()
+                .reader(new StringRecordReader(fruits))
+                .processor(recordDispatcher)
+                .batchProcessEventListener(new PoisonRecordBroadcaster(recordDispatcher))
+                .build();
 
-        //send poison records when all input data has been dispatched to workers
-        recordDispatcher.dispatchRecord(new PoisonRecord());
+        // Build easy batch engines
+        Engine workerEngine1 = buildWorkerEngine(appleQueue);
+        Engine workerEngine2 = buildWorkerEngine(orangeQueue);
+        Engine workerEngine3 = buildWorkerEngine(defaultQueue);
 
-        //wait for easy batch instances termination and get partial reports
-        Report report1 = reportFuture1.get();
-        Report report2 = reportFuture2.get();
-        Report report3 = reportFuture3.get();
+        // Create a threads pool to call Easy Batch engines in parallel
+        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
-        //merge partial reports into a global one
-        ReportMerger reportMerger = new DefaultReportMerger();
-        Report finalReport = reportMerger.mergerReports(report1, report2, report3);
-        System.out.println(finalReport);
+        // Submit master and worker engines to executor service
+        executorService.submit(masterEngine);
+        executorService.submit(workerEngine1);
+        executorService.submit(workerEngine2);
+        executorService.submit(workerEngine3);
 
-        //shutdown executor service
+        // Shutdown executor service
         executorService.shutdown();
 
     }
 
-    public static Engine buildBatchEngine(BlockingQueue<Record> queue) {
-        return new EngineBuilder()
+    public static Engine buildWorkerEngine(BlockingQueue<Record> queue) {
+        return aNewEngine()
                 .reader(new QueueRecordReader(queue))
                 .filter(new PoisonRecordFilter())
                 .build();
