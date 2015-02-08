@@ -37,7 +37,7 @@ import java.util.concurrent.BlockingQueue;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RandomRecordDispatcher implements RecordDispatcher {
+public class RandomRecordDispatcher extends AbstractRecordDispatcher implements RecordDispatcher {
 
     /**
      * The total number of queues this dispatcher operates on.

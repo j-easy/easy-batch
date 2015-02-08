@@ -36,7 +36,7 @@ import java.util.concurrent.BlockingQueue;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RoundRobinRecordDispatcher implements RecordDispatcher {
+public class RoundRobinRecordDispatcher extends AbstractRecordDispatcher implements RecordDispatcher {
 
     /**
      * The total number of queues this dispatcher operates on.

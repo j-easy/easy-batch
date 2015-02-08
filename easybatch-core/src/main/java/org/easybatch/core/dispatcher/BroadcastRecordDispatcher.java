@@ -35,7 +35,7 @@ import java.util.concurrent.BlockingQueue;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BroadcastRecordDispatcher implements RecordDispatcher {
+public class BroadcastRecordDispatcher extends AbstractRecordDispatcher implements RecordDispatcher {
 
     /**
      * List of queues to which records should be dispatched.

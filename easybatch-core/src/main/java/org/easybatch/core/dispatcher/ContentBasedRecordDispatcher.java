@@ -38,7 +38,7 @@ import java.util.concurrent.BlockingQueue;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ContentBasedRecordDispatcher implements RecordDispatcher {
+public class ContentBasedRecordDispatcher extends AbstractRecordDispatcher implements RecordDispatcher {
 
     /**
      * Map a predicate to a queue: when the record content matches the predicate,
