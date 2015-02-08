@@ -1,24 +1,23 @@
-package org.easybatch.core.util;
+package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.RecordDispatcher;
 import org.easybatch.core.api.event.global.BatchProcessEventListener;
 import org.easybatch.core.record.PoisonRecord;
 
 /**
  * A utility batch event listener that broadcasts a poison record at the end of batch
- * using a delegate {@link RecordDispatcher}.
+ * using a delegate record dispatcher.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class PoisonRecordBroadcaster implements BatchProcessEventListener {
 
-    private RecordDispatcher recordDispatcher;
+    private AbstractRecordDispatcher recordDispatcher;
 
     /**
      * Create a new {@link PoisonRecordBroadcaster}.
-     * @param recordDispatcher the delegate {@link RecordDispatcher} used to dispatch the poison record
+     * @param recordDispatcher the delegate record dispatcher used to dispatch the poison record
      */
-    public PoisonRecordBroadcaster(RecordDispatcher recordDispatcher) {
+    public PoisonRecordBroadcaster(AbstractRecordDispatcher recordDispatcher) {
         this.recordDispatcher = recordDispatcher;
     }
 

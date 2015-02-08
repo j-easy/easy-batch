@@ -31,7 +31,7 @@ import org.easybatch.core.filter.PoisonRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.reader.QueueRecordReader;
 import org.easybatch.core.reader.StringRecordReader;
-import org.easybatch.core.util.PoisonRecordBroadcaster;
+import org.easybatch.core.dispatcher.PoisonRecordBroadcaster;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;

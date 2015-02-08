@@ -29,7 +29,7 @@ import org.easybatch.core.dispatcher.RoundRobinRecordDispatcher;
 import org.easybatch.core.filter.PoisonRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.reader.QueueRecordReader;
-import org.easybatch.core.util.PoisonRecordBroadcaster;
+import org.easybatch.core.dispatcher.PoisonRecordBroadcaster;
 import org.easybatch.flatfile.FlatFileRecordReader;
 import org.easybatch.tutorials.basic.helloworld.TweetProcessor;
 
