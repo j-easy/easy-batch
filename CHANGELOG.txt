@@ -17,7 +17,7 @@ Changes in version 3.0.0 (2015-02-08)
 * Added integration module with Xstream for Xml -> Object mapping
 * Added integration module with Jackson and Gson for Json -> Object mapping
 * Added integration module with Spring JDBC for ResultSet -> Object mapping
-* Added the RecordDispatcher API with 4 convenient implementations for more efficient parallel processing
+* Added the AbstractRecordDispatcher API with 4 convenient implementations for more efficient parallel processing
 * Added the QueueRecordReader API to read data from a BlockingQueue
 * Added the ListRecordReader API to read data from a List
 * Added Status enumeration to report batch execution final status
