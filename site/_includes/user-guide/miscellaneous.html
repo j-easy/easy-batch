@@ -1,10 +1,10 @@
-<h2>1. The RecordDispatcher API</h2>
+<h2>1. The AbstractRecordDispatcher API</h2>
 
         <p>Easy Batch does not provide a feature to partition input data.
-            Instead of that, it comes with the <code><em>RecordDispatcher</em></code> abstraction that allows you to
+            Instead of that, it comes with the <code><em>AbstractRecordDispatcher</em></code> abstraction that allows you to
         dispatch records to multiple worker engines in several ways according to your requirements.</p>
 
-        <p>There are 4 built-in implementations of the <code><em>RecordDispatcher</em></code> interface and you can
+        <p>There are 4 built-in implementations of the <code><em>AbstractRecordDispatcher</em></code> class and you can
             provide a custom record dispatching strategy as well:</p>
 
 <div class="row">
@@ -30,7 +30,8 @@ BlockingQueue&lt;Record&gt; queue1 = new LinkedBlockingQueue&lt;Record&gt;();
 BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
 
 //create a record dispatcher to dispatch records to queues
-<strong>RecordDispatcher recordDispatcher = new RoundRobinRecordDispatcher(Arrays.asList(queue1, queue2));</strong></code></pre>
+<strong>RoundRobinRecordDispatcher recordDispatcher =
+            new RoundRobinRecordDispatcher(Arrays.asList(queue1, queue2));</strong></code></pre>
 </div>
 
         <p>You can then read records from these queues using the <code><em>QueueRecordReader</em></code> provided by Easy Batch.</p>
@@ -58,7 +59,7 @@ BlockingQueue&lt;Record&gt; defaultQueue = new LinkedBlockingQueue&lt;Record&gt;
 
 
 //create a content based record dispatcher to dispatch records to previously created queues
-<strong>RecordDispatcher recordDispatcher = new ContentBasedRecordDispatcherBuilder()
+<strong>ContentBasedRecordDispatcher recordDispatcher = new ContentBasedRecordDispatcherBuilder()
     .when(new CircleRecordPredicate()).dispatchTo(queue1)
     .when(new SquareRecordPredicate()).dispatchTo(queue2)
     .otherwise(defaultQueue)
@@ -98,12 +99,12 @@ BlockingQueue&lt;Record&gt; defaultQueue = new LinkedBlockingQueue&lt;Record&gt;
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">//Create queues
-    BlockingQueue&lt;Record&gt; queue1 = new LinkedBlockingQueue&lt;Record&gt;();
-    BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
+BlockingQueue&lt;Record&gt; queue1 = new LinkedBlockingQueue&lt;Record&gt;();
+BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
 
-    //create a record broadcaster
-    <strong>BroadcastRecordDispatcher broadcastRecordDispatcher
-                = new BroadcastRecordDispatcher(Arrays.asList(queue1, queue2));</strong></code></pre>
+//create a record broadcaster
+<strong>BroadcastRecordDispatcher broadcastRecordDispatcher
+            = new BroadcastRecordDispatcher(Arrays.asList(queue1, queue2));</strong></code></pre>
 </div>
 
 <p>You can then read records from these queues using the <code><em>QueueRecordReader</em></code> provided by Easy Batch.</p>
@@ -116,10 +117,10 @@ BlockingQueue&lt;Record&gt; defaultQueue = new LinkedBlockingQueue&lt;Record&gt;
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">//Create queues
-    BlockingQueue&lt;Record&gt; queue1 = new LinkedBlockingQueue&lt;Record&gt;();
-    BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
+BlockingQueue&lt;Record&gt; queue1 = new LinkedBlockingQueue&lt;Record&gt;();
+BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
 
-    <strong>RecordDispatcher recordDispatcher = new RandomRecordDispatcher(Arrays.asList(queue1, queue2));</strong></code></pre>
+<strong>RandomRecordDispatcher recordDispatcher = new RandomRecordDispatcher(Arrays.asList(queue1, queue2));</strong></code></pre>
 </div>
 
 <h2>2. Extension points</h2>

@@ -32,7 +32,7 @@ title : Parallel jobs
 
         <h2>2. Dispatching records</h2>
 
-<p>In order to distribute work to multiple engines, Easy Batch provides the <code><em>RecordDispatcher</em></code> API:</p>
+<p>In order to distribute work to multiple engines, Easy Batch provides the <code><em>AbstractRecordDispatcher</em></code> API:</p>
 
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
@@ -40,7 +40,7 @@ title : Parallel jobs
             </div>
         </div>
 
-        <p>There are 4 built-in implementations of the <code><em>RecordDispatcher</em></code> API. Please refer to the
+        <p>There are 4 built-in implementations of the <code><em>AbstractRecordDispatcher</em></code> API. Please refer to the
             <a href="../documentation/user-guide.html">user guide</a> (section "miscellaneaous") for all details about available record dispatchers.
         In this tutorial, you will learn how to use the <code><em>RoundRobinRecordDispatcher</em></code> to distribute tweets to 2 queues.</p>
 
@@ -108,7 +108,7 @@ title : Parallel jobs
 }</code></pre>
 </div>
 
-        <p>The <code><em>RecordDispatcher</em></code> dispatches records to a <code><em>java.util.concurrent.BlockingQueue</em></code>.
+        <p>The record dispatcher dispatches records to a <code><em>java.util.concurrent.BlockingQueue</em></code>.
         We should be able to read data from this type of queues. Easy Batch comes with a built-in <code><em>QueueRecordReader</em></code> to
         save you from writing the reading code yourself. When the master engine finishes reading the data source, it sends a <code><em>PoisonRecord</em></code>
             using the <code><em>PoisonRecordBroadcaster</em></code> to stop worker engines.</p>
@@ -177,7 +177,7 @@ title : Parallel jobs
         You could also launch separate JVMs for each part.</p>
 </div>
 
-        <p>Another possibility to process multiple input files in parallel is to use a master engine with a <code><em>FileRecordReader</em></code> coupled to a <code><em>RecordDispatcher</em></code>:</p>
+        <p>Another possibility to process multiple input files in parallel is to use a master engine with a <code><em>FileRecordReader</em></code> coupled to a record dispatcher:</p>
 
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
@@ -301,7 +301,7 @@ $>mvn exec:java -PrunParallelTutorialWithDataFiltering
                   </tbody>
               </table>
 
-        <p>Using the <code><em>RecordDispatcher</em></code> API should be your first choice when dealing with data processing in parallel
+        <p>Using a record dispatcher should be your first choice when dealing with data processing in parallel
             because it is more efficient than other techniques and provides the most natural way of distributing the work across multiple engines.</p>
 
 <h2>7. What's next?</h2>

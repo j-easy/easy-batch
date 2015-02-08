@@ -6,7 +6,7 @@ title : Distributed jobs
 
 <h2>1. Introduction</h2>
 
-              <p>In this tutorial, you will learn how to implement a custom <code><em>RecordDispatcher</em></code>
+              <p>In this tutorial, you will learn how to implement a custom record dispatcher
                   in order to balance a heavy workload to a distributed army of worker engines deployed on a cluster of machines.</p>
 
 <p>Let's suppose you have an E-commerce web application and you would like to process orders
@@ -20,19 +20,19 @@ title : Distributed jobs
     </div>
 </div>
 
-        <p>We will turn this REST endpoint into a <code><em>RecordDispatcher</em></code> that will distribute incoming
-        requests (or records) to several worker engines. Each worker has its own JMS queue in which order records will be placed
+        <p>We will turn this REST endpoint into a record dispatcher that will distribute incoming
+        requests (or records) to several worker engines. Each worker engine has its own JMS queue in which order records will be placed
         waiting to be processed asynchronously. So let's get started.</p>
 
-        <h2>2. Implementing the RecordDispatcher</h2>
+        <h2>2. Implementing the RestEndpointRecordDispatcher</h2>
 
         <p>To keep the tutorial simple, we will use the JDK built-in HTTP server instead of a RESTful framework.</p>
 
-        <p>Here is the implementation of the custom <code><em>RecordDispatcher</em></code>:</p>
+        <p>Here is the implementation of the custom record dispatcher:</p>
 
         <div class="bs-callout bs-callout-code">
             <h5>RestEndpointRecordDispatcher.java</h5>
-<pre><code class="java">public class RestEndpointRecordDispatcher implements RecordDispatcher, HttpHandler {
+<pre><code class="java">public class RestEndpointRecordDispatcher extends AbstractRecordDispatcher implements HttpHandler {
 
     private int recordNumber;
 
