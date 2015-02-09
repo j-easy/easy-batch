@@ -74,10 +74,18 @@
 
 <h2>2. The <em>Record</em> abstraction</h2>
 
-<p>Easy Batch streams data record by record from the data source.
-    Depending on the data source type, a record can be a line in a flat file, an tag in an Xml file, a record in a database table, a message in a queue, an object in a list, a file in a folder, etc.</p>
+<p>Easy Batch <strong>streams</strong> data record by record from the data source.
+    Depending on the data source type, a record can be a line in a flat file, a tag in a XML file,
+    a row in a database table, a file in a folder, etc.</p>
+<p>Here are some examples of records as seen by Easy Batch:</p>
 
-        <p>The <code><em>Record</em></code> interface is an abstraction of records as seen by Easy Batch:</p>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p class="pull-center"><img class="ebi" src="../img/eb/record-samples.jpg"/></p>
+    </div>
+</div>
+
+        <p>The generic <code><em>Record</em></code> interface is an abstraction of all record types:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">public interface Record&lt;P&gt; {
@@ -97,7 +105,7 @@
 }</code></pre>
 </div>
 
-<p>There are several implementations of the <code><em>Record</em></code> interface provided by Easy Batch to represent different type of records:</p>
+<p>A record has a number which represents its physical number in the data source and a payload. There are several implementations of the <code><em>Record</em></code> interface provided by Easy Batch to represent different type of records:</p>
 
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
@@ -105,4 +113,4 @@
     </div>
 </div>
 
-<p>Note that the record payload can be of any type, so that a record can represent any type of input data (textual or not).</p>
+<p>Note that the record payload can be of any type, so that it can represent any type of input data (textual or not).</p>
