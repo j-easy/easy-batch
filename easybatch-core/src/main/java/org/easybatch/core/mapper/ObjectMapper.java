@@ -76,7 +76,7 @@ public class ObjectMapper<T> {
      */
     public ObjectMapper(final Class<? extends T> recordClass) {
         this.recordClass = recordClass;
-        InitializeTypeConverters();
+        initializeTypeConverters();
         initializeSetters();
     }
 
@@ -142,7 +142,7 @@ public class ObjectMapper<T> {
     /**
      * Initialize default type converters.
      */
-    private void InitializeTypeConverters() {
+    private void initializeTypeConverters() {
         typeConverters = new HashMap<Class, TypeConverter>();
         typeConverters.put(AtomicInteger.class, new AtomicIntegerTypeConverter());
         typeConverters.put(AtomicLong.class, new AtomicLongTypeConverter());
