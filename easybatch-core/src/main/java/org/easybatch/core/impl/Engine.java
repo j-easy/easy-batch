@@ -112,7 +112,7 @@ public final class Engine implements Callable<Report> {
         try {
 
             Integer totalRecords = recordReader.getTotalRecords();
-            LOGGER.log(Level.INFO, "Total records = {0}", (totalRecords == null ? "N/A" : totalRecords));
+            LOGGER.log(Level.INFO, "Total records = {0}", totalRecords == null ? "N/A" : totalRecords);
             report.setStatus(Status.RUNNING);
             LOGGER.info("easy batch engine is running...");
 
