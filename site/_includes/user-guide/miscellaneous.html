@@ -1,4 +1,4 @@
-<h2>1. The AbstractRecordDispatcher API</h2>
+<h2>8. The AbstractRecordDispatcher API</h2>
 
         <p>Easy Batch does not provide a feature to partition input data.
             Instead of that, it comes with the <code><em>AbstractRecordDispatcher</em></code> abstraction that allows you to
@@ -13,7 +13,9 @@
     </div>
 </div>
 
-        <h3>1.1 The RoundRobinRecordDispatcher</h3>
+        <p>A record dispatcher is a regular <code><em>RecordProcessor</em></code> and can be used like any other processor in the pipeline.</p>
+
+        <h3>8.1 The RoundRobinRecordDispatcher</h3>
         <p>The <code><em>RoundRobinRecordDispatcher</em></code> dispatches input records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues in a round robin fashion:</p>
 
 <div class="row">
@@ -38,7 +40,7 @@ BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
 
         <p>You can find a usage sample of this API in the <a href="../tutorials/parallel.html">Parallel jobs tutorial</a>.</p>
 
-        <h3>1.2 The ContentBasedRecordDispatcher</h3>
+        <h3>8.2 The ContentBasedRecordDispatcher</h3>
         <p>The <code><em>ContentBasedRecordDispatcher</em></code> dispatches records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues based on record content:</p>
 
 <div class="row">
@@ -85,7 +87,7 @@ BlockingQueue&lt;Record&gt; defaultQueue = new LinkedBlockingQueue&lt;Record&gt;
 <p>Once you have dispatched records to the queues, you should be able to read them using the <code><em>QueueRecordReader</em></code> provided by Easy Batch.
     You can find a usage sample of this API <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/cbrd" target="_blank">here</a>.</p>
 
-<h3>1.3 The BroadcastRecordDispatcher</h3>
+<h3>8.3 The BroadcastRecordDispatcher</h3>
 <p>The <code><em>BroadcastRecordDispatcher</em></code> broadcasts input records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues:</p>
 
 <div class="row">
@@ -109,7 +111,7 @@ BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
 
 <p>You can then read records from these queues using the <code><em>QueueRecordReader</em></code> provided by Easy Batch.</p>
 
-<h3>1.4 The RandomRecordDispatcher</h3>
+<h3>8.4 The RandomRecordDispatcher</h3>
 
         <p>As its name implies, the <code><em>RandomRecordDispatcher</em></code> dispatches records randomly to one of the queues it operates on.</p>
 
@@ -123,9 +125,9 @@ BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
 <strong>RandomRecordDispatcher recordDispatcher = new RandomRecordDispatcher(Arrays.asList(queue1, queue2));</strong></code></pre>
 </div>
 
-<h2>2. Extension points</h2>
+<h2>9. Extension points</h2>
 
-        <h3>2.1 Workflow extension points</h3>
+        <h3>9.1 Workflow extension points</h3>
 
         <p>Easy Batch's workflow is extensible. You can register listeners to do pre/post processing before and after each step.</p>
         <p>There are two types of listeners:</p>
@@ -167,7 +169,7 @@ BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
     .build();</code></pre>
 </div>
 
-        <h4>2.1.1 Batch job listener</h4>
+        <h4>9.1.1 Batch job listener</h4>
 
         <p>The batch job listener is defined in the <code><em>BatchProcessEventListener</em></code> interface:</p>
 
@@ -199,7 +201,7 @@ BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
     .build();</code></pre>
         </div>
 
-        <h4>2.1.2 Batch step listeners</h4>
+        <h4>9.1.2 Batch step listeners</h4>
 
         <p>Step listeners work the same as the global batch job event listener:</P>
 
@@ -250,7 +252,7 @@ BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
 </table>
 
 
-        <h3>2.2 Reporting extension points</h3>
+        <h3>9.2 Reporting extension points</h3>
 
         <p>By default, when an exception occurs during record filtering, mapping, validation or processing, Easy Batch
         logs the exception and updates report statistics. You may want to add custom behaviour of logging and reporting.
