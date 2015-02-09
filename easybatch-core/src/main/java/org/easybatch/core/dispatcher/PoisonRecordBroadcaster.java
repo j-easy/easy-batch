@@ -31,7 +31,7 @@ public class PoisonRecordBroadcaster implements BatchProcessEventListener {
         try {
             recordDispatcher.dispatchRecord(new PoisonRecord());
         } catch (Exception e) {
-            throw new RuntimeException("Unable to broadcast poison record");
+            throw new RuntimeException("Unable to broadcast poison record.", e);
         }
     }
 
