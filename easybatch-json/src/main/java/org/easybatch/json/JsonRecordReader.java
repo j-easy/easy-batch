@@ -150,18 +150,18 @@ public class JsonRecordReader implements RecordReader {
     public Integer getTotalRecords() {
         //Unable to use the same (or even another) json parser to calculate total record number of the input stream.
         int data;
-        int objectDepth = 0;
+        int rootObjectDepth = 0;
         int totalRecords = 0;
         try {
             data = inputStream.read();
             while(data != -1) {
                 char currentChar = (char)data;
                 if('{' == currentChar) {
-                    objectDepth++;
+                    rootObjectDepth++;
                 }
                 if('}' == currentChar) {
-                    objectDepth--;
-                    if (objectDepth == 0) {
+                    rootObjectDepth--;
+                    if (rootObjectDepth == 0) {
                         totalRecords++;
                     }
                 }
