@@ -250,6 +250,8 @@ public class JsonRecordReader implements RecordReader {
             case VALUE_NUMBER:
                 jsonGenerator.write(key, parser.getBigDecimal());
                 break;
+            default:
+                break;
         }
     }
 
