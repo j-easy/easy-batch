@@ -10,7 +10,7 @@
     <artifactId>easybatch-json</artifactId>
     <packaging>jar</packaging>
 
-    <name>easybatch-xml</name>
+    <name>easybatch-json</name>
     <description>Easy Batch json module</description>
     <url>http://www.easybatch.org</url>
 

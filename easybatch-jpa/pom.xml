@@ -12,7 +12,7 @@
     <artifactId>easybatch-jpa</artifactId>
     <packaging>jar</packaging>
 
-    <name>easybatch-jms</name>
+    <name>easybatch-jpa</name>
     <description>Easy Batch - JPA integration module</description>
     <url>http://www.easybatch.org</url>
 
