@@ -244,17 +244,17 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
         }
     }
 
-    private String trimWhitespaces(String token) {
+    private String trimWhitespaces(final String token) {
         if (trimWhitespaces) {
-            token = token.trim();
+            return token.trim();
         }
         return token;
     }
 
-    private String removeQualifier(String token) {
+    private String removeQualifier(final String token) {
         int qualifierLength = qualifier.length();
         if (qualifierLength > 0) {
-            token = token.substring(qualifierLength, token.length() - qualifierLength);
+            return token.substring(qualifierLength, token.length() - qualifierLength);
         }
         return token;
     }
