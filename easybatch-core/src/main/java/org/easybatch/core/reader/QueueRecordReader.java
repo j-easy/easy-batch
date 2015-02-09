@@ -52,7 +52,8 @@ public class QueueRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception { }
+    public void open() throws Exception {
+    }
 
     @Override
     public boolean hasNextRecord() {
@@ -77,6 +78,7 @@ public class QueueRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws Exception { }
+    public void close() throws Exception {
+    }
 
 }
