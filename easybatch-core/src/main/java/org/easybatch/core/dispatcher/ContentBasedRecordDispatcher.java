@@ -75,8 +75,11 @@ public class ContentBasedRecordDispatcher extends AbstractRecordDispatcher {
                 return;
             }
         }
-        //if the record does not match any predicate, then put it on the default queue
-        queueMap.get(new DefaultPredicate()).put(record);
+        //if the record does not match any predicate, then put it in the default queue
+        BlockingQueue<Record> defaultQueue = queueMap.get(new DefaultPredicate());
+        if (defaultQueue != null) {
+            defaultQueue.put(record);
+        }
     }
 
 }
