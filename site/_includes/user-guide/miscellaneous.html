@@ -85,7 +85,8 @@ BlockingQueue&lt;Record&gt; defaultQueue = new LinkedBlockingQueue&lt;Record&gt;
         dispatched to which queue, and a default queue to which unmatched records will be dispatched.</p>
 
 <p>Once you have dispatched records to the queues, you should be able to read them using the <code><em>QueueRecordReader</em></code> provided by Easy Batch.
-    You can find a usage sample of this API <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/cbrd" target="_blank">here</a>.</p>
+    You can find examples of how to use this API <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/cbrd/fruits" target="_blank">here</a> and
+    <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/cbrd/files" target="_blank">here</a>.</p>
 
 <h3>8.3 The BroadcastRecordDispatcher</h3>
 <p>The <code><em>BroadcastRecordDispatcher</em></code> broadcasts input records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues:</p>
