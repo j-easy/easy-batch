@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.advanced.cbrd;
+package org.easybatch.tutorials.advanced.cbrd.fruits;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.dispatcher.ContentBasedRecordDispatcher;

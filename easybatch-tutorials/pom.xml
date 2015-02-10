@@ -391,7 +391,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.advanced.cbrd.ContentBasedRecordDispatcherTutorial</mainClass>
+                            <mainClass>org.easybatch.tutorials.advanced.cbrd.fruits.ContentBasedRecordDispatcherTutorial</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
