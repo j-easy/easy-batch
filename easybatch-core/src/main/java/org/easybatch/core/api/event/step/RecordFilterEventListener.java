@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.api.event.record;
+package org.easybatch.core.api.event.step;
 
 import org.easybatch.core.api.Record;
 

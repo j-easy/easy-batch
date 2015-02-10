@@ -22,54 +22,41 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.api.event.record;
+package org.easybatch.core.api.event.step;
 
 import org.easybatch.core.api.Record;
 
 /**
- * Event interface collection for RecordReader events.
+ * Event interface collection for RecordMapper events.
  * <p>
- * You should implement this interface in your reader to
+ * You should implement this interface in your mapper to
  * declare the ability to receive events from the batch process.
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordReaderEventListener {
+public interface RecordMapperEventListener {
 
     /**
-     * Called before the call to {@link org.easybatch.core.api.RecordReader#open()}
+     * Called before the mapper call.
+     *
+     * @param record The record that will be passed to the record call.
      */
-    public void beforeReaderOpen();
+    public void beforeMapRecord(Record record);
 
     /**
-     * Called after the call to {@link org.easybatch.core.api.RecordReader#open()}
+     * Called directly after the mapper call.
+     *
+     * @param record The incoming record.
+     * @param typedRecord The mapping result.
      */
-    public void afterReaderOpen();
+    public void afterMapRecord(Record record, Object typedRecord);
 
     /**
-     * Called before each record read
+     * When the mapper throws an exception, this method will get the exception.
+     * In addition you will receive the incoming record for further inspection.
+     *
+     * @param t The exception thrown.
+     * @param record The record that was processed while the exception was thrown.
      */
-    public void beforeRecordRead();
-
-    /**
-     * Called after each record read operation.
-     * @param record The record that has been read.
-     */
-    public void afterRecordRead(Record record);
-
-    /**
-     * Called when an exception occurs during record reading.
-     * @param throwable the throwable thrown during record reading
-     */
-    public void onRecordReadException(Throwable throwable);
-
-    /**
-     * Called before the reader gets closed.
-     */
-    public void beforeReaderClose();
-
-    /**
-     * Called after the reader has been closed.
-     */
-    public void afterReaderClose();
+    public void onMapperException(Throwable t, Record record);
 }

@@ -24,7 +24,7 @@
 
 package org.easybatch.tutorials.intermediate.load;
 
-import org.easybatch.core.api.event.record.RecordProcessorEventListener;
+import org.easybatch.core.api.event.step.RecordProcessorEventListener;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

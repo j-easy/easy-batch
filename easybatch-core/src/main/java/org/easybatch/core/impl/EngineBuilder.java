@@ -25,8 +25,8 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.global.BatchProcessEventListener;
-import org.easybatch.core.api.event.record.*;
+import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.step.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -200,7 +200,7 @@ public final class EngineBuilder {
 
     /**
      * Register a batch process event listener.
-     * See {@link org.easybatch.core.api.event.global.BatchProcessEventListener} for available callback methods.
+     * See {@link org.easybatch.core.api.event.batch.BatchProcessEventListener} for available callback methods.
      *
      * @param eventListener The event listener to add.
      * @return the engine builder
@@ -213,7 +213,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record reader event listener.
-     * See {@link org.easybatch.core.api.event.record.RecordReaderEventListener} for available callback methods.
+     * See {@link org.easybatch.core.api.event.step.RecordReaderEventListener} for available callback methods.
      *
      * @param eventListener The record reader listener to add.
      * @return the engine builder
@@ -226,7 +226,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record filter event listener.
-     * See {@link org.easybatch.core.api.event.record.RecordFilterEventListener} for available callback methods.
+     * See {@link org.easybatch.core.api.event.step.RecordFilterEventListener} for available callback methods.
      *
      * @param eventListener The event listener to add.
      * @return the engine builder
@@ -239,7 +239,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record mapper event listener.
-     * See {@link org.easybatch.core.api.event.record.RecordMapperEventListener} for available callback methods.
+     * See {@link org.easybatch.core.api.event.step.RecordMapperEventListener} for available callback methods.
      *
      * @param eventListener The event listener to add.
      * @return the engine builder
@@ -252,7 +252,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record validator event listener.
-     * See {@link org.easybatch.core.api.event.record.RecordValidatorEventListener} for available callback methods.
+     * See {@link org.easybatch.core.api.event.step.RecordValidatorEventListener} for available callback methods.
      *
      * @param eventListener The event listener to add.
      * @return the engine builder
@@ -265,7 +265,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record processor event listener.
-     * See {@link org.easybatch.core.api.event.record.RecordProcessorEventListener} for available callback methods.
+     * See {@link org.easybatch.core.api.event.step.RecordProcessorEventListener} for available callback methods.
      *
      * @param eventListener The event listener to add.
      * @return the engine builder

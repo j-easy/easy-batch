@@ -1,6 +1,6 @@
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.event.global.BatchProcessEventListener;
+import org.easybatch.core.api.event.batch.BatchProcessEventListener;
 import org.easybatch.core.record.PoisonRecord;
 
 /**

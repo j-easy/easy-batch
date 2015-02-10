@@ -1,8 +1,8 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.global.BatchProcessEventListener;
-import org.easybatch.core.api.event.record.*;
+import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.step.*;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.core.util.Utils;
 import org.junit.Before;

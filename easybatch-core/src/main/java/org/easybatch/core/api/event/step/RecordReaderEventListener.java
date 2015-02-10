@@ -22,32 +22,54 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.api.event.record;
+package org.easybatch.core.api.event.step;
 
-import org.easybatch.core.api.ValidationError;
-
-import java.util.Set;
+import org.easybatch.core.api.Record;
 
 /**
- * Event interface collection for RecordValidator events.
+ * Event interface collection for RecordReader events.
  * <p>
- * You should implement this interface in your validator to
+ * You should implement this interface in your reader to
  * declare the ability to receive events from the batch process.
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordValidatorEventListener {
+public interface RecordReaderEventListener {
 
     /**
-     * Called before each validation.
-     * @param mappedRecord The mapped record that is going to be validated.
+     * Called before the call to {@link org.easybatch.core.api.RecordReader#open()}
      */
-    public void beforeValidateRecord(Object mappedRecord);
+    public void beforeReaderOpen();
 
     /**
-     * Called after each validation.
-     * @param validatedRecord The validated record.
-     * @param validationErrors The Set of validation errors, if any.
+     * Called after the call to {@link org.easybatch.core.api.RecordReader#open()}
      */
-    public void afterValidateRecord(Object validatedRecord, Set<ValidationError> validationErrors);
+    public void afterReaderOpen();
+
+    /**
+     * Called before each record read
+     */
+    public void beforeRecordRead();
+
+    /**
+     * Called after each record read operation.
+     * @param record The record that has been read.
+     */
+    public void afterRecordRead(Record record);
+
+    /**
+     * Called when an exception occurs during record reading.
+     * @param throwable the throwable thrown during record reading
+     */
+    public void onRecordReadException(Throwable throwable);
+
+    /**
+     * Called before the reader gets closed.
+     */
+    public void beforeReaderClose();
+
+    /**
+     * Called after the reader has been closed.
+     */
+    public void afterReaderClose();
 }

@@ -22,41 +22,32 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.api.event.record;
+package org.easybatch.core.api.event.step;
 
-import org.easybatch.core.api.Record;
+import org.easybatch.core.api.ValidationError;
+
+import java.util.Set;
 
 /**
- * Event interface collection for RecordMapper events.
+ * Event interface collection for RecordValidator events.
  * <p>
- * You should implement this interface in your mapper to
+ * You should implement this interface in your validator to
  * declare the ability to receive events from the batch process.
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordMapperEventListener {
+public interface RecordValidatorEventListener {
 
     /**
-     * Called before the mapper call.
-     *
-     * @param record The record that will be passed to the record call.
+     * Called before each validation.
+     * @param mappedRecord The mapped record that is going to be validated.
      */
-    public void beforeMapRecord(Record record);
+    public void beforeValidateRecord(Object mappedRecord);
 
     /**
-     * Called directly after the mapper call.
-     *
-     * @param record The incoming record.
-     * @param typedRecord The mapping result.
+     * Called after each validation.
+     * @param validatedRecord The validated record.
+     * @param validationErrors The Set of validation errors, if any.
      */
-    public void afterMapRecord(Record record, Object typedRecord);
-
-    /**
-     * When the mapper throws an exception, this method will get the exception.
-     * In addition you will receive the incoming record for further inspection.
-     *
-     * @param t The exception thrown.
-     * @param record The record that was processed while the exception was thrown.
-     */
-    public void onMapperException(Throwable t, Record record);
+    public void afterValidateRecord(Object validatedRecord, Set<ValidationError> validationErrors);
 }

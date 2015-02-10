@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.api.event.record;
+package org.easybatch.core.api.event.step;
 
 /**
  * Event interface collection for RecordProcessor events.

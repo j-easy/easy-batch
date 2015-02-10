@@ -24,8 +24,8 @@
 
 package org.easybatch.core.api;
 
-import org.easybatch.core.api.event.global.BatchProcessEventListener;
-import org.easybatch.core.api.event.record.*;
+import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.step.*;
 
 import java.util.Set;
 

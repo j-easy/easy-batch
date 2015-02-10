@@ -27,8 +27,8 @@ package org.easybatch.core.impl;
 import org.easybatch.core.api.EventManager;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.ValidationError;
-import org.easybatch.core.api.event.global.BatchProcessEventListener;
-import org.easybatch.core.api.event.record.*;
+import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.step.*;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
