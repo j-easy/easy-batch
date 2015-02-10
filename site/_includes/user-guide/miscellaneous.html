@@ -38,7 +38,7 @@ BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
 
         <p>You can then read records from these queues using the <code><em>QueueRecordReader</em></code> provided by Easy Batch.</p>
 
-        <p>You can find a usage sample of this API in the <a href="../tutorials/parallel.html">Parallel jobs tutorial</a>.</p>
+        <p>You can find a usage sample of this API in the <a href="../tutorials/parallel.html" target="_blank">Parallel jobs tutorial</a>.</p>
 
         <h3>8.2 The ContentBasedRecordDispatcher</h3>
         <p>The <code><em>ContentBasedRecordDispatcher</em></code> dispatches records to several <code><em>java.util.concurrent.BlockingQueue</em></code> queues based on record content:</p>
@@ -143,7 +143,7 @@ BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
             <li><strong>Batch step listeners</strong>: These are listeners bound to batch steps (before/after each step). Here are some use cases:
                 <ul>
                     <li>Define transaction boundaries and commit interval in a transactional batch application</li>
-                    <li>Calculate the processing time for each step/record</li>
+                    <li>Calculate the processing time for each step</li>
                     <li>etc</li>
                 </ul>
             </li>
