@@ -364,7 +364,7 @@ public final class Engine implements Callable<Report> {
         }
     }
 
-    public void enableJMX(boolean jmx) {
+    void enableJMX(boolean jmx) {
         if (jmx) {
             Utils.registerJmxMBean(report);
         }
