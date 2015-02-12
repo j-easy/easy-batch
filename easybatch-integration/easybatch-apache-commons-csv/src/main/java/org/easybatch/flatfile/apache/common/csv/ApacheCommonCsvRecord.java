@@ -28,7 +28,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.record.GenericRecord;
 
 /**
- * Record having as payload a {@link CSVRecord}.
+ * Record having a {@link CSVRecord} as payload.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
