@@ -34,16 +34,16 @@ import org.easybatch.core.mapper.ObjectMapper;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ApacheCommonCsvRecordMapper implements RecordMapper {
+public class ApacheCommonCsvRecordMapper<T> implements RecordMapper {
 
-    private ObjectMapper objectMapper;
+    private ObjectMapper<T> objectMapper;
 
-    public ApacheCommonCsvRecordMapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public ApacheCommonCsvRecordMapper(Class<? extends T> recordClass) {
+        this.objectMapper = new ObjectMapper<T>(recordClass);
     }
 
     @Override
-    public Object mapRecord(Record record) throws Exception {
+    public T mapRecord(Record record) throws Exception {
         CSVRecord csvRecord = (CSVRecord) record.getPayload();
         return objectMapper.mapObject(csvRecord.toMap());
     }
