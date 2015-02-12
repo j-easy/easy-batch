@@ -38,7 +38,7 @@ import java.util.Set;
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public class LocalEventManager implements EventManager {
+class LocalEventManager implements EventManager {
 
     private Set<BatchProcessEventListener> batchProcessEventListeners = new LinkedHashSet<BatchProcessEventListener>();
     private Set<RecordReaderEventListener> recordReaderEventListeners = new LinkedHashSet<RecordReaderEventListener>();
