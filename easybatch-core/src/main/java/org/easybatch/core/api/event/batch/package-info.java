@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains built-in type converters.
+ * This package contains listeners for batch events.
  */
-package org.easybatch.core.mapper.converter;
+package org.easybatch.core.api.event.batch;

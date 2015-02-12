@@ -25,7 +25,7 @@
 package org.easybatch.core.jmx;
 
 /**
- *  JMX MBean interface.
+ *  JMX MBean interface to expose monitoring attributes.
  *
  *  @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -98,7 +98,7 @@ public interface MonitorMBean {
     String getProgress();
 
     /**
-     * Get engine status.
+     * Get engine {@link org.easybatch.core.api.Status}.
      * @return engine status
      */
     String getStatus();

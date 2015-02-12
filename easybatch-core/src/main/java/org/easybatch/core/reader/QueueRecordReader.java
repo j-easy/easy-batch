@@ -31,7 +31,7 @@ import org.easybatch.core.record.PoisonRecord;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * A {@link RecordReader} that reads record from a {@link BlockingQueue}.
+ * A convenient {@link RecordReader} that reads record from a {@link BlockingQueue}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

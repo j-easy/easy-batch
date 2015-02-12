@@ -28,9 +28,9 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters string records ending with one of the given suffixes.
+ * A {@link org.easybatch.core.api.RecordFilter} that filters string records ending with one of the given suffixes.<br/>
  * The parameter negate can be set to true to inverse this behavior :
- * this filter will filter records that do not start with one of the given suffixes.
+ * this filter will then filter records that do not start with one of the given suffixes.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

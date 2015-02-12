@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains built-in type converters.
+ * This package contains built-in implementations of the {@link org.easybatch.core.dispatcher.AbstractRecordDispatcher} class.
  */
-package org.easybatch.core.mapper.converter;
+package org.easybatch.core.dispatcher;

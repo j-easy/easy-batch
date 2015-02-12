@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains built-in type converters.
+ * This package contains utility classes.
  */
-package org.easybatch.core.mapper.converter;
+package org.easybatch.core.util;

@@ -41,17 +41,17 @@ package org.easybatch.core.api.event.batch;
 public interface BatchProcessEventListener {
 
     /**
-     * Happens before the {@link org.easybatch.core.api.RecordReader#open()} call.
+     * Called before the {@link org.easybatch.core.api.RecordReader#open()} call.
      */
     public void beforeBatchStart();
 
     /**
-     * Happens after the {@link org.easybatch.core.api.RecordReader#close()} call.
+     * Called after the {@link org.easybatch.core.api.RecordReader#close()} call.
      */
     public void afterBatchEnd();
 
     /**
-     * Happens on any throwable event while processing.
+     * Called on any throwable event while processing.
      * <p>
      * There is no context information available, so this will probably something you want to use for logging
      * purposes or similar.

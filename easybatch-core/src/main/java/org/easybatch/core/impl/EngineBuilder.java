@@ -277,7 +277,7 @@ public final class EngineBuilder {
     }
 
     /**
-     * Set the event manager.
+     * Register a custom event manager.
      *
      * @param eventManager The event manager to use instead of the default {@link org.easybatch.core.impl.LocalEventManager}
      * @return the engine builder

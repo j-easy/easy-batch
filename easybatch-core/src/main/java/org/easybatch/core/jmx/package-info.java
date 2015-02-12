@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains easy batch JMX MBean interface and implementation.
+ * This package contains JMX monitoring support classes.
  */
 package org.easybatch.core.jmx;

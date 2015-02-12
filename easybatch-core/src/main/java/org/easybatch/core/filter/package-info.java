@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains classes to filter records based on their numbers or raw content.
+ * This package contains built-in implementations of the {@link org.easybatch.core.api.RecordFilter} interface.
  */
 package org.easybatch.core.filter;

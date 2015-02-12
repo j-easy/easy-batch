@@ -32,7 +32,7 @@ package org.easybatch.core.api;
 public enum Status {
 
     /**
-     * The engine is initializing data source.
+     * The engine is initializing the data source.
      */
     INITIALIZING,
 

@@ -41,6 +41,10 @@ public class BroadcastRecordDispatcher extends AbstractRecordDispatcher {
      */
     private List<BlockingQueue<Record>> queues;
 
+    /**
+     * Create a {@link BroadcastRecordDispatcher} instance.
+     * @param queues the list of queues to which records should be dispatched
+     */
     public BroadcastRecordDispatcher(List<BlockingQueue<Record>> queues) {
         this.queues = queues;
     }

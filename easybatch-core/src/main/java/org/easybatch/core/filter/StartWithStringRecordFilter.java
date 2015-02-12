@@ -28,7 +28,7 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters string records starting with one of the given prefixes.
+ * A {@link org.easybatch.core.api.RecordFilter} that filters string records starting with one of the given prefixes.<br/>
  * The parameter negate can be set to true to inverse this behavior :
  * this filter will filter records that do not start with one of the given prefixes.
  *

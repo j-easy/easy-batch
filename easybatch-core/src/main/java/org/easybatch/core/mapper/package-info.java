@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains easy batch object mapper implementation.
+ * This package contains the object mapper implementation.
  */
 package org.easybatch.core.mapper;

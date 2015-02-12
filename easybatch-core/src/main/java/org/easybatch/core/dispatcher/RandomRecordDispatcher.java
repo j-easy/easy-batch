@@ -58,6 +58,10 @@ public class RandomRecordDispatcher extends AbstractRecordDispatcher {
      */
     private Random random;
 
+    /**
+     * Create a {@link RandomRecordDispatcher} instance.
+     * @param queues the list of queues to which records should be dispatched
+     */
     public RandomRecordDispatcher(List<BlockingQueue<Record>> queues) {
         this.queues = queues;
         this.queuesNumber = queues.size();

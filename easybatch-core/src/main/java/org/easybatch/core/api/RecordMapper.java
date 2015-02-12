@@ -25,7 +25,7 @@
 package org.easybatch.core.api;
 
 /**
- * An interface for record mapper.
+ * Interface for record mapper.
  * This will be used by the engine to map input record to domain objects.
  *
  * @param <T> The target domain object type.

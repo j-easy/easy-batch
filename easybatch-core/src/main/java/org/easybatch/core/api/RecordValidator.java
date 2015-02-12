@@ -27,7 +27,7 @@ package org.easybatch.core.api;
 import java.util.Set;
 
 /**
- * An interface for record validator.
+ * Interface for record validator.
  * This is used by the engine to apply validation logic on input records.
  *
  * @param <T> The target domain object type this validator can validate.

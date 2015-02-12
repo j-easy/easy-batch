@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains built-in type converters.
+ * This package contains several convenient implementations of the {@link org.easybatch.core.api.Record} interface.
  */
-package org.easybatch.core.mapper.converter;
+package org.easybatch.core.record;

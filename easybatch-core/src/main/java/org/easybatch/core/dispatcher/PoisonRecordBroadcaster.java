@@ -4,7 +4,7 @@ import org.easybatch.core.api.event.batch.BatchProcessEventListener;
 import org.easybatch.core.record.PoisonRecord;
 
 /**
- * A utility batch event listener that broadcasts a poison record at the end of batch
+ * A utility batch event listener that broadcasts a {@link PoisonRecord} record at the end of batch
  * using a delegate record dispatcher.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

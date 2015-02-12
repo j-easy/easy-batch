@@ -57,6 +57,10 @@ public class RoundRobinRecordDispatcher extends AbstractRecordDispatcher {
      */
     private BroadcastRecordDispatcher broadcastRecordDispatcher;
 
+    /**
+     * Create a {@link RoundRobinRecordDispatcher} dispatcher.
+     * @param queues the list of queues to which records should be dispatched
+     */
     public RoundRobinRecordDispatcher(List<BlockingQueue<Record>> queues) {
         this.queues = queues;
         this.queuesNumber = queues.size();

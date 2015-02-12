@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * A class holding batch reporting data.
+ * Class holding batch reporting data.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

@@ -32,7 +32,7 @@ package org.easybatch.core.api;
 public interface FilteredRecordHandler {
 
     /**
-     * @param record - the filtered record to handle
+     * @param record the filtered record to handle
      */
     void handle(final Record record);
 

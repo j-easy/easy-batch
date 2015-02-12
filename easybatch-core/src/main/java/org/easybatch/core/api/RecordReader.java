@@ -25,7 +25,7 @@
 package org.easybatch.core.api;
 
 /**
- * An interface for record reader.
+ * Interface for record reader.
  * This will be used by easy batch to <strong>sequentially</strong> read records from a data source.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

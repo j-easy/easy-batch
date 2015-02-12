@@ -25,7 +25,7 @@
 package org.easybatch.core.api;
 
 /**
- * Interface for type converter used to convert raw textual data to typed data in domain objects.
+ * Interface for type converters that are used to convert raw textual data to typed data in domain objects.
  *
  * @param <T> The target type.
  *

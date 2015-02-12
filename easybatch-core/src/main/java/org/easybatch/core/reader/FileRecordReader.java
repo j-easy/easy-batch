@@ -33,9 +33,9 @@ import java.text.MessageFormat;
 import java.util.*;
 
 /**
- * Reader that reads files in a directory.
+ * A convenient {@link RecordReader} that reads files in a directory.
  *
- * This reader is not recursive.
+ * This reader is <strong>not</strong> recursive.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

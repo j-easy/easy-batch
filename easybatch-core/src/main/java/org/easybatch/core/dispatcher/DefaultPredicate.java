@@ -27,7 +27,7 @@ package org.easybatch.core.dispatcher;
 import org.easybatch.core.api.Record;
 
 /**
- * Used to put records in the default queue when building a {@link org.easybatch.core.dispatcher.ContentBasedRecordDispatcher}.
+ * A default predicate used to put records in the default queue when building a {@link org.easybatch.core.dispatcher.ContentBasedRecordDispatcher}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

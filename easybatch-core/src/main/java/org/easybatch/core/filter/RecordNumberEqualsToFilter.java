@@ -28,7 +28,7 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters flat file records based on their number.
+ * A {@link org.easybatch.core.api.RecordFilter} that filters flat file records based on their number.<br/>
  * The parameter negate can be set to true to inverse this behavior :
  * this filter will filter records which number is not equal to any of the given numbers.
  *

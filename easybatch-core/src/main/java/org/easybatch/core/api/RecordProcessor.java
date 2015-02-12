@@ -25,12 +25,12 @@
 package org.easybatch.core.api;
 
 /**
- * An interface for record processor.
+ * Interface for record processor.
  * A record processor performs some business logic on an input object and produces an output object.
  * The output object may be of another type of the input object and will be piped out to the next processor if any.
  *
- * @param <I> The input domain object type.
- * @param <O> The output domain object type.
+ * @param <I> The input object type.
+ * @param <O> The output object type.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
