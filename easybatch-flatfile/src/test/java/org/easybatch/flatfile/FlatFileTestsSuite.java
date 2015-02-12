@@ -37,6 +37,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses( {
         DelimitedRecordMapperTest.class,
-        FixedLengthRecordMapperTest.class})
+        FixedLengthRecordMapperTest.class,
+        FlatFileRecordReaderTest.class})
 public class FlatFileTestsSuite {
 }
