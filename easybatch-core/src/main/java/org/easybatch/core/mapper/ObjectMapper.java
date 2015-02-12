@@ -100,7 +100,7 @@ public class ObjectMapper<T> {
     }
 
     /**
-     * Map a values to fields of the target object type.
+     * Map values to fields of the target object type.
      *
      * @param values fields values
      * @return A populated instance of the target type.
