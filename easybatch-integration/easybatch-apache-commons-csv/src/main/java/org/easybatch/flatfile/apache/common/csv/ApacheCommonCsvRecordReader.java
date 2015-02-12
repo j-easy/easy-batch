@@ -59,7 +59,7 @@ public class ApacheCommonCsvRecordReader implements RecordReader {
 
     @Override
     public Record readNextRecord() throws Exception {
-        return new ApacheCommonCsvRecord((int) parser.getCurrentLineNumber(), iterator.next());
+        return new ApacheCommonCsvRecord((int) parser.getRecordNumber() + 1, iterator.next());
     }
 
     @Override
