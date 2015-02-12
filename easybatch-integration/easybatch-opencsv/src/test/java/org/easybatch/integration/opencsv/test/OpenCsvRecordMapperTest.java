@@ -27,6 +27,8 @@ package org.easybatch.integration.opencsv.test;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.integration.opencsv.OpenCsvRecordMapper;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test class for {@link OpenCsvRecordMapper}.
@@ -37,12 +39,12 @@ public class OpenCsvRecordMapperTest {
 
     private OpenCsvRecordMapper<Foo> openCsvRecordMapper;
 
-    @org.junit.Before
+    @Before
     public void setUp() throws Exception {
         openCsvRecordMapper = new OpenCsvRecordMapper<Foo>(Foo.class, new String[]{"firstName", "lastName", "age", "married"});
     }
 
-    @org.junit.Test
+    @Test
     public void testOpenCsvMapping() throws Exception {
         StringRecord fooRecord = new StringRecord(1, "foo,bar,15,true");
         Foo foo = openCsvRecordMapper.mapRecord(fooRecord);
@@ -53,7 +55,7 @@ public class OpenCsvRecordMapperTest {
         Assert.assertEquals(true, foo.isMarried());
     }
 
-    @org.junit.Test
+    @Test
     public void testOpenCsvDelimiter() throws Exception {
         openCsvRecordMapper.setDelimiter(';');
         StringRecord fooRecord = new StringRecord(1, "foo;bar");
@@ -63,7 +65,7 @@ public class OpenCsvRecordMapperTest {
         Assert.assertEquals("bar", foo.getLastName());
     }
 
-    @org.junit.Test
+    @Test
     public void testOpenCsvQualifier() throws Exception {
         openCsvRecordMapper.setQualifier('\'');
         StringRecord fooRecord = new StringRecord(1, "'foo,s','bar'");
@@ -73,7 +75,7 @@ public class OpenCsvRecordMapperTest {
         Assert.assertEquals("bar", foo.getLastName());
     }
 
-    @org.junit.Test
+    @Test
     public void testOpenCsvCarriageReturn() throws Exception {
         openCsvRecordMapper.setQualifier('\'');
         StringRecord fooRecord = new StringRecord(1, "'foo\n','bar\n'");
@@ -81,12 +83,6 @@ public class OpenCsvRecordMapperTest {
         Assert.assertNotNull(foo);
         Assert.assertEquals("foo\n", foo.getFirstName());
         Assert.assertEquals("bar\n", foo.getLastName());
-    }
-
-    @org.junit.After
-    public void tearDown() throws Exception {
-        openCsvRecordMapper = null;
-        System.gc();
     }
 
 }
