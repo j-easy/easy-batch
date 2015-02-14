@@ -69,6 +69,7 @@ public class Customer {
 ```
 $>cd easybatch-bench
 $>cd mvn clean install
+$>cd target
 $>java -Dorg.easybatch.bench.count=10000 -cp "easybatch-bench-3.0.0.jar:dependency/*" org.easybatch.bench.CsvBenchmark
 ```
 
@@ -77,6 +78,7 @@ $>java -Dorg.easybatch.bench.count=10000 -cp "easybatch-bench-3.0.0.jar:dependen
 ```
 $>cd easybatch-bench
 $>cd mvn clean install
+$>cd target
 $>java -Dorg.easybatch.bench.count=10000 -cp "easybatch-bench-3.0.0.jar:dependency/*" org.easybatch.bench.XmlBenchmark
 ```
 
