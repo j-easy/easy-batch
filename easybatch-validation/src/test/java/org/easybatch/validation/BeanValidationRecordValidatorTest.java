@@ -28,7 +28,7 @@ import org.easybatch.core.api.ValidationError;
 
 import java.util.Set;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link BeanValidationRecordValidator}.

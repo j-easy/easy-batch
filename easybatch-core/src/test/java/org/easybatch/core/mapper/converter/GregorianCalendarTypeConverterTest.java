@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import java.util.GregorianCalendar;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link GregorianCalendarTypeConverter}.

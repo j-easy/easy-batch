@@ -25,14 +25,15 @@
 package org.easybatch.flatfile.flr;
 
 import org.easybatch.core.api.Header;
-import org.easybatch.flatfile.FlatFileRecord;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.flatfile.Bean;
-import org.fest.assertions.Assertions;
+import org.easybatch.flatfile.FlatFileRecord;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Unit test class for {@link org.easybatch.flatfile.flr.FixedLengthRecordMapper}.
@@ -64,10 +65,10 @@ public class FixedLengthRecordMapperTest {
     @Test
     public void testRecordParsing() throws Exception {
         FlatFileRecord flatFileRecord = fixedLengthRecordMapper.parseRecord(stringRecord);
-        Assertions.assertThat(flatFileRecord.getFlatFileFields().size()).isEqualTo(3);
-        Assertions.assertThat(flatFileRecord.getFlatFileFields().get(0).getRawContent()).isEqualTo("aaaa");
-        Assertions.assertThat(flatFileRecord.getFlatFileFields().get(1).getRawContent()).isEqualTo("bb");
-        Assertions.assertThat(flatFileRecord.getFlatFileFields().get(2).getRawContent()).isEqualTo("ccc");
+        assertThat(flatFileRecord.getFlatFileFields().size()).isEqualTo(3);
+        assertThat(flatFileRecord.getFlatFileFields().get(0).getRawContent()).isEqualTo("aaaa");
+        assertThat(flatFileRecord.getFlatFileFields().get(1).getRawContent()).isEqualTo("bb");
+        assertThat(flatFileRecord.getFlatFileFields().get(2).getRawContent()).isEqualTo("ccc");
     }
 
 }

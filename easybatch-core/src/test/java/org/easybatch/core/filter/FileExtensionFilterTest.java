@@ -33,7 +33,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link FileExtensionFilter}.
@@ -52,9 +52,10 @@ public class FileExtensionFilterTest {
     public void setUp() throws Exception {
         filter = new FileExtensionFilter(Arrays.asList(".txt", ".xml"));
         File currentDirectory = new File("");
-        txtRecord = new FileRecord(new Header(1l, "ds", new Date()), new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "CHANGELOG.txt"));
-        xmlRecord = new FileRecord(new Header(2l, "ds", new Date()), new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "pom.xml"));
-        mdRecord = new FileRecord(new Header(3l, "ds", new Date()), new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR +"README.md"));
+        Header header = new Header(1l, "Dummy Directory", new Date());
+        txtRecord = new FileRecord(header, new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "CHANGELOG.txt"));
+        xmlRecord = new FileRecord(header, new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "pom.xml"));
+        mdRecord = new FileRecord(header, new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR +"README.md"));
     }
 
     @Test

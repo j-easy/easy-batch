@@ -30,7 +30,7 @@ import org.junit.Test;
 
 import java.io.File;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link FileRecordReaderTest}.
@@ -45,7 +45,7 @@ public class FileRecordReaderTest {
 
     private File emptyDataSource;
 
-    private File nonExistentDataSource;
+    private File nonExistingDataSource;
 
     @Before
     public void setUp() throws Exception {
@@ -53,12 +53,12 @@ public class FileRecordReaderTest {
         fileRecordReader = new FileRecordReader(dataSource);
         fileRecordReader.open();
 
-        nonExistentDataSource = new File(System.getProperty("java.io.tmpdir") +
+        nonExistingDataSource = new File(System.getProperty("java.io.tmpdir") +
                         System.getProperty("file.separator") +
                         "ImSureThisDirectoryDoesNotExist");
 
         //create empty directory
-        emptyDataSource = new File("ebTestEmptyDirectory");
+        emptyDataSource = new File("easyBatchTestEmptyDirectory");
         emptyDataSource.mkdir();
     }
 
@@ -81,7 +81,7 @@ public class FileRecordReaderTest {
     @Test(expected = IllegalArgumentException.class)
     public void whenTheDirectoryDoesNotExist_ThenShouldThrowAnIllegalArgumentException() throws Exception {
         fileRecordReader.close();
-        fileRecordReader = new FileRecordReader(nonExistentDataSource);
+        fileRecordReader = new FileRecordReader(nonExistingDataSource);
         fileRecordReader.open();
     }
 

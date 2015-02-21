@@ -13,7 +13,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.Types;
 import java.util.Date;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 /**
@@ -36,7 +36,7 @@ public class SpringJdbcRecordMapperTest {
     @Before
     public void setUp() throws Exception {
         mapper = new SpringJdbcRecordMapper<Tweet>(Tweet.class);
-        jdbcRecord = new JdbcRecord(new Header(1l, "ds", new Date()), payload);
+        jdbcRecord = new JdbcRecord(new Header(1l, "DataSource", new Date()), payload);
     }
 
     @Test

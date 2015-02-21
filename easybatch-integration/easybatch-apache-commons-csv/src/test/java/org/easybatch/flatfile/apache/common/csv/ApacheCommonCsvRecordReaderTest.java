@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import java.io.StringReader;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * Test class for {@link ApacheCommonCsvRecordReader}.
  *
@@ -36,14 +38,14 @@ public class ApacheCommonCsvRecordReaderTest {
     @Test
     public void testReadNextRecord() throws Exception {
         Record record = recordReader.readNextRecord();
-        Assert.assertTrue(record instanceof ApacheCommonCsvRecord);
+        assertThat(record).isInstanceOf(ApacheCommonCsvRecord.class);
 
         ApacheCommonCsvRecord apacheCommonCsvRecord = (ApacheCommonCsvRecord) record;
-        Assert.assertEquals(new Long(1), apacheCommonCsvRecord.getHeader().getNumber());
-        Assert.assertEquals("foo", apacheCommonCsvRecord.getPayload().get("firstName"));
-        Assert.assertEquals("bar", apacheCommonCsvRecord.getPayload().get("lastName"));
-        Assert.assertEquals("15", apacheCommonCsvRecord.getPayload().get("age"));
-        Assert.assertEquals("true", apacheCommonCsvRecord.getPayload().get("married"));
+        assertThat(apacheCommonCsvRecord.getHeader().getNumber()).isEqualTo(1);
+        assertThat(apacheCommonCsvRecord.getPayload().get("firstName")).isEqualTo("foo");
+        assertThat(apacheCommonCsvRecord.getPayload().get("lastName")).isEqualTo("bar");
+        assertThat(apacheCommonCsvRecord.getPayload().get("age")).isEqualTo("15");
+        assertThat(apacheCommonCsvRecord.getPayload().get("married")).isEqualTo("true");
     }
 
     @After

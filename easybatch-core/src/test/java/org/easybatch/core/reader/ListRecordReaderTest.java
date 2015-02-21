@@ -32,7 +32,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link org.easybatch.core.reader.ListRecordReader}.
@@ -84,7 +84,7 @@ public class ListRecordReaderTest {
     public void whenTheDataSourceIsNotEmpty_ThenTheNextRecordShouldBeReadFromTheList() throws Exception {
         Record<String> record = listRecordReader.readNextRecord();
         assertThat(record).isInstanceOf(GenericRecord.class);
-        assertThat(record.getHeader().getNumber()).isEqualTo(1);
+        assertThat(record.getHeader().getNumber()).isEqualTo(1l);
         assertThat(record.getPayload()).isEqualTo(PAYLOAD);
     }
 

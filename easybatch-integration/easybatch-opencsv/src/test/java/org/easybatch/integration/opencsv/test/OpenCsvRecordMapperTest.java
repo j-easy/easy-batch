@@ -27,11 +27,12 @@ package org.easybatch.integration.opencsv.test;
 import org.easybatch.core.api.Header;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.integration.opencsv.OpenCsvRecordMapper;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link OpenCsvRecordMapper}.
@@ -42,50 +43,53 @@ public class OpenCsvRecordMapperTest {
 
     private OpenCsvRecordMapper<Foo> openCsvRecordMapper;
 
+    private Header header;
+
     @Before
     public void setUp() throws Exception {
         openCsvRecordMapper = new OpenCsvRecordMapper<Foo>(Foo.class, new String[]{"firstName", "lastName", "age", "married"});
+        header = new Header(1l, "DataSource", new Date());
     }
 
     @Test
     public void testOpenCsvMapping() throws Exception {
-        StringRecord fooRecord = new StringRecord(new Header(1l, "ds", new Date()), "foo,bar,15,true");
+        StringRecord fooRecord = new StringRecord(header, "foo,bar,15,true");
         Foo foo = openCsvRecordMapper.mapRecord(fooRecord);
-        Assert.assertNotNull(foo);
-        Assert.assertEquals("foo", foo.getFirstName());
-        Assert.assertEquals("bar", foo.getLastName());
-        Assert.assertEquals(15, foo.getAge());
-        Assert.assertEquals(true, foo.isMarried());
+        assertThat(foo).isNotNull();
+        assertThat(foo.getFirstName()).isEqualTo("foo");
+        assertThat(foo.getLastName()).isEqualTo("bar");
+        assertThat(foo.getAge()).isEqualTo(15);
+        assertThat(foo.isMarried()).isTrue();
     }
 
     @Test
     public void testOpenCsvDelimiter() throws Exception {
         openCsvRecordMapper.setDelimiter(';');
-        StringRecord fooRecord = new StringRecord(new Header(1l, "ds", new Date()), "foo;bar");
+        StringRecord fooRecord = new StringRecord(header, "foo;bar");
         Foo foo = openCsvRecordMapper.mapRecord(fooRecord);
-        Assert.assertNotNull(foo);
-        Assert.assertEquals("foo", foo.getFirstName());
-        Assert.assertEquals("bar", foo.getLastName());
+        assertThat(foo).isNotNull();
+        assertThat(foo.getFirstName()).isEqualTo("foo");
+        assertThat(foo.getLastName()).isEqualTo("bar");
     }
 
     @Test
     public void testOpenCsvQualifier() throws Exception {
         openCsvRecordMapper.setQualifier('\'');
-        StringRecord fooRecord = new StringRecord(new Header(1l, "ds", new Date()), "'foo,s','bar'");
+        StringRecord fooRecord = new StringRecord(header, "'foo,s','bar'");
         Foo foo = openCsvRecordMapper.mapRecord(fooRecord);
-        Assert.assertNotNull(foo);
-        Assert.assertEquals("foo,s", foo.getFirstName());
-        Assert.assertEquals("bar", foo.getLastName());
+        assertThat(foo).isNotNull();
+        assertThat(foo.getFirstName()).isEqualTo("foo,s");
+        assertThat(foo.getLastName()).isEqualTo("bar");
     }
 
     @Test
     public void testOpenCsvCarriageReturn() throws Exception {
         openCsvRecordMapper.setQualifier('\'');
-        StringRecord fooRecord = new StringRecord(new Header(1l, "ds", new Date()), "'foo\n','bar\n'");
+        StringRecord fooRecord = new StringRecord(header, "'foo\n','bar\n'");
         Foo foo = openCsvRecordMapper.mapRecord(fooRecord);
-        Assert.assertNotNull(foo);
-        Assert.assertEquals("foo\n", foo.getFirstName());
-        Assert.assertEquals("bar\n", foo.getLastName());
+        assertThat(foo).isNotNull();
+        assertThat(foo.getFirstName()).isEqualTo("foo\n");
+        assertThat(foo.getLastName()).isEqualTo("bar\n");
     }
 
 }

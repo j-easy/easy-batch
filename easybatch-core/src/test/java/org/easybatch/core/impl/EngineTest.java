@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
@@ -79,7 +79,6 @@ public class EngineTest {
         when(record1.getHeader()).thenReturn(header1);
         when(record2.getHeader()).thenReturn(header2);
         when(record1.getPayload()).thenReturn("test1");
-        when(record2.getHeader().getNumber()).thenReturn(2l);
         when(record2.getPayload()).thenReturn("test2");
         when(reader.hasNextRecord()).thenReturn(true, true, false);
         when(reader.readNextRecord()).thenReturn(record1, record2);
@@ -128,8 +127,6 @@ public class EngineTest {
 
     @Test
     public void recordReaderShouldBeClosedAtTheEndOfExecution() throws Exception {
-        when(record1.getHeader().getNumber()).thenReturn(1l);
-        when(record1.getPayload()).thenReturn("test1");
         when(reader.hasNextRecord()).thenReturn(true, false);
         when(reader.readNextRecord()).thenReturn(record1);
         engine = new EngineBuilder().reader(reader).build();
@@ -146,6 +143,7 @@ public class EngineTest {
                 .reader(reader)
                 .build();
         Report report = engine.call();
+        assertThat(report).isNotNull();
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
         assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
@@ -219,6 +217,10 @@ public class EngineTest {
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
         assertThat(report.getTotalRecords()).isEqualTo(1);
         assertThat(report.getStatus()).isEqualTo(Status.ABORTED);
+        verify(firstProcessor).processRecord(record1);
+        verify(secondProcessor).processRecord(record1);
+        verifyNoMoreInteractions(firstProcessor);
+        verifyNoMoreInteractions(secondProcessor);
     }
 
     @Test
@@ -237,6 +239,8 @@ public class EngineTest {
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
         assertThat(report.getTotalRecords()).isEqualTo(1);
         assertThat(report.getStatus()).isEqualTo(Status.ABORTED);
+        verify(mapper).mapRecord(record1);
+        verifyNoMoreInteractions(mapper);
     }
 
     @Test
@@ -256,6 +260,8 @@ public class EngineTest {
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
         assertThat(report.getTotalRecords()).isEqualTo(1);
         assertThat(report.getStatus()).isEqualTo(Status.ABORTED);
+        verify(validator).validateRecord(record1);
+        verifyNoMoreInteractions(validator);
     }
 
     @Test

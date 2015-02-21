@@ -4,11 +4,12 @@ import com.google.gson.Gson;
 import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.json.JsonRecord;
-import org.fest.assertions.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link GsonRecordMapper}.
@@ -31,9 +32,9 @@ public class GsonRecordMapperTest {
         Record record = new JsonRecord(new Header(1l, "ds", new Date()), jsonTweet);
         Tweet tweet = mapper.mapRecord(record);
 
-        Assertions.assertThat(tweet.getId()).isEqualTo(1);
-        Assertions.assertThat(tweet.getUser()).isEqualTo("foo");
-        Assertions.assertThat(tweet.getMessage()).isEqualTo("Hello");
+        assertThat(tweet.getId()).isEqualTo(1);
+        assertThat(tweet.getUser()).isEqualTo("foo");
+        assertThat(tweet.getMessage()).isEqualTo("Hello");
     }
 
     @Test
@@ -42,9 +43,9 @@ public class GsonRecordMapperTest {
         Record record = new JsonRecord(new Header(1l, "ds", new Date()), jsonTweet);
         Tweet tweet = mapper.mapRecord(record);
 
-        Assertions.assertThat(tweet.getId()).isEqualTo(1);
-        Assertions.assertThat(tweet.getUser()).isEqualTo("foo");
-        Assertions.assertThat(tweet.getMessage()).isNull();
+        assertThat(tweet.getId()).isEqualTo(1);
+        assertThat(tweet.getUser()).isEqualTo("foo");
+        assertThat(tweet.getMessage()).isNull();
     }
 
     @Test
@@ -53,9 +54,9 @@ public class GsonRecordMapperTest {
         Record record = new JsonRecord(new Header(1l, "ds", new Date()), jsonTweet);
         Tweet tweet = mapper.mapRecord(record);
 
-        Assertions.assertThat(tweet.getId()).isEqualTo(0);
-        Assertions.assertThat(tweet.getUser()).isNull();
-        Assertions.assertThat(tweet.getMessage()).isNull();
+        assertThat(tweet.getId()).isEqualTo(0);
+        assertThat(tweet.getUser()).isNull();
+        assertThat(tweet.getMessage()).isNull();
     }
 
 }

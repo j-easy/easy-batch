@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link org.easybatch.core.dispatcher.BroadcastRecordDispatcher}.
@@ -58,26 +58,24 @@ public class BroadcastRecordDispatcherTest {
     @Test
     public void testBroadcastRecord() throws Exception {
 
-        StringRecord record = new StringRecord(new Header(1l, "ds", new Date()), "test record");
+        Header header = new Header(1l, "In-Memory String", new Date());
+        String payload = "test record";
+        StringRecord record = new StringRecord(header, payload);
+
         broadcastRecordDispatcher.dispatchRecord(record);
 
-        assertThat(queue1).isNotEmpty();
-        assertThat(queue2).isNotEmpty();
+        assertThat(queue1).isNotEmpty().containsExactly(record);
+        assertThat(queue2).isNotEmpty().containsExactly(record);
 
-        assertThat(queue1).contains(record);
-        assertThat(queue2).contains(record);
-
-        assertThat(queue1.peek()).isNotNull();
-        assertThat(queue1.peek()).isInstanceOf(StringRecord.class);
+        assertThat(queue1.peek()).isNotNull().isInstanceOf(StringRecord.class);
         Record record1 = queue1.poll();
-        assertThat(record1.getHeader().getNumber()).isEqualTo(1);
-        assertThat(record1.getPayload()).isEqualTo("test record");
+        assertThat(record1.getHeader().getNumber()).isEqualTo(1l);
+        assertThat(record1.getPayload()).isEqualTo(payload);
 
-        assertThat(queue2.peek()).isNotNull();
-        assertThat(queue2.peek()).isInstanceOf(StringRecord.class);
+        assertThat(queue2.peek()).isNotNull().isInstanceOf(StringRecord.class);
         Record record2 = queue2.poll();
-        assertThat(record2.getHeader().getNumber()).isEqualTo(1);
-        assertThat(record2.getPayload()).isEqualTo("test record");
+        assertThat(record2.getHeader().getNumber()).isEqualTo(1l);
+        assertThat(record2.getPayload()).isEqualTo(payload);
     }
 
 }

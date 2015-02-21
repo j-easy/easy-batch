@@ -7,11 +7,10 @@ import org.easybatch.xml.XmlRecord;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.util.Date;
 import java.util.Scanner;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link XstreamRecordMapper}.
@@ -26,13 +25,16 @@ public class XstreamRecordMapperTest {
 
     private XmlRecord xmlRecord;
 
+    private Header header;
+
     @Before
     public void setUp() throws Exception {
         xStream = new XStream();
         xStream.alias("person", Person.class);
         xmlRecordMapper = new XstreamRecordMapper<Person>(xStream);
         String xml = getXmlFromFile("/person.xml");
-        xmlRecord = new XmlRecord(new Header(1l, "ds", new Date()), xml);
+        header = new Header(1l, "DataSource", new Date());
+        xmlRecord = new XmlRecord(header, xml);
     }
 
     @Test
@@ -47,7 +49,7 @@ public class XstreamRecordMapperTest {
 
     @Test
     public void testEmptyXmlPersonMapping() throws Exception {
-        xmlRecord = new XmlRecord(new Header(1l, "ds", new Date()), "<person/>");
+        xmlRecord = new XmlRecord(header, "<person/>");
         Person person = (Person) xmlRecordMapper.mapRecord(xmlRecord);
         assertThat(person.getId()).isEqualTo(0);
         assertThat(person.getFirstName()).isNull();
@@ -57,7 +59,7 @@ public class XstreamRecordMapperTest {
 
     @Test
     public void testPartialXmlPersonMapping() throws Exception {
-        xmlRecord = new XmlRecord(new Header(1l, "ds", new Date()), getXmlFromFile("/person-partial.xml"));
+        xmlRecord = new XmlRecord(header, getXmlFromFile("/person-partial.xml"));
         Person person = (Person) xmlRecordMapper.mapRecord(xmlRecord);
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(1);
@@ -68,12 +70,8 @@ public class XstreamRecordMapperTest {
 
     @Test(expected = ConversionException.class)
     public void testInvalidXmlPersonMapping() throws Exception {
-        xmlRecord = new XmlRecord(new Header(1l, "ds", new Date()), getXmlFromFile("/person-invalid.xml"));
+        xmlRecord = new XmlRecord(header, getXmlFromFile("/person-invalid.xml"));
         xmlRecordMapper.mapRecord(xmlRecord);
-    }
-
-    private File getFile(String fileName) {
-        return new File(this.getClass().getResource(fileName).getFile());
     }
 
     private String getXmlFromFile(String file) {

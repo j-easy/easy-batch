@@ -4,13 +4,14 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.api.Header;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Date;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link ApacheCommonCsvRecordMapper}.
@@ -60,11 +61,11 @@ public class ApacheCommonCsvRecordMapperTest {
 
         Foo foo = mapper.mapRecord(record);
 
-        Assert.assertNotNull(foo);
-        Assert.assertEquals("foo,s", foo.getFirstName());
-        Assert.assertEquals("bar,n", foo.getLastName());
-        Assert.assertEquals(0, foo.getAge());
-        Assert.assertEquals(false, foo.isMarried());
+        assertThat(foo).isNotNull();
+        assertThat(foo.getFirstName()).isEqualTo("foo,s");
+        assertThat(foo.getLastName()).isEqualTo("bar,n");
+        assertThat(foo.getAge()).isEqualTo(0);
+        assertThat(foo.isMarried()).isFalse();
     }
 
     @Test
@@ -77,25 +78,25 @@ public class ApacheCommonCsvRecordMapperTest {
 
         Foo foo = mapper.mapRecord(record);
 
-        Assert.assertNotNull(foo);
-        Assert.assertEquals("foo\n", foo.getFirstName());
-        Assert.assertEquals("bar\n", foo.getLastName());
-        Assert.assertEquals(0, foo.getAge());
-        Assert.assertEquals(false, foo.isMarried());
+        assertThat(foo).isNotNull();
+        assertThat(foo.getFirstName()).isEqualTo("foo\n");
+        assertThat(foo.getLastName()).isEqualTo("bar\n");
+        assertThat(foo.getAge()).isEqualTo(0);
+        assertThat(foo.isMarried()).isFalse();
     }
 
     private void assertFoo(Foo foo) {
-        Assert.assertNotNull(foo);
-        Assert.assertEquals("foo", foo.getFirstName());
-        Assert.assertEquals("bar", foo.getLastName());
-        Assert.assertEquals(15, foo.getAge());
-        Assert.assertEquals(true, foo.isMarried());
+        assertThat(foo).isNotNull();
+        assertThat(foo.getFirstName()).isEqualTo("foo");
+        assertThat(foo.getLastName()).isEqualTo("bar");
+        assertThat(foo.getAge()).isEqualTo(15);
+        assertThat(foo.isMarried()).isTrue();
     }
 
     private ApacheCommonCsvRecord getApacheCommonCsvRecord(StringReader stringReader, CSVFormat csvFormat) throws IOException {
         CSVParser parser = new CSVParser(stringReader, csvFormat);
         CSVRecord csvRecord = parser.iterator().next();
-        return new ApacheCommonCsvRecord(new Header(1l, "ds", new Date()), csvRecord);
+        return new ApacheCommonCsvRecord(new Header(1l, "DataSource", new Date()), csvRecord);
     }
 
 }

@@ -27,7 +27,7 @@ package org.easybatch.core.mapper.converter;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link org.easybatch.core.mapper.converter.CharacterTypeConverter}.

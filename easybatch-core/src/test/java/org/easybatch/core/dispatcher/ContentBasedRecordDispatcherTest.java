@@ -32,10 +32,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link org.easybatch.core.dispatcher.ContentBasedRecordDispatcher}.
@@ -50,33 +50,32 @@ public class ContentBasedRecordDispatcherTest {
 
     private BlockingQueue<Record> defaultQueue;
 
+    private Header header = new Header(1l, "DataSource", new Date());
+
     @Before
     public void setUp() throws Exception {
         orangeQueue = new LinkedBlockingQueue<Record>();
         defaultQueue = new LinkedBlockingQueue<Record>();
-        recordDispatcher =
-                new ContentBasedRecordDispatcherBuilder()
+        recordDispatcher = new ContentBasedRecordDispatcherBuilder()
                     .when(new OrangePredicate()).dispatchTo(orangeQueue)
                     .otherwise(defaultQueue)
                     .build();
-
+        header = new Header(1l, "DataSource", new Date());
     }
 
     @Test
     public void orangeRecordShouldBeDispatchedToOrangeQueue() throws Exception {
-        StringRecord orangeRecord = new StringRecord(new Header(1l, "ds", new Date()), "orange record");
+        StringRecord orangeRecord = new StringRecord(header, "orange record");
         recordDispatcher.dispatchRecord(orangeRecord);
-        assertThat(orangeQueue).isNotEmpty();
-        assertThat(orangeQueue).contains(orangeRecord);
+        assertThat(orangeQueue).isNotEmpty().containsExactly(orangeRecord);
         assertThat(defaultQueue).isEmpty();
     }
 
     @Test
     public void nonOrangeRecordShouldBeDispatchedToDefaultQueue() throws Exception {
-        StringRecord appleRecord = new StringRecord(new Header(2l, "ds", new Date()), "apple record");
+        StringRecord appleRecord = new StringRecord(header, "apple record");
         recordDispatcher.dispatchRecord(appleRecord);
-        assertThat(defaultQueue).isNotEmpty();
-        assertThat(defaultQueue).contains(appleRecord);
+        assertThat(defaultQueue).isNotEmpty().containsExactly(appleRecord);
         assertThat(orangeQueue).isEmpty();
     }
 
@@ -84,10 +83,8 @@ public class ContentBasedRecordDispatcherTest {
     public void poisonRecordShouldBeDispatchedToAllQueues() throws Exception {
         PoisonRecord poisonRecord = new PoisonRecord();
         recordDispatcher.dispatchRecord(poisonRecord);
-        assertThat(defaultQueue).isNotEmpty();
-        assertThat(defaultQueue).contains(poisonRecord);
-        assertThat(orangeQueue).isNotEmpty();
-        assertThat(orangeQueue).contains(poisonRecord);
+        assertThat(defaultQueue).isNotEmpty().contains(poisonRecord);
+        assertThat(orangeQueue).isNotEmpty().contains(poisonRecord);
     }
 
 

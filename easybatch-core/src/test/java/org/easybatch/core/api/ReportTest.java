@@ -27,10 +27,9 @@ package org.easybatch.core.api;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Calendar;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link org.easybatch.core.api.Report} formatting utility methods.
@@ -62,16 +61,15 @@ public class ReportTest {
         report.setTotalRecords(10l);
         report.setCurrentRecordNumber(2);
         report.setBatchResult(50);
-        report.addFilteredRecord(1);report.addFilteredRecord(2);
-        report.addIgnoredRecord(3);report.addIgnoredRecord(4);
-        report.addRejectedRecord(5);report.addRejectedRecord(6);
-        report.addErrorRecord(7);report.addErrorRecord(8);
-        report.addSuccessRecord(9);report.addSuccessRecord(10);
+        report.addFilteredRecord(1l);report.addFilteredRecord(2l);
+        report.addIgnoredRecord(3l);report.addIgnoredRecord(4l);
+        report.addRejectedRecord(5l);report.addRejectedRecord(6l);
+        report.addErrorRecord(7l);report.addErrorRecord(8l);
+        report.addSuccessRecord(9l);report.addSuccessRecord(10l);
     }
 
     @Test
     public void reportStatisticsShouldBeValid() {
-        assertThat(report).isNotNull();
 
         assertThat(report.getFilteredRecordsCount()).isEqualTo(2);
         assertThat(report.getIgnoredRecordsCount()).isEqualTo(2);
@@ -89,7 +87,6 @@ public class ReportTest {
 
     @Test
     public void reportStatisticsShouldBeCorrectlyFormatted() {
-        assertThat(report).isNotNull();
 
         assertThat(report.getFormattedStartTime()).isEqualTo("2015-01-01 01:00:00");
         assertThat(report.getFormattedEndTime()).isEqualTo("2015-01-01 01:00:10");

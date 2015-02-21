@@ -10,7 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Date;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link MongoDBRecordMapper}.

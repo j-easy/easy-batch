@@ -31,7 +31,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link GrepFilter}.
@@ -47,7 +47,7 @@ public class GrepFilterTest {
     @Before
     public void setUp() throws Exception {
         grepFilter = new GrepFilter("java");
-        header = new Header(1l, "ds", new Date());
+        header = new Header(1l, "DataSource", new Date());
     }
 
     @Test

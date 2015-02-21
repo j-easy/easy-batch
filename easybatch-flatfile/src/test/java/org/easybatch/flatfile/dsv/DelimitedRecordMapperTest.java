@@ -25,9 +25,9 @@
 package org.easybatch.flatfile.dsv;
 
 import org.easybatch.core.api.Header;
+import org.easybatch.core.record.StringRecord;
 import org.easybatch.flatfile.FlatFileField;
 import org.easybatch.flatfile.FlatFileRecord;
-import org.easybatch.core.record.StringRecord;
 import org.easybatch.flatfile.Person;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ import org.junit.Test;
 import java.util.Date;
 import java.util.List;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Unit test class for {@link org.easybatch.flatfile.dsv.DelimitedRecordMapper}.

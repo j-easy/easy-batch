@@ -32,7 +32,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link PoisonRecordFilter}.
@@ -56,7 +56,7 @@ public class PoisonRecordFilterTest {
 
     @Test
     public void whenTheRecordIsNotOfTypePoisonRecord_ThenItNotShouldBeFiltered() {
-        assertThat(poisonRecordFilter.filterRecord(new StringRecord(new Header(1l, "ds", new Date()), "foo"))).isFalse();
+        assertThat(poisonRecordFilter.filterRecord(new StringRecord(new Header(1l, "DataSource", new Date()), "foo"))).isFalse();
     }
 
     class CustomPoisonRecord extends PoisonRecord {

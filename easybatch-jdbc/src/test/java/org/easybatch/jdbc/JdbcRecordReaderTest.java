@@ -5,7 +5,7 @@ import org.junit.*;
 import java.io.File;
 import java.sql.*;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for {@link JdbcRecordReader}.
