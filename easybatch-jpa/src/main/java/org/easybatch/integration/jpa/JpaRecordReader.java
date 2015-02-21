@@ -1,11 +1,13 @@
 package org.easybatch.integration.jpa;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.GenericRecord;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class JpaRecordReader<T> implements RecordReader {
 
     private int maxResults;
     
-    private int currentRecordNumber;
+    private long currentRecordNumber;
 
     public JpaRecordReader(EntityManagerFactory entityManagerFactory, String query, Class<T> type) {
         this.entityManager = entityManagerFactory.createEntityManager();
@@ -54,11 +56,12 @@ public class JpaRecordReader<T> implements RecordReader {
 
     @Override
     public GenericRecord<T> readNextRecord() throws Exception {
-        return new GenericRecord<T>(++currentRecordNumber, iterator.next());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        return new GenericRecord<T>(header, iterator.next());
     }
 
     @Override
-    public Integer getTotalRecords() {
+    public Long getTotalRecords() {
         return null;
     }
 

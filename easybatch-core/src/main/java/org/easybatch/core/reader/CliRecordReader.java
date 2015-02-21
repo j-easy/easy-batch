@@ -24,11 +24,13 @@
 
 package org.easybatch.core.reader;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.core.record.StringRecord;
 
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -46,7 +48,7 @@ public class CliRecordReader implements RecordReader {
     /**
      * The current record number.
      */
-    private int recordNumber;
+    private long recordNumber;
 
     /**
      * The word to type to terminate reading from the standard input.
@@ -85,16 +87,17 @@ public class CliRecordReader implements RecordReader {
 
     @Override
     public Record readNextRecord() {
-        String input = scanner.nextLine();
-        stop = input != null && !input.isEmpty() && input.equalsIgnoreCase(terminationInput);
+        String payload = scanner.nextLine();
+        stop = payload != null && !payload.isEmpty() && payload.equalsIgnoreCase(terminationInput);
         if (stop) {
             return new PoisonRecord();
         }
-        return new StringRecord(++recordNumber, input);
+        Header header = new Header(++recordNumber, getDataSourceName(), new Date());
+        return new StringRecord(header, payload);
     }
 
     @Override
-    public Integer getTotalRecords() {
+    public Long getTotalRecords() {
         // total record cannot be calculated upfront
         return null;
     }

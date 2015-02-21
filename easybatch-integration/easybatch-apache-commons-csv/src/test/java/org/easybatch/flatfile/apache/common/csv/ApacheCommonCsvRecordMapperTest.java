@@ -3,12 +3,14 @@ package org.easybatch.flatfile.apache.common.csv;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.easybatch.core.api.Header;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Date;
 
 /**
  * Test class for {@link ApacheCommonCsvRecordMapper}.
@@ -93,7 +95,7 @@ public class ApacheCommonCsvRecordMapperTest {
     private ApacheCommonCsvRecord getApacheCommonCsvRecord(StringReader stringReader, CSVFormat csvFormat) throws IOException {
         CSVParser parser = new CSVParser(stringReader, csvFormat);
         CSVRecord csvRecord = parser.iterator().next();
-        return new ApacheCommonCsvRecord(1, csvRecord);
+        return new ApacheCommonCsvRecord(new Header(1l, "ds", new Date()), csvRecord);
     }
 
 }

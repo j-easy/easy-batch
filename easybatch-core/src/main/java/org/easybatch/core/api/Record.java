@@ -25,7 +25,7 @@
 package org.easybatch.core.api;
 
 /**
- * Interface for input record.<br/>
+ * Interface for input records.<br/>
  *
  * A record can be:
  * <ul>
@@ -44,13 +44,13 @@ package org.easybatch.core.api;
 public interface Record<P> {
 
     /**
-     * Return the physical record number in the data source.
-     * @return the record's physical number in the input data source.
+     * Return the record's header.
+     * @return the record's header.
      */
-    int getNumber();
+    Header getHeader();
 
     /**
-     * Return the payload of the record.
+     * Return the record's payload.
      * @return the record's payload.
      */
     P getPayload();

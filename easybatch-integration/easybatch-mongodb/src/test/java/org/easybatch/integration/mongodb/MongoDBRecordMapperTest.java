@@ -2,6 +2,7 @@ package org.easybatch.integration.mongodb;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import org.easybatch.core.api.Header;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +42,7 @@ public class MongoDBRecordMapperTest {
                 .append("lastName", LAST_NAME)
                 .append("birthDate", DATE)
                 .append("married", MARRIED);
-        MongoRecord mongoRecord = new MongoRecord(1, personDBObject);
+        MongoRecord mongoRecord = new MongoRecord(new Header(1l, "MongoDB", new Date()), personDBObject);
         Person person = mapper.mapRecord(mongoRecord);
 
         assertThat(person).isNotNull();

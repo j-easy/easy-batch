@@ -24,12 +24,14 @@
 
 package org.easybatch.core.dispatcher;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -62,7 +64,7 @@ public class ContentBasedRecordDispatcherTest {
 
     @Test
     public void orangeRecordShouldBeDispatchedToOrangeQueue() throws Exception {
-        StringRecord orangeRecord = new StringRecord(1, "orange record");
+        StringRecord orangeRecord = new StringRecord(new Header(1l, "ds", new Date()), "orange record");
         recordDispatcher.dispatchRecord(orangeRecord);
         assertThat(orangeQueue).isNotEmpty();
         assertThat(orangeQueue).contains(orangeRecord);
@@ -71,7 +73,7 @@ public class ContentBasedRecordDispatcherTest {
 
     @Test
     public void nonOrangeRecordShouldBeDispatchedToDefaultQueue() throws Exception {
-        StringRecord appleRecord = new StringRecord(2, "apple record");
+        StringRecord appleRecord = new StringRecord(new Header(2l, "ds", new Date()), "apple record");
         recordDispatcher.dispatchRecord(appleRecord);
         assertThat(defaultQueue).isNotEmpty();
         assertThat(defaultQueue).contains(appleRecord);

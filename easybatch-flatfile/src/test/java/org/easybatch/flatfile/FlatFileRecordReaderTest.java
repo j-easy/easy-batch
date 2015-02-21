@@ -2,6 +2,7 @@ package org.easybatch.flatfile;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.record.StringRecord;
+import org.fest.assertions.Assertions;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,18 +40,18 @@ public class FlatFileRecordReaderTest {
     public void testReadNextRecord() throws Exception {
         Record record = flatFileRecordReader.readNextRecord();
         StringRecord stringRecord = (StringRecord) record;
-        Assert.assertEquals(1, stringRecord.getNumber());
+        Assertions.assertThat(stringRecord.getHeader().getNumber()).isEqualTo(1l);
         Assert.assertEquals("id,user,message", stringRecord.getPayload());
 
         record = flatFileRecordReader.readNextRecord();
         stringRecord = (StringRecord) record;
-        Assert.assertEquals(2, stringRecord.getNumber());
+        Assertions.assertThat(stringRecord.getHeader().getNumber()).isEqualTo(2l);
         Assert.assertEquals("1,foo,easy batch rocks! #EasyBatch", stringRecord.getPayload());
     }
 
     @Test
     public void testTotalRecords() throws Exception {
-        Assert.assertEquals(new Integer(3), flatFileRecordReader.getTotalRecords());
+        Assert.assertEquals(new Long(3), flatFileRecordReader.getTotalRecords());
     }
 
     @Test
@@ -75,7 +76,7 @@ public class FlatFileRecordReaderTest {
         flatFileRecordReader.close();
         flatFileRecordReader = new FlatFileRecordReader(emptyDataSource);
         flatFileRecordReader.open();
-        Assert.assertEquals(new Integer(0), flatFileRecordReader.getTotalRecords());
+        Assert.assertEquals(new Long(0), flatFileRecordReader.getTotalRecords());
     }
 
 

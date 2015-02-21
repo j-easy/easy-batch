@@ -58,7 +58,7 @@ public class Monitor implements MonitorMBean {
      * {@inheritDoc}
      */
     public String getTotalRecords() {
-        Integer totalRecords = report.getTotalRecords();
+        Long totalRecords = report.getTotalRecords();
         return totalRecords == null ? "N/A" : totalRecords.toString();
     }
 

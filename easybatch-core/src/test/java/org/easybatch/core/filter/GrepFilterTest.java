@@ -24,9 +24,12 @@
 
 package org.easybatch.core.filter;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Date;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -39,24 +42,27 @@ public class GrepFilterTest {
 
     private GrepFilter grepFilter;
 
+    private Header header;
+
     @Before
     public void setUp() throws Exception {
         grepFilter = new GrepFilter("java");
+        header = new Header(1l, "ds", new Date());
     }
 
     @Test
     public void whenRecordContainsPattern_ThenItShouldNotBeFiltered() throws Exception {
-        assertThat(grepFilter.filterRecord(new StringRecord(1, "java rocks!"))).isFalse();
+        assertThat(grepFilter.filterRecord(new StringRecord(header, "java rocks!"))).isFalse();
     }
 
     @Test
     public void whenRecordDoesNotContainPattern_ThenItShouldBeFiltered() throws Exception {
-        assertThat(grepFilter.filterRecord(new StringRecord(1, "c++ ..."))).isTrue();
+        assertThat(grepFilter.filterRecord(new StringRecord(header, "c++ ..."))).isTrue();
     }
 
     @Test
     public void patternLookupShouldBeCaseSensitive() throws Exception {
-        assertThat(grepFilter.filterRecord(new StringRecord(1, "JAVA rocks!"))).isTrue();
+        assertThat(grepFilter.filterRecord(new StringRecord(header, "JAVA rocks!"))).isTrue();
     }
 
 }

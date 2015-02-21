@@ -24,6 +24,7 @@
 
 package org.easybatch.tutorials.intermediate.recipes;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.record.GenericRecord;
 
 /**
@@ -31,8 +32,8 @@ import org.easybatch.core.record.GenericRecord;
  */
 public class RecipeRecord extends GenericRecord<Recipe> {
 
-    public RecipeRecord(int number, Recipe recipe) {
-        super(number, recipe);
+    public RecipeRecord(final Header header, final Recipe recipe) {
+        super(header, recipe);
     }
 
 }

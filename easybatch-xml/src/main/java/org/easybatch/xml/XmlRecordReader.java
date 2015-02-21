@@ -24,6 +24,7 @@
 
 package org.easybatch.xml;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
 
 import javax.xml.stream.XMLEventReader;
@@ -32,6 +33,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.EndDocument;
 import javax.xml.stream.events.XMLEvent;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,7 +64,7 @@ public class XmlRecordReader implements RecordReader {
     /**
      * The current record number.
      */
-    private int currentRecordNumber;
+    private long currentRecordNumber;
 
     public XmlRecordReader(final String rootElementName, final InputStream xmlInputStream) {
         this.rootElementName = rootElementName;
@@ -99,13 +101,13 @@ public class XmlRecordReader implements RecordReader {
         }
         //append root element end tag
         stringBuilder.append(xmlEventReader.nextEvent().toString());
-
-        return new XmlRecord(++currentRecordNumber, stringBuilder.toString());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        return new XmlRecord(header, stringBuilder.toString());
     }
 
     @Override
-    public Integer getTotalRecords() {
-        int totalRecords = 0;
+    public Long getTotalRecords() {
+        long totalRecords = 0;
         XMLEventReader totalRecordsXmlEventReader = null;
         try {
             totalRecordsXmlEventReader =

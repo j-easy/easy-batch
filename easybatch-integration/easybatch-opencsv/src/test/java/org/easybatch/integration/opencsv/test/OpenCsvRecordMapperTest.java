@@ -24,11 +24,14 @@
 
 package org.easybatch.integration.opencsv.test;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.integration.opencsv.OpenCsvRecordMapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Date;
 
 /**
  * Test class for {@link OpenCsvRecordMapper}.
@@ -46,7 +49,7 @@ public class OpenCsvRecordMapperTest {
 
     @Test
     public void testOpenCsvMapping() throws Exception {
-        StringRecord fooRecord = new StringRecord(1, "foo,bar,15,true");
+        StringRecord fooRecord = new StringRecord(new Header(1l, "ds", new Date()), "foo,bar,15,true");
         Foo foo = openCsvRecordMapper.mapRecord(fooRecord);
         Assert.assertNotNull(foo);
         Assert.assertEquals("foo", foo.getFirstName());
@@ -58,7 +61,7 @@ public class OpenCsvRecordMapperTest {
     @Test
     public void testOpenCsvDelimiter() throws Exception {
         openCsvRecordMapper.setDelimiter(';');
-        StringRecord fooRecord = new StringRecord(1, "foo;bar");
+        StringRecord fooRecord = new StringRecord(new Header(1l, "ds", new Date()), "foo;bar");
         Foo foo = openCsvRecordMapper.mapRecord(fooRecord);
         Assert.assertNotNull(foo);
         Assert.assertEquals("foo", foo.getFirstName());
@@ -68,7 +71,7 @@ public class OpenCsvRecordMapperTest {
     @Test
     public void testOpenCsvQualifier() throws Exception {
         openCsvRecordMapper.setQualifier('\'');
-        StringRecord fooRecord = new StringRecord(1, "'foo,s','bar'");
+        StringRecord fooRecord = new StringRecord(new Header(1l, "ds", new Date()), "'foo,s','bar'");
         Foo foo = openCsvRecordMapper.mapRecord(fooRecord);
         Assert.assertNotNull(foo);
         Assert.assertEquals("foo,s", foo.getFirstName());
@@ -78,7 +81,7 @@ public class OpenCsvRecordMapperTest {
     @Test
     public void testOpenCsvCarriageReturn() throws Exception {
         openCsvRecordMapper.setQualifier('\'');
-        StringRecord fooRecord = new StringRecord(1, "'foo\n','bar\n'");
+        StringRecord fooRecord = new StringRecord(new Header(1l, "ds", new Date()), "'foo\n','bar\n'");
         Foo foo = openCsvRecordMapper.mapRecord(fooRecord);
         Assert.assertNotNull(foo);
         Assert.assertEquals("foo\n", foo.getFirstName());

@@ -24,6 +24,7 @@
 
 package org.easybatch.json;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.record.StringRecord;
 
 /**
@@ -33,8 +34,8 @@ import org.easybatch.core.record.StringRecord;
  */
 public class JsonRecord extends StringRecord {
 
-    public JsonRecord(int number, String payload) {
-        super(number, payload);
+    public JsonRecord(final Header header, final String payload) {
+        super(header, payload);
     }
 
 }

@@ -27,6 +27,7 @@ package org.easybatch.tutorials.advanced.distributed;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.apache.commons.io.IOUtils;
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.dispatcher.AbstractRecordDispatcher;
 import org.easybatch.core.record.StringRecord;
@@ -34,6 +35,7 @@ import org.easybatch.tutorials.advanced.jms.JMSUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 /**
  * Record dispatcher listening to incoming rest requests.
@@ -49,7 +51,7 @@ import java.io.InputStream;
  */
 public class RestEndpointRecordDispatcher extends AbstractRecordDispatcher implements HttpHandler {
 
-    private int recordNumber;
+    private long recordNumber;
 
     @Override
     public void dispatchRecord(Record record) throws Exception {
@@ -62,7 +64,8 @@ public class RestEndpointRecordDispatcher extends AbstractRecordDispatcher imple
         InputStream requestBody = httpExchange.getRequestBody();
         String body = IOUtils.toString(requestBody);
         try {
-            dispatchRecord(new StringRecord(++recordNumber, body));
+            Header header = new Header(++recordNumber, "REST API: /api/orders", new Date());
+            dispatchRecord(new StringRecord(header, body));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

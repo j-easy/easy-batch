@@ -52,7 +52,7 @@ public class SpringJdbcRecordMapper<T> implements RecordMapper<T> {
     public T mapRecord(Record record) throws Exception {
         ResultSet resultSet = (ResultSet) record.getPayload();
         BeanPropertyRowMapper beanPropertyRowMapper = new BeanPropertyRowMapper(type);
-        return (T) beanPropertyRowMapper.mapRow(resultSet, record.getNumber());
+        return (T) beanPropertyRowMapper.mapRow(resultSet, record.getHeader().getNumber().intValue());
     }
 
 }

@@ -103,7 +103,7 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
             throw new Exception("record length " + recordLength + " not equal to expected length of " + recordExpectedLength);
         }
 
-        FlatFileRecord flatFileRecord = new FlatFileRecord(record.getNumber(), payload);
+        FlatFileRecord flatFileRecord = new FlatFileRecord(record.getHeader(), payload);
         for (int i = 0; i < fieldsLength.length; i++) {
             String token = payload.substring(fieldsOffsets[i], fieldsOffsets[i + 1]);
             FlatFileField flatFileField = new FlatFileField(i, token);

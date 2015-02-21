@@ -1,11 +1,14 @@
 package org.easybatch.json.jackson;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.json.JsonRecord;
 import org.fest.assertions.Assertions;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Date;
 
 /**
  * Test class for {@link JacksonRecordMapper}.
@@ -25,7 +28,7 @@ public class JacksonRecordMapperTest {
     @Test
     public void testMapRecord() throws Exception {
         String jsonTweet = "{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}";
-        Record record = new JsonRecord(1, jsonTweet);
+        Record record = new JsonRecord(new Header(1l, "ds", new Date()), jsonTweet);
         Tweet tweet = mapper.mapRecord(record);
 
         Assertions.assertThat(tweet.getId()).isEqualTo(1);
@@ -36,7 +39,7 @@ public class JacksonRecordMapperTest {
     @Test
     public void testMapIncompleteRecord() throws Exception {
         String jsonTweet = "{\"id\":1,\"user\":\"foo\"}";
-        Record record = new JsonRecord(1, jsonTweet);
+        Record record = new JsonRecord(new Header(1l, "ds", new Date()), jsonTweet);
         Tweet tweet = mapper.mapRecord(record);
 
         Assertions.assertThat(tweet.getId()).isEqualTo(1);
@@ -47,7 +50,7 @@ public class JacksonRecordMapperTest {
     @Test
     public void testMapEmptyRecord() throws Exception {
         String jsonTweet = "{}";
-        Record record = new JsonRecord(1, jsonTweet);
+        Record record = new JsonRecord(new Header(1l, "ds", new Date()), jsonTweet);
         Tweet tweet = mapper.mapRecord(record);
 
         Assertions.assertThat(tweet.getId()).isEqualTo(0);

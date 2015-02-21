@@ -24,6 +24,7 @@
 
 package org.easybatch.core.dispatcher;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.core.record.StringRecord;
@@ -31,6 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -57,7 +59,7 @@ public class RandomRecordDispatcherTest {
     @Test
     public void regularRecordsShouldBeDispatchedRandomlyToOneOfTheQueues() throws Exception {
 
-        StringRecord record = new StringRecord(1, "test record");
+        StringRecord record = new StringRecord(new Header(1l, "ds", new Date()), "test record");
         randomRecordDispatcher.dispatchRecord(record);
 
         if(queue1.isEmpty()) {
@@ -66,7 +68,7 @@ public class RandomRecordDispatcherTest {
             assertThat(queue2.peek()).isNotNull();
             assertThat(queue2.peek()).isInstanceOf(StringRecord.class);
             Record record2 = queue2.poll();
-            assertThat(record2.getNumber()).isEqualTo(1);
+            assertThat(record2.getHeader().getNumber()).isEqualTo(1);
             assertThat(record2.getPayload()).isEqualTo("test record");
         }
         if(!queue1.isEmpty()) {
@@ -77,7 +79,7 @@ public class RandomRecordDispatcherTest {
             assertThat(queue1.peek()).isNotNull();
             assertThat(queue1.peek()).isInstanceOf(StringRecord.class);
             Record record1 = queue1.poll();
-            assertThat(record1.getNumber()).isEqualTo(1);
+            assertThat(record1.getHeader().getNumber()).isEqualTo(1);
             assertThat(record1.getPayload()).isEqualTo("test record");
         }
 

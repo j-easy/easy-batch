@@ -24,10 +24,13 @@
 
 package org.easybatch.core.filter;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Date;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -53,7 +56,7 @@ public class PoisonRecordFilterTest {
 
     @Test
     public void whenTheRecordIsNotOfTypePoisonRecord_ThenItNotShouldBeFiltered() {
-        assertThat(poisonRecordFilter.filterRecord(new StringRecord(1, "foo"))).isFalse();
+        assertThat(poisonRecordFilter.filterRecord(new StringRecord(new Header(1l, "ds", new Date()), "foo"))).isFalse();
     }
 
     class CustomPoisonRecord extends PoisonRecord {

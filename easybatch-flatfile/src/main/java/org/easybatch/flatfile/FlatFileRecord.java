@@ -24,6 +24,7 @@
 
 package org.easybatch.flatfile;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.record.StringRecord;
 
 import java.util.ArrayList;
@@ -41,8 +42,8 @@ public class FlatFileRecord extends StringRecord {
      */
     private List<FlatFileField> flatFileFields;
 
-    public FlatFileRecord(final int number, final String payload) {
-        super(number, payload);
+    public FlatFileRecord(final Header header, final String payload) {
+        super(header, payload);
         flatFileFields = new ArrayList<FlatFileField>();
     }
 

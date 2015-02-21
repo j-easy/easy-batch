@@ -43,79 +43,79 @@ public class Report implements Serializable {
 
     private String dataSource;
 
-    private Integer totalRecords;
+    private Long totalRecords;
 
     // needed only for jmx monitoring
-    private int currentRecordNumber;
+    private long currentRecordNumber;
 
-    private List<Integer> filteredRecords;
+    private List<Long> filteredRecords;
 
-    private List<Integer> ignoredRecords;
+    private List<Long> ignoredRecords;
 
-    private List<Integer> rejectedRecords;
+    private List<Long> rejectedRecords;
 
-    private List<Integer> errorRecords;
+    private List<Long> errorRecords;
 
-    private List<Integer> successRecords;
+    private List<Long> successRecords;
 
     private Object batchResult;
 
     private Status status;
 
     public Report() {
-        filteredRecords = new ArrayList<Integer>();
-        ignoredRecords = new ArrayList<Integer>();
-        rejectedRecords = new ArrayList<Integer>();
-        errorRecords = new ArrayList<Integer>();
-        successRecords = new ArrayList<Integer>();
+        filteredRecords = new ArrayList<Long>();
+        ignoredRecords = new ArrayList<Long>();
+        rejectedRecords = new ArrayList<Long>();
+        errorRecords = new ArrayList<Long>();
+        successRecords = new ArrayList<Long>();
         status = Status.INITIALIZING;
     }
 
-    public void addFilteredRecord(final int recordNumber) {
+    public void addFilteredRecord(final long recordNumber) {
         filteredRecords.add(recordNumber);
     }
 
-    public void addIgnoredRecord(final int recordNumber) {
+    public void addIgnoredRecord(final long recordNumber) {
         ignoredRecords.add(recordNumber);
     }
 
-    public void addRejectedRecord(final int recordNumber) {
+    public void addRejectedRecord(final long recordNumber) {
         rejectedRecords.add(recordNumber);
     }
 
-    public void addErrorRecord(final int recordNumber) {
+    public void addErrorRecord(final long recordNumber) {
         errorRecords.add(recordNumber);
     }
 
-    public void addSuccessRecord(final int recordNumber) {
+    public void addSuccessRecord(final long recordNumber) {
         successRecords.add(recordNumber);
     }
 
-    public void setTotalRecords(final Integer totalRecords) {
+    public void setTotalRecords(final Long totalRecords) {
         this.totalRecords = totalRecords;
     }
 
-    public Integer getTotalRecords() {
+    public Long getTotalRecords() {
         return totalRecords;
     }
 
-    public List<Integer> getFilteredRecords() {
+    public List<Long> getFilteredRecords() {
         return filteredRecords;
     }
 
-    public List<Integer> getIgnoredRecords() {
+    public List<Long> getIgnoredRecords() {
         return ignoredRecords;
     }
 
-    public List<Integer> getRejectedRecords() {
+    public List<Long> getRejectedRecords() {
         return rejectedRecords;
     }
 
-    public List<Integer> getErrorRecords() {
+    public List<Long> getErrorRecords() {
         return errorRecords;
     }
 
-    public List<Integer> getSuccessRecords() {
+    public List<Long> getSuccessRecords() {
         return successRecords;
     }
 
@@ -143,11 +143,11 @@ public class Report implements Serializable {
         this.dataSource = dataSource;
     }
 
-    public int getCurrentRecordNumber() {
+    public long getCurrentRecordNumber() {
         return currentRecordNumber;
     }
 
-    public void setCurrentRecordNumber(final int currentRecordNumber) {
+    public void setCurrentRecordNumber(final long currentRecordNumber) {
         this.currentRecordNumber = currentRecordNumber;
     }
 

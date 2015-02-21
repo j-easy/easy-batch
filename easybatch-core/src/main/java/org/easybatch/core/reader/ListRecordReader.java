@@ -24,10 +24,12 @@
 
 package org.easybatch.core.reader;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.GenericRecord;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class ListRecordReader<T> implements RecordReader {
     /**
      * The current record number.
      */
-    private int currentRecordNumber;
+    private long currentRecordNumber;
 
     /**
      * The data source iterator.
@@ -78,13 +80,13 @@ public class ListRecordReader<T> implements RecordReader {
 
     @Override
     public Record<T> readNextRecord() {
-        currentRecordNumber++;
-        return new GenericRecord<T>(currentRecordNumber, iterator.next());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        return new GenericRecord<T>(header, iterator.next());
     }
 
     @Override
-    public Integer getTotalRecords() {
-        return dataSource.size();
+    public Long getTotalRecords() {
+        return (long) dataSource.size();
     }
 
     @Override

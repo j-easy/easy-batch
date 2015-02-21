@@ -49,7 +49,7 @@ public class JdbcRecordReaderTest {
         JdbcRecord actual = jdbcRecordReader.readNextRecord();
 
         assertThat(actual).isNotNull();
-        assertThat(actual.getNumber()).isEqualTo(1);
+        assertThat(actual.getHeader().getNumber()).isEqualTo(1);
 
         ResultSet payload = actual.getPayload();
         assertThat(payload.getInt(1)).isEqualTo(1);

@@ -39,7 +39,7 @@ public class ApacheCommonCsvRecordReaderTest {
         Assert.assertTrue(record instanceof ApacheCommonCsvRecord);
 
         ApacheCommonCsvRecord apacheCommonCsvRecord = (ApacheCommonCsvRecord) record;
-        Assert.assertEquals(1, apacheCommonCsvRecord.getNumber());
+        Assert.assertEquals(new Long(1), apacheCommonCsvRecord.getHeader().getNumber());
         Assert.assertEquals("foo", apacheCommonCsvRecord.getPayload().get("firstName"));
         Assert.assertEquals("bar", apacheCommonCsvRecord.getPayload().get("lastName"));
         Assert.assertEquals("15", apacheCommonCsvRecord.getPayload().get("age"));

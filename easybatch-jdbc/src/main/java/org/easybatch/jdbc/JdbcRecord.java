@@ -24,6 +24,7 @@
 
 package org.easybatch.jdbc;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.record.GenericRecord;
 
@@ -38,8 +39,8 @@ import java.sql.SQLException;
  */
 public class JdbcRecord extends GenericRecord<ResultSet> {
 
-    public JdbcRecord(final int number, final ResultSet payload) {
-        super(number, payload);
+    public JdbcRecord(final Header header, final ResultSet payload) {
+        super(header, payload);
     }
 
     // override toString because it is used by easy batch engine for logging errors if any

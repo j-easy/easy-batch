@@ -24,10 +24,12 @@
 
 package org.easybatch.tutorials.intermediate.recipes;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 import java.io.File;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -50,7 +52,7 @@ public class RecipeRecordReader implements RecordReader {
     /**
      * The current read record number.
      */
-    private int currentRecordNumber;
+    private long currentRecordNumber;
 
     public RecipeRecordReader(File file) {
         this.file = file;
@@ -85,11 +87,12 @@ public class RecipeRecordReader implements RecordReader {
                 recipe.getIngredients().add(ingredient);
             }
         }
-        return new RecipeRecord(currentRecordNumber, recipe);
+        Header header = new Header(currentRecordNumber, getDataSourceName(), new Date());
+        return new RecipeRecord(header, recipe);
     }
 
     @Override
-    public Integer getTotalRecords() {
+    public Long getTotalRecords() {
         // not implemented in this tutorial.
         return null;
     }

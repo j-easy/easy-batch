@@ -24,12 +24,14 @@
 
 package org.easybatch.core.filter;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.record.FileRecord;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -50,9 +52,9 @@ public class FileExtensionFilterTest {
     public void setUp() throws Exception {
         filter = new FileExtensionFilter(Arrays.asList(".txt", ".xml"));
         File currentDirectory = new File("");
-        txtRecord = new FileRecord(1, new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "CHANGELOG.txt"));
-        xmlRecord = new FileRecord(2, new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "pom.xml"));
-        mdRecord = new FileRecord(3, new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR +"README.md"));
+        txtRecord = new FileRecord(new Header(1l, "ds", new Date()), new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "CHANGELOG.txt"));
+        xmlRecord = new FileRecord(new Header(2l, "ds", new Date()), new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "pom.xml"));
+        mdRecord = new FileRecord(new Header(3l, "ds", new Date()), new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR +"README.md"));
     }
 
     @Test

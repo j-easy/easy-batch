@@ -67,7 +67,7 @@ public class RecordNumberEqualsToFilter implements RecordFilter {
      */
     public boolean filterRecord(final Record record) {
         for (long number : numbers) {
-            if (record.getNumber() == number) {
+            if (record.getHeader().getNumber() == number) {
                 return !negate;
             }
         }

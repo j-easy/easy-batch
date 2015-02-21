@@ -24,6 +24,7 @@
 
 package org.easybatch.flatfile.dsv;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.flatfile.FlatFileField;
 import org.easybatch.flatfile.FlatFileRecord;
 import org.easybatch.core.record.StringRecord;
@@ -31,6 +32,7 @@ import org.easybatch.flatfile.Person;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -46,11 +48,14 @@ public class DelimitedRecordMapperTest {
 
     private StringRecord stringRecord;
 
+    private Header header;
+
     @Before
     public void setUp() throws Exception {
         delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class,
                 new String[]{"firstName", "lastName", "age", "birthDate", "married"});
-        stringRecord = new StringRecord(1, "foo,bar,30,1990-12-12,true");
+        header = new Header(1l, "ds", new Date());
+        stringRecord = new StringRecord(header, "foo,bar,30,1990-12-12,true");
     }
 
     /*
@@ -59,14 +64,14 @@ public class DelimitedRecordMapperTest {
 
     @Test(expected = Exception.class)
     public void testIllFormedRecord() throws Exception {
-        stringRecord = new StringRecord(1, "foo,bar,30,1990-12-12");// incorrect record size
+        stringRecord = new StringRecord(header, "foo,bar,30,1990-12-12");// incorrect record size
         delimitedRecordMapper.parseRecord(stringRecord);
     }
 
 
     @Test
     public void testRecordSizeWithEmptyField() throws Exception {
-        stringRecord = new StringRecord(1, "foo,bar,30,1990-12-12,");
+        stringRecord = new StringRecord(header, "foo,bar,30,1990-12-12,");
         FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(stringRecord);
         assertThat(flatFileRecord.getFlatFileFields().get(4).getRawContent()).isEmpty();
     }
@@ -79,56 +84,56 @@ public class DelimitedRecordMapperTest {
     @Test
     public void testRecordParsingWithTrimmedWhitespaces() throws Exception {
         delimitedRecordMapper.setTrimWhitespaces(true);
-        stringRecord = new StringRecord(1, "  foo ,    bar  ,  30  ,     1990-12-12  ,  true         ");
+        stringRecord = new StringRecord(header, "  foo ,    bar  ,  30  ,     1990-12-12  ,  true         ");
         validateRecord(stringRecord);
     }
 
     @Test
     public void testRecordParsingWithPipeDelimiter() throws Exception {
         delimitedRecordMapper.setDelimiter("|");
-        stringRecord = new StringRecord(1, "foo|bar|30|1990-12-12|true");
+        stringRecord = new StringRecord(header, "foo|bar|30|1990-12-12|true");
         validateRecord(stringRecord);
     }
 
     @Test
     public void testRecordParsingWithSpaceDelimiter() throws Exception {
         delimitedRecordMapper.setDelimiter(" ");
-        stringRecord = new StringRecord(1, "foo bar 30 1990-12-12 true");
+        stringRecord = new StringRecord(header, "foo bar 30 1990-12-12 true");
         validateRecord(stringRecord);
     }
 
     @Test
     public void testRecordParsingWithTabDelimiter() throws Exception {
         delimitedRecordMapper.setDelimiter("\t");
-        stringRecord = new StringRecord(1, "foo\tbar\t30\t1990-12-12\ttrue");
+        stringRecord = new StringRecord(header, "foo\tbar\t30\t1990-12-12\ttrue");
         validateRecord(stringRecord);
     }
 
     @Test
     public void testRecordParsingWithMultipleCharactersDelimiter() throws Exception {
         delimitedRecordMapper.setDelimiter("###");
-        stringRecord = new StringRecord(1, "foo###bar###30###1990-12-12###true");
+        stringRecord = new StringRecord(header, "foo###bar###30###1990-12-12###true");
         validateRecord(stringRecord);
     }
 
     @Test
     public void testRecordParsingWithSimpleQuoteQualifier() throws Exception {
         delimitedRecordMapper.setQualifier("'");
-        stringRecord = new StringRecord(1, "'foo','bar','30','1990-12-12','true'");
+        stringRecord = new StringRecord(header, "'foo','bar','30','1990-12-12','true'");
         validateRecord(stringRecord);
     }
 
     @Test(expected = Exception.class)
     public void allFieldsShouldBeQualified() throws Exception {
         delimitedRecordMapper.setQualifier("'");
-        stringRecord = new StringRecord(1, "'foo','bar',30,'1990-12-12','true'"); //age field not qualified
+        stringRecord = new StringRecord(header, "'foo','bar',30,'1990-12-12','true'"); //age field not qualified
         validateRecord(stringRecord);
     }
 
     @Test
     public void testRecordParsingWithDoubleQuoteQualifier() throws Exception {
         delimitedRecordMapper.setQualifier("\"");
-        stringRecord = new StringRecord(1, "\"foo\",\"bar\",\"30\",\"1990-12-12\",\"true\"");
+        stringRecord = new StringRecord(header, "\"foo\",\"bar\",\"30\",\"1990-12-12\",\"true\"");
         validateRecord(stringRecord);
     }
 
@@ -165,7 +170,7 @@ public class DelimitedRecordMapperTest {
     public void testFieldNamesConventionOverConfiguration() throws Exception {
         delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class);
 
-        delimitedRecordMapper.parseRecord(new StringRecord(1, "firstName,lastName,age,birthDate,married"));
+        delimitedRecordMapper.parseRecord(new StringRecord(header, "firstName,lastName,age,birthDate,married"));
         Person person = (Person) delimitedRecordMapper.mapRecord(stringRecord);
         assertThat(person).isNotNull();
         assertThat(person.getFirstName()).isEqualTo("foo");
@@ -178,7 +183,7 @@ public class DelimitedRecordMapperTest {
     @Test
     public void testFieldSubsetMappingWithConventionOverConfiguration() throws Exception {
         delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class, new Integer[]{1, 5});
-        delimitedRecordMapper.parseRecord(new StringRecord(1, "firstName,lastName,age,birthDate,married"));
+        delimitedRecordMapper.parseRecord(new StringRecord(header, "firstName,lastName,age,birthDate,married"));
         Person person = (Person) delimitedRecordMapper.mapRecord(stringRecord);
 
         assertThat(person).isNotNull();

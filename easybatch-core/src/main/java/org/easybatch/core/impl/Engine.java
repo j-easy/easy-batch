@@ -111,7 +111,7 @@ public final class Engine implements Callable<Report> {
         LOGGER.log(Level.INFO, "Strict mode: {0}", strictMode);
         try {
 
-            Integer totalRecords = recordReader.getTotalRecords();
+            Long totalRecords = recordReader.getTotalRecords();
             LOGGER.log(Level.INFO, "Total records = {0}", totalRecords == null ? "N/A" : totalRecords);
             report.setStatus(Status.RUNNING);
             LOGGER.info("easy batch engine is running...");
@@ -119,8 +119,8 @@ public final class Engine implements Callable<Report> {
             report.setTotalRecords(totalRecords);
             report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
 
-            int currentRecordNumber; // the physical record number in the data source (can be different from logical record number as seen by the engine in a multi-threaded scenario)
-            int processedRecordsNumber = 0;
+            long currentRecordNumber; // the physical record number in the data source (can be different from logical record number as seen by the engine in a multi-threaded scenario)
+            long processedRecordsNumber = 0;
 
             while (recordReader.hasNextRecord()) {
 
@@ -143,7 +143,7 @@ public final class Engine implements Callable<Report> {
                     return report;
                 }
                 processedRecordsNumber++;
-                currentRecordNumber = currentRecord.getNumber();
+                currentRecordNumber = currentRecord.getHeader().getNumber();
                 report.setCurrentRecordNumber(currentRecordNumber);
 
                 //apply filter chain on the record

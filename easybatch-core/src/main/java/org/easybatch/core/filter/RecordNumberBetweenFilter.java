@@ -58,7 +58,7 @@ public class RecordNumberBetweenFilter implements RecordFilter {
      * {@inheritDoc}
      */
     public boolean filterRecord(final Record record) {
-        return record.getNumber() >= lowerBound && record.getNumber() <= higherBound;
+        return record.getHeader().getNumber() >= lowerBound && record.getHeader().getNumber() <= higherBound;
     }
 
 }

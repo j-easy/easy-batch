@@ -59,7 +59,7 @@ public class ReportTest {
         report.setEndTime(END_TIME);
         report.setStatus(Status.FINISHED);
         report.setDataSource("In-Memory");
-        report.setTotalRecords(10);
+        report.setTotalRecords(10l);
         report.setCurrentRecordNumber(2);
         report.setBatchResult(50);
         report.addFilteredRecord(1);report.addFilteredRecord(2);
@@ -79,11 +79,11 @@ public class ReportTest {
         assertThat(report.getErrorRecordsCount()).isEqualTo(2);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
 
-        assertThat(report.getFilteredRecords()).isEqualTo(Arrays.asList(1, 2));
-        assertThat(report.getIgnoredRecords()).isEqualTo(Arrays.asList(3, 4));
-        assertThat(report.getRejectedRecords()).isEqualTo(Arrays.asList(5, 6));
-        assertThat(report.getErrorRecords()).isEqualTo(Arrays.asList(7, 8));
-        assertThat(report.getSuccessRecords()).isEqualTo(Arrays.asList(9, 10));
+        assertThat(report.getFilteredRecords()).containsExactly(1l, 2l);
+        assertThat(report.getIgnoredRecords()).containsExactly(3l, 4l);
+        assertThat(report.getRejectedRecords()).containsExactly(5l, 6l);
+        assertThat(report.getErrorRecords()).containsExactly(7l, 8l);
+        assertThat(report.getSuccessRecords()).containsExactly(9l, 10l);
     }
 
 
@@ -105,13 +105,13 @@ public class ReportTest {
 
     @Test
     public void whenTotalRecordsIsZero_ThenFormattedAverageRecordProcessingTimeShouldBeNA() {
-        report.setTotalRecords(0);
+        report.setTotalRecords(0l);
         assertThat(report.getFormattedAverageRecordProcessingTime()).isEqualTo("N/A");
     }
 
     @Test
     public void whenTotalRecordsIsZero_ThenFormattedProgressShouldBeNA() {
-        report.setTotalRecords(0);
+        report.setTotalRecords(0l);
         assertThat(report.getFormattedAverageRecordProcessingTime()).isEqualTo("N/A");
     }
 

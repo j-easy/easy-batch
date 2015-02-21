@@ -24,6 +24,7 @@
 
 package org.easybatch.core.dispatcher;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.core.record.StringRecord;
@@ -31,6 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -57,8 +59,8 @@ public class RoundRobinRecordDispatcherTest {
     @Test
     public void regularRecordsShouldBeDispatchedToQueuesInRoundRobinFashion() throws Exception {
 
-        StringRecord record1 = new StringRecord(1, "test record1");
-        StringRecord record2 = new StringRecord(2, "test record2");
+        StringRecord record1 = new StringRecord(new Header(1l, "ds", new Date()), "test record1");
+        StringRecord record2 = new StringRecord(new Header(2l, "ds", new Date()), "test record2");
         roundRobinRecordDispatcher.dispatchRecord(record1);
         roundRobinRecordDispatcher.dispatchRecord(record2);
 
@@ -67,7 +69,7 @@ public class RoundRobinRecordDispatcherTest {
         assertThat(queue1.peek()).isNotNull();
         assertThat(queue1.peek()).isInstanceOf(StringRecord.class);
         Record r1 = queue1.poll();
-        assertThat(r1.getNumber()).isEqualTo(1);
+        assertThat(r1.getHeader().getNumber()).isEqualTo(1);
         assertThat(r1.getPayload()).isEqualTo("test record1");
 
         assertThat(queue2).isNotEmpty();
@@ -75,17 +77,17 @@ public class RoundRobinRecordDispatcherTest {
         assertThat(queue2.peek()).isNotNull();
         assertThat(queue2.peek()).isInstanceOf(StringRecord.class);
         Record r2 = queue2.poll();
-        assertThat(r2.getNumber()).isEqualTo(2);
+        assertThat(r2.getHeader().getNumber()).isEqualTo(2);
         assertThat(r2.getPayload()).isEqualTo("test record2");
 
-        StringRecord record3 = new StringRecord(3, "test record3");
+        StringRecord record3 = new StringRecord(new Header(3l, "ds", new Date()), "test record3");
         roundRobinRecordDispatcher.dispatchRecord(record3);
 
         assertThat(queue1).isNotEmpty();
         assertThat(queue1.peek()).isNotNull();
         assertThat(queue1.peek()).isInstanceOf(StringRecord.class);
         Record r3 = queue1.poll();
-        assertThat(r3.getNumber()).isEqualTo(3);
+        assertThat(r3.getHeader().getNumber()).isEqualTo(3);
         assertThat(r3.getPayload()).isEqualTo("test record3");
 
         assertThat(queue2).isEmpty();

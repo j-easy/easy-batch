@@ -58,7 +58,7 @@ class NoOpRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
-    public Integer getTotalRecords() {
+    public Long getTotalRecords() {
         return null;
     }
 

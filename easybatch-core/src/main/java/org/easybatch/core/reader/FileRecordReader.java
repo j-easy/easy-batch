@@ -24,6 +24,7 @@
 
 package org.easybatch.core.reader;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.FileRecord;
@@ -59,7 +60,7 @@ public class FileRecordReader implements RecordReader {
     /**
      * The current record number.
      */
-    private int currentRecordNumber;
+    private long currentRecordNumber;
 
     /**
      * Construct a {@link FileRecordReader} to read files (non recursively) from a given directory.
@@ -122,8 +123,8 @@ public class FileRecordReader implements RecordReader {
      */
     @Override
     public Record readNextRecord() throws Exception {
-        currentRecordNumber++;
-        return new FileRecord(currentRecordNumber, iterator.next());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        return new FileRecord(header, iterator.next());
     }
 
     /**
@@ -133,8 +134,8 @@ public class FileRecordReader implements RecordReader {
      *         calculated in advance
      */
     @Override
-    public Integer getTotalRecords() {
-        return files.size();
+    public Long getTotalRecords() {
+        return (long) files.size();
     }
 
     /**

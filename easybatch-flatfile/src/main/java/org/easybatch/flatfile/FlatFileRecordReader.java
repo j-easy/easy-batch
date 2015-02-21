@@ -24,12 +24,14 @@
 
 package org.easybatch.flatfile;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.StringRecord;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -42,7 +44,7 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * The current read record number.
      */
-    private int currentRecordNumber;
+    private long currentRecordNumber;
 
     /**
      * The input file.
@@ -91,15 +93,15 @@ public class FlatFileRecordReader implements RecordReader {
      * {@inheritDoc}
      */
     public StringRecord readNextRecord() {
-        currentRecordNumber++;
-        return new StringRecord(currentRecordNumber, scanner.nextLine());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        return new StringRecord(header, scanner.nextLine());
     }
 
     /**
      * {@inheritDoc}
      */
-    public Integer getTotalRecords() {
-        int totalRecords = 0;
+    public Long getTotalRecords() {
+        long totalRecords = 0;
         while (recordCounterScanner.hasNextLine()) {
             totalRecords++;
             recordCounterScanner.nextLine();

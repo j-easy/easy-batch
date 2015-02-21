@@ -53,7 +53,7 @@ public class JsonRecordReaderTest {
         String expectedJson1 = "{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}";
         JsonRecord jsonRecord1 = jsonRecordReader.readNextRecord();
         assertThat(jsonRecord1).isNotNull();
-        assertThat(jsonRecord1.getNumber()).isEqualTo(1);
+        assertThat(jsonRecord1.getHeader().getNumber()).isEqualTo(1);
         assertThat(jsonRecord1.getPayload()).isEqualTo(expectedJson1);
 
         assertThat(jsonRecordReader.hasNextRecord()).isTrue();
@@ -61,7 +61,7 @@ public class JsonRecordReaderTest {
         String expectedJson2 = "{\"id\":2,\"user\":\"bar\",\"message\":\"Hi!\"}";
         JsonRecord jsonRecord2 = jsonRecordReader.readNextRecord();
         assertThat(jsonRecord2).isNotNull();
-        assertThat(jsonRecord2.getNumber()).isEqualTo(2);
+        assertThat(jsonRecord2.getHeader().getNumber()).isEqualTo(2);
         assertThat(jsonRecord2.getPayload()).isEqualTo(expectedJson2);
 
         assertThat(jsonRecordReader.hasNextRecord()).isFalse();
@@ -74,7 +74,7 @@ public class JsonRecordReaderTest {
 
     @Test
     public void whenTheInputFileIsNotEmpty_ThenTheTotalRecordsCountShouldBeEqualToTheNumberOfRecordsInTheInputFile() throws Exception {
-        Integer totalRecords = jsonRecordReader.getTotalRecords();
+        Long totalRecords = jsonRecordReader.getTotalRecords();
         assertThat(totalRecords).isNotNull();
         assertThat(totalRecords).isEqualTo(2);
     }
@@ -96,7 +96,7 @@ public class JsonRecordReaderTest {
         jsonRecordReader.close();
         jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/empty.json"));
         jsonRecordReader.open();
-        Integer totalRecords = jsonRecordReader.getTotalRecords();
+        Long totalRecords = jsonRecordReader.getTotalRecords();
         assertThat(totalRecords).isNotNull();
         assertThat(totalRecords).isEqualTo(0);
     }

@@ -24,10 +24,12 @@
 
 package org.easybatch.integration.jms;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 import javax.jms.*;
+import java.util.Date;
 
 /**
  * A record reader that reads records from a JMS queue.
@@ -40,7 +42,7 @@ import javax.jms.*;
  */
 public class JmsRecordReader implements RecordReader {
 
-    private int currentRecordNumber;
+    private long currentRecordNumber;
 
     QueueConnectionFactory queueConnectionFactory;
 
@@ -83,11 +85,12 @@ public class JmsRecordReader implements RecordReader {
         Message message = queueReceiver.receive();
         String type = message.getStringProperty("type");
         stop = message instanceof JmsPoisonMessage || (type!= null && type.equals("poison"));
-        return new JmsRecord(++currentRecordNumber, message);
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        return new JmsRecord(header, message);
     }
 
     @Override
-    public Integer getTotalRecords() {
+    public Long getTotalRecords() {
         //undefined, cannot be calculated upfront
         return null;
     }

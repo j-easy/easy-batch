@@ -24,12 +24,15 @@
 
 package org.easybatch.flatfile.flr;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.flatfile.FlatFileRecord;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.flatfile.Bean;
 import org.fest.assertions.Assertions;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Date;
 
 /**
  * Unit test class for {@link org.easybatch.flatfile.flr.FixedLengthRecordMapper}.
@@ -39,20 +42,22 @@ import org.junit.Test;
 public class FixedLengthRecordMapperTest {
 
     private FixedLengthRecordMapper fixedLengthRecordMapper;
-
     private StringRecord stringRecord;
+
+    private Header header;
 
     @Before
     public void setUp() throws Exception {
         fixedLengthRecordMapper = new FixedLengthRecordMapper<Bean>(Bean.class,
                 new int[]{4, 2, 3},
                 new String[]{"field1", "field2", "field3"});
-        stringRecord = new StringRecord(1, "aaaabbccc");
+        header = new Header(1l, "ds", new Date());
+        stringRecord = new StringRecord(header, "aaaabbccc");
     }
 
     @Test (expected = Exception.class)
     public void testIllFormedRecord() throws Exception {
-        stringRecord = new StringRecord(1, "aaaabbcccd"); // unexpected record size
+        stringRecord = new StringRecord(header, "aaaabbcccd"); // unexpected record size
         fixedLengthRecordMapper.parseRecord(stringRecord);
     }
 

@@ -51,7 +51,7 @@ public class RecordNumberLowerThanFilter implements RecordFilter {
      * {@inheritDoc}
      */
     public boolean filterRecord(final Record record) {
-        return record.getNumber() < number;
+        return record.getHeader().getNumber() < number;
     }
 
 }

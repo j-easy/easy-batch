@@ -24,12 +24,14 @@
 
 package org.easybatch.jdbc;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -74,7 +76,7 @@ public class JdbcRecordReader implements RecordReader {
     /**
      * The current record number.
      */
-    private int currentRecordNumber;
+    private long currentRecordNumber;
 
     /**
      * Create a JdbcRecordReader instance.
@@ -108,12 +110,13 @@ public class JdbcRecordReader implements RecordReader {
 
     @Override
     public JdbcRecord readNextRecord() {
-        return new JdbcRecord(++currentRecordNumber, resultSet);
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        return new JdbcRecord(header, resultSet);
     }
 
     @Override
-    public Integer getTotalRecords() {
-        int rowCount = 0;
+    public Long getTotalRecords() {
+        long rowCount = 0;
 
         try {
             if (resultSet.last()) {

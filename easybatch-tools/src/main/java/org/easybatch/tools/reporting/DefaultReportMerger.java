@@ -62,17 +62,17 @@ public class DefaultReportMerger implements ReportMerger {
 
         List<Long> endTimes = new ArrayList<Long>();
 
-        int totalRecords = 0;
+        long totalRecords = 0;
 
-        List<Integer> filteredRecords = new ArrayList<Integer>();
+        List<Long> filteredRecords = new ArrayList<Long>();
 
-        List<Integer> ignoredRecords = new ArrayList<Integer>();
+        List<Long> ignoredRecords = new ArrayList<Long>();
 
-        List<Integer> rejectedRecords = new ArrayList<Integer>();
+        List<Long> rejectedRecords = new ArrayList<Long>();
 
-        List<Integer> errorRecords = new ArrayList<Integer>();
+        List<Long> errorRecords = new ArrayList<Long>();
 
-        List<Integer> successRecords = new ArrayList<Integer>();
+        List<Long> successRecords = new ArrayList<Long>();
 
         List<Object> results = new ArrayList<Object>();
 
@@ -103,19 +103,19 @@ public class DefaultReportMerger implements ReportMerger {
         finalReport.setStartTime(Collections.min(startTimes));
         finalReport.setEndTime(Collections.max(endTimes));
         finalReport.setTotalRecords(totalRecords);
-        for (Integer filteredRecord : filteredRecords) {
+        for (Long filteredRecord : filteredRecords) {
             finalReport.addFilteredRecord(filteredRecord);
         }
-        for (Integer ignoredRecord : ignoredRecords) {
+        for (Long ignoredRecord : ignoredRecords) {
             finalReport.addIgnoredRecord(ignoredRecord);
         }
-        for (Integer rejectedRecord : rejectedRecords) {
+        for (Long rejectedRecord : rejectedRecords) {
             finalReport.addRejectedRecord(rejectedRecord);
         }
-        for (Integer errorRecord : errorRecords) {
+        for (Long errorRecord : errorRecords) {
             finalReport.addErrorRecord(errorRecord);
         }
-        for (Integer successRecord : successRecords) {
+        for (Long successRecord : successRecords) {
             finalReport.addSuccessRecord(successRecord);
         }
         if (!results.isEmpty()) {

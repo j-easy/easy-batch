@@ -226,7 +226,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
             fields.add(new FlatFileField(++index, token));
         }
 
-        FlatFileRecord flatFileRecord = new FlatFileRecord(record.getNumber(), payload);
+        FlatFileRecord flatFileRecord = new FlatFileRecord(record.getHeader(), payload);
         if (fieldsPositions != null) {
             filterFields(fields);
         }

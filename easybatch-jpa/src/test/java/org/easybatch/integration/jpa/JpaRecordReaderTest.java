@@ -61,7 +61,7 @@ public class JpaRecordReaderTest {
     @Test
     public void testReadNextRecord() throws Exception {
         GenericRecord<Tweet> record = jpaRecordReader.readNextRecord();
-        int recordNumber = record.getNumber();
+        long recordNumber = record.getHeader().getNumber();
         Tweet tweet = record.getPayload();
 
         assertThat(recordNumber).isEqualTo(1);

@@ -2,11 +2,13 @@ package org.easybatch.xml.xstream;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.ConversionException;
+import org.easybatch.core.api.Header;
 import org.easybatch.xml.XmlRecord;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Date;
 import java.util.Scanner;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -30,7 +32,7 @@ public class XstreamRecordMapperTest {
         xStream.alias("person", Person.class);
         xmlRecordMapper = new XstreamRecordMapper<Person>(xStream);
         String xml = getXmlFromFile("/person.xml");
-        xmlRecord = new XmlRecord(1, xml);
+        xmlRecord = new XmlRecord(new Header(1l, "ds", new Date()), xml);
     }
 
     @Test
@@ -45,7 +47,7 @@ public class XstreamRecordMapperTest {
 
     @Test
     public void testEmptyXmlPersonMapping() throws Exception {
-        xmlRecord = new XmlRecord(1, "<person/>");
+        xmlRecord = new XmlRecord(new Header(1l, "ds", new Date()), "<person/>");
         Person person = (Person) xmlRecordMapper.mapRecord(xmlRecord);
         assertThat(person.getId()).isEqualTo(0);
         assertThat(person.getFirstName()).isNull();
@@ -55,7 +57,7 @@ public class XstreamRecordMapperTest {
 
     @Test
     public void testPartialXmlPersonMapping() throws Exception {
-        xmlRecord = new XmlRecord(1, getXmlFromFile("/person-partial.xml"));
+        xmlRecord = new XmlRecord(new Header(1l, "ds", new Date()), getXmlFromFile("/person-partial.xml"));
         Person person = (Person) xmlRecordMapper.mapRecord(xmlRecord);
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(1);
@@ -66,7 +68,7 @@ public class XstreamRecordMapperTest {
 
     @Test(expected = ConversionException.class)
     public void testInvalidXmlPersonMapping() throws Exception {
-        xmlRecord = new XmlRecord(1, getXmlFromFile("/person-invalid.xml"));
+        xmlRecord = new XmlRecord(new Header(1l, "ds", new Date()), getXmlFromFile("/person-invalid.xml"));
         xmlRecordMapper.mapRecord(xmlRecord);
     }
 

@@ -24,9 +24,11 @@
 
 package org.easybatch.core.record;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * A marker record that serves as End-Of-Stream record or Poison Record.
@@ -37,8 +39,8 @@ import java.io.Serializable;
 public class PoisonRecord implements Record<Object>, Serializable {
 
     @Override
-    public int getNumber() {
-        return 0;
+    public Header getHeader() {
+        return new Header(0l, "Poison record", new Date());
     }
 
     @Override

@@ -24,8 +24,11 @@
 
 package org.easybatch.core.filter;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
+
+import java.util.Date;
 
 /**
  * Base class for common record filter tests.
@@ -38,8 +41,8 @@ public class BaseRecordFilterTest {
 
     @Before
     public void setUp() throws Exception {
-        stringRecord1 = new StringRecord(1, "prefix1_content1_suffix1");
-        stringRecord2 = new StringRecord(2, "prefix2_content2_suffix2");
+        stringRecord1 = new StringRecord(new Header(1l, "ds", new Date()), "prefix1_content1_suffix1");
+        stringRecord2 = new StringRecord(new Header(2l, "ds", new Date()), "prefix2_content2_suffix2");
     }
 
 }

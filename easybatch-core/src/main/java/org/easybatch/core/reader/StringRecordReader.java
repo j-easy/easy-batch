@@ -24,10 +24,12 @@
 
 package org.easybatch.core.reader;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.StringRecord;
 
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -40,7 +42,7 @@ public class StringRecordReader implements RecordReader {
     /**
      * The current read record number.
      */
-    private int currentRecordNumber;
+    private long currentRecordNumber;
 
     /**
      * Scanner to read input String.
@@ -81,13 +83,13 @@ public class StringRecordReader implements RecordReader {
 
     @Override
     public Record readNextRecord() {
-        currentRecordNumber++;
-        return new StringRecord(currentRecordNumber, scanner.nextLine());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        return new StringRecord(header, scanner.nextLine());
     }
 
     @Override
-    public Integer getTotalRecords() {
-        int totalRecords = 0;
+    public Long getTotalRecords() {
+        long totalRecords = 0;
         while (recordCounterScanner.hasNextLine()) {
             totalRecords++;
             recordCounterScanner.nextLine();

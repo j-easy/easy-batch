@@ -44,7 +44,7 @@ class NoOpFilteredRecordHandler implements FilteredRecordHandler {
      */
     @Override
     public void handle(final Record record) {
-        LOGGER.log(Level.INFO, "Record #{0} [{1}] has been filtered.", new Object[]{record.getNumber(), record});
+        LOGGER.log(Level.INFO, "Record #{0} [{1}] has been filtered.", new Object[]{record.getHeader().getNumber(), record});
     }
 
 }

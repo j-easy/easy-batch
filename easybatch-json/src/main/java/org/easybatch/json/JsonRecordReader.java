@@ -24,6 +24,7 @@
 
 package org.easybatch.json;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
 
 import javax.json.Json;
@@ -33,6 +34,7 @@ import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
 import javax.json.stream.JsonParser;
 import java.io.*;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,7 +75,7 @@ public class JsonRecordReader implements RecordReader {
     /**
      * The current record number.
      */
-    private int currentRecordNumber;
+    private long currentRecordNumber;
 
     private JsonParser.Event currentEvent;
 
@@ -143,15 +145,16 @@ public class JsonRecordReader implements RecordReader {
             jsonGenerator.writeEnd();
         }
         jsonGenerator.close();
-        return new JsonRecord(++currentRecordNumber, stringWriter.toString());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        return new JsonRecord(header, stringWriter.toString());
     }
 
     @Override
-    public Integer getTotalRecords() {
+    public Long getTotalRecords() {
         //Unable to use the same (or even another) json parser to calculate total record number of the input stream.
         int data;
         int rootObjectDepth = 0;
-        int totalRecords = 0;
+        long totalRecords = 0;
         try {
             data = inputStream.read();
             while(data != -1) {

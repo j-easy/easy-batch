@@ -3,8 +3,11 @@ package org.easybatch.integration.mongodb;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
+
+import java.util.Date;
 
 /**
  * Reader that reads documents from a MongoDB collection.
@@ -28,7 +31,7 @@ public class MongoDBRecordReader implements RecordReader {
     private boolean sort;
     private DBObject orderBy;
 
-    private int currentRecordNumber;
+    private long currentRecordNumber;
 
     public MongoDBRecordReader(DBCollection collection, DBObject query) {
         this.collection = collection;
@@ -57,12 +60,13 @@ public class MongoDBRecordReader implements RecordReader {
 
     @Override
     public Record readNextRecord() throws Exception {
-        return new MongoRecord(++currentRecordNumber, cursor.next());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        return new MongoRecord(header, cursor.next());
     }
 
     @Override
-    public Integer getTotalRecords() {
-        return cursor.count();
+    public Long getTotalRecords() {
+        return (long) cursor.count();
     }
 
     @Override

@@ -45,7 +45,7 @@ public class XmlRecordReaderTest {
         XMLUnit.setIgnoreWhitespace(true);
         Diff diff = new Diff(expectedPayload, actualPayload);
 
-        assertThat(xmlRecord.getNumber()).isEqualTo(1);
+        assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(1);
         assertThat(diff.similar()).isTrue();
     }
 
@@ -102,7 +102,7 @@ public class XmlRecordReaderTest {
         XMLUnit.setIgnoreWhitespace(true);
         Diff diff = new Diff(expectedPayload, actualPayload);
 
-        assertThat(xmlRecord.getNumber()).isEqualTo(1);
+        assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(1);
         assertThat(diff.similar()).isTrue();
     }
 

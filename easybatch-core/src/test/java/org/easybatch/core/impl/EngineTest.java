@@ -33,6 +33,8 @@ public class EngineTest {
     private Engine engine;
 
     @Mock
+    private Header header1, header2;
+    @Mock
     private StringRecord record1, record2;
     @Mock
     private RecordReader reader;
@@ -72,9 +74,12 @@ public class EngineTest {
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
-        when(record1.getNumber()).thenReturn(1);
+        when(header1.getNumber()).thenReturn(1l);
+        when(header2.getNumber()).thenReturn(2l);
+        when(record1.getHeader()).thenReturn(header1);
+        when(record2.getHeader()).thenReturn(header2);
         when(record1.getPayload()).thenReturn("test1");
-        when(record2.getNumber()).thenReturn(2);
+        when(record2.getHeader().getNumber()).thenReturn(2l);
         when(record2.getPayload()).thenReturn("test2");
         when(reader.hasNextRecord()).thenReturn(true, true, false);
         when(reader.readNextRecord()).thenReturn(record1, record2);
@@ -123,7 +128,7 @@ public class EngineTest {
 
     @Test
     public void recordReaderShouldBeClosedAtTheEndOfExecution() throws Exception {
-        when(record1.getNumber()).thenReturn(1);
+        when(record1.getHeader().getNumber()).thenReturn(1l);
         when(record1.getPayload()).thenReturn("test1");
         when(reader.hasNextRecord()).thenReturn(true, false);
         when(reader.readNextRecord()).thenReturn(record1);

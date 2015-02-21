@@ -24,6 +24,7 @@
 
 package org.easybatch.core.record;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 
 /**
@@ -31,35 +32,35 @@ import org.easybatch.core.api.Record;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class GenericRecord<T> implements Record<T> {
+public class GenericRecord<P> implements Record<P> {
 
     /**
-     * The physical record number in the data source.
+     * The record header.
      */
-    protected int number;
+    protected Header header;
 
     /**
      * The record's payload.
      */
-    protected T payload;
+    protected P payload;
 
-    public GenericRecord(final int number, final T payload) {
-        this.number = number;
+    public GenericRecord(final Header header, final P payload) {
+        this.header = header;
         this.payload = payload;
     }
 
-    public int getNumber() {
-        return number;
+    public Header getHeader() {
+        return header;
     }
 
-    public T getPayload() {
+    public P getPayload() {
         return payload;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Record{");
-        sb.append("number=").append(number);
+        sb.append("header=").append(header);
         sb.append(", payload='").append(payload).append('\'');
         sb.append('}');
         return sb.toString();

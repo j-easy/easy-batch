@@ -24,6 +24,7 @@
 
 package org.easybatch.core.record;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 
 /**
@@ -33,8 +34,8 @@ import org.easybatch.core.api.Record;
  */
 public class StringRecord extends GenericRecord<String> {
 
-    public StringRecord(final int number, final String payload) {
-        super(number, payload);
+    public StringRecord(final Header header, final String payload) {
+        super(header, payload);
     }
 
 }

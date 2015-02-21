@@ -67,14 +67,14 @@ public class MongoDBRecordReaderTest {
     public void testGetNextRecord() throws Exception {
         Record record = reader.readNextRecord();
 
-        assertThat(record.getNumber()).isEqualTo(1);
+        assertThat(record.getHeader().getNumber()).isEqualTo(1);
         assertThat(record.getPayload()).isEqualTo(dbObject);
         verify(cursor).next();
     }
 
     @Test
     public void testGetTotalRecords() throws Exception {
-        Integer totalRecords = reader.getTotalRecords();
+        Long totalRecords = reader.getTotalRecords();
 
         assertThat(totalRecords).isEqualTo(TOTAL_RECORDS);
         verify(cursor).count();

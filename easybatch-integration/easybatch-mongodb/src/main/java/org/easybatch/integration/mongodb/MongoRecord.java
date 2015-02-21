@@ -1,6 +1,7 @@
 package org.easybatch.integration.mongodb;
 
 import com.mongodb.DBObject;
+import org.easybatch.core.api.Header;
 import org.easybatch.core.record.GenericRecord;
 
 /**
@@ -10,8 +11,8 @@ import org.easybatch.core.record.GenericRecord;
  */
 public class MongoRecord extends GenericRecord<DBObject> {
 
-    public MongoRecord(int number, DBObject payload) {
-        super(number, payload);
+    public MongoRecord(final Header header, DBObject payload) {
+        super(header, payload);
     }
 
 }

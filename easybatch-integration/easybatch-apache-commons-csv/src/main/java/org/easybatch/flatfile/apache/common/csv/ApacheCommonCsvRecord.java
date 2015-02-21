@@ -25,6 +25,7 @@
 package org.easybatch.flatfile.apache.common.csv;
 
 import org.apache.commons.csv.CSVRecord;
+import org.easybatch.core.api.Header;
 import org.easybatch.core.record.GenericRecord;
 
 /**
@@ -34,8 +35,8 @@ import org.easybatch.core.record.GenericRecord;
  */
 public class ApacheCommonCsvRecord extends GenericRecord<CSVRecord> {
 
-    public ApacheCommonCsvRecord(int number, CSVRecord payload) {
-        super(number, payload);
+    public ApacheCommonCsvRecord(final Header header, final CSVRecord payload) {
+        super(header, payload);
     }
 
 }

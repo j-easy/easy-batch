@@ -1,5 +1,6 @@
 package org.easybatch.jdbc;
 
+import org.easybatch.core.api.Header;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +9,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.util.Date;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -32,7 +34,7 @@ public class JdbcRecordMapperTest {
     @Before
     public void setUp() throws Exception {
         tweetMapper = new JdbcRecordMapper<Tweet>(Tweet.class);
-        jdbcRecord = new JdbcRecord(1, payload);
+        jdbcRecord = new JdbcRecord(new Header(1l, "ds", new Date()), payload);
     }
 
     @Test

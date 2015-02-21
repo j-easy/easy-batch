@@ -36,7 +36,7 @@ public class HeaderRecordFilter implements RecordFilter {
 
     @Override
     public boolean filterRecord(Record record) {
-        return record.getNumber() == 1;
+        return record.getHeader().getNumber() == 1;
     }
 
 }

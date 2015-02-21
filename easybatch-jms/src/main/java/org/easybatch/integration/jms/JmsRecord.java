@@ -24,6 +24,7 @@
 
 package org.easybatch.integration.jms;
 
+import org.easybatch.core.api.Header;
 import org.easybatch.core.record.GenericRecord;
 
 import javax.jms.Message;
@@ -35,8 +36,8 @@ import javax.jms.Message;
  */
 public class JmsRecord extends GenericRecord<Message> {
 
-    public JmsRecord(int number, Message payload) {
-        super(number, payload);
+    public JmsRecord(final Header header, final Message payload) {
+        super(header, payload);
     }
 
 }

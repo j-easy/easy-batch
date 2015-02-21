@@ -26,9 +26,11 @@ package org.easybatch.flatfile.apache.common.csv;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -59,11 +61,12 @@ public class ApacheCommonCsvRecordReader implements RecordReader {
 
     @Override
     public Record readNextRecord() throws Exception {
-        return new ApacheCommonCsvRecord((int) parser.getRecordNumber() + 1, iterator.next());
+        Header header = new Header(parser.getRecordNumber() + 1, getDataSourceName(), new Date());
+        return new ApacheCommonCsvRecord(header, iterator.next());
     }
 
     @Override
-    public Integer getTotalRecords() {
+    public Long getTotalRecords() {
         return null;
     }
 

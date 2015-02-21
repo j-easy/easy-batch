@@ -56,7 +56,7 @@ public interface RecordReader {
      * @return the total record number in the data source or null if the total records number cannot be
      * calculated in advance
      */
-    Integer getTotalRecords();
+    Long getTotalRecords();
 
     /**
      * This method returns a human readable data source name to be shown in the batch report.

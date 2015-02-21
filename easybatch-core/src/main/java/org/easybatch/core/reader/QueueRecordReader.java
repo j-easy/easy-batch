@@ -68,7 +68,7 @@ public class QueueRecordReader implements RecordReader {
     }
 
     @Override
-    public Integer getTotalRecords() {
+    public Long getTotalRecords() {
         return null;
     }
 

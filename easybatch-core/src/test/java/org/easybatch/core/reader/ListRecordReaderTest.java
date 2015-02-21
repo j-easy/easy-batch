@@ -84,7 +84,7 @@ public class ListRecordReaderTest {
     public void whenTheDataSourceIsNotEmpty_ThenTheNextRecordShouldBeReadFromTheList() throws Exception {
         Record<String> record = listRecordReader.readNextRecord();
         assertThat(record).isInstanceOf(GenericRecord.class);
-        assertThat(record.getNumber()).isEqualTo(1);
+        assertThat(record.getHeader().getNumber()).isEqualTo(1);
         assertThat(record.getPayload()).isEqualTo(PAYLOAD);
     }
 
