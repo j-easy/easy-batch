@@ -19,7 +19,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.12</junit.version>
-        <fest-assert.version>1.4</fest-assert.version>
+        <assertj.version>1.7.1</assertj.version>
         <mockito.version>1.10.19</mockito.version>
         <maven-dependency-plugin.version>2.9</maven-dependency-plugin.version>
         <maven-checkstyle-plugin.version>2.13</maven-checkstyle-plugin.version>
@@ -169,9 +169,9 @@
             </dependency>
 
             <dependency>
-                <groupId>org.easytesting</groupId>
-                <artifactId>fest-assert</artifactId>
-                <version>${fest-assert.version}</version>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${assertj.version}</version>
                 <scope>test</scope>
             </dependency>
 
