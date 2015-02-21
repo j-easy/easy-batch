@@ -59,10 +59,10 @@ public class GenericRecord<P> implements Record<P> {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Record{");
+        final StringBuilder sb = new StringBuilder("[");
         sb.append("header=").append(header);
-        sb.append(", payload='").append(payload).append('\'');
-        sb.append('}');
+        sb.append(", payload=\"").append(payload).append('\"');
+        sb.append(']');
         return sb.toString();
     }
 

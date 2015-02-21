@@ -59,11 +59,11 @@ public class Header {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Header{");
+        final StringBuilder sb = new StringBuilder("[");
         sb.append("number=").append(number);
-        sb.append(", source='").append(source).append('\'');
-        sb.append(", creationDate=").append(creationDate);
-        sb.append('}');
+        sb.append(", source=\"").append(source).append('\"');
+        sb.append(", creationDate=\"").append(creationDate);
+        sb.append("\"]");
         return sb.toString();
     }
 }
