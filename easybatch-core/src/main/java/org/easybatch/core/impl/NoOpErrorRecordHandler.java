@@ -24,11 +24,11 @@
 
 package org.easybatch.core.impl;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.easybatch.core.api.ErrorRecordHandler;
 import org.easybatch.core.api.Record;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A No Operation {@link ErrorRecordHandler} implementation used by default by easy batch engine.
@@ -44,7 +44,7 @@ class NoOpErrorRecordHandler implements ErrorRecordHandler {
      */
     @Override
     public void handle(final Record record, final Throwable e) {
-        LOGGER.log(Level.SEVERE, "Error while processing record #" + record.getHeader().getNumber() + "[" + record + "]", e);
+        LOGGER.log(Level.SEVERE, "Error while processing record " + record, e);
     }
 
 }
