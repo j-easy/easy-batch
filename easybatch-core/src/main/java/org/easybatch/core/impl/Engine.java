@@ -129,7 +129,7 @@ public final class Engine implements Callable<Report> {
                 try {
                     currentRecord = readRecord();
                     if(currentRecord == null) {
-                        LOGGER.log(Level.SEVERE, "The record reader returned null for next record, next steps will be skipped.");
+                        LOGGER.log(Level.SEVERE, "The record reader returned null for next record, aborting execution.");
                         report.setStatus(Status.ABORTED);
                         report.setEndTime(System.currentTimeMillis());
                         return report;
@@ -137,7 +137,7 @@ public final class Engine implements Callable<Report> {
                 } catch (Exception e) {
                     eventManager.fireOnBatchException(e);
                     eventManager.fireOnRecordReadException(e);
-                    LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record", e);
+                    LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record, aborting execution.", e);
                     report.setStatus(Status.ABORTED);
                     report.setEndTime(System.currentTimeMillis());
                     return report;
@@ -185,7 +185,7 @@ public final class Engine implements Callable<Report> {
                         continue;
                     }
                 } catch (Exception e) {
-                    LOGGER.log(Level.SEVERE, "An exception occurred while validating record #" + currentRecordNumber + " [" + currentRecord + "]", e);
+                    LOGGER.log(Level.SEVERE, "An exception occurred while validating record " + currentRecord, e);
                     report.addRejectedRecord(currentRecordNumber);
                     rejectedRecordHandler.handle(currentRecord, e);
                     eventManager.fireOnBatchException(e);
