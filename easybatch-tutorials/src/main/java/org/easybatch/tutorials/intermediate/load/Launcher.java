@@ -63,9 +63,12 @@ public class Launcher {
         // Run easy batch engine
         engine.call();
 
-        //Dump tweet table to check inserted data
-        DatabaseUtil.closeSessionFactory();
+        // Dump tweet table to check inserted data
         DatabaseUtil.dumpTweetTable();
+
+        // Shutdown embedded database server and delete temporary files
+        DatabaseUtil.closeSessionFactory();
+        DatabaseUtil.cleanUpWorkingDirectory();
 
     }
 

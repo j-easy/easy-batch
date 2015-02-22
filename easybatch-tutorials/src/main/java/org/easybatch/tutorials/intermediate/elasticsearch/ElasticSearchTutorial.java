@@ -84,6 +84,7 @@ public class ElasticSearchTutorial {
 
         //shutdown embedded database
         DatabaseUtil.shutDown(connection);
+        DatabaseUtil.cleanUpWorkingDirectory();
     }
 
 }

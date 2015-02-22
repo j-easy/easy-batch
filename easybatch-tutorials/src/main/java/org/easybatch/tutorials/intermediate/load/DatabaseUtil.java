@@ -59,7 +59,9 @@ public class DatabaseUtil {
 
     public static void closeSessionFactory() {
         sessionFactory.close();
+    }
 
+    public static void cleanUpWorkingDirectory() {
         //delete hsqldb tmp files
         new File("mem.log").delete();
         new File("mem.properties").delete();
