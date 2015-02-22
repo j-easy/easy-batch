@@ -6,10 +6,10 @@ title : Loading data in a database
               <h2 id="1">1. Introduction</h2>
 
         <p>You have seen in the <a href="./key-apis.html">previous tutorial</a> how to process tweets form a CSV file to compute some statistics.
-            You have filtered undesired data, mapped tweets to the <code><em>Tweet</em></code> bean, and validated tweets using the
+            You have filtered undesired data, mapped tweets to the <code><em>Tweet</em></code> bean, and validated them using the
             <a href="http://www.beanvalidation.org" target="_blank">Bean Validation API</a>.</p>
 
-        <p>In this tutorial, you will see how to store these tweets into a database.
+        <p>In this tutorial, you will see how to store these tweets in a database.
             Since only the business logic changes, you will reuse the same application and register a new processor to load validated tweets in the database.</p>
 
         <p>Here is a quick refresh of what you have seen in the previous tutorial:</p>
@@ -198,8 +198,9 @@ INFO: Shutting down easy batch engine</code></pre>
                 <h2 id="4">4. Summary</h2>
 
                 <p>In this tutorial, you have learned how to use Easy Batch in a typical enterprise requirement to persist data into a database.
-                    Note that you have only wrote the <code><em>TweetProcessor</em></code> which is your application's logic and have reused
-                exactly the same components that served for another application. This is how flexible Easy Batch's API is to enforce reusability.</p>
+                    Note that you have only wrote the <code><em>TweetLoader</em></code> and <code><em>TransactionProcessingEventListener</em></code>
+                    which represent your application's logic and have reused exactly the same components that served for another application.
+                    This is how flexible Easy Batch's API is to enforce reuse.</p>
 
 <h2 id="9">9. What's next?</h2>
 

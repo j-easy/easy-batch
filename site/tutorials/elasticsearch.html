@@ -49,7 +49,7 @@ title : Indexing ElasticSearch tutorial
 </code></pre>
 </div>
 
-        <p>You must specify the target domain object type the mapper should map data to. This mapper will use
+        <p>You must specify the type of the target domain object to which the mapper should map data. This mapper will use
         the table's meta-data to determine column names and map values to corresponding fields of the domain object.</p>
 
         <p>This mapper will produce <code><em>Tweet</em></code> objects that you can use to index ElasticSearch.</p>
@@ -194,8 +194,8 @@ INFO: Strict mode: false
 INFO: Total records = 2
 INFO: easy batch engine is running...
 Total tweets = 2
-tweet: {"id":2,"user":"bar","message":"@foo I do confirm :-)"}
 tweet: {"id":1,"user":"foo","message":"easy batch rocks! #EasyBatch"}
+tweet: {"id":2,"user":"bar","message":"@foo I do confirm :-)"}
 INFO: Shutting down easy batch engine</code></pre>
         </div>
 

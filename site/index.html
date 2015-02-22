@@ -75,6 +75,7 @@ title : batch processing with Java&trade; made easy
         // Build a batch engine
         Engine engine = new EngineBuilder()
             .reader(new FlatFileRecordReader(new File("data.csv")))
+            .filter(new HeaderRecordFilter())
             .mapper(new DelimitedRecordMapper(Data.class))
             .processor(new DataProcessor())
             .build();
@@ -89,14 +90,14 @@ title : batch processing with Java&trade; made easy
                     <p>You write your business logic in the <code><em>DataProcessor</em></code> and Easy Batch will:</p>
                 <ul>
                     <li>Read data from your data source</li>
+                    <li>Filter data based on your business rules</li>
                     <li>Parse data according to the specified format</li>
-                    <li>Map data to your domain POJO <code>Data.class</code></li>
+                    <li>Map data to your domain object <code><em>Data.class</em></code></li>
                     <li>Give you a nice report at the end of execution</li>
                     <li>And much more!</li>
                 </ul>
                 <p>Easy, isn't it?</p>
                         <div class="pull-center">
-                            <br/>
                             <br/>
                             <a href="./documentation/architecture.html" class="btn btn-lg btn-primary">Learn more</a>
                             <a href="./documentation/getting-started.html" class="btn btn-lg btn-primary">Get started</a> </div>

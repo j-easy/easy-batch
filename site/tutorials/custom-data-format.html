@@ -76,15 +76,15 @@ END</code></pre>
         <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class RecipeRecord extends GenericRecord&lt;Recipe&gt; {
 
-    public RecipeRecord(int number, Recipe recipe) {
-        super(number, recipe);
+    public RecipeRecord(Header header, Recipe payload) {
+        super(header, payload);
     }
 }</code></pre>
         </div>
 
-              <p>This <code>logical</code> record holds the record number and an instance of the recipe as its payload.
+              <p>This <code>logical</code> record holds the record header and an instance of the recipe as its payload.
 
-                  Next, you will implement a custom <code>RecordReader</code> to read multiple physical records and produce logical <code>RecipeRecord</code> instances, so here is the implementation:</p>
+                  Next, you will implement a custom <code><em>RecordReader</em></code> to read multiple physical records and produce logical <code><em>RecipeRecord</em></code> instances, so here is the implementation:</p>
 
         <div class="bs-callout bs-callout-code">
 <pre><code class="java">public class RecipeRecordReader implements RecordReader {
@@ -104,7 +104,7 @@ END</code></pre>
     /**
      * The current read record number.
      */
-    private int currentRecordNumber;
+    private long currentRecordNumber;
 
     public RecipeRecordReader(File file) {
         this.file = file;
@@ -139,7 +139,8 @@ END</code></pre>
                 recipe.getIngredients().add(ingredient);
             }
         }
-        return new RecipeRecord(currentRecordNumber, recipe);
+        Header header = new Header(currentRecordNumber, getDataSourceName(), new Date());
+        return new RecipeRecord(header, recipe);
     }</strong>
 
     @Override
@@ -193,9 +194,9 @@ END</code></pre>
               <p>Let's configure an Easy Batch engine to:</p>
 
               <ol>
-                  <li>Read recipes from <code>recipes.txt</code> file using the custom <code>RecipeRecordReader</code></li>
-                  <li>Map physical records in flat file to the logical <code>RecipeRecord</code></li>
-                  <li>Process each recipe using the <code>RecipeProcessor</code></li>
+                  <li>Read recipes from <code>recipes.txt</code> file using the custom <code><em>RecipeRecordReader</em></code></li>
+                  <li>Map physical records in flat file to the logical <code><em>RecipeRecord</em></code></li>
+                  <li>Process each recipe using the <code><em>RecipeProcessor</em></code></li>
               </ol>
 
               <p>The following listing provides this configuration:</p>
@@ -259,7 +260,7 @@ INFO: Shutting down easy batch engine</code></pre>
 <h2 id="4">4. Summary</h2>
 
 <p>In this tutorial, you have learned how to process a non standard data format.
-    Thanks to the flexible Easy Batch API, integrating custom solutions is easy.</p>
+    Thanks to the flexible API of Easy Batch, integrating custom solutions is relatively easy.</p>
 
 <h2 id="9">9. What's next?</h2>
 

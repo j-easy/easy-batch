@@ -34,7 +34,7 @@ title : Distributed jobs
             <h5>RestEndpointRecordDispatcher.java</h5>
 <pre><code class="java">public class RestEndpointRecordDispatcher extends AbstractRecordDispatcher implements HttpHandler {
 
-    private int recordNumber;
+    private long recordNumber;
 
     @Override
     public void dispatchRecord(Record record) throws Exception {
@@ -45,9 +45,10 @@ title : Distributed jobs
     public void handle(HttpExchange httpExchange) throws IOException {
         //should check if request == PUT && path = /api/orders ..
         InputStream requestBody = httpExchange.getRequestBody();
-        String body = IOUtils.toString(requestBody);
+        String payload = IOUtils.toString(requestBody);
         try {
-            dispatchRecord(new StringRecord(++recordNumber, body));
+            Header header = new Header(++recordNumber, "REST API: /api/orders", new Date());
+            dispatchRecord(new StringRecord(header, payload));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

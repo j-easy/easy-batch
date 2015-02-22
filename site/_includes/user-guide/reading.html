@@ -275,7 +275,7 @@
 
 <div class="bs-callout bs-callout-code">
 <pre><code class="java">Engine engine = new EngineBuilder()
-    <strong>.reader(new JpaRecordReader(myEntityManagerFactory, myQuery, myObjectType))</strong>
+    <strong>.reader(new JpaRecordReader(myEntityManagerFactory, myQuery, MyObjectType.class))</strong>
     .build();</code></pre>
 </div>
 

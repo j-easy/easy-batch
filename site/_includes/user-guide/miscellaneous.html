@@ -151,9 +151,7 @@ BlockingQueue&lt;Record&gt; queue2 = new LinkedBlockingQueue&lt;Record&gt;();
         </ul>
 
         <p>The central piece of event handling in Easy Batch is the <code><em>EventManager</em></code> interface.
-        This is where all events handling logic is implemented.</p>
-
-    <p> By default, there is one local implementation included. It could also be implemented using JMS or any other distributed
+        This is where all events handling logic is implemented. By default, there is one local implementation included. It could also be implemented using JMS or any other distributed
     technology to get to know of any event happened while the batch is being executed.<p>
 
 <div class="bs-callout bs-callout-warning">

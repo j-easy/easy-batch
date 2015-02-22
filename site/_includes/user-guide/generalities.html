@@ -91,10 +91,10 @@
 <pre><code class="java">public interface Record&lt;P&gt; {
 
     /**
-    * Return the physical record number in the data source.
-    * @return the record's physical number in the input data source.
+    * Return the header of the record.
+    * @return the record's header.
     */
-    int getNumber();
+    Header getHeader();
 
     /**
     * Return the payload of the record.
@@ -105,7 +105,10 @@
 }</code></pre>
 </div>
 
-<p>A record has a number which represents its physical number in the data source and a payload. There are several implementations of the <code><em>Record</em></code> interface provided by Easy Batch to represent different type of records:</p>
+<p>A record has a header and a payload. The record header contains various metadata about the record such as the data source from which
+    the record has been read, its physical number, etc.. The record payload is the raw content of the record which is generic since its depends on
+    the data source type.
+    There are several implementations of the <code><em>Record</em></code> interface provided by Easy Batch to represent different type of records:</p>
 
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
