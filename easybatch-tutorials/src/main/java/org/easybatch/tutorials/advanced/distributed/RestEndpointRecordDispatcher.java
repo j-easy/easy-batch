@@ -62,10 +62,10 @@ public class RestEndpointRecordDispatcher extends AbstractRecordDispatcher imple
     public void handle(HttpExchange httpExchange) throws IOException {
         //should check if request == PUT && path = /api/orders ..
         InputStream requestBody = httpExchange.getRequestBody();
-        String body = IOUtils.toString(requestBody);
+        String payload = IOUtils.toString(requestBody);
         try {
             Header header = new Header(++recordNumber, "REST API: /api/orders", new Date());
-            dispatchRecord(new StringRecord(header, body));
+            dispatchRecord(new StringRecord(header, payload));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
