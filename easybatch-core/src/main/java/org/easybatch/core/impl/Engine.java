@@ -52,15 +52,13 @@ public final class Engine implements Callable<Report> {
 
     private RecordValidator recordValidator;
 
-    private List<RecordProcessor> processingPipeline;
+    private ProcessingPipeline processingPipeline;
 
     private FilteredRecordHandler filteredRecordHandler;
 
     private IgnoredRecordHandler ignoredRecordHandler;
 
     private RejectedRecordHandler rejectedRecordHandler;
-
-    private ErrorRecordHandler errorRecordHandler;
 
     private boolean strictMode;
 
@@ -72,22 +70,22 @@ public final class Engine implements Callable<Report> {
            final List<RecordFilter> filterChain,
            final RecordMapper recordMapper,
            final RecordValidator recordValidator,
-           final List<RecordProcessor> processingPipeline,
+           final List<RecordProcessor> processors,
            final FilteredRecordHandler filteredRecordHandler,
            final IgnoredRecordHandler ignoredRecordHandler,
            final RejectedRecordHandler rejectedRecordHandler,
-           final ErrorRecordHandler errorRecordHandler) {
+           final ErrorRecordHandler errorRecordHandler,
+           final EventManager eventManager) {
         this.recordReader = recordReader;
         this.filterChain = filterChain;
         this.recordMapper = recordMapper;
         this.recordValidator = recordValidator;
-        this.processingPipeline = processingPipeline;
         this.filteredRecordHandler = filteredRecordHandler;
         this.ignoredRecordHandler = ignoredRecordHandler;
         this.rejectedRecordHandler = rejectedRecordHandler;
-        this.errorRecordHandler = errorRecordHandler;
-        
-        report = new Report();
+        this.report = new Report();
+        this.eventManager = eventManager;
+        this.processingPipeline = new ProcessingPipeline(processors, errorRecordHandler, report, eventManager);
     }
 
     @Override
@@ -198,25 +196,7 @@ public final class Engine implements Callable<Report> {
                 }
 
                 //execute record processing pipeline
-                boolean processingError = false;
-                Object processingResult = null;
-                eventManager.fireBeforeProcessingRecord(typedRecord);
-                for (RecordProcessor recordProcessor : processingPipeline) {
-                    try {
-                        typedRecord = recordProcessor.processRecord(typedRecord);
-                        if (recordProcessor instanceof ComputationalRecordProcessor) {
-                            processingResult = ((ComputationalRecordProcessor) recordProcessor).getComputationResult();
-                        }
-                    } catch (Exception e) {
-                        processingError = true;
-                        report.addErrorRecord(currentRecordNumber);
-                        errorRecordHandler.handle(currentRecord, e);
-                        eventManager.fireOnBatchException(e);
-                        eventManager.fireOnRecordProcessingException(typedRecord, e);
-                        break;
-                    }
-                }
-                eventManager.fireAfterProcessingRecord(typedRecord, processingResult);
+                boolean processingError = processingPipeline.process(currentRecord, typedRecord, currentRecordNumber);
                 if (processingError) {
                     if (strictMode) {
                         LOGGER.info(STRICT_MODE_MESSAGE);
@@ -235,7 +215,7 @@ public final class Engine implements Callable<Report> {
             }
 
             // The batch result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
-            RecordProcessor lastRecordProcessor = processingPipeline.get(processingPipeline.size() - 1);
+            RecordProcessor lastRecordProcessor = processingPipeline.getLastProcessor();
             if (lastRecordProcessor instanceof ComputationalRecordProcessor) {
                 ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor) lastRecordProcessor;
                 Object batchResult = computationalRecordProcessor.getComputationResult();
@@ -327,7 +307,7 @@ public final class Engine implements Callable<Report> {
     }
 
     void addRecordProcessor(final RecordProcessor recordProcessor) {
-        this.processingPipeline.add(recordProcessor);
+        this.processingPipeline.addProcessor(recordProcessor);
     }
 
     void setFilteredRecordHandler(final FilteredRecordHandler filteredRecordHandler) {
@@ -343,7 +323,7 @@ public final class Engine implements Callable<Report> {
     }
 
     void setErrorRecordHandler(final ErrorRecordHandler errorRecordHandler) {
-        this.errorRecordHandler = errorRecordHandler;
+        processingPipeline.setErrorRecordHandler(errorRecordHandler);
     }
 
     void setEventManager(EventManager eventManager) {

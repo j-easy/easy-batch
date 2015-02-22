@@ -66,8 +66,8 @@ public final class EngineBuilder {
                         filteredRecordHandler,
                         ignoredRecordHandler,
                         rejectedRecordHandler,
-                        errorRecordHandler);
-        engine.setEventManager(eventManager);
+                        errorRecordHandler,
+                        eventManager);
     }
 
     /**
