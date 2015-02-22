@@ -26,6 +26,12 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 ### Project Home
 [http://www.easybatch.org](http://www.easybatch.org)
 
+### Continuous integration
+[Jenkins job @ cloudbees.com](https://buildhive.cloudbees.com/job/benas/job/easy-batch/)
+
+### Agile Board
+[Backlog items @ waffle.io](https://waffle.io/benas/easy-batch)
+
 ### Presentation slides
 [https://speakerdeck.com/benas/easy-batch](https://speakerdeck.com/benas/easy-batch)
 
@@ -36,25 +42,29 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 ### Blog posts
 - [How I reduced my Java batch application’s code by 80% using Easy Batch](http://blog.mahmoud-benhassine.fr/2014/01/21/how-i-reduced-my-java-app-code-by-80%25-using-easy-batch.html)
 - [Easy Batch vs Spring Batch : a Hello World comparison](http://blog.mahmoud-benhassine.fr/2014/03/03/spring-batch-vs-easy-batch:-a-hello-world-comparison.html)
+- [Easy Batch vs Spring Batch : a performance comparison](http://blog.mahmoud-benhassine.fr/2015/02/15/spring-batch-vs-easy-batch:-a-performance-comparison.html)
 
 ## Current version
 
-The current stable version of Easy Batch is 2.2.0 : [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/).
-<br/>
-The current development version of Easy Batch is 3.0.0-SNAPSHOT
-<br/>
-<a href="https://buildhive.cloudbees.com/job/benas/job/easy-batch/"><img src="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/></a>
-<a href="http://www.jetbrains.com/idea/"><img src="https://raw.github.com/benas/easy-batch/master/site/img/misc/idea.png"/></a>
+* The current stable version is 2.2.0: [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/)
+* The current development version is 3.0.0-SNAPSHOT
 
-## License
-Easy Batch is released under the [MIT License](http://opensource.org/licenses/mit-license.php/).
+## Contribution
+
+You are welcome to contribute to the project with pull requests on GitHub.
+
+If you believe you found a bug, please use the [issue tracker](https://github.com/benas/easy-batch/issues).
+
+It would be great to attach a JUnit test that fails and it would be awesome to send a pull request with a patch that fixes the bug!
+
+For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or chat with the team on [Gitter](https://gitter.im/benas/easy-batch).
 
 ## Awesome contributors
 
 * [ammachado](https://github.com/ammachado)
 * [anandhi](https://github.com/anandhi)
 * [chellan](https://github.com/chellan)
-* [jawher] (https://github.com/jawher)
+* [jawher](https://github.com/jawher)
 * [natlantisprog](https://github.com/natlantisprog)
 * [nicopatch](https://github.com/nicopatch)
 * [nihed](https://github.com/nihed)
@@ -62,12 +72,30 @@ Easy Batch is released under the [MIT License](http://opensource.org/licenses/mi
 
 Thank you all for your contributions!
 
-## Contribution
+## License
 
-To report issues, please use the [issue tracker](https://github.com/benas/easy-batch/issues).
+Easy Batch is released under the [MIT License](http://opensource.org/licenses/mit-license.php/):
 
-You can contribute to the project with pull requests on GitHub, your are welcome.
+```
+The MIT License (MIT)
 
-If you believe you found a bug, please consider sending a pull request with a JUnit test that fails.
+Copyright (c) 2015 Mahmoud Ben Hassine (mahmoud@benhassine.fr)
 
-For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or chat with the team on [Gitter](https://gitter.im/benas/easy-batch).
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```
