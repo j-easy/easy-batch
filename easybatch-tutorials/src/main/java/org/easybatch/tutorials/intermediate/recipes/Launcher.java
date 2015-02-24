@@ -40,7 +40,7 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         // Initialize input file recipes.txt
-        File recipes = new File(args[0]);
+        File recipes = new File(Launcher.class.getResource("/org/easybatch/tutorials/intermediate/recipes/recipes.txt").toURI());
 
         // Build a batch engine
         Engine engine = new EngineBuilder()

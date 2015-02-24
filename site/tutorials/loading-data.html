@@ -165,7 +165,9 @@ title : Loading data in a database
 }</code></pre>
         </div>
 
-                <h2 id="3">3. Running the tutorial</h2>
+                <h2>2. Running the tutorial</h2>
+
+        <h3>2.1 From the command line</h3>
 
         <p>To run the tutorial, proceed as follows:</p>
         <div class="bs-callout bs-callout-code">
@@ -193,16 +195,29 @@ Tweet : id= 2 | user= bar | message= @foo I do confirm :-)
 INFO: Shutting down easy batch engine</code></pre>
         </div>
 
-<p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/intermediate/load" target="_blank">here</a>.</p>
+<h3>2.2 From your IDE</h3>
 
-                <h2 id="4">4. Summary</h2>
+<p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/intermediate/load" target="_blank">here</a>:</p>
+
+<div class="bs-callout bs-callout-code">
+    <pre><code>$>git clone https://github.com/benas/easy-batch.git</code></pre>
+</div>
+
+<p>If you do not have git installed, you can download a zip file containing the project's source code from GitHub
+    <a href="https://github.com/benas/easy-batch/archive/easybatch-{{ site.version }}.zip">here</a>.</p>
+
+<p>Then, import the <code><em>easybatch-tutorials</em></code> module in you favorite IDE and resolve maven dependencies.</p>
+
+<p>Finally, run the <code><em>org.easybatch.tutorials.intermediate.load.Launcher</em></code> class without any argument.</p>
+
+<h2>3. Summary</h2>
 
                 <p>In this tutorial, you have learned how to use Easy Batch in a typical enterprise requirement to persist data into a database.
                     Note that you have only wrote the <code><em>TweetLoader</em></code> and <code><em>TransactionProcessingEventListener</em></code>
                     which represent your application's logic and have reused exactly the same components that served for another application.
                     This is how flexible Easy Batch's API is to enforce reuse.</p>
 
-<h2 id="9">9. What's next?</h2>
+<h2>4. What's next?</h2>
 
 <p>In the next tutorial, you will learn how to build a <a
         href="http://fr.wikipedia.org/wiki/Extract_Transform_Load">Extract-Transform-Load</a> application using Easy Batch.

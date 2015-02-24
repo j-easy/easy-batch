@@ -25,11 +25,11 @@
 package org.easybatch.tutorials.advanced.parallel;
 
 import org.easybatch.core.api.Record;
+import org.easybatch.core.dispatcher.PoisonRecordBroadcaster;
 import org.easybatch.core.dispatcher.RoundRobinRecordDispatcher;
 import org.easybatch.core.filter.PoisonRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.reader.QueueRecordReader;
-import org.easybatch.core.dispatcher.PoisonRecordBroadcaster;
 import org.easybatch.flatfile.FlatFileRecordReader;
 import org.easybatch.tutorials.basic.helloworld.TweetProcessor;
 
@@ -54,7 +54,8 @@ public class ParallelTutorialWithRecordDispatching {
     public static void main(String[] args) throws Exception {
 
         // Input file tweets.csv
-        File tweets = new File(args[0]);
+        File tweets = new File(ParallelTutorialWithRecordDispatching.class
+                            .getResource("/org/easybatch/tutorials/advanced/parallel/tweets.csv").toURI());
 
         // Create queues
         BlockingQueue<Record> queue1 = new LinkedBlockingQueue<Record>();

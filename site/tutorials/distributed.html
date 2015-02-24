@@ -64,7 +64,7 @@ title : Distributed jobs
         <p>The <code><em>JMSUtil</em></code> class is the same class used in the <a href="./jms.html">Asynchronous jobs tutorial</a> and is used to start an embedded JMS broker
             and send JMS messages to the queue.</p>
 
-        <h2>4. Putting it all together</h2>
+        <h2>3. Putting it all together</h2>
 
         <p>To launch the tutorial, we will use the following class:</p>
 
@@ -96,9 +96,11 @@ title : Distributed jobs
         <p>This class starts an embedded HTTP server and registers the <code><em>RestEndpointRecordDispatcher</em></code>
         to listen to incoming requests on <code><em>http://localhost:8000/api/orders</em></code>.</p>
 
-              <h2 id="3">3. Running the tutorial</h2>
+              <h2>4. Running the tutorial</h2>
 
-<p>To run the tutorial, proceed as follow:</p>
+        <h3>4.1 From the command line</h3>
+
+<p>To run the tutorial from scratch, proceed as follow:</p>
 <div class="bs-callout bs-callout-code">
 <pre><code>$>git clone https://github.com/benas/easy-batch.git
 $>cd easy-batch
@@ -129,15 +131,28 @@ Hit enter to stop the application...</code></pre>
             <code><em>curl -XPUT http://localhost:8000/api/orders -d '{orderData}'</em></code> for example
         and see that the worker engine has processed the record.</p>
 
-<p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/distributed" target="_blank">here</a>.</p>
+<h3>4.2 From your IDE</h3>
 
-              <h2 id="4">4. Summary</h2>
+<p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/distributed" target="_blank">here</a>:</p>
+
+<div class="bs-callout bs-callout-code">
+    <pre><code>$>git clone https://github.com/benas/easy-batch.git</code></pre>
+</div>
+
+<p>If you do not have git installed, you can download a zip file containing the project's source code from GitHub
+    <a href="https://github.com/benas/easy-batch/archive/easybatch-{{ site.version }}.zip">here</a>.</p>
+
+<p>Then, import the <code><em>easybatch-tutorials</em></code> module in you favorite IDE and resolve maven dependencies.</p>
+
+<p>Finally, run the <code><em>org.easybatch.tutorials.advanced.distributed.RestEndpointRecordDispatcherLauncher</em></code> class without any argument.</p>
+
+              <h2>5. Summary</h2>
 
         <p>In this tutorial, you have seen one possible way of load balancing the work across multiple worker engines.
         Even though the tutorial uses a single worker engine on the local machine, you can configure the record dispatcher
         with several JMS queues deployed on a cluster of distributed machines.</p>
 
-<h2 id="9">9. What's next?</h2>
+<h2>6. What's next?</h2>
 
 <p>That was all for advanced tutorials, you are now ready to develop any kind of batch application using Easy Batch.
     Congratulations!</p>

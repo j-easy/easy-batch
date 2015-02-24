@@ -25,9 +25,9 @@
 package org.easybatch.tutorials.basic.pipeline.unixLike;
 
 import org.easybatch.core.api.Report;
+import org.easybatch.core.filter.GrepFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.core.filter.GrepFilter;
 import org.easybatch.flatfile.FlatFileRecordReader;
 
 import java.io.File;
@@ -42,7 +42,7 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         // Input file tweets.csv
-        File tweets = new File(args[0]);
+        File tweets = new File(Launcher.class.getResource("/org/easybatch/tutorials/basic/keyapis/tweets.csv").toURI());
 
         // Build a batch engine
         Engine engine = new EngineBuilder()

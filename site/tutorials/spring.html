@@ -104,9 +104,12 @@ title : Job configuration with Spring
 }</code></pre>
         </div>
 
-        <h3>3. Run the tutorial</h3>
+        <h2>3. Run the tutorial</h2>
 
-<p>To run this tutorial, proceed as follow:</p>
+        <h3>3.1 From the command line</h3>
+
+
+<p>To run this tutorial from scratch, proceed as follow:</p>
 <div class="bs-callout bs-callout-code">
 <pre><code>$>git clone https://github.com/benas/easy-batch.git
 $>cd easy-batch
@@ -116,7 +119,20 @@ $>mvn exec:java -PrunSpringTutorial
 </code></pre>
 </div>
 
-<p>You can find the complete source code of this tutorial <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/spring" target="_blank">here</a>.</p>
+<h3>3.2 From your IDE</h3>
+
+<p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/spring" target="_blank">here</a>:</p>
+
+<div class="bs-callout bs-callout-code">
+    <pre><code>$>git clone https://github.com/benas/easy-batch.git</code></pre>
+</div>
+
+<p>If you do not have git installed, you can download a zip file containing the project's source code from GitHub
+    <a href="https://github.com/benas/easy-batch/archive/easybatch-{{ site.version }}.zip">here</a>.</p>
+
+<p>Then, import the <code><em>easybatch-tutorials</em></code> module in you favorite IDE and resolve maven dependencies.</p>
+
+<p>Finally, run the <code><em>org.easybatch.tutorials.advanced.spring.Launcher</em></code> class without any argument.</p>
 
 <h2>4. Summary</h2>
 

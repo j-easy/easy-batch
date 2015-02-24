@@ -176,7 +176,9 @@ title : Indexing ElasticSearch tutorial
 
         <h2>6. Running the tutorial</h2>
 
-        <p>To run the tutorial, proceed as follow:</p>
+        <h3>6.1 From the command line</h3>
+
+        <p>To run the tutorial from scratch, proceed as follow:</p>
         <div class="bs-callout bs-callout-code">
 <pre><code>$>git clone https://github.com/benas/easy-batch.git
 $>cd easy-batch
@@ -199,13 +201,26 @@ tweet: {"id":2,"user":"bar","message":"@foo I do confirm :-)"}
 INFO: Shutting down easy batch engine</code></pre>
         </div>
 
-<p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/intermediate/elasticsearch" target="_blank">here</a>.
+<h3>6.2 From your IDE</h3>
 
-<h2>8. Summary</h2>
+<p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/intermediate/elasticsearch" target="_blank">here</a>:</p>
+
+<div class="bs-callout bs-callout-code">
+    <pre><code>$>git clone https://github.com/benas/easy-batch.git</code></pre>
+</div>
+
+<p>If you do not have git installed, you can download a zip file containing the project's source code from GitHub
+    <a href="https://github.com/benas/easy-batch/archive/easybatch-{{ site.version }}.zip">here</a>.</p>
+
+<p>Then, import the <code><em>easybatch-tutorials</em></code> module in you favorite IDE and resolve maven dependencies.</p>
+
+<p>Finally, run the <code><em>org.easybatch.tutorials.intermediate.elasticsearch.ElasticSearchTutorial</em></code> class without any argument.</p>
+
+<h2>7. Summary</h2>
 
 <p>In this tutorial, you have learned how to build a typical ETL application with a minimum effort thanks to Easy Batch.</p>
 
-<h2>9. What's next?</h2>
+<h2>8. What's next?</h2>
 
 <p>Until now, you have only processed data in standard formats: CSV, XML, JSON and relational.
     What if your data is organized in a specific format? In the next tutorial, you will learn how to implement your own Easy Batch components

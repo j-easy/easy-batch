@@ -44,7 +44,8 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         //load tweets from tweets.csv
-        File tweets = new File(args[0]);
+        File tweets = new File(Launcher.class
+                .getResource("/org/easybatch/tutorials/basic/keyapis/tweets.csv").toURI());
 
         //Start embedded database server
         DatabaseUtil.startEmbeddedDatabase();

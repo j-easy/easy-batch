@@ -252,6 +252,8 @@ title : Parallel jobs
 
               <h2>5. Running the tutorial</h2>
 
+        <h3>5.1 From the command line</h3>
+
 <p>To run the tutorials, proceed as follow:</p>
 <div class="bs-callout bs-callout-code">
 <pre><code>$>git clone https://github.com/benas/easy-batch.git
@@ -267,7 +269,25 @@ $>mvn exec:java -PrunParallelTutorialWithDataFiltering
 </code></pre>
 </div>
 
-<p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/parallel" target="_blank">here</a>.
+<h3>5.2 From your IDE</h3>
+
+<p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/parallel" target="_blank">here</a>:</p>
+
+<div class="bs-callout bs-callout-code">
+    <pre><code>$>git clone https://github.com/benas/easy-batch.git</code></pre>
+</div>
+
+<p>If you do not have git installed, you can download a zip file containing the project's source code from GitHub
+    <a href="https://github.com/benas/easy-batch/archive/easybatch-{{ site.version }}.zip">here</a>.</p>
+
+<p>Then, import the <code><em>easybatch-tutorials</em></code> module in you favorite IDE and resolve maven dependencies.</p>
+
+<p>Finally, run the one of the following classes without any argument:</p>
+<ul>
+    <li><code><em>org.easybatch.tutorials.advanced.parallel.ParallelTutorialWithDataFiltering</em></code></li>
+    <li><code><em>org.easybatch.tutorials.advanced.parallel.ParallelTutorialWithDataSplitting</em></code></li>
+    <li><code><em>org.easybatch.tutorials.advanced.parallel.ParallelTutorialWithRecordDispatching</em></code></li>
+</ul>
 
 <h2>6. Summary</h2>
 

@@ -65,9 +65,11 @@ ScheduledFuture scheduledFuture = scheduledExecutorService.schedule(engine, 5, T
 }</code></pre>
         </div>
 
-              <p>You can find the complete source code of this tutorial <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/quartz" target="_blank">here</a>.</p>
+<h2>3. Run the tutorial</h2>
 
-<p>To run the tutorial, follow these steps:</p>
+<h3>3.1 From the command line</h3>
+
+<p>To run the tutorial from scratch, follow these steps:</p>
 
 <div class="bs-callout bs-callout-code">
 <pre><code>$>git clone https://github.com/benas/easy-batch.git
@@ -79,6 +81,21 @@ $>mvn exec:java -PrunQuartzTutorial
 </div>
 
 <p>If everything is ok, you will see in the console that Easy Batch engine will run every minute.</p>
+
+<h3>3.2 From your IDE</h3>
+
+<p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/quartz" target="_blank">here</a>:</p>
+
+<div class="bs-callout bs-callout-code">
+    <pre><code>$>git clone https://github.com/benas/easy-batch.git</code></pre>
+</div>
+
+<p>If you do not have git installed, you can download a zip file containing the project's source code from GitHub
+    <a href="https://github.com/benas/easy-batch/archive/easybatch-{{ site.version }}.zip">here</a>.</p>
+
+<p>Then, import the <code><em>easybatch-tutorials</em></code> module in you favorite IDE and resolve maven dependencies.</p>
+
+<p>Finally, run the <code><em>org.easybatch.tutorials.advanced.quartz.Launcher</em></code> class without any argument.</p>
 
 <h2>3. Summary</h2>
 

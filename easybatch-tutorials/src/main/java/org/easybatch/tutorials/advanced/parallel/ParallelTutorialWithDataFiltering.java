@@ -50,7 +50,8 @@ public class ParallelTutorialWithDataFiltering {
     public static void main(String[] args) throws Exception {
 
         // Input file tweets.csv
-        File tweets = new File(args[0]);
+        File tweets = new File(ParallelTutorialWithDataFiltering.class
+                            .getResource("/org/easybatch/tutorials/advanced/parallel/tweets.csv").toURI());
 
         // Build worker engines
         // worker engine 1: process data from tweets.csv, filter records 6-10

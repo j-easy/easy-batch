@@ -116,7 +116,7 @@ title : Unix-like processing pipeline
         <p>Note that this is a <em>computational</em> processor since it does some computation.
             It should be placed at the end of the pipeline.</p>
 
-<h2>7. Putting it all together</h2>
+<h2>6. Putting it all together</h2>
 
 <p>To launch the tutorial, you can use the following class:<p>
 
@@ -147,6 +147,8 @@ title : Unix-like processing pipeline
 }</code></pre>
 </div>
 
+<h3>6.1 Run the tutorial from the command line</h3>
+
 <p>To run the tutorial, proceed as follow:</p>
 <div class="bs-callout bs-callout-code">
 <pre><code>$>git clone https://github.com/benas/easy-batch.git
@@ -171,15 +173,28 @@ The number of words in tweets containing #EasyBatch = 4
 INFO: Shutting down easy batch engine</code></pre>
 </div>
 
-<p>The complete source code of this tutorial is available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/basic/pipeline" target="_blank">here</a>.
+<h3>6.2 Run the tutorial from your IDE</h3>
 
-<h2 id="8">8. Summary</h2>
+<p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/basic/pipeline/unixLike" target="_blank">here</a>:</p>
+
+<div class="bs-callout bs-callout-code">
+    <pre><code>$>git clone https://github.com/benas/easy-batch.git</code></pre>
+</div>
+
+<p>If you do not have git installed, you can download a zip file containing the project's source code from GitHub
+    <a href="https://github.com/benas/easy-batch/archive/easybatch-{{ site.version }}.zip">here</a>.</p>
+
+<p>Then, import the <code><em>easybatch-tutorials</em></code> module in you favorite IDE and resolve maven dependencies.</p>
+
+<p>Finally, run the <code><em>org.easybatch.tutorials.basic.pipeline.unixLike.Launcher</em></code> class without any argument.</p>
+
+<h2>7. Summary</h2>
 
 <p>In this tutorial, you have learned how to build a unix like data processing pipeline using Easy Batch.
     This is actually a sort of filter-map-reduce implementation.
     All the power is now in your hands to imagine and build all sorts of pipelines, easily!</p>
 
-<h2 id="9">9. What's next?</h2>
+<h2>8. What's next?</h2>
 
 <p>That was all for basic tutorials, you can now move on to the next level to see how to build real world enterprise
     batch applications using Easy Batch.</p>

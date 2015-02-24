@@ -214,9 +214,6 @@
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
                             <mainClass>org.easybatch.tutorials.basic.keyapis.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/basic/keyapis/tweets.csv</argument>
-                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -234,9 +231,6 @@
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
                             <mainClass>org.easybatch.tutorials.basic.pipeline.unixLike.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/basic/keyapis/tweets.csv</argument>
-                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -272,9 +266,6 @@
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
                             <mainClass>org.easybatch.tutorials.intermediate.load.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/basic/keyapis/tweets.csv</argument>
-                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -309,9 +300,6 @@
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
                             <mainClass>org.easybatch.tutorials.intermediate.recipes.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/intermediate/recipes/recipes.txt</argument>
-                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -330,9 +318,6 @@
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
                             <mainClass>org.easybatch.tutorials.advanced.parallel.ParallelTutorialWithRecordDispatching</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/advanced/parallel/tweets.csv</argument>
-                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -350,9 +335,6 @@
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
                             <mainClass>org.easybatch.tutorials.advanced.parallel.ParallelTutorialWithDataFiltering</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/advanced/parallel/tweets.csv</argument>
-                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -370,10 +352,6 @@
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
                             <mainClass>org.easybatch.tutorials.advanced.parallel.ParallelTutorialWithDataSplitting</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/advanced/parallel/tweets-part1.csv</argument>
-                                <argument>${project.basedir}/src/main/resources/org/easybatch/tutorials/advanced/parallel/tweets-part2.csv</argument>
-                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -409,9 +387,6 @@
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
                             <mainClass>org.easybatch.tutorials.advanced.quartz.Launcher</mainClass>
-                            <arguments>
-                                <argument>${project.basedir}/src/main/resources/greetings.csv</argument>
-                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -446,9 +421,6 @@
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
                             <mainClass>org.easybatch.tutorials.advanced.jmx.Launcher</mainClass>
-                            <arguments>
-                                <argument>/tmp/greetings-jmx.csv</argument>
-                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>

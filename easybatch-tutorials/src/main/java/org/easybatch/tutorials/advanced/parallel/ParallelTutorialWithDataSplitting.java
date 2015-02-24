@@ -47,10 +47,12 @@ public class ParallelTutorialWithDataSplitting {
     public static void main(String[] args) throws Exception {
 
         // Input file tweets-part1.csv
-        File tweetsPart1 = new File(args[0]);
+        File tweetsPart1 = new File(ParallelTutorialWithDataSplitting.class
+                .getResource("/org/easybatch/tutorials/advanced/parallel/tweets-part1.csv").toURI());
 
         // Input file tweets-part2.csv
-        File tweetsPart2 = new File(args[1]);
+        File tweetsPart2 = new File(ParallelTutorialWithDataSplitting.class
+                .getResource("/org/easybatch/tutorials/advanced/parallel/tweets-part2.csv").toURI());
 
         // Build worker engines
         Engine engine1 = buildEngine(tweetsPart1);

@@ -45,7 +45,7 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         // Input file tweets.csv
-        File tweets = new File(args[0]);
+        File tweets = new File(Launcher.class.getResource("/org/easybatch/tutorials/basic/keyapis/tweets.csv").toURI());
 
         // Build a batch engine
         Engine engine = new EngineBuilder()
@@ -60,7 +60,7 @@ public class Launcher {
         Report report = engine.call();
 
         // Print the batch execution report
-        System.out.println("Total tweets containing #EasyBatch: " + report.getBatchResult());
+        System.out.println("Total tweets containing #EasyBatch = " + report.getBatchResult());
 
     }
 
