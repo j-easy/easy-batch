@@ -162,6 +162,12 @@
             <version>2.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -266,6 +272,23 @@
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
                             <mainClass>org.easybatch.tutorials.intermediate.load.Launcher</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>runMongoDBTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin-version}</version>
+                        <configuration>
+                            <mainClass>org.easybatch.tutorials.intermediate.mongodb.Launcher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
