@@ -67,7 +67,16 @@ END</code></pre>
 
               <p>So let's get started!</p>
 
-              <h2>2. Reading recipes</h2>
+<h2>2. What you’ll need</h2>
+
+<ul>
+    <li>JDK 1.6+</li>
+    <li>Maven</li>
+    <li>Git (Optional)</li>
+    <li>Your favorite IDE (Optional)</li>
+</ul>
+
+              <h2>3. Reading recipes</h2>
 
               <p>First, you will define a <code>logical</code> recipe record that represent multiple physical records in the flat file:</p>
 
@@ -161,7 +170,7 @@ END</code></pre>
 
               <p>The implementation is pretty straightforward. The devil is in the <code><em>readNextRecord</em></code> method: this is where you should iterate on physical records until finding a <em>END</em> record to create a recipe instance.</p>
 
-<h2>3. Mapping recipes</h2>
+<h2>4. Mapping recipes</h2>
 
               <p>The record reader that we implemented not only reads data but also maps data to domain objects.
                   Mapping data to domain objects is the role of the <code><em>RecordMapper</em></code> component.</p>
@@ -171,7 +180,7 @@ END</code></pre>
 
                 <p>Easy Batch provides the <code><em>GenericRecordMapper</em></code> that returns the record payload object as is. We can use this mapper to return recipes from the <code><em>RecipeRecord</em></code>.</p>
 
-<h2>4. Processing recipes</h2>
+<h2>5. Processing recipes</h2>
 
               <p>Now that you have mapped flat data to domain objects of type <code><em>Recipe</em></code>,
                   you will implement a <code><em>RecipeProcessor</em></code> that simply prints out recipes to the console as required:</p>
@@ -187,7 +196,7 @@ END</code></pre>
 }</code></pre>
     </div>
 
-<h2>5. Putting it all together</h2>
+<h2>6. Putting it all together</h2>
 
               <p>Let's configure an Easy Batch engine to:</p>
 
@@ -222,9 +231,9 @@ END</code></pre>
 
               <p>That's all, you can now run the tutorial and see the results.</p>
 
-<h2>6. Running the tutorial</h2>
+<h2>7. Running the tutorial</h2>
 
-        <h3>6.1 From the command line</h3>
+        <h3>7.1 From the command line</h3>
 
 <p>To run the tutorial from scratch, proceed as follow:</p>
 <div class="bs-callout bs-callout-code">
@@ -255,7 +264,7 @@ Recipe {name='Ice cream', ingredients=[
 INFO: Shutting down easy batch engine</code></pre>
 </div>
 
-<h3>6.2 From your IDE</h3>
+<h3>7.2 From your IDE</h3>
 
 <p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/intermediate/recipes" target="_blank">here</a>:</p>
 
@@ -270,12 +279,12 @@ INFO: Shutting down easy batch engine</code></pre>
 
 <p>Finally, run the <code><em>org.easybatch.tutorials.intermediate.recipes.Launcher</em></code> class without any argument.</p>
 
-<h2>7. Summary</h2>
+<h2>8. Summary</h2>
 
 <p>In this tutorial, you have learned how to process a non standard data format.
     Thanks to the flexible API of Easy Batch, integrating custom solutions is relatively easy.</p>
 
-<h2>8. What's next?</h2>
+<h2>9. What's next?</h2>
 
 <p>That was all for intermediate tutorials, you can move on to the advanced level to tackle funky stuff such as asynchronous processing and parallel jobs.</p>
 

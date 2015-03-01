@@ -20,7 +20,16 @@ title : Key APIs Tutorial
 
 This tutorial is divided into 5 parts. Each part will introduce a new API and give an example of how to use it.
 
-        <h2>2. Reading records</h2>
+<h2>2. What you’ll need</h2>
+
+<ul>
+    <li>JDK 1.6+</li>
+    <li>Maven</li>
+    <li>Git (Optional)</li>
+    <li>Your favorite IDE (Optional)</li>
+</ul>
+
+        <h2>3. Reading records</h2>
 
         <p>Unlike the hello world tutorial where tweets were read from a in-memory string, in this tutorial we will read data from a CSV flat file.
             Easy Batch provides the <code><em>FlatFileRecordReader</em></code> to read records from a flat file. So let's use this reader:</p>
@@ -31,7 +40,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
     .build();</code></pre>
 </div>
 
-        <h2>3. Filtering records</h2>
+        <h2>4. Filtering records</h2>
         <p>The <code><em>RecordFilter</em></code> allows you to filter records from being processed.
             In this tutorial, you would like to filter the header record containing field names.</p>
         <p>Easy Batch comes with several built-in filters for common use cases and you can implement your own filter as well.
@@ -45,7 +54,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
 
         <p>This snippet will tell the engine to skip the first record.</p>
 
-        <h2>4. Mapping records</h2>
+        <h2>5. Mapping records</h2>
 
         <div class="row">
 
@@ -97,7 +106,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
             an exception that will cause the engine to ignore this record and move to the next one.</p>
         </div>
 
-<h2>5. Validating records</h2>
+<h2>6. Validating records</h2>
 
         <div class="row">
 
@@ -148,7 +157,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
         When a record is not valid, the engine will reject it and move to the next one.</p>
 
 
-<h2 id="2">6. Processing tweets, finally!</h2>
+<h2 id="2">7. Processing tweets, finally!</h2>
 
         <p>At this stage, you have filtered undesired data, mapped tweets to domain objects and validated them.
         You should now be able to process tweets quietly.</p>
@@ -192,7 +201,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
     .build();</code></pre>
 </div>
 
-<h2>7. Putting it all together</h2>
+<h2>8. Putting it all together</h2>
 
 <p>To launch the tutorial, you will use the following class:<p>
 
@@ -222,7 +231,7 @@ This tutorial is divided into 5 parts. Each part will introduce a new API and gi
 }</code></pre>
 </div>
 
-        <h3>7.1 Run the tutorial from the command line</h3>
+        <h3>8.1 Run the tutorial from the command line</h3>
 
         <div class="row">
 
@@ -259,7 +268,7 @@ INFO: Shutting down easy batch engine</code></pre>
             </div>
         </div>
 
-<h3>7.2 Run the tutorial from your IDE</h3>
+<h3>8.2 Run the tutorial from your IDE</h3>
 
 <p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/basic/keyapis" target="_blank">here</a>:</p>
 
@@ -274,7 +283,7 @@ INFO: Shutting down easy batch engine</code></pre>
 
 <p>Finally, run the <code><em>org.easybatch.tutorials.basic.keyapis.Launcher</em></code> class without any argument.</p>
 
-<h2>8. Summary</h2>
+<h2>9. Summary</h2>
 
 <p>In this tutorial, you have learned how to use most of the common APIs of Easy Batch.
 You have seen how to filter, map and validate tweets before processing them.</p>
@@ -357,7 +366,7 @@ You have seen how to filter, map and validate tweets before processing them.</p>
     </tbody>
 </table>
 
-<h2>9. What's next?</h2>
+<h2>10. What's next?</h2>
 
 <p>Until now, you have always registered only one record processor.
     In the next tutorial, you will learn how to build a unix-like data processing pipeline with several processors.</p>

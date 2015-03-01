@@ -19,7 +19,16 @@ ScheduledFuture scheduledFuture = scheduledExecutorService.schedule(engine, 5, T
               <p>In this tutorial, you will learn how to schedule an Easy Batch instance using the built-in <code><em>EasyBatchScheduler</em></code> API.</p>
              <p>This API acts as a bridge so that you do not need to deal with Quartz low level APIs.</p>
 
-              <h2 id="quartzTutorial">2. Try it out</h2>
+<h2>2. What you’ll need</h2>
+
+<ul>
+    <li>JDK 1.6+</li>
+    <li>Maven</li>
+    <li>Git (Optional)</li>
+    <li>Your favorite IDE (Optional)</li>
+</ul>
+
+              <h2 id="quartzTutorial">3. Try it out</h2>
 
               <p>First, you need to add the <code>easybatch-quartz</code> module to your project dependencies:</p>
 
@@ -65,9 +74,9 @@ ScheduledFuture scheduledFuture = scheduledExecutorService.schedule(engine, 5, T
 }</code></pre>
         </div>
 
-<h2>3. Run the tutorial</h2>
+<h2>4. Run the tutorial</h2>
 
-<h3>3.1 From the command line</h3>
+<h3>4.1 From the command line</h3>
 
 <p>To run the tutorial from scratch, follow these steps:</p>
 
@@ -82,7 +91,7 @@ $>mvn exec:java -PrunQuartzTutorial
 
 <p>If everything is ok, you will see in the console that Easy Batch engine will run every minute.</p>
 
-<h3>3.2 From your IDE</h3>
+<h3>4.2 From your IDE</h3>
 
 <p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/quartz" target="_blank">here</a>:</p>
 
@@ -97,12 +106,12 @@ $>mvn exec:java -PrunQuartzTutorial
 
 <p>Finally, run the <code><em>org.easybatch.tutorials.advanced.quartz.Launcher</em></code> class without any argument.</p>
 
-<h2>4. Summary</h2>
+<h2>5. Summary</h2>
 
 <p>In this tutorial, you have learned how to schedule job executions using the Quartz integration module provided by Easy Batch.
     Thanks to this module, you can configure job scheduling without the need to deal with Quartz's low level API.</p>
 
-<h2>5. What's next?</h2>
+<h2>6. What's next?</h2>
 
 <p>If you are a <a href="http://spring.io" target="_blank">Spring</a> fan, the next tutorial is for you! You will learn how to configure Easy Batch as a Spring bean.</p>
 

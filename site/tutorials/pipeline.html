@@ -27,7 +27,16 @@ title : Unix-like processing pipeline
 
         <p>Let's get your hands dirty!</p>
 
-<h2>2. Reading tweets</h2>
+<h2>2. What you’ll need</h2>
+
+<ul>
+    <li>JDK 1.6+</li>
+    <li>Maven</li>
+    <li>Git (Optional)</li>
+    <li>Your favorite IDE (Optional)</li>
+</ul>
+
+<h2>3. Reading tweets</h2>
 
         <p>As in previous tutorial, you can use the <code><em>FlatFileRecordReader</em></code> to read tweets from the <code>tweets.csv</code> file:</p>
 
@@ -39,7 +48,7 @@ title : Unix-like processing pipeline
 
         <p>This reader will produce <code><em>StringRecord</em></code> with string payloads. You will implement several processor to operate on these strings.</p>
 
-<h2>3. Grepping tweets</h2>
+<h2>4. Grepping tweets</h2>
 
         <p>The <code>RecordFilter</code> API is a perfect candidate to implement the <code>grep</code> command.</p>
         <p>Easy Batch provides a built-in filter that mimics the <code>grep</code> command, it is called <code><em>GrepFilter</em></code>:</p>
@@ -53,7 +62,7 @@ title : Unix-like processing pipeline
 
 <p>This filter will filter records that do not contain the hash tag #EasyBatch.</p>
 
-<h2>4. Splitting tweets</h2>
+<h2>5. Splitting tweets</h2>
 
 <p>The next step is to implement the command <code><em>cut -d',' -f3</em></code>. Here is a processor that does the trick:</p>
 
@@ -88,7 +97,7 @@ title : Unix-like processing pipeline
         several times during its journey in the processing pipeline.</p>
 </div>
 
-<h2>5. Counting words</h2>
+<h2>6. Counting words</h2>
 
 <p>The next step is to implement the <code><em>wc -w</em></code> command. Here is a processor to do it:</p>
 
@@ -116,7 +125,7 @@ title : Unix-like processing pipeline
         <p>Note that this is a <em>computational</em> processor since it does some computation.
             It should be placed at the end of the pipeline.</p>
 
-<h2>6. Putting it all together</h2>
+<h2>7. Putting it all together</h2>
 
 <p>To launch the tutorial, you can use the following class:<p>
 
@@ -147,7 +156,7 @@ title : Unix-like processing pipeline
 }</code></pre>
 </div>
 
-<h3>6.1 Run the tutorial from the command line</h3>
+<h3>7.1 Run the tutorial from the command line</h3>
 
 <p>To run the tutorial, proceed as follow:</p>
 <div class="bs-callout bs-callout-code">
@@ -173,9 +182,9 @@ The number of words in tweets containing #EasyBatch = 4
 INFO: Shutting down easy batch engine</code></pre>
 </div>
 
-<h3>6.2 Run the tutorial from your IDE</h3>
+<h3>7.2 Run the tutorial from your IDE</h3>
 
-<p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/basic/pipeline/unixLike" target="_blank">here</a>:</p>
+<p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/basic/pipeline" target="_blank">here</a>:</p>
 
 <div class="bs-callout bs-callout-code">
     <pre><code>$>git clone https://github.com/benas/easy-batch.git</code></pre>
@@ -188,13 +197,13 @@ INFO: Shutting down easy batch engine</code></pre>
 
 <p>Finally, run the <code><em>org.easybatch.tutorials.basic.pipeline.unixLike.Launcher</em></code> class without any argument.</p>
 
-<h2>7. Summary</h2>
+<h2>8. Summary</h2>
 
 <p>In this tutorial, you have learned how to build a unix like data processing pipeline using Easy Batch.
     This is actually a sort of filter-map-reduce implementation.
     All the power is now in your hands to imagine and build all sorts of pipelines, easily!</p>
 
-<h2>8. What's next?</h2>
+<h2>9. What's next?</h2>
 
 <p>That was all for basic tutorials, you can now move on to the next level to see how to build real world enterprise
     batch applications using Easy Batch.</p>

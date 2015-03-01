@@ -25,7 +25,16 @@ title : Hello World Tutorial
 
         <p>Let's get started!</p>
 
-        <h2>2. Reading tweets</h2>
+        <h2>2. What you’ll need</h2>
+
+        <ul>
+            <li>JDK 1.6+</li>
+            <li>Maven</li>
+            <li>Git (Optional)</li>
+            <li>Your favorite IDE (Optional)</li>
+        </ul>
+
+        <h2>3. Reading tweets</h2>
 
 <p>You need to read records from a String, you can use the built-in <code><em>StringRecordReader</em></code>. This reader will read the data source line by line and produce
     <code><em>StringRecord</em></code> instances which, as you may have guessed, contain strings as payload, or tweets in our case. Let's configure an engine to use this reader:</p>
@@ -39,7 +48,7 @@ Engine engine = new EngineBuilder()
     .build();</code></pre>
 </div>
 
-        <h2>3. Processing tweets</h2>
+        <h2>4. Processing tweets</h2>
 
         <p>With Easy Batch, you only write your application's logic and let the framework take care of the boilerplate code of reading, parsing, logging, reporting, etc.</p>
 
@@ -65,7 +74,7 @@ Engine engine = new EngineBuilder()
                 We have only one processor in this tutorial, you will see how to build a data processing pipeline later on in <a href="./pipeline.html">this tutorial</a>.</p>
         </div>
 
-        <h2>4. Putting it all together</h2>
+        <h2>5. Putting it all together</h2>
 
         <p>Now that you have implemented the application's business logic, you should configure Easy Batch engine to:<p>
         <ol>
@@ -104,9 +113,9 @@ Engine engine = new EngineBuilder()
         <p>Easy Batch returns a report at the end of execution containing various metrics and statistics.
             In this example, its content is printed out to the console to examine it. Time to run the tutorial and see the result.</p>
 
-        <h2>5. Running the tutorial</h2>
+        <h2>6. Running the tutorial</h2>
 
-        <h3>5.1 From the command line</h3>
+        <h3>6.1 From the command line</h3>
         <div class="row">
         <div class="col-md-6">
             <p>To run the tutorial from scratch, you can follow these instructions:</p>
@@ -137,7 +146,7 @@ INFO: Shutting down easy batch engine</code></pre>
         </div>
         </div>
 
-        <h3>5.2 From your IDE</h3>
+        <h3>6.2 From your IDE</h3>
 
         <p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/basic/helloworld" target="_blank">here</a>:</p>
 
@@ -152,7 +161,7 @@ INFO: Shutting down easy batch engine</code></pre>
 
         <p>Finally, run the <code><em>org.easybatch.tutorials.basic.helloworld.Launcher</em></code> class without any argument.</p>
 
-        <h2>6. Summary</h2>
+        <h2>7. Summary</h2>
 
         <p>Congratulations! You have built your first batch application with Easy Batch.
             You learned how to create, configure and run a batch engine to process data from a data source.</p>
@@ -165,7 +174,7 @@ INFO: Shutting down easy batch engine</code></pre>
 
         <p>Easy Batch handled the boilerplate code of reading, parsing, logging and reporting for you.</p>
 
-        <h2>7. What's next?</h2>
+        <h2>8. What's next?</h2>
 
         <p>In the next tutorial, you will learn how to filter tweets, how to map them to a domain object named <code><em>Tweet</em></code>
         and how to validate them using the <a href="http://www.beanvalidation.org" target="_blank">Bean Validation API</a>.</p>

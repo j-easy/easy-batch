@@ -16,7 +16,16 @@ title : Indexing ElasticSearch tutorial
 
         <p>Let's get started!</p>
 
-<h2>2. Extracting tweets from database</h2>
+<h2>2. What you’ll need</h2>
+
+<ul>
+    <li>JDK 1.6+</li>
+    <li>Maven</li>
+    <li>Git (Optional)</li>
+    <li>Your favorite IDE (Optional)</li>
+</ul>
+
+<h2>3. Extracting tweets from the database</h2>
 
         Easy Batch provides the <code><em>JdbcRecordReader</em></code> that is designed to read data from a relational database using the
 <a href="http://docs.oracle.com/javase/tutorial/jdbc/" target="_blank">JDBC</a> API.
@@ -34,7 +43,7 @@ title : Indexing ElasticSearch tutorial
         <p>This reader produces <code><em>JdbcRecord</em></code> instances having a <code><em>java.sql.ResultSet</em></code> payload.
         You can access data of the current record using this payload.</p>
 
-<h2>3. Transforming tweets to Json objects</h2>
+<h2>4. Transforming tweets to Json objects</h2>
 
         <p>Before transforming tweets to Json, you would like to map relational data to instances of the <code><em>Tweet</em></code> bean. This is the Pojo-centric approach Easy Batch is all about.
             Once you get tweet objects, it will be easy to use ElasticSearch's APIs to index data in Json format.</p>
@@ -54,7 +63,7 @@ title : Indexing ElasticSearch tutorial
 
         <p>This mapper will produce <code><em>Tweet</em></code> objects that you can use to index ElasticSearch.</p>
 
-<h2>4. Loading tweets in ElasticSearch</h2>
+<h2>5. Loading tweets in ElasticSearch</h2>
 
         <p>At this stage, you will write a record processor that consumes <code><em>Tweet</em></code> objects and uses APIs provided
         by ElasticSearch to index data in Json format. Here is the <code><em>TweetTransformer</em></code>:</p>
@@ -121,7 +130,7 @@ title : Indexing ElasticSearch tutorial
     </ul>
 </div>
 
-<h2>5. Putting it all together</h2>
+<h2>6. Putting it all together</h2>
 
         <p>To run the tutorial, you will use this class:</p>
 
@@ -174,9 +183,9 @@ title : Indexing ElasticSearch tutorial
         <p>The code is self explanatory, the main part (in bold) is how to configure Easy Batch to read data form the database and index it in ElasticSearch.
         The remaining code is just for starting/stopping the embedded database and ElasticSearch servers.</p>
 
-        <h2>6. Running the tutorial</h2>
+        <h2>7. Running the tutorial</h2>
 
-        <h3>6.1 From the command line</h3>
+        <h3>7.1 From the command line</h3>
 
         <p>To run the tutorial from scratch, proceed as follow:</p>
         <div class="bs-callout bs-callout-code">
@@ -201,7 +210,7 @@ tweet: {"id":2,"user":"bar","message":"@foo I do confirm :-)"}
 INFO: Shutting down easy batch engine</code></pre>
         </div>
 
-<h3>6.2 From your IDE</h3>
+<h3>7.2 From your IDE</h3>
 
 <p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/intermediate/elasticsearch" target="_blank">here</a>:</p>
 
@@ -216,11 +225,11 @@ INFO: Shutting down easy batch engine</code></pre>
 
 <p>Finally, run the <code><em>org.easybatch.tutorials.intermediate.elasticsearch.ElasticSearchTutorial</em></code> class without any argument.</p>
 
-<h2>7. Summary</h2>
+<h2>8. Summary</h2>
 
 <p>In this tutorial, you have learned how to build a typical ETL application with a minimum effort thanks to Easy Batch.</p>
 
-<h2>8. What's next?</h2>
+<h2>9. What's next?</h2>
 
 <p>Until now, you have only processed data in standard formats: CSV, XML, JSON and relational.
     What if your data is organized in a specific format? In the next tutorial, you will learn how to implement your own Easy Batch components

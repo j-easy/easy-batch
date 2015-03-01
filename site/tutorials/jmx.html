@@ -36,7 +36,17 @@ title : Job monitoring with JMX
               </p>
               <br/>
 
-              <h2>2. Try it out</h2>
+<h2>2. What you’ll need</h2>
+
+<ul>
+    <li>JDK 1.6+</li>
+    <li>Maven</li>
+    <li>Any JMX compliant client (such as VisualVM)</li>
+    <li>Git (Optional)</li>
+    <li>Your favorite IDE (Optional)</li>
+</ul>
+
+              <h2>3. Try it out</h2>
 
               <p>In this tutorial, you will use the same application developed in the <a href="../tutorials/helloworld.html" target="_blank">Hello World tutorial</a>.
                   The main difference is that you will build a new slow processor to simulate long running processing:</p>
@@ -60,9 +70,9 @@ title : Job monitoring with JMX
 
               <p>The complete source code of this tutorial can be found <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/jmx" target="_blank">here</a>.</p>
 
-<h2>3. Run the tutorial</h2>
+<h2>4. Run the tutorial</h2>
 
-<h3>3.1 From the command line</h3>
+<h3>4.1 From the command line</h3>
 
               <p>To run the tutorial from scratch, follow these steps:</p>
 
@@ -82,7 +92,7 @@ $>mvn exec:java -PrunJmxTutorial
 
               <p>As described in the screen shot above, navigate to the <code>org.easybatch.core.jmx:type=EasyBatchMonitorMBean</code> MBean and you will be able to monitor the execution progress of the slow Hello World tutorial in real time.</p>
 
-<h3>3.2 From your IDE</h3>
+<h3>4.2 From your IDE</h3>
 
 <p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/jmx" target="_blank">here</a>:</p>
 
@@ -97,12 +107,12 @@ $>mvn exec:java -PrunJmxTutorial
 
 <p>Finally, run the <code><em>org.easybatch.tutorials.advanced.jmx.Launcher</em></code> class without any argument.</p>
 
-<h2>4. Summary</h2>
+<h2>5. Summary</h2>
 
         <p>In this tutorial, you have learned how to monitor job execution at runtime. Real time monitoring is an
         essential requirement for every production application and Easy Batch provides you this feature with no cost.</p>
 
-<h2>5. What's next?</h2>
+<h2>6. What's next?</h2>
 
 <p>In the next tutorial, you will tackle another production requirement which is scheduling job executions.
 Easy Batch provides integration with <a href="http://www.quartz-scheduler.org" target="_blank">Quartz</a> to schedule job execution.</p>

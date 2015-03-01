@@ -30,7 +30,16 @@ title : Parallel jobs
 </code></pre>
 </div>
 
-        <h2>2. Dispatching records</h2>
+<h2>2. What you’ll need</h2>
+
+<ul>
+    <li>JDK 1.6+</li>
+    <li>Maven</li>
+    <li>Git (Optional)</li>
+    <li>Your favorite IDE (Optional)</li>
+</ul>
+
+        <h2>3. Dispatching records</h2>
 
 <p>In order to distribute work to multiple engines, Easy Batch provides the <code><em>AbstractRecordDispatcher</em></code> API:</p>
 
@@ -113,7 +122,7 @@ title : Parallel jobs
         save you from writing the reading code yourself. When the master engine finishes reading the data source, it sends a <code><em>PoisonRecord</em></code>
             using the <code><em>PoisonRecordBroadcaster</em></code> to stop worker engines.</p>
 
-        <h2>3. Splitting the data source</h2>
+        <h2>4. Splitting the data source</h2>
 
         <p>It is a common technique to split the data source into multiple slices as follow:</p>
 
@@ -190,7 +199,7 @@ title : Parallel jobs
         to distribute files according to their type (for example: CSV files go to worker1, XML files to worker2, etc)</p>
         <p>This configuration is not implemented in this tutorial.</p>
 
-<h2>4. Filtering the data source</h2>
+<h2>5. Filtering the data source</h2>
 
         <p>Sometimes it is just impossible to split the data source into multiple physical parts. The third technique is to use a single data source
         but to instruct worker engines to process separate parts and filter the rest of the data source.</p>
@@ -250,9 +259,9 @@ title : Parallel jobs
 }</code></pre>
         </div>
 
-              <h2>5. Running the tutorial</h2>
+              <h2>6. Running the tutorial</h2>
 
-        <h3>5.1 From the command line</h3>
+        <h3>6.1 From the command line</h3>
 
 <p>To run the tutorials, proceed as follow:</p>
 <div class="bs-callout bs-callout-code">
@@ -269,7 +278,7 @@ $>mvn exec:java -PrunParallelTutorialWithDataFiltering
 </code></pre>
 </div>
 
-<h3>5.2 From your IDE</h3>
+<h3>6.2 From your IDE</h3>
 
 <p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/parallel" target="_blank">here</a>:</p>
 
@@ -289,7 +298,7 @@ $>mvn exec:java -PrunParallelTutorialWithDataFiltering
     <li><code><em>org.easybatch.tutorials.advanced.parallel.ParallelTutorialWithRecordDispatching</em></code></li>
 </ul>
 
-<h2>6. Summary</h2>
+<h2>7. Summary</h2>
 
               <p>In this tutorial, you have seen at least 3 ways of how to process data in parallel using multiple worker engines
                   in order to speed up the overall processing time.</p>
@@ -324,7 +333,7 @@ $>mvn exec:java -PrunParallelTutorialWithDataFiltering
         <p>Using a record dispatcher should be your first choice when dealing with data processing in parallel
             because it is more efficient than other techniques and provides the most natural way of distributing the work across multiple engines.</p>
 
-<h2>7. What's next?</h2>
+<h2>8. What's next?</h2>
 
 <p>In the next, you will learn how to process data asynchronously using a JMS queue.</p>
 

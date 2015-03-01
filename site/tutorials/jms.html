@@ -19,7 +19,16 @@ title : Asynchronous jobs
 
         <p>Let's get started.</p>
 
-        <h2>2. Reading tweets from JMS queue</h2>
+<h2>2. What you’ll need</h2>
+
+<ul>
+    <li>JDK 1.6+</li>
+    <li>Maven</li>
+    <li>Git (Optional)</li>
+    <li>Your favorite IDE (Optional)</li>
+</ul>
+
+        <h2>3. Reading tweets from JMS queue</h2>
 
         <p>The <code><em>JmsQueueRecordReader</em></code> needs to be configured with the JMS queue connection factory and the queue to read data from. It will produce <code><em>JmsRecord</em></code> instances with a <code><em>javax.jms.Message</em></code> as payload.</p>
 
@@ -33,7 +42,7 @@ title : Asynchronous jobs
         <p>The <code><em>JMSUtil</em></code> class is used to start an embedded broker and to provide JMS utilities.
             The broker setup details are not shown here for readability's sake.</p>
 
-        <h2>3. Processing tweets</h2>
+        <h2>4. Processing tweets</h2>
 
         <p>To process <code><em>JmsRecord</em></code> instances, you will use the following <code><em>RecordProcessor</em></code>:</p>
 
@@ -53,7 +62,7 @@ title : Asynchronous jobs
 
         <p>This processor will extract the message payload and print it out to the console.</p>
 
-        <h2>4. Putting it all together</h2>
+        <h2>5. Putting it all together</h2>
 
         <p>To launch the tutorial, you will use the following class:</p>
 
@@ -124,9 +133,9 @@ title : Asynchronous jobs
 
               <p>That's all, you can now run the tutorial and see the results.</p>
 
-              <h2>5. Running the tutorial</h2>
+              <h2>6. Running the tutorial</h2>
 
-        <h3>5.1 From the command line</h3>
+        <h3>6.1 From the command line</h3>
 
 <p>To run the tutorial, proceed as follow:</p>
 <div class="bs-callout bs-callout-code">
@@ -177,7 +186,7 @@ JMS message '2,bar,@foo I do confirm :-)' processed</code></pre>
 
               </div>
 
-<h3>5.2 From your IDE</h3>
+<h3>6.2 From your IDE</h3>
 
 <p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/spring" target="_blank">here</a>:</p>
 
@@ -198,7 +207,7 @@ JMS message '2,bar,@foo I do confirm :-)' processed</code></pre>
     <li></li>
 </ul>
 
-              <h2>6. Summary</h2>
+              <h2>7. Summary</h2>
 
               <p> In this tutorial, you have learned how to use Easy Batch along with JMS to create an asynchronous batch application.</p>
               <p>As you have seen in the <a href="./parallel.html">Parallel jobs tutorial</a>, you can also distribute the work across multiple Easy Batch worker instances.</p>
@@ -207,7 +216,7 @@ JMS message '2,bar,@foo I do confirm :-)' processed</code></pre>
             <p><i class="fa fa-info-circle"></i> When combined together, asynchronous and parallel processing provide an <strong>extremely powerful</strong> technique of data processing! Easy Batch makes it a breeze <i class="fa fa-smile-o"></i></p>
         </div>
 
-<h2>7. What's next?</h2>
+<h2>8. What's next?</h2>
 
 <p>In the next tutorial, you will go a step further, by balancing the workload to an army of worker engines distributed
 across a cluster of machines.</p>

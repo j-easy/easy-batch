@@ -10,7 +10,16 @@ title : Job configuration with Spring
               This can be done using the provided <code><em>EasyBatchFactoryBean</em></code>.</p>
            <p>In this tutorial, you will learn how to use this custom factory bean.</p>
 
-              <h2>2. Try it out</h2>
+<h2>2. What you’ll need</h2>
+
+<ul>
+    <li>JDK 1.6+</li>
+    <li>Maven</li>
+    <li>Git (Optional)</li>
+    <li>Your favorite IDE (Optional)</li>
+</ul>
+
+              <h2>3. Try it out</h2>
 
         <p>You will implement the same application developed in the <a href="./helloworld.html">Hello world tutorial</a> but you will use Spring to configure Easy Batch.</p>
               <p>First, you need to add the <code>easybatch-spring</code> module to your dependencies:</p>
@@ -104,9 +113,9 @@ title : Job configuration with Spring
 }</code></pre>
         </div>
 
-        <h2>3. Run the tutorial</h2>
+        <h2>4. Run the tutorial</h2>
 
-        <h3>3.1 From the command line</h3>
+        <h3>4.1 From the command line</h3>
 
 
 <p>To run this tutorial from scratch, proceed as follow:</p>
@@ -119,7 +128,7 @@ $>mvn exec:java -PrunSpringTutorial
 </code></pre>
 </div>
 
-<h3>3.2 From your IDE</h3>
+<h3>4.2 From your IDE</h3>
 
 <p>First, you need to checkout the source code of the tutorial available <a href="https://github.com/benas/easy-batch/tree/master/easybatch-tutorials/src/main/java/org/easybatch/tutorials/advanced/spring" target="_blank">here</a>:</p>
 
@@ -134,12 +143,12 @@ $>mvn exec:java -PrunSpringTutorial
 
 <p>Finally, run the <code><em>org.easybatch.tutorials.advanced.spring.Launcher</em></code> class without any argument.</p>
 
-<h2>4. Summary</h2>
+<h2>5. Summary</h2>
 
 <p>In this tutorial, you have learned how to configure Easy Batch using Spring framework.
 Note that you can change the processing pipeline by adding/removing processors without recompiling your application thanks to Spring's dependency injection.</p>
 
-<h2>5. What's next?</h2>
+<h2>6. What's next?</h2>
 
         <p>In the next tutorial, you will see how to process data in parallel using Easy Batch. You probably need a break and a coffee
             before starting out <i class="fa fa-smile-o"></i> .</p>
