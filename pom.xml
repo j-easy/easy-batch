@@ -157,6 +157,18 @@
 
             <dependency>
                 <groupId>org.easybatch</groupId>
+                <artifactId>easybatch-mongodb</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.easybatch</groupId>
+                <artifactId>easybatch-xstream</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-quartz</artifactId>
                 <version>${project.version}</version>
             </dependency>
