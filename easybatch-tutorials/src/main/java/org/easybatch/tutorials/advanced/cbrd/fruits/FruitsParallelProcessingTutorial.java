@@ -27,11 +27,11 @@ package org.easybatch.tutorials.advanced.cbrd.fruits;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.dispatcher.ContentBasedRecordDispatcher;
 import org.easybatch.core.dispatcher.ContentBasedRecordDispatcherBuilder;
+import org.easybatch.core.dispatcher.PoisonRecordBroadcaster;
 import org.easybatch.core.filter.PoisonRecordFilter;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.reader.QueueRecordReader;
 import org.easybatch.core.reader.StringRecordReader;
-import org.easybatch.core.dispatcher.PoisonRecordBroadcaster;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -45,7 +45,7 @@ import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
  *
 * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
 */
-public class ContentBasedRecordDispatcherTutorial {
+public class FruitsParallelProcessingTutorial {
 
     private static final int THREAD_POOL_SIZE = 4;
 

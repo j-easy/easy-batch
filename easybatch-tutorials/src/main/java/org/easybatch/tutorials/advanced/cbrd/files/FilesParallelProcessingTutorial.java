@@ -48,7 +48,7 @@ import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
  *
 * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
 */
-public class ParallelFileProcessingTutorial {
+public class FilesParallelProcessingTutorial {
 
     private static final int THREAD_POOL_SIZE = 3;
 
