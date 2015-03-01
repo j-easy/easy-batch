@@ -3,7 +3,7 @@
     <parent>
         <artifactId>easybatch-integration</artifactId>
         <groupId>org.easybatch</groupId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -44,7 +44,7 @@
         <url>git@github.com:benas/easy-batch.git</url>
         <connection>scm:git:git@github.com:benas/easy-batch.git</connection>
         <developerConnection>scm:git:git@github.com:benas/easy-batch.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>easybatch-3.0.0</tag>
     </scm>
 
     <issueManagement>
