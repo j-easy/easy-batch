@@ -1,4 +1,4 @@
-package org.easybatch.tutorials.intermediate.mongodb;
+package org.easybatch.tutorials.intermediate.mongodb.load;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
