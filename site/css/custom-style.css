@@ -74,6 +74,11 @@ code {
     height: auto;
 }
 
+.ebi-small {
+    max-width: 60%;
+    height: auto;
+}
+
 ul.list-lg li {
     border: 1px solid #eee;
     margin-bottom: -1px;
