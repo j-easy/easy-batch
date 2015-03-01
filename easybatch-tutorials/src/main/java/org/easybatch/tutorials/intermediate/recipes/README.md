@@ -1,8 +1,9 @@
-# Filter-Map-Reduce Tutorial
+# Recipes Tutorial
 
 ## Description
 
-This tutorial is a filter-map-reduce application that operates on a list of persons and calculates some statistics on these persons.
+This tutorial is an application that reads recipes from flat file and prints them out to the standard output.
+The goal of the tutorial is to show how to write a custom record reader to read a non standard data format.
 
 ## Pre-requisite
 
@@ -31,12 +32,12 @@ Open a terminal in the directory where you have extracted the source code of the
 $>cd easy-batch
 $>mvn install
 $>cd easybatch-tutorials
-$>mvn exec:java -PrunFilterMapReduceTutorial
+$>mvn exec:java -PrunRecipesTutorial
 ```
 
 ### From Your IDE
 
 * Import the `easybatch-tutorials` module in your IDE
 * Resolve maven dependencies
-* Navigate to the `org.easybatch.tutorials.basic.pipeline.filterMapReduce` package
-* Run the `org.easybatch.tutorials.basic.pipeline.filterMapReduce.FilterMapReduceTutorial` class without any argument
+* Navigate to the `org.easybatch.tutorials.intermediate.recipes` package
+* Run the `org.easybatch.tutorials.intermediate.recipes.Launcher` class without any argument

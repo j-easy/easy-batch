@@ -1,13 +1,14 @@
-# Filter-Map-Reduce Tutorial
+# MongoDB export Tutorial
 
 ## Description
 
-This tutorial is a filter-map-reduce application that operates on a list of persons and calculates some statistics on these persons.
+This tutorial is an application that reads tweets from MongoDB collection and export them in a XML file.
 
 ## Pre-requisite
 
 * JDK 1.6+
 * Maven
+* MongoDB up and running on default port (27017)
 * Git (optional)
 * Your favorite IDE (optional)
 
@@ -31,12 +32,12 @@ Open a terminal in the directory where you have extracted the source code of the
 $>cd easy-batch
 $>mvn install
 $>cd easybatch-tutorials
-$>mvn exec:java -PrunFilterMapReduceTutorial
+$>mvn exec:java -PrunMongoDBExportDataTutorial
 ```
 
 ### From Your IDE
 
 * Import the `easybatch-tutorials` module in your IDE
 * Resolve maven dependencies
-* Navigate to the `org.easybatch.tutorials.basic.pipeline.filterMapReduce` package
-* Run the `org.easybatch.tutorials.basic.pipeline.filterMapReduce.FilterMapReduceTutorial` class without any argument
+* Navigate to the `org.easybatch.tutorials.intermediate.mongodb.extract` package
+* Run the `org.easybatch.tutorials.intermediate.mongodb.extract.Launcher` class without any argument

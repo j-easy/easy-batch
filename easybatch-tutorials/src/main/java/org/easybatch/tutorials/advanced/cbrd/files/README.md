@@ -1,8 +1,10 @@
-# Filter-Map-Reduce Tutorial
+# Content-Based record dispatcher Tutorial 1
 
 ## Description
 
-This tutorial is a filter-map-reduce application that operates on a list of persons and calculates some statistics on these persons.
+This tutorial is a show case of the `ContentBasedRecordDispatcher`.
+The goal is to process a directory containing multiple files and to dispatch these files based on their content type.
+Input files are processed in parallel using multiple queues.
 
 ## Pre-requisite
 
@@ -31,12 +33,12 @@ Open a terminal in the directory where you have extracted the source code of the
 $>cd easy-batch
 $>mvn install
 $>cd easybatch-tutorials
-$>mvn exec:java -PrunFilterMapReduceTutorial
+$>mvn exec:java -PrunFilesParallelProcessingTutorial
 ```
 
 ### From Your IDE
 
 * Import the `easybatch-tutorials` module in your IDE
 * Resolve maven dependencies
-* Navigate to the `org.easybatch.tutorials.basic.pipeline.filterMapReduce` package
-* Run the `org.easybatch.tutorials.basic.pipeline.filterMapReduce.FilterMapReduceTutorial` class without any argument
+* Navigate to the `org.easybatch.tutorials.advanced.cbrd.files` package
+* Run the `org.easybatch.tutorials.advanced.cbrd.files.FilesParallelProcessingTutorial` class without any argument

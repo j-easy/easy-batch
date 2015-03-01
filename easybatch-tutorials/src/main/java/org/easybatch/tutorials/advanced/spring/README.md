@@ -1,8 +1,8 @@
-# Filter-Map-Reduce Tutorial
+# Spring Tutorial
 
 ## Description
 
-This tutorial is a filter-map-reduce application that operates on a list of persons and calculates some statistics on these persons.
+This tutorial is a show case of how to configure Easy Batch using Spring framework using the provided `org.easybatch.integration.spring.BatchFactoryBean`.
 
 ## Pre-requisite
 
@@ -31,12 +31,12 @@ Open a terminal in the directory where you have extracted the source code of the
 $>cd easy-batch
 $>mvn install
 $>cd easybatch-tutorials
-$>mvn exec:java -PrunFilterMapReduceTutorial
+$>mvn exec:java -PrunSpringTutorial
 ```
 
 ### From Your IDE
 
 * Import the `easybatch-tutorials` module in your IDE
 * Resolve maven dependencies
-* Navigate to the `org.easybatch.tutorials.basic.pipeline.filterMapReduce` package
-* Run the `org.easybatch.tutorials.basic.pipeline.filterMapReduce.FilterMapReduceTutorial` class without any argument
+* Navigate to the `org.easybatch.tutorials.advanced.spring` package
+* Run the `org.easybatch.tutorials.advanced.spring.Launcher` class without any argument

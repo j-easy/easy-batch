@@ -1,8 +1,9 @@
-# Filter-Map-Reduce Tutorial
+# Job scheduling Tutorial
 
 ## Description
 
-This tutorial is a filter-map-reduce application that operates on a list of persons and calculates some statistics on these persons.
+This tutorial is an application that schedule a batch job to run repeatedly every minute.
+The goal is to show how to use `easybatch-quartz` module APIs.
 
 ## Pre-requisite
 
@@ -31,12 +32,16 @@ Open a terminal in the directory where you have extracted the source code of the
 $>cd easy-batch
 $>mvn install
 $>cd easybatch-tutorials
-$>mvn exec:java -PrunFilterMapReduceTutorial
+$>mvn exec:java -PrunQuartzTutorial
 ```
+
+If everything is ok, you will see in the console that Easy Batch engine will run every minute.
 
 ### From Your IDE
 
 * Import the `easybatch-tutorials` module in your IDE
 * Resolve maven dependencies
-* Navigate to the `org.easybatch.tutorials.basic.pipeline.filterMapReduce` package
-* Run the `org.easybatch.tutorials.basic.pipeline.filterMapReduce.FilterMapReduceTutorial` class without any argument
+* Navigate to the `org.easybatch.tutorials.advanced.quartz` package
+* Run the `org.easybatch.tutorials.advanced.quartz.Launcher` class without any argument
+
+If everything is ok, you will see in the console that Easy Batch engine will run every minute.
