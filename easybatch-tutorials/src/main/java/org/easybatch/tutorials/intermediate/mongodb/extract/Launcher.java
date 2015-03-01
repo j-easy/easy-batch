@@ -64,6 +64,9 @@ public class Launcher {
 
         // run easy batch engine
         engine.call();
+
         System.out.println("Successfully exported tweets in : " + fileName);
+
+        mongoClient.close();
     }
 }

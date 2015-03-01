@@ -60,5 +60,7 @@ public class Launcher {
         // Run easy batch engine
         engine.call();
 
+        mongoClient.close();
+
     }
 }
