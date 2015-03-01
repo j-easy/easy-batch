@@ -258,7 +258,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.basic.pipeline.unixLike.Launcher</mainClass>
+                            <mainClass>org.easybatch.tutorials.basic.pipeline.Launcher</mainClass>
                             <systemProperties>
                                 <systemProperty>
                                     <key>java.util.logging.SimpleFormatter.format</key>
@@ -272,7 +272,7 @@
         </profile>
 
         <profile>
-            <id>runFilterMapReducePipelineTutorial</id>
+            <id>runFilterMapReduceTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
                 <plugins>
@@ -281,7 +281,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin-version}</version>
                         <configuration>
-                            <mainClass>org.easybatch.tutorials.basic.pipeline.filterMapReduce.FilterMapReduceTutorial</mainClass>
+                            <mainClass>org.easybatch.tutorials.basic.filterMapReduce.FilterMapReduceTutorial</mainClass>
                             <systemProperties>
                                 <systemProperty>
                                     <key>java.util.logging.SimpleFormatter.format</key>

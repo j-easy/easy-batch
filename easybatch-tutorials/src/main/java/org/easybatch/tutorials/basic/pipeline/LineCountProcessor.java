@@ -22,22 +22,29 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.basic.pipeline.filterMapReduce;
+package org.easybatch.tutorials.basic.pipeline;
 
+import org.easybatch.core.api.ComputationalRecordProcessor;
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordMapper;
 
 /**
- * A custom mapper that maps a person to it's age.
+ * A processor that mimics "wc -l" unix command.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class AgeMapper implements RecordMapper<Integer> {
+public class LineCountProcessor implements ComputationalRecordProcessor<Record, Record, Integer> {
+
+    private Integer count = 0;
 
     @Override
-    public Integer mapRecord(Record record) throws Exception {
-        Person person = (Person) record.getPayload();
-        return person.getAge();
+    public Record processRecord(Record record) throws Exception {
+        count ++;
+        return record;
+    }
+
+    @Override
+    public Integer getComputationResult() {
+        return count;
     }
 
 }

@@ -22,42 +22,32 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.basic.pipeline.unixLike;
+package org.easybatch.tutorials.basic.pipeline;
 
-import org.easybatch.core.api.Report;
-import org.easybatch.core.filter.GrepFilter;
-import org.easybatch.core.impl.Engine;
-import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.flatfile.FlatFileRecordReader;
+import org.easybatch.core.api.ComputationalRecordProcessor;
 
-import java.io.File;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
-* Main class to run the unix-like processing pipeline tutorial.
+ * A processor that mimics "sort" unix command.
  *
-* @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
-*/
-public class Launcher {
+ * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ */
+public class SortProcessor implements ComputationalRecordProcessor<String, String, Set<String>> {
 
-    public static void main(String[] args) throws Exception {
+    private Set<String> sortedStrings = new TreeSet<String>();
 
-        // Input file tweets.csv
-        File tweets = new File(Launcher.class.getResource("/org/easybatch/tutorials/basic/keyapis/tweets.csv").toURI());
 
-        // Build a batch engine
-        Engine engine = new EngineBuilder()
-                .reader(new FlatFileRecordReader(tweets))
-                .filter(new GrepFilter("#EasyBatch"))
-                .processor(new CutProcessor(",", 2))
-                .processor(new WordCountProcessor())
-                .build();
+    @Override
+    public String processRecord(String record) throws Exception {
+        sortedStrings.add(record);
+        return record;
+    }
 
-        // Run the batch engine
-        Report report = engine.call();
-
-        // Print the batch execution result
-        System.out.println("The number of words in tweets containing #EasyBatch = " + report.getBatchResult());
-
+    @Override
+    public Set<String> getComputationResult() {
+        return sortedStrings;
     }
 
 }

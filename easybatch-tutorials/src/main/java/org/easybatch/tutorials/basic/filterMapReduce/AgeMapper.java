@@ -22,29 +22,22 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.basic.pipeline.unixLike;
+package org.easybatch.tutorials.basic.filterMapReduce;
 
-import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.api.Record;
+import org.easybatch.core.api.RecordMapper;
 
 /**
- * A processor that mimics "tr" unix command.
+ * A custom mapper that maps a person to it's age.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class TranslateProcessor implements RecordProcessor<String, String> {
-
-    private String regexp;
-
-    private String replacement;
-
-    public TranslateProcessor(String regexp, String replacement) {
-        this.regexp = regexp;
-        this.replacement = replacement;
-    }
+public class AgeMapper implements RecordMapper<Integer> {
 
     @Override
-    public String processRecord(String record) throws Exception {
-        return record.replaceAll(regexp, replacement);
+    public Integer mapRecord(Record record) throws Exception {
+        Person person = (Person) record.getPayload();
+        return person.getAge();
     }
 
 }

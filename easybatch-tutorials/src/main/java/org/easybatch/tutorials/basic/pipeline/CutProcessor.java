@@ -22,30 +22,30 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.basic.pipeline.unixLike;
+package org.easybatch.tutorials.basic.pipeline;
 
 import org.easybatch.core.api.RecordProcessor;
-
-import java.io.OutputStream;
+import org.easybatch.core.record.StringRecord;
 
 /**
- * A record processor that prints input records to an output stream.
+ * A processor that mimics "cut" unix command.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class OutputProcessor implements RecordProcessor<String, String> {
+public class CutProcessor implements RecordProcessor<StringRecord, String> {
 
-    private OutputStream outputStream;
+    private String delimiter;
 
-    public OutputProcessor(OutputStream outputStream) {
-        this.outputStream = outputStream;
+    private int fieldNumber;
+
+    public CutProcessor(String delimiter, int fieldNumber) {
+        this.delimiter = delimiter;
+        this.fieldNumber = fieldNumber;
     }
 
     @Override
-    public String processRecord(String record) throws Exception {
-        outputStream.write(record.getBytes());
-        outputStream.write(System.getProperty("line.separator").getBytes());
-        return record;
+    public String processRecord(StringRecord record) throws Exception {
+        return record.getPayload().split(delimiter)[fieldNumber];
     }
 
 }

@@ -22,34 +22,29 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.basic.pipeline.unixLike;
+package org.easybatch.tutorials.basic.pipeline;
 
-import org.easybatch.core.api.ComputationalRecordProcessor;
-
-import java.util.HashSet;
-import java.util.Set;
+import org.easybatch.core.api.RecordProcessor;
 
 /**
- * A processor that mimics "uniq" unix command.
+ * A processor that mimics "tr" unix command.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class UniqProcessor implements ComputationalRecordProcessor<String, String, Set<String>> {
+public class TranslateProcessor implements RecordProcessor<String, String> {
 
-    private Set<String> uniqueStrings = new HashSet<String>();
+    private String regexp;
 
+    private String replacement;
 
-    @Override
-    public String processRecord(String record) throws Exception {
-        if (!uniqueStrings.contains(record)) {
-            uniqueStrings.add(record);
-        }
-        return record;
+    public TranslateProcessor(String regexp, String replacement) {
+        this.regexp = regexp;
+        this.replacement = replacement;
     }
 
     @Override
-    public Set<String> getComputationResult() {
-        return uniqueStrings;
+    public String processRecord(String record) throws Exception {
+        return record.replaceAll(regexp, replacement);
     }
 
 }

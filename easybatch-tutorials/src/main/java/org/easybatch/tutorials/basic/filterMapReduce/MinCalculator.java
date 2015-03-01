@@ -22,29 +22,30 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.basic.pipeline.unixLike;
+package org.easybatch.tutorials.basic.filterMapReduce;
 
 import org.easybatch.core.api.ComputationalRecordProcessor;
-import org.easybatch.core.api.Record;
 
 /**
- * A processor that mimics "wc -l" unix command.
+ * Record processor that calculates min value.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class LineCountProcessor implements ComputationalRecordProcessor<Record, Record, Integer> {
+public class MinCalculator implements ComputationalRecordProcessor<Integer, Integer, Integer> {
 
-    private Integer count = 0;
+    private Integer min = Integer.MAX_VALUE;
 
     @Override
-    public Record processRecord(Record record) throws Exception {
-        count ++;
+    public Integer processRecord(Integer record) throws Exception {
+        if (record < min) {
+            min = record;
+        }
         return record;
     }
 
     @Override
     public Integer getComputationResult() {
-        return count;
+        return min;
     }
 
 }

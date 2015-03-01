@@ -22,28 +22,70 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.basic.pipeline.filterMapReduce;
-
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
+package org.easybatch.tutorials.basic.filterMapReduce;
 
 /**
- * A record filter that filter persons by country.
+ * Person bean.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class CountryFilter implements RecordFilter {
+public class Person {
+
+    private String name;
 
     private String country;
 
-    public CountryFilter(String country) {
+    private int age;
+
+    public Person(String name, String country, int age) {
+        this.name = name;
         this.country = country;
+        this.age = age;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public int getAge() {
+        return age;
     }
 
     @Override
-    public boolean filterRecord(Record record) {
-        Person person = (Person) record.getPayload();
-        return !country.equalsIgnoreCase(person.getCountry());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Person person = (Person) o;
+
+        if (age != person.age) return false;
+        if (!country.equals(person.country)) return false;
+        if (!name.equals(person.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + country.hashCode();
+        result = 31 * result + age;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Person{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", country='").append(country).append('\'');
+        sb.append(", age=").append(age);
+        sb.append('}');
+        return sb.toString();
     }
 
 }

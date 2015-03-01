@@ -22,32 +22,30 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.basic.pipeline.unixLike;
+package org.easybatch.tutorials.basic.pipeline;
 
-import org.easybatch.core.api.ComputationalRecordProcessor;
+import org.easybatch.core.api.RecordProcessor;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.io.OutputStream;
 
 /**
- * A processor that mimics "sort" unix command.
+ * A record processor that prints input records to an output stream.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class SortProcessor implements ComputationalRecordProcessor<String, String, Set<String>> {
+public class OutputProcessor implements RecordProcessor<String, String> {
 
-    private Set<String> sortedStrings = new TreeSet<String>();
+    private OutputStream outputStream;
 
-
-    @Override
-    public String processRecord(String record) throws Exception {
-        sortedStrings.add(record);
-        return record;
+    public OutputProcessor(OutputStream outputStream) {
+        this.outputStream = outputStream;
     }
 
     @Override
-    public Set<String> getComputationResult() {
-        return sortedStrings;
+    public String processRecord(String record) throws Exception {
+        outputStream.write(record.getBytes());
+        outputStream.write(System.getProperty("line.separator").getBytes());
+        return record;
     }
 
 }

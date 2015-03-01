@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.basic.pipeline.filterMapReduce;
+package org.easybatch.tutorials.basic.filterMapReduce;
 
 import org.easybatch.core.api.Report;
 import org.easybatch.core.impl.Engine;

@@ -22,30 +22,28 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tutorials.basic.pipeline.filterMapReduce;
+package org.easybatch.tutorials.basic.pipeline;
 
 import org.easybatch.core.api.ComputationalRecordProcessor;
 
 /**
- * Record processor that calculates min value.
+ * A processor that mimics "wc -w" unix command.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class MinCalculator implements ComputationalRecordProcessor<Integer, Integer, Integer> {
+public class WordCountProcessor implements ComputationalRecordProcessor<String, String, Integer> {
 
-    private Integer min = Integer.MAX_VALUE;
-
-    @Override
-    public Integer processRecord(Integer record) throws Exception {
-        if (record < min) {
-            min = record;
-        }
-        return record;
-    }
+    private Integer count = 0;
 
     @Override
     public Integer getComputationResult() {
-        return min;
+        return count;
+    }
+
+    @Override
+    public String processRecord(String record) throws Exception {
+        count += record.split(" ").length;
+        return record;
     }
 
 }
