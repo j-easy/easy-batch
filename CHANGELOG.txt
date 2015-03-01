@@ -2,7 +2,7 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
-Changes in version 3.0.0 (2015-02-08)
+Changes in version 3.0.0 (2015-03-01)
 -------------------------------------
 
 * Introduced the processing pipeline in the framework's core

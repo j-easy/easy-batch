@@ -46,8 +46,8 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 
 ## Current version
 
-* The current stable version is 2.2.0: [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/)
-* The current development version is 3.0.0-SNAPSHOT
+* The current stable version is 3.0.0: [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/)
+* The current development version is 3.0.1-SNAPSHOT
 
 ## Contribution
 
