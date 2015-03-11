@@ -72,6 +72,12 @@ For any further question, you can use the [forum](https://groups.google.com/d/fo
 
 Thank you all for your contributions!
 
+## Acknowledgments
+
+Many thanks to [YourKit, LLC](https://www.yourkit.com/) for providing a free license of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/index.jsp) to kindly support the development of Easy Batch.
+
+![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)
+
 ## License
 
 Easy Batch is released under the [MIT License](http://opensource.org/licenses/mit-license.php/):
