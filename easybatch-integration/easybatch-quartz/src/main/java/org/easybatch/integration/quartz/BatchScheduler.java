@@ -30,6 +30,8 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.spi.JobFactory;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Quartz scheduler wrapper used to setup triggers.
@@ -37,6 +39,8 @@ import java.util.Date;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class BatchScheduler {
+
+    private static final Logger LOGGER = Logger.getLogger(BatchScheduler.class.getName());
 
     /**
      * The name of easy batch job trigger.
@@ -119,11 +123,12 @@ public class BatchScheduler {
             scheduler.scheduleJob(job, trigger);
             scheduler.start();
         } catch (SchedulerException e) {
+            throw new BatchSchedulerException("An exception occurred during scheduler startup", e);
+        } finally {
             try {
                 scheduler.shutdown(true);
-                throw new BatchSchedulerException("An exception occurred during scheduler startup", e);
-            } catch (SchedulerException e1) {
-                throw new BatchSchedulerException("Unable to shutdown the scheduler, the process may be killed", e1);
+            } catch (SchedulerException e) {
+                LOGGER.log(Level.WARNING, "Unable to shutdown the scheduler, the process may be killed", e);
             }
         }
     }
