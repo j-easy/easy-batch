@@ -46,7 +46,7 @@ public final class Engine implements Callable<Report> {
 
     private RecordReader recordReader;
 
-    private List<RecordFilter> filterChain;
+    private FilterChain filterChain;
 
     private RecordMapper recordMapper;
 
@@ -67,7 +67,7 @@ public final class Engine implements Callable<Report> {
     private Report report;
 
     Engine(final RecordReader recordReader,
-           final List<RecordFilter> filterChain,
+           final List<RecordFilter> filters,
            final RecordMapper recordMapper,
            final RecordValidator recordValidator,
            final List<RecordProcessor> processors,
@@ -77,7 +77,6 @@ public final class Engine implements Callable<Report> {
            final ErrorRecordHandler errorRecordHandler,
            final EventManager eventManager) {
         this.recordReader = recordReader;
-        this.filterChain = filterChain;
         this.recordMapper = recordMapper;
         this.recordValidator = recordValidator;
         this.filteredRecordHandler = filteredRecordHandler;
@@ -85,6 +84,7 @@ public final class Engine implements Callable<Report> {
         this.rejectedRecordHandler = rejectedRecordHandler;
         this.report = new Report();
         this.eventManager = eventManager;
+        this.filterChain = new FilterChain(filters, eventManager);
         this.processingPipeline = new ProcessingPipeline(processors, errorRecordHandler, report, eventManager);
     }
 
@@ -145,7 +145,7 @@ public final class Engine implements Callable<Report> {
                 report.setCurrentRecordNumber(currentRecordNumber);
 
                 //apply filter chain on the record
-                boolean filtered = filterRecord(currentRecord);
+                boolean filtered = filterChain.filterRecord(currentRecord);
                 if (filtered) {
                     report.addFilteredRecord(currentRecordNumber);
                     filteredRecordHandler.handle(currentRecord);
@@ -266,19 +266,6 @@ public final class Engine implements Callable<Report> {
         return typedRecord;
     }
 
-    private boolean filterRecord(Record currentRecord) {
-        eventManager.fireBeforeFilterRecord(currentRecord);
-        boolean filtered = false;
-        for (RecordFilter recordFilter : filterChain) {
-            if (recordFilter.filterRecord(currentRecord)) {
-                filtered = true;
-                break;
-            }
-        }
-        eventManager.fireAfterFilterRecord(currentRecord, filtered);
-        return filtered;
-    }
-
     private Record readRecord() throws Exception {
         eventManager.fireBeforeRecordRead();
         Record currentRecord = recordReader.readNextRecord();
@@ -291,7 +278,7 @@ public final class Engine implements Callable<Report> {
      */
 
     void addRecordFilter(final RecordFilter recordFilter) {
-        this.filterChain.add(recordFilter);
+        this.filterChain.addRecordFilter(recordFilter);
     }
 
     void setRecordReader(final RecordReader recordReader) {
