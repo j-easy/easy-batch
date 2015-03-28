@@ -26,9 +26,6 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 ### Project Home
 [http://www.easybatch.org](http://www.easybatch.org)
 
-### Continuous integration
-[Jenkins job @ cloudbees.com](https://buildhive.cloudbees.com/job/benas/job/easy-batch/)
-
 ### Agile Board
 [Backlog items @ waffle.io](https://waffle.io/easybatch/easybatch-framework)
 
@@ -46,7 +43,7 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 
 ## Current version
 
-* The current stable version is 3.0.0: [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/)
+* The current stable version is 3.0.0
 * The current development version is 3.0.1-SNAPSHOT
 
 ## Contribution
@@ -85,12 +82,6 @@ Many thanks to [JetBrains](https://www.jetbrains.com/) for providing a free lice
 Many thanks to [YourKit, LLC](https://www.yourkit.com/) for providing a free license of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/index.jsp) to kindly support the development of Easy Batch.
 
 ![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)
-
-### CloudBees
-
-Many thanks to [CloudBees]() for providing a free [Jenkins]() service to support continuous integration for open source projects.
-
-![CloudBees](https://www.cloudbees.com/sites/default/files/styles/large/public/Button-Powered-by-CB.png)
 
 ## License
 
