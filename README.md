@@ -50,7 +50,7 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 
 You are welcome to contribute to the project with pull requests on GitHub.
 
-If you believe you found a bug, please use the [issue tracker](https://github.com/benas/easy-batch/issues).
+If you believe you found a bug, please use the [issue tracker](https://github.com/easybatch/easybatch-framework/issues).
 
 It would be great to attach a JUnit test that fails and it would be awesome to send a pull request with a patch that fixes the bug!
 
