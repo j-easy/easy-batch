@@ -1,5 +1,5 @@
 ## What is Easy Batch?
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/benas/easy-batch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/EasyBatch/easybatch-framework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Easy Batch is a framework that aims to simplify batch processing with Java.
 
@@ -57,7 +57,7 @@ If you believe you found a bug, please use the [issue tracker](https://github.co
 
 It would be great to attach a JUnit test that fails and it would be awesome to send a pull request with a patch that fixes the bug!
 
-For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or chat with the team on [Gitter](https://gitter.im/benas/easy-batch).
+For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or chat with the team on [Gitter](https://gitter.im/EasyBatch/easybatch-framework).
 
 ## Awesome contributors
 
@@ -74,9 +74,23 @@ Thank you all for your contributions!
 
 ## Acknowledgments
 
+### JetBrains
+
+Many thanks to [JetBrains](https://www.jetbrains.com/) for providing a free license of [IntelliJ IDEA](https://www.jetbrains.com/idea/) to kindly support the development of Easy Batch.
+
+![IntelliJ IDEA](https://www.jetbrains.com/idea/docs/logo_intellij_idea.png)
+
+### YourKit
+
 Many thanks to [YourKit, LLC](https://www.yourkit.com/) for providing a free license of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/index.jsp) to kindly support the development of Easy Batch.
 
 ![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)
+
+### CloudBees
+
+Many thanks to [CloudBees]() for providing a free [Jenkins]() service to support continuous integration for open source projects.
+
+![CloudBees](https://www.cloudbees.com/sites/default/files/styles/large/public/Button-Powered-by-CB.png)
 
 ## License
 
