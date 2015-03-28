@@ -30,7 +30,7 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 [Jenkins job @ cloudbees.com](https://buildhive.cloudbees.com/job/benas/job/easy-batch/)
 
 ### Agile Board
-[Backlog items @ waffle.io](https://waffle.io/benas/easy-batch)
+[Backlog items @ waffle.io](https://waffle.io/easybatch/easybatch-framework)
 
 ### Presentation slides
 [https://speakerdeck.com/benas/easy-batch](https://speakerdeck.com/benas/easy-batch)
