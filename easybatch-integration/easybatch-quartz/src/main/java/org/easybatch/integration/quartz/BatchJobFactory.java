@@ -35,7 +35,7 @@ import org.quartz.spi.TriggerFiredBundle;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BatchJobFactory implements JobFactory {
+class BatchJobFactory implements JobFactory {
 
     /**
      * Batch instance.

@@ -34,7 +34,7 @@ import org.quartz.JobExecutionException;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BatchJob implements Job {
+class BatchJob implements Job {
 
     /**
      * Easy batch instance.
