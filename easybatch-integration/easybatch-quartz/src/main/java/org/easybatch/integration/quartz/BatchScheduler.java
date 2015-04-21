@@ -31,8 +31,6 @@ import org.quartz.spi.JobFactory;
 
 import java.util.Date;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Quartz scheduler wrapper used to setup triggers.
@@ -41,12 +39,10 @@ import java.util.logging.Logger;
  */
 public class BatchScheduler {
 
-    private static final Logger LOGGER = Logger.getLogger(BatchScheduler.class.getName());
-
     /**
      * The name of easy batch job trigger.
      */
-    public static final String BATCH_JOB_TRIGGER = "batch-job-trigger";
+    private String triggerName;
 
     /**
      * The name of easy batch job.
@@ -70,6 +66,7 @@ public class BatchScheduler {
             scheduler = schedulerFactory.getScheduler();
             scheduler.setJobFactory(jobFactory);
             jobName = "batch-job-" + UUID.randomUUID();
+            triggerName = "trigger-for-" + jobName;
         } catch (SchedulerException e) {
             throw new BatchSchedulerException("An exception occurred during scheduler setup", e);
         }
@@ -82,7 +79,7 @@ public class BatchScheduler {
      */
     public void scheduleAt(final Date startTime) {
         trigger = TriggerBuilder.newTrigger()
-                .withIdentity(BATCH_JOB_TRIGGER)
+                .withIdentity(triggerName)
                 .startAt(startTime)
                 .forJob(jobName)
                 .build();
@@ -98,7 +95,7 @@ public class BatchScheduler {
         SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(interval);
         simpleScheduleBuilder = simpleScheduleBuilder.repeatForever();
         trigger = TriggerBuilder.newTrigger()
-                .withIdentity(BATCH_JOB_TRIGGER)
+                .withIdentity(triggerName)
                 .startAt(startTime)
                 .withSchedule(simpleScheduleBuilder)
                 .forJob(jobName)
@@ -114,7 +111,7 @@ public class BatchScheduler {
      */
     public void scheduleCron(final String cronExpression) {
         trigger = TriggerBuilder.newTrigger()
-                .withIdentity(BATCH_JOB_TRIGGER)
+                .withIdentity(triggerName)
                 .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
                 .forJob(jobName)
                 .build();
@@ -132,12 +129,48 @@ public class BatchScheduler {
             scheduler.start();
         } catch (SchedulerException e) {
             throw new BatchSchedulerException("An exception occurred during scheduler startup", e);
-        } finally {
-            try {
-                scheduler.shutdown(true);
-            } catch (SchedulerException e) {
-                LOGGER.log(Level.WARNING, "Unable to shutdown the scheduler, the process may be killed", e);
-            }
+        }
+    }
+
+
+    /**
+     * Stop the scheduler.
+     *
+     * Note: The scheduler cannot be re-started.
+     *
+     * @throws BatchSchedulerException thrown if the scheduler cannot be stopped
+     */
+    public void stop() throws BatchSchedulerException {
+        try {
+            scheduler.shutdown();
+        } catch (SchedulerException e) {
+            throw new BatchSchedulerException("An exception occurred during scheduler shutdown", e);
+        }
+    }
+
+    /**
+     * Check if the scheduler is started.
+     *
+     * @throws BatchSchedulerException thrown if the scheduler status cannot be checked
+     */
+    public boolean isStarted() throws BatchSchedulerException {
+        try {
+            return scheduler.isStarted();
+        } catch (SchedulerException e) {
+            throw new BatchSchedulerException("An exception occurred during checking if the scheduler is started", e);
+        }
+    }
+
+    /**
+     * Check if the scheduler is stopped.
+     *
+     * @throws BatchSchedulerException thrown if the scheduler status cannot be checked
+     */
+    public boolean isStopped() throws BatchSchedulerException {
+        try {
+            return scheduler.isShutdown();
+        } catch (SchedulerException e) {
+            throw new BatchSchedulerException("An exception occurred during checking if the scheduler is stopped", e);
         }
     }
 
