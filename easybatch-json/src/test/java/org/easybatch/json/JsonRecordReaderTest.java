@@ -28,6 +28,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.InputStream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -41,12 +43,17 @@ public class JsonRecordReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/tweets.json"));
+        jsonRecordReader = new JsonRecordReader(getDataSource("/tweets.json"));
         jsonRecordReader.open();
     }
 
     @Test
-    public void parsedJsonRecordPayloadShouldBeTheSameAsInInputFile() throws Exception {
+    public void whenTheDataSourceIsNotEmpty_ThenTheJsonRecordReaderShouldHaveNextRecord() throws Exception {
+        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
+    }
+
+    @Test
+    public void parsedJsonRecordPayloadShouldBeTheSameAsInTheDataSource() throws Exception {
 
         assertThat(jsonRecordReader.hasNextRecord()).isTrue();
 
@@ -67,43 +74,25 @@ public class JsonRecordReaderTest {
         assertThat(jsonRecordReader.hasNextRecord()).isFalse();
     }
 
-    @Test
-    public void whenTheInputFileIsNotEmpty_ThenTheJsonRecordReaderShouldHaveNextRecord() throws Exception {
-        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
-    }
-
-    @Test
-    public void whenTheInputFileIsNotEmpty_ThenTheTotalRecordsCountShouldBeEqualToTheNumberOfRecordsInTheInputFile() throws Exception {
-        Long totalRecords = jsonRecordReader.getTotalRecords();
-        assertThat(totalRecords).isNotNull();
-        assertThat(totalRecords).isEqualTo(2);
-    }
-
     /*
      * Empty file tests
      */
 
     @Test
-    public void whenTheInputFileIsEmpty_ThenTheJsonRecordReaderShouldHaveNoNextRecord() throws Exception {
+    public void whenTheDataSourceIsEmpty_ThenTheJsonRecordReaderShouldHaveNoNextRecord() throws Exception {
         jsonRecordReader.close();
-        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/empty.json"));
+        jsonRecordReader = new JsonRecordReader(getDataSource("/empty.json"));
         jsonRecordReader.open();
         assertThat(jsonRecordReader.hasNextRecord()).isFalse();
-    }
-
-    @Test
-    public void whenTheInputFileIsEmpty_ThenTheTotalRecordsCountShouldBeEqualToZero() throws Exception {
-        jsonRecordReader.close();
-        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/empty.json"));
-        jsonRecordReader.open();
-        Long totalRecords = jsonRecordReader.getTotalRecords();
-        assertThat(totalRecords).isNotNull();
-        assertThat(totalRecords).isEqualTo(0);
     }
 
     @After
     public void tearDown() throws Exception {
         jsonRecordReader.close();
+    }
+
+    private InputStream getDataSource(String fileName) {
+        return this.getClass().getResourceAsStream(fileName);
     }
 
 }

@@ -28,7 +28,6 @@ import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
 
 import javax.json.Json;
-import javax.json.JsonException;
 import javax.json.JsonValue;
 import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
@@ -36,8 +35,6 @@ import javax.json.stream.JsonParser;
 import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Record reader that reads Json records from an array of Json objects:
@@ -54,8 +51,6 @@ import java.util.logging.Logger;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JsonRecordReader implements RecordReader {
-
-    private static final Logger LOGGER = Logger.getLogger(JsonRecordReader.class.getSimpleName());
 
     /**
      * The data source stream.
@@ -151,36 +146,7 @@ public class JsonRecordReader implements RecordReader {
 
     @Override
     public Long getTotalRecords() {
-        //Unable to use the same (or even another) json parser to calculate total record number of the input stream.
-        int data;
-        int rootObjectDepth = 0;
-        long totalRecords = 0;
-        try {
-            data = inputStream.read();
-            while(data != -1) {
-                char currentChar = (char)data;
-                if('{' == currentChar) {
-                    rootObjectDepth++;
-                }
-                if('}' == currentChar) {
-                    rootObjectDepth--;
-                    if (rootObjectDepth == 0) {
-                        totalRecords++;
-                    }
-                }
-                data = inputStream.read();
-            }
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Unable to calculate total records number in JSON stream.", e);
-            return null;
-        } finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "Unable to close JSON stream when calculating total records number.", e);
-            }
-        }
-        return totalRecords;
+        return null;
     }
 
     @Override
