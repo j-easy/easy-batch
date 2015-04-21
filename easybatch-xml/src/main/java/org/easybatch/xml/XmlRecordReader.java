@@ -29,7 +29,6 @@ import org.easybatch.core.api.RecordReader;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.EndDocument;
 import javax.xml.stream.events.XMLEvent;
 import java.io.InputStream;
@@ -38,7 +37,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A record reader that reads xml records from an xml file.
+ * A record reader that reads xml records from an xml stream.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -107,31 +106,7 @@ public class XmlRecordReader implements RecordReader {
 
     @Override
     public Long getTotalRecords() {
-        long totalRecords = 0;
-        XMLEventReader totalRecordsXmlEventReader = null;
-        try {
-            totalRecordsXmlEventReader =
-                    XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream);
-            XMLEvent event;
-            while (totalRecordsXmlEventReader.hasNext()) {
-                event = totalRecordsXmlEventReader.nextEvent();
-                if (event.isStartElement() && event.asStartElement().getName().toString().equals(rootElementName)) {
-                    totalRecords++;
-                }
-            }
-        } catch (XMLStreamException e) {
-            LOGGER.log(Level.SEVERE, "Unable to read data from xml stream " + xmlInputStream, e);
-            return null;
-        } finally {
-            if (totalRecordsXmlEventReader != null) {
-                try {
-                    totalRecordsXmlEventReader.close();
-                } catch (XMLStreamException e) {
-                    LOGGER.log(Level.SEVERE, "An exception occurred during closing xml total record reader", e);
-                }
-            }
-        }
-        return totalRecords;
+        return null;
     }
 
     @Override
@@ -148,16 +123,18 @@ public class XmlRecordReader implements RecordReader {
 
     /**
      * Utility method to check if the next tag matches a start tag of the root element.
+     *
      * @return true if the next tag matches a start element of the root element, false else
      * @throws Exception thrown if no able to peek the next xml element
      */
     private boolean nextTagIsRootElementStart() throws Exception {
         return xmlEventReader.peek().isStartElement() &&
-               xmlEventReader.peek().asStartElement().getName().toString().equalsIgnoreCase(rootElementName);
+                xmlEventReader.peek().asStartElement().getName().toString().equalsIgnoreCase(rootElementName);
     }
 
     /**
      * Utility method to check if the next tag matches an end tag of the root element.
+     *
      * @return true if the next tag matches an end tag of the root element, false else
      * @throws Exception thrown if no able to peek the next xml element
      */

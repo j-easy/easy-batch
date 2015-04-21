@@ -27,7 +27,7 @@ public class XmlRecordReaderTest {
 
     @Test
     public void testGetTotalRecords() throws Exception {
-        assertThat(xmlRecordReader.getTotalRecords()).isEqualTo(2);
+        assertThat(xmlRecordReader.getTotalRecords()).isNull();
     }
 
     @Test
@@ -58,7 +58,7 @@ public class XmlRecordReaderTest {
         xmlRecordReader.close();
         xmlRecordReader = new XmlRecordReader("person", this.getClass().getResourceAsStream("/persons-empty.xml"));
         xmlRecordReader.open();
-        assertThat(xmlRecordReader.getTotalRecords()).isEqualTo(0);
+        assertThat(xmlRecordReader.getTotalRecords()).isNull();
     }
 
     @Test
@@ -113,6 +113,6 @@ public class XmlRecordReaderTest {
     }
 
     private String getXmlFromFile(String file) {
-        return new Scanner(this.getClass().getResourceAsStream(file) ).useDelimiter("\\A").next();
+        return new Scanner(this.getClass().getResourceAsStream(file)).useDelimiter("\\A").next();
     }
 }
