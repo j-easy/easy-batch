@@ -38,6 +38,8 @@ import java.util.*;
  *
  * This reader is <strong>not</strong> recursive.
  *
+ * This reader produces {@link FileRecord} instances.
+ *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class FileRecordReader implements RecordReader {

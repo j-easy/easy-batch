@@ -1,6 +1,7 @@
 package org.easybatch.integration.jpa;
 
 import org.easybatch.core.api.Header;
+import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.GenericRecord;
 
@@ -12,7 +13,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Reader that reads data using the JPA API.
+ * Reader that reads data using the Java Persistence API.
+ *
+ * This reader produces {@link GenericRecord} instances that can be mapped
+ * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects.
+ *
+ * @param <T> the type of objects this reader will read.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -55,7 +61,7 @@ public class JpaRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public GenericRecord<T> readNextRecord() throws Exception {
+    public Record<T> readNextRecord() throws Exception {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new GenericRecord<T>(header, iterator.next());
     }

@@ -25,6 +25,7 @@
 package org.easybatch.flatfile;
 
 import org.easybatch.core.api.Header;
+import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.StringRecord;
 
@@ -36,6 +37,8 @@ import java.util.Scanner;
 
 /**
  * A {@link RecordReader} implementation that read data from a flat file.
+ *
+ * This reader produces {@link StringRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -92,7 +95,7 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
-    public StringRecord readNextRecord() {
+    public Record readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new StringRecord(header, scanner.nextLine());
     }

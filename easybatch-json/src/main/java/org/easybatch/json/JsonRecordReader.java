@@ -25,6 +25,7 @@
 package org.easybatch.json;
 
 import org.easybatch.core.api.Header;
+import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 import javax.json.Json;
@@ -39,6 +40,7 @@ import java.util.HashMap;
 /**
  * Record reader that reads Json records from an array of Json objects:
  *
+ *<p>
  * [
  *  {
  *      // JSON object
@@ -47,6 +49,9 @@ import java.util.HashMap;
  *      // JSON object
  *  }
  * ]
+ * </p>
+ *
+ * <p>This reader produces {@link JsonRecord} instances.</p>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -129,7 +134,7 @@ public class JsonRecordReader implements RecordReader {
     }
 
     @Override
-    public JsonRecord readNextRecord() throws Exception {
+    public Record readNextRecord() throws Exception {
         StringWriter stringWriter = new StringWriter();
         JsonGenerator jsonGenerator = jsonGeneratorFactory.createGenerator(stringWriter);
         writeRecordStart(jsonGenerator);

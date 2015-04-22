@@ -34,11 +34,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A convenient {@link org.easybatch.core.api.RecordReader} that reads data from a {@link java.util.List} of objects.<br/>
+ * A convenient {@link org.easybatch.core.api.RecordReader} that reads data from a {@link java.util.List} of objects.
  *
- * This reader returns {@link org.easybatch.core.record.GenericRecord} instances that should be mapped with {@link org.easybatch.core.mapper.GenericRecordMapper}
+ * This reader returns {@link org.easybatch.core.record.GenericRecord} instances that should be mapped
+ * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects from the list.
  *
- * in order to get the raw objects from the list.
+ * @param <T> the type of objects contained in the list
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

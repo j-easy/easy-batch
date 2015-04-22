@@ -37,6 +37,8 @@ import java.util.Iterator;
  * Reader that uses <a href="http://commons.apache.org/proper/commons-csv/">Apache Common CSV</a>
  * to read {@link ApacheCommonCsvRecord} instances from a CSV data source.
  *
+ * This reader produces {@link ApacheCommonCsvRecord} instances.
+ *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class ApacheCommonCsvRecordReader implements RecordReader {

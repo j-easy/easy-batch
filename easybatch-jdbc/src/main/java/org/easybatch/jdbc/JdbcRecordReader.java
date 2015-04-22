@@ -25,6 +25,7 @@
 package org.easybatch.jdbc;
 
 import org.easybatch.core.api.Header;
+import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 import java.sql.Connection;
@@ -37,6 +38,8 @@ import java.util.logging.Logger;
 
 /**
  * A {@link org.easybatch.core.api.RecordReader} that reads records from a database using jdbc API.
+ *
+ * This reader produces {@link JdbcRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -109,7 +112,7 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
-    public JdbcRecord readNextRecord() {
+    public Record readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new JdbcRecord(header, resultSet);
     }

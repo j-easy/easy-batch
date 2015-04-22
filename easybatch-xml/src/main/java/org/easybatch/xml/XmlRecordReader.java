@@ -25,6 +25,7 @@
 package org.easybatch.xml;
 
 import org.easybatch.core.api.Header;
+import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 import javax.xml.stream.XMLEventReader;
@@ -38,6 +39,8 @@ import java.util.logging.Logger;
 
 /**
  * A record reader that reads xml records from an xml stream.
+ *
+ * This reader produces {@link XmlRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -93,7 +96,7 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public XmlRecord readNextRecord() throws Exception {
+    public Record readNextRecord() throws Exception {
         StringBuilder stringBuilder = new StringBuilder("");
         while (!nextTagIsRootElementEnd()) {
             stringBuilder.append(xmlEventReader.nextEvent().toString());
