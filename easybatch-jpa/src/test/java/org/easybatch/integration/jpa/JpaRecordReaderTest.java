@@ -55,7 +55,7 @@ public class JpaRecordReaderTest {
 
     @Test
     public void testTotalRecords() throws Exception {
-        assertThat(jpaRecordReader.getTotalRecords()).isNull();//NYI
+        assertThat(jpaRecordReader.getTotalRecords()).isNotNull().isEqualTo(2);
     }
 
     @Test

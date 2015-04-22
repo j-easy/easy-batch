@@ -28,6 +28,8 @@ public class JpaRecordReader<T> implements RecordReader {
     private String query;
 
     private Class<T> type;
+
+    private List<T> records;
     
     private Iterator<T> iterator;
 
@@ -46,12 +48,12 @@ public class JpaRecordReader<T> implements RecordReader {
     @Override
     public void open() throws Exception {
         currentRecordNumber = 0;
-        TypedQuery<T> typedQuery = entityManager.createQuery(this.query, type);
+        TypedQuery<T> typedQuery = entityManager.createQuery(query, type);
         if (maxResultsEnabled) {
             typedQuery.setMaxResults(maxResults);
         }
-        List<T> list = typedQuery.getResultList();
-        iterator = list.iterator();
+        records = typedQuery.getResultList();
+        iterator = records.iterator();
     }
 
     @Override
@@ -67,7 +69,7 @@ public class JpaRecordReader<T> implements RecordReader {
 
     @Override
     public Long getTotalRecords() {
-        return null;
+        return (long) records.size();
     }
 
     @Override
