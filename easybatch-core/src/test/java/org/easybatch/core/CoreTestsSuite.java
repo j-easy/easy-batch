@@ -30,8 +30,7 @@ import org.easybatch.core.impl.EngineTest;
 import org.easybatch.core.mapper.converter.*;
 import org.easybatch.core.filter.*;
 import org.easybatch.core.mapper.ObjectMapperTest;
-import org.easybatch.core.reader.FileRecordReaderTest;
-import org.easybatch.core.reader.ListRecordReaderTest;
+import org.easybatch.core.reader.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -45,6 +44,9 @@ import org.junit.runners.Suite;
         // reader
         FileRecordReaderTest.class,
         ListRecordReaderTest.class,
+        QueueRecordReaderTest.class,
+        StringRecordReaderTest.class,
+        CliRecordReaderTest.class,
         // mapper
         ObjectMapperTest.class,
         AtomicIntegerTypeConverterTest.class,
