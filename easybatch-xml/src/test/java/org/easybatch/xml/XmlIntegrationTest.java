@@ -20,6 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class XmlIntegrationTest {
 
+    private static final String EXPECTED_DATA_SOURCE_NAME = "XML stream";
+
     @SuppressWarnings("unchecked")
     @Test
     public void testXmlProcessing() throws Exception {
@@ -43,6 +45,7 @@ public class XmlIntegrationTest {
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
         assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
+        assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
 
         List<Person> persons = (List<Person>) recordProcessor.getComputationResult();
 

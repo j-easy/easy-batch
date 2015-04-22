@@ -155,7 +155,7 @@ public class JsonRecordReader implements RecordReader {
 
     @Override
     public String getDataSourceName() {
-        return "Json stream: " + inputStream;
+        return "Json stream";
     }
 
     @Override

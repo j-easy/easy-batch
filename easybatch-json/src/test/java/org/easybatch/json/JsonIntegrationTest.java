@@ -20,6 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class JsonIntegrationTest {
 
+    private static final String EXPECTED_DATA_SOURCE_NAME = "Json stream";
+
     @SuppressWarnings("unchecked")
     @Test
     public void testJsonProcessing() throws Exception {
@@ -42,6 +44,7 @@ public class JsonIntegrationTest {
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
         assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
+        assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
 
         List<JsonRecord> tweets = (List<JsonRecord>) recordProcessor.getComputationResult();
 

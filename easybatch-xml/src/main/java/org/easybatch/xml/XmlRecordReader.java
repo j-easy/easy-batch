@@ -113,7 +113,7 @@ public class XmlRecordReader implements RecordReader {
 
     @Override
     public String getDataSourceName() {
-        return "XML stream: " + xmlInputStream;
+        return "XML stream";
     }
 
     @Override
