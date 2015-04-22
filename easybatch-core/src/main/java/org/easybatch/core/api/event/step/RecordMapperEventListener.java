@@ -28,7 +28,7 @@ import org.easybatch.core.api.Record;
 
 /**
  * Event interface collection for RecordMapper events.
- * <p>
+ * <p/>
  * You should implement this interface in your mapper to
  * declare the ability to receive events from the batch process.
  *
@@ -46,7 +46,7 @@ public interface RecordMapperEventListener {
     /**
      * Called directly after the mapper call.
      *
-     * @param record The incoming record.
+     * @param record      The incoming record.
      * @param typedRecord The mapping result.
      */
     void afterMapRecord(Record record, Object typedRecord);
@@ -55,7 +55,7 @@ public interface RecordMapperEventListener {
      * When the mapper throws an exception, this method will get the exception.
      * In addition you will receive the incoming record for further inspection.
      *
-     * @param t The exception thrown.
+     * @param t      The exception thrown.
      * @param record The record that was processed while the exception was thrown.
      */
     void onMapperException(Throwable t, Record record);

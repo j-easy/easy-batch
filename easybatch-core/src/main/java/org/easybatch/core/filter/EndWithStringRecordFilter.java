@@ -54,7 +54,7 @@ public class EndWithStringRecordFilter implements RecordFilter {
     }
 
     /**
-     * @param negate true if the filter should filter records that do not end with any of the given suffixes.
+     * @param negate   true if the filter should filter records that do not end with any of the given suffixes.
      * @param suffixes suffixes that cause the record to be filtered.
      */
     public EndWithStringRecordFilter(final boolean negate, final String... suffixes) {

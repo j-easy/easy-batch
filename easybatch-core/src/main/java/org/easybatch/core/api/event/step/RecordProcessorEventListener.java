@@ -26,7 +26,7 @@ package org.easybatch.core.api.event.step;
 
 /**
  * Event interface collection for RecordProcessor events.
- * <p>
+ * <p/>
  * You should implement this interface in your processor to
  * declare the ability to receive events from the batch process.
  *
@@ -36,20 +36,23 @@ public interface RecordProcessorEventListener {
 
     /**
      * Called before the record gets processed.
+     *
      * @param record The record that will be processed.
      */
     void beforeProcessingRecord(final Object record);
 
     /**
      * Called after the record has been processed.
-     * @param record The processed record.
+     *
+     * @param record           The processed record.
      * @param processingResult The processing result if any, called from {@link org.easybatch.core.api.ComputationalRecordProcessor#getComputationResult()}
      */
     void afterProcessingRecord(final Object record, final Object processingResult);
 
     /**
      * Called when an exception occurs during record processing
-     * @param record the currently processed record
+     *
+     * @param record    the currently processed record
      * @param throwable the exception occurred during record processing
      */
     void onRecordProcessingException(final Object record, final Throwable throwable);

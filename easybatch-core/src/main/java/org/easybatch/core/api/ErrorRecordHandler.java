@@ -29,11 +29,11 @@ package org.easybatch.core.api;
  *
  * @author Chellan (https://github.com/chellan)
  */
-public interface ErrorRecordHandler  {
+public interface ErrorRecordHandler {
 
     /**
      * @param record the error record to handle
-     * @param e the exception that caused the record to be rejected
+     * @param e      the exception that caused the record to be rejected
      */
     void handle(final Record record, final Throwable e);
 

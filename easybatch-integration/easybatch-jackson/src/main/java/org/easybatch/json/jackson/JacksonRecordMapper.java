@@ -34,7 +34,6 @@ import org.easybatch.json.JsonRecord;
  * to map json records to domain objects.
  *
  * @param <T> Target domain object class.
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JacksonRecordMapper<T> implements RecordMapper<T> {

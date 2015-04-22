@@ -26,14 +26,14 @@ package org.easybatch.core.api.event.batch;
 
 /**
  * Enables the implementing class to get an event on different steps within the batch process.
- * <p>
+ * <p/>
  * Use this interface when you want a listener that is not bound to a specific processor type, otherwise look at:
  * <ul>
- *     <li>{@link org.easybatch.core.api.event.step.RecordReaderEventListener}: for pre/post reading events</li>
- *     <li>{@link org.easybatch.core.api.event.step.RecordFilterEventListener}: for pre/post filtering events</li>
- *     <li>{@link org.easybatch.core.api.event.step.RecordMapperEventListener}: for pre/post mapping events</li>
- *     <li>{@link org.easybatch.core.api.event.step.RecordValidatorEventListener}: for pre/post validating events</li>
- *     <li>{@link org.easybatch.core.api.event.step.RecordProcessorEventListener}: for pre/post processing events</li>
+ * <li>{@link org.easybatch.core.api.event.step.RecordReaderEventListener}: for pre/post reading events</li>
+ * <li>{@link org.easybatch.core.api.event.step.RecordFilterEventListener}: for pre/post filtering events</li>
+ * <li>{@link org.easybatch.core.api.event.step.RecordMapperEventListener}: for pre/post mapping events</li>
+ * <li>{@link org.easybatch.core.api.event.step.RecordValidatorEventListener}: for pre/post validating events</li>
+ * <li>{@link org.easybatch.core.api.event.step.RecordProcessorEventListener}: for pre/post processing events</li>
  * </ul>
  *
  * @author Mario Mueller (mario@xenji.com)
@@ -52,7 +52,7 @@ public interface BatchProcessEventListener {
 
     /**
      * Called on any throwable event while processing.
-     * <p>
+     * <p/>
      * There is no context information available, so this will probably something you want to use for logging
      * purposes or similar.
      *

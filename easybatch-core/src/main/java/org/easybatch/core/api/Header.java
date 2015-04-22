@@ -25,9 +25,8 @@ public class Header {
     private Date creationDate;
 
     /**
-     *
-     * @param number physical record number in the data source (if defined).
-     * @param source data source name from which this record has been read.
+     * @param number       physical record number in the data source (if defined).
+     * @param source       data source name from which this record has been read.
      * @param creationDate date at which the record has been read.
      */
     public Header(Long number, String source, Date creationDate) {

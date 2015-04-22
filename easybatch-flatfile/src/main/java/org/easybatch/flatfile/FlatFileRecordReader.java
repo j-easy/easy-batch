@@ -36,7 +36,7 @@ import java.util.Scanner;
 
 /**
  * A {@link RecordReader} implementation that read data from a flat file.
- *
+ * <p/>
  * This reader produces {@link StringRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -72,6 +72,7 @@ public class FlatFileRecordReader implements RecordReader {
 
     /**
      * Constructs a flat file record reader.
+     *
      * @param input the input file
      * @throws FileNotFoundException thrown if the file does not exist
      */
@@ -81,7 +82,8 @@ public class FlatFileRecordReader implements RecordReader {
 
     /**
      * Constructs a flat file record reader.
-     * @param input the input file
+     *
+     * @param input       the input file
      * @param charsetName the encoding to use to read the file
      * @throws FileNotFoundException thrown if the file does not exist
      */

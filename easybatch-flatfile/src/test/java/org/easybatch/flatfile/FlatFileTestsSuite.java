@@ -35,7 +35,7 @@ import org.junit.runners.Suite;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses( {
+@Suite.SuiteClasses({
         DelimitedRecordMapperTest.class,
         FixedLengthRecordMapperTest.class,
         FlatFileRecordReaderTest.class,

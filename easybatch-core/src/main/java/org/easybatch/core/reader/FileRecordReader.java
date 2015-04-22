@@ -30,13 +30,16 @@ import org.easybatch.core.record.FileRecord;
 
 import java.io.File;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A convenient {@link RecordReader} that reads files in a directory.
- *
+ * <p/>
  * This reader is <strong>not</strong> recursive.
- *
+ * <p/>
  * This reader produces {@link FileRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -95,7 +98,7 @@ public class FileRecordReader implements RecordReader {
 
         files = new ArrayList<File>();
         File[] filesList = directory.listFiles();
-        if( filesList != null ) {
+        if (filesList != null) {
             for (File file : filesList) {
                 if (file.isFile()) {
                     files.add(file);
@@ -132,7 +135,7 @@ public class FileRecordReader implements RecordReader {
      * Get the total record number in the data source. This is useful to calculate execution progress.
      *
      * @return the total record number in the data source or null if the total records number cannot be
-     *         calculated in advance
+     * calculated in advance
      */
     @Override
     public Long getTotalRecords() {

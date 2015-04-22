@@ -36,6 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Unit test class for {@link ObjectMapper}.
+ *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class ObjectMapperTest {

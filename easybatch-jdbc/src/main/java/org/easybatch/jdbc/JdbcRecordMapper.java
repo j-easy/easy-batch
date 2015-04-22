@@ -37,7 +37,6 @@ import java.util.Map;
  * A {@link org.easybatch.core.api.RecordMapper} that maps database rows to domain objects.
  *
  * @param <T> the target domain object type.
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JdbcRecordMapper<T> implements RecordMapper<T> {
@@ -50,6 +49,7 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
     /**
      * Constructs a default JdbcRecordMapper instance. Column names will be fetched from the jdbc result set meta data
      * and set to fields with the same name of the target object.
+     *
      * @param recordClass the target domain object class
      */
     public JdbcRecordMapper(final Class<? extends T> recordClass) {
@@ -72,6 +72,7 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Register a custom type converter.
+     *
      * @param typeConverter the type converter to user
      */
     public void registerTypeConverter(final TypeConverter typeConverter) {

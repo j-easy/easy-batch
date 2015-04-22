@@ -97,7 +97,7 @@ public class JdbcRecordReaderTest {
         new File("mem.tmp").delete();
     }
 
-    private static void createTweetTable(Connection connection) throws Exception{
+    private static void createTweetTable(Connection connection) throws Exception {
         Statement statement = connection.createStatement();
         String query = "CREATE TABLE if not exists tweet (\n" +
                 "  id integer NOT NULL PRIMARY KEY,\n" +

@@ -56,7 +56,7 @@ public class FixedLengthRecordMapperTest {
         stringRecord = new StringRecord(header, "aaaabbccc");
     }
 
-    @Test (expected = Exception.class)
+    @Test(expected = Exception.class)
     public void testIllFormedRecord() throws Exception {
         stringRecord = new StringRecord(header, "aaaabbcccd"); // unexpected record size
         fixedLengthRecordMapper.parseRecord(stringRecord);

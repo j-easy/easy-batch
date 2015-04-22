@@ -28,7 +28,7 @@ import org.easybatch.core.api.Record;
 
 /**
  * Event interface collection for RecordFilter events.
- * <p>
+ * <p/>
  * You should implement this interface in your filter to
  * declare the ability to receive events from the batch process.
  *
@@ -38,13 +38,15 @@ public interface RecordFilterEventListener {
 
     /**
      * Called before the filter step.
+     *
      * @param record The record that gets filtered
      */
     void beforeFilterRecord(Record record);
 
     /**
      * Called after the filter step.
-     * @param record The record that has been processed.
+     *
+     * @param record       The record that has been processed.
      * @param filterRecord Indicates if the filter has been applied successfully. True if filtered, false if not.
      */
     void afterFilterRecord(Record record, boolean filterRecord);

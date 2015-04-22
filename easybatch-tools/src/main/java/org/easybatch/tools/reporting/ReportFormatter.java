@@ -30,13 +30,13 @@ import org.easybatch.core.api.Report;
  * Report formatter interface.
  *
  * @param <T> the report format type (HTML, PDF, etc)
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public interface ReportFormatter<T> {
 
     /**
      * Format easy batch report.
+     *
      * @param report the report to format
      * @return the formatted report
      */

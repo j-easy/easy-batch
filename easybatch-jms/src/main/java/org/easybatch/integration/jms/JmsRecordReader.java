@@ -32,9 +32,9 @@ import java.util.Date;
 
 /**
  * A record reader that reads records from a JMS queue.
- *
+ * <p/>
  * This reader produces {@link JmsRecord} instances of type {@link javax.jms.Message}.
- *
+ * <p/>
  * It will stop reading records when a {@link JmsPoisonMessage} is sent to the queue.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -59,7 +59,7 @@ public class JmsRecordReader implements RecordReader {
      * Create a Jms queue record reader.
      *
      * @param queueConnectionFactory the queue connection factory
-     * @param queue the jms queue to read records from
+     * @param queue                  the jms queue to read records from
      */
     public JmsRecordReader(final QueueConnectionFactory queueConnectionFactory, final Queue queue) {
         this.queueConnectionFactory = queueConnectionFactory;
@@ -83,7 +83,7 @@ public class JmsRecordReader implements RecordReader {
     public JmsRecord readNextRecord() throws Exception {
         Message message = queueReceiver.receive();
         String type = message.getStringProperty("type");
-        stop = message instanceof JmsPoisonMessage || (type!= null && type.equals("poison"));
+        stop = message instanceof JmsPoisonMessage || (type != null && type.equals("poison"));
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new JmsRecord(header, message);
     }

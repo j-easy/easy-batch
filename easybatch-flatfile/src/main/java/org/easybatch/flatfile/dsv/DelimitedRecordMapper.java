@@ -26,10 +26,10 @@ package org.easybatch.flatfile.dsv;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.api.TypeConverter;
 import org.easybatch.core.mapper.ObjectMapper;
 import org.easybatch.flatfile.FlatFileField;
 import org.easybatch.flatfile.FlatFileRecord;
-import org.easybatch.core.api.TypeConverter;
 
 import java.util.*;
 
@@ -37,7 +37,6 @@ import java.util.*;
  * DSV to Object mapper implementation.
  *
  * @param <T> the target domain object type
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class DelimitedRecordMapper<T> implements RecordMapper<T> {
@@ -105,6 +104,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
      * Constructs a default DelimitedRecordMapper instance.
      * Column names and expected record size will be calculated from the header record.
      * and set to fields with the same name of the target object.
+     *
      * @param recordClass the target domain object class
      */
     public DelimitedRecordMapper(final Class<? extends T> recordClass) {
@@ -115,8 +115,9 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
     /**
      * Constructs a DelimitedRecordMapper instance.
      * Expected record size will be calculated from the header record.
+     *
      * @param recordClass the target domain object class
-     * @param fieldNames a String array containing target type field names in the same order as in the delimited flat file.
+     * @param fieldNames  a String array containing target type field names in the same order as in the delimited flat file.
      */
     public DelimitedRecordMapper(final Class<? extends T> recordClass, final String[] fieldNames) {
         this(recordClass);
@@ -126,8 +127,9 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Constructs a DelimitedRecordMapper instance.
-     * @param recordClass the target domain object class
-     * @param fieldNames a String array containing target type field names in the same order as in the delimited flat file.
+     *
+     * @param recordClass          the target domain object class
+     * @param fieldNames           a String array containing target type field names in the same order as in the delimited flat file.
      * @param recordExpectedLength record expected length
      */
     public DelimitedRecordMapper(final Class<? extends T> recordClass, final String[] fieldNames, final int recordExpectedLength) {
@@ -138,7 +140,8 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
     /**
      * Constructs a DelimitedRecordMapper instance.
      * Expected record size will be calculated from the header record.
-     * @param recordClass the target domain object class
+     *
+     * @param recordClass     the target domain object class
      * @param fieldsPositions array of indexes of fields to retain
      */
     public DelimitedRecordMapper(final Class<? extends T> recordClass, final Integer[] fieldsPositions) {
@@ -149,9 +152,10 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
     /**
      * Constructs a DelimitedRecordMapper instance.
      * Expected record size will be calculated from the header record.
-     * @param recordClass the target domain object class
+     *
+     * @param recordClass     the target domain object class
      * @param fieldsPositions array of indexes of fields to retain
-     * @param fieldNames a String array representing fields name in the same order in the DSV flat file.
+     * @param fieldNames      a String array representing fields name in the same order in the DSV flat file.
      */
     public DelimitedRecordMapper(final Class<? extends T> recordClass, final Integer[] fieldsPositions, final String[] fieldNames) {
         this(recordClass);
@@ -161,9 +165,10 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Constructs a DelimitedRecordMapper instance.
-     * @param recordClass the target domain object class
-     * @param fieldsPositions array of indexes of fields to retain
-     * @param fieldNames a String array representing fields name in the same order in the DSV flat file.
+     *
+     * @param recordClass          the target domain object class
+     * @param fieldsPositions      array of indexes of fields to retain
+     * @param fieldNames           a String array representing fields name in the same order in the DSV flat file.
      * @param recordExpectedLength record expected length
      */
     public DelimitedRecordMapper(final Class<? extends T> recordClass, final Integer[] fieldsPositions, final String[] fieldNames, final int recordExpectedLength) {
@@ -236,7 +241,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
 
     private void filterFields(List<FlatFileField> fields) {
         Iterator<FlatFileField> iterator = fields.iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             int index = iterator.next().getIndex();
             if (!fieldsPositions.contains(index)) {
                 iterator.remove();
@@ -261,6 +266,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Set the delimiter to use.
+     *
      * @param delimiter the delimiter to use
      */
     public void setDelimiter(final String delimiter) {
@@ -274,6 +280,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Trim white spaces when parsing the DSV record.
+     *
      * @param trimWhitespaces true if whitespaces should be trimmed
      */
     public void setTrimWhitespaces(final boolean trimWhitespaces) {
@@ -282,6 +289,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Set the data qualifier to use.
+     *
      * @param qualifier the data qualifier to use.
      */
     public void setQualifier(final String qualifier) {
@@ -290,6 +298,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Register a custom type converter.
+     *
      * @param typeConverter the type converter to user
      */
     public void registerTypeConverter(final TypeConverter typeConverter) {

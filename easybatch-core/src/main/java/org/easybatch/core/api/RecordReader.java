@@ -34,18 +34,21 @@ public interface RecordReader {
 
     /**
      * Open the reader.
+     *
      * @throws Exception thrown if an exception occurs during reader opening
      */
     void open() throws Exception;
 
     /**
      * Check if the reader has a next record.
+     *
      * @return true if the reader has a next record, false else.
      */
     boolean hasNextRecord();
 
     /**
      * Read next record from the data source.
+     *
      * @return the next record from the data source.
      * @throws Exception thrown if an exception occurs during reading next record
      */
@@ -53,6 +56,7 @@ public interface RecordReader {
 
     /**
      * Get the total record number in the data source. This is useful to calculate execution progress.
+     *
      * @return the total record number in the data source or null if the total records number cannot be
      * calculated in advance
      */
@@ -60,12 +64,14 @@ public interface RecordReader {
 
     /**
      * This method returns a human readable data source name to be shown in the batch report.
+     *
      * @return the data source name this reader is reading data from
      */
     String getDataSourceName();
 
     /**
      * Close the reader.
+     *
      * @throws Exception thrown if an exception occurs during reader closing
      */
     void close() throws Exception;

@@ -36,7 +36,7 @@ import java.util.Scanner;
 /**
  * A convenient {@link RecordReader} that reads data from the standard input (useful for tests)
  * until a termination word is read (can be specified at construction time, "quit" by default).
- *
+ * <p/>
  * <p>Note: This reader produces {@link StringRecord} instances. when the termination word is read, the reader
  * returns a {@link PoisonRecord}, so you need to filter the last record with a {@link org.easybatch.core.filter.PoisonRecordFilter}
  * when using this reader.</p>
@@ -76,6 +76,7 @@ public class CliRecordReader implements RecordReader {
 
     /**
      * Constructs a CliRecordReader instance with a termination word.
+     *
      * @param terminationInput the word to type to stop reading from the standard input.
      */
     public CliRecordReader(String terminationInput) {

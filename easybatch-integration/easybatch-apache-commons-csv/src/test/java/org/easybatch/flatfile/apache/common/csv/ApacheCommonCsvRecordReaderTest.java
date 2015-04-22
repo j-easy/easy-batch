@@ -32,7 +32,7 @@ public class ApacheCommonCsvRecordReaderTest {
 
     @Test
     public void testHasNextRecord() throws Exception {
-         Assert.assertTrue(recordReader.hasNextRecord());
+        Assert.assertTrue(recordReader.hasNextRecord());
     }
 
     @Test

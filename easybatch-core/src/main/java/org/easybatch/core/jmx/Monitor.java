@@ -27,9 +27,9 @@ package org.easybatch.core.jmx;
 import org.easybatch.core.api.Report;
 
 /**
- *  JMX MBean implementation of {@link MonitorMBean}.
+ * JMX MBean implementation of {@link MonitorMBean}.
  *
- *  @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class Monitor implements MonitorMBean {
 

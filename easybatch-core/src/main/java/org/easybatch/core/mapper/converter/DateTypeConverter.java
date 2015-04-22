@@ -58,6 +58,7 @@ public class DateTypeConverter implements TypeConverter<Date> {
 
     /**
      * Create a Date converter with the specified date format.
+     *
      * @param dateFormat the date format to use
      */
     public DateTypeConverter(String dateFormat) {

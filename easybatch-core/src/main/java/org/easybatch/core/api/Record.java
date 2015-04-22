@@ -26,31 +26,32 @@ package org.easybatch.core.api;
 
 /**
  * Interface for input records.<br/>
- *
+ * <p/>
  * A record can be:
  * <ul>
- *     <li>A line in a flat file</li>
- *     <li>A tag in a xml file</li>
- *     <li>A row in a database table</li>
- *     <li>A file in a directory</li>
- *     <li>A message in a queue</li>
- *     <li>etc</li>
+ * <li>A line in a flat file</li>
+ * <li>A tag in a xml file</li>
+ * <li>A row in a database table</li>
+ * <li>A file in a directory</li>
+ * <li>A message in a queue</li>
+ * <li>etc</li>
  * </ul>
  *
  * @param <P> The record's payload type.
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public interface Record<P> {
 
     /**
      * Return the record's header.
+     *
      * @return the record's header.
      */
     Header getHeader();
 
     /**
      * Return the record's payload.
+     *
      * @return the record's payload.
      */
     P getPayload();

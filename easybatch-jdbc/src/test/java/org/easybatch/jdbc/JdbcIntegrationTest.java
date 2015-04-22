@@ -91,7 +91,7 @@ public class JdbcIntegrationTest {
         new File("mem.tmp").delete();
     }
 
-    private void createTweetTable(Connection connection) throws Exception{
+    private void createTweetTable(Connection connection) throws Exception {
         Statement statement = connection.createStatement();
         String query = "CREATE TABLE if not exists person (\n" +
                 "  id integer NOT NULL PRIMARY KEY,\n" +

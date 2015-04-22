@@ -26,10 +26,10 @@ package org.easybatch.flatfile.flr;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.api.TypeConverter;
 import org.easybatch.core.mapper.ObjectMapper;
 import org.easybatch.flatfile.FlatFileField;
 import org.easybatch.flatfile.FlatFileRecord;
-import org.easybatch.core.api.TypeConverter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +38,6 @@ import java.util.Map;
  * Fixed Length Record to Object mapper implementation.
  *
  * @param <T> the target domain object type
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
@@ -67,9 +66,10 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Constructs a FixedLengthRecordMapper instance.
-     * @param recordClass the target domain object class
+     *
+     * @param recordClass  the target domain object class
      * @param fieldsLength an array of fields length in the same order in the FLR flat file.
-     * @param fieldNames a String array representing fields name in the same order in the FLR flat file.
+     * @param fieldNames   a String array representing fields name in the same order in the FLR flat file.
      */
     public FixedLengthRecordMapper(Class<? extends T> recordClass, int[] fieldsLength, String[] fieldNames) {
         this.fieldsLength = fieldsLength.clone();
@@ -116,11 +116,12 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * utility method to calculate field offsets used to extract fields from record.
+     *
      * @param lengths fields length array
      * @return offsets array
      */
     private int[] calculateOffsets(final int[] lengths) {
-        int[] offsets = new int[ lengths.length + 1 ];
+        int[] offsets = new int[lengths.length + 1];
         offsets[0] = 0;
         for (int i = 0; i < lengths.length; i++) {
             offsets[i + 1] = offsets[i] + lengths[i];
@@ -130,6 +131,7 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Register a custom type converter.
+     *
      * @param typeConverter the type converter to user
      */
     public void registerTypeConverter(final TypeConverter typeConverter) {

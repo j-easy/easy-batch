@@ -58,20 +58,21 @@ public final class EngineBuilder {
         ErrorRecordHandler errorRecordHandler = new NoOpErrorRecordHandler();
         EventManager eventManager = new LocalEventManager();
         engine = new Engine(
-                        recordReader,
-                        filterChain,
-                        recordMapper,
-                        recordValidator,
-                        processingPipeline,
-                        filteredRecordHandler,
-                        ignoredRecordHandler,
-                        rejectedRecordHandler,
-                        errorRecordHandler,
-                        eventManager);
+                recordReader,
+                filterChain,
+                recordMapper,
+                recordValidator,
+                processingPipeline,
+                filteredRecordHandler,
+                ignoredRecordHandler,
+                rejectedRecordHandler,
+                errorRecordHandler,
+                eventManager);
     }
 
     /**
      * Static method to create a new {@link EngineBuilder}.
+     *
      * @return a new engine builder.
      */
     public static EngineBuilder aNewEngine() {
@@ -80,6 +81,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record reader.
+     *
      * @param recordReader the record reader to register
      * @return the engine builder
      */
@@ -90,6 +92,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record filter.
+     *
      * @param recordFilter the record filter to register
      * @return the engine builder
      */
@@ -100,6 +103,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record mapper.
+     *
      * @param recordMapper the record mapper to register
      * @return the engine builder
      */
@@ -110,6 +114,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record validator.
+     *
      * @param recordValidator the record validator to register
      * @return the engine builder
      */
@@ -120,6 +125,7 @@ public final class EngineBuilder {
 
     /**
      * Register a record processor.
+     *
      * @param recordProcessor the record processor to register
      * @return the engine builder
      */
@@ -130,6 +136,7 @@ public final class EngineBuilder {
 
     /**
      * Register a filtered record handler.
+     *
      * @param filteredRecordHandler the handler to process filtered record
      * @return the engine builder
      */
@@ -140,6 +147,7 @@ public final class EngineBuilder {
 
     /**
      * Register a ignored record handler.
+     *
      * @param ignoredRecordHandler the handler to process ignored record
      * @return the engine builder
      */
@@ -147,9 +155,10 @@ public final class EngineBuilder {
         engine.setIgnoredRecordHandler(ignoredRecordHandler);
         return this;
     }
-    
+
     /**
      * Register a rejected record handler.
+     *
      * @param rejectedRecordHandler the handler to process rejected record
      * @return the engine builder
      */
@@ -157,9 +166,10 @@ public final class EngineBuilder {
         engine.setRejectedRecordHandler(rejectedRecordHandler);
         return this;
     }
-    
+
     /**
      * Register a error record handler.
+     *
      * @param errorRecordHandler the handler to process error record
      * @return the engine builder
      */
@@ -170,6 +180,7 @@ public final class EngineBuilder {
 
     /**
      * Enable strict mode : if true, then the execution will be aborted on first mapping, validating or processing error.
+     *
      * @param strictMode true if strict mode should be enabled
      * @return the engine builder
      */
@@ -180,6 +191,7 @@ public final class EngineBuilder {
 
     /**
      * Parameter to mute all loggers.
+     *
      * @param silentMode true to enable silent mode
      * @return the engine builder
      */
@@ -190,6 +202,7 @@ public final class EngineBuilder {
 
     /**
      * Activate JMX monitoring.
+     *
      * @param jmx true to enable jmx monitoring
      * @return the engine builder
      */
@@ -290,6 +303,7 @@ public final class EngineBuilder {
 
     /**
      * Build an Easy Batch engine instance.
+     *
      * @return an Easy Batch instance
      */
     public Engine build() {

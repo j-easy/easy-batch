@@ -32,13 +32,13 @@ package org.easybatch.core.api;
  * @param <I> The input object type.
  * @param <O> The output object type.
  * @param <R> The computed result type.
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public interface ComputationalRecordProcessor<I, O, R> extends RecordProcessor<I, O> {
 
     /**
      * Returns the computation result.
+     *
      * @return the computation result
      */
     R getComputationResult();

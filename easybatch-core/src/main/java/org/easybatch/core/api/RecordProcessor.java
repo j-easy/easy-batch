@@ -31,13 +31,13 @@ package org.easybatch.core.api;
  *
  * @param <I> The input object type.
  * @param <O> The output object type.
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public interface RecordProcessor<I, O> {
 
     /**
      * Process a record.
+     *
      * @param record the record to process.
      * @return the processed record, may be of another type of the input object
      * @throws Exception thrown if an exception occurs during record processing

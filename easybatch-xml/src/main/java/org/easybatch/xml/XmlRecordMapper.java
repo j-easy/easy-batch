@@ -39,7 +39,6 @@ import java.io.File;
  * A record mapper that maps xml records to domain objects annotated with JaxB2 annotations.
  *
  * @param <T> the target domain object type
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class XmlRecordMapper<T> implements RecordMapper<T> {
@@ -56,6 +55,7 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Creates an XmlRecordMapper. Using this constructor, no validation against an xsd will be applied.
+     *
      * @param type the target domain object type.
      * @throws Exception thrown if an error occurs during the creation of Jaxb context.
      */
@@ -65,9 +65,10 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
     }
 
     /**
-     *  Creates an XmlRecordMapper.
+     * Creates an XmlRecordMapper.
+     *
      * @param type the target domain object type.
-     * @param xsd the xsd file against which xml records will be validated
+     * @param xsd  the xsd file against which xml records will be validated
      * @throws Exception thrown if an error occurs during the creation of Jaxb context.
      */
     public XmlRecordMapper(Class<? extends T> type, File xsd) throws Exception {

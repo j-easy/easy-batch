@@ -13,12 +13,11 @@ import java.util.List;
 
 /**
  * Reader that reads data using the Java Persistence API.
- *
+ * <p/>
  * This reader produces {@link GenericRecord} instances that can be mapped
  * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects.
  *
  * @param <T> the type of objects this reader will read.
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JpaRecordReader<T> implements RecordReader {
@@ -30,13 +29,13 @@ public class JpaRecordReader<T> implements RecordReader {
     private Class<T> type;
 
     private List<T> records;
-    
+
     private Iterator<T> iterator;
 
     private boolean maxResultsEnabled;
 
     private int maxResults;
-    
+
     private long currentRecordNumber;
 
     public JpaRecordReader(EntityManagerFactory entityManagerFactory, String query, Class<T> type) {

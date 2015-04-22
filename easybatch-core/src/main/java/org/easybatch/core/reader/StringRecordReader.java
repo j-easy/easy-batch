@@ -33,7 +33,7 @@ import java.util.Scanner;
 
 /**
  * A convenient {@link RecordReader} that reads data from a String.
- *
+ * <p/>
  * This reader produces {@link StringRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -64,6 +64,7 @@ public class StringRecordReader implements RecordReader {
 
     /**
      * Constructs a StringRecordReader.
+     *
      * @param content The String data source
      */
     public StringRecordReader(final String content) {

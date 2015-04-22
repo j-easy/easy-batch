@@ -11,7 +11,7 @@ import java.io.InputStream;
 public class JSR353Test {
 
     //@org.junit.Test
-    public void test1(){
+    public void test1() {
         String json = "{\"id\":\"1\",\"name\":\"foo\",\"isMarried\":true}";
         InputStream is = new ByteArrayInputStream(json.getBytes());
         JsonParser p1 = Json.createParser(is);
@@ -33,7 +33,7 @@ public class JSR353Test {
     }
 
     //@org.junit.Test
-    public void test2(){
+    public void test2() {
         String json = "{\"id\":\"1\",\"name\":\"foo\",\"isMarried\":true}";
         InputStream is = new ByteArrayInputStream(json.getBytes());
         JsonParser p1 = Json.createParser(is);

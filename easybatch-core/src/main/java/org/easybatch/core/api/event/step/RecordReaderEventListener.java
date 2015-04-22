@@ -28,7 +28,7 @@ import org.easybatch.core.api.Record;
 
 /**
  * Event interface collection for RecordReader events.
- * <p>
+ * <p/>
  * You should implement this interface in your reader to
  * declare the ability to receive events from the batch process.
  *
@@ -53,12 +53,14 @@ public interface RecordReaderEventListener {
 
     /**
      * Called after each record read operation.
+     *
      * @param record The record that has been read.
      */
     void afterRecordRead(Record record);
 
     /**
      * Called when an exception occurs during record reading.
+     *
      * @param throwable the throwable thrown during record reading
      */
     void onRecordReadException(Throwable throwable);

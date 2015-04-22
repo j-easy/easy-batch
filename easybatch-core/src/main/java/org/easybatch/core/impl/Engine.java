@@ -126,7 +126,7 @@ public final class Engine implements Callable<Report> {
                 Record currentRecord;
                 try {
                     currentRecord = readRecord();
-                    if(currentRecord == null) {
+                    if (currentRecord == null) {
                         LOGGER.log(Level.SEVERE, "The record reader returned null for next record, aborting execution.");
                         report.setStatus(Status.ABORTED);
                         report.setEndTime(System.currentTimeMillis());
@@ -156,7 +156,7 @@ public final class Engine implements Callable<Report> {
                 Object typedRecord;
                 try {
                     typedRecord = mapRecord(currentRecord);
-                    if(typedRecord == null) {
+                    if (typedRecord == null) {
                         report.addIgnoredRecord(currentRecordNumber);
                         ignoredRecordHandler.handle(currentRecord);
                         continue;

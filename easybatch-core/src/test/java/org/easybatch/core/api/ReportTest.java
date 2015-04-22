@@ -43,7 +43,7 @@ public class ReportTest {
     private static long START_TIME;
     private static long END_TIME;
 
-    static{
+    static {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2015, Calendar.JANUARY, 1, 1, 0, 0);
         START_TIME = calendar.getTime().getTime();
@@ -61,11 +61,16 @@ public class ReportTest {
         report.setTotalRecords(10l);
         report.setCurrentRecordNumber(2);
         report.setBatchResult(50);
-        report.addFilteredRecord(1l);report.addFilteredRecord(2l);
-        report.addIgnoredRecord(3l);report.addIgnoredRecord(4l);
-        report.addRejectedRecord(5l);report.addRejectedRecord(6l);
-        report.addErrorRecord(7l);report.addErrorRecord(8l);
-        report.addSuccessRecord(9l);report.addSuccessRecord(10l);
+        report.addFilteredRecord(1l);
+        report.addFilteredRecord(2l);
+        report.addIgnoredRecord(3l);
+        report.addIgnoredRecord(4l);
+        report.addRejectedRecord(5l);
+        report.addRejectedRecord(6l);
+        report.addErrorRecord(7l);
+        report.addErrorRecord(8l);
+        report.addSuccessRecord(9l);
+        report.addSuccessRecord(10l);
     }
 
     @Test

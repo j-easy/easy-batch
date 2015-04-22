@@ -28,13 +28,13 @@ package org.easybatch.core.api;
  * Interface for type converters that are used to convert raw textual data to typed data in domain objects.
  *
  * @param <T> The target type.
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public interface TypeConverter<T> {
 
     /**
      * Convert raw data from textual to typed value.
+     *
      * @param value the String value to convert
      * @return Converted value
      */

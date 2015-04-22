@@ -52,5 +52,5 @@ public class PoisonRecord implements Record<Object>, Serializable {
     public String toString() {
         return "Poison Record";
     }
-    
+
 }

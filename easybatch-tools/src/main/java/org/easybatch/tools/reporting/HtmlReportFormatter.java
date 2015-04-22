@@ -24,11 +24,11 @@
 
 package org.easybatch.tools.reporting;
 
-import org.easybatch.core.api.Report;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
+import org.easybatch.core.api.Report;
 
 import java.io.StringWriter;
 import java.util.Properties;

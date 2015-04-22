@@ -46,7 +46,7 @@ public class RecordNumberBetweenFilter implements RecordFilter {
     protected long higherBound;
 
     /**
-     * @param lowerBound Record number range lower bound.
+     * @param lowerBound  Record number range lower bound.
      * @param higherBound Record number range higher bound.
      */
     public RecordNumberBetweenFilter(final long lowerBound, final long higherBound) {

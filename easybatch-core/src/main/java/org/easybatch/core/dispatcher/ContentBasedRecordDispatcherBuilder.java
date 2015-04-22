@@ -46,7 +46,7 @@ public class ContentBasedRecordDispatcherBuilder {
     }
 
     public ContentBasedRecordDispatcherBuilder when(Predicate predicate) {
-         this.predicate = predicate;
+        this.predicate = predicate;
         return this;
     }
 

@@ -29,7 +29,7 @@ package org.easybatch.core.api;
  *
  * @author Chellan (https://github.com/chellan)
  */
-public interface IgnoredRecordHandler  {
+public interface IgnoredRecordHandler {
 
     /**
      * @param record the ignored record to handle
@@ -38,7 +38,7 @@ public interface IgnoredRecordHandler  {
 
     /**
      * @param record the ignored record to handle
-     * @param e the exception that caused the record to be ignored
+     * @param e      the exception that caused the record to be ignored
      */
     void handle(final Record record, final Throwable e);
 

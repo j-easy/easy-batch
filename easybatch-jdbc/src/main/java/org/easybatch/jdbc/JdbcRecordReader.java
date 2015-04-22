@@ -37,7 +37,7 @@ import java.util.logging.Logger;
 
 /**
  * A {@link org.easybatch.core.api.RecordReader} that reads records from a database using jdbc API.
- *
+ * <p/>
  * This reader produces {@link JdbcRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -82,8 +82,9 @@ public class JdbcRecordReader implements RecordReader {
 
     /**
      * Create a JdbcRecordReader instance.
+     *
      * @param connection the connection to use to read data
-     * @param query the jdbc query to use to fetch data
+     * @param query      the jdbc query to use to fetch data
      */
     public JdbcRecordReader(final Connection connection, final String query) {
         this.connection = connection;
@@ -94,7 +95,7 @@ public class JdbcRecordReader implements RecordReader {
     public void open() throws Exception {
         currentRecordNumber = 0;
         statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        if(maxRowsEnabled) {
+        if (maxRowsEnabled) {
             statement.setMaxRows(maxRows);
         }
         resultSet = statement.executeQuery(query);
@@ -158,6 +159,7 @@ public class JdbcRecordReader implements RecordReader {
 
     /**
      * Set the maximum number of rows to fetch.
+     *
      * @param maxRows the maximum number of rows to fetch
      */
     public void setMaxRows(int maxRows) {

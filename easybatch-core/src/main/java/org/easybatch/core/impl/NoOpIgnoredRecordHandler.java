@@ -24,11 +24,11 @@
 
 package org.easybatch.core.impl;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.easybatch.core.api.IgnoredRecordHandler;
 import org.easybatch.core.api.Record;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A No Operation {@link IgnoredRecordHandler} implementation used by default by easy batch engine.

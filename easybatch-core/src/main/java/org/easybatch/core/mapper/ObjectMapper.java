@@ -45,7 +45,6 @@ import java.util.logging.Logger;
  * A helper class that maps a record to a domain object instance.
  *
  * @param <T> the target domain object type
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class ObjectMapper<T> {
@@ -72,6 +71,7 @@ public class ObjectMapper<T> {
 
     /**
      * Construct an object mapper.
+     *
      * @param recordClass the target object type
      */
     public ObjectMapper(final Class<? extends T> recordClass) {
@@ -128,8 +128,8 @@ public class ObjectMapper<T> {
                 }
             } else {
                 LOGGER.log(Level.WARNING,
-                           "Type conversion not supported for type {0}, field {1} will be set to null (if object type) or default value (if primitive type)",
-                            new Object[]{type, field});
+                        "Type conversion not supported for type {0}, field {1} will be set to null (if object type) or default value (if primitive type)",
+                        new Object[]{type, field});
             }
 
             //set the typed value to the object field
@@ -175,6 +175,7 @@ public class ObjectMapper<T> {
 
     /**
      * Register a custom type converter.
+     *
      * @param typeConverter the type converter to user
      */
     public void registerTypeConverter(final TypeConverter typeConverter) {

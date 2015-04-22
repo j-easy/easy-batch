@@ -57,9 +57,9 @@ public class ContentBasedRecordDispatcherTest {
         orangeQueue = new LinkedBlockingQueue<Record>();
         defaultQueue = new LinkedBlockingQueue<Record>();
         recordDispatcher = new ContentBasedRecordDispatcherBuilder()
-                    .when(new OrangePredicate()).dispatchTo(orangeQueue)
-                    .otherwise(defaultQueue)
-                    .build();
+                .when(new OrangePredicate()).dispatchTo(orangeQueue)
+                .otherwise(defaultQueue)
+                .build();
         header = new Header(1l, "DataSource", new Date());
     }
 

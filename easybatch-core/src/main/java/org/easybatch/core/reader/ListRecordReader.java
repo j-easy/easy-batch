@@ -34,12 +34,11 @@ import java.util.List;
 
 /**
  * A convenient {@link org.easybatch.core.api.RecordReader} that reads data from a {@link java.util.List} of objects.
- *
+ * <p/>
  * This reader returns {@link org.easybatch.core.record.GenericRecord} instances that should be mapped
  * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects from the list.
  *
  * @param <T> the type of objects contained in the list
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class ListRecordReader<T> implements RecordReader {
@@ -61,6 +60,7 @@ public class ListRecordReader<T> implements RecordReader {
 
     /**
      * Constructs a {@link ListRecordReader}.
+     *
      * @param dataSource The list data source
      */
     public ListRecordReader(final List<T> dataSource) {

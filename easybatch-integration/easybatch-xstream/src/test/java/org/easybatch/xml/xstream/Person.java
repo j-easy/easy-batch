@@ -24,8 +24,6 @@
 
 package org.easybatch.xml.xstream;
 
-import java.util.Date;
-
 /**
  * A person java bean used for tests.
  *

@@ -75,7 +75,7 @@ public class XstreamRecordMapperTest {
     }
 
     private String getXmlFromFile(String file) {
-        return new Scanner(this.getClass().getResourceAsStream(file) ).useDelimiter("\\A").next();
+        return new Scanner(this.getClass().getResourceAsStream(file)).useDelimiter("\\A").next();
     }
 
 }

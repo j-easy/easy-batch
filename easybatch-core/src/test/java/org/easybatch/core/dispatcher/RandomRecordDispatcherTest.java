@@ -63,14 +63,14 @@ public class RandomRecordDispatcherTest {
         StringRecord record = new StringRecord(header, "test record");
         randomRecordDispatcher.dispatchRecord(record);
 
-        if(queue1.isEmpty()) {
+        if (queue1.isEmpty()) {
             assertThat(queue2).isNotEmpty().containsOnly(record);
             assertThat(queue2.peek()).isNotNull().isInstanceOf(StringRecord.class);
             Record record2 = queue2.poll();
             assertThat(record2.getHeader().getNumber()).isEqualTo(1);
             assertThat(record2.getPayload()).isEqualTo("test record");
         }
-        if(!queue1.isEmpty()) {
+        if (!queue1.isEmpty()) {
             assertThat(queue2).isEmpty();
             assertThat(queue2.peek()).isNull();
 

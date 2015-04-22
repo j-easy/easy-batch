@@ -7,7 +7,7 @@ import java.util.GregorianCalendar;
 
 /**
  * {@link java.util.Calendar} type converter.
- *
+ * <p/>
  * Used to convert a raw String into a Gregorian Calendar instance.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

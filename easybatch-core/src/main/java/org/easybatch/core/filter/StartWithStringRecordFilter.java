@@ -54,7 +54,7 @@ public class StartWithStringRecordFilter implements RecordFilter {
     }
 
     /**
-     * @param negate true if the filter should filter records that do not start with any of the given prefixes.
+     * @param negate   true if the filter should filter records that do not start with any of the given prefixes.
      * @param prefixes prefixes that cause the record to be filtered.
      */
     public StartWithStringRecordFilter(final boolean negate, final String... prefixes) {

@@ -15,6 +15,7 @@ public class PoisonRecordBroadcaster implements BatchProcessEventListener {
 
     /**
      * Create a new {@link PoisonRecordBroadcaster}.
+     *
      * @param recordDispatcher the delegate record dispatcher used to dispatch the poison record
      */
     public PoisonRecordBroadcaster(AbstractRecordDispatcher recordDispatcher) {

@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * Reader that reads documents from a MongoDB collection.
- *
+ * <p/>
  * This reader produces {@link MongoDBRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -43,13 +43,13 @@ public class MongoDBRecordReader implements RecordReader {
     public void open() throws Exception {
         currentRecordNumber = 0;
         cursor = collection.find(query);
-        if(limit) {
+        if (limit) {
             cursor.limit(nbLimit);
         }
-        if(skip) {
+        if (skip) {
             cursor.skip(nbSkip);
         }
-        if(sort) {
+        if (sort) {
             cursor.sort(orderBy);
         }
     }
@@ -82,6 +82,7 @@ public class MongoDBRecordReader implements RecordReader {
 
     /**
      * Set cursor limit.
+     *
      * @param limit the number of documents limit
      */
     public void setLimit(int limit) {
@@ -91,6 +92,7 @@ public class MongoDBRecordReader implements RecordReader {
 
     /**
      * Set the number of documents to skip.
+     *
      * @param skip the number of documents to skip.
      */
     public void setSkip(int skip) {
@@ -100,6 +102,7 @@ public class MongoDBRecordReader implements RecordReader {
 
     /**
      * Set the sort criteria.
+     *
      * @param orderBy the sort criteria
      */
     public void setSort(DBObject orderBy) {

@@ -34,7 +34,6 @@ import org.easybatch.xml.XmlRecord;
  * to map XML records to domain objects.
  *
  * @param <T> Target domain object class.
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class XstreamRecordMapper<T> implements RecordMapper<T> {

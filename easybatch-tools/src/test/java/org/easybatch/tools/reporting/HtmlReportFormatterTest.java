@@ -49,7 +49,7 @@ public class HtmlReportFormatterTest {
     private static long START_TIME;
     private static long END_TIME;
 
-    static{
+    static {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2015, Calendar.JANUARY, 1, 1, 0, 0);
         START_TIME = calendar.getTime().getTime();
@@ -65,11 +65,16 @@ public class HtmlReportFormatterTest {
         report.setStatus(Status.FINISHED);
         report.setDataSource("In-Memory String");
         report.setTotalRecords(10l);
-        report.addFilteredRecord(1);report.addFilteredRecord(2);
-        report.addIgnoredRecord(3);report.addIgnoredRecord(4);
-        report.addRejectedRecord(5);report.addRejectedRecord(6);
-        report.addErrorRecord(7);report.addErrorRecord(8);
-        report.addSuccessRecord(9);report.addSuccessRecord(10);
+        report.addFilteredRecord(1);
+        report.addFilteredRecord(2);
+        report.addIgnoredRecord(3);
+        report.addIgnoredRecord(4);
+        report.addRejectedRecord(5);
+        report.addRejectedRecord(6);
+        report.addErrorRecord(7);
+        report.addErrorRecord(8);
+        report.addSuccessRecord(9);
+        report.addSuccessRecord(10);
     }
 
     @Ignore("TODO: Contents are identical but assertion fails due to different whitespaces")

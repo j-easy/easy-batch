@@ -197,7 +197,7 @@ class LocalEventManager implements EventManager {
     }
 
     @Override
-    public void fireAfterProcessingRecord(Object record,Object processingResult) {
+    public void fireAfterProcessingRecord(Object record, Object processingResult) {
         for (RecordProcessorEventListener eventListener : recordProcessorEventListeners) {
             eventListener.afterProcessingRecord(record, processingResult);
         }

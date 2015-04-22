@@ -38,7 +38,6 @@ import java.util.Set;
  * An implementation of {@link RecordValidator} using JSR 303 API.
  *
  * @param <T> the object type this validator can validate.
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class BeanValidationRecordValidator<T> implements RecordValidator<T> {

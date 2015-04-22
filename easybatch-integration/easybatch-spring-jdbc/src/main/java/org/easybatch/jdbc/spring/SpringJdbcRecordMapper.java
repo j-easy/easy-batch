@@ -36,7 +36,6 @@ import java.sql.ResultSet;
  * to map result set to domain object.
  *
  * @param <T> Target domain object type
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class SpringJdbcRecordMapper<T> implements RecordMapper<T> {

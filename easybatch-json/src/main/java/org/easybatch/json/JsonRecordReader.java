@@ -32,7 +32,8 @@ import javax.json.JsonValue;
 import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
 import javax.json.stream.JsonParser;
-import java.io.*;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -98,7 +99,7 @@ public class JsonRecordReader implements RecordReader {
 
     @Override
     public boolean hasNextRecord() {
-        if(parser.hasNext()) {
+        if (parser.hasNext()) {
             currentEvent = parser.next();
             if (JsonParser.Event.START_ARRAY.equals(currentEvent)) {
                 arrayDepth++;
@@ -111,7 +112,7 @@ public class JsonRecordReader implements RecordReader {
             }
         }
 
-        if(parser.hasNext()) {
+        if (parser.hasNext()) {
             nextEvent = parser.next();
             if (JsonParser.Event.START_ARRAY.equals(nextEvent)) {
                 arrayDepth++;
@@ -139,7 +140,7 @@ public class JsonRecordReader implements RecordReader {
         writeRecordStart(jsonGenerator);
         do {
             moveToNextElement(jsonGenerator);
-        } while(!isEndRootObject());
+        } while (!isEndRootObject());
         if (arrayDepth != 2) {
             jsonGenerator.writeEnd();
         }
@@ -169,7 +170,7 @@ public class JsonRecordReader implements RecordReader {
 
     private void writeRecordStart(JsonGenerator jsonGenerator) {
         if (currentEvent.equals(JsonParser.Event.START_ARRAY)) {
-            if(arrayDepth != 1) {
+            if (arrayDepth != 1) {
                 jsonGenerator.writeStartArray();
             }
             arrayDepth++;
@@ -190,7 +191,7 @@ public class JsonRecordReader implements RecordReader {
 
     private void moveToNextElement(JsonGenerator jsonGenerator) {
         JsonParser.Event event = parser.next();
-        switch(event) {
+        switch (event) {
             case START_ARRAY:
                 jsonGenerator.writeStartArray();
                 break;

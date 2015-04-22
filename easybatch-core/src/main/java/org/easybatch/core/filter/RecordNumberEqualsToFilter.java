@@ -54,7 +54,7 @@ public class RecordNumberEqualsToFilter implements RecordFilter {
     }
 
     /**
-     * @param negate true if the filter should filter records which number is not equal to any of the given numbers.
+     * @param negate  true if the filter should filter records which number is not equal to any of the given numbers.
      * @param numbers record numbers that cause the record to be filtered.
      */
     public RecordNumberEqualsToFilter(final boolean negate, final long... numbers) {

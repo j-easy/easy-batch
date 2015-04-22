@@ -35,6 +35,7 @@ public interface ReportMerger {
 
     /**
      * Merge multiple reports into a consolidated one.
+     *
      * @param reports reports to merge
      * @return a merged report
      */

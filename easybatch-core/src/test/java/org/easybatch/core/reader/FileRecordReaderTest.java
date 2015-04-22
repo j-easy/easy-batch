@@ -54,8 +54,8 @@ public class FileRecordReaderTest {
         fileRecordReader.open();
 
         nonExistingDataSource = new File(System.getProperty("java.io.tmpdir") +
-                        System.getProperty("file.separator") +
-                        "ImSureThisDirectoryDoesNotExist");
+                System.getProperty("file.separator") +
+                "ImSureThisDirectoryDoesNotExist");
 
         //create empty directory
         emptyDataSource = new File("easyBatchTestEmptyDirectory");
