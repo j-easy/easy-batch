@@ -41,7 +41,7 @@ public interface RecordMapperEventListener {
      *
      * @param record The record that will be passed to the record call.
      */
-    public void beforeMapRecord(Record record);
+    void beforeMapRecord(Record record);
 
     /**
      * Called directly after the mapper call.
@@ -49,7 +49,7 @@ public interface RecordMapperEventListener {
      * @param record The incoming record.
      * @param typedRecord The mapping result.
      */
-    public void afterMapRecord(Record record, Object typedRecord);
+    void afterMapRecord(Record record, Object typedRecord);
 
     /**
      * When the mapper throws an exception, this method will get the exception.
@@ -58,5 +58,5 @@ public interface RecordMapperEventListener {
      * @param t The exception thrown.
      * @param record The record that was processed while the exception was thrown.
      */
-    public void onMapperException(Throwable t, Record record);
+    void onMapperException(Throwable t, Record record);
 }

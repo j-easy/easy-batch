@@ -42,12 +42,12 @@ public interface RecordValidatorEventListener {
      * Called before each validation.
      * @param mappedRecord The mapped record that is going to be validated.
      */
-    public void beforeValidateRecord(Object mappedRecord);
+    void beforeValidateRecord(Object mappedRecord);
 
     /**
      * Called after each validation.
      * @param validatedRecord The validated record.
      * @param validationErrors The Set of validation errors, if any.
      */
-    public void afterValidateRecord(Object validatedRecord, Set<ValidationError> validationErrors);
+    void afterValidateRecord(Object validatedRecord, Set<ValidationError> validationErrors);
 }

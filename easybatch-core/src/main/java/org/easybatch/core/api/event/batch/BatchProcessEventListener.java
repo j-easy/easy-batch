@@ -43,12 +43,12 @@ public interface BatchProcessEventListener {
     /**
      * Called before the {@link org.easybatch.core.api.RecordReader#open()} call.
      */
-    public void beforeBatchStart();
+    void beforeBatchStart();
 
     /**
      * Called after the {@link org.easybatch.core.api.RecordReader#close()} call.
      */
-    public void afterBatchEnd();
+    void afterBatchEnd();
 
     /**
      * Called on any throwable event while processing.
@@ -58,5 +58,5 @@ public interface BatchProcessEventListener {
      *
      * @param throwable The exception thrown at the time of call.
      */
-    public void onException(Throwable throwable);
+    void onException(Throwable throwable);
 }

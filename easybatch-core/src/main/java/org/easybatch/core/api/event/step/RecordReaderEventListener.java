@@ -39,37 +39,37 @@ public interface RecordReaderEventListener {
     /**
      * Called before the call to {@link org.easybatch.core.api.RecordReader#open()}
      */
-    public void beforeReaderOpen();
+    void beforeReaderOpen();
 
     /**
      * Called after the call to {@link org.easybatch.core.api.RecordReader#open()}
      */
-    public void afterReaderOpen();
+    void afterReaderOpen();
 
     /**
      * Called before each record read
      */
-    public void beforeRecordRead();
+    void beforeRecordRead();
 
     /**
      * Called after each record read operation.
      * @param record The record that has been read.
      */
-    public void afterRecordRead(Record record);
+    void afterRecordRead(Record record);
 
     /**
      * Called when an exception occurs during record reading.
      * @param throwable the throwable thrown during record reading
      */
-    public void onRecordReadException(Throwable throwable);
+    void onRecordReadException(Throwable throwable);
 
     /**
      * Called before the reader gets closed.
      */
-    public void beforeReaderClose();
+    void beforeReaderClose();
 
     /**
      * Called after the reader has been closed.
      */
-    public void afterReaderClose();
+    void afterReaderClose();
 }

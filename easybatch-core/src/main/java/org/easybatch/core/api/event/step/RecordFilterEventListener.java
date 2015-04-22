@@ -40,12 +40,12 @@ public interface RecordFilterEventListener {
      * Called before the filter step.
      * @param record The record that gets filtered
      */
-    public void beforeFilterRecord(Record record);
+    void beforeFilterRecord(Record record);
 
     /**
      * Called after the filter step.
      * @param record The record that has been processed.
      * @param filterRecord Indicates if the filter has been applied successfully. True if filtered, false if not.
      */
-    public void afterFilterRecord(Record record, boolean filterRecord);
+    void afterFilterRecord(Record record, boolean filterRecord);
 }
