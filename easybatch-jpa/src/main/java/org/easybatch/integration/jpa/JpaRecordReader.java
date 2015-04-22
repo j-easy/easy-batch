@@ -1,7 +1,6 @@
 package org.easybatch.integration.jpa;
 
 import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.GenericRecord;
 
@@ -61,7 +60,7 @@ public class JpaRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public Record<T> readNextRecord() throws Exception {
+    public GenericRecord<T> readNextRecord() throws Exception {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new GenericRecord<T>(header, iterator.next());
     }

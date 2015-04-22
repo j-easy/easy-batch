@@ -25,7 +25,6 @@
 package org.easybatch.core.reader;
 
 import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.StringRecord;
 
@@ -84,7 +83,7 @@ public class StringRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readNextRecord() {
+    public StringRecord readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new StringRecord(header, scanner.nextLine());
     }

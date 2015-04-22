@@ -25,7 +25,6 @@
 package org.easybatch.json;
 
 import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 import javax.json.Json;
@@ -134,7 +133,7 @@ public class JsonRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readNextRecord() throws Exception {
+    public JsonRecord readNextRecord() throws Exception {
         StringWriter stringWriter = new StringWriter();
         JsonGenerator jsonGenerator = jsonGeneratorFactory.createGenerator(stringWriter);
         writeRecordStart(jsonGenerator);

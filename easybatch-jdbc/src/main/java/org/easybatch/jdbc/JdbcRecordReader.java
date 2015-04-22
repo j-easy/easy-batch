@@ -25,7 +25,6 @@
 package org.easybatch.jdbc;
 
 import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 import java.sql.Connection;
@@ -112,7 +111,7 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readNextRecord() {
+    public JdbcRecord readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new JdbcRecord(header, resultSet);
     }

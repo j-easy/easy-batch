@@ -27,7 +27,6 @@ package org.easybatch.flatfile.apache.common.csv;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 import java.util.Date;
@@ -62,7 +61,7 @@ public class ApacheCommonCsvRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readNextRecord() throws Exception {
+    public ApacheCommonCsvRecord readNextRecord() throws Exception {
         Header header = new Header(parser.getRecordNumber() + 1, getDataSourceName(), new Date());
         return new ApacheCommonCsvRecord(header, iterator.next());
     }

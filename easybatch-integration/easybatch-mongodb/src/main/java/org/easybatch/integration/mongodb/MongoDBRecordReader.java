@@ -4,7 +4,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 import java.util.Date;
@@ -61,7 +60,7 @@ public class MongoDBRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readNextRecord() throws Exception {
+    public MongoDBRecord readNextRecord() throws Exception {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new MongoDBRecord(header, cursor.next());
     }

@@ -25,7 +25,6 @@
 package org.easybatch.xml;
 
 import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 import javax.xml.stream.XMLEventReader;
@@ -96,7 +95,7 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readNextRecord() throws Exception {
+    public XmlRecord readNextRecord() throws Exception {
         StringBuilder stringBuilder = new StringBuilder("");
         while (!nextTagIsRootElementEnd()) {
             stringBuilder.append(xmlEventReader.nextEvent().toString());

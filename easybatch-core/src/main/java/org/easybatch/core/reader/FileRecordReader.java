@@ -25,7 +25,6 @@
 package org.easybatch.core.reader;
 
 import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.FileRecord;
 
@@ -124,7 +123,7 @@ public class FileRecordReader implements RecordReader {
      * @throws Exception thrown if an exception occurs during reading next record
      */
     @Override
-    public Record readNextRecord() throws Exception {
+    public FileRecord readNextRecord() throws Exception {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new FileRecord(header, iterator.next());
     }

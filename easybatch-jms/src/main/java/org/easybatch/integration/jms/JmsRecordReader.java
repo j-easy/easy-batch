@@ -25,7 +25,6 @@
 package org.easybatch.integration.jms;
 
 import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 import javax.jms.*;
@@ -81,7 +80,7 @@ public class JmsRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readNextRecord() throws Exception {
+    public JmsRecord readNextRecord() throws Exception {
         Message message = queueReceiver.receive();
         String type = message.getStringProperty("type");
         stop = message instanceof JmsPoisonMessage || (type!= null && type.equals("poison"));
