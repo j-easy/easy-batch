@@ -5,8 +5,6 @@ import com.mongodb.DBObject;
 import org.easybatch.core.api.Header;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Date;
 
@@ -17,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-@RunWith(MockitoJUnitRunner.class)
 public class MongoDBRecordMapperTest {
 
     public static final String ID = "507f1f77bcf86cd799439011";
@@ -42,8 +39,9 @@ public class MongoDBRecordMapperTest {
                 .append("lastName", LAST_NAME)
                 .append("birthDate", DATE)
                 .append("married", MARRIED);
-        MongoRecord mongoRecord = new MongoRecord(new Header(1l, "MongoDB", new Date()), personDBObject);
-        Person person = mapper.mapRecord(mongoRecord);
+        MongoDBRecord mongoDBRecord = new MongoDBRecord(new Header(1l, "MongoDB", new Date()), personDBObject);
+
+        Person person = mapper.mapRecord(mongoDBRecord);
 
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(ID);

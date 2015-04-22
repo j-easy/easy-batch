@@ -9,9 +9,9 @@ import org.easybatch.core.record.GenericRecord;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class MongoRecord extends GenericRecord<DBObject> {
+public class MongoDBRecord extends GenericRecord<DBObject> {
 
-    public MongoRecord(final Header header, DBObject payload) {
+    public MongoDBRecord(final Header header, DBObject payload) {
         super(header, payload);
     }
 

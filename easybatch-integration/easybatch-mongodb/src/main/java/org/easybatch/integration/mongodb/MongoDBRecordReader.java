@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * Reader that reads documents from a MongoDB collection.
  *
- * This reader produces {@link MongoRecord} instances.
+ * This reader produces {@link MongoDBRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -63,7 +63,7 @@ public class MongoDBRecordReader implements RecordReader {
     @Override
     public Record readNextRecord() throws Exception {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new MongoRecord(header, cursor.next());
+        return new MongoDBRecord(header, cursor.next());
     }
 
     @Override
