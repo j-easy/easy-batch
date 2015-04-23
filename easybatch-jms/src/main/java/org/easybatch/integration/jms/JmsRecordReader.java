@@ -43,15 +43,15 @@ public class JmsRecordReader implements RecordReader {
 
     private long currentRecordNumber;
 
-    QueueConnectionFactory queueConnectionFactory;
+    private QueueConnectionFactory queueConnectionFactory;
 
-    QueueConnection queueConnection;
+    private QueueConnection queueConnection;
 
-    QueueSession queueSession;
+    private QueueSession queueSession;
 
-    QueueReceiver queueReceiver;
+    private QueueReceiver queueReceiver;
 
-    Queue queue;
+    private Queue queue;
 
     private boolean stop;
 
