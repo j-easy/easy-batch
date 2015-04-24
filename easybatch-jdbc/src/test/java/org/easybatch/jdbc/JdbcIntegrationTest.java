@@ -37,8 +37,8 @@ public class JdbcIntegrationTest {
     @Before
     public void setUp() throws Exception {
         connection = DriverManager.getConnection(DATABASE_URL, "sa", "pwd");
-        createTweetTable(connection);
-        populateTweetTable(connection);
+        createPersonTable(connection);
+        populatePersonTable(connection);
         query = "select * from person";
     }
 
@@ -91,7 +91,7 @@ public class JdbcIntegrationTest {
         new File("mem.tmp").delete();
     }
 
-    private void createTweetTable(Connection connection) throws Exception {
+    private void createPersonTable(Connection connection) throws Exception {
         Statement statement = connection.createStatement();
         String query = "CREATE TABLE if not exists person (\n" +
                 "  id integer NOT NULL PRIMARY KEY,\n" +
@@ -101,7 +101,7 @@ public class JdbcIntegrationTest {
         statement.close();
     }
 
-    private void populateTweetTable(Connection connection) throws Exception {
+    private void populatePersonTable(Connection connection) throws Exception {
         executeQuery(connection, "INSERT INTO person VALUES (1,'foo');");
         executeQuery(connection, "INSERT INTO person VALUES (2,'bar');");
     }
