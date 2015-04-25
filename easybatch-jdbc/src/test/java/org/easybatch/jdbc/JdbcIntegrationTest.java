@@ -7,6 +7,7 @@ import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
@@ -33,6 +34,11 @@ public class JdbcIntegrationTest {
     private Connection connection;
 
     private String query;
+
+    @BeforeClass
+    public static void init() {
+        System.setProperty("hsqldb.reconfig_logging", "false");
+    }
 
     @Before
     public void setUp() throws Exception {
