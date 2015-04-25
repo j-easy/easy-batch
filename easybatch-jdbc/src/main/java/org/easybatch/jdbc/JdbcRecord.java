@@ -29,8 +29,6 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.record.GenericRecord;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 
 /**
  * A {@link Record} implementation that has database row as raw content.
@@ -43,21 +41,4 @@ public class JdbcRecord extends GenericRecord<ResultSet> {
         super(header, payload);
     }
 
-    // override toString because it is used by easy batch engine for logging errors if any
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder("");
-        try {
-            ResultSetMetaData resultSetMetaData = payload.getMetaData();
-            int columnCount = resultSetMetaData.getColumnCount();
-            for (int i = 1; i < columnCount + 1; i++) {
-                String name = resultSetMetaData.getColumnName(i);
-                stringBuilder.append(name).append("=").append(payload.getString(i)).append("|");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("An exception occurred during toString of record " + payload, e);
-        }
-        return stringBuilder.toString();
-
-    }
 }
