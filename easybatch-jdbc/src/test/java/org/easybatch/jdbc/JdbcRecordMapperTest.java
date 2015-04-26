@@ -9,7 +9,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -27,6 +26,8 @@ public class JdbcRecordMapperTest {
     private JdbcRecord jdbcRecord;
 
     @Mock
+    private Header header;
+    @Mock
     private ResultSet payload;
     @Mock
     private ResultSetMetaData metadata;
@@ -34,11 +35,11 @@ public class JdbcRecordMapperTest {
     @Before
     public void setUp() throws Exception {
         tweetMapper = new JdbcRecordMapper<Tweet>(Tweet.class);
-        jdbcRecord = new JdbcRecord(new Header(1l, "ds", new Date()), payload);
+        jdbcRecord = new JdbcRecord(header, payload);
     }
 
     @Test
-    public void testMapRecord() throws Exception {
+    public void testMapRecordWithDefaultMapping() throws Exception {
         when(payload.getMetaData()).thenReturn(metadata);
         when(metadata.getColumnCount()).thenReturn(3);
         when(metadata.getColumnLabel(1)).thenReturn("id");
@@ -46,13 +47,35 @@ public class JdbcRecordMapperTest {
         when(metadata.getColumnLabel(3)).thenReturn("message");
         when(payload.getString(1)).thenReturn("1");
         when(payload.getString(2)).thenReturn("foo");
-        when(payload.getString(3)).thenReturn("message");
+        when(payload.getString(3)).thenReturn("Hello!");
 
         Tweet tweet = tweetMapper.mapRecord(jdbcRecord);
 
         assertThat(tweet).isNotNull();
         assertThat(tweet.getId()).isEqualTo(1);
         assertThat(tweet.getUser()).isEqualTo("foo");
-        assertThat(tweet.getMessage()).isEqualTo("message");
+        assertThat(tweet.getMessage()).isEqualTo("Hello!");
+    }
+
+    @Test
+    public void testMapRecordWithCustomMapping() throws Exception {
+
+        tweetMapper = new JdbcRecordMapper<Tweet>(Tweet.class, new String[] {"id", "user", "message"});
+
+        when(payload.getMetaData()).thenReturn(metadata);
+        when(metadata.getColumnCount()).thenReturn(3);
+        when(metadata.getColumnLabel(1)).thenReturn("t_id");
+        when(metadata.getColumnLabel(2)).thenReturn("t_user");
+        when(metadata.getColumnLabel(3)).thenReturn("t_message");
+        when(payload.getString(1)).thenReturn("1");
+        when(payload.getString(2)).thenReturn("foo");
+        when(payload.getString(3)).thenReturn("Hello!");
+
+        Tweet tweet = tweetMapper.mapRecord(jdbcRecord);
+
+        assertThat(tweet).isNotNull();
+        assertThat(tweet.getId()).isEqualTo(1);
+        assertThat(tweet.getUser()).isEqualTo("foo");
+        assertThat(tweet.getMessage()).isEqualTo("Hello!");
     }
 }

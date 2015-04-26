@@ -30,6 +30,7 @@ import org.easybatch.core.api.TypeConverter;
 import org.easybatch.core.mapper.ObjectMapper;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +48,11 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
     private ObjectMapper<T> objectMapper;
 
     /**
+     * Field names used for custom column mapping.
+     */
+    private String[] fields;
+
+    /**
      * Constructs a default JdbcRecordMapper instance. Column names will be fetched from the jdbc result set meta data
      * and set to fields with the same name of the target object.
      *
@@ -56,18 +62,46 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
         objectMapper = new ObjectMapper<T>(recordClass);
     }
 
+    /**
+     * Constructs a JdbcRecordMapper. The supplied field names will be used to map columns to the target object fields.
+     *
+     * @param recordClass the target domain object class
+     * @param fields      the list of fields names
+     */
+    public JdbcRecordMapper(final Class<? extends T> recordClass, String[] fields) {
+        this(recordClass);
+        this.fields = fields;
+    }
+
     @Override
     public T mapRecord(final Record record) throws Exception {
 
         JdbcRecord jdbcRecord = (JdbcRecord) record;
         ResultSet resultSet = jdbcRecord.getPayload();
-        int columnCount = resultSet.getMetaData().getColumnCount();
+
+        initFieldNames(resultSet);
 
         Map<String, String> values = new HashMap<String, String>();
-        for (int i = 1; i < columnCount + 1; i++) {
-            values.put(resultSet.getMetaData().getColumnLabel(i).toLowerCase(), resultSet.getString(i));
+        for (int i = 0; i < fields.length; i++) {
+            values.put(fields[i], resultSet.getString(i + 1));
         }
         return objectMapper.mapObject(values);
+    }
+
+    /**
+     * When no field names are supplied, fetch column names from the ResultSet meta data.
+     *
+     * @param resultSet the result set to fetch column names.
+     * @throws SQLException thrown if not able to get ResultSet meta data
+     */
+    private void initFieldNames(ResultSet resultSet) throws SQLException {
+        int columnCount = resultSet.getMetaData().getColumnCount();
+        if (fields == null) {
+            fields = new String[columnCount];
+            for (int i = 1; i < columnCount + 1; i++) {
+                fields[i - 1] = resultSet.getMetaData().getColumnLabel(i).toLowerCase();
+            }
+        }
     }
 
     /**
