@@ -24,14 +24,14 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
-import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -42,11 +42,15 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@RunWith(MockitoJUnitRunner.class)
 public class BroadcastRecordDispatcherTest {
 
     private BroadcastRecordDispatcher broadcastRecordDispatcher;
 
     private BlockingQueue<Record> queue1, queue2;
+
+    @Mock
+    private Record record;
 
     @Before
     public void setUp() throws Exception {
@@ -58,24 +62,11 @@ public class BroadcastRecordDispatcherTest {
     @Test
     public void testBroadcastRecord() throws Exception {
 
-        Header header = new Header(1l, "In-Memory String", new Date());
-        String payload = "test record";
-        StringRecord record = new StringRecord(header, payload);
-
         broadcastRecordDispatcher.dispatchRecord(record);
 
-        assertThat(queue1).isNotEmpty().containsExactly(record);
-        assertThat(queue2).isNotEmpty().containsExactly(record);
+        assertThat(queue1).isNotEmpty().containsOnly(record);
+        assertThat(queue2).isNotEmpty().containsOnly(record);
 
-        assertThat(queue1.peek()).isNotNull().isInstanceOf(StringRecord.class);
-        Record record1 = queue1.poll();
-        assertThat(record1.getHeader().getNumber()).isEqualTo(1l);
-        assertThat(record1.getPayload()).isEqualTo(payload);
-
-        assertThat(queue2.peek()).isNotNull().isInstanceOf(StringRecord.class);
-        Record record2 = queue2.poll();
-        assertThat(record2.getHeader().getNumber()).isEqualTo(1l);
-        assertThat(record2.getPayload()).isEqualTo(payload);
     }
 
 }

@@ -24,24 +24,26 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.record.PoisonRecord;
-import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * Test class for {@link org.easybatch.core.dispatcher.ContentBasedRecordDispatcher}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@RunWith(MockitoJUnitRunner.class)
 public class ContentBasedRecordDispatcherTest {
 
     private ContentBasedRecordDispatcher recordDispatcher;
@@ -50,30 +52,37 @@ public class ContentBasedRecordDispatcherTest {
 
     private BlockingQueue<Record> defaultQueue;
 
-    private Header header = new Header(1l, "DataSource", new Date());
+    @Mock
+    private Record orangeRecord, appleRecord;
+
+    @Mock
+    private PoisonRecord poisonRecord;
+
+    @Mock
+    private Predicate orangePredicate;
 
     @Before
     public void setUp() throws Exception {
         orangeQueue = new LinkedBlockingQueue<Record>();
         defaultQueue = new LinkedBlockingQueue<Record>();
         recordDispatcher = new ContentBasedRecordDispatcherBuilder()
-                .when(new OrangePredicate()).dispatchTo(orangeQueue)
+                .when(orangePredicate).dispatchTo(orangeQueue)
                 .otherwise(defaultQueue)
                 .build();
-        header = new Header(1l, "DataSource", new Date());
+
+        when(orangePredicate.matches(orangeRecord)).thenReturn(true);
+        when(orangePredicate.matches(appleRecord)).thenReturn(false);
     }
 
     @Test
     public void orangeRecordShouldBeDispatchedToOrangeQueue() throws Exception {
-        StringRecord orangeRecord = new StringRecord(header, "orange record");
         recordDispatcher.dispatchRecord(orangeRecord);
-        assertThat(orangeQueue).isNotEmpty().containsExactly(orangeRecord);
+        assertThat(orangeQueue).isNotEmpty().containsOnly(orangeRecord);
         assertThat(defaultQueue).isEmpty();
     }
 
     @Test
     public void nonOrangeRecordShouldBeDispatchedToDefaultQueue() throws Exception {
-        StringRecord appleRecord = new StringRecord(header, "apple record");
         recordDispatcher.dispatchRecord(appleRecord);
         assertThat(defaultQueue).isNotEmpty().containsExactly(appleRecord);
         assertThat(orangeQueue).isEmpty();
@@ -81,22 +90,9 @@ public class ContentBasedRecordDispatcherTest {
 
     @Test
     public void poisonRecordShouldBeDispatchedToAllQueues() throws Exception {
-        PoisonRecord poisonRecord = new PoisonRecord();
         recordDispatcher.dispatchRecord(poisonRecord);
         assertThat(defaultQueue).isNotEmpty().contains(poisonRecord);
         assertThat(orangeQueue).isNotEmpty().contains(poisonRecord);
-    }
-
-
-    // predicate that matches records containing "orange", used for tests
-    private class OrangePredicate implements Predicate {
-
-        @Override
-        public boolean matches(Record record) {
-            StringRecord stringRecord = (StringRecord) record;
-            return stringRecord.getPayload().contains("orange");
-        }
-
     }
 
 }

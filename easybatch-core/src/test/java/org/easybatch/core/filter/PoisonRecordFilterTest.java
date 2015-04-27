@@ -24,13 +24,13 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Header;
 import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Date;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,9 +39,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@RunWith(MockitoJUnitRunner.class)
 public class PoisonRecordFilterTest {
 
     private PoisonRecordFilter poisonRecordFilter;
+
+    @Mock
+    private StringRecord record;
 
     @Before
     public void setUp() throws Exception {
@@ -56,7 +60,7 @@ public class PoisonRecordFilterTest {
 
     @Test
     public void whenTheRecordIsNotOfTypePoisonRecord_ThenItNotShouldBeFiltered() {
-        assertThat(poisonRecordFilter.filterRecord(new StringRecord(new Header(1l, "DataSource", new Date()), "foo"))).isFalse();
+        assertThat(poisonRecordFilter.filterRecord(record)).isFalse();
     }
 
     class CustomPoisonRecord extends PoisonRecord {
