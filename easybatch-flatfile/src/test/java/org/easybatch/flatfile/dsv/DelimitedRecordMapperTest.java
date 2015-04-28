@@ -140,7 +140,7 @@ public class DelimitedRecordMapperTest {
     @Test
     public void testFieldSubsetMapping() throws Exception {
         delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class,
-                new Integer[]{1, 5},
+                new Integer[]{0, 4},
                 new String[]{"firstName", "married"}
         );
         FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(stringRecord);
@@ -182,7 +182,7 @@ public class DelimitedRecordMapperTest {
 
     @Test
     public void testFieldSubsetMappingWithConventionOverConfiguration() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class, new Integer[]{1, 5});
+        delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class, new Integer[]{0, 4});
         delimitedRecordMapper.parseRecord(new StringRecord(header, "firstName,lastName,age,birthDate,married"));
         Person person = (Person) delimitedRecordMapper.mapRecord(stringRecord);
 

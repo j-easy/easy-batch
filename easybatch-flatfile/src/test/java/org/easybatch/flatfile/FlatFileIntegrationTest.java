@@ -36,17 +36,127 @@ public class FlatFileIntegrationTest {
 
         Report report = engine.call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(2);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
+        assertReportIsValid(report);
 
         List<Person> persons = (List<Person>) personProcessor.getComputationResult();
 
+        assertPersons(persons);
+
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testCsvSubRecordProcessing() throws Exception {
+
+        File dataSource = new File(this.getClass().getResource("/persons.csv").toURI());
+        final ComputationalRecordProcessor personProcessor = new PersonProcessor();
+
+        Engine engine = EngineBuilder.aNewEngine()
+                .reader(new FlatFileRecordReader(dataSource))
+                .mapper(new DelimitedRecordMapper(Person.class, new Integer[]{2, 4}, new String[]{"age", "married"}))
+                .processor(personProcessor)
+                .build();
+
+        Report report = engine.call();
+
+        assertReportIsValid(report);
+
+        List<Person> persons = (List<Person>) personProcessor.getComputationResult();
+
+        assertPersonsFieldSubsetMapping(persons);
+
+    }
+
+    /*
+     * Test field names convention over configuration
+     */
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void whenFieldNamesAreNotSpecified_thenTheyShouldBeRetrievedFromTheHeaderRecord() throws Exception {
+
+        File dataSource = new File(this.getClass().getResource("/persons_with_header.csv").toURI());
+        final ComputationalRecordProcessor personProcessor = new PersonProcessor();
+
+        Engine engine = EngineBuilder.aNewEngine()
+                .reader(new FlatFileRecordReader(dataSource))
+                .mapper(new DelimitedRecordMapper(Person.class))
+                .processor(personProcessor)
+                .build();
+
+        Report report = engine.call();
+
+        assertReportWithIgnoredHeaderRecord(report);
+
+        List<Person> persons = (List<Person>) personProcessor.getComputationResult();
+
+        assertPersons(persons);
+
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void whenOnlySubsetOfFieldsAreSpecified_thenOnlyCorrespondingFieldsShouldBeMapped() throws Exception {
+
+        File dataSource = new File(this.getClass().getResource("/persons_with_header.csv").toURI());
+        final ComputationalRecordProcessor personProcessor = new PersonProcessor();
+
+        Engine engine = EngineBuilder.aNewEngine()
+                .reader(new FlatFileRecordReader(dataSource))
+                .mapper(new DelimitedRecordMapper(Person.class, new Integer[]{2, 4}))
+                .processor(personProcessor)
+                .build();
+
+        Report report = engine.call();
+
+        assertReportWithIgnoredHeaderRecord(report);
+
+        List<Person> persons = (List<Person>) personProcessor.getComputationResult();
+
+        assertPersonsFieldSubsetMapping(persons);
+
+    }
+
+    private void assertReportIsValid(Report report) {
+        assertReport(report);
+        assertThat(report.getTotalRecords()).isEqualTo(2);
+        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
+    }
+
+    private void assertReportWithIgnoredHeaderRecord(Report report) {
+        assertReport(report);
+        assertThat(report.getTotalRecords()).isEqualTo(3);
+        assertThat(report.getIgnoredRecordsCount()).isEqualTo(1);
+    }
+
+    private void assertReport(Report report) {
+        assertThat(report).isNotNull();
+        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
+        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
+        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
+        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
+        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
+    }
+
+    private void assertPersonsFieldSubsetMapping(List<Person> persons) {
+        assertThat(persons).isNotEmpty().hasSize(2);
+
+        final Person person1 = persons.get(0);
+        assertThat(person1.getFirstName()).isNull();
+        assertThat(person1.getLastName()).isNull();
+        assertThat(person1.getBirthDate()).isNull();
+        assertThat(person1.getAge()).isEqualTo(30);
+        assertThat(person1.isMarried()).isTrue();
+
+        final Person person2 = persons.get(1);
+        assertThat(person2.getFirstName()).isNull();
+        assertThat(person2.getLastName()).isNull();
+        assertThat(person2.getBirthDate()).isNull();
+        assertThat(person2.getAge()).isEqualTo(15);
+        assertThat(person2.isMarried()).isFalse();
+    }
+
+    private void assertPersons(List<Person> persons) {
         assertThat(persons).isNotEmpty().hasSize(2);
 
         final Person person1 = persons.get(0);
@@ -60,7 +170,6 @@ public class FlatFileIntegrationTest {
         assertThat(person2.getLastName()).isEqualTo("foo");
         assertThat(person2.getAge()).isEqualTo(15);
         assertThat(person2.isMarried()).isFalse();
-
     }
 
     private static class PersonProcessor implements ComputationalRecordProcessor<Person, Person, List<Person>> {

@@ -92,6 +92,11 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
     private String[] fieldNames;
 
     /**
+     * Flag telling if field names have been retrieved from the header record.
+     */
+    private boolean fieldNamesRetrievedFromHeader;
+
+    /**
      * private default constructor to initialize the mapper with default parameter values.
      */
     private DelimitedRecordMapper() {
@@ -181,8 +186,14 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
 
         FlatFileRecord flatFileRecord = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<String, String>();
+        int index = 0;
         for (FlatFileField flatFileField : flatFileRecord.getFlatFileFields()) {
-            String fieldName = fieldNames[flatFileField.getIndex() - 1];
+            String fieldName;
+            if (fieldNamesRetrievedFromHeader) {
+                fieldName = fieldNames[flatFileField.getIndex()];
+            } else {
+                fieldName = fieldNames[index++];
+            }
             String fieldValue = flatFileField.getRawContent();
             fieldsContents.put(fieldName, fieldValue);
         }
@@ -201,6 +212,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
 
         // convention over configuration : if field names are not specified, retrieve them from the header record (done only once)
         if (fieldNames == null) {
+            fieldNamesRetrievedFromHeader = true;
             fieldNames = new String[tokens.length];
             for (int i = 0; i < tokens.length; i++) {
                 String token = tokens[i];
@@ -228,7 +240,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
         for (String token : tokens) {
             token = trimWhitespaces(token);
             token = removeQualifier(token);
-            fields.add(new FlatFileField(++index, token));
+            fields.add(new FlatFileField(index++, token));
         }
 
         FlatFileRecord flatFileRecord = new FlatFileRecord(record.getHeader(), payload);
