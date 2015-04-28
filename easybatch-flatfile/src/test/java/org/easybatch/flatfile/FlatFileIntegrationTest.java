@@ -6,6 +6,7 @@ import org.easybatch.core.api.Status;
 import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
+import org.easybatch.flatfile.flr.FixedLengthRecordMapper;
 import org.junit.Test;
 
 import java.io.File;
@@ -114,6 +115,45 @@ public class FlatFileIntegrationTest {
         List<Person> persons = (List<Person>) personProcessor.getComputationResult();
 
         assertPersonsFieldSubsetMapping(persons);
+
+    }
+
+    /*
+     * Test fixed-length record processing
+     */
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testFlrProcessing() throws Exception {
+
+        File dataSource = new File(this.getClass().getResource("/persons.flr").toURI());
+        final ComputationalRecordProcessor personProcessor = new PersonProcessor();
+
+        Engine engine = EngineBuilder.aNewEngine()
+                .reader(new FlatFileRecordReader(dataSource))
+                .mapper(new FixedLengthRecordMapper(Person.class, new int[]{4, 4, 2, 10, 1}, new String[]{"firstName", "lastName", "age", "birthDate", "married"}))
+                .processor(personProcessor)
+                .build();
+
+        Report report = engine.call();
+
+        assertReportIsValid(report);
+
+        List<Person> persons = (List<Person>) personProcessor.getComputationResult();
+
+        assertThat(persons).isNotEmpty().hasSize(2);
+
+        final Person person1 = persons.get(0);
+        assertThat(person1.getFirstName()).isEqualTo("foo ");
+        assertThat(person1.getLastName()).isEqualTo("bar ");
+        assertThat(person1.getAge()).isEqualTo(30);
+        assertThat(person1.isMarried()).isTrue();
+
+        final Person person2 = persons.get(1);
+        assertThat(person2.getFirstName()).isEqualTo("toto");
+        assertThat(person2.getLastName()).isEqualTo("titi");
+        assertThat(person2.getAge()).isEqualTo(15);
+        assertThat(person2.isMarried()).isFalse();
 
     }
 
