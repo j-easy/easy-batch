@@ -24,47 +24,48 @@
 
 package org.easybatch.flatfile.flr;
 
-import org.easybatch.core.api.Header;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.flatfile.Bean;
 import org.easybatch.flatfile.FlatFileRecord;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Date;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit test class for {@link org.easybatch.flatfile.flr.FixedLengthRecordMapper}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@RunWith(MockitoJUnitRunner.class)
 public class FixedLengthRecordMapperTest {
 
     private FixedLengthRecordMapper fixedLengthRecordMapper;
-    private StringRecord stringRecord;
 
-    private Header header;
+    @Mock
+    private StringRecord record;
 
     @Before
     public void setUp() throws Exception {
         fixedLengthRecordMapper = new FixedLengthRecordMapper<Bean>(Bean.class,
                 new int[]{4, 2, 3},
                 new String[]{"field1", "field2", "field3"});
-        header = new Header(1l, "ds", new Date());
-        stringRecord = new StringRecord(header, "aaaabbccc");
+        when(record.getPayload()).thenReturn("aaaabbccc");
     }
 
     @Test(expected = Exception.class)
     public void testIllFormedRecord() throws Exception {
-        stringRecord = new StringRecord(header, "aaaabbcccd"); // unexpected record size
-        fixedLengthRecordMapper.parseRecord(stringRecord);
+        when(record.getPayload()).thenReturn("aaaabbcccd"); // unexpected record size
+        fixedLengthRecordMapper.parseRecord(record);
     }
 
     @Test
     public void testRecordParsing() throws Exception {
-        FlatFileRecord flatFileRecord = fixedLengthRecordMapper.parseRecord(stringRecord);
+        FlatFileRecord flatFileRecord = fixedLengthRecordMapper.parseRecord(record);
         assertThat(flatFileRecord.getFlatFileFields().size()).isEqualTo(3);
         assertThat(flatFileRecord.getFlatFileFields().get(0).getRawContent()).isEqualTo("aaaa");
         assertThat(flatFileRecord.getFlatFileFields().get(1).getRawContent()).isEqualTo("bb");

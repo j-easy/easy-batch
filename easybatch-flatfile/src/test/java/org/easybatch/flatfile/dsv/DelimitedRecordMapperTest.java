@@ -24,38 +24,41 @@
 
 package org.easybatch.flatfile.dsv;
 
-import org.easybatch.core.api.Header;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.flatfile.FlatFileField;
 import org.easybatch.flatfile.FlatFileRecord;
 import org.easybatch.flatfile.Person;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit test class for {@link org.easybatch.flatfile.dsv.DelimitedRecordMapper}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@RunWith(MockitoJUnitRunner.class)
 public class DelimitedRecordMapperTest {
 
     private DelimitedRecordMapper delimitedRecordMapper;
 
-    private StringRecord stringRecord;
-
-    private Header header;
+    @Mock
+    private StringRecord record, headerRecord;
 
     @Before
     public void setUp() throws Exception {
         delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class,
                 new String[]{"firstName", "lastName", "age", "birthDate", "married"});
-        header = new Header(1l, "ds", new Date());
-        stringRecord = new StringRecord(header, "foo,bar,30,1990-12-12,true");
+
+        when(record.getPayload()).thenReturn("foo,bar,30,1990-12-12,true");
+        when(headerRecord.getPayload()).thenReturn("firstName,lastName,age,birthDate,married");
     }
 
     /*
@@ -64,77 +67,77 @@ public class DelimitedRecordMapperTest {
 
     @Test(expected = Exception.class)
     public void testIllFormedRecord() throws Exception {
-        stringRecord = new StringRecord(header, "foo,bar,30,1990-12-12");// incorrect record size
-        delimitedRecordMapper.parseRecord(stringRecord);
+        when(record.getPayload()).thenReturn("foo,bar,30,1990-12-12");// incorrect record size
+        delimitedRecordMapper.parseRecord(record);
     }
 
 
     @Test
     public void testRecordSizeWithEmptyField() throws Exception {
-        stringRecord = new StringRecord(header, "foo,bar,30,1990-12-12,");
-        FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(stringRecord);
+        when(record.getPayload()).thenReturn("foo,bar,30,1990-12-12,");
+        FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(record);
         assertThat(flatFileRecord.getFlatFileFields().get(4).getRawContent()).isEmpty();
     }
 
     @Test
     public void testRecordParsing() throws Exception {
-        validateRecord(stringRecord);
+        validateRecord(record);
     }
 
     @Test
     public void testRecordParsingWithTrimmedWhitespaces() throws Exception {
         delimitedRecordMapper.setTrimWhitespaces(true);
-        stringRecord = new StringRecord(header, "  foo ,    bar  ,  30  ,     1990-12-12  ,  true         ");
-        validateRecord(stringRecord);
+        when(record.getPayload()).thenReturn("  foo ,    bar  ,  30  ,     1990-12-12  ,  true         ");
+        validateRecord(record);
     }
 
     @Test
     public void testRecordParsingWithPipeDelimiter() throws Exception {
         delimitedRecordMapper.setDelimiter("|");
-        stringRecord = new StringRecord(header, "foo|bar|30|1990-12-12|true");
-        validateRecord(stringRecord);
+        when(record.getPayload()).thenReturn("foo|bar|30|1990-12-12|true");
+        validateRecord(record);
     }
 
     @Test
     public void testRecordParsingWithSpaceDelimiter() throws Exception {
         delimitedRecordMapper.setDelimiter(" ");
-        stringRecord = new StringRecord(header, "foo bar 30 1990-12-12 true");
-        validateRecord(stringRecord);
+        when(record.getPayload()).thenReturn("foo bar 30 1990-12-12 true");
+        validateRecord(record);
     }
 
     @Test
     public void testRecordParsingWithTabDelimiter() throws Exception {
         delimitedRecordMapper.setDelimiter("\t");
-        stringRecord = new StringRecord(header, "foo\tbar\t30\t1990-12-12\ttrue");
-        validateRecord(stringRecord);
+        when(record.getPayload()).thenReturn("foo\tbar\t30\t1990-12-12\ttrue");
+        validateRecord(record);
     }
 
     @Test
     public void testRecordParsingWithMultipleCharactersDelimiter() throws Exception {
         delimitedRecordMapper.setDelimiter("###");
-        stringRecord = new StringRecord(header, "foo###bar###30###1990-12-12###true");
-        validateRecord(stringRecord);
+        when(record.getPayload()).thenReturn("foo###bar###30###1990-12-12###true");
+        validateRecord(record);
     }
 
     @Test
     public void testRecordParsingWithSimpleQuoteQualifier() throws Exception {
         delimitedRecordMapper.setQualifier("'");
-        stringRecord = new StringRecord(header, "'foo','bar','30','1990-12-12','true'");
-        validateRecord(stringRecord);
+        when(record.getPayload()).thenReturn("'foo','bar','30','1990-12-12','true'");
+        validateRecord(record);
     }
 
     @Test(expected = Exception.class)
     public void allFieldsShouldBeQualified() throws Exception {
         delimitedRecordMapper.setQualifier("'");
-        stringRecord = new StringRecord(header, "'foo','bar',30,'1990-12-12','true'"); //age field not qualified
-        validateRecord(stringRecord);
+        when(record.getPayload()).thenReturn("'foo','bar',30,'1990-12-12','true'"); //age field not qualified
+        validateRecord(record);
     }
 
     @Test
     public void testRecordParsingWithDoubleQuoteQualifier() throws Exception {
         delimitedRecordMapper.setQualifier("\"");
-        stringRecord = new StringRecord(header, "\"foo\",\"bar\",\"30\",\"1990-12-12\",\"true\"");
-        validateRecord(stringRecord);
+        when(record.getPayload()).thenReturn("\"foo\",\"bar\",\"30\",\"1990-12-12\",\"true\"");
+        validateRecord(record);
     }
 
     @Test
@@ -143,7 +146,7 @@ public class DelimitedRecordMapperTest {
                 new Integer[]{0, 4},
                 new String[]{"firstName", "married"}
         );
-        FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(stringRecord);
+        FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(record);
         assertThat(flatFileRecord).isNotNull();
         assertThat(flatFileRecord.getFlatFileFields().size()).isEqualTo(2);
         assertThat(flatFileRecord.getFlatFileFields().get(0).getRawContent()).isEqualTo("foo");
@@ -170,8 +173,8 @@ public class DelimitedRecordMapperTest {
     public void testFieldNamesConventionOverConfiguration() throws Exception {
         delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class);
 
-        delimitedRecordMapper.parseRecord(new StringRecord(header, "firstName,lastName,age,birthDate,married"));
-        Person person = (Person) delimitedRecordMapper.mapRecord(stringRecord);
+        delimitedRecordMapper.parseRecord(headerRecord);
+        Person person = (Person) delimitedRecordMapper.mapRecord(record);
         assertThat(person).isNotNull();
         assertThat(person.getFirstName()).isEqualTo("foo");
         assertThat(person.getLastName()).isEqualTo("bar");
@@ -183,8 +186,8 @@ public class DelimitedRecordMapperTest {
     @Test
     public void testFieldSubsetMappingWithConventionOverConfiguration() throws Exception {
         delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class, new Integer[]{0, 4});
-        delimitedRecordMapper.parseRecord(new StringRecord(header, "firstName,lastName,age,birthDate,married"));
-        Person person = (Person) delimitedRecordMapper.mapRecord(stringRecord);
+        delimitedRecordMapper.parseRecord(headerRecord);
+        Person person = (Person) delimitedRecordMapper.mapRecord(record);
 
         assertThat(person).isNotNull();
         assertThat(person.getFirstName()).isEqualTo("foo");
