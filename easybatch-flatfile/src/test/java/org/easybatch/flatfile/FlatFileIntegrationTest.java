@@ -10,6 +10,8 @@ import org.easybatch.flatfile.flr.FixedLengthRecordMapper;
 import org.junit.Test;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class FlatFileIntegrationTest {
     @Test
     public void testCsvProcessing() throws Exception {
 
-        File dataSource = new File(this.getClass().getResource("/persons.csv").toURI());
+        File dataSource = new File(getFileUri("/persons.csv"));
         final ComputationalRecordProcessor personProcessor = new PersonProcessor();
 
         Engine engine = EngineBuilder.aNewEngine()
@@ -49,7 +51,7 @@ public class FlatFileIntegrationTest {
     @Test
     public void testCsvSubRecordProcessing() throws Exception {
 
-        File dataSource = new File(this.getClass().getResource("/persons.csv").toURI());
+        File dataSource = new File(getFileUri("/persons.csv"));
         final ComputationalRecordProcessor personProcessor = new PersonProcessor();
 
         Engine engine = EngineBuilder.aNewEngine()
@@ -76,7 +78,7 @@ public class FlatFileIntegrationTest {
     @Test
     public void whenFieldNamesAreNotSpecified_thenTheyShouldBeRetrievedFromTheHeaderRecord() throws Exception {
 
-        File dataSource = new File(this.getClass().getResource("/persons_with_header.csv").toURI());
+        File dataSource = new File(getFileUri("/persons_with_header.csv"));
         final ComputationalRecordProcessor personProcessor = new PersonProcessor();
 
         Engine engine = EngineBuilder.aNewEngine()
@@ -99,7 +101,7 @@ public class FlatFileIntegrationTest {
     @Test
     public void whenOnlySubsetOfFieldsAreSpecified_thenOnlyCorrespondingFieldsShouldBeMapped() throws Exception {
 
-        File dataSource = new File(this.getClass().getResource("/persons_with_header.csv").toURI());
+        File dataSource = new File(getFileUri("/persons_with_header.csv"));
         final ComputationalRecordProcessor personProcessor = new PersonProcessor();
 
         Engine engine = EngineBuilder.aNewEngine()
@@ -126,7 +128,7 @@ public class FlatFileIntegrationTest {
     @Test
     public void testFlrProcessing() throws Exception {
 
-        File dataSource = new File(this.getClass().getResource("/persons.flr").toURI());
+        File dataSource = new File(getFileUri("/persons.flr"));
         final ComputationalRecordProcessor personProcessor = new PersonProcessor();
 
         Engine engine = EngineBuilder.aNewEngine()
@@ -227,6 +229,10 @@ public class FlatFileIntegrationTest {
             return persons;
         }
 
+    }
+
+    private URI getFileUri(String fileName) throws URISyntaxException {
+        return this.getClass().getResource(fileName).toURI();
     }
 
 }
