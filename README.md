@@ -43,8 +43,8 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 
 ## Current version
 
-* The current stable version is 3.0.0
-* The current development version is 3.0.1-SNAPSHOT
+* The current stable version is 3.0.1
+* The current development version is 3.0.2-SNAPSHOT
 
 ## Contribution
 
@@ -62,6 +62,8 @@ For any further question, you can use the [forum](https://groups.google.com/d/fo
 * [anandhi](https://github.com/anandhi)
 * [chellan](https://github.com/chellan)
 * [jawher](https://github.com/jawher)
+* [jlcanibe](https://github.com/jlcanibe)
+* [imranrajjad](https://github.com/imranrajjad)
 * [natlantisprog](https://github.com/natlantisprog)
 * [nicopatch](https://github.com/nicopatch)
 * [nihed](https://github.com/nihed)
