@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dependencies>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.fake</groupId>
+        <artifactId>fake-core</artifactId>
+        <version>1.0</version>
+        <optional>true</optional>
+        <exclusions>
+            <exclusion>
+                <groupId>some.excluded.dep</groupId>
+                <artifactId>dep-core</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+</dependencies>

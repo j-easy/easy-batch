@@ -18,25 +18,99 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@SuppressWarnings("unchecked")
 public class XmlIntegrationTest {
 
     private static final String EXPECTED_DATA_SOURCE_NAME = "XML stream";
 
-    @SuppressWarnings("unchecked")
     @Test
-    public void testXmlProcessing() throws Exception {
+    public void testPersonsProcessing() throws Exception {
 
-        final InputStream xmlDataSource = this.getClass().getResourceAsStream("/persons.xml");
-        final ComputationalRecordProcessor recordProcessor = new PersonProcessor();
+        final InputStream xmlDataSource = getDataSource("/persons.xml");
 
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new XmlRecordReader("person", xmlDataSource))
                 .mapper(new XmlRecordMapper<Person>(Person.class))
-                .processor(recordProcessor)
+                .processor(new Processor<Person>())
                 .build();
 
         Report report = engine.call();
 
+        assertThatReportIsCorrect(report);
+
+        List<Person> persons = (List<Person>) report.getBatchResult();
+
+        assertThat(persons).isNotEmpty().hasSize(2);
+
+        Person person = persons.get(0);
+        assertThat(person.getId()).isEqualTo(1);
+        assertThat(person.getFirstName()).isEqualTo("foo");
+        assertThat(person.getLastName()).isEqualTo("bar");
+        assertThat(person.isMarried()).isTrue();
+
+        person = persons.get(1);
+        assertThat(person.getId()).isEqualTo(2);
+        assertThat(person.getFirstName()).isEqualTo("bar");
+        assertThat(person.getLastName()).isEqualTo("foo");
+        assertThat(person.isMarried()).isFalse();
+
+    }
+
+    @Test
+    public void testMavenDependenciesProcessing() throws Exception {
+
+        final InputStream xmlDataSource = getDataSource("/dependencies.xml");
+
+        Engine engine = EngineBuilder.aNewEngine()
+                .reader(new XmlRecordReader("dependency", xmlDataSource))
+                .mapper(new XmlRecordMapper<Dependency>(Dependency.class))
+                .processor(new Processor<Dependency>())
+                .build();
+
+        Report report = engine.call();
+
+        assertThatReportIsCorrect(report);
+
+        List<Dependency> dependencies = (List<Dependency>) report.getBatchResult();
+
+        assertThat(dependencies).isNotEmpty().hasSize(2);
+
+        Dependency dependency = dependencies.get(0);
+        assertThat(dependency).isNotNull();
+        assertThat(dependency.getArtifactId()).isEqualTo("junit");
+        assertThat(dependency.getGroupId()).isEqualTo("junit");
+        assertThat(dependency.getVersion()).isEqualTo("4.12");
+        assertThat(dependency.getScope()).isEqualTo("test");
+        assertThat(dependency.getClassifier()).isNull();
+        assertThat(dependency.getSystemPath()).isNull();
+        assertThat(dependency.getType()).isNull();
+        assertThat(dependency.getExclusions()).isNull();
+        assertThat(dependency.isOptional()).isFalse();
+
+        dependency = dependencies.get(1);
+        assertThat(dependency).isNotNull();
+        assertThat(dependency.getArtifactId()).isEqualTo("fake-core");
+        assertThat(dependency.getGroupId()).isEqualTo("org.fake");
+        assertThat(dependency.getVersion()).isEqualTo("1.0");
+        assertThat(dependency.getScope()).isNull();
+        assertThat(dependency.getClassifier()).isNull();
+        assertThat(dependency.getSystemPath()).isNull();
+        assertThat(dependency.getType()).isNull();
+        assertThat(dependency.isOptional()).isTrue();
+
+        Dependency.Exclusions exclusions = dependency.getExclusions();
+        assertThat(exclusions).isNotNull();
+        assertThat(exclusions.getExclusion()).hasSize(1);
+
+        Exclusion exclusion = exclusions.getExclusion().get(0);
+        assertThat(exclusion).isNotNull();
+        assertThat(exclusion.getGroupId()).isNotNull().isEqualTo("some.excluded.dep");
+        assertThat(exclusion.getArtifactId()).isNotNull().isEqualTo("dep-core");
+
+
+    }
+
+    private void assertThatReportIsCorrect(Report report) {
         assertThat(report).isNotNull();
         assertThat(report.getTotalRecords()).isEqualTo(2);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
@@ -46,38 +120,25 @@ public class XmlIntegrationTest {
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
         assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
         assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
-
-        List<Person> persons = (List<Person>) recordProcessor.getComputationResult();
-
-        assertThat(persons).isNotEmpty().hasSize(2);
-
-        final Person person1 = persons.get(0);
-        assertThat(person1.getId()).isEqualTo(1);
-        assertThat(person1.getFirstName()).isEqualTo("foo");
-        assertThat(person1.getLastName()).isEqualTo("bar");
-        assertThat(person1.isMarried()).isTrue();
-
-        final Person person2 = persons.get(1);
-        assertThat(person2.getId()).isEqualTo(2);
-        assertThat(person2.getFirstName()).isEqualTo("bar");
-        assertThat(person2.getLastName()).isEqualTo("foo");
-        assertThat(person2.isMarried()).isFalse();
-
     }
 
-    private static class PersonProcessor implements ComputationalRecordProcessor<Person, Person, List<Person>> {
+    private InputStream getDataSource(String name) {
+        return this.getClass().getResourceAsStream(name);
+    }
 
-        private List<Person> persons = new ArrayList<Person>();
+    private class Processor<T> implements ComputationalRecordProcessor<T, T, List<T>> {
+
+        private List<T> items = new ArrayList<T>();
 
         @Override
-        public Person processRecord(Person person) throws Exception {
-            persons.add(person);
-            return person;
+        public T processRecord(T item) throws Exception {
+            items.add(item);
+            return item;
         }
 
         @Override
-        public List<Person> getComputationResult() {
-            return persons;
+        public List<T> getComputationResult() {
+            return items;
         }
 
     }
