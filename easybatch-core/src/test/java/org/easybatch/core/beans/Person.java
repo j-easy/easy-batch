@@ -43,6 +43,8 @@ public class Person {
 
     protected boolean married;
 
+    private Gender gender;
+
     public String getFirstName() {
         return firstName;
     }
@@ -83,6 +85,14 @@ public class Person {
         this.married = married;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Person{");
@@ -91,6 +101,7 @@ public class Person {
         sb.append(", age=").append(age);
         sb.append(", birthDate=").append(birthDate);
         sb.append(", isMarried=").append(married);
+        sb.append(", gender=").append(gender);
         sb.append('}');
         return sb.toString();
     }

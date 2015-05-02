@@ -24,7 +24,9 @@
 
 package org.easybatch.core.mapper;
 
+import org.easybatch.core.api.TypeConverter;
 import org.easybatch.core.beans.ExtendedPerson;
+import org.easybatch.core.beans.Gender;
 import org.easybatch.core.beans.Person;
 import org.junit.Test;
 
@@ -96,6 +98,24 @@ public class ObjectMapperTest {
         assertThat(extendedPerson.getNickName()).isEqualTo("FB");
     }
 
+    @Test
+    public void whenACustomTypeConverterIsRegistered_ThenItShouldBeUsedToConvertTheCustomType() throws Exception {
+
+        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class);
+        mapper.registerTypeConverter(new TypeConverter<Gender>() {
+            @Override
+            public Gender convert(String value) {
+                return Gender.valueOf(value.toUpperCase());
+            }
+        });
+
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("gender", "MALE");
+
+        Person person = mapper.mapObject(values);
+
+        assertThat(person.getGender()).isNotNull().isEqualTo(Gender.MALE);
+    }
 }
 
 

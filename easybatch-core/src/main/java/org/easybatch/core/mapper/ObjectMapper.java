@@ -32,6 +32,8 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -179,7 +181,30 @@ public class ObjectMapper<T> {
      * @param typeConverter the type converter to user
      */
     public void registerTypeConverter(final TypeConverter typeConverter) {
-        typeConverters.put(recordClass, typeConverter);
+
+        //retrieve the target class name of the converter
+        Class<? extends TypeConverter> typeConverterClass = typeConverter.getClass();
+        Type[] genericInterfaces = typeConverterClass.getGenericInterfaces();
+        Type genericInterface = genericInterfaces[0];
+        if (!(genericInterface instanceof ParameterizedType)) {
+            LOGGER.log(Level.WARNING, "The type converter {0} should be a parametrized type", typeConverterClass.getName());
+            return;
+        }
+        ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
+        Type type = parameterizedType.getActualTypeArguments()[0];
+
+        // register the converter
+        try {
+            Class clazz = Class.forName(getClassName(type));
+            typeConverters.put(clazz, typeConverter);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to register custom type converter " + typeConverterClass.getName(), e);
+        }
+
+    }
+
+    private String getClassName(Type actualTypeArgument) {
+        return actualTypeArgument.toString().substring(6);
     }
 
 }
