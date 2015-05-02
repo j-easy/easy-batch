@@ -2,6 +2,17 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
+Changes in version 3.0.1 (2015-05-03)
+-------------------------------------
+
+* Fixed issue #46: Unable to run multiple BatchSchedulers
+* Fixed issue #47: Error reading XML File
+* Fixed issue #48: Error reading Json data source
+* Fixed issue #50: Error in mapping a delimited record
+* Fixed issue #51: Error while parsing embedded object/array in a Json stream
+* Fixed issue #52: Unable to register a custom type converter
+* Implemented improvement #49: Provide custom mapping strategy for the JdbcRecordMapper
+
 Changes in version 3.0.0 (2015-03-01)
 -------------------------------------
 
