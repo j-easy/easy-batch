@@ -8,5 +8,10 @@
         "id": 2,
         "user": "bar",
         "message": "Hi!"
+    },
+    {
+        "id": 3,
+        "user": "toto",
+        "message": "yep ;-)"
     }
 ]

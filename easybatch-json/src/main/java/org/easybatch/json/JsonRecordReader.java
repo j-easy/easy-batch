@@ -29,6 +29,7 @@ import org.easybatch.core.api.RecordReader;
 
 import javax.json.Json;
 import javax.json.JsonValue;
+import javax.json.stream.JsonGenerationException;
 import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
 import javax.json.stream.JsonParser;
@@ -191,38 +192,71 @@ public class JsonRecordReader implements RecordReader {
 
     private void moveToNextElement(JsonGenerator jsonGenerator) {
         JsonParser.Event event = parser.next();
+        /*
+         * The jsonGenerator is stateful and its current context (array/object) is not public
+         * => There is no way to query it to know when to use write() or write(key) methods.
+         * The idea to track its state with two boolean inArray and inObject has been tried and was not successful
+         */
         switch (event) {
             case START_ARRAY:
-                jsonGenerator.writeStartArray();
+                try {
+                    jsonGenerator.writeStartArray();
+                } catch(JsonGenerationException e) {
+                    jsonGenerator.writeStartArray(key);
+                }
                 break;
             case END_ARRAY:
                 jsonGenerator.writeEnd();
                 break;
             case START_OBJECT:
                 objectDepth++;
-                jsonGenerator.writeStartObject();
+                try {
+                    jsonGenerator.writeStartObject();
+                } catch (Exception e) {
+                    jsonGenerator.writeStartObject(key);
+                }
                 break;
             case END_OBJECT:
                 objectDepth--;
                 jsonGenerator.writeEnd();
                 break;
             case VALUE_FALSE:
-                jsonGenerator.write(key, JsonValue.FALSE);
+                try {
+                    jsonGenerator.write(JsonValue.FALSE);
+                } catch (Exception e) {
+                    jsonGenerator.write(key, JsonValue.FALSE);
+                }
                 break;
             case VALUE_NULL:
-                jsonGenerator.write(key, JsonValue.NULL);
+                try {
+                    jsonGenerator.write(JsonValue.NULL);
+                } catch (Exception e) {
+                    jsonGenerator.write(key, JsonValue.NULL);
+                }
                 break;
             case VALUE_TRUE:
-                jsonGenerator.write(key, JsonValue.TRUE);
+                try {
+                    jsonGenerator.write(JsonValue.TRUE);
+                } catch (Exception e) {
+                    jsonGenerator.write(key, JsonValue.TRUE);
+                }
                 break;
             case KEY_NAME:
                 key = parser.getString();
                 break;
             case VALUE_STRING:
-                jsonGenerator.write(key, parser.getString());
+                try {
+                    jsonGenerator.write(parser.getString());
+                } catch (Exception e) {
+                    jsonGenerator.write(key, parser.getString());
+                }
                 break;
             case VALUE_NUMBER:
-                jsonGenerator.write(key, parser.getBigDecimal());
+                try {
+                    jsonGenerator.write(parser.getBigDecimal());
+                } catch (Exception e) {
+                    jsonGenerator.write(key, parser.getBigDecimal());
+                }
                 break;
             default:
                 break;

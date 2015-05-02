@@ -28,6 +28,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,21 +58,51 @@ public class JsonRecordReaderTest {
 
         assertThat(jsonRecordReader.hasNextRecord()).isTrue();
 
-        String expectedJson1 = "{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}";
-        JsonRecord jsonRecord1 = jsonRecordReader.readNextRecord();
-        assertThat(jsonRecord1).isNotNull();
-        assertThat(jsonRecord1.getHeader().getNumber()).isEqualTo(1);
-        assertThat(jsonRecord1.getPayload()).isEqualTo(expectedJson1);
+        String expectedJson = "{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}";
+        JsonRecord jsonRecord = jsonRecordReader.readNextRecord();
+        assertThat(jsonRecord).isNotNull();
+        assertThat(jsonRecord.getHeader().getNumber()).isEqualTo(1);
+        assertThat(jsonRecord.getPayload()).isEqualTo(expectedJson);
 
         assertThat(jsonRecordReader.hasNextRecord()).isTrue();
 
-        String expectedJson2 = "{\"id\":2,\"user\":\"bar\",\"message\":\"Hi!\"}";
-        JsonRecord jsonRecord2 = jsonRecordReader.readNextRecord();
-        assertThat(jsonRecord2).isNotNull();
-        assertThat(jsonRecord2.getHeader().getNumber()).isEqualTo(2);
-        assertThat(jsonRecord2.getPayload()).isEqualTo(expectedJson2);
+        expectedJson = "{\"id\":2,\"user\":\"bar\",\"message\":\"Hi!\"}";
+        jsonRecord = jsonRecordReader.readNextRecord();
+        assertThat(jsonRecord).isNotNull();
+        assertThat(jsonRecord.getHeader().getNumber()).isEqualTo(2);
+        assertThat(jsonRecord.getPayload()).isEqualTo(expectedJson);
+
+        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
+
+        expectedJson = "{\"id\":3,\"user\":\"toto\",\"message\":\"yep ;-)\"}";
+        jsonRecord = jsonRecordReader.readNextRecord();
+        assertThat(jsonRecord).isNotNull();
+        assertThat(jsonRecord.getHeader().getNumber()).isEqualTo(3);
+        assertThat(jsonRecord.getPayload()).isEqualTo(expectedJson);
 
         assertThat(jsonRecordReader.hasNextRecord()).isFalse();
+    }
+
+    @Test
+    public void testEmbeddedObjectParsing() throws Exception {
+        String dataSource = "[{\"name\":\"foo\",\"address\":{\"zipcode\":1000,\"city\":\"brussels\"}}]";
+        jsonRecordReader.close();
+        jsonRecordReader = new JsonRecordReader(new ByteArrayInputStream(dataSource.getBytes()));
+        jsonRecordReader.open();
+        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
+        JsonRecord record = jsonRecordReader.readNextRecord();
+        assertThat(record.getPayload()).isEqualTo("{\"name\":\"foo\",\"address\":{\"zipcode\":1000,\"city\":\"brussels\"}}");
+    }
+
+    @Test
+    public void testEmbeddedArrayParsing() throws Exception {
+        String dataSource = "[{\"friends\":[\"foo\",\"bar\"]}]";
+        jsonRecordReader.close();
+        jsonRecordReader = new JsonRecordReader(new ByteArrayInputStream(dataSource.getBytes()));
+        jsonRecordReader.open();
+        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
+        JsonRecord record = jsonRecordReader.readNextRecord();
+        assertThat(record.getPayload()).isEqualTo("{\"friends\":[\"foo\",\"bar\"]}");
     }
 
     /*
@@ -84,6 +115,17 @@ public class JsonRecordReaderTest {
         jsonRecordReader = new JsonRecordReader(getDataSource("/empty.json"));
         jsonRecordReader.open();
         assertThat(jsonRecordReader.hasNextRecord()).isFalse();
+    }
+
+    @Test(expected = javax.json.stream.JsonParsingException.class) // TODO should be wrapped in an Easy Batch exception
+    public void whenJsonStreamIsIllformed_thenTheJsonRecordReaderShouldThrowAnException() throws Exception {
+        String dataSource = "[{\"name\":\"foo\",}]";// illegal trailing comma
+        jsonRecordReader.close();
+        jsonRecordReader = new JsonRecordReader(new ByteArrayInputStream(dataSource.getBytes()));
+        jsonRecordReader.open();
+        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
+        jsonRecordReader.readNextRecord();
+
     }
 
     @After

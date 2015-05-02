@@ -1,0 +1,190 @@
+[
+  {
+  "id" : "25ei-6bcr",
+  "name" : "Credit Card Complaints",
+  "averageRating" : 0,
+  "createdAt" : 1337199939,
+  "displayType" : "table",
+  "downloadCount" : 5011,
+  "indexUpdatedAt" : 1414647847,
+  "newBackend" : false,
+  "numberOfComments" : 0,
+  "oid" : 2956892,
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1364274981,
+  "publicationGroup" : 342069,
+  "publicationStage" : "published",
+  "rowIdentifierColumnId" : 53173967,
+  "rowsUpdatedAt" : 1364274443,
+  "rowsUpdatedBy" : "dfzt-mv86",
+  "tableId" : 756116,
+  "totalTimesRated" : 0,
+  "viewCount" : 68124,
+  "viewLastModified" : 1364274981,
+  "viewType" : "tabular",
+  "grants" : [ {
+    "inherited" : true,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "custom_fields" : {
+      "TEST" : {
+        "CFPB1" : ""
+      }
+    },
+    "renderTypeConfig" : {
+      "visible" : {
+        "table" : true
+      }
+    },
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+    "rdfSubject" : "0",
+    "rowIdentifier" : 53173967
+  },
+  "owner" : {
+    "id" : "dfzt-mv86",
+    "displayName" : "CFPB Administrator",
+    "roleName" : "publisher",
+    "screenName" : "CFPB Administrator",
+    "rights" : [ "create_datasets", "edit_others_datasets", "edit_nominations", "approve_nominations", "moderate_comments", "manage_stories", "feature_items", "change_configurations", "view_domain", "view_others_datasets", "create_pages", "edit_pages", "view_goals", "view_dashboards", "edit_goals", "edit_dashboards" ]
+  },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "dfzt-mv86",
+    "displayName" : "CFPB Administrator",
+    "roleName" : "publisher",
+    "screenName" : "CFPB Administrator",
+    "rights" : [ "create_datasets", "edit_others_datasets", "edit_nominations", "approve_nominations", "moderate_comments", "manage_stories", "feature_items", "change_configurations", "view_domain", "view_others_datasets", "create_pages", "edit_pages", "view_goals", "view_dashboards", "edit_goals", "edit_dashboards" ]
+  },
+  "flags" : [ "default" ]
+},
+  {
+  "id" : "fphp-cr5a",
+  "name" : "Debt collection complaints",
+  "averageRating" : 0,
+  "createdAt" : 1383061830,
+  "displayType" : "table",
+  "downloadCount" : 23761,
+  "indexUpdatedAt" : 1430489336,
+  "moderationStatus" : true,
+  "newBackend" : false,
+  "numberOfComments" : 0,
+  "oid" : 11110911,
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1430482892,
+  "publicationGroup" : 713240,
+  "publicationStage" : "published",
+  "rowsUpdatedAt" : 1430481392,
+  "rowsUpdatedBy" : "3gpd-kj7i",
+  "tableId" : 2758736,
+  "totalTimesRated" : 0,
+  "viewCount" : 73673,
+  "viewLastModified" : 1383061850,
+  "viewType" : "tabular",
+  "grants" : [ {
+    "inherited" : true,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "custom_fields" : {
+      "TEST" : {
+        "CFPB1" : ""
+      }
+    },
+    "renderTypeConfig" : {
+      "visible" : {
+        "table" : true
+      }
+    },
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+    "rdfSubject" : "0"
+  },
+  "owner" : {
+    "id" : "2m4m-3z9t",
+    "displayName" : "Micheal Keane",
+    "screenName" : "Micheal Keane"
+  },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "dfzt-mv86",
+    "displayName" : "CFPB Administrator",
+    "roleName" : "publisher",
+    "screenName" : "CFPB Administrator",
+    "rights" : [ "create_datasets", "edit_others_datasets", "edit_nominations", "approve_nominations", "moderate_comments", "manage_stories", "feature_items", "change_configurations", "view_domain", "view_others_datasets", "create_pages", "edit_pages", "view_goals", "view_dashboards", "edit_goals", "edit_dashboards" ]
+  }
+},
+  {
+  "id" : "x94z-ydhh",
+  "name" : "Consumer Complaints",
+  "averageRating" : 0,
+  "createdAt" : 1362426812,
+  "displayType" : "table",
+  "downloadCount" : 60996,
+  "indexUpdatedAt" : 1430488302,
+  "newBackend" : false,
+  "numberOfComments" : 0,
+  "oid" : 11110158,
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1430482892,
+  "publicationGroup" : 713240,
+  "publicationStage" : "published",
+  "rowsUpdatedAt" : 1430481392,
+  "rowsUpdatedBy" : "3gpd-kj7i",
+  "tableId" : 2758736,
+  "totalTimesRated" : 0,
+  "viewCount" : 245320,
+  "viewLastModified" : 1430482892,
+  "viewType" : "tabular",
+  "grants" : [ {
+    "inherited" : true,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "custom_fields" : {
+      "TEST" : {
+        "CFPB1" : ""
+      }
+    },
+    "renderTypeConfig" : {
+      "visible" : {
+        "table" : true
+      }
+    },
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+    "jsonQuery" : {
+      "order" : [ {
+        "ascending" : false,
+        "columnFieldName" : "date_received"
+      } ]
+    },
+    "rdfSubject" : "0",
+    "filterCondition" : {
+      "value" : "AND",
+      "type" : "operator",
+      "metadata" : {
+        "unifiedVersion" : 2,
+        "advanced" : false
+      }
+    }
+  },
+  "owner" : {
+    "id" : "dfzt-mv86",
+    "displayName" : "CFPB Administrator",
+    "roleName" : "publisher",
+    "screenName" : "CFPB Administrator",
+    "rights" : [ "create_datasets", "edit_others_datasets", "edit_nominations", "approve_nominations", "moderate_comments", "manage_stories", "feature_items", "change_configurations", "view_domain", "view_others_datasets", "create_pages", "edit_pages", "view_goals", "view_dashboards", "edit_goals", "edit_dashboards" ]
+  },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "dfzt-mv86",
+    "displayName" : "CFPB Administrator",
+    "roleName" : "publisher",
+    "screenName" : "CFPB Administrator",
+    "rights" : [ "create_datasets", "edit_others_datasets", "edit_nominations", "approve_nominations", "moderate_comments", "manage_stories", "feature_items", "change_configurations", "view_domain", "view_others_datasets", "create_pages", "edit_pages", "view_goals", "view_dashboards", "edit_goals", "edit_dashboards" ]
+  },
+  "flags" : [ "default" ]
+}
+]
