@@ -66,10 +66,15 @@ public class EndWithStringRecordFilter implements RecordFilter {
      * {@inheritDoc}
      */
     public boolean filterRecord(final Record record) {
+        boolean result = doFilterRecord(record);
+        return negate ? !result : result;
+    }
+
+    private boolean doFilterRecord(Record record) {
         String payload = (String) record.getPayload();
         for (String prefix : suffixes) {
             if (payload.endsWith(prefix)) {
-                return !negate;
+                return true;
             }
         }
         return false;
