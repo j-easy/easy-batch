@@ -29,10 +29,13 @@ import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.StringRecord;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Scanner;
+
+import static java.lang.String.format;
 
 /**
  * A {@link RecordReader} implementation that read data from a flat file.
@@ -106,11 +109,17 @@ public class FlatFileRecordReader implements RecordReader {
      */
     public Long getTotalRecords() {
         long totalRecords = 0;
-        while (recordCounterScanner.hasNextLine()) {
-            totalRecords++;
-            recordCounterScanner.nextLine();
+        try {
+            recordCounterScanner = new Scanner(new FileInputStream(input), charsetName);
+            while (recordCounterScanner.hasNextLine()) {
+                totalRecords++;
+                recordCounterScanner.nextLine();
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(format("File %s not found", input), e);
+        } finally {
+            recordCounterScanner.close();
         }
-        recordCounterScanner.close();
         return totalRecords;
     }
 
@@ -124,8 +133,7 @@ public class FlatFileRecordReader implements RecordReader {
      */
     public void open() throws Exception {
         currentRecordNumber = 0;
-        scanner = new Scanner(input, charsetName);
-        recordCounterScanner = new Scanner(input);
+        scanner = new Scanner(new FileInputStream(input), charsetName);
     }
 
     /**
