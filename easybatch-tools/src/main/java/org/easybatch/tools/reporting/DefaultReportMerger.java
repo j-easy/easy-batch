@@ -67,16 +67,6 @@ public class DefaultReportMerger implements ReportMerger {
 
         long totalRecords = 0;
 
-        List<Long> filteredRecords = new ArrayList<Long>();
-
-        List<Long> ignoredRecords = new ArrayList<Long>();
-
-        List<Long> rejectedRecords = new ArrayList<Long>();
-
-        List<Long> errorRecords = new ArrayList<Long>();
-
-        List<Long> successRecords = new ArrayList<Long>();
-
         List<Object> results = new ArrayList<Object>();
 
         List<String> datasources = new ArrayList<String>();
@@ -88,11 +78,21 @@ public class DefaultReportMerger implements ReportMerger {
             startTimes.add(report.getStartTime());
             endTimes.add(report.getEndTime());
             totalRecords += report.getTotalRecords();
-            filteredRecords.addAll(report.getFilteredRecords());
-            ignoredRecords.addAll(report.getIgnoredRecords());
-            rejectedRecords.addAll(report.getRejectedRecords());
-            errorRecords.addAll(report.getErrorRecords());
-            successRecords.addAll(report.getSuccessRecords());
+            for (int i = 0; i < report.getFilteredRecordsCount(); i++) {
+                finalReport.incrementTotalFilteredRecords();
+            }
+            for (int i = 0; i < report.getIgnoredRecordsCount(); i++) {
+                finalReport.incrementTotalIgnoredRecord();
+            }
+            for (int i = 0; i < report.getRejectedRecordsCount(); i++) {
+                finalReport.incrementTotalRejectedRecord();
+            }
+            for (int i = 0; i < report.getErrorRecordsCount(); i++) {
+                finalReport.incrementTotalErrorRecord();
+            }
+            for (int i = 0; i < report.getSuccessRecordsCount(); i++) {
+                finalReport.incrementTotalSuccessRecord();
+            }
             if (report.getBatchResult() != null) {
                 results.add(report.getBatchResult());
             }
@@ -106,21 +106,6 @@ public class DefaultReportMerger implements ReportMerger {
         finalReport.setStartTime(Collections.min(startTimes));
         finalReport.setEndTime(Collections.max(endTimes));
         finalReport.setTotalRecords(totalRecords);
-        for (Long filteredRecord : filteredRecords) {
-            finalReport.addFilteredRecord(filteredRecord);
-        }
-        for (Long ignoredRecord : ignoredRecords) {
-            finalReport.addIgnoredRecord(ignoredRecord);
-        }
-        for (Long rejectedRecord : rejectedRecords) {
-            finalReport.addRejectedRecord(rejectedRecord);
-        }
-        for (Long errorRecord : errorRecords) {
-            finalReport.addErrorRecord(errorRecord);
-        }
-        for (Long successRecord : successRecords) {
-            finalReport.addSuccessRecord(successRecord);
-        }
         if (!results.isEmpty()) {
             finalReport.setBatchResult(results);
         }

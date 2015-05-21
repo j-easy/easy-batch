@@ -40,7 +40,7 @@ final class ProcessingPipeline {
                 }
             } catch (Exception e) {
                 processingError = true;
-                report.addErrorRecord(currentRecordNumber);
+                report.incrementTotalErrorRecord();
                 errorRecordHandler.handle(currentRecord, e);
                 eventManager.fireOnBatchException(e);
                 eventManager.fireOnRecordProcessingException(typedRecord, e);

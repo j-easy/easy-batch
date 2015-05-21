@@ -119,7 +119,7 @@ public final class Engine implements Callable<Report> {
                 LOGGER.log(Level.INFO, "Total records = {0}", totalRecords == null ? "N/A" : totalRecords);
             }
             report.setStatus(Status.RUNNING);
-            LOGGER.info("easy batch engine is running...");
+            LOGGER.info("easy batch engine is running");
 
             report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
 
@@ -153,7 +153,7 @@ public final class Engine implements Callable<Report> {
                 //apply filter chain on the record
                 boolean filtered = filterChain.filterRecord(currentRecord);
                 if (filtered) {
-                    report.addFilteredRecord(currentRecordNumber);
+                    report.incrementTotalFilteredRecords();
                     filteredRecordHandler.handle(currentRecord);
                     continue;
                 }
@@ -163,12 +163,12 @@ public final class Engine implements Callable<Report> {
                 try {
                     typedRecord = mapRecord(currentRecord);
                     if (typedRecord == null) {
-                        report.addIgnoredRecord(currentRecordNumber);
+                        report.incrementTotalIgnoredRecord();
                         ignoredRecordHandler.handle(currentRecord);
                         continue;
                     }
                 } catch (Exception e) {
-                    report.addIgnoredRecord(currentRecordNumber);
+                    report.incrementTotalIgnoredRecord();
                     ignoredRecordHandler.handle(currentRecord, e);
                     eventManager.fireOnBatchException(e);
                     if (strictMode) {
@@ -184,13 +184,13 @@ public final class Engine implements Callable<Report> {
                     Set<ValidationError> validationsErrors = validateRecord(typedRecord);
 
                     if (!validationsErrors.isEmpty()) {
-                        report.addRejectedRecord(currentRecordNumber);
+                        report.incrementTotalRejectedRecord();
                         rejectedRecordHandler.handle(currentRecord, validationsErrors);
                         continue;
                     }
                 } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "An exception occurred while validating record " + currentRecord, e);
-                    report.addRejectedRecord(currentRecordNumber);
+                    report.incrementTotalRejectedRecord();
                     rejectedRecordHandler.handle(currentRecord, e);
                     eventManager.fireOnBatchException(e);
                     if (strictMode) {
@@ -210,7 +210,7 @@ public final class Engine implements Callable<Report> {
                         break;
                     }
                 } else {
-                    report.addSuccessRecord(currentRecordNumber);
+                    report.incrementTotalSuccessRecord();
                 }
             }
 

@@ -26,9 +26,7 @@ package org.easybatch.core.api;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Class holding batch reporting data.
@@ -50,47 +48,42 @@ public class Report implements Serializable {
     // needed only for jmx monitoring
     private long currentRecordNumber;
 
-    private List<Long> filteredRecords;
+    private long filteredRecords;
 
-    private List<Long> ignoredRecords;
+    private long ignoredRecords;
 
-    private List<Long> rejectedRecords;
+    private long rejectedRecords;
 
-    private List<Long> errorRecords;
+    private long errorRecords;
 
-    private List<Long> successRecords;
+    private long successRecords;
 
     private Object batchResult;
 
     private Status status;
 
     public Report() {
-        filteredRecords = new ArrayList<Long>();
-        ignoredRecords = new ArrayList<Long>();
-        rejectedRecords = new ArrayList<Long>();
-        errorRecords = new ArrayList<Long>();
-        successRecords = new ArrayList<Long>();
         status = Status.INITIALIZING;
     }
 
-    public void addFilteredRecord(final long recordNumber) {
-        filteredRecords.add(recordNumber);
+    public void incrementTotalFilteredRecords() {
+        filteredRecords++;
     }
 
-    public void addIgnoredRecord(final long recordNumber) {
-        ignoredRecords.add(recordNumber);
+    public void incrementTotalIgnoredRecord() {
+        ignoredRecords++;
     }
 
-    public void addRejectedRecord(final long recordNumber) {
-        rejectedRecords.add(recordNumber);
+    public void incrementTotalRejectedRecord() {
+        rejectedRecords++;
     }
 
-    public void addErrorRecord(final long recordNumber) {
-        errorRecords.add(recordNumber);
+    public void incrementTotalErrorRecord() {
+        errorRecords++;
     }
 
-    public void addSuccessRecord(final long recordNumber) {
-        successRecords.add(recordNumber);
+    public void incrementTotalSuccessRecord() {
+        successRecords++;
     }
 
     public void setTotalRecords(final Long totalRecords) {
@@ -99,26 +92,6 @@ public class Report implements Serializable {
 
     public Long getTotalRecords() {
         return totalRecords;
-    }
-
-    public List<Long> getFilteredRecords() {
-        return filteredRecords;
-    }
-
-    public List<Long> getIgnoredRecords() {
-        return ignoredRecords;
-    }
-
-    public List<Long> getRejectedRecords() {
-        return rejectedRecords;
-    }
-
-    public List<Long> getErrorRecords() {
-        return errorRecords;
-    }
-
-    public List<Long> getSuccessRecords() {
-        return successRecords;
     }
 
     public long getStartTime() {
@@ -169,24 +142,24 @@ public class Report implements Serializable {
         this.status = status;
     }
 
-    public int getFilteredRecordsCount() {
-        return filteredRecords.size();
+    public long getFilteredRecordsCount() {
+        return filteredRecords;
     }
 
-    public int getIgnoredRecordsCount() {
-        return ignoredRecords.size();
+    public long getIgnoredRecordsCount() {
+        return ignoredRecords;
     }
 
-    public int getRejectedRecordsCount() {
-        return rejectedRecords.size();
+    public long getRejectedRecordsCount() {
+        return rejectedRecords;
     }
 
-    public int getErrorRecordsCount() {
-        return errorRecords.size();
+    public long getErrorRecordsCount() {
+        return errorRecords;
     }
 
-    public int getSuccessRecordsCount() {
-        return successRecords.size();
+    public long getSuccessRecordsCount() {
+        return successRecords;
     }
 
     /*

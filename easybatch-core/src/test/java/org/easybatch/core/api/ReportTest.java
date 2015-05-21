@@ -61,16 +61,16 @@ public class ReportTest {
         report.setTotalRecords(10l);
         report.setCurrentRecordNumber(2);
         report.setBatchResult(50);
-        report.addFilteredRecord(1l);
-        report.addFilteredRecord(2l);
-        report.addIgnoredRecord(3l);
-        report.addIgnoredRecord(4l);
-        report.addRejectedRecord(5l);
-        report.addRejectedRecord(6l);
-        report.addErrorRecord(7l);
-        report.addErrorRecord(8l);
-        report.addSuccessRecord(9l);
-        report.addSuccessRecord(10l);
+        report.incrementTotalFilteredRecords();
+        report.incrementTotalFilteredRecords();
+        report.incrementTotalIgnoredRecord();
+        report.incrementTotalIgnoredRecord();
+        report.incrementTotalRejectedRecord();
+        report.incrementTotalRejectedRecord();
+        report.incrementTotalErrorRecord();
+        report.incrementTotalErrorRecord();
+        report.incrementTotalSuccessRecord();
+        report.incrementTotalSuccessRecord();
     }
 
     @Test
@@ -81,12 +81,6 @@ public class ReportTest {
         assertThat(report.getRejectedRecordsCount()).isEqualTo(2);
         assertThat(report.getErrorRecordsCount()).isEqualTo(2);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
-
-        assertThat(report.getFilteredRecords()).containsExactly(1l, 2l);
-        assertThat(report.getIgnoredRecords()).containsExactly(3l, 4l);
-        assertThat(report.getRejectedRecords()).containsExactly(5l, 6l);
-        assertThat(report.getErrorRecords()).containsExactly(7l, 8l);
-        assertThat(report.getSuccessRecords()).containsExactly(9l, 10l);
     }
 
 

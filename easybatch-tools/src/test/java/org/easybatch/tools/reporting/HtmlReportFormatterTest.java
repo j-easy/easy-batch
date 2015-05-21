@@ -65,16 +65,16 @@ public class HtmlReportFormatterTest {
         report.setStatus(Status.FINISHED);
         report.setDataSource("In-Memory String");
         report.setTotalRecords(10l);
-        report.addFilteredRecord(1);
-        report.addFilteredRecord(2);
-        report.addIgnoredRecord(3);
-        report.addIgnoredRecord(4);
-        report.addRejectedRecord(5);
-        report.addRejectedRecord(6);
-        report.addErrorRecord(7);
-        report.addErrorRecord(8);
-        report.addSuccessRecord(9);
-        report.addSuccessRecord(10);
+        report.incrementTotalFilteredRecords();
+        report.incrementTotalFilteredRecords();
+        report.incrementTotalIgnoredRecord();
+        report.incrementTotalIgnoredRecord();
+        report.incrementTotalRejectedRecord();
+        report.incrementTotalRejectedRecord();
+        report.incrementTotalErrorRecord();
+        report.incrementTotalErrorRecord();
+        report.incrementTotalSuccessRecord();
+        report.incrementTotalSuccessRecord();
     }
 
     @Ignore("TODO: Contents are identical but assertion fails due to different whitespaces")
