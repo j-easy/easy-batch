@@ -24,31 +24,49 @@
 
 package org.easybatch.core.filter;
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
+import org.easybatch.core.api.Record;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Answers;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * Test class for {@link RecordNumberBetweenFilter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordNumberBetweenFilterTest extends BaseRecordFilterTest {
+@RunWith(MockitoJUnitRunner.class)
+public class RecordNumberBetweenFilterTest {
 
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private Record record;
+    
     private RecordNumberBetweenFilter recordNumberBetweenFilter;
 
     @Test
     public void whenTheRecordNumberIsInsideRange_ThenItShouldBeFiltered() {
         recordNumberBetweenFilter = new RecordNumberBetweenFilter(1, 2);
-        assertThat(recordNumberBetweenFilter.filterRecord(stringRecord1)).isTrue();
-        assertThat(recordNumberBetweenFilter.filterRecord(stringRecord2)).isTrue();
+
+        when(record.getHeader().getNumber()).thenReturn(1l);
+        assertThat(recordNumberBetweenFilter.filterRecord(record)).isTrue();
+        
+        when(record.getHeader().getNumber()).thenReturn(2l);
+        assertThat(recordNumberBetweenFilter.filterRecord(record)).isTrue();
     }
 
     @Test
     public void whenTheRecordNumberIsOutsideRange_ThenItShouldNotBeFiltered() {
         recordNumberBetweenFilter = new RecordNumberBetweenFilter(3, 4);
-        assertThat(recordNumberBetweenFilter.filterRecord(stringRecord1)).isFalse();
-        assertThat(recordNumberBetweenFilter.filterRecord(stringRecord2)).isFalse();
+
+        when(record.getHeader().getNumber()).thenReturn(2l);
+        assertThat(recordNumberBetweenFilter.filterRecord(record)).isFalse();
+
+        when(record.getHeader().getNumber()).thenReturn(5l);
+        assertThat(recordNumberBetweenFilter.filterRecord(record)).isFalse();
     }
 
 }

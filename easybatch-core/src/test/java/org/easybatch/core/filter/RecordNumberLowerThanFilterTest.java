@@ -24,31 +24,49 @@
 
 package org.easybatch.core.filter;
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
+import org.easybatch.core.api.Record;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Answers;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * Test class for {@link org.easybatch.core.filter.RecordNumberLowerThanFilter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordNumberLowerThanFilterTest extends BaseRecordFilterTest {
+@RunWith(MockitoJUnitRunner.class)
+public class RecordNumberLowerThanFilterTest {
 
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private Record record;
+    
     private RecordNumberLowerThanFilter recordNumberLowerThanFilter;
 
     @Test
     public void whenTheRecordNumberIsLowerThanExpectedNumber_ThenItShouldBeFiltered() {
         recordNumberLowerThanFilter = new RecordNumberLowerThanFilter(3);
-        assertThat(recordNumberLowerThanFilter.filterRecord(stringRecord1)).isTrue();
-        assertThat(recordNumberLowerThanFilter.filterRecord(stringRecord2)).isTrue();
+
+        when(record.getHeader().getNumber()).thenReturn(1l);
+        assertThat(recordNumberLowerThanFilter.filterRecord(record)).isTrue();
+
+        when(record.getHeader().getNumber()).thenReturn(2l);
+        assertThat(recordNumberLowerThanFilter.filterRecord(record)).isTrue();
     }
 
     @Test
     public void whenTheRecordNumberIsGreaterThanOrEqualToExpectedNumber_ThenItShouldNotBeFiltered() {
         recordNumberLowerThanFilter = new RecordNumberLowerThanFilter(1);
-        assertThat(recordNumberLowerThanFilter.filterRecord(stringRecord1)).isFalse();
-        assertThat(recordNumberLowerThanFilter.filterRecord(stringRecord2)).isFalse();
+
+        when(record.getHeader().getNumber()).thenReturn(1l);
+        assertThat(recordNumberLowerThanFilter.filterRecord(record)).isFalse();
+        
+        when(record.getHeader().getNumber()).thenReturn(2l);
+        assertThat(recordNumberLowerThanFilter.filterRecord(record)).isFalse();
     }
 
 }
