@@ -52,6 +52,10 @@ public class GrepFilterTest {
         grepFilter = new GrepFilter("java");
     }
 
+    /*
+     * Test regular behavior
+     */
+
     @Test
     public void whenRecordContainsPattern_ThenItShouldNotBeFiltered() throws Exception {
         when(record.getPayload()).thenReturn("java rocks!");
@@ -68,6 +72,24 @@ public class GrepFilterTest {
     public void patternLookupShouldBeCaseSensitive() throws Exception {
         when(record.getPayload()).thenReturn("JAVA rocks!");
         assertThat(grepFilter.filterRecord(record)).isTrue();
+    }
+
+    /*
+     * Test negate behavior
+     */
+
+    @Test
+    public void whenRecordContainsPattern_ThenItShouldBeFiltered() throws Exception {
+        grepFilter = new GrepFilter("java", true);
+        when(record.getPayload()).thenReturn("java rocks!");
+        assertThat(grepFilter.filterRecord(record)).isTrue();
+    }
+
+    @Test
+    public void whenRecordDoesNotContainPattern_ThenItShouldNotBeFiltered() throws Exception {
+        grepFilter = new GrepFilter("java", true);
+        when(record.getPayload()).thenReturn("c++ ..");
+        assertThat(grepFilter.filterRecord(record)).isFalse();
     }
 
 }

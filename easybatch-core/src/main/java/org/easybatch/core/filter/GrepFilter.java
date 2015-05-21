@@ -16,14 +16,26 @@ public class GrepFilter implements RecordFilter {
 
     private String pattern;
 
+    private boolean negate;
+
     public GrepFilter(String pattern) {
         this.pattern = pattern;
+    }
+
+    public GrepFilter(String pattern, boolean negate) {
+        this.pattern = pattern;
+        this.negate = negate;
     }
 
     @Override
     public boolean filterRecord(Record record) {
         StringRecord stringRecord = (StringRecord) record;
         String payload = stringRecord.getPayload();
+        boolean result = doFilterRecord(payload);
+        return negate ? !result : result;
+    }
+
+    private boolean doFilterRecord(String payload) {
         return !payload.contains(pattern);
     }
 
