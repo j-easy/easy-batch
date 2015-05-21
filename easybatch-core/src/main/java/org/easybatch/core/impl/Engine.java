@@ -65,6 +65,8 @@ public final class Engine implements Callable<Report> {
     private EventManager eventManager;
 
     private Report report;
+    
+    private boolean jmxEnabled;
 
     Engine(final RecordReader recordReader,
            final List<RecordFilter> filters,
@@ -102,19 +104,23 @@ public final class Engine implements Callable<Report> {
             return report;
         }
 
+        LOGGER.log(Level.INFO, "Strict mode: {0}", strictMode);
+
         String dataSourceName = recordReader.getDataSourceName();
         LOGGER.log(Level.INFO, "Data source: {0}", dataSourceName);
         report.setDataSource(dataSourceName);
 
-        LOGGER.log(Level.INFO, "Strict mode: {0}", strictMode);
         try {
 
-            Long totalRecords = recordReader.getTotalRecords();
-            LOGGER.log(Level.INFO, "Total records = {0}", totalRecords == null ? "N/A" : totalRecords);
+            if(jmxEnabled) {
+                LOGGER.log(Level.INFO, "Calculating the total number of records");
+                Long totalRecords = recordReader.getTotalRecords();
+                report.setTotalRecords(totalRecords);
+                LOGGER.log(Level.INFO, "Total records = {0}", totalRecords == null ? "N/A" : totalRecords);
+            }
             report.setStatus(Status.RUNNING);
             LOGGER.info("easy batch engine is running...");
 
-            report.setTotalRecords(totalRecords);
             report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
 
             long currentRecordNumber; // the physical record number in the data source (can be different from logical record number as seen by the engine in a multi-threaded scenario)
@@ -332,6 +338,7 @@ public final class Engine implements Callable<Report> {
     }
 
     void enableJMX(boolean jmx) {
+        jmxEnabled = jmx;
         if (jmx) {
             Utils.registerJmxMBean(report);
         }
