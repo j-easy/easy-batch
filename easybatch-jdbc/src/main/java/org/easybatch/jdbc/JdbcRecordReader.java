@@ -82,6 +82,12 @@ public class JdbcRecordReader implements RecordReader {
     private boolean fetchSizeEnabled;
 
     /**
+     * Parameter to set the query timeout.
+     */
+    private int queryTimeout;
+    private boolean queryTimeoutEnabled;
+
+    /**
      * The current record number.
      */
     private long currentRecordNumber;
@@ -106,6 +112,9 @@ public class JdbcRecordReader implements RecordReader {
         }
         if (fetchSizeEnabled) {
             statement.setFetchSize(fetchSize);
+        }
+        if (queryTimeoutEnabled) {
+            statement.setQueryTimeout(queryTimeout);
         }
         resultSet = statement.executeQuery(query);
     }
@@ -183,5 +192,14 @@ public class JdbcRecordReader implements RecordReader {
     public void setFetchSize(int fetchSize) {
         this.fetchSize = fetchSize;
         this.fetchSizeEnabled = true;
+    }
+
+    /**
+     * Set the statement query timeout.
+     * @param queryTimeout the query timeout in seconds
+     */
+    public void setQueryTimeout(int queryTimeout) {
+        this.queryTimeout = queryTimeout;
+        this.queryTimeoutEnabled = true;
     }
 }
