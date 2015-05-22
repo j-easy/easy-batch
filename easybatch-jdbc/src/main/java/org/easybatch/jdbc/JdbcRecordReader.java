@@ -76,6 +76,12 @@ public class JdbcRecordReader implements RecordReader {
     private boolean maxRowsEnabled;
 
     /**
+     * Parameter to set fetch size.
+     */
+    private int fetchSize;
+    private boolean fetchSizeEnabled;
+
+    /**
      * The current record number.
      */
     private long currentRecordNumber;
@@ -97,6 +103,9 @@ public class JdbcRecordReader implements RecordReader {
         statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         if (maxRowsEnabled) {
             statement.setMaxRows(maxRows);
+        }
+        if (fetchSizeEnabled) {
+            statement.setFetchSize(fetchSize);
         }
         resultSet = statement.executeQuery(query);
     }
@@ -167,4 +176,12 @@ public class JdbcRecordReader implements RecordReader {
         this.maxRowsEnabled = true;
     }
 
+    /**
+     * Set the statement fetch size.
+     * @param fetchSize the fetch size to set
+     */
+    public void setFetchSize(int fetchSize) {
+        this.fetchSize = fetchSize;
+        this.fetchSizeEnabled = true;
+    }
 }
