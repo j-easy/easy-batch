@@ -126,8 +126,12 @@ public class ObjectMapper<T> {
                 TypeConverter typeConverter = typeConverters.get(type);
                 if (typeConverter != null) {
                     try {
-                        typedValue = typeConverter.convert(value);
-                        setter.invoke(result, typedValue);
+                        if(value != null) {
+                            typedValue = typeConverter.convert(value);
+                            setter.invoke(result, typedValue);
+                        } else {
+                            LOGGER.log(Level.WARNING, "Attempting to convert null to type {0} for field {1}, this field will be set to null (if object type) or default value (if primitive type)", new Object[] {type, field});
+                        }
                     } catch (Exception e) {
                         throw new Exception("Unable to convert '" + value + "' to type " + type + " for field " + field, e);
                     }

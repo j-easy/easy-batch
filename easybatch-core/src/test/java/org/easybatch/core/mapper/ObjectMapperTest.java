@@ -134,6 +134,19 @@ public class ObjectMapperTest {
         }
     }
 
+    @Test
+    public void whenAttemptingToSetANullValue_ThenShouldNotCallTheSetter() throws Exception {
+
+        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class);
+
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("age", null);
+
+        Person person = mapper.mapObject(values);
+        assertThat(person).isNotNull();
+        assertThat(person.getAge()).isEqualTo(0);
+    }
+
 }
 
 
