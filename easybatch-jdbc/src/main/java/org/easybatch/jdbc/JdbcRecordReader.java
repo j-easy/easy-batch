@@ -106,7 +106,7 @@ public class JdbcRecordReader implements RecordReader {
     @Override
     public void open() throws Exception {
         currentRecordNumber = 0;
-        statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         if (maxRowsEnabled) {
             statement.setMaxRows(maxRows);
         }
@@ -137,18 +137,7 @@ public class JdbcRecordReader implements RecordReader {
 
     @Override
     public Long getTotalRecords() {
-        long rowCount = 0;
-
-        try {
-            if (resultSet.last()) {
-                rowCount = resultSet.getRow();
-                resultSet.beforeFirst();
-            }
-            return rowCount;
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "An exception occurred during fetching database record set size", e);
-            return null;
-        }
+        return null;
     }
 
     @Override

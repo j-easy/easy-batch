@@ -59,7 +59,7 @@ public class JdbcRecordReaderTest {
 
     @Test
     public void testTotalRecordsNumber() throws Exception {
-        assertThat(jdbcRecordReader.getTotalRecords()).isEqualTo(2);
+        assertThat(jdbcRecordReader.getTotalRecords()).isNull();// dropped in issue #60
     }
 
     @Test
@@ -67,7 +67,9 @@ public class JdbcRecordReaderTest {
         jdbcRecordReader = new JdbcRecordReader(connection, query);
         jdbcRecordReader.setMaxRows(1);
         jdbcRecordReader.open();
-        assertThat(jdbcRecordReader.getTotalRecords()).isEqualTo(1);
+        assertThat(jdbcRecordReader.hasNextRecord()).isTrue();
+        jdbcRecordReader.readNextRecord();
+        assertThat(jdbcRecordReader.hasNextRecord()).isFalse();
     }
 
     @Test
