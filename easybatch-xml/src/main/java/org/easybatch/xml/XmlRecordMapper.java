@@ -26,9 +26,11 @@ package org.easybatch.xml;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
+import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -59,7 +61,7 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
      * @param type the target domain object type.
      * @throws Exception thrown if an error occurs during the creation of Jaxb context.
      */
-    public XmlRecordMapper(Class<? extends T> type) throws Exception {
+    public XmlRecordMapper(Class<? extends T> type) throws JAXBException {
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
     }
@@ -69,9 +71,10 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
      *
      * @param type the target domain object type.
      * @param xsd  the xsd file against which xml records will be validated
-     * @throws Exception thrown if an error occurs during the creation of Jaxb context.
+     * @throws JAXBException thrown if an error occurs during the creation of Jaxb context.
+     * @throws SAXException  thrown if an error occurs during the schema parsing.
      */
-    public XmlRecordMapper(Class<? extends T> type, File xsd) throws Exception {
+    public XmlRecordMapper(Class<? extends T> type, File xsd) throws JAXBException, SAXException {
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
