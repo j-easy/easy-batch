@@ -29,7 +29,7 @@ public class JdbcIntegrationTest {
 
     private static final String DATABASE_URL = "jdbc:hsqldb:mem";
 
-    private static final String DATA_SOURCE_NAME = "Connection URL: jdbc:hsqldb:mem | Query string: select * from person";
+    private static final String DATA_SOURCE_NAME = "Connection URL: jdbc:hsqldb:mem | Query string: select id, name from person";
 
     private Connection connection;
 
@@ -45,7 +45,7 @@ public class JdbcIntegrationTest {
         connection = DriverManager.getConnection(DATABASE_URL, "sa", "pwd");
         createPersonTable(connection);
         populatePersonTable(connection);
-        query = "select * from person";
+        query = "select id, name from person";
     }
 
     @SuppressWarnings("unchecked")
@@ -56,7 +56,7 @@ public class JdbcIntegrationTest {
 
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new JdbcRecordReader(connection, query))
-                .mapper(new JdbcRecordMapper<Person>(Person.class))
+                .mapper(new JdbcRecordMapper<Person>(Person.class, new String[]{"id", "name"}))
                 .processor(personProcessor)
                 .build();
 

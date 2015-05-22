@@ -99,7 +99,7 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
         if (fields == null) {
             fields = new String[columnCount];
             for (int i = 1; i < columnCount + 1; i++) {
-                fields[i - 1] = resultSet.getMetaData().getColumnLabel(i).toLowerCase();
+                fields[i - 1] = resultSet.getMetaData().getColumnLabel(i);
             }
         }
     }
