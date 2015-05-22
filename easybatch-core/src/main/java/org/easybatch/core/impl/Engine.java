@@ -94,6 +94,8 @@ public final class Engine implements Callable<Report> {
     public Report call() {
         eventManager.fireBeforeBatchStart();
         LOGGER.info("Initializing easy batch engine");
+        report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
+
         try {
             openRecordReader();
         } catch (Exception e) {
@@ -120,8 +122,6 @@ public final class Engine implements Callable<Report> {
             }
             report.setStatus(Status.RUNNING);
             LOGGER.info("easy batch engine is running");
-
-            report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
 
             long currentRecordNumber; // the physical record number in the data source (can be different from logical record number as seen by the engine in a multi-threaded scenario)
             long processedRecordsNumber = 0;
