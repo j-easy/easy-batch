@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 /**
  * Unit test class for {@link ObjectMapper}.
@@ -116,6 +117,23 @@ public class ObjectMapperTest {
 
         assertThat(person.getGender()).isNotNull().isEqualTo(Gender.MALE);
     }
+
+    @Test
+    public void whenASetterDoesNotExist_ThenShouldLogAWarning() throws Exception {
+
+        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class);
+
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("nickName", "foo");
+
+        try {
+            Person person = mapper.mapObject(values);
+            assertThat(person).isNotNull();
+        } catch (Exception e) {
+            fail("Should not throw an exception even if the setter does not exist");
+        }
+    }
+
 }
 
 

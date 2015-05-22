@@ -119,23 +119,26 @@ public class ObjectMapper<T> {
             String value = values.get(field);
 
             //convert the String raw value to the field type
-            Object typedValue = null;
-            Class<?> type = setters.get(field).getParameterTypes()[0];
-            TypeConverter typeConverter = typeConverters.get(type);
-            if (typeConverter != null) {
-                try {
-                    typedValue = typeConverter.convert(value);
-                } catch (Exception e) {
-                    throw new Exception("Unable to convert '" + value + "' to type " + type + " for field " + field, e);
+            Object typedValue;
+            Method setter = setters.get(field);
+            if (setter != null) {
+                Class<?> type = setter.getParameterTypes()[0];
+                TypeConverter typeConverter = typeConverters.get(type);
+                if (typeConverter != null) {
+                    try {
+                        typedValue = typeConverter.convert(value);
+                        setter.invoke(result, typedValue);
+                    } catch (Exception e) {
+                        throw new Exception("Unable to convert '" + value + "' to type " + type + " for field " + field, e);
+                    }
+                } else {
+                    LOGGER.log(Level.WARNING,
+                            "Type conversion not supported for type {0}, field {1} will be set to null (if object type) or default value (if primitive type)",
+                            new Object[]{type, field});
                 }
             } else {
-                LOGGER.log(Level.WARNING,
-                        "Type conversion not supported for type {0}, field {1} will be set to null (if object type) or default value (if primitive type)",
-                        new Object[]{type, field});
+                LOGGER.log(Level.WARNING, "No public setter found for field {0}, this field will be set to null (if object type) or default value (if primitive type)", field);
             }
-
-            //set the typed value to the object field
-            setters.get(field).invoke(result, typedValue);
         }
 
         return result;
