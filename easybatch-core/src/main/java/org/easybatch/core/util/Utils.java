@@ -1,6 +1,7 @@
 package org.easybatch.core.util;
 
 import org.easybatch.core.api.Report;
+import org.easybatch.core.impl.Engine;
 import org.easybatch.core.jmx.Monitor;
 
 import javax.management.MBeanServer;
@@ -21,7 +22,9 @@ public abstract class Utils {
 
     private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
 
-    public static final String JMX_MBEAN_NAME = "org.easybatch.core.jmx:type=EasyBatchMonitorMBean";
+    public static final String DEFAULT_ENGINE_NAME = "engine";
+
+    public static final String JMX_MBEAN_NAME = "org.easybatch.core.jmx:name=";
 
     private Utils() {
 
@@ -48,18 +51,22 @@ public abstract class Utils {
         }
     }
 
-    public static void registerJmxMBean(Report report) {
+    public static void registerJmxMBean(Report report, Engine engine) {
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
         try {
-            name = new ObjectName(JMX_MBEAN_NAME);
+            name = new ObjectName(JMX_MBEAN_NAME + engine.toString());
             if (!mbs.isRegistered(name)) {
                 Monitor monitor = new Monitor(report);
                 mbs.registerMBean(monitor, name);
-                LOGGER.log(Level.INFO, "Easy batch JMX MBean registered successfully as: {0}", name.getCanonicalName());
+                LOGGER.log(Level.INFO, "Easy Batch JMX MBean registered successfully as: {0}", name.getCanonicalName());
+            } else {
+                LOGGER.log(Level.WARNING, "JMX MBean {0} already registered for another engine." +
+                        " If you use multiple engines in parallel and you would like to monitor each of them, make sure they have different names",
+                        name.getCanonicalName());
             }
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Unable to register Easy batch JMX MBean. Root exception is :" + e.getMessage(), e);
+            LOGGER.log(Level.WARNING, "Unable to register Easy Batch JMX MBean.", e);
         }
     }
 }

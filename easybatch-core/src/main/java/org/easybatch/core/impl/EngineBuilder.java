@@ -27,6 +27,7 @@ package org.easybatch.core.impl;
 import org.easybatch.core.api.*;
 import org.easybatch.core.api.event.batch.BatchProcessEventListener;
 import org.easybatch.core.api.event.step.*;
+import org.easybatch.core.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,7 @@ public final class EngineBuilder {
         ErrorRecordHandler errorRecordHandler = new NoOpErrorRecordHandler();
         EventManager eventManager = new LocalEventManager();
         engine = new Engine(
+                Utils.DEFAULT_ENGINE_NAME,
                 recordReader,
                 filterChain,
                 recordMapper,
@@ -77,6 +79,17 @@ public final class EngineBuilder {
      */
     public static EngineBuilder aNewEngine() {
         return new EngineBuilder();
+    }
+
+    /**
+     * Set the engine name.
+     *
+     * @param name the engine name
+     * @return the engine builder
+     */
+    public EngineBuilder withName(final String name) {
+        engine.setName(name);
+        return this;
     }
 
     /**

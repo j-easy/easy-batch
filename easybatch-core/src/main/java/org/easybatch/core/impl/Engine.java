@@ -68,7 +68,10 @@ public final class Engine implements Callable<Report> {
     
     private boolean jmxEnabled;
 
-    Engine(final RecordReader recordReader,
+    private String name;
+
+    Engine(final String name,
+           final RecordReader recordReader,
            final List<RecordFilter> filters,
            final RecordMapper recordMapper,
            final RecordValidator recordValidator,
@@ -78,6 +81,7 @@ public final class Engine implements Callable<Report> {
            final RejectedRecordHandler rejectedRecordHandler,
            final ErrorRecordHandler errorRecordHandler,
            final EventManager eventManager) {
+        this.name = name;
         this.recordReader = recordReader;
         this.recordMapper = recordMapper;
         this.recordValidator = recordValidator;
@@ -99,7 +103,7 @@ public final class Engine implements Callable<Report> {
         try {
             openRecordReader();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "An exception occurred during opening data source reader", e);
+            LOGGER.log(Level.SEVERE, "An exception occurred while opening data source reader", e);
             eventManager.fireOnBatchException(e);
             report.setStatus(Status.ABORTED);
             report.setEndTime(System.currentTimeMillis());
@@ -115,6 +119,7 @@ public final class Engine implements Callable<Report> {
         try {
 
             if(jmxEnabled) {
+                Utils.registerJmxMBean(report, this);
                 LOGGER.log(Level.INFO, "Calculating the total number of records");
                 Long totalRecords = recordReader.getTotalRecords();
                 report.setTotalRecords(totalRecords);
@@ -337,11 +342,16 @@ public final class Engine implements Callable<Report> {
         }
     }
 
-    void enableJMX(boolean jmx) {
-        jmxEnabled = jmx;
-        if (jmx) {
-            Utils.registerJmxMBean(report);
-        }
+    public void setName(String name) {
+        this.name = name;
     }
 
+    void enableJMX(boolean jmx) {
+        jmxEnabled = jmx;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

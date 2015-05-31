@@ -265,10 +265,20 @@ public class EngineTest {
     }
 
     @Test
-    public void jmxMBeanShouldBeRegisteredAtEngineCreation() throws MalformedObjectNameException {
+    public void whenEngineNameIsNotSpecified_thenTheJmxMBeanShouldBeRegisteredWithDefaultEngineName() throws MalformedObjectNameException {
         engine = new EngineBuilder().enableJMX(true).build();
+        engine.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + Utils.DEFAULT_ENGINE_NAME))).isTrue();
+    }
+
+    @Test
+    public void whenEngineNameIsSpecified_thenTheJmxMBeanShouldBeRegisteredWithEngineName() throws MalformedObjectNameException {
+        String name = "master-engine";
+        engine = new EngineBuilder().enableJMX(true).withName(name).build();
+        engine.call();
+        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + name))).isTrue();
     }
 
     /*
