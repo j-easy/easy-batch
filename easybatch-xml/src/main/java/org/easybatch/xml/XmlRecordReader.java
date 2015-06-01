@@ -131,7 +131,7 @@ public class XmlRecordReader implements RecordReader {
      */
     private boolean nextTagIsRootElementStart() throws Exception {
         return xmlEventReader.peek().isStartElement() &&
-                xmlEventReader.peek().asStartElement().getName().toString().equalsIgnoreCase(rootElementName);
+                xmlEventReader.peek().asStartElement().getName().getLocalPart().equalsIgnoreCase(rootElementName);
     }
 
     /**
@@ -142,7 +142,7 @@ public class XmlRecordReader implements RecordReader {
      */
     private boolean nextTagIsRootElementEnd() throws Exception {
         return xmlEventReader.peek().isEndElement() &&
-                xmlEventReader.peek().asEndElement().getName().toString().equalsIgnoreCase(rootElementName);
+                xmlEventReader.peek().asEndElement().getName().getLocalPart().equalsIgnoreCase(rootElementName);
     }
 
 }

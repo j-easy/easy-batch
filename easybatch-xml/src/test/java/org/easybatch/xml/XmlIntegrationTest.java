@@ -110,6 +110,22 @@ public class XmlIntegrationTest {
 
     }
 
+    @Test
+    public void testXmlProcessingWithCustomNamespace() throws Exception {
+
+        final InputStream xmlDataSource = getDataSource("/beans.xml");
+
+        Engine engine = EngineBuilder.aNewEngine()
+                .reader(new XmlRecordReader("bean", xmlDataSource))
+                .build();
+
+        Report report = engine.call();
+
+        assertThat(report).isNotNull();
+        assertThat(report.getTotalRecords()).isEqualTo(2);
+
+    }
+
     private void assertThatReportIsCorrect(Report report) {
         assertThat(report).isNotNull();
         assertThat(report.getTotalRecords()).isEqualTo(2);
