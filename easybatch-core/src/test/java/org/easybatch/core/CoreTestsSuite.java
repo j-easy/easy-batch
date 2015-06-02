@@ -29,6 +29,7 @@ import org.easybatch.core.dispatcher.*;
 import org.easybatch.core.filter.*;
 import org.easybatch.core.impl.EngineTest;
 import org.easybatch.core.impl.FilterChainTest;
+import org.easybatch.core.impl.ProcessingPipelineTest;
 import org.easybatch.core.impl.ValidationPipelineTest;
 import org.easybatch.core.mapper.ObjectMapperTest;
 import org.easybatch.core.mapper.converter.*;
@@ -87,7 +88,8 @@ import org.junit.runners.Suite;
         // impl
         EngineTest.class,
         FilterChainTest.class,
-        ValidationPipelineTest.class
+        ValidationPipelineTest.class,
+        ProcessingPipelineTest.class
 
 })
 public class CoreTestsSuite {
