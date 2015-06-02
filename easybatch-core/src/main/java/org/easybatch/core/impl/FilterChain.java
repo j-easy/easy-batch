@@ -17,7 +17,7 @@ class FilterChain {
 
     private EventManager eventManager;
 
-    public FilterChain(List<RecordFilter> filters, EventManager eventManager) {
+    FilterChain(List<RecordFilter> filters, EventManager eventManager) {
         this.filters = filters;
         this.eventManager = eventManager;
     }
