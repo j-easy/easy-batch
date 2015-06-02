@@ -28,6 +28,8 @@ import org.easybatch.core.api.ReportTest;
 import org.easybatch.core.dispatcher.*;
 import org.easybatch.core.filter.*;
 import org.easybatch.core.impl.EngineTest;
+import org.easybatch.core.impl.FilterChainTest;
+import org.easybatch.core.impl.ValidationPipelineTest;
 import org.easybatch.core.mapper.ObjectMapperTest;
 import org.easybatch.core.mapper.converter.*;
 import org.easybatch.core.reader.*;
@@ -83,7 +85,10 @@ import org.junit.runners.Suite;
         // api
         ReportTest.class,
         // impl
-        EngineTest.class
+        EngineTest.class,
+        FilterChainTest.class,
+        ValidationPipelineTest.class
+
 })
 public class CoreTestsSuite {
 }
