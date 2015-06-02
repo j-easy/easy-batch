@@ -25,6 +25,8 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
+import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.step.*;
 import org.easybatch.core.util.Utils;
 
 import java.util.List;
@@ -44,6 +46,8 @@ public final class Engine implements Callable<Report> {
 
     private static final String STRICT_MODE_MESSAGE = "Strict mode enabled: aborting execution";
 
+    private String name;
+
     private RecordReader recordReader;
 
     private FilterChain filterChain;
@@ -60,15 +64,15 @@ public final class Engine implements Callable<Report> {
 
     private RejectedRecordHandler rejectedRecordHandler;
 
-    private boolean strictMode;
-
     private EventManager eventManager;
 
     private Report report;
-    
-    private boolean jmxEnabled;
 
-    private String name;
+    private boolean strictMode;
+
+    private boolean silentMode;
+
+    private boolean jmxEnabled;
 
     Engine(final String name,
            final RecordReader recordReader,
@@ -96,66 +100,44 @@ public final class Engine implements Callable<Report> {
 
     @Override
     public Report call() {
-        eventManager.fireBeforeBatchStart();
-        LOGGER.info("Initializing easy batch engine");
-        report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
 
-        try {
-            openRecordReader();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "An exception occurred while opening data source reader", e);
-            eventManager.fireOnBatchException(e);
-            report.setStatus(Status.ABORTED);
-            report.setEndTime(System.currentTimeMillis());
+        initializeEngine();
+
+        if (!initializeRecordReader()) {
             return report;
         }
 
-        LOGGER.log(Level.INFO, "Strict mode: {0}", strictMode);
+        initializeDatasource();
 
-        String dataSourceName = recordReader.getDataSourceName();
-        LOGGER.log(Level.INFO, "Data source: {0}", dataSourceName);
-        report.setDataSource(dataSourceName);
+        setupMonitoring();
 
         try {
-
-            if(jmxEnabled) {
-                Utils.registerJmxMBean(report, this);
-                LOGGER.log(Level.INFO, "Calculating the total number of records");
-                Long totalRecords = recordReader.getTotalRecords();
-                report.setTotalRecords(totalRecords);
-                LOGGER.log(Level.INFO, "Total records = {0}", totalRecords == null ? "N/A" : totalRecords);
-            }
-            report.setStatus(Status.RUNNING);
-            LOGGER.info("easy batch engine is running");
-
-            long currentRecordNumber; // the physical record number in the data source (can be different from logical record number as seen by the engine in a multi-threaded scenario)
             long processedRecordsNumber = 0;
-
             while (recordReader.hasNextRecord()) {
-
-                //read next record
+                /*
+                 * read next record
+                 */
                 Record currentRecord;
                 try {
                     currentRecord = readRecord();
                     if (currentRecord == null) {
                         LOGGER.log(Level.SEVERE, "The record reader returned null for next record, aborting execution.");
-                        report.setStatus(Status.ABORTED);
-                        report.setEndTime(System.currentTimeMillis());
+                        reportAbortedStatus();
                         return report;
                     }
+                    processedRecordsNumber++;
+                    report.setCurrentRecordNumber(currentRecord.getHeader().getNumber());
                 } catch (Exception e) {
                     eventManager.fireOnBatchException(e);
                     eventManager.fireOnRecordReadException(e);
                     LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record, aborting execution.", e);
-                    report.setStatus(Status.ABORTED);
-                    report.setEndTime(System.currentTimeMillis());
+                    reportAbortedStatus();
                     return report;
                 }
-                processedRecordsNumber++;
-                currentRecordNumber = currentRecord.getHeader().getNumber();
-                report.setCurrentRecordNumber(currentRecordNumber);
 
-                //apply filter chain on the record
+                /*
+                 * apply filter chain
+                 */
                 boolean filtered = filterChain.filterRecord(currentRecord);
                 if (filtered) {
                     report.incrementTotalFilteredRecords();
@@ -163,7 +145,9 @@ public final class Engine implements Callable<Report> {
                     continue;
                 }
 
-                //map record to domain object
+                /*
+                 * map record to domain object
+                 */
                 Object typedRecord;
                 try {
                     typedRecord = mapRecord(currentRecord);
@@ -177,41 +161,33 @@ public final class Engine implements Callable<Report> {
                     ignoredRecordHandler.handle(currentRecord, e);
                     eventManager.fireOnBatchException(e);
                     if (strictMode) {
-                        LOGGER.info(STRICT_MODE_MESSAGE);
-                        report.setStatus(Status.ABORTED);
+                        reportAbortDueToStrictMode();
                         break;
                     }
                     continue;
                 }
 
-                //validate record
-                try {
-                    Set<ValidationError> validationsErrors = validateRecord(typedRecord);
-
-                    if (!validationsErrors.isEmpty()) {
-                        report.incrementTotalRejectedRecord();
-                        rejectedRecordHandler.handle(currentRecord, validationsErrors);
-                        continue;
-                    }
-                } catch (Exception e) {
-                    LOGGER.log(Level.SEVERE, "An exception occurred while validating record " + currentRecord, e);
+                /*
+                 * apply validation pipeline
+                 */
+                Set<ValidationError> validationsErrors = validateRecord(typedRecord);
+                if (!validationsErrors.isEmpty()) {
                     report.incrementTotalRejectedRecord();
-                    rejectedRecordHandler.handle(currentRecord, e);
-                    eventManager.fireOnBatchException(e);
+                    rejectedRecordHandler.handle(currentRecord, validationsErrors);
                     if (strictMode) {
-                        LOGGER.info(STRICT_MODE_MESSAGE);
-                        report.setStatus(Status.ABORTED);
+                        reportAbortDueToStrictMode();
                         break;
                     }
                     continue;
                 }
 
-                //execute record processing pipeline
-                boolean processingError = processingPipeline.process(currentRecord, typedRecord, currentRecordNumber);
+                /*
+                 * apply processing pipeline
+                 */
+                boolean processingError = processingPipeline.process(currentRecord, typedRecord);
                 if (processingError) {
                     if (strictMode) {
-                        LOGGER.info(STRICT_MODE_MESSAGE);
-                        report.setStatus(Status.ABORTED);
+                        reportAbortDueToStrictMode();
                         break;
                     }
                 } else {
@@ -219,40 +195,36 @@ public final class Engine implements Callable<Report> {
                 }
             }
 
-            report.setTotalRecords(processedRecordsNumber);
-            report.setEndTime(System.currentTimeMillis());
-            if (!report.getStatus().equals(Status.ABORTED)) {
-                report.setStatus(Status.FINISHED);
-            }
-
-            // The batch result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
-            RecordProcessor lastRecordProcessor = processingPipeline.getLastProcessor();
-            if (lastRecordProcessor instanceof ComputationalRecordProcessor) {
-                ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor) lastRecordProcessor;
-                Object batchResult = computationalRecordProcessor.getComputationResult();
-                report.setBatchResult(batchResult);
-            }
+            tearDownEngine(processedRecordsNumber);
 
         } finally {
-            LOGGER.info("Shutting down easy batch engine");
-            //close the record reader
-            try {
-                closeRecordReader();
-            } catch (Exception e) {
-                //at this point, there is no need to log a severe message and return null as batch report
-                LOGGER.log(Level.WARNING, "An exception occurred during closing data source reader", e);
-                eventManager.fireOnBatchException(e);
-            }
+            closeRecordReader();
+            eventManager.fireAfterBatchEnd();
         }
-        eventManager.fireAfterBatchEnd();
         return report;
 
     }
 
-    private void closeRecordReader() throws Exception {
-        eventManager.fireBeforeRecordReaderClose();
-        recordReader.close();
-        eventManager.fireAfterRecordReaderClose();
+    private void initializeEngine() {
+        if (silentMode) {
+            Utils.muteLoggers();
+        }
+        eventManager.fireBeforeBatchStart();
+        LOGGER.info("Initializing easy batch engine");
+        report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
+        LOGGER.log(Level.INFO, "Strict mode: {0}", strictMode);
+    }
+
+    private boolean initializeRecordReader() {
+        try {
+            openRecordReader();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "An exception occurred while opening data source reader", e);
+            eventManager.fireOnBatchException(e);
+            reportAbortedStatus();
+            return false;
+        }
+        return true;
     }
 
     private void openRecordReader() throws Exception {
@@ -261,9 +233,40 @@ public final class Engine implements Callable<Report> {
         eventManager.fireAfterReaderOpen();
     }
 
-    @SuppressWarnings({"unchecked"})
-    private Set<ValidationError> validateRecord(Object typedRecord) {
-        return validationPipeline.validateRecord(typedRecord);
+    private void initializeDatasource() {
+        String dataSourceName = recordReader.getDataSourceName();
+        LOGGER.log(Level.INFO, "Data source: {0}", dataSourceName == null ? "N/A" : dataSourceName);
+        report.setDataSource(dataSourceName);
+    }
+
+    private void setupMonitoring() {
+        if (jmxEnabled) {
+            LOGGER.log(Level.INFO, "Registering JMX MBean");
+            Utils.registerJmxMBean(report, this);
+            LOGGER.log(Level.INFO, "Calculating the total number of records");
+            Long totalRecords = recordReader.getTotalRecords();
+            report.setTotalRecords(totalRecords);
+            LOGGER.log(Level.INFO, "Total records = {0}", totalRecords == null ? "N/A" : totalRecords);
+        }
+        report.setStatus(Status.RUNNING);
+        LOGGER.info("easy batch engine is running");
+    }
+
+    private void reportAbortedStatus() {
+        report.setStatus(Status.ABORTED);
+        report.setEndTime(System.currentTimeMillis());
+    }
+
+    private void reportAbortDueToStrictMode() {
+        LOGGER.info(STRICT_MODE_MESSAGE);
+        report.setStatus(Status.ABORTED);
+    }
+
+    private Record readRecord() throws Exception {
+        eventManager.fireBeforeRecordRead();
+        Record currentRecord = recordReader.readNextRecord();
+        eventManager.fireAfterRecordRead(currentRecord);
+        return currentRecord;
     }
 
     private Object mapRecord(Record currentRecord) throws Exception {
@@ -274,11 +277,37 @@ public final class Engine implements Callable<Report> {
         return typedRecord;
     }
 
-    private Record readRecord() throws Exception {
-        eventManager.fireBeforeRecordRead();
-        Record currentRecord = recordReader.readNextRecord();
-        eventManager.fireAfterRecordRead(currentRecord);
-        return currentRecord;
+    @SuppressWarnings({"unchecked"})
+    private Set<ValidationError> validateRecord(Object typedRecord) {
+        return validationPipeline.validateRecord(typedRecord);
+    }
+
+    private void tearDownEngine(long processedRecordsNumber) {
+        report.setTotalRecords(processedRecordsNumber);
+        report.setEndTime(System.currentTimeMillis());
+        if (!report.getStatus().equals(Status.ABORTED)) {
+            report.setStatus(Status.FINISHED);
+        }
+
+        // The batch result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
+        RecordProcessor lastRecordProcessor = processingPipeline.getLastProcessor();
+        if (lastRecordProcessor instanceof ComputationalRecordProcessor) {
+            ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor) lastRecordProcessor;
+            Object batchResult = computationalRecordProcessor.getComputationResult();
+            report.setBatchResult(batchResult);
+        }
+    }
+
+    private void closeRecordReader() {
+        LOGGER.info("Shutting down easy batch engine");
+        eventManager.fireBeforeRecordReaderClose();
+        try {
+            recordReader.close();
+            eventManager.fireAfterRecordReaderClose();
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "An exception occurred during closing data source reader", e);
+            eventManager.fireOnBatchException(e);
+        }
     }
 
     /*
@@ -325,8 +354,28 @@ public final class Engine implements Callable<Report> {
         this.eventManager = eventManager;
     }
 
-    EventManager getEventManager() {
-        return eventManager;
+    public void addBatchProcessEventListener(final BatchProcessEventListener batchProcessEventListener) {
+        eventManager.addBatchProcessEventListener(batchProcessEventListener);
+    }
+
+    public void addRecordReaderEventListener(final RecordReaderEventListener recordReaderEventListener) {
+        eventManager.addRecordReaderEventListener(recordReaderEventListener);
+    }
+
+    public void addRecordFilterEventListener(final RecordFilterEventListener recordFilterEventListener) {
+        eventManager.addRecordFilterEventListener(recordFilterEventListener);
+    }
+
+    public void addRecordMapperEventListener(final RecordMapperEventListener recordMapperEventListener) {
+        eventManager.addRecordMapperEventListener(recordMapperEventListener);
+    }
+
+    public void addRecordValidatorEventListener(final RecordValidatorEventListener recordValidatorEventListener) {
+        eventManager.addRecordValidatorEventListener(recordValidatorEventListener);
+    }
+
+    public void addRecordProcessorEventListener(final RecordProcessorEventListener recordProcessorEventListener) {
+        eventManager.addRecordProcessorEventListener(recordProcessorEventListener);
     }
 
     void setStrictMode(final boolean strictMode) {
@@ -334,12 +383,10 @@ public final class Engine implements Callable<Report> {
     }
 
     void setSilentMode(boolean silentMode) {
-        if (silentMode) {
-            Utils.muteLoggers();
-        }
+        this.silentMode = silentMode;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 

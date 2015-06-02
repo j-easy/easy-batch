@@ -234,7 +234,7 @@ public final class EngineBuilder {
      */
     public EngineBuilder batchProcessEventListener(final BatchProcessEventListener eventListener) {
         assert eventListener != null;
-        engine.getEventManager().addBatchProcessListener(eventListener);
+        engine.addBatchProcessEventListener(eventListener);
         return this;
     }
 
@@ -247,7 +247,7 @@ public final class EngineBuilder {
      */
     public EngineBuilder recordReaderEventListener(final RecordReaderEventListener eventListener) {
         assert eventListener != null;
-        engine.getEventManager().addRecordReaderEventListener(eventListener);
+        engine.addRecordReaderEventListener(eventListener);
         return this;
     }
 
@@ -260,7 +260,7 @@ public final class EngineBuilder {
      */
     public EngineBuilder recordFilterEventListener(final RecordFilterEventListener eventListener) {
         assert eventListener != null;
-        engine.getEventManager().addRecordFilterEventListener(eventListener);
+        engine.addRecordFilterEventListener(eventListener);
         return this;
     }
 
@@ -273,7 +273,7 @@ public final class EngineBuilder {
      */
     public EngineBuilder recordMapperEventListener(final RecordMapperEventListener eventListener) {
         assert eventListener != null;
-        engine.getEventManager().addRecordMapperEventListener(eventListener);
+        engine.addRecordMapperEventListener(eventListener);
         return this;
     }
 
@@ -286,7 +286,7 @@ public final class EngineBuilder {
      */
     public EngineBuilder recordValidatorEventListener(final RecordValidatorEventListener eventListener) {
         assert eventListener != null;
-        engine.getEventManager().addRecordValidatorEventListener(eventListener);
+        engine.addRecordValidatorEventListener(eventListener);
         return this;
     }
 
@@ -299,7 +299,7 @@ public final class EngineBuilder {
      */
     public EngineBuilder recordProcessorEventListener(final RecordProcessorEventListener eventListener) {
         assert eventListener != null;
-        engine.getEventManager().addRecordProcessorEventListener(eventListener);
+        engine.addRecordProcessorEventListener(eventListener);
         return this;
     }
 

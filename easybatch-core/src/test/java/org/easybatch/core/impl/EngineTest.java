@@ -257,27 +257,6 @@ public class EngineTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    public void whenStrictModeIsEnabled_ThenTheEngineShouldAbortOnFirstValidationExceptionIfAny() throws Exception {
-        when(firstValidator.validateRecord(record1)).thenThrow(new RuntimeException());
-        engine = new EngineBuilder()
-                .reader(reader)
-                .validator(firstValidator)
-                .strictMode(true)
-                .build();
-        Report report = engine.call();
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(1);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
-        assertThat(report.getTotalRecords()).isEqualTo(1);
-        assertThat(report.getStatus()).isEqualTo(Status.ABORTED);
-        verify(firstValidator).validateRecord(record1);
-        verifyNoMoreInteractions(firstValidator);
-    }
-
-    @Test
     public void whenEngineNameIsNotSpecified_thenTheJmxMBeanShouldBeRegisteredWithDefaultEngineName() throws MalformedObjectNameException {
         engine = new EngineBuilder().enableJMX(true).build();
         engine.call();

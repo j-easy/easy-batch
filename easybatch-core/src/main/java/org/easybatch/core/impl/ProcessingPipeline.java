@@ -27,7 +27,7 @@ final class ProcessingPipeline {
     }
 
     @SuppressWarnings({"unchecked"})
-    public boolean process(Record currentRecord, Object typedRecord, long currentRecordNumber) {
+    public boolean process(Record currentRecord, Object typedRecord) {
 
         boolean processingError = false;
         Object processingResult = null;
