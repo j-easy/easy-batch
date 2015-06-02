@@ -37,7 +37,7 @@ import java.util.Set;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ValidationPipeline {
+class ValidationPipeline {
 
     private List<RecordValidator> validators;
 
