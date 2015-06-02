@@ -26,6 +26,9 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 ### Project Home
 [http://www.easybatch.org](http://www.easybatch.org)
 
+### Continuous integration
+[Jenkins job @ cloudbees.com](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/)
+
 ### Agile Board
 [Backlog items @ waffle.io](https://waffle.io/easybatch/easybatch-framework)
 
@@ -44,7 +47,7 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 ## Current version
 
 * The current stable version is 3.0.1
-* The current development version is 3.0.2-SNAPSHOT
+* The current development version is 3.0.2-SNAPSHOT : [![Build Status](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/badge/icon)](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/)
 
 ## Contribution
 
