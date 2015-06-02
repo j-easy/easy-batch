@@ -50,7 +50,7 @@ public final class Engine implements Callable<Report> {
 
     private RecordMapper recordMapper;
 
-    private RecordValidator recordValidator;
+    private ValidationPipeline validationPipeline;
 
     private ProcessingPipeline processingPipeline;
 
@@ -74,7 +74,7 @@ public final class Engine implements Callable<Report> {
            final RecordReader recordReader,
            final List<RecordFilter> filters,
            final RecordMapper recordMapper,
-           final RecordValidator recordValidator,
+           final List<RecordValidator> validators,
            final List<RecordProcessor> processors,
            final FilteredRecordHandler filteredRecordHandler,
            final IgnoredRecordHandler ignoredRecordHandler,
@@ -84,13 +84,13 @@ public final class Engine implements Callable<Report> {
         this.name = name;
         this.recordReader = recordReader;
         this.recordMapper = recordMapper;
-        this.recordValidator = recordValidator;
         this.filteredRecordHandler = filteredRecordHandler;
         this.ignoredRecordHandler = ignoredRecordHandler;
         this.rejectedRecordHandler = rejectedRecordHandler;
         this.report = new Report();
         this.eventManager = eventManager;
         this.filterChain = new FilterChain(filters, eventManager);
+        this.validationPipeline = new ValidationPipeline(validators, eventManager);
         this.processingPipeline = new ProcessingPipeline(processors, errorRecordHandler, report, eventManager);
     }
 
@@ -263,10 +263,7 @@ public final class Engine implements Callable<Report> {
 
     @SuppressWarnings({"unchecked"})
     private Set<ValidationError> validateRecord(Object typedRecord) {
-        eventManager.fireBeforeValidateRecord(typedRecord);
-        Set<ValidationError> validationsErrors = recordValidator.validateRecord(typedRecord);
-        eventManager.fireAfterValidateRecord(typedRecord, validationsErrors);
-        return validationsErrors;
+        return validationPipeline.validateRecord(typedRecord);
     }
 
     private Object mapRecord(Record currentRecord) throws Exception {
@@ -289,7 +286,7 @@ public final class Engine implements Callable<Report> {
      */
 
     void addRecordFilter(final RecordFilter recordFilter) {
-        this.filterChain.addRecordFilter(recordFilter);
+        filterChain.addRecordFilter(recordFilter);
     }
 
     void setRecordReader(final RecordReader recordReader) {
@@ -300,12 +297,12 @@ public final class Engine implements Callable<Report> {
         this.recordMapper = recordMapper;
     }
 
-    void setRecordValidator(final RecordValidator recordValidator) {
-        this.recordValidator = recordValidator;
+    void addRecordValidator(final RecordValidator recordValidator) {
+        validationPipeline.addRecordValidator(recordValidator);
     }
 
     void addRecordProcessor(final RecordProcessor recordProcessor) {
-        this.processingPipeline.addProcessor(recordProcessor);
+        processingPipeline.addProcessor(recordProcessor);
     }
 
     void setFilteredRecordHandler(final FilteredRecordHandler filteredRecordHandler) {

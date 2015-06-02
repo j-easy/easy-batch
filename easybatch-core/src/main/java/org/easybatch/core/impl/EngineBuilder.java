@@ -50,7 +50,8 @@ public final class EngineBuilder {
         List<RecordFilter> filterChain = new ArrayList<RecordFilter>();
         filterChain.add(new NoOpRecordFilter());
         RecordMapper recordMapper = new NoOpRecordMapper();
-        RecordValidator recordValidator = new NoOpRecordValidator();
+        List<RecordValidator> validationPipeline = new ArrayList<RecordValidator>();
+        validationPipeline.add(new NoOpRecordValidator());
         List<RecordProcessor> processingPipeline = new ArrayList<RecordProcessor>();
         processingPipeline.add(new NoOpRecordProcessor());
         FilteredRecordHandler filteredRecordHandler = new NoOpFilteredRecordHandler();
@@ -63,7 +64,7 @@ public final class EngineBuilder {
                 recordReader,
                 filterChain,
                 recordMapper,
-                recordValidator,
+                validationPipeline,
                 processingPipeline,
                 filteredRecordHandler,
                 ignoredRecordHandler,
@@ -132,7 +133,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder validator(final RecordValidator recordValidator) {
-        engine.setRecordValidator(recordValidator);
+        engine.addRecordValidator(recordValidator);
         return this;
     }
 
