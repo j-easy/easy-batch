@@ -47,7 +47,7 @@ public interface EventManager {
      *
      * @param batchProcessEventListener The listener to add.
      */
-    void addBatchProcessListener(final BatchProcessEventListener batchProcessEventListener);
+    void addBatchProcessEventListener(final BatchProcessEventListener batchProcessEventListener);
 
     /**
      * Add an event listener.
@@ -97,9 +97,9 @@ public interface EventManager {
     /**
      * Called on any exception thrown in the whole process.
      *
-     * @param t The exception that has been thrown.
+     * @param throwable The exception that has been thrown.
      */
-    void fireOnBatchException(Throwable t);
+    void fireOnBatchException(Throwable throwable);
 
     /**
      * Called before the reader opens

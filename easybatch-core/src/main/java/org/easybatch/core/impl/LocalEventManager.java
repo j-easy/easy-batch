@@ -48,7 +48,7 @@ class LocalEventManager implements EventManager {
     private Set<RecordProcessorEventListener> recordProcessorEventListeners = new LinkedHashSet<RecordProcessorEventListener>();
 
     @Override
-    public void addBatchProcessListener(BatchProcessEventListener batchProcessEventListener) {
+    public void addBatchProcessEventListener(BatchProcessEventListener batchProcessEventListener) {
         batchProcessEventListeners.add(batchProcessEventListener);
     }
 
