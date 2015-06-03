@@ -66,11 +66,11 @@ public class ProcessingPipelineTest {
 
         InOrder inOrder = inOrder(eventManager, recordProcessor, computationalRecordProcessor);
 
-        inOrder.verify(eventManager).fireBeforeProcessingRecord(typedRecord);
+        inOrder.verify(eventManager).fireBeforeRecordProcessing(typedRecord);
         inOrder.verify(recordProcessor).processRecord(typedRecord);
         inOrder.verify(computationalRecordProcessor).processRecord(processedRecord);
         inOrder.verify(computationalRecordProcessor).getComputationResult();
-        inOrder.verify(eventManager).fireAfterProcessingRecord(secondlyProcessedRecord, processingResult);
+        inOrder.verify(eventManager).fireAfterRecordProcessing(secondlyProcessedRecord, processingResult);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class ProcessingPipelineTest {
 
         InOrder inOrder = inOrder(eventManager, report, recordProcessor, errorRecordHandler, computationalRecordProcessor);
 
-        inOrder.verify(eventManager).fireBeforeProcessingRecord(typedRecord);
+        inOrder.verify(eventManager).fireBeforeRecordProcessing(typedRecord);
         inOrder.verify(recordProcessor).processRecord(typedRecord);
         inOrder.verify(report).incrementTotalErrorRecord();
         inOrder.verify(errorRecordHandler).handle(record, exception);

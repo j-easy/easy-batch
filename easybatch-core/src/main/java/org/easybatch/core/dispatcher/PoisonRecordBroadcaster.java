@@ -37,7 +37,7 @@ public class PoisonRecordBroadcaster implements BatchProcessEventListener {
     }
 
     @Override
-    public void onException(Throwable throwable) {
+    public void onBatchException(Throwable throwable) {
 
     }
 }

@@ -290,7 +290,7 @@ public class EngineTest {
         engine.call();
 
         verify(batchProcessEventListener).beforeBatchStart();
-        verify(batchProcessEventListener).onException(exception);
+        verify(batchProcessEventListener).onBatchException(exception);
         verify(batchProcessEventListener).afterBatchEnd();
     }
 
@@ -307,33 +307,33 @@ public class EngineTest {
                 .build();
         engine.call();
 
-        verify(recordReaderEventListener).beforeReaderOpen();
-        verify(recordReaderEventListener).afterReaderOpen();
-        verify(recordReaderEventListener, times(2)).beforeRecordRead();
-        verify(recordReaderEventListener).afterRecordRead(record1);
-        verify(recordReaderEventListener).afterRecordRead(record2);
-        verify(recordReaderEventListener).beforeReaderClose();
-        verify(recordReaderEventListener).afterReaderClose();
+        verify(recordReaderEventListener).beforeReaderOpening();
+        verify(recordReaderEventListener).afterReaderOpening();
+        verify(recordReaderEventListener, times(2)).beforeRecordReading();
+        verify(recordReaderEventListener).afterRecordReading(record1);
+        verify(recordReaderEventListener).afterRecordReading(record2);
+        verify(recordReaderEventListener).beforeReaderClosing();
+        verify(recordReaderEventListener).afterReaderClosing();
 
-        verify(recordFilterEventListener).beforeFilterRecord(record1);
-        verify(recordFilterEventListener).beforeFilterRecord(record2);
-        verify(recordFilterEventListener).afterFilterRecord(record1, false);
-        verify(recordFilterEventListener).afterFilterRecord(record2, false);
+        verify(recordFilterEventListener).beforeRecordFiltering(record1);
+        verify(recordFilterEventListener).beforeRecordFiltering(record2);
+        verify(recordFilterEventListener).afterRecordFiltering(record1, false);
+        verify(recordFilterEventListener).afterRecordFiltering(record2, false);
 
-        verify(recordMapperEventListener).beforeMapRecord(record1);
-        verify(recordMapperEventListener).beforeMapRecord(record2);
-        verify(recordMapperEventListener).afterMapRecord(record1, record1);
-        verify(recordMapperEventListener).afterMapRecord(record2, record2);
+        verify(recordMapperEventListener).beforeRecordMapping(record1);
+        verify(recordMapperEventListener).beforeRecordMapping(record2);
+        verify(recordMapperEventListener).afterRecordMapping(record1, record1);
+        verify(recordMapperEventListener).afterRecordMapping(record2, record2);
 
-        verify(recordValidatorEventListener).beforeValidateRecord(record1);
-        verify(recordValidatorEventListener).beforeValidateRecord(record2);
-        verify(recordValidatorEventListener).afterValidateRecord(record1, Collections.<ValidationError>emptySet());
-        verify(recordValidatorEventListener).afterValidateRecord(record2, Collections.<ValidationError>emptySet());
+        verify(recordValidatorEventListener).beforeRecordValidation(record1);
+        verify(recordValidatorEventListener).beforeRecordValidation(record2);
+        verify(recordValidatorEventListener).afterRecordValidation(record1, Collections.<ValidationError>emptySet());
+        verify(recordValidatorEventListener).afterRecordValidation(record2, Collections.<ValidationError>emptySet());
 
-        verify(recordProcessorEventListener).beforeProcessingRecord(record1);
-        verify(recordProcessorEventListener).afterProcessingRecord(record1, null);
-        verify(recordProcessorEventListener).beforeProcessingRecord(record2);
-        verify(recordProcessorEventListener).afterProcessingRecord(record2, null);
+        verify(recordProcessorEventListener).beforeRecordProcessing(record1);
+        verify(recordProcessorEventListener).afterRecordProcessing(record1, null);
+        verify(recordProcessorEventListener).beforeRecordProcessing(record2);
+        verify(recordProcessorEventListener).afterRecordProcessing(record2, null);
     }
 
     /*

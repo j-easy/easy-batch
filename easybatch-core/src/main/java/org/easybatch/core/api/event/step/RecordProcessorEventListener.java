@@ -39,7 +39,7 @@ public interface RecordProcessorEventListener {
      *
      * @param record The record that will be processed.
      */
-    void beforeProcessingRecord(final Object record);
+    void beforeRecordProcessing(final Object record);
 
     /**
      * Called after the record has been processed.
@@ -47,7 +47,7 @@ public interface RecordProcessorEventListener {
      * @param record           The processed record.
      * @param processingResult The processing result if any, called from {@link org.easybatch.core.api.ComputationalRecordProcessor#getComputationResult()}
      */
-    void afterProcessingRecord(final Object record, final Object processingResult);
+    void afterRecordProcessing(final Object record, final Object processingResult);
 
     /**
      * Called when an exception occurs during record processing

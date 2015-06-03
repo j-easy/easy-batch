@@ -27,7 +27,7 @@ class FilterChain {
     }
 
     public boolean filterRecord(final Record currentRecord) {
-        eventManager.fireBeforeFilterRecord(currentRecord);
+        eventManager.fireBeforeRecordFiltering(currentRecord);
         boolean filtered = false;
         for (RecordFilter recordFilter : filters) {
             if (recordFilter.filterRecord(currentRecord)) {
@@ -35,7 +35,7 @@ class FilterChain {
                 break;
             }
         }
-        eventManager.fireAfterFilterRecord(currentRecord, filtered);
+        eventManager.fireAfterRecordFiltering(currentRecord, filtered);
         return filtered;
     }
 }

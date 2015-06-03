@@ -58,5 +58,5 @@ public interface BatchProcessEventListener {
      *
      * @param throwable The exception thrown at the time of call.
      */
-    void onException(Throwable throwable);
+    void onBatchException(Throwable throwable);
 }

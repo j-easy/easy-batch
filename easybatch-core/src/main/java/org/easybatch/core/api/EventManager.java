@@ -31,10 +31,10 @@ import java.util.Set;
 
 /**
  * Interface for the event manager.
- * <p/>
+ * <p>
  * There is one local implementation included. It could also be implemented using JMS or any other distributed
  * technology to get to know of any event happened while the batch is being processed.
- * <p/>
+ * <p>
  * Please note that if you implement something like a global or singleton event handler you must care for synchronized
  * access for your self.
  *
@@ -104,78 +104,78 @@ public interface EventManager {
     /**
      * Called before the reader opens
      */
-    void fireBeforeReaderOpen();
+    void fireBeforeReaderOpening();
 
     /**
      * Called after the reader has been opened.
      */
-    void fireAfterReaderOpen();
+    void fireAfterReaderOpening();
 
     /**
      * Called before a record gets read.
      */
-    void fireBeforeRecordRead();
+    void fireBeforeRecordReading();
 
     /**
      * Called after the record was read and returned.
      *
      * @param record The record that has been read.
      */
-    void fireAfterRecordRead(final Record record);
+    void fireAfterRecordReading(final Record record);
 
     /**
      * Called on exception while reading the record
      *
      * @param throwable The exception happened
      */
-    void fireOnRecordReadException(Throwable throwable);
+    void fireOnRecordReadingException(Throwable throwable);
 
     /**
      * Called before the record reader has been closed.
      */
-    void fireBeforeRecordReaderClose();
+    void fireBeforeRecordReaderClosing();
 
     /**
      * Called after the record reader has been closed.
      */
-    void fireAfterRecordReaderClose();
+    void fireAfterRecordReaderClosing();
 
     /**
      * Called before the record is passed to the filter.
      *
      * @param record The record to be filtered
      */
-    void fireBeforeFilterRecord(final Record record);
+    void fireBeforeRecordFiltering(final Record record);
 
     /**
      * Called after the record was filtered.
      *
-     * @param record       Can be null in case the record was filtered.
-     * @param filterRecord Record identified for filtering?
+     * @param record   Can be null in case the record was filtered.
+     * @param filtered Record identified for filtering?
      */
-    void fireAfterFilterRecord(final Record record, boolean filterRecord);
+    void fireAfterRecordFiltering(final Record record, boolean filtered);
 
     /**
      * Called before the record is passed into the mapper.
      *
      * @param record The record that is going to be mapped.
      */
-    void fireBeforeMapRecord(final Record record);
+    void fireBeforeRecordMapping(final Record record);
 
     /**
      * Called after the mapping process.
      *
-     * @param record    The record that came in.
-     * @param mapResult The result that came out.
+     * @param record       The record that came in.
+     * @param mappedRecord The result that came out.
      */
-    void fireAfterMapRecord(final Record record, final Object mapResult);
+    void fireAfterRecordMapping(final Record record, final Object mappedRecord);
 
     /**
      * Called before the mapped record gets validated.
      *
      * @param mappedRecord the mapped record.
      */
-    void fireBeforeValidateRecord(final Object mappedRecord);
+    void fireBeforeRecordValidation(final Object mappedRecord);
 
     /**
      * Called after the record is validated.
@@ -183,24 +183,24 @@ public interface EventManager {
      * @param validatedRecord  The validated record.
      * @param validationErrors The set of validation errors that came out.
      */
-    void fireAfterValidateRecord(final Object validatedRecord, final Set<ValidationError> validationErrors);
+    void fireAfterRecordValidation(final Object validatedRecord, final Set<ValidationError> validationErrors);
 
     /**
      * Called before the record gets processed.
      *
      * @param record The record to be processed.
      */
-    void fireBeforeProcessingRecord(final Object record);
+    void fireBeforeRecordProcessing(final Object record);
 
     /**
      * Called after the processing is done.
-     * <p/>
+     * <p>
      * Do not use this method to do additional work on the record or the result.
      *
-     * @param record        The record that has been processed.
-     * @param processResult The processing result, if any. This can be a null reference.
+     * @param record           The record that has been processed.
+     * @param processingResult The processing result, if any. This can be a null reference.
      */
-    void fireAfterProcessingRecord(final Object record, final Object processResult);
+    void fireAfterRecordProcessing(final Object record, final Object processingResult);
 
     /**
      * Called when an exception occurs during record processing

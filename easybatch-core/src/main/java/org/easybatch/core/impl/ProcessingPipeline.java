@@ -31,7 +31,7 @@ final class ProcessingPipeline {
 
         boolean processingError = false;
         Object processingResult = null;
-        eventManager.fireBeforeProcessingRecord(typedRecord);
+        eventManager.fireBeforeRecordProcessing(typedRecord);
         for (RecordProcessor recordProcessor : processors) {
             try {
                 typedRecord = recordProcessor.processRecord(typedRecord);
@@ -47,7 +47,7 @@ final class ProcessingPipeline {
                 break;
             }
         }
-        eventManager.fireAfterProcessingRecord(typedRecord, processingResult);
+        eventManager.fireAfterRecordProcessing(typedRecord, processingResult);
         return processingError;
     }
 

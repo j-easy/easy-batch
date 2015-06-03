@@ -41,13 +41,13 @@ public interface RecordFilterEventListener {
      *
      * @param record The record that gets filtered
      */
-    void beforeFilterRecord(Record record);
+    void beforeRecordFiltering(final Record record);
 
     /**
      * Called after the filter step.
      *
      * @param record       The record that has been processed.
-     * @param filterRecord Indicates if the filter has been applied successfully. True if filtered, false if not.
+     * @param filtered Indicates if the filter has been applied successfully. True if filtered, false if not.
      */
-    void afterFilterRecord(Record record, boolean filterRecord);
+    void afterRecordFiltering(final Record record, final boolean filtered);
 }

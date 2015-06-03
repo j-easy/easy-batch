@@ -129,7 +129,7 @@ public final class Engine implements Callable<Report> {
                     report.setCurrentRecordNumber(currentRecord.getHeader().getNumber());
                 } catch (Exception e) {
                     eventManager.fireOnBatchException(e);
-                    eventManager.fireOnRecordReadException(e);
+                    eventManager.fireOnRecordReadingException(e);
                     LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record, aborting execution.", e);
                     reportAbortedStatus();
                     return report;
@@ -228,9 +228,9 @@ public final class Engine implements Callable<Report> {
     }
 
     private void openRecordReader() throws Exception {
-        eventManager.fireBeforeReaderOpen();
+        eventManager.fireBeforeReaderOpening();
         recordReader.open();
-        eventManager.fireAfterReaderOpen();
+        eventManager.fireAfterReaderOpening();
     }
 
     private void initializeDatasource() {
@@ -263,17 +263,17 @@ public final class Engine implements Callable<Report> {
     }
 
     private Record readRecord() throws Exception {
-        eventManager.fireBeforeRecordRead();
+        eventManager.fireBeforeRecordReading();
         Record currentRecord = recordReader.readNextRecord();
-        eventManager.fireAfterRecordRead(currentRecord);
+        eventManager.fireAfterRecordReading(currentRecord);
         return currentRecord;
     }
 
     private Object mapRecord(Record currentRecord) throws Exception {
         Object typedRecord;
-        eventManager.fireBeforeMapRecord(currentRecord);
+        eventManager.fireBeforeRecordMapping(currentRecord);
         typedRecord = recordMapper.mapRecord(currentRecord);
-        eventManager.fireAfterMapRecord(currentRecord, typedRecord);
+        eventManager.fireAfterRecordMapping(currentRecord, typedRecord);
         return typedRecord;
     }
 
@@ -300,10 +300,10 @@ public final class Engine implements Callable<Report> {
 
     private void closeRecordReader() {
         LOGGER.info("Shutting down easy batch engine");
-        eventManager.fireBeforeRecordReaderClose();
+        eventManager.fireBeforeRecordReaderClosing();
         try {
             recordReader.close();
-            eventManager.fireAfterRecordReaderClose();
+            eventManager.fireAfterRecordReaderClosing();
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "An exception occurred during closing data source reader", e);
             eventManager.fireOnBatchException(e);

@@ -119,158 +119,158 @@ public class LocalEventManagerTest {
 
         InOrder inOrder = Mockito.inOrder(batchProcessEventListener1, batchProcessEventListener2);
 
-        inOrder.verify(batchProcessEventListener1).onException(throwable);
-        inOrder.verify(batchProcessEventListener2).onException(throwable);
+        inOrder.verify(batchProcessEventListener1).onBatchException(throwable);
+        inOrder.verify(batchProcessEventListener2).onBatchException(throwable);
     }
 
     @Test
     public void fireBeforeReaderOpen() {
-        localEventManager.fireBeforeReaderOpen();
+        localEventManager.fireBeforeReaderOpening();
 
         InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
-        inOrder.verify(recordReaderEventListener1).beforeReaderOpen();
-        inOrder.verify(recordReaderEventListener2).beforeReaderOpen();
+        inOrder.verify(recordReaderEventListener1).beforeReaderOpening();
+        inOrder.verify(recordReaderEventListener2).beforeReaderOpening();
     }
 
     @Test
     public void fireAfterReaderOpen() {
-        localEventManager.fireAfterReaderOpen();
+        localEventManager.fireAfterReaderOpening();
 
         InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
-        inOrder.verify(recordReaderEventListener1).afterReaderOpen();
-        inOrder.verify(recordReaderEventListener2).afterReaderOpen();
+        inOrder.verify(recordReaderEventListener1).afterReaderOpening();
+        inOrder.verify(recordReaderEventListener2).afterReaderOpening();
     }
 
     @Test
     public void fireBeforeRecordRead() {
-        localEventManager.fireBeforeRecordRead();
+        localEventManager.fireBeforeRecordReading();
 
         InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
-        inOrder.verify(recordReaderEventListener1).beforeRecordRead();
-        inOrder.verify(recordReaderEventListener2).beforeRecordRead();
+        inOrder.verify(recordReaderEventListener1).beforeRecordReading();
+        inOrder.verify(recordReaderEventListener2).beforeRecordReading();
     }
 
     @Test
     public void fireAfterRecordRead() {
-        localEventManager.fireAfterRecordRead(record);
+        localEventManager.fireAfterRecordReading(record);
 
         InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
-        inOrder.verify(recordReaderEventListener1).afterRecordRead(record);
-        inOrder.verify(recordReaderEventListener2).afterRecordRead(record);
+        inOrder.verify(recordReaderEventListener1).afterRecordReading(record);
+        inOrder.verify(recordReaderEventListener2).afterRecordReading(record);
     }
 
     @Test
     public void fireOnRecordReadException() {
-        localEventManager.fireOnRecordReadException(throwable);
+        localEventManager.fireOnRecordReadingException(throwable);
 
         InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
-        inOrder.verify(recordReaderEventListener1).onRecordReadException(throwable);
-        inOrder.verify(recordReaderEventListener2).onRecordReadException(throwable);
+        inOrder.verify(recordReaderEventListener1).onRecordReadingException(throwable);
+        inOrder.verify(recordReaderEventListener2).onRecordReadingException(throwable);
     }
 
     @Test
     public void fireBeforeRecordReaderClose() {
-        localEventManager.fireBeforeRecordReaderClose();
+        localEventManager.fireBeforeRecordReaderClosing();
 
         InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
-        inOrder.verify(recordReaderEventListener1).beforeReaderClose();
-        inOrder.verify(recordReaderEventListener2).beforeReaderClose();
+        inOrder.verify(recordReaderEventListener1).beforeReaderClosing();
+        inOrder.verify(recordReaderEventListener2).beforeReaderClosing();
     }
 
     @Test
     public void fireAfterRecordReaderClose() {
-        localEventManager.fireAfterRecordReaderClose();
+        localEventManager.fireAfterRecordReaderClosing();
 
         InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
-        inOrder.verify(recordReaderEventListener1).afterReaderClose();
-        inOrder.verify(recordReaderEventListener2).afterReaderClose();
+        inOrder.verify(recordReaderEventListener1).afterReaderClosing();
+        inOrder.verify(recordReaderEventListener2).afterReaderClosing();
     }
 
     @Test
     public void fireBeforeFilterRecord() {
-        localEventManager.fireBeforeFilterRecord(record);
+        localEventManager.fireBeforeRecordFiltering(record);
 
         InOrder inOrder = Mockito.inOrder(recordFilterEventListener1, recordFilterEventListener2);
 
-        inOrder.verify(recordFilterEventListener1).beforeFilterRecord(record);
-        inOrder.verify(recordFilterEventListener2).beforeFilterRecord(record);
+        inOrder.verify(recordFilterEventListener1).beforeRecordFiltering(record);
+        inOrder.verify(recordFilterEventListener2).beforeRecordFiltering(record);
     }
 
     @Test
     public void fireAfterFilterRecord() {
-        localEventManager.fireAfterFilterRecord(record, true);
+        localEventManager.fireAfterRecordFiltering(record, true);
 
         InOrder inOrder = Mockito.inOrder(recordFilterEventListener1, recordFilterEventListener2);
 
-        inOrder.verify(recordFilterEventListener1).afterFilterRecord(record, true);
-        inOrder.verify(recordFilterEventListener2).afterFilterRecord(record, true);
+        inOrder.verify(recordFilterEventListener1).afterRecordFiltering(record, true);
+        inOrder.verify(recordFilterEventListener2).afterRecordFiltering(record, true);
     }
 
     @Test
     public void fireBeforeMapRecord() {
-        localEventManager.fireBeforeMapRecord(record);
+        localEventManager.fireBeforeRecordMapping(record);
 
         InOrder inOrder = Mockito.inOrder(recordMapperEventListener1, recordMapperEventListener2);
 
-        inOrder.verify(recordMapperEventListener1).beforeMapRecord(record);
-        inOrder.verify(recordMapperEventListener2).beforeMapRecord(record);
+        inOrder.verify(recordMapperEventListener1).beforeRecordMapping(record);
+        inOrder.verify(recordMapperEventListener2).beforeRecordMapping(record);
     }
 
     @Test
     public void fireAfterMapRecord() {
-        localEventManager.fireAfterMapRecord(record, mappedRecord);
+        localEventManager.fireAfterRecordMapping(record, mappedRecord);
 
         InOrder inOrder = Mockito.inOrder(recordMapperEventListener1, recordMapperEventListener2);
 
-        inOrder.verify(recordMapperEventListener1).afterMapRecord(record, mappedRecord);
-        inOrder.verify(recordMapperEventListener2).afterMapRecord(record, mappedRecord);
+        inOrder.verify(recordMapperEventListener1).afterRecordMapping(record, mappedRecord);
+        inOrder.verify(recordMapperEventListener2).afterRecordMapping(record, mappedRecord);
     }
 
     @Test
     public void fireBeforeValidateRecord() {
-        localEventManager.fireBeforeValidateRecord(mappedRecord);
+        localEventManager.fireBeforeRecordValidation(mappedRecord);
 
         InOrder inOrder = Mockito.inOrder(recordValidatorEventListener1, recordValidatorEventListener2);
 
-        inOrder.verify(recordValidatorEventListener1).beforeValidateRecord(mappedRecord);
-        inOrder.verify(recordValidatorEventListener2).beforeValidateRecord(mappedRecord);
+        inOrder.verify(recordValidatorEventListener1).beforeRecordValidation(mappedRecord);
+        inOrder.verify(recordValidatorEventListener2).beforeRecordValidation(mappedRecord);
     }
 
     @Test
     public void fireAfterValidateRecord() {
-        localEventManager.fireAfterValidateRecord(mappedRecord, validationErrors);
+        localEventManager.fireAfterRecordValidation(mappedRecord, validationErrors);
 
         InOrder inOrder = Mockito.inOrder(recordValidatorEventListener1, recordValidatorEventListener2);
 
-        inOrder.verify(recordValidatorEventListener1).afterValidateRecord(mappedRecord, validationErrors);
-        inOrder.verify(recordValidatorEventListener2).afterValidateRecord(mappedRecord, validationErrors);
+        inOrder.verify(recordValidatorEventListener1).afterRecordValidation(mappedRecord, validationErrors);
+        inOrder.verify(recordValidatorEventListener2).afterRecordValidation(mappedRecord, validationErrors);
     }
 
     @Test
     public void fireBeforeProcessingRecord() {
-        localEventManager.fireBeforeProcessingRecord(mappedRecord);
+        localEventManager.fireBeforeRecordProcessing(mappedRecord);
 
         InOrder inOrder = Mockito.inOrder(recordProcessorEventListener1, recordProcessorEventListener2);
 
-        inOrder.verify(recordProcessorEventListener1).beforeProcessingRecord(mappedRecord);
-        inOrder.verify(recordProcessorEventListener2).beforeProcessingRecord(mappedRecord);
+        inOrder.verify(recordProcessorEventListener1).beforeRecordProcessing(mappedRecord);
+        inOrder.verify(recordProcessorEventListener2).beforeRecordProcessing(mappedRecord);
     }
 
     @Test
     public void fireAfterProcessingRecord() {
-        localEventManager.fireAfterProcessingRecord(mappedRecord, processingResult);
+        localEventManager.fireAfterRecordProcessing(mappedRecord, processingResult);
 
         InOrder inOrder = Mockito.inOrder(recordProcessorEventListener1, recordProcessorEventListener2);
 
-        inOrder.verify(recordProcessorEventListener1).afterProcessingRecord(mappedRecord, processingResult);
-        inOrder.verify(recordProcessorEventListener2).afterProcessingRecord(mappedRecord, processingResult);
+        inOrder.verify(recordProcessorEventListener1).afterRecordProcessing(mappedRecord, processingResult);
+        inOrder.verify(recordProcessorEventListener2).afterRecordProcessing(mappedRecord, processingResult);
     }
 
     @Test
