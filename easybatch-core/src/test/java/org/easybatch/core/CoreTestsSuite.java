@@ -27,10 +27,8 @@ package org.easybatch.core;
 import org.easybatch.core.api.ReportTest;
 import org.easybatch.core.dispatcher.*;
 import org.easybatch.core.filter.*;
-import org.easybatch.core.impl.EngineTest;
-import org.easybatch.core.impl.FilterChainTest;
-import org.easybatch.core.impl.ProcessingPipelineTest;
-import org.easybatch.core.impl.ValidationPipelineTest;
+import org.easybatch.core.impl.*;
+import org.easybatch.core.mapper.GenericRecordMapperTest;
 import org.easybatch.core.mapper.ObjectMapperTest;
 import org.easybatch.core.mapper.converter.*;
 import org.easybatch.core.reader.*;
@@ -52,6 +50,7 @@ import org.junit.runners.Suite;
         CliRecordReaderTest.class,
         // mapper
         ObjectMapperTest.class,
+        GenericRecordMapperTest.class,
         AtomicIntegerTypeConverterTest.class,
         AtomicLongTypeConverterTest.class,
         BigDecimalTypeConverterTest.class,
@@ -89,7 +88,8 @@ import org.junit.runners.Suite;
         EngineTest.class,
         FilterChainTest.class,
         ValidationPipelineTest.class,
-        ProcessingPipelineTest.class
+        ProcessingPipelineTest.class,
+        LocalEventManagerTest.class
 
 })
 public class CoreTestsSuite {
