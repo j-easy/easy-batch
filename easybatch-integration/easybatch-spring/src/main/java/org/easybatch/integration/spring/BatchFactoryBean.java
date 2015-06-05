@@ -25,13 +25,15 @@
 package org.easybatch.integration.spring;
 
 import org.easybatch.core.api.*;
+import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.step.*;
 import org.easybatch.core.impl.EngineBuilder;
 import org.springframework.beans.factory.FactoryBean;
 
 import java.util.List;
 
 /**
- * Spring Factory Bean that creates batch instances.
+ * Spring Factory Bean that creates engine instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -39,34 +41,118 @@ public class BatchFactoryBean implements FactoryBean {
 
     private RecordReader recordReader;
 
-    private RecordFilter recordFilter;
+    private List<RecordFilter> filterChain;
 
     private RecordMapper recordMapper;
 
-    private RecordValidator recordValidator;
+    private List<RecordValidator> validationPipeline;
 
     private List<RecordProcessor> processingPipeline;
+
+    private FilteredRecordHandler filteredRecordHandler;
+
+    private IgnoredRecordHandler ignoredRecordHandler;
+
+    private RejectedRecordHandler rejectedRecordHandler;
+
+    private ErrorRecordHandler errorRecordHandler;
+
+    private List<BatchProcessEventListener> batchProcessEventListeners;
+
+    private List<RecordReaderEventListener> recordReaderEventListeners;
+
+    private List<RecordFilterEventListener> recordFilterEventListeners;
+
+    private List<RecordMapperEventListener> recordMapperEventListeners;
+
+    private List<RecordValidatorEventListener> recordValidatorEventListeners;
+
+    private List<RecordProcessorEventListener> recordProcessorEventListeners;
+
+    private EventManager eventManager;
 
     @Override
     public Object getObject() throws Exception {
         EngineBuilder engineBuilder = new EngineBuilder();
+
         if (recordReader != null) {
             engineBuilder.reader(recordReader);
         }
-        if (recordFilter != null) {
-            engineBuilder.filter(recordFilter);
+        if (filterChain != null) {
+            for (RecordFilter recordFilter : filterChain) {
+                engineBuilder.filter(recordFilter);
+            }
         }
         if (recordMapper != null) {
             engineBuilder.mapper(recordMapper);
         }
-        if (recordValidator != null) {
-            engineBuilder.validator(recordValidator);
+        if (validationPipeline != null) {
+            for (RecordValidator recordValidator : validationPipeline) {
+                engineBuilder.validator(recordValidator);
+            }
         }
         if (processingPipeline != null) {
             for (RecordProcessor recordProcessor : processingPipeline) {
                 engineBuilder.processor(recordProcessor);
             }
         }
+
+        if (filteredRecordHandler != null) {
+            engineBuilder.filteredRecordHandler(filteredRecordHandler);
+        }
+
+        if (ignoredRecordHandler != null) {
+            engineBuilder.ignoredRecordHandler(ignoredRecordHandler);
+        }
+
+        if (rejectedRecordHandler != null) {
+            engineBuilder.rejectedRecordHandler(rejectedRecordHandler);
+        }
+
+        if (errorRecordHandler != null) {
+            engineBuilder.errorRecordHandler(errorRecordHandler);
+        }
+
+        if (batchProcessEventListeners != null) {
+            for (BatchProcessEventListener batchProcessEventListener : batchProcessEventListeners) {
+                engineBuilder.batchProcessEventListener(batchProcessEventListener);
+            }
+        }
+
+        if (recordReaderEventListeners != null) {
+            for (RecordReaderEventListener recordReaderEventListener : recordReaderEventListeners) {
+                engineBuilder.recordReaderEventListener(recordReaderEventListener);
+            }
+        }
+
+        if (recordFilterEventListeners != null) {
+            for (RecordFilterEventListener recordFilterEventListener : recordFilterEventListeners) {
+                engineBuilder.recordFilterEventListener(recordFilterEventListener);
+            }
+        }
+
+        if (recordMapperEventListeners != null) {
+            for (RecordMapperEventListener recordMapperEventListener : recordMapperEventListeners) {
+                engineBuilder.recordMapperEventListener(recordMapperEventListener);
+            }
+        }
+
+        if (recordValidatorEventListeners != null) {
+            for (RecordValidatorEventListener recordValidatorEventListener : recordValidatorEventListeners) {
+                engineBuilder.recordValidatorEventListener(recordValidatorEventListener);
+            }
+        }
+
+        if (recordProcessorEventListeners != null) {
+            for (RecordProcessorEventListener recordProcessorEventListener : recordProcessorEventListeners) {
+                engineBuilder.recordProcessorEventListener(recordProcessorEventListener);
+            }
+        }
+
+        if (eventManager != null) {
+            engineBuilder.eventManager(eventManager);
+        }
+
         return engineBuilder.build();
     }
 
@@ -86,21 +172,63 @@ public class BatchFactoryBean implements FactoryBean {
         this.recordReader = recordReader;
     }
 
-    public void setRecordFilter(RecordFilter recordFilter) {
-        this.recordFilter = recordFilter;
+    public void setFilterChain(List<RecordFilter> filterChain) {
+        this.filterChain = filterChain;
     }
 
     public void setRecordMapper(RecordMapper recordMapper) {
         this.recordMapper = recordMapper;
     }
 
-    public void setRecordValidator(RecordValidator recordValidator) {
-        this.recordValidator = recordValidator;
+    public void setValidationPipeline(List<RecordValidator> validationPipeline) {
+        this.validationPipeline = validationPipeline;
     }
 
     public void setProcessingPipeline(List<RecordProcessor> processingPipeline) {
         this.processingPipeline = processingPipeline;
     }
 
+    public void setFilteredRecordHandler(FilteredRecordHandler filteredRecordHandler) {
+        this.filteredRecordHandler = filteredRecordHandler;
+    }
 
+    public void setIgnoredRecordHandler(IgnoredRecordHandler ignoredRecordHandler) {
+        this.ignoredRecordHandler = ignoredRecordHandler;
+    }
+
+    public void setRejectedRecordHandler(RejectedRecordHandler rejectedRecordHandler) {
+        this.rejectedRecordHandler = rejectedRecordHandler;
+    }
+
+    public void setErrorRecordHandler(ErrorRecordHandler errorRecordHandler) {
+        this.errorRecordHandler = errorRecordHandler;
+    }
+
+    public void setBatchProcessEventListeners(List<BatchProcessEventListener> batchProcessEventListeners) {
+        this.batchProcessEventListeners = batchProcessEventListeners;
+    }
+
+    public void setRecordReaderEventListeners(List<RecordReaderEventListener> recordReaderEventListeners) {
+        this.recordReaderEventListeners = recordReaderEventListeners;
+    }
+
+    public void setRecordFilterEventListeners(List<RecordFilterEventListener> recordFilterEventListeners) {
+        this.recordFilterEventListeners = recordFilterEventListeners;
+    }
+
+    public void setRecordMapperEventListeners(List<RecordMapperEventListener> recordMapperEventListeners) {
+        this.recordMapperEventListeners = recordMapperEventListeners;
+    }
+
+    public void setRecordValidatorEventListeners(List<RecordValidatorEventListener> recordValidatorEventListeners) {
+        this.recordValidatorEventListeners = recordValidatorEventListeners;
+    }
+
+    public void setRecordProcessorEventListeners(List<RecordProcessorEventListener> recordProcessorEventListeners) {
+        this.recordProcessorEventListeners = recordProcessorEventListeners;
+    }
+
+    public void setEventManager(EventManager eventManager) {
+        this.eventManager = eventManager;
+    }
 }
