@@ -24,8 +24,10 @@
 
 package org.easybatch.tools.reporting;
 
+import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
+import org.easybatch.core.impl.EngineBuilder;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -58,8 +60,9 @@ public class HtmlReportFormatterTest {
 
     @Before
     public void setUp() throws Exception {
+        Engine engine = EngineBuilder.aNewEngine().build();
         reportFormatter = new HtmlReportFormatter();
-        report = new Report();
+        report = new Report(engine);
         report.setStartTime(START_TIME);
         report.setEndTime(END_TIME);
         report.setStatus(Status.FINISHED);
@@ -88,7 +91,7 @@ public class HtmlReportFormatterTest {
         }
 
         String expectedResult = stringBuilder.toString();
-        assertThat(result).isEqualTo(expectedResult);
+        assertThat(result).isXmlEqualTo(expectedResult);
     }
 
 }

@@ -85,7 +85,7 @@ import org.junit.runners.Suite;
         // api
         ReportTest.class,
         // impl
-        EngineTest.class,
+        EngineImplTest.class,
         FilterChainTest.class,
         ValidationPipelineTest.class,
         ProcessingPipelineTest.class,

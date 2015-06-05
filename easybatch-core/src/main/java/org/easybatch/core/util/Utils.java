@@ -24,8 +24,8 @@
 
 package org.easybatch.core.util;
 
+import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Report;
-import org.easybatch.core.impl.Engine;
 import org.easybatch.core.jmx.Monitor;
 
 import javax.management.MBeanServer;
@@ -48,7 +48,7 @@ public abstract class Utils {
 
     public static final String DEFAULT_ENGINE_NAME = "engine";
 
-    public static final String JMX_MBEAN_NAME = "org.easybatch.core.jmx:name=";
+    public static final String JMX_MBEAN_NAME = "org.easybatch.core.jmx:";
 
     private Utils() {
 
@@ -79,7 +79,7 @@ public abstract class Utils {
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
         try {
-            name = new ObjectName(JMX_MBEAN_NAME + engine.toString());
+            name = new ObjectName(JMX_MBEAN_NAME + "name=" + engine.getName() + ",id=" + engine.getExecutionId());
             if (!mbs.isRegistered(name)) {
                 Monitor monitor = new Monitor(report);
                 mbs.registerMBean(monitor, name);

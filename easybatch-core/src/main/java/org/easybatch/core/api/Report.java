@@ -36,6 +36,8 @@ import java.util.Date;
 public class Report implements Serializable {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+    
+    private Engine engine;
 
     private long startTime;
 
@@ -62,8 +64,9 @@ public class Report implements Serializable {
 
     private Status status;
 
-    public Report() {
-        status = Status.INITIALIZING;
+    public Report(Engine engine) {
+        this.engine = engine;
+        this.status = Status.INITIALIZING;
     }
 
     public void incrementTotalFilteredRecords() {
@@ -198,6 +201,14 @@ public class Report implements Serializable {
      * Public utility methods to format report statistics
      */
 
+    public String getEngineName() {
+        return engine == null ? "N/A" : engine.getName();
+    }
+    
+    public String getExecutionId() {
+        return engine == null ? "N/A" : engine.getExecutionId();
+    }
+    
     public String getFormattedBatchDuration() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getBatchDuration()).append("ms");
@@ -279,10 +290,12 @@ public class Report implements Serializable {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Batch Report:");
+        sb.append("\n\tEngine name = ").append(getEngineName());
+        sb.append("\n\tExecution Id = ").append(getExecutionId());
         sb.append("\n\tStart time = ").append(getFormattedStartTime());
         sb.append("\n\tEnd time = ").append(getFormattedEndTime());
-        sb.append("\n\tStatus = ").append(status);
         sb.append("\n\tBatch duration = ").append(getFormattedBatchDuration());
+        sb.append("\n\tStatus = ").append(status);
         sb.append("\n\tData source = ").append(dataSource);
         sb.append("\n\tTotal records = ").append(totalRecords == null ? "N/A" : totalRecords);
         sb.append("\n\tFiltered records = ").append(getFormattedFilteredRecords());

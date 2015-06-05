@@ -42,7 +42,23 @@ public class Monitor implements MonitorMBean {
         this.report = report;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public String getEngineName() {
+        return report.getEngineName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getExecutionId() {
+        return report.getExecutionId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getDataSource() {
         return report.getDataSource();
     }

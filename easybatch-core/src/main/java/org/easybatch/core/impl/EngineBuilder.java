@@ -42,7 +42,7 @@ public final class EngineBuilder {
     /**
      * The easy batch engine to build.
      */
-    private Engine engine;
+    private EngineImpl engine;
 
     public EngineBuilder() {
 
@@ -59,7 +59,7 @@ public final class EngineBuilder {
         RejectedRecordHandler rejectedRecordHandler = new NoOpRejectedRecordHandler();
         ErrorRecordHandler errorRecordHandler = new NoOpErrorRecordHandler();
         EventManager eventManager = new LocalEventManager();
-        engine = new Engine(
+        engine = new EngineImpl(
                 Utils.DEFAULT_ENGINE_NAME,
                 recordReader,
                 filterChain,

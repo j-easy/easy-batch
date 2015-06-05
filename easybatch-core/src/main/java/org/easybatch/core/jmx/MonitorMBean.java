@@ -32,6 +32,20 @@ package org.easybatch.core.jmx;
 public interface MonitorMBean {
 
     /**
+     * Get the engine name.
+     * 
+     * @return the engine name
+     */
+    String getEngineName();
+
+    /**
+     * Get the job execution id.
+     * 
+     * @return the job execution id
+     */
+    String getExecutionId();
+    
+    /**
      * Get the data source name.
      *
      * @return the data source name

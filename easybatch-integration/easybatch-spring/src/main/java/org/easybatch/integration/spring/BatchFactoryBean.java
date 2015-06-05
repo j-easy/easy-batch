@@ -25,7 +25,6 @@
 package org.easybatch.integration.spring;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.springframework.beans.factory.FactoryBean;
 

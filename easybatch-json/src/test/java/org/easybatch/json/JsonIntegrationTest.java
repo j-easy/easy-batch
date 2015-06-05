@@ -25,9 +25,9 @@
 package org.easybatch.json;
 
 import org.easybatch.core.api.ComputationalRecordProcessor;
+import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
-import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.junit.Test;
 

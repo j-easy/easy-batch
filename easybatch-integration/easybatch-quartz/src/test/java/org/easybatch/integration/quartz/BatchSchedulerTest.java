@@ -24,8 +24,8 @@
 
 package org.easybatch.integration.quartz;
 
+import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.RecordProcessor;
-import org.easybatch.core.impl.Engine;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.reader.StringRecordReader;
 import org.easybatch.core.record.StringRecord;

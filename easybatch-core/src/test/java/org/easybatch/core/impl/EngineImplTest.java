@@ -42,7 +42,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
 import java.util.Collections;
@@ -53,12 +52,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
- * Test class for {@link Engine}.
+ * Test class for {@link EngineImpl}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 @RunWith(MockitoJUnitRunner.class)
-public class EngineTest {
+public class EngineImplTest {
 
     private Engine engine;
 
@@ -223,7 +222,7 @@ public class EngineTest {
     }
 
     @Test
-    public void batchResultShouldBeReturnedFromTheLastProcessorInThePipeline() {
+    public void batchResultShouldBeReturnedFromTheLastProcessorInThePipeline() throws Exception {
         when(computationalRecordProcessor.getComputationResult()).thenReturn(5);
 
         engine = new EngineBuilder()
@@ -293,20 +292,20 @@ public class EngineTest {
     }
 
     @Test
-    public void whenEngineNameIsNotSpecified_thenTheJmxMBeanShouldBeRegisteredWithDefaultEngineName() throws MalformedObjectNameException {
+    public void whenEngineNameIsNotSpecified_thenTheJmxMBeanShouldBeRegisteredWithDefaultEngineName() throws Exception {
         engine = new EngineBuilder().enableJMX(true).build();
         engine.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + Utils.DEFAULT_ENGINE_NAME))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + Utils.DEFAULT_ENGINE_NAME + ",id=" + engine.getExecutionId()))).isTrue();
     }
 
     @Test
-    public void whenEngineNameIsSpecified_thenTheJmxMBeanShouldBeRegisteredWithEngineName() throws MalformedObjectNameException {
+    public void whenEngineNameIsSpecified_thenTheJmxMBeanShouldBeRegisteredWithEngineName() throws Exception {
         String name = "master-engine";
         engine = new EngineBuilder().enableJMX(true).withName(name).build();
         engine.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + name))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + name + ",id=" + engine.getExecutionId()))).isTrue();
     }
 
     /*
@@ -376,7 +375,7 @@ public class EngineTest {
      */
 
     @Test
-    public void whenARecordIsFiltered_thenTheCustomFilteredRecordHandlerShouldBeInvoked() {
+    public void whenARecordIsFiltered_thenTheCustomFilteredRecordHandlerShouldBeInvoked() throws Exception {
         when(firstFilter.filterRecord(record1)).thenReturn(true);
         engine = new EngineBuilder()
                 .reader(reader)

@@ -69,10 +69,10 @@ public class DefaultReportMerger implements ReportMerger {
 
         List<Object> results = new ArrayList<Object>();
 
-        List<String> datasources = new ArrayList<String>();
+        List<String> dataSources = new ArrayList<String>();
 
         //calculate aggregate results
-        Report finalReport = new Report();
+        Report finalReport = new Report(null);
         finalReport.setStatus(Status.FINISHED);
         for (Report report : reports) {
             startTimes.add(report.getStartTime());
@@ -99,7 +99,7 @@ public class DefaultReportMerger implements ReportMerger {
             if (Status.ABORTED.equals(report.getStatus())) {
                 finalReport.setStatus(Status.ABORTED);
             }
-            datasources.add(report.getDataSource());
+            dataSources.add(report.getDataSource());
         }
 
         //merge results
@@ -112,7 +112,7 @@ public class DefaultReportMerger implements ReportMerger {
 
         //data sources
         StringBuilder stringBuilder = new StringBuilder();
-        for (String dataSource : datasources) {
+        for (String dataSource : dataSources) {
             stringBuilder.append(dataSource).append("\n");
 
         }
