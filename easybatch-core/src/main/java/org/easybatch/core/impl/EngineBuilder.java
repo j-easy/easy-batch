@@ -88,7 +88,7 @@ public final class EngineBuilder {
      * @param name the engine name
      * @return the engine builder
      */
-    public EngineBuilder withName(final String name) {
+    public EngineBuilder named(final String name) {
         engine.setName(name);
         return this;
     }

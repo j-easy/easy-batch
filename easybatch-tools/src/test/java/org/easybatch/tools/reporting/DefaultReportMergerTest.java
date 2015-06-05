@@ -47,8 +47,8 @@ public class DefaultReportMergerTest {
     @Before
     public void setUp() throws Exception {
         reportMerger = new DefaultReportMerger();
-        engine1 = EngineBuilder.aNewEngine().withName("engine1").build();
-        engine2 = EngineBuilder.aNewEngine().withName("engine2").build();
+        engine1 = EngineBuilder.aNewEngine().named("engine1").build();
+        engine2 = EngineBuilder.aNewEngine().named("engine2").build();
     }
 
     @Test

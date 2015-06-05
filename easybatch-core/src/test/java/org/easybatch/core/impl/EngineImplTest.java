@@ -302,7 +302,7 @@ public class EngineImplTest {
     @Test
     public void whenEngineNameIsSpecified_thenTheJmxMBeanShouldBeRegisteredWithEngineName() throws Exception {
         String name = "master-engine";
-        engine = new EngineBuilder().enableJMX(true).withName(name).build();
+        engine = new EngineBuilder().enableJMX(true).named(name).build();
         engine.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + name + ",id=" + engine.getExecutionId()))).isTrue();
