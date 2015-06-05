@@ -30,7 +30,6 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.spi.JobFactory;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Quartz scheduler wrapper used to setup triggers.
@@ -65,7 +64,7 @@ public class BatchScheduler {
         try {
             scheduler = schedulerFactory.getScheduler();
             scheduler.setJobFactory(jobFactory);
-            jobName = "batch-job-" + UUID.randomUUID();
+            jobName = "batch-job-" + engine.getExecutionId();
             triggerName = "trigger-for-" + jobName;
         } catch (SchedulerException e) {
             throw new BatchSchedulerException("An exception occurred during scheduler setup", e);
