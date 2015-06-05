@@ -309,7 +309,7 @@ public final class EngineBuilder {
      * @param eventManager The event manager to use instead of the default {@link org.easybatch.core.impl.LocalEventManager}
      * @return the engine builder
      */
-    public EngineBuilder setEventManager(final EventManager eventManager) {
+    public EngineBuilder eventManager(final EventManager eventManager) {
         assert eventManager != null;
         engine.setEventManager(eventManager);
         return this;
