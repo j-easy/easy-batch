@@ -27,6 +27,7 @@ package org.easybatch.json.jackson;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.exception.RecordMappingException;
 import org.easybatch.json.JsonRecord;
 
 /**
@@ -49,8 +50,12 @@ public class JacksonRecordMapper<T> implements RecordMapper<T> {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public T mapRecord(Record record) throws Exception {
+    public T mapRecord(Record record) throws RecordMappingException {
         JsonRecord jsonRecord = (JsonRecord) record;
-        return mapper.readValue(jsonRecord.getPayload().getBytes(), type);
+        try {
+            return mapper.readValue(jsonRecord.getPayload().getBytes(), type);
+        } catch (Exception e) {
+            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
+        }
     }
 }

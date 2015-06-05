@@ -31,6 +31,10 @@ package org.easybatch.core.exception;
  */
 public class RecordProcessingException extends Exception {
 
+    public RecordProcessingException(String message) {
+        super(message);
+    }
+
     public RecordProcessingException(String message, Throwable cause) {
         super(message, cause);
     }

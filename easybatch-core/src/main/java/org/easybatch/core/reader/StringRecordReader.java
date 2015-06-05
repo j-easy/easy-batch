@@ -72,7 +72,7 @@ public class StringRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         currentRecordNumber = 0;
         scanner = new Scanner(content);
         recordCounterScanner = new Scanner(content);

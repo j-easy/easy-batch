@@ -25,10 +25,10 @@
 package org.easybatch.xml;
 
 import org.easybatch.core.api.Header;
+import org.easybatch.core.exception.RecordMappingException;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.xml.bind.UnmarshalException;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -91,13 +91,13 @@ public class XmlRecordMapperTest {
         assertThat(person.isMarried()).isFalse();
     }
 
-    @Test(expected = UnmarshalException.class)
+    @Test(expected = RecordMappingException.class)
     public void testInvalidXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-invalid.xml"));
         xmlRecordMapper.mapRecord(xmlRecord);
     }
 
-    @Test(expected = UnmarshalException.class)
+    @Test(expected = RecordMappingException.class)
     public void testMappingOfInvalidXmlAccordingToXsd() throws Exception {
         xmlRecordMapper = new XmlRecordMapper<Person>(Person.class, getFile("/person.xsd"));
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-invalid-xsd.xml"));

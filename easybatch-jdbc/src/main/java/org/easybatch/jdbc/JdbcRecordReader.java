@@ -26,6 +26,8 @@ package org.easybatch.jdbc;
 
 import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.exception.RecordReaderClosingException;
+import org.easybatch.core.exception.RecordReaderOpeningException;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -104,19 +106,24 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() throws RecordReaderOpeningException {
         currentRecordNumber = 0;
-        statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-        if (maxRowsEnabled) {
-            statement.setMaxRows(maxRows);
+        try {
+            statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            if (maxRowsEnabled) {
+                statement.setMaxRows(maxRows);
+            }
+            if (fetchSizeEnabled) {
+                statement.setFetchSize(fetchSize);
+            }
+            if (queryTimeoutEnabled) {
+                statement.setQueryTimeout(queryTimeout);
+            }
+            resultSet = statement.executeQuery(query);
+
+        } catch (SQLException e) {
+            throw new RecordReaderOpeningException("Unable to open record reader", e);
         }
-        if (fetchSizeEnabled) {
-            statement.setFetchSize(fetchSize);
-        }
-        if (queryTimeoutEnabled) {
-            statement.setQueryTimeout(queryTimeout);
-        }
-        resultSet = statement.executeQuery(query);
     }
 
     @Override
@@ -152,16 +159,21 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws Exception {
-        if (resultSet != null) {
-            resultSet.close();
+    public void close() throws RecordReaderClosingException {
+        try {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            throw new RecordReaderClosingException("Unable to close record reader", e);
         }
-        if (statement != null) {
-            statement.close();
-        }
-        if (connection != null) {
-            connection.close();
-        }
+
     }
 
     /**
@@ -176,6 +188,7 @@ public class JdbcRecordReader implements RecordReader {
 
     /**
      * Set the statement fetch size.
+     *
      * @param fetchSize the fetch size to set
      */
     public void setFetchSize(int fetchSize) {
@@ -185,6 +198,7 @@ public class JdbcRecordReader implements RecordReader {
 
     /**
      * Set the statement query timeout.
+     *
      * @param queryTimeout the query timeout in seconds
      */
     public void setQueryTimeout(int queryTimeout) {

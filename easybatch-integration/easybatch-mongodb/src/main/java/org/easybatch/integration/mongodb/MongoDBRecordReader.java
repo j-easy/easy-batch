@@ -64,7 +64,7 @@ public class MongoDBRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         currentRecordNumber = 0;
         cursor = collection.find(query);
         if (limit) {
@@ -84,7 +84,7 @@ public class MongoDBRecordReader implements RecordReader {
     }
 
     @Override
-    public MongoDBRecord readNextRecord() throws Exception {
+    public MongoDBRecord readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new MongoDBRecord(header, cursor.next());
     }
@@ -100,7 +100,7 @@ public class MongoDBRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         cursor.close();
     }
 

@@ -29,13 +29,13 @@ package org.easybatch.core.exception;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordReadingException extends Exception {
+public class RecordReaderOpeningException extends Exception {
 
-    public RecordReadingException(String message) {
+    public RecordReaderOpeningException(String message) {
         super(message);
     }
 
-    public RecordReadingException(String message, Throwable cause) {
+    public RecordReaderOpeningException(String message, Throwable cause) {
         super(message, cause);
     }
 }

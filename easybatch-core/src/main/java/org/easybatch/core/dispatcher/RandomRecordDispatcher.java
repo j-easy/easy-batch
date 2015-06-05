@@ -71,7 +71,7 @@ public class RandomRecordDispatcher extends AbstractRecordDispatcher {
     }
 
     @Override
-    public void dispatchRecord(Record record) throws Exception {
+    public void dispatchRecord(Record record) throws InterruptedException {
         // when receiving a poising record, broadcast it to all queues
         if (record instanceof PoisonRecord) {
             broadcastRecordDispatcher.dispatchRecord(record);

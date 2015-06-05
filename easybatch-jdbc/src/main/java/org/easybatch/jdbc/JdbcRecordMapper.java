@@ -27,6 +27,7 @@ package org.easybatch.jdbc;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.TypeConverter;
+import org.easybatch.core.exception.RecordMappingException;
 import org.easybatch.core.mapper.ObjectMapper;
 
 import java.sql.ResultSet;
@@ -74,18 +75,23 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
     }
 
     @Override
-    public T mapRecord(final Record record) throws Exception {
+    public T mapRecord(final Record record) throws RecordMappingException {
 
         JdbcRecord jdbcRecord = (JdbcRecord) record;
         ResultSet resultSet = jdbcRecord.getPayload();
 
-        initFieldNames(resultSet);
+        try {
+            initFieldNames(resultSet);
 
-        Map<String, String> values = new HashMap<String, String>();
-        for (int i = 0; i < fields.length; i++) {
-            values.put(fields[i], resultSet.getString(i + 1));
+            Map<String, String> values = new HashMap<String, String>();
+            for (int i = 0; i < fields.length; i++) {
+                values.put(fields[i], resultSet.getString(i + 1));
+            }
+            return objectMapper.mapObject(values);
+        } catch (SQLException e) {
+            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
         }
-        return objectMapper.mapObject(values);
+
     }
 
     /**

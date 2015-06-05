@@ -26,6 +26,7 @@ package org.easybatch.core.dispatcher;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.exception.RecordProcessingException;
 
 /**
  * Base class for record dispatchers.
@@ -34,11 +35,15 @@ import org.easybatch.core.api.RecordProcessor;
  */
 public abstract class AbstractRecordDispatcher implements RecordProcessor<Record, Record> {
 
-    protected abstract void dispatchRecord(Record record) throws Exception;
+    protected abstract void dispatchRecord(Record record) throws InterruptedException;
 
     @Override
-    public Record processRecord(Record record) throws Exception {
-        dispatchRecord(record);
+    public Record processRecord(Record record) throws RecordProcessingException {
+        try {
+            dispatchRecord(record);
+        } catch (InterruptedException e) {
+            throw new RecordProcessingException("Unable to dispatch record to queue", e);
+        }
         return record;
     }
 

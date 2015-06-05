@@ -167,7 +167,7 @@ public class JsonIntegrationTest {
         private List<JsonRecord> jsonRecords = new ArrayList<JsonRecord>();
 
         @Override
-        public JsonRecord processRecord(JsonRecord jsonRecord) throws Exception {
+        public JsonRecord processRecord(JsonRecord jsonRecord) {
             jsonRecords.add(jsonRecord);
             return jsonRecord;
         }

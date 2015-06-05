@@ -27,6 +27,7 @@ package org.easybatch.flatfile.dsv;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.TypeConverter;
+import org.easybatch.core.exception.RecordMappingException;
 import org.easybatch.core.mapper.ObjectMapper;
 import org.easybatch.flatfile.FlatFileField;
 import org.easybatch.flatfile.FlatFileRecord;
@@ -182,7 +183,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
     }
 
     @Override
-    public T mapRecord(final Record record) throws Exception {
+    public T mapRecord(final Record record) throws RecordMappingException {
 
         FlatFileRecord flatFileRecord = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<String, String>();
@@ -200,7 +201,7 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
         return objectMapper.mapObject(fieldsContents);
     }
 
-    FlatFileRecord parseRecord(final Record record) throws Exception {
+    FlatFileRecord parseRecord(final Record record) throws RecordMappingException {
 
         String payload = (String) record.getPayload();
         String[] tokens = payload.split(delimiter, -1);
@@ -223,14 +224,14 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
         }
 
         if (tokens.length != recordExpectedLength) {
-            throw new Exception("record length (" + tokens.length + " fields) not equal to expected length of "
+            throw new RecordMappingException("record length (" + tokens.length + " fields) not equal to expected length of "
                     + recordExpectedLength + " fields");
         }
 
         if (qualifier.length() > 0) {
             for (String token : tokens) {
                 if (!token.startsWith(qualifier) || !token.endsWith(qualifier)) {
-                    throw new Exception("field [" + token + "] is not enclosed as expected with '" + qualifier + "'");
+                    throw new RecordMappingException("field [" + token + "] is not enclosed as expected with '" + qualifier + "'");
                 }
             }
         }

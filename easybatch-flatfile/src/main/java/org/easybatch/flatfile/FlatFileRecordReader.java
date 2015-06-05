@@ -26,6 +26,7 @@ package org.easybatch.flatfile;
 
 import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.exception.RecordReaderOpeningException;
 import org.easybatch.core.record.StringRecord;
 
 import java.io.File;
@@ -131,9 +132,13 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
-    public void open() throws Exception {
+    public void open() throws RecordReaderOpeningException {
         currentRecordNumber = 0;
-        scanner = new Scanner(new FileInputStream(input), charsetName);
+        try {
+            scanner = new Scanner(new FileInputStream(input), charsetName);
+        } catch (FileNotFoundException e) {
+            throw new RecordReaderOpeningException("Unable to find file " + input.getName(), e);
+        }
     }
 
     /**

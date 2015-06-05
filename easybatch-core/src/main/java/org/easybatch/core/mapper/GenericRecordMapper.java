@@ -38,7 +38,7 @@ import org.easybatch.core.api.RecordMapper;
 public class GenericRecordMapper implements RecordMapper<Object> {
 
     @Override
-    public Object mapRecord(Record record) throws Exception {
+    public Object mapRecord(Record record) {
         return record.getPayload();
     }
 

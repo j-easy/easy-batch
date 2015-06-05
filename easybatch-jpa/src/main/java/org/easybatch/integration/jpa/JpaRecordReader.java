@@ -69,7 +69,7 @@ public class JpaRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         currentRecordNumber = 0;
         TypedQuery<T> typedQuery = entityManager.createQuery(query, type);
         if (maxResultsEnabled) {
@@ -85,7 +85,7 @@ public class JpaRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public GenericRecord<T> readNextRecord() throws Exception {
+    public GenericRecord<T> readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new GenericRecord<T>(header, iterator.next());
     }
@@ -101,7 +101,7 @@ public class JpaRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         entityManager.close();
     }
 

@@ -69,7 +69,7 @@ public class ListRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         currentRecordNumber = 0;
     }
 

@@ -26,9 +26,11 @@ package org.easybatch.jdbc.spring;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.exception.RecordMappingException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * A record mapper that uses
@@ -48,10 +50,14 @@ public class SpringJdbcRecordMapper<T> implements RecordMapper<T> {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public T mapRecord(Record record) throws Exception {
+    public T mapRecord(Record record) throws RecordMappingException {
         ResultSet resultSet = (ResultSet) record.getPayload();
         BeanPropertyRowMapper beanPropertyRowMapper = new BeanPropertyRowMapper(type);
-        return (T) beanPropertyRowMapper.mapRow(resultSet, record.getHeader().getNumber().intValue());
+        try {
+            return (T) beanPropertyRowMapper.mapRow(resultSet, record.getHeader().getNumber().intValue());
+        } catch (SQLException e) {
+            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
+        }
     }
 
 }

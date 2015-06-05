@@ -26,6 +26,9 @@ package org.easybatch.integration.jms;
 
 import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.exception.RecordReaderClosingException;
+import org.easybatch.core.exception.RecordReaderOpeningException;
+import org.easybatch.core.exception.RecordReadingException;
 
 import javax.jms.*;
 import java.util.Date;
@@ -67,11 +70,15 @@ public class JmsRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
-        queueConnection = queueConnectionFactory.createQueueConnection();
-        queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-        queueReceiver = queueSession.createReceiver(queue);
-        queueConnection.start();
+    public void open() throws RecordReaderOpeningException {
+        try {
+            queueConnection = queueConnectionFactory.createQueueConnection();
+            queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+            queueReceiver = queueSession.createReceiver(queue);
+            queueConnection.start();
+        } catch (JMSException e) {
+            throw new RecordReaderOpeningException("Unable to open record reader", e);
+        }
     }
 
     @Override
@@ -80,12 +87,17 @@ public class JmsRecordReader implements RecordReader {
     }
 
     @Override
-    public JmsRecord readNextRecord() throws Exception {
-        Message message = queueReceiver.receive();
-        String type = message.getStringProperty("type");
-        stop = message instanceof JmsPoisonMessage || (type != null && type.equals("poison"));
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new JmsRecord(header, message);
+    public JmsRecord readNextRecord() throws RecordReadingException {
+        try {
+            Message message = queueReceiver.receive();
+            String type = message.getStringProperty("type");
+            stop = message instanceof JmsPoisonMessage || (type != null && type.equals("poison"));
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            return new JmsRecord(header, message);
+        } catch (JMSException e) {
+            throw new RecordReadingException("Unable to read next record", e);
+        }
+
     }
 
     @Override
@@ -104,15 +116,19 @@ public class JmsRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws Exception {
-        if (queueConnection != null) {
-            queueConnection.close();
-        }
-        if (queueSession != null) {
-            queueSession.close();
-        }
-        if (queueReceiver != null) {
-            queueReceiver.close();
+    public void close() throws RecordReaderClosingException {
+        try {
+            if (queueConnection != null) {
+                queueConnection.close();
+            }
+            if (queueSession != null) {
+                queueSession.close();
+            }
+            if (queueReceiver != null) {
+                queueReceiver.close();
+            }
+        } catch (JMSException e) {
+            throw new RecordReaderClosingException("Unable to close record reader", e);
         }
     }
 

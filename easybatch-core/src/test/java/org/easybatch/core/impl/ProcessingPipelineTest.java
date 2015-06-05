@@ -25,6 +25,7 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
+import org.easybatch.core.exception.RecordProcessingException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -55,7 +56,7 @@ public class ProcessingPipelineTest {
     private Object processingResult;
 
     @Mock
-    private Exception exception;
+    private RecordProcessingException exception;
 
     @Mock
     private Report report;

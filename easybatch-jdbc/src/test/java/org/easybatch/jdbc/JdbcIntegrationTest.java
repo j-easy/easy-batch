@@ -147,7 +147,7 @@ public class JdbcIntegrationTest {
         private List<Person> persons = new ArrayList<Person>();
 
         @Override
-        public Person processRecord(Person person) throws Exception {
+        public Person processRecord(Person person) {
             persons.add(person);
             return person;
         }

@@ -27,6 +27,10 @@ package org.easybatch.core.impl;
 import org.easybatch.core.api.*;
 import org.easybatch.core.api.event.batch.BatchProcessEventListener;
 import org.easybatch.core.api.event.step.*;
+import org.easybatch.core.exception.RecordMappingException;
+import org.easybatch.core.exception.RecordProcessingException;
+import org.easybatch.core.exception.RecordReaderOpeningException;
+import org.easybatch.core.exception.RecordReadingException;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.core.util.Utils;
 import org.junit.Before;
@@ -94,6 +98,14 @@ public class EngineTest {
     private RejectedRecordHandler rejectedRecordHandler;
     @Mock
     private ErrorRecordHandler errorRecordHandler;
+    @Mock
+    private RecordMappingException recordMappingException;
+    @Mock
+    private RecordReadingException recordReadingException;
+    @Mock
+    private RecordReaderOpeningException recordReaderOpeningException;
+    @Mock
+    private RecordProcessingException recordProcessingException;
 
     @Before
     @SuppressWarnings("unchecked")
@@ -175,7 +187,7 @@ public class EngineTest {
 
     @Test
     public void whenNotAbleToOpenReader_ThenTheEngineShouldAbortExecution() throws Exception {
-        doThrow(new Exception("error while opening record reader!")).when(reader).open();
+        doThrow(recordReaderOpeningException).when(reader).open();
         engine = new EngineBuilder()
                 .reader(reader)
                 .build();
@@ -193,7 +205,7 @@ public class EngineTest {
     @Test
     public void whenNotAbleToReadNextRecord_ThenTheEngineShouldAbortExecution() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true);
-        when(reader.readNextRecord()).thenThrow(new Exception());
+        when(reader.readNextRecord()).thenThrow(recordReadingException);
         when(reader.getTotalRecords()).thenReturn(null);
 
         engine = new EngineBuilder()
@@ -239,7 +251,7 @@ public class EngineTest {
     @SuppressWarnings("unchecked")
     public void whenStrictModeIsEnabled_ThenTheEngineShouldAbortOnFirstProcessingExceptionIfAny() throws Exception {
         when(firstProcessor.processRecord(record1)).thenReturn(record1);
-        when(secondProcessor.processRecord(record1)).thenThrow(new Exception());
+        when(secondProcessor.processRecord(record1)).thenThrow(recordProcessingException);
         engine = new EngineBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
@@ -262,7 +274,7 @@ public class EngineTest {
 
     @Test
     public void whenStrictModeIsEnabled_ThenTheEngineShouldAbortOnFirstMappingExceptionIfAny() throws Exception {
-        when(mapper.mapRecord(record1)).thenThrow(new Exception());
+        when(mapper.mapRecord(record1)).thenThrow(recordMappingException);
         engine = new EngineBuilder()
                 .reader(reader)
                 .mapper(mapper)
@@ -304,8 +316,7 @@ public class EngineTest {
     @Test
     @SuppressWarnings("unchecked")
     public void batchProcessEventListenerShouldBeInvokedForEachEvent() throws Exception {
-        Exception exception = new Exception();
-        when(firstProcessor.processRecord(record1)).thenThrow(exception);
+        when(firstProcessor.processRecord(record1)).thenThrow(recordProcessingException);
         engine = new EngineBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
@@ -314,7 +325,7 @@ public class EngineTest {
         engine.call();
 
         verify(batchProcessEventListener).beforeBatchStart();
-        verify(batchProcessEventListener).onBatchException(exception);
+        verify(batchProcessEventListener).onBatchException(recordProcessingException);
         verify(batchProcessEventListener).afterBatchEnd();
     }
 
@@ -379,8 +390,7 @@ public class EngineTest {
 
     @Test
     public void whenARecordIsIgnored_thenTheCustomIgnoredRecordHandlerShouldBeInvoked() throws Exception {
-        Exception exception = new Exception();
-        when(mapper.mapRecord(record1)).thenThrow(exception);
+        when(mapper.mapRecord(record1)).thenThrow(recordMappingException);
         engine = new EngineBuilder()
                 .reader(reader)
                 .mapper(mapper)
@@ -388,7 +398,7 @@ public class EngineTest {
                 .build();
         engine.call();
 
-        verify(ignoredRecordHandler).handle(record1, exception);
+        verify(ignoredRecordHandler).handle(record1, recordMappingException);
     }
 
     @Test
@@ -410,8 +420,7 @@ public class EngineTest {
     @Test
     @SuppressWarnings("unchecked")
     public void whenARecordIsInError_thenTheCustomErrorRecordHandlerShouldBeInvoked() throws Exception {
-        Exception exception = new Exception();
-        when(firstProcessor.processRecord(record1)).thenThrow(exception);
+        when(firstProcessor.processRecord(record1)).thenThrow(recordProcessingException);
         engine = new EngineBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
@@ -419,7 +428,7 @@ public class EngineTest {
                 .build();
         engine.call();
 
-        verify(errorRecordHandler).handle(record1, exception);
+        verify(errorRecordHandler).handle(record1, recordProcessingException);
     }
 
 }

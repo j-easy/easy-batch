@@ -60,7 +60,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<T> {
     }
 
     @Override
-    public T mapRecord(Record record) throws Exception {
+    public T mapRecord(Record record) {
         String payload = (String) record.getPayload();
         openCsvReader = new CSVReader(
                 new StringReader(payload),

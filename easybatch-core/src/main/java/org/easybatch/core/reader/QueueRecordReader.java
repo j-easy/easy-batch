@@ -26,6 +26,7 @@ package org.easybatch.core.reader;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.exception.RecordReadingException;
 import org.easybatch.core.record.PoisonRecord;
 
 import java.util.concurrent.BlockingQueue;
@@ -52,7 +53,7 @@ public class QueueRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
     }
 
     @Override
@@ -61,10 +62,14 @@ public class QueueRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readNextRecord() throws Exception {
-        Record record = queue.take();
-        stop = record instanceof PoisonRecord;
-        return record;
+    public Record readNextRecord() throws RecordReadingException {
+        try {
+            Record record = queue.take();
+            stop = record instanceof PoisonRecord;
+            return record;
+        } catch (InterruptedException e) {
+            throw new RecordReadingException("Unable to read next record", e);
+        }
     }
 
     @Override
@@ -78,7 +83,7 @@ public class QueueRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
     }
 
 }

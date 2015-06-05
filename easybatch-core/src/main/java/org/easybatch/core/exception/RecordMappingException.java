@@ -31,6 +31,10 @@ package org.easybatch.core.exception;
  */
 public class RecordMappingException extends Exception {
 
+    public RecordMappingException(String message) {
+        super(message);
+    }
+
     public RecordMappingException(String message, Throwable cause) {
         super(message, cause);
     }

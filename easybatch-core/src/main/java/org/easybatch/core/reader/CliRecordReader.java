@@ -84,7 +84,7 @@ public class CliRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         scanner = new Scanner(System.in);
     }
 

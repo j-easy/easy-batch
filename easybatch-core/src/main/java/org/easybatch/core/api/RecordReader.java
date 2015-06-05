@@ -24,6 +24,10 @@
 
 package org.easybatch.core.api;
 
+import org.easybatch.core.exception.RecordReaderClosingException;
+import org.easybatch.core.exception.RecordReaderOpeningException;
+import org.easybatch.core.exception.RecordReadingException;
+
 /**
  * Interface for record reader.
  * This will be used by easy batch to <strong>sequentially</strong> read records from a data source.
@@ -35,9 +39,9 @@ public interface RecordReader {
     /**
      * Open the reader.
      *
-     * @throws Exception thrown if an exception occurs during reader opening
+     * @throws RecordReaderOpeningException thrown if an exception occurs during reader opening
      */
-    void open() throws Exception;
+    void open() throws RecordReaderOpeningException;
 
     /**
      * Check if the reader has a next record.
@@ -50,9 +54,9 @@ public interface RecordReader {
      * Read next record from the data source.
      *
      * @return the next record from the data source.
-     * @throws Exception thrown if an exception occurs during reading next record
+     * @throws RecordReadingException thrown if an exception occurs during reading next record
      */
-    Record readNextRecord() throws Exception;
+    Record readNextRecord() throws RecordReadingException;
 
     /**
      * Get the total record number in the data source. This is useful to calculate execution progress.
@@ -72,8 +76,8 @@ public interface RecordReader {
     /**
      * Close the reader.
      *
-     * @throws Exception thrown if an exception occurs during reader closing
+     * @throws RecordReaderClosingException thrown if an exception occurs during reader closing
      */
-    void close() throws Exception;
+    void close() throws RecordReaderClosingException;
 
 }

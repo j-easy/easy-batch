@@ -153,7 +153,7 @@ public class FlatFileIntegrationTest {
                     }
 
                     @Override
-                    public Complaint processRecord(Complaint complaint) throws Exception {
+                    public Complaint processRecord(Complaint complaint) {
                         complaints.add(complaint);
                         return complaint;
                     }
@@ -292,7 +292,7 @@ public class FlatFileIntegrationTest {
         private List<Person> persons = new ArrayList<Person>();
 
         @Override
-        public Person processRecord(Person person) throws Exception {
+        public Person processRecord(Person person) {
             persons.add(person);
             return person;
         }

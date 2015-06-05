@@ -46,7 +46,7 @@ public class XstreamRecordMapper<T> implements RecordMapper<T> {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public T mapRecord(Record record) throws Exception {
+    public T mapRecord(Record record) {
         XmlRecord xmlRecord = (XmlRecord) record;
         return (T) xStream.fromXML(xmlRecord.getPayload());
     }

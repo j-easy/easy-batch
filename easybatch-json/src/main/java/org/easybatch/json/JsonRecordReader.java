@@ -94,7 +94,7 @@ public class JsonRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         parser = Json.createParser(inputStream);
     }
 
@@ -135,7 +135,7 @@ public class JsonRecordReader implements RecordReader {
     }
 
     @Override
-    public JsonRecord readNextRecord() throws Exception {
+    public JsonRecord readNextRecord() {
         StringWriter stringWriter = new StringWriter();
         JsonGenerator jsonGenerator = jsonGeneratorFactory.createGenerator(stringWriter);
         writeRecordStart(jsonGenerator);
@@ -161,7 +161,7 @@ public class JsonRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         parser.close();
     }
 

@@ -48,7 +48,7 @@ public class MongoDBRecordMapper<T> implements RecordMapper<T> {
     }
 
     @Override
-    public T mapRecord(Record record) throws Exception {
+    public T mapRecord(Record record) {
         MongoDBRecord mongoDBRecord = (MongoDBRecord) record;
         DBObject dbObject = mongoDBRecord.getPayload();
         return morphia.fromDBObject(type, dbObject);

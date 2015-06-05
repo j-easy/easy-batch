@@ -26,6 +26,7 @@ package org.easybatch.xml;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.exception.RecordMappingException;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -59,7 +60,7 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
      * Creates an XmlRecordMapper. Using this constructor, no validation against an xsd will be applied.
      *
      * @param type the target domain object type.
-     * @throws Exception thrown if an error occurs during the creation of Jaxb context.
+     * @throws JAXBException thrown if an error occurs during the creation of Jaxb context.
      */
     public XmlRecordMapper(Class<? extends T> type) throws JAXBException {
         jaxbContext = JAXBContext.newInstance(type);
@@ -93,12 +94,15 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
     }
 
     @Override
-    public T mapRecord(final Record record) throws Exception {
+    public T mapRecord(final Record record) throws RecordMappingException {
 
         XmlRecord xmlRecord = (XmlRecord) record;
 
-        //return mapped object
-        return (T) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(xmlRecord.getPayload().getBytes()));
+        try {
+            return (T) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(xmlRecord.getPayload().getBytes()));
+        } catch (JAXBException e) {
+            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
+        }
 
     }
 

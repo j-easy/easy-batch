@@ -171,7 +171,7 @@ public class XmlIntegrationTest {
         private List<T> items = new ArrayList<T>();
 
         @Override
-        public T processRecord(T item) throws Exception {
+        public T processRecord(T item) {
             items.add(item);
             return item;
         }

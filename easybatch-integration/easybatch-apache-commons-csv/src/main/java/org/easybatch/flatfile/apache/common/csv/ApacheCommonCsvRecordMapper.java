@@ -27,6 +27,7 @@ package org.easybatch.flatfile.apache.common.csv;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.exception.RecordMappingException;
 import org.easybatch.core.mapper.ObjectMapper;
 
 /**
@@ -43,7 +44,7 @@ public class ApacheCommonCsvRecordMapper<T> implements RecordMapper {
     }
 
     @Override
-    public T mapRecord(Record record) throws Exception {
+    public T mapRecord(Record record) throws RecordMappingException {
         CSVRecord csvRecord = (CSVRecord) record.getPayload();
         return objectMapper.mapObject(csvRecord.toMap());
     }

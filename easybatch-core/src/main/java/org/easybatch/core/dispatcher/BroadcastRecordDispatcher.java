@@ -51,7 +51,7 @@ public class BroadcastRecordDispatcher extends AbstractRecordDispatcher {
     }
 
     @Override
-    public void dispatchRecord(Record record) throws Exception {
+    public void dispatchRecord(Record record) throws InterruptedException {
         for (BlockingQueue<Record> queue : queues) {
             queue.put(record);
         }

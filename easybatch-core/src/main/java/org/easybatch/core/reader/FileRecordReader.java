@@ -77,11 +77,25 @@ public class FileRecordReader implements RecordReader {
 
     /**
      * Open the reader.
-     *
-     * @throws Exception thrown if an exception occurs during reader opening
      */
     @Override
-    public void open() throws Exception {
+    public void open() {
+        checkDirectory();
+
+        files = new ArrayList<File>();
+        File[] filesList = directory.listFiles();
+        if (filesList != null) {
+            for (File file : filesList) {
+                if (file.isFile()) {
+                    files.add(file);
+                }
+            }
+        }
+        this.iterator = files.listIterator();
+        currentRecordNumber = 0;
+    }
+
+    private void checkDirectory() {
         if (!directory.exists()) {
             throw new IllegalArgumentException(MessageFormat.format(
                     "Directory {0} does not exist.", directory.getAbsoluteFile()));
@@ -95,18 +109,6 @@ public class FileRecordReader implements RecordReader {
                     "Unable to read files from directory {0}. Permission denied.",
                     directory.getAbsoluteFile()));
         }
-
-        files = new ArrayList<File>();
-        File[] filesList = directory.listFiles();
-        if (filesList != null) {
-            for (File file : filesList) {
-                if (file.isFile()) {
-                    files.add(file);
-                }
-            }
-        }
-        this.iterator = files.listIterator();
-        currentRecordNumber = 0;
     }
 
     /**
@@ -123,10 +125,9 @@ public class FileRecordReader implements RecordReader {
      * Read next record from the data source.
      *
      * @return the next record from the data source.
-     * @throws Exception thrown if an exception occurs during reading next record
      */
     @Override
-    public FileRecord readNextRecord() throws Exception {
+    public FileRecord readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new FileRecord(header, iterator.next());
     }
@@ -154,11 +155,9 @@ public class FileRecordReader implements RecordReader {
 
     /**
      * Close the reader.
-     *
-     * @throws Exception thrown if an exception occurs during reader closing
      */
     @Override
-    public void close() throws Exception {
+    public void close() {
 
     }
 }

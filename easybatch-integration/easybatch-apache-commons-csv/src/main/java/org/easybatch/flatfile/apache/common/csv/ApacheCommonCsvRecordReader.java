@@ -28,7 +28,9 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.exception.RecordReaderClosingException;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -51,7 +53,7 @@ public class ApacheCommonCsvRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         iterator = parser.iterator();
     }
 
@@ -61,7 +63,7 @@ public class ApacheCommonCsvRecordReader implements RecordReader {
     }
 
     @Override
-    public ApacheCommonCsvRecord readNextRecord() throws Exception {
+    public ApacheCommonCsvRecord readNextRecord() {
         Header header = new Header(parser.getRecordNumber() + 1, getDataSourceName(), new Date());
         return new ApacheCommonCsvRecord(header, iterator.next());
     }
@@ -77,8 +79,12 @@ public class ApacheCommonCsvRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws Exception {
-        parser.close();
+    public void close() throws RecordReaderClosingException {
+        try {
+            parser.close();
+        } catch (IOException e) {
+            throw new RecordReaderClosingException("Unable to close record reader", e);
+        }
     }
 
 }

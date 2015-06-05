@@ -24,6 +24,8 @@
 
 package org.easybatch.core.api;
 
+import org.easybatch.core.exception.RecordProcessingException;
+
 /**
  * Interface for record processor.
  * A record processor performs some business logic on an input object and produces an output object.
@@ -40,8 +42,8 @@ public interface RecordProcessor<I, O> {
      *
      * @param record the record to process.
      * @return the processed record, may be of another type of the input object
-     * @throws Exception thrown if an exception occurs during record processing
+     * @throws RecordProcessingException thrown if an exception occurs during record processing
      */
-    O processRecord(I record) throws Exception;
+    O processRecord(I record) throws RecordProcessingException;
 
 }

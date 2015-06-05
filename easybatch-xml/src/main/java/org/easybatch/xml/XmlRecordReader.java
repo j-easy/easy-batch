@@ -26,9 +26,13 @@ package org.easybatch.xml;
 
 import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.exception.RecordReaderClosingException;
+import org.easybatch.core.exception.RecordReaderOpeningException;
+import org.easybatch.core.exception.RecordReadingException;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.EndDocument;
 import javax.xml.stream.events.XMLEvent;
 import java.io.InputStream;
@@ -73,9 +77,13 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() throws RecordReaderOpeningException {
         currentRecordNumber = 0;
-        xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream);
+        try {
+            xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream);
+        } catch (XMLStreamException e) {
+            throw new RecordReaderOpeningException("Unable to open record reader", e);
+        }
     }
 
     @Override
@@ -95,15 +103,19 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public XmlRecord readNextRecord() throws Exception {
+    public XmlRecord readNextRecord() throws RecordReadingException {
         StringBuilder stringBuilder = new StringBuilder("");
-        while (!nextTagIsRootElementEnd()) {
+        try {
+            while (!nextTagIsRootElementEnd()) {
+                stringBuilder.append(xmlEventReader.nextEvent().toString());
+            }
+            //append root element end tag
             stringBuilder.append(xmlEventReader.nextEvent().toString());
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            return new XmlRecord(header, stringBuilder.toString());
+        } catch (XMLStreamException e) {
+            throw new RecordReadingException("Unable to read next record", e);
         }
-        //append root element end tag
-        stringBuilder.append(xmlEventReader.nextEvent().toString());
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new XmlRecord(header, stringBuilder.toString());
     }
 
     @Override
@@ -117,9 +129,13 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws Exception {
-        if (xmlEventReader != null) {
-            xmlEventReader.close();
+    public void close() throws RecordReaderClosingException {
+        try {
+            if (xmlEventReader != null) {
+                xmlEventReader.close();
+            }
+        } catch (XMLStreamException e) {
+            throw new RecordReaderClosingException("Unable to close record reader", e);
         }
     }
 
@@ -127,9 +143,9 @@ public class XmlRecordReader implements RecordReader {
      * Utility method to check if the next tag matches a start tag of the root element.
      *
      * @return true if the next tag matches a start element of the root element, false else
-     * @throws Exception thrown if no able to peek the next xml element
+     * @throws XMLStreamException thrown if no able to peek the next xml element
      */
-    private boolean nextTagIsRootElementStart() throws Exception {
+    private boolean nextTagIsRootElementStart() throws XMLStreamException {
         return xmlEventReader.peek().isStartElement() &&
                 xmlEventReader.peek().asStartElement().getName().getLocalPart().equalsIgnoreCase(rootElementName);
     }
@@ -138,9 +154,9 @@ public class XmlRecordReader implements RecordReader {
      * Utility method to check if the next tag matches an end tag of the root element.
      *
      * @return true if the next tag matches an end tag of the root element, false else
-     * @throws Exception thrown if no able to peek the next xml element
+     * @throws XMLStreamException thrown if no able to peek the next xml element
      */
-    private boolean nextTagIsRootElementEnd() throws Exception {
+    private boolean nextTagIsRootElementEnd() throws XMLStreamException {
         return xmlEventReader.peek().isEndElement() &&
                 xmlEventReader.peek().asEndElement().getName().getLocalPart().equalsIgnoreCase(rootElementName);
     }

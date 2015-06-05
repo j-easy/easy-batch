@@ -25,6 +25,7 @@
 package org.easybatch.core.mapper;
 
 import org.easybatch.core.api.TypeConverter;
+import org.easybatch.core.exception.RecordMappingException;
 import org.easybatch.core.mapper.converter.*;
 
 import java.beans.BeanInfo;
@@ -106,11 +107,18 @@ public class ObjectMapper<T> {
      *
      * @param values fields values
      * @return A populated instance of the target type.
-     * @throws Exception thrown if values cannot be mapped to target object fields
+     * @throws RecordMappingException thrown if values cannot be mapped to target object fields
      */
-    public T mapObject(final Map<String, String> values) throws Exception {
+    public T mapObject(final Map<String, String> values) throws RecordMappingException {
 
-        T result = recordClass.newInstance();
+        T result;
+        try {
+            result = recordClass.newInstance();
+        } catch (InstantiationException e) {
+            throw new RecordMappingException("Unable to create a new instance of target type", e);
+        } catch (IllegalAccessException e) {
+            throw new RecordMappingException("Unable to create a new instance of target type", e);
+        }
 
         // for each field
         for (String field : values.keySet()) {
@@ -133,7 +141,7 @@ public class ObjectMapper<T> {
                             LOGGER.log(Level.WARNING, "Attempting to convert null to type {0} for field {1}, this field will be set to null (if object type) or default value (if primitive type)", new Object[] {type, field});
                         }
                     } catch (Exception e) {
-                        throw new Exception("Unable to convert '" + value + "' to type " + type + " for field " + field, e);
+                        throw new RecordMappingException("Unable to convert '" + value + "' to type " + type + " for field " + field, e);
                     }
                 } else {
                     LOGGER.log(Level.WARNING,
