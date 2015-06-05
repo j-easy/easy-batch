@@ -37,6 +37,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import static java.lang.String.format;
+
 /**
  * Easy Batch's utilities class.
  *
@@ -86,11 +88,17 @@ public abstract class Utils {
                 LOGGER.log(Level.INFO, "Easy Batch JMX MBean registered successfully as: {0}", name.getCanonicalName());
             } else {
                 LOGGER.log(Level.WARNING, "JMX MBean {0} already registered for another engine." +
-                        " If you use multiple engines in parallel and you would like to monitor each of them, make sure they have different names",
+                                " If you use multiple engines in parallel and you would like to monitor each of them, make sure they have different names",
                         name.getCanonicalName());
             }
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Unable to register Easy Batch JMX MBean.", e);
+        }
+    }
+
+    public static void checkNotNull(Object argument, String argumentName) {
+        if (argument == null) {
+            throw new IllegalArgumentException(format("The %s must not be null", argumentName));
         }
     }
 }

@@ -32,6 +32,8 @@ import org.easybatch.core.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Easy batch engine instance builder.
  *
@@ -89,6 +91,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder named(final String name) {
+        checkNotNull(name, "engine name");
         engine.setName(name);
         return this;
     }
@@ -100,6 +103,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder reader(final RecordReader recordReader) {
+        checkNotNull(recordReader, "record reader");
         engine.setRecordReader(recordReader);
         return this;
     }
@@ -111,6 +115,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder filter(final RecordFilter recordFilter) {
+        checkNotNull(recordFilter, "record filter");
         engine.addRecordFilter(recordFilter);
         return this;
     }
@@ -122,6 +127,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder mapper(final RecordMapper recordMapper) {
+        checkNotNull(recordMapper, "record mapper");
         engine.setRecordMapper(recordMapper);
         return this;
     }
@@ -133,6 +139,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder validator(final RecordValidator recordValidator) {
+        checkNotNull(recordValidator, "record validator");
         engine.addRecordValidator(recordValidator);
         return this;
     }
@@ -144,6 +151,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder processor(final RecordProcessor recordProcessor) {
+        checkNotNull(recordProcessor, "record processor");
         engine.addRecordProcessor(recordProcessor);
         return this;
     }
@@ -155,6 +163,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder filteredRecordHandler(final FilteredRecordHandler filteredRecordHandler) {
+        checkNotNull(filteredRecordHandler, "filtered record handler");
         engine.setFilteredRecordHandler(filteredRecordHandler);
         return this;
     }
@@ -166,6 +175,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder ignoredRecordHandler(final IgnoredRecordHandler ignoredRecordHandler) {
+        checkNotNull(ignoredRecordHandler, "ignored record handler");
         engine.setIgnoredRecordHandler(ignoredRecordHandler);
         return this;
     }
@@ -177,6 +187,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder rejectedRecordHandler(final RejectedRecordHandler rejectedRecordHandler) {
+        checkNotNull(rejectedRecordHandler, "rejected record handler");
         engine.setRejectedRecordHandler(rejectedRecordHandler);
         return this;
     }
@@ -188,6 +199,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder errorRecordHandler(final ErrorRecordHandler errorRecordHandler) {
+        checkNotNull(errorRecordHandler, "error record handler");
         engine.setErrorRecordHandler(errorRecordHandler);
         return this;
     }
@@ -229,12 +241,12 @@ public final class EngineBuilder {
      * Register a batch process event listener.
      * See {@link org.easybatch.core.api.event.batch.BatchProcessEventListener} for available callback methods.
      *
-     * @param eventListener The event listener to add.
+     * @param batchProcessEventListener The event listener to add.
      * @return the engine builder
      */
-    public EngineBuilder batchProcessEventListener(final BatchProcessEventListener eventListener) {
-        assert eventListener != null;
-        engine.addBatchProcessEventListener(eventListener);
+    public EngineBuilder batchProcessEventListener(final BatchProcessEventListener batchProcessEventListener) {
+        checkNotNull(batchProcessEventListener, "batch process event listener");
+        engine.addBatchProcessEventListener(batchProcessEventListener);
         return this;
     }
 
@@ -242,12 +254,12 @@ public final class EngineBuilder {
      * Register a record reader event listener.
      * See {@link org.easybatch.core.api.event.step.RecordReaderEventListener} for available callback methods.
      *
-     * @param eventListener The record reader listener to add.
+     * @param recordReaderEventListener The record reader listener to add.
      * @return the engine builder
      */
-    public EngineBuilder recordReaderEventListener(final RecordReaderEventListener eventListener) {
-        assert eventListener != null;
-        engine.addRecordReaderEventListener(eventListener);
+    public EngineBuilder recordReaderEventListener(final RecordReaderEventListener recordReaderEventListener) {
+        checkNotNull(recordReaderEventListener, "record reader event listener");
+        engine.addRecordReaderEventListener(recordReaderEventListener);
         return this;
     }
 
@@ -255,12 +267,12 @@ public final class EngineBuilder {
      * Register a record filter event listener.
      * See {@link org.easybatch.core.api.event.step.RecordFilterEventListener} for available callback methods.
      *
-     * @param eventListener The event listener to add.
+     * @param recordFilterEventListener The event listener to add.
      * @return the engine builder
      */
-    public EngineBuilder recordFilterEventListener(final RecordFilterEventListener eventListener) {
-        assert eventListener != null;
-        engine.addRecordFilterEventListener(eventListener);
+    public EngineBuilder recordFilterEventListener(final RecordFilterEventListener recordFilterEventListener) {
+        checkNotNull(recordFilterEventListener, "record filter event listener");
+        engine.addRecordFilterEventListener(recordFilterEventListener);
         return this;
     }
 
@@ -268,12 +280,12 @@ public final class EngineBuilder {
      * Register a record mapper event listener.
      * See {@link org.easybatch.core.api.event.step.RecordMapperEventListener} for available callback methods.
      *
-     * @param eventListener The event listener to add.
+     * @param recordMapperEventListener The event listener to add.
      * @return the engine builder
      */
-    public EngineBuilder recordMapperEventListener(final RecordMapperEventListener eventListener) {
-        assert eventListener != null;
-        engine.addRecordMapperEventListener(eventListener);
+    public EngineBuilder recordMapperEventListener(final RecordMapperEventListener recordMapperEventListener) {
+        checkNotNull(recordMapperEventListener, "record mapper event listener");
+        engine.addRecordMapperEventListener(recordMapperEventListener);
         return this;
     }
 
@@ -281,12 +293,12 @@ public final class EngineBuilder {
      * Register a record validator event listener.
      * See {@link org.easybatch.core.api.event.step.RecordValidatorEventListener} for available callback methods.
      *
-     * @param eventListener The event listener to add.
+     * @param recordValidatorEventListener The event listener to add.
      * @return the engine builder
      */
-    public EngineBuilder recordValidatorEventListener(final RecordValidatorEventListener eventListener) {
-        assert eventListener != null;
-        engine.addRecordValidatorEventListener(eventListener);
+    public EngineBuilder recordValidatorEventListener(final RecordValidatorEventListener recordValidatorEventListener) {
+        checkNotNull(recordValidatorEventListener, "record validator event listener");
+        engine.addRecordValidatorEventListener(recordValidatorEventListener);
         return this;
     }
 
@@ -294,12 +306,12 @@ public final class EngineBuilder {
      * Register a record processor event listener.
      * See {@link org.easybatch.core.api.event.step.RecordProcessorEventListener} for available callback methods.
      *
-     * @param eventListener The event listener to add.
+     * @param recordProcessorEventListener The event listener to add.
      * @return the engine builder
      */
-    public EngineBuilder recordProcessorEventListener(final RecordProcessorEventListener eventListener) {
-        assert eventListener != null;
-        engine.addRecordProcessorEventListener(eventListener);
+    public EngineBuilder recordProcessorEventListener(final RecordProcessorEventListener recordProcessorEventListener) {
+        checkNotNull(recordProcessorEventListener, "record processor event listener");
+        engine.addRecordProcessorEventListener(recordProcessorEventListener);
         return this;
     }
 
@@ -310,7 +322,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder eventManager(final EventManager eventManager) {
-        assert eventManager != null;
+        checkNotNull(eventManager, "event manager");
         engine.setEventManager(eventManager);
         return this;
     }
