@@ -35,8 +35,8 @@ import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Scanner;
-
-import static java.lang.String.format;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A {@link RecordReader} implementation that read data from a flat file.
@@ -46,6 +46,8 @@ import static java.lang.String.format;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class FlatFileRecordReader implements RecordReader {
+
+    private static final Logger LOGGER = Logger.getLogger(FlatFileRecordReader.class.getName());
 
     /**
      * The current read record number.
@@ -117,9 +119,12 @@ public class FlatFileRecordReader implements RecordReader {
                 recordCounterScanner.nextLine();
             }
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(format("File %s not found", input), e);
+            LOGGER.log(Level.SEVERE, "Unable to calculate total records number", e);
+            return null;
         } finally {
-            recordCounterScanner.close();
+            if (recordCounterScanner != null) {
+                recordCounterScanner.close();
+            }
         }
         return totalRecords;
     }
@@ -152,7 +157,9 @@ public class FlatFileRecordReader implements RecordReader {
      * {@inheritDoc}
      */
     public void close() {
-        scanner.close();
+        if (scanner != null) {
+            scanner.close();
+        }
     }
 
 }

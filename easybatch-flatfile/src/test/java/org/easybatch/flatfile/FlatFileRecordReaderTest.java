@@ -20,12 +20,13 @@ public class FlatFileRecordReaderTest {
 
     private FlatFileRecordReader flatFileRecordReader;
 
-    private File dataSource, emptyDataSource;
+    private File dataSource, emptyDataSource, nonExistingDataSource;
 
     @Before
     public void setUp() throws Exception {
         dataSource = new File(getFileUri("/tweets.csv"));
         emptyDataSource = new File(getFileUri("/empty-file.txt"));
+        nonExistingDataSource = new File("./foo.bar");
         flatFileRecordReader = new FlatFileRecordReader(dataSource);
         flatFileRecordReader.open();
     }
@@ -72,8 +73,14 @@ public class FlatFileRecordReaderTest {
     public void testTotalRecordsForEmptyFile() throws Exception {
         flatFileRecordReader.close();
         flatFileRecordReader = new FlatFileRecordReader(emptyDataSource);
-        flatFileRecordReader.open();
         assertThat(flatFileRecordReader.getTotalRecords()).isEqualTo(0l);
+    }
+
+    @Test
+    public void testTotalRecordsForNonExistingFile() throws Exception {
+        flatFileRecordReader.close();
+        flatFileRecordReader = new FlatFileRecordReader(nonExistingDataSource);
+        assertThat(flatFileRecordReader.getTotalRecords()).isNull();
     }
 
 
