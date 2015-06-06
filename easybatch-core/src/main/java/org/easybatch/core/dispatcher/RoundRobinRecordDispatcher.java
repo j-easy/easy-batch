@@ -30,6 +30,8 @@ import org.easybatch.core.record.PoisonRecord;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
+import static java.lang.String.format;
+
 /**
  * A record dispatcher that dispatches records to a list of queues in round-robin fashion.
  *
@@ -69,14 +71,21 @@ public class RoundRobinRecordDispatcher extends AbstractRecordDispatcher {
     }
 
     @Override
-    public void dispatchRecord(Record record) throws InterruptedException {
+    public void dispatchRecord(Record record) throws RecordDispatchingException {
         // when receiving a poising record, broadcast it to all queues
         if (record instanceof PoisonRecord) {
             broadcastRecordDispatcher.dispatchRecord(record);
             return;
         }
         //dispatch records to queues in round-robin fashion
-        queues.get(next++ % queuesNumber).put(record);
+        BlockingQueue<Record> queue = null;
+        try {
+            queue = queues.get(next++ % queuesNumber);
+            queue.put(record);
+        } catch (InterruptedException e) {
+            String message = format("Unable to put record %s in queue %s", record, queue);
+            throw new RecordDispatchingException(message, e);
+        }
     }
 
 }

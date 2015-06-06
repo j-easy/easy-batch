@@ -24,30 +24,18 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordProcessor;
-import org.easybatch.core.exception.RecordProcessingException;
-
-import static java.lang.String.format;
-
 /**
- * Base class for record dispatchers.
+ * Exception thrown when an error occurs during record mapping.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public abstract class AbstractRecordDispatcher implements RecordProcessor<Record, Record> {
+public class RecordDispatchingException extends Exception {
 
-    protected abstract void dispatchRecord(final Record record) throws RecordDispatchingException;
-
-    @Override
-    public Record processRecord(final Record record) throws RecordProcessingException {
-        try {
-            dispatchRecord(record);
-            return record;
-        } catch (RecordDispatchingException e) {
-            String message = format("Unable to dispatch record %s", record);
-            throw new RecordProcessingException(message, e);
-        }
+    public RecordDispatchingException(String message) {
+        super(message);
     }
 
+    public RecordDispatchingException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

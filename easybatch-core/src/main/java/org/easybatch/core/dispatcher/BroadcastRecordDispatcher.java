@@ -29,6 +29,8 @@ import org.easybatch.core.api.Record;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
+import static java.lang.String.format;
+
 /**
  * A record dispatcher that broadcasts input records to a list of queues.
  *
@@ -51,9 +53,14 @@ public class BroadcastRecordDispatcher extends AbstractRecordDispatcher {
     }
 
     @Override
-    public void dispatchRecord(Record record) throws InterruptedException {
+    public void dispatchRecord(final Record record) throws RecordDispatchingException {
         for (BlockingQueue<Record> queue : queues) {
-            queue.put(record);
+            try {
+                queue.put(record);
+            } catch (InterruptedException e) {
+                String message = format("Unable to put record %s in queue %s", record, queue);
+                throw new RecordDispatchingException(message, e);
+            }
         }
     }
 
