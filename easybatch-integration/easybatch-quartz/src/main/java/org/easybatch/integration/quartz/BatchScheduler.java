@@ -30,6 +30,8 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.spi.JobFactory;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Quartz scheduler wrapper used to setup triggers.
@@ -37,6 +39,8 @@ import java.util.Date;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class BatchScheduler {
+
+    private static final Logger LOGGER = Logger.getLogger(BatchScheduler.class.getName());
 
     /**
      * The name of easy batch job trigger.
@@ -82,6 +86,7 @@ public class BatchScheduler {
                 .startAt(startTime)
                 .forJob(jobName)
                 .build();
+        LOGGER.log(Level.INFO, "Building a scheduler for job {0} to start at {1}", new Object[]{jobName, startTime});
     }
 
     /**
@@ -99,14 +104,15 @@ public class BatchScheduler {
                 .withSchedule(simpleScheduleBuilder)
                 .forJob(jobName)
                 .build();
+        LOGGER.log(Level.INFO, "Building a scheduler for job {0} to start at {1} and every {2} minute(s)", new Object[]{jobName, startTime, interval});
     }
 
     /**
      * Setup a unix cron-like trigger.
      *
      * @param cronExpression the cron expression to use.
-     * For a complete tutorial about cron expressions, please refer to
-     * <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/crontrigger">quartz reference documentation</a>.
+     *                       For a complete tutorial about cron expressions, please refer to
+     *                       <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/crontrigger">quartz reference documentation</a>.
      */
     public void scheduleCron(final String cronExpression) {
         trigger = TriggerBuilder.newTrigger()
@@ -114,6 +120,7 @@ public class BatchScheduler {
                 .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
                 .forJob(jobName)
                 .build();
+        LOGGER.log(Level.INFO, "Building a scheduler for job {0} with cron expression {1}", new Object[]{jobName, cronExpression});
     }
 
     /**
@@ -122,6 +129,7 @@ public class BatchScheduler {
      * @throws BatchSchedulerException thrown if the scheduler cannot be started
      */
     public void start() throws BatchSchedulerException {
+        LOGGER.log(Level.INFO, "Starting the scheduler for job {0}", jobName);
         try {
             JobDetail job = JobBuilder.newJob(BatchJob.class).withIdentity(jobName).build();
             scheduler.scheduleJob(job, trigger);
@@ -134,12 +142,13 @@ public class BatchScheduler {
 
     /**
      * Stop the scheduler.
-     *
+     * <p/>
      * Note: The scheduler cannot be re-started.
      *
      * @throws BatchSchedulerException thrown if the scheduler cannot be stopped
      */
     public void stop() throws BatchSchedulerException {
+        LOGGER.log(Level.INFO, "Stopping the scheduler for job {0}", jobName);
         try {
             scheduler.shutdown();
         } catch (SchedulerException e) {
