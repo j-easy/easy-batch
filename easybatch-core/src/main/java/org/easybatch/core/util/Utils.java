@@ -85,7 +85,7 @@ public abstract class Utils {
             if (!mbs.isRegistered(name)) {
                 Monitor monitor = new Monitor(report);
                 mbs.registerMBean(monitor, name);
-                LOGGER.log(Level.INFO, "Easy Batch JMX MBean registered successfully as: {0}", name.getCanonicalName());
+                LOGGER.log(Level.INFO, "JMX MBean registered successfully as: {0}", name.getCanonicalName());
             } else {
                 LOGGER.log(Level.WARNING, "JMX MBean {0} already registered for another engine." +
                                 " If you use multiple engines in parallel and you would like to monitor each of them, make sure they have different names",
