@@ -1,7 +1,7 @@
 package ${packageName};
 
 import org.easybatch.core.api.Report;
-import org.easybatch.core.impl.Engine;
+import org.easybatch.core.api.Engine;
 import org.easybatch.core.reader.StringRecordReader;
 
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
