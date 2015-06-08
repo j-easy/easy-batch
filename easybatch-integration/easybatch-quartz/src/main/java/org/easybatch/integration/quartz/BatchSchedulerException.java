@@ -24,8 +24,6 @@
 
 package org.easybatch.integration.quartz;
 
-import org.quartz.SchedulerException;
-
 /**
  * Batch scheduler exception used to signal any scheduler setup or startup failure.
  *
@@ -33,8 +31,8 @@ import org.quartz.SchedulerException;
  */
 public class BatchSchedulerException extends Exception {
 
-    public BatchSchedulerException(final String message, final SchedulerException e) {
-        super(message, e);
+    public BatchSchedulerException(final String message, final Exception exception) {
+        super(message, exception);
     }
 
 }

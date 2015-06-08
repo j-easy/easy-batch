@@ -29,7 +29,9 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.spi.JobFactory;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,13 +66,20 @@ public class BatchScheduler {
 
     public BatchScheduler(Engine engine) throws BatchSchedulerException {
         JobFactory jobFactory = new BatchJobFactory(engine);
-        SchedulerFactory schedulerFactory = new StdSchedulerFactory();
         try {
+            // load quartz default configuration
+            Properties properties = new Properties();
+            properties.load(this.getClass().getResourceAsStream("/org/quartz/quartz.properties"));
+            // override the scheduler name property to make it unique
+            properties.setProperty("org.quartz.scheduler.instanceName", engine.getExecutionId());
+            SchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
             scheduler = schedulerFactory.getScheduler();
             scheduler.setJobFactory(jobFactory);
             jobName = "batch-job-" + engine.getExecutionId();
             triggerName = "trigger-for-" + jobName;
         } catch (SchedulerException e) {
+            throw new BatchSchedulerException("An exception occurred during scheduler setup", e);
+        } catch (IOException e) {
             throw new BatchSchedulerException("An exception occurred during scheduler setup", e);
         }
     }
