@@ -36,4 +36,10 @@ public interface FilteredRecordHandler {
      */
     void handle(final Record record);
 
+    /**
+     * @param record    the filtered record to handle
+     * @param throwable the exception thrown while attempting to filter the record
+     */
+    void handle(final Record record, final Throwable throwable);
+
 }

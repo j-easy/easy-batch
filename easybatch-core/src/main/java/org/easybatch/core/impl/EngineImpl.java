@@ -153,10 +153,16 @@ final class EngineImpl implements Engine {
                 /*
                  * apply filter chain
                  */
-                boolean filtered = filterChain.filterRecord(currentRecord);
-                if (filtered) {
+                try {
+                    boolean filtered = filterChain.filterRecord(currentRecord);
+                    if (filtered) {
+                        report.incrementTotalFilteredRecords();
+                        filteredRecordHandler.handle(currentRecord);
+                        continue;
+                    }
+                } catch (Exception e) {
                     report.incrementTotalFilteredRecords();
-                    filteredRecordHandler.handle(currentRecord);
+                    filteredRecordHandler.handle(currentRecord, e);
                     continue;
                 }
 

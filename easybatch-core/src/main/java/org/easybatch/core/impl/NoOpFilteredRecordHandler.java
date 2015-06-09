@@ -47,4 +47,13 @@ class NoOpFilteredRecordHandler implements FilteredRecordHandler {
         LOGGER.log(Level.INFO, "Record {0} has been filtered.", record);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handle(Record record, Throwable throwable) {
+        LOGGER.log(Level.SEVERE, "An exception occurred while filtering record " + record, throwable);
+    }
+
+
 }

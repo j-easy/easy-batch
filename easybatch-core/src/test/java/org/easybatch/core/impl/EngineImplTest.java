@@ -238,6 +238,18 @@ public class EngineImplTest {
     }
 
     @Test
+    public void whenRecordFilterThrowsARuntimeException_thenShouldFilterRecord() throws Exception {
+        when(firstFilter.filterRecord(record1)).thenThrow(runtimeException);
+        aNewEngine()
+                .reader(reader)
+                .filter(firstFilter)
+                .filteredRecordHandler(filteredRecordHandler)
+                .build().call();
+
+        verify(filteredRecordHandler).handle(record1, runtimeException);
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     public void whenRecordValidatorThrowsARuntimeException_thenShouldRejectRecord() throws Exception {
         when(firstValidator.validateRecord(record1)).thenThrow(runtimeException);
