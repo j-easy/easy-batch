@@ -45,6 +45,14 @@ class NoOpRejectedRecordHandler implements RejectedRecordHandler {
      * {@inheritDoc}
      */
     @Override
+    public void handle(final Record record, final Throwable throwable) {
+        LOGGER.log(Level.SEVERE, "An exception occurred while validating record " + record, throwable);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void handle(final Record record, final Set<ValidationError> validationsErrors) {
         StringBuilder stringBuilder = new StringBuilder();
         for (ValidationError validationError : validationsErrors) {

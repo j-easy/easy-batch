@@ -185,10 +185,21 @@ final class EngineImpl implements Engine {
                 /*
                  * apply validation pipeline
                  */
-                Set<ValidationError> validationsErrors = validateRecord(typedRecord);
-                if (!validationsErrors.isEmpty()) {
+                try {
+                    Set<ValidationError> validationsErrors = validateRecord(typedRecord);
+                    if (!validationsErrors.isEmpty()) {
+                        report.incrementTotalRejectedRecord();
+                        rejectedRecordHandler.handle(currentRecord, validationsErrors);
+                        if (strictMode) {
+                            reportAbortDueToStrictMode();
+                            break;
+                        }
+                        continue;
+                    }
+                } catch (Exception e) {
                     report.incrementTotalRejectedRecord();
-                    rejectedRecordHandler.handle(currentRecord, validationsErrors);
+                    rejectedRecordHandler.handle(currentRecord, e);
+                    eventManager.fireOnBatchException(e);
                     if (strictMode) {
                         reportAbortDueToStrictMode();
                         break;

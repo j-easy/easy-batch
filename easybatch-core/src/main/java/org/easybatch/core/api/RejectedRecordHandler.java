@@ -34,6 +34,12 @@ import java.util.Set;
 public interface RejectedRecordHandler {
 
     /**
+     * @param record    the rejected record to handle
+     * @param throwable the exception that caused the record to be rejected
+     */
+    void handle(final Record record, final Throwable throwable);
+
+    /**
      * @param record            the rejected record to handle
      * @param validationsErrors a set of validationsErrors that caused that record to be rejected
      */

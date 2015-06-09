@@ -49,6 +49,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 import static org.mockito.Mockito.*;
 
 /**
@@ -105,6 +106,8 @@ public class EngineImplTest {
     private RecordReaderOpeningException recordReaderOpeningException;
     @Mock
     private RecordProcessingException recordProcessingException;
+    @Mock
+    private RuntimeException runtimeException;
 
     @Before
     @SuppressWarnings("unchecked")
@@ -232,6 +235,19 @@ public class EngineImplTest {
         Report report = engine.call();
 
         assertThat(report.getBatchResult()).isEqualTo(computationalRecordProcessor.getComputationResult());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void whenRecordValidatorThrowsARuntimeException_thenShouldRejectRecord() throws Exception {
+        when(firstValidator.validateRecord(record1)).thenThrow(runtimeException);
+        aNewEngine()
+                .reader(reader)
+                .validator(firstValidator)
+                .rejectedRecordHandler(rejectedRecordHandler)
+                .build().call();
+
+        verify(rejectedRecordHandler).handle(record1, runtimeException);
     }
 
     @Test
