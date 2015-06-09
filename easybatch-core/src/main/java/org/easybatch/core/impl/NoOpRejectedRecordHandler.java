@@ -46,7 +46,7 @@ class NoOpRejectedRecordHandler implements RejectedRecordHandler {
      */
     @Override
     public void handle(final Record record, final Throwable throwable) {
-        LOGGER.log(Level.SEVERE, "An exception occurred while validating record " + record, throwable);
+        LOGGER.log(Level.SEVERE, "An exception occurred while attempting to validate record " + record, throwable);
     }
 
     /**

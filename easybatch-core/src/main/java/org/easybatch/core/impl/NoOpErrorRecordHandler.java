@@ -44,7 +44,7 @@ class NoOpErrorRecordHandler implements ErrorRecordHandler {
      */
     @Override
     public void handle(final Record record, final Throwable throwable) {
-        LOGGER.log(Level.SEVERE, "Error while processing record " + record, throwable);
+        LOGGER.log(Level.SEVERE, "An exception occurred while attempting to process record " + record, throwable);
     }
 
 }

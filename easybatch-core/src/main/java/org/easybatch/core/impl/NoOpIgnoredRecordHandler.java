@@ -44,7 +44,7 @@ class NoOpIgnoredRecordHandler implements IgnoredRecordHandler {
      */
     @Override
     public void handle(final Record record) {
-        LOGGER.log(Level.SEVERE, "The record mapper returned null for record {0}, it will be ignored", record);
+        LOGGER.log(Level.SEVERE, "The record mapper returned null for record {0}, this record will be ignored", record);
     }
 
     /**
@@ -52,7 +52,7 @@ class NoOpIgnoredRecordHandler implements IgnoredRecordHandler {
      */
     @Override
     public void handle(final Record record, final Throwable throwable) {
-        LOGGER.log(Level.SEVERE, "Record " + record + " has been ignored. Root exception:", throwable);
+        LOGGER.log(Level.SEVERE, "An exception occurred while attempting to map record " + record, throwable);
     }
 
 }

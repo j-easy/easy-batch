@@ -136,7 +136,7 @@ final class EngineImpl implements Engine {
                 try {
                     currentRecord = readRecord();
                     if (currentRecord == null) {
-                        LOGGER.log(Level.SEVERE, "The record reader returned null for next record, aborting execution.");
+                        LOGGER.log(Level.SEVERE, "The record reader returned null for next record, aborting execution");
                         reportAbortedStatus();
                         return report;
                     }
@@ -145,7 +145,7 @@ final class EngineImpl implements Engine {
                 } catch (Exception e) {
                     eventManager.fireOnBatchException(e);
                     eventManager.fireOnRecordReadingException(e);
-                    LOGGER.log(Level.SEVERE, "An exception occurred during reading next data source record, aborting execution.", e);
+                    LOGGER.log(Level.SEVERE, "An exception occurred while reading next record, aborting execution", e);
                     reportAbortedStatus();
                     return report;
                 }

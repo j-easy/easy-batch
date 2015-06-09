@@ -44,7 +44,7 @@ class NoOpFilteredRecordHandler implements FilteredRecordHandler {
      */
     @Override
     public void handle(final Record record) {
-        LOGGER.log(Level.INFO, "Record {0} has been filtered.", record);
+        LOGGER.log(Level.INFO, "Record {0} has been filtered", record);
     }
 
     /**
@@ -52,7 +52,7 @@ class NoOpFilteredRecordHandler implements FilteredRecordHandler {
      */
     @Override
     public void handle(Record record, Throwable throwable) {
-        LOGGER.log(Level.SEVERE, "An exception occurred while filtering record " + record, throwable);
+        LOGGER.log(Level.SEVERE, "An exception occurred while attempting to filter record " + record, throwable);
     }
 
 
