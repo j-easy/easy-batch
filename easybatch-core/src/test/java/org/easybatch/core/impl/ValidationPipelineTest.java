@@ -33,10 +33,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -68,7 +68,7 @@ public class ValidationPipelineTest {
         when(validator1.validateRecord(record)).thenReturn(Collections.emptySet());
         when(validator2.validateRecord(record)).thenReturn(Collections.emptySet());
 
-        validationPipeline = new ValidationPipeline(Arrays.asList(validator1, validator2), eventManager);
+        validationPipeline = new ValidationPipeline(asList(validator1, validator2), eventManager);
 
         assertThat(validationPipeline.validateRecord(record)).isEmpty();
     }
@@ -79,8 +79,8 @@ public class ValidationPipelineTest {
         when(validator1.validateRecord(record)).thenReturn(new HashSet<ValidationError>(Collections.singletonList(error1)));
         when(validator2.validateRecord(record)).thenReturn(new HashSet<ValidationError>(Collections.singletonList(error2)));
 
-        validationPipeline = new ValidationPipeline(Arrays.asList(validator1, validator2), eventManager);
+        validationPipeline = new ValidationPipeline(asList(validator1, validator2), eventManager);
 
-        assertThat(validationPipeline.validateRecord(record)).containsOnly(error1, error2);
+        assertThat(validationPipeline.validateRecord(record)).containsOnly(error1);
     }
 }
