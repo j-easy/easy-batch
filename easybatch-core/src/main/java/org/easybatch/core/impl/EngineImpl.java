@@ -25,7 +25,7 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.job.JobEventListener;
 import org.easybatch.core.api.event.step.*;
 import org.easybatch.core.util.Utils;
 
@@ -143,7 +143,7 @@ final class EngineImpl implements Engine {
                     processedRecordsNumber++;
                     report.setCurrentRecordNumber(currentRecord.getHeader().getNumber());
                 } catch (Exception e) {
-                    eventManager.fireOnBatchException(e);
+                    eventManager.fireOnJobException(e);
                     eventManager.fireOnRecordReadingException(e);
                     LOGGER.log(Level.SEVERE, "An exception occurred while reading next record, aborting execution", e);
                     reportAbortedStatus();
@@ -180,7 +180,7 @@ final class EngineImpl implements Engine {
                 } catch (Exception e) {
                     report.incrementTotalIgnoredRecord();
                     ignoredRecordHandler.handle(currentRecord, e);
-                    eventManager.fireOnBatchException(e);
+                    eventManager.fireOnJobException(e);
                     if (strictMode) {
                         reportAbortDueToStrictMode();
                         break;
@@ -205,7 +205,7 @@ final class EngineImpl implements Engine {
                 } catch (Exception e) {
                     report.incrementTotalRejectedRecord();
                     rejectedRecordHandler.handle(currentRecord, e);
-                    eventManager.fireOnBatchException(e);
+                    eventManager.fireOnJobException(e);
                     if (strictMode) {
                         reportAbortDueToStrictMode();
                         break;
@@ -231,7 +231,7 @@ final class EngineImpl implements Engine {
 
         } finally {
             closeRecordReader();
-            eventManager.fireAfterBatchEnd();
+            eventManager.fireAfterJobEnd();
         }
         return report;
 
@@ -241,7 +241,7 @@ final class EngineImpl implements Engine {
         if (silentMode) {
             Utils.muteLoggers();
         }
-        eventManager.fireBeforeBatchStart();
+        eventManager.fireBeforeJobStart();
         LOGGER.info("Initializing the engine");
         LOGGER.log(Level.INFO, "Engine name: {0}", getName());
         LOGGER.log(Level.INFO, "Execution id: {0}", getExecutionId());
@@ -254,7 +254,7 @@ final class EngineImpl implements Engine {
             openRecordReader();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An exception occurred while opening the record reader", e);
-            eventManager.fireOnBatchException(e);
+            eventManager.fireOnJobException(e);
             reportAbortedStatus();
             return false;
         }
@@ -343,7 +343,7 @@ final class EngineImpl implements Engine {
             eventManager.fireAfterRecordReaderClosing();
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "An exception occurred while closing the record reader", e);
-            eventManager.fireOnBatchException(e);
+            eventManager.fireOnJobException(e);
         }
     }
 
@@ -391,8 +391,8 @@ final class EngineImpl implements Engine {
         this.eventManager = eventManager;
     }
 
-    public void addBatchProcessEventListener(final BatchProcessEventListener batchProcessEventListener) {
-        eventManager.addBatchProcessEventListener(batchProcessEventListener);
+    public void addJobEventListener(final JobEventListener jobEventListener) {
+        eventManager.addJobEventListener(jobEventListener);
     }
 
     public void addRecordReaderEventListener(final RecordReaderEventListener recordReaderEventListener) {

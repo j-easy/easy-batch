@@ -25,7 +25,7 @@ package org.easybatch.core.impl;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.ValidationError;
-import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.job.JobEventListener;
 import org.easybatch.core.api.event.step.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +46,7 @@ import java.util.HashSet;
 public class LocalEventManagerTest {
 
     @Mock
-    private BatchProcessEventListener batchProcessEventListener1, batchProcessEventListener2;
+    private JobEventListener jobEventListener1, jobEventListener2;
     @Mock
     private RecordReaderEventListener recordReaderEventListener1, recordReaderEventListener2;
     @Mock
@@ -74,8 +74,8 @@ public class LocalEventManagerTest {
     public void setUp() {
         localEventManager = new LocalEventManager();
         
-        localEventManager.addBatchProcessEventListener(batchProcessEventListener1);
-        localEventManager.addBatchProcessEventListener(batchProcessEventListener2);
+        localEventManager.addJobEventListener(jobEventListener1);
+        localEventManager.addJobEventListener(jobEventListener2);
         
         localEventManager.addRecordFilterEventListener(recordFilterEventListener1);
         localEventManager.addRecordFilterEventListener(recordFilterEventListener2);
@@ -95,32 +95,32 @@ public class LocalEventManagerTest {
 
     @Test
     public void fireBeforeBatchStart() {
-        localEventManager.fireBeforeBatchStart();
+        localEventManager.fireBeforeJobStart();
 
-        InOrder inOrder = Mockito.inOrder(batchProcessEventListener1, batchProcessEventListener2);
+        InOrder inOrder = Mockito.inOrder(jobEventListener1, jobEventListener2);
 
-        inOrder.verify(batchProcessEventListener1).beforeBatchStart();
-        inOrder.verify(batchProcessEventListener2).beforeBatchStart();
+        inOrder.verify(jobEventListener1).beforeJobStart();
+        inOrder.verify(jobEventListener2).beforeJobStart();
     }
 
     @Test
     public void fireAfterBatchEnd() {
-        localEventManager.fireAfterBatchEnd();
+        localEventManager.fireAfterJobEnd();
 
-        InOrder inOrder = Mockito.inOrder(batchProcessEventListener1, batchProcessEventListener2);
+        InOrder inOrder = Mockito.inOrder(jobEventListener1, jobEventListener2);
 
-        inOrder.verify(batchProcessEventListener1).afterBatchEnd();
-        inOrder.verify(batchProcessEventListener2).afterBatchEnd();
+        inOrder.verify(jobEventListener1).afterJobEnd();
+        inOrder.verify(jobEventListener2).afterJobEnd();
     }
 
     @Test
     public void fireOnBatchException() {
-        localEventManager.fireOnBatchException(throwable);
+        localEventManager.fireOnJobException(throwable);
 
-        InOrder inOrder = Mockito.inOrder(batchProcessEventListener1, batchProcessEventListener2);
+        InOrder inOrder = Mockito.inOrder(jobEventListener1, jobEventListener2);
 
-        inOrder.verify(batchProcessEventListener1).onBatchException(throwable);
-        inOrder.verify(batchProcessEventListener2).onBatchException(throwable);
+        inOrder.verify(jobEventListener1).onJobException(throwable);
+        inOrder.verify(jobEventListener2).onJobException(throwable);
     }
 
     @Test

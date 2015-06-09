@@ -116,7 +116,7 @@ public class ProcessingPipelineTest {
         inOrder.verify(recordProcessor).processRecord(typedRecord);
         inOrder.verify(report).incrementTotalErrorRecord();
         inOrder.verify(errorRecordHandler).handle(record, exception);
-        inOrder.verify(eventManager).fireOnBatchException(exception);
+        inOrder.verify(eventManager).fireOnJobException(exception);
         inOrder.verify(eventManager).fireOnRecordProcessingException(typedRecord, exception);
 
         Mockito.verifyZeroInteractions(computationalRecordProcessor);

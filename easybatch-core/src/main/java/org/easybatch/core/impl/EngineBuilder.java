@@ -25,7 +25,7 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.job.JobEventListener;
 import org.easybatch.core.api.event.step.*;
 import org.easybatch.core.util.Utils;
 
@@ -238,15 +238,15 @@ public final class EngineBuilder {
     }
 
     /**
-     * Register a batch process event listener.
-     * See {@link org.easybatch.core.api.event.batch.BatchProcessEventListener} for available callback methods.
+     * Register a job event listener.
+     * See {@link JobEventListener} for available callback methods.
      *
-     * @param batchProcessEventListener The event listener to add.
+     * @param jobEventListener The event listener to add.
      * @return the engine builder
      */
-    public EngineBuilder batchProcessEventListener(final BatchProcessEventListener batchProcessEventListener) {
-        checkNotNull(batchProcessEventListener, "batch process event listener");
-        engine.addBatchProcessEventListener(batchProcessEventListener);
+    public EngineBuilder jobEventListener(final JobEventListener jobEventListener) {
+        checkNotNull(jobEventListener, "job event listener");
+        engine.addJobEventListener(jobEventListener);
         return this;
     }
 

@@ -25,7 +25,7 @@
 package org.easybatch.integration.spring;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.job.JobEventListener;
 import org.easybatch.core.api.event.step.*;
 import org.easybatch.core.impl.EngineBuilder;
 import org.springframework.beans.factory.FactoryBean;
@@ -57,7 +57,7 @@ public class BatchFactoryBean implements FactoryBean {
 
     private ErrorRecordHandler errorRecordHandler;
 
-    private List<BatchProcessEventListener> batchProcessEventListeners;
+    private List<JobEventListener> jobEventListeners;
 
     private List<RecordReaderEventListener> recordReaderEventListeners;
 
@@ -113,9 +113,9 @@ public class BatchFactoryBean implements FactoryBean {
             engineBuilder.errorRecordHandler(errorRecordHandler);
         }
 
-        if (batchProcessEventListeners != null) {
-            for (BatchProcessEventListener batchProcessEventListener : batchProcessEventListeners) {
-                engineBuilder.batchProcessEventListener(batchProcessEventListener);
+        if (jobEventListeners != null) {
+            for (JobEventListener jobEventListener : jobEventListeners) {
+                engineBuilder.jobEventListener(jobEventListener);
             }
         }
 
@@ -204,8 +204,8 @@ public class BatchFactoryBean implements FactoryBean {
         this.errorRecordHandler = errorRecordHandler;
     }
 
-    public void setBatchProcessEventListeners(List<BatchProcessEventListener> batchProcessEventListeners) {
-        this.batchProcessEventListeners = batchProcessEventListeners;
+    public void setJobEventListeners(List<JobEventListener> jobEventListeners) {
+        this.jobEventListeners = jobEventListeners;
     }
 
     public void setRecordReaderEventListeners(List<RecordReaderEventListener> recordReaderEventListeners) {

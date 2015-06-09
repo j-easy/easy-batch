@@ -24,16 +24,16 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.job.JobEventListener;
 import org.easybatch.core.record.PoisonRecord;
 
 /**
- * A utility batch event listener that broadcasts a {@link PoisonRecord} record at the end of batch
+ * A utility job event listener that broadcasts a {@link PoisonRecord} record at the end of the job
  * using a delegate record dispatcher.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class PoisonRecordBroadcaster implements BatchProcessEventListener {
+public class PoisonRecordBroadcaster implements JobEventListener {
 
     private AbstractRecordDispatcher recordDispatcher;
 
@@ -47,12 +47,12 @@ public class PoisonRecordBroadcaster implements BatchProcessEventListener {
     }
 
     @Override
-    public void beforeBatchStart() {
+    public void beforeJobStart() {
 
     }
 
     @Override
-    public void afterBatchEnd() {
+    public void afterJobEnd() {
         try {
             recordDispatcher.dispatchRecord(new PoisonRecord());
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class PoisonRecordBroadcaster implements BatchProcessEventListener {
     }
 
     @Override
-    public void onBatchException(Throwable throwable) {
+    public void onJobException(Throwable throwable) {
 
     }
 }

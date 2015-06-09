@@ -25,7 +25,7 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.job.JobEventListener;
 import org.easybatch.core.api.event.step.*;
 import org.easybatch.core.exception.RecordMappingException;
 import org.easybatch.core.exception.RecordProcessingException;
@@ -79,7 +79,7 @@ public class EngineImplTest {
     @Mock
     private ComputationalRecordProcessor computationalRecordProcessor;
     @Mock
-    private BatchProcessEventListener batchProcessEventListener;
+    private JobEventListener jobEventListener;
     @Mock
     private RecordReaderEventListener recordReaderEventListener;
     @Mock
@@ -347,13 +347,13 @@ public class EngineImplTest {
         engine = new EngineBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
-                .batchProcessEventListener(batchProcessEventListener)
+                .jobEventListener(jobEventListener)
                 .build();
         engine.call();
 
-        verify(batchProcessEventListener).beforeBatchStart();
-        verify(batchProcessEventListener).onBatchException(recordProcessingException);
-        verify(batchProcessEventListener).afterBatchEnd();
+        verify(jobEventListener).beforeJobStart();
+        verify(jobEventListener).onJobException(recordProcessingException);
+        verify(jobEventListener).afterJobEnd();
     }
 
     @Test

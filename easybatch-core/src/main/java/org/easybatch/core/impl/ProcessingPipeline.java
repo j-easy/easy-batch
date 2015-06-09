@@ -66,7 +66,7 @@ final class ProcessingPipeline {
                 processingError = true;
                 report.incrementTotalErrorRecord();
                 errorRecordHandler.handle(currentRecord, e);
-                eventManager.fireOnBatchException(e);
+                eventManager.fireOnJobException(e);
                 eventManager.fireOnRecordProcessingException(typedRecord, e);
                 break;
             }

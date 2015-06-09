@@ -24,7 +24,7 @@
 
 package org.easybatch.core.api;
 
-import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.job.JobEventListener;
 import org.easybatch.core.api.event.step.*;
 
 import java.util.Set;
@@ -33,7 +33,7 @@ import java.util.Set;
  * Interface for the event manager.
  * <p>
  * There is one local implementation included. It could also be implemented using JMS or any other distributed
- * technology to get to know of any event happened while the batch is being processed.
+ * technology to get to know of any event happened while the job is running.
  * <p>
  * Please note that if you implement something like a global or singleton event handler you must care for synchronized
  * access for your self.
@@ -45,9 +45,9 @@ public interface EventManager {
     /**
      * Add an event listener.
      *
-     * @param batchProcessEventListener The listener to add.
+     * @param jobEventListener The listener to add.
      */
-    void addBatchProcessEventListener(final BatchProcessEventListener batchProcessEventListener);
+    void addJobEventListener(final JobEventListener jobEventListener);
 
     /**
      * Add an event listener.
@@ -87,19 +87,19 @@ public interface EventManager {
     /**
      * Called before the whole batch starts.
      */
-    void fireBeforeBatchStart();
+    void fireBeforeJobStart();
 
     /**
      * Called after the whole batch ends.
      */
-    void fireAfterBatchEnd();
+    void fireAfterJobEnd();
 
     /**
      * Called on any exception thrown in the whole process.
      *
      * @param throwable The exception that has been thrown.
      */
-    void fireOnBatchException(Throwable throwable);
+    void fireOnJobException(Throwable throwable);
 
     /**
      * Called before the reader opens

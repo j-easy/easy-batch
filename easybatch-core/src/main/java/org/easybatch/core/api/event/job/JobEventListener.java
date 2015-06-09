@@ -22,10 +22,10 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.api.event.batch;
+package org.easybatch.core.api.event.job;
 
 /**
- * Enables the implementing class to get an event on different steps within the batch process.
+ * Enables the implementing class to get an event on different steps within the batch job.
  * <p/>
  * Use this interface when you want a listener that is not bound to a specific processor type, otherwise look at:
  * <ul>
@@ -38,17 +38,17 @@ package org.easybatch.core.api.event.batch;
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface BatchProcessEventListener {
+public interface JobEventListener {
 
     /**
      * Called before the {@link org.easybatch.core.api.RecordReader#open()} call.
      */
-    void beforeBatchStart();
+    void beforeJobStart();
 
     /**
      * Called after the {@link org.easybatch.core.api.RecordReader#close()} call.
      */
-    void afterBatchEnd();
+    void afterJobEnd();
 
     /**
      * Called on any throwable event while processing.
@@ -58,5 +58,5 @@ public interface BatchProcessEventListener {
      *
      * @param throwable The exception thrown at the time of call.
      */
-    void onBatchException(Throwable throwable);
+    void onJobException(Throwable throwable);
 }

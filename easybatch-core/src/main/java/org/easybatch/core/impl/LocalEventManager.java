@@ -27,7 +27,7 @@ package org.easybatch.core.impl;
 import org.easybatch.core.api.EventManager;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.ValidationError;
-import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.job.JobEventListener;
 import org.easybatch.core.api.event.step.*;
 
 import java.util.LinkedHashSet;
@@ -40,7 +40,7 @@ import java.util.Set;
  */
 class LocalEventManager implements EventManager {
 
-    private Set<BatchProcessEventListener> batchProcessEventListeners = new LinkedHashSet<BatchProcessEventListener>();
+    private Set<JobEventListener> jobEventListeners = new LinkedHashSet<JobEventListener>();
     private Set<RecordReaderEventListener> recordReaderEventListeners = new LinkedHashSet<RecordReaderEventListener>();
     private Set<RecordFilterEventListener> recordFilterEventListeners = new LinkedHashSet<RecordFilterEventListener>();
     private Set<RecordMapperEventListener> recordMapperEventListeners = new LinkedHashSet<RecordMapperEventListener>();
@@ -48,8 +48,8 @@ class LocalEventManager implements EventManager {
     private Set<RecordProcessorEventListener> recordProcessorEventListeners = new LinkedHashSet<RecordProcessorEventListener>();
 
     @Override
-    public void addBatchProcessEventListener(BatchProcessEventListener batchProcessEventListener) {
-        batchProcessEventListeners.add(batchProcessEventListener);
+    public void addJobEventListener(JobEventListener jobEventListener) {
+        jobEventListeners.add(jobEventListener);
     }
 
     @Override
@@ -78,23 +78,23 @@ class LocalEventManager implements EventManager {
     }
 
     @Override
-    public void fireBeforeBatchStart() {
-        for (BatchProcessEventListener eventListener : batchProcessEventListeners) {
-            eventListener.beforeBatchStart();
+    public void fireBeforeJobStart() {
+        for (JobEventListener eventListener : jobEventListeners) {
+            eventListener.beforeJobStart();
         }
     }
 
     @Override
-    public void fireAfterBatchEnd() {
-        for (BatchProcessEventListener eventListener : batchProcessEventListeners) {
-            eventListener.afterBatchEnd();
+    public void fireAfterJobEnd() {
+        for (JobEventListener eventListener : jobEventListeners) {
+            eventListener.afterJobEnd();
         }
     }
 
     @Override
-    public void fireOnBatchException(Throwable t) {
-        for (BatchProcessEventListener eventListener : batchProcessEventListeners) {
-            eventListener.onBatchException(t);
+    public void fireOnJobException(Throwable t) {
+        for (JobEventListener eventListener : jobEventListeners) {
+            eventListener.onJobException(t);
         }
     }
 
