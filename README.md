@@ -47,8 +47,8 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 
 ## Current version
 
-* The current stable version is 3.0.1
-* The current development version is 3.0.2-SNAPSHOT : [![Build Status](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/badge/icon)](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/)
+* The current stable version is 3.0.2
+* The current development version is 3.0.3-SNAPSHOT : [![Build Status](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/badge/icon)](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/)
 
 If you would like to use the snapshot version, you need to add the following repository in your `pom.xml` file:
 
