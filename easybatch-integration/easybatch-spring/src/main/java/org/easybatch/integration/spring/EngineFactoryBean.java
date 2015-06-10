@@ -37,7 +37,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BatchFactoryBean implements FactoryBean {
+public class EngineFactoryBean implements FactoryBean {
 
     private RecordReader recordReader;
 

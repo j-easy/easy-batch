@@ -69,7 +69,6 @@
         <module>easybatch-quartz</module>
         <module>easybatch-spring</module>
         <module>easybatch-opencsv</module>
-        <module>easybatch-spring-jdbc</module>
         <module>easybatch-apache-commons-csv</module>
         <module>easybatch-gson</module>
         <module>easybatch-xstream</module>
