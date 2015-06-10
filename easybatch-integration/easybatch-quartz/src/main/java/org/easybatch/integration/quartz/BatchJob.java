@@ -30,14 +30,14 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 /**
- * Quartz Job implementation to launch batch instances.
+ * Quartz Job implementation to launch batch job instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 class BatchJob implements Job {
 
     /**
-     * Easy batch instance.
+     * The engine instance.
      */
     private Engine engine;
 
@@ -52,7 +52,7 @@ class BatchJob implements Job {
         try {
             engine.call();
         } catch (Exception e) {
-            throw new JobExecutionException("An exception occurred during batch engine execution", e);
+            throw new JobExecutionException("An exception occurred during the execution of engine " + engine, e);
         }
     }
 

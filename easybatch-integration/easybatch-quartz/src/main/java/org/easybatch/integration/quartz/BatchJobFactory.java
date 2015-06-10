@@ -37,18 +37,9 @@ import org.quartz.spi.TriggerFiredBundle;
  */
 class BatchJobFactory implements JobFactory {
 
-    /**
-     * Batch instance.
-     */
-    private Engine engine;
-
-    public BatchJobFactory(final Engine engine) {
-        this.engine = engine;
-    }
-
     @Override
     public Job newJob(final TriggerFiredBundle bundle, final Scheduler scheduler) {
-        return new BatchJob(engine);
+        return new BatchJob((Engine) bundle.getJobDetail().getJobDataMap().get("engine"));
     }
 
 }

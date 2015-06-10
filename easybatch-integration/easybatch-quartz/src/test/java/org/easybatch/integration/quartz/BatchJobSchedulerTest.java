@@ -26,6 +26,7 @@ package org.easybatch.integration.quartz;
 
 import org.easybatch.core.api.Engine;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -37,12 +38,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Test class for {@link BatchScheduler}.
+ * Test class for {@link BatchJobScheduler}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 @RunWith(MockitoJUnitRunner.class)
-public class BatchSchedulerTest {
+public class BatchJobSchedulerTest {
 
     private static final Date now = new Date();
 
@@ -57,29 +58,29 @@ public class BatchSchedulerTest {
         when(engine2.getExecutionId()).thenReturn("456");
     }
 
-    @org.junit.Test
+    @Test
     public void testJobScheduling() throws Exception {
 
-        BatchScheduler batchScheduler = new BatchScheduler(engine1);
+        BatchJobScheduler batchScheduler = new BatchJobScheduler(engine1);
         batchScheduler.scheduleAtWithInterval(now, everyMinute);
         batchScheduler.start();
 
         assertThat(batchScheduler.isStarted()).isTrue();
-
         verify(engine1).call();
 
         batchScheduler.stop();
+        assertThat(batchScheduler.isStopped()).isTrue();
 
     }
 
-    @org.junit.Test
+    @Test
     public void testMultipleJobsScheduling() throws Exception {
 
-        BatchScheduler batchScheduler1 = new BatchScheduler(engine1);
+        BatchJobScheduler batchScheduler1 = new BatchJobScheduler(engine1);
         batchScheduler1.scheduleAtWithInterval(now, everyMinute);
         batchScheduler1.start();
 
-        BatchScheduler batchScheduler2 = new BatchScheduler(engine2);
+        BatchJobScheduler batchScheduler2 = new BatchJobScheduler(engine2);
         batchScheduler2.scheduleAtWithInterval(now, everyMinute);
         batchScheduler2.start();
 

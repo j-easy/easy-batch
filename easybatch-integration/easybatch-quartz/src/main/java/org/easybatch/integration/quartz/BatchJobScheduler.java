@@ -29,33 +29,37 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.spi.JobFactory;
 
-import java.io.IOException;
 import java.util.Date;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static org.easybatch.core.util.Utils.checkNotNull;
+import static org.quartz.CronScheduleBuilder.cronSchedule;
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
  * Quartz scheduler wrapper used to setup triggers.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BatchScheduler {
+public class BatchJobScheduler {
 
-    private static final Logger LOGGER = Logger.getLogger(BatchScheduler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BatchJobScheduler.class.getName());
 
     /**
-     * The name of easy batch job trigger.
+     * The job trigger name.
      */
     private String triggerName;
 
     /**
-     * The name of easy batch job.
+     * The job name.
      */
     private String jobName;
 
     /**
-     * The trigger used to fire batch execution.
+     * The trigger used to fire job execution.
      */
     private Trigger trigger;
 
@@ -64,22 +68,28 @@ public class BatchScheduler {
      */
     private Scheduler scheduler;
 
-    public BatchScheduler(Engine engine) throws BatchSchedulerException {
-        JobFactory jobFactory = new BatchJobFactory(engine);
+    /**
+     * The engine to schedule.
+     */
+    private Engine engine;
+
+    /**
+     * Create a job scheduler for the given engine.
+     *
+     * @param engine the engine to schedule
+     * @throws BatchSchedulerException thrown if an exception occurs while creating the scheduler
+     */
+    public BatchJobScheduler(Engine engine) throws BatchSchedulerException {
+        checkNotNull(engine, "engine");
+        this.engine = engine;
+        JobFactory jobFactory = new BatchJobFactory();
+        SchedulerFactory schedulerFactory = new StdSchedulerFactory();
         try {
-            // load quartz default configuration
-            Properties properties = new Properties();
-            properties.load(this.getClass().getResourceAsStream("/org/quartz/quartz.properties"));
-            // override the scheduler name property to make it unique
-            properties.setProperty("org.quartz.scheduler.instanceName", engine.getExecutionId());
-            SchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
             scheduler = schedulerFactory.getScheduler();
             scheduler.setJobFactory(jobFactory);
             jobName = "batch-job-" + engine.getExecutionId();
             triggerName = "trigger-for-" + jobName;
         } catch (SchedulerException e) {
-            throw new BatchSchedulerException("An exception occurred during scheduler setup", e);
-        } catch (IOException e) {
             throw new BatchSchedulerException("An exception occurred during scheduler setup", e);
         }
     }
@@ -90,7 +100,7 @@ public class BatchScheduler {
      * @param startTime the start time
      */
     public void scheduleAt(final Date startTime) {
-        trigger = TriggerBuilder.newTrigger()
+        trigger = newTrigger()
                 .withIdentity(triggerName)
                 .startAt(startTime)
                 .forJob(jobName)
@@ -105,12 +115,13 @@ public class BatchScheduler {
      * @param interval  the repeat interval in minutes
      */
     public void scheduleAtWithInterval(final Date startTime, final int interval) {
-        SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(interval);
-        simpleScheduleBuilder = simpleScheduleBuilder.repeatForever();
-        trigger = TriggerBuilder.newTrigger()
+        ScheduleBuilder scheduleBuilder = simpleSchedule()
+                .withIntervalInMinutes(interval)
+                .repeatForever();
+        trigger = newTrigger()
                 .withIdentity(triggerName)
                 .startAt(startTime)
-                .withSchedule(simpleScheduleBuilder)
+                .withSchedule(scheduleBuilder)
                 .forJob(jobName)
                 .build();
         LOGGER.log(Level.INFO, "Building a scheduler for job {0} to start at {1} and every {2} minute(s)", new Object[]{jobName, startTime, interval});
@@ -124,9 +135,9 @@ public class BatchScheduler {
      *                       <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/crontrigger">quartz reference documentation</a>.
      */
     public void scheduleCron(final String cronExpression) {
-        trigger = TriggerBuilder.newTrigger()
+        trigger = newTrigger()
                 .withIdentity(triggerName)
-                .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
+                .withSchedule(cronSchedule(cronExpression))
                 .forJob(jobName)
                 .build();
         LOGGER.log(Level.INFO, "Building a scheduler for job {0} with cron expression {1}", new Object[]{jobName, cronExpression});
@@ -140,7 +151,9 @@ public class BatchScheduler {
     public void start() throws BatchSchedulerException {
         LOGGER.log(Level.INFO, "Starting the scheduler for job {0}", jobName);
         try {
-            JobDetail job = JobBuilder.newJob(BatchJob.class).withIdentity(jobName).build();
+            JobDataMap jobDataMap = new JobDataMap();
+            jobDataMap.put("engine", engine);
+            JobDetail job = newJob(BatchJob.class).withIdentity(jobName).usingJobData(jobDataMap).build();
             scheduler.scheduleJob(job, trigger);
             scheduler.start();
         } catch (SchedulerException e) {
