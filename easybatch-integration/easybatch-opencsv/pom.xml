@@ -3,7 +3,7 @@
     <parent>
         <artifactId>easybatch-integration</artifactId>
         <groupId>org.easybatch</groupId>
-        <version>3.0.2</version>
+        <version>3.0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -30,7 +30,7 @@
         <url>git@github.com:easybatch/easybatch-framework.git</url>
         <connection>scm:git:git@github.com:easybatch/easybatch-framework.git</connection>
         <developerConnection>scm:git:git@github.com:easybatch/easybatch-framework.git</developerConnection>
-        <tag>easybatch-3.0.2</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
