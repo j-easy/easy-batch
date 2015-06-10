@@ -29,21 +29,6 @@
         </developer>
     </developers>
 
-    <contributors>
-        <contributor>
-            <name>Nihed MBAREK</name>
-            <url>https://github.com/nihed</url>
-        </contributor>
-        <contributor>
-            <name>chellan</name>
-            <url>https://github.com/chellan</url>
-        </contributor>
-        <contributor>
-            <name>xenji</name>
-            <url>https://github.com/xenji</url>
-        </contributor>
-    </contributors>
-
     <scm>
         <url>git@github.com:easybatch/easybatch-framework.git</url>
         <connection>scm:git:git@github.com:easybatch/easybatch-framework.git</connection>
