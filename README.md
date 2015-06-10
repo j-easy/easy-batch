@@ -82,6 +82,7 @@ For any further question, you can use the [forum](https://groups.google.com/d/fo
 * [natlantisprog](https://github.com/natlantisprog)
 * [nicopatch](https://github.com/nicopatch)
 * [nihed](https://github.com/nihed)
+* [gs-spadmanabhan](https://github.com/gs-spadmanabhan)
 * [xenji](https://github.com/xenji)
 
 Thank you all for your contributions!
