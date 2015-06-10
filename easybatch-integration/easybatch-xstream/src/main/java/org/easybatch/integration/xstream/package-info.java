@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains easy batch - xstream integration module classes.
+ * This package contains Xstream integration module classes.
  */
 package org.easybatch.integration.xstream;

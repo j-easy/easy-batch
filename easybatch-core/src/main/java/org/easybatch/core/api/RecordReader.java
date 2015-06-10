@@ -24,10 +24,6 @@
 
 package org.easybatch.core.api;
 
-import org.easybatch.core.exception.RecordReaderClosingException;
-import org.easybatch.core.exception.RecordReaderOpeningException;
-import org.easybatch.core.exception.RecordReadingException;
-
 /**
  * Interface for record reader.
  * This will be used by easy batch to <strong>sequentially</strong> read records from a data source.

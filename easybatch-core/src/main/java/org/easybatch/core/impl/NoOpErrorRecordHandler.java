@@ -24,8 +24,8 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.api.ErrorRecordHandler;
 import org.easybatch.core.api.Record;
+import org.easybatch.core.api.handler.ErrorRecordHandler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

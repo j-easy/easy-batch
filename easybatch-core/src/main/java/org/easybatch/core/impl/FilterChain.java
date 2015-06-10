@@ -24,9 +24,9 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.api.EventManager;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.api.event.EventManager;
 
 import java.util.List;
 

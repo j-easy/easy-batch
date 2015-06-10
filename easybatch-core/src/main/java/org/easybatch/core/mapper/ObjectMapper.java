@@ -24,9 +24,9 @@
 
 package org.easybatch.core.mapper;
 
+import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.core.api.TypeConverter;
-import org.easybatch.core.exception.RecordMappingException;
-import org.easybatch.core.mapper.converter.*;
+import org.easybatch.core.converter.*;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;

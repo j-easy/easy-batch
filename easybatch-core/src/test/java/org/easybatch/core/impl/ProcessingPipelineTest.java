@@ -25,7 +25,8 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.exception.RecordProcessingException;
+import org.easybatch.core.api.event.EventManager;
+import org.easybatch.core.api.handler.ErrorRecordHandler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;

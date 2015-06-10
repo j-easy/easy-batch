@@ -28,7 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
-import org.easybatch.core.exception.RecordMappingException;
+import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.json.JsonRecord;
 
 /**

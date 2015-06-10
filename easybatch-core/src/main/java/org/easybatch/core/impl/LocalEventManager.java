@@ -24,9 +24,9 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.api.EventManager;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.ValidationError;
+import org.easybatch.core.api.event.EventManager;
 import org.easybatch.core.api.event.job.JobEventListener;
 import org.easybatch.core.api.event.step.*;
 

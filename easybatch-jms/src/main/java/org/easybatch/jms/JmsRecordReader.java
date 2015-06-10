@@ -24,11 +24,7 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.exception.RecordReaderClosingException;
-import org.easybatch.core.exception.RecordReaderOpeningException;
-import org.easybatch.core.exception.RecordReadingException;
+import org.easybatch.core.api.*;
 
 import javax.jms.*;
 import java.util.Date;

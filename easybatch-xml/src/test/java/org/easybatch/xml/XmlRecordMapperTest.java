@@ -25,7 +25,7 @@
 package org.easybatch.xml;
 
 import org.easybatch.core.api.Header;
-import org.easybatch.core.exception.RecordMappingException;
+import org.easybatch.core.api.RecordMappingException;
 import org.junit.Before;
 import org.junit.Test;
 

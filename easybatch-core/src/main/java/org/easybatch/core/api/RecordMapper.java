@@ -24,8 +24,6 @@
 
 package org.easybatch.core.api;
 
-import org.easybatch.core.exception.RecordMappingException;
-
 /**
  * Interface for record mapper.
  * This will be used by the engine to map input record to domain objects.

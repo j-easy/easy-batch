@@ -24,10 +24,10 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.api.EventManager;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordValidator;
 import org.easybatch.core.api.ValidationError;
+import org.easybatch.core.api.event.EventManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

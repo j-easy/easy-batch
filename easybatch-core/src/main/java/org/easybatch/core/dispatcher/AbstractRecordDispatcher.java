@@ -25,8 +25,8 @@
 package org.easybatch.core.dispatcher;
 
 import org.easybatch.core.api.Record;
+import org.easybatch.core.api.RecordProcessingException;
 import org.easybatch.core.api.RecordProcessor;
-import org.easybatch.core.exception.RecordProcessingException;
 
 import static java.lang.String.format;
 

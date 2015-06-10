@@ -25,8 +25,8 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RejectedRecordHandler;
 import org.easybatch.core.api.ValidationError;
+import org.easybatch.core.api.handler.RejectedRecordHandler;
 
 import java.util.Set;
 import java.util.logging.Level;

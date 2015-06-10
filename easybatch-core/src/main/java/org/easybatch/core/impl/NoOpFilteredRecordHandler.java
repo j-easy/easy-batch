@@ -24,14 +24,14 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.api.FilteredRecordHandler;
 import org.easybatch.core.api.Record;
+import org.easybatch.core.api.handler.FilteredRecordHandler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A No Operation {@link org.easybatch.core.api.FilteredRecordHandler} implementation used by default by easy batch engine.
+ * A No Operation {@link FilteredRecordHandler} implementation used by default by easy batch engine.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

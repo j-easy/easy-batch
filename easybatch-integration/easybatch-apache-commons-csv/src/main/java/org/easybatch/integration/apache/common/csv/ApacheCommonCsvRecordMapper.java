@@ -27,7 +27,7 @@ package org.easybatch.integration.apache.common.csv;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
-import org.easybatch.core.exception.RecordMappingException;
+import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.core.mapper.ObjectMapper;
 
 /**

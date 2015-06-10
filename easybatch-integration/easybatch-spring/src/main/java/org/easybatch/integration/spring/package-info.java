@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains easy batch - spring integration module classes.
+ * This package contains Spring integration module classes.
  */
 package org.easybatch.integration.spring;

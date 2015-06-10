@@ -26,7 +26,7 @@ package org.easybatch.core.reader;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.exception.RecordReadingException;
+import org.easybatch.core.api.RecordReadingException;
 import org.easybatch.core.record.PoisonRecord;
 
 import java.util.concurrent.BlockingQueue;

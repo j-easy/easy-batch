@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains listeners for batch events.
+ * This package contains listeners for job events.
  */
 package org.easybatch.core.api.event.job;

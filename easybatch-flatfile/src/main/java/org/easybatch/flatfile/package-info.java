@@ -23,7 +23,6 @@
  */
 
 /**
- * This package contains classes to read data from flat files and map DSV and FLR record types to
- * domain objects.
+ * This package contains flat file processing support classes.
  */
 package org.easybatch.flatfile;

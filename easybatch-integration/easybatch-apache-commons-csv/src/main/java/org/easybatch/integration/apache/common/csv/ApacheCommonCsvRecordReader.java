@@ -28,7 +28,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.exception.RecordReaderClosingException;
+import org.easybatch.core.api.RecordReaderClosingException;
 
 import java.io.IOException;
 import java.util.Date;

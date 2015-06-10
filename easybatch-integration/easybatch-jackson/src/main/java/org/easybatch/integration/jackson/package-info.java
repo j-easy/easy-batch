@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains easy batch - jackson integration module classes.
+ * This package contains Jackson integration module classes.
  */
 package org.easybatch.integration.jackson;

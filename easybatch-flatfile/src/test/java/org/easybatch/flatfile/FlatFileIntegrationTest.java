@@ -1,11 +1,9 @@
 package org.easybatch.flatfile;
 
 import org.easybatch.core.api.*;
+import org.easybatch.core.converter.DateTypeConverter;
 import org.easybatch.core.filter.HeaderRecordFilter;
 import org.easybatch.core.impl.EngineBuilder;
-import org.easybatch.core.mapper.converter.DateTypeConverter;
-import org.easybatch.flatfile.dsv.DelimitedRecordMapper;
-import org.easybatch.flatfile.flr.FixedLengthRecordMapper;
 import org.junit.Test;
 
 import java.io.File;

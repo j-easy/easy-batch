@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains easy batch - mongodb integration module classes.
+ * This package contains MongoDB integration module classes.
  */
 package org.easybatch.integration.mongodb;
