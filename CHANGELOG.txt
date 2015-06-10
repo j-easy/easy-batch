@@ -2,6 +2,22 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
+Changes in version 3.0.2 (2015-06-10)
+-------------------------------------
+
+* Fixed issue #53: Incorrect record number with large data set
+* Fixed issue #54: Reporting can lead to an OutOfMemory error with large data sets
+* Fixed issue #56: The negate behavior of RecordFilter does not work
+* Fixed issue #57: NPE in ObjectMapper when there is no setter for a given field
+* Fixed issue #58: Incorrect start time in report
+* Fixed issue #61: The XmlRecordReader does not support custom namespace declaration
+* Fixed issue #62: Unable to monitor parallel engines
+* Fixed issue #65: Error in Multiple Jobs Scheduling
+* Implemented improvement #55: Do not calculate the total records number upfront by default
+* Implemented improvement #59: The fetch size of jdbc statement should be configurable in the JdbcRecordReader
+* Implemented improvement #60: Change the type of ResultSet to TYPE_FORWARD_ONLY in the JdbcRecordReader
+* Implemented improvement #63: Register multiple record validators
+
 Changes in version 3.0.1 (2015-05-03)
 -------------------------------------
 
