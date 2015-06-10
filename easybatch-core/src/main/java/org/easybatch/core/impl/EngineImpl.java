@@ -433,6 +433,10 @@ final class EngineImpl implements Engine {
 
     @Override
     public String toString() {
-        return name;
+        final StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("{name='").append(name).append('\'');
+        stringBuilder.append(", executionId='").append(executionId).append('\'');
+        stringBuilder.append('}');
+        return stringBuilder.toString();
     }
 }
