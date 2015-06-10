@@ -25,7 +25,7 @@
 package org.easybatch.core.exception;
 
 /**
- * Exception thrown when an error occurs during record reading.
+ * Exception thrown when an error occurs during record reader opening.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

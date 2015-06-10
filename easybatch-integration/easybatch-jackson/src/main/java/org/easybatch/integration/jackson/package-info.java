@@ -22,20 +22,7 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.exception;
-
 /**
- * Exception thrown when an error occurs during record reader closing.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * This package contains easy batch - jackson integration module classes.
  */
-public class RecordReaderClosingException extends Exception {
-
-    public RecordReaderClosingException(String message) {
-        super(message);
-    }
-
-    public RecordReaderClosingException(String message, Throwable cause) {
-        super(message, cause);
-    }
-}
+package org.easybatch.integration.jackson;

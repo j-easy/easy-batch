@@ -23,6 +23,6 @@
  */
 
 /**
- * Json processing support classes.
+ * This package contains Json processing support classes.
  */
 package org.easybatch.json;

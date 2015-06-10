@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains easy batch Xml related classes.
+ * This package contains Xml processing support classes.
  */
 package org.easybatch.xml;
