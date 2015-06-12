@@ -87,7 +87,7 @@ public class JmsRecordReader implements RecordReader {
         try {
             Message message = queueReceiver.receive();
             String type = message.getStringProperty("type");
-            stop = message instanceof JmsPoisonMessage || (type != null && type.equals("poison"));
+            stop = message instanceof JmsPoisonMessage || (type != null && "poison".equals(type));
             Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
             return new JmsRecord(header, message);
         } catch (JMSException e) {

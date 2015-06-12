@@ -55,7 +55,7 @@ public class JmsPoisonRecordFilter implements RecordFilter {
         try {
             String type = payload.getStringProperty("type");
             if (type != null && !type.isEmpty()) {
-                isPoison = type.equals("poison");
+                isPoison = "poison".equals(type);
             }
         } catch (JMSException e) {
             LOGGER.log(Level.WARNING, "Unable to get property type form JMS message " + payload, e);
