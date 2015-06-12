@@ -77,7 +77,7 @@ public class EngineFactoryBean implements FactoryBean {
     private EventManager eventManager;
 
     @Override
-    public Object getObject() throws Exception {
+    public Engine getObject() throws Exception {
         EngineBuilder engineBuilder = new EngineBuilder();
 
         registerMainComponents(engineBuilder);
@@ -174,7 +174,7 @@ public class EngineFactoryBean implements FactoryBean {
     }
 
     @Override
-    public Class<?> getObjectType() {
+    public Class<Engine> getObjectType() {
         return Engine.class;
     }
 

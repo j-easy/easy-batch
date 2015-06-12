@@ -110,7 +110,7 @@ public class EngineFactoryBeanTest {
 
     @Test
     public void testGetObject() throws Exception {
-        Engine engine = (Engine) engineFactoryBean.getObject();
+        Engine engine = engineFactoryBean.getObject();
         assertThat(engine).isNotNull();
         // TODO assert that fields are correctly set through reflection
     }
