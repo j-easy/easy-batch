@@ -39,6 +39,7 @@ public class SqlDateTypeConverter implements TypeConverter<Date> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Date convert(final String value) {
         return Date.valueOf(value);
     }

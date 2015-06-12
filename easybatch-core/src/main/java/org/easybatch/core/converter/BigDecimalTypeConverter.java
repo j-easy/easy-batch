@@ -39,6 +39,7 @@ public class BigDecimalTypeConverter implements TypeConverter<BigDecimal> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public BigDecimal convert(final String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value to convert must not be null");

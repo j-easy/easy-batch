@@ -36,6 +36,7 @@ public class StringTypeConverter implements TypeConverter<String> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String convert(final String value) {
         return value;
     }

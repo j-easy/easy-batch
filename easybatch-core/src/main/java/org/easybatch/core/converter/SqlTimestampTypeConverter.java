@@ -39,6 +39,7 @@ public class SqlTimestampTypeConverter implements TypeConverter<Timestamp> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Timestamp convert(final String value) {
         return Timestamp.valueOf(value);
     }

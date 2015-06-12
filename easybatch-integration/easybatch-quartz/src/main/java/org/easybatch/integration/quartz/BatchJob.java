@@ -48,6 +48,7 @@ class BatchJob implements Job {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(final JobExecutionContext context) throws JobExecutionException {
         try {
             engine.call();

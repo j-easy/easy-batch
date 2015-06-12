@@ -37,6 +37,7 @@ public class DoubleTypeConverter implements TypeConverter<Double> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Double convert(final String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value to convert must not be null");

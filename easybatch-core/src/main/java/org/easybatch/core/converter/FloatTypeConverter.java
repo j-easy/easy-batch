@@ -37,6 +37,7 @@ public class FloatTypeConverter implements TypeConverter<Float> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Float convert(final String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value to convert must not be null");

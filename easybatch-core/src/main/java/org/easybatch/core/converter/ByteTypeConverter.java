@@ -37,6 +37,7 @@ public class ByteTypeConverter implements TypeConverter<Byte> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Byte convert(final String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value to convert must not be null");

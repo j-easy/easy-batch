@@ -37,6 +37,7 @@ public class BooleanTypeConverter implements TypeConverter<Boolean> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Boolean convert(final String value) {
         return Boolean.valueOf(value) || "1".equals(value) || "on".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value);
     }

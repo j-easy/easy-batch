@@ -65,6 +65,7 @@ public class RecordNumberEqualsToFilter implements RecordFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean filterRecord(final Record record) {
         for (long number : numbers) {
             if (record.getHeader().getNumber() == number) {

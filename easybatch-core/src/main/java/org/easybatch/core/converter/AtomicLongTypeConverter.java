@@ -39,6 +39,7 @@ public class AtomicLongTypeConverter implements TypeConverter<AtomicLong> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public AtomicLong convert(final String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value to convert must not be null");

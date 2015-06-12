@@ -37,6 +37,7 @@ public class LongTypeConverter implements TypeConverter<Long> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long convert(final String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value to convert must not be null");

@@ -50,6 +50,7 @@ public class RecordNumberGreaterThanFilter implements RecordFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean filterRecord(final Record record) {
         return record.getHeader().getNumber() > number;
     }

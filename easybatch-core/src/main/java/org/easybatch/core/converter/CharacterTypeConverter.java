@@ -38,6 +38,7 @@ public class CharacterTypeConverter implements TypeConverter<Character> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Character convert(final String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value to convert must not be null");

@@ -203,6 +203,7 @@ class LocalEventManager implements EventManager {
         }
     }
 
+    @Override
     public void fireOnRecordProcessingException(final Object record, final Throwable throwable) {
         for (RecordProcessorEventListener eventListener : recordProcessorEventListeners) {
             eventListener.onRecordProcessingException(record, throwable);

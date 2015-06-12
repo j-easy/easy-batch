@@ -65,6 +65,7 @@ public class EndWithStringRecordFilter implements RecordFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean filterRecord(final Record record) {
         boolean result = doFilterRecord(record);
         return negate ? !result : result;

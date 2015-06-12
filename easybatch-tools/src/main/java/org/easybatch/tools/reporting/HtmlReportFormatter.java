@@ -56,6 +56,7 @@ public class HtmlReportFormatter implements ReportFormatter<String> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String formatReport(final Report report) {
         Template template = velocityEngine.getTemplate("/org/easybatch/tools/reporting/HtmlReport.vm");
         StringWriter stringWriter = new StringWriter();

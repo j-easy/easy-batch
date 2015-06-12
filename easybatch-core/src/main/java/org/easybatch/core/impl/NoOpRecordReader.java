@@ -37,6 +37,7 @@ class NoOpRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void open() {
         //no op implementation
     }
@@ -44,6 +45,7 @@ class NoOpRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasNextRecord() {
         return false;
     }
@@ -51,6 +53,7 @@ class NoOpRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Record readNextRecord() {
         return null;
     }
@@ -58,6 +61,7 @@ class NoOpRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getTotalRecords() {
         return null;
     }
@@ -70,6 +74,7 @@ class NoOpRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void close() {
         //no op implementation
     }

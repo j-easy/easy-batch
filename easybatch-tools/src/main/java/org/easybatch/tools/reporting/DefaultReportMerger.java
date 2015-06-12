@@ -59,6 +59,7 @@ public class DefaultReportMerger implements ReportMerger {
      * @param reports reports to merge
      * @return a merged report
      */
+    @Override
     public Report mergerReports(Report... reports) {
 
         List<Long> startTimes = new ArrayList<Long>();

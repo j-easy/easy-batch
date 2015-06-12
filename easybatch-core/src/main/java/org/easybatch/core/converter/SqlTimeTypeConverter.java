@@ -39,6 +39,7 @@ public class SqlTimeTypeConverter implements TypeConverter<Time> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Time convert(final String value) {
         return Time.valueOf(value);
     }

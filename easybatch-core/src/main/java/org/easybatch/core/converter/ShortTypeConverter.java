@@ -37,6 +37,7 @@ public class ShortTypeConverter implements TypeConverter<Short> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Short convert(final String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value to convert must not be null");

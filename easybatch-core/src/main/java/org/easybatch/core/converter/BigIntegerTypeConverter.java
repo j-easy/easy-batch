@@ -39,6 +39,7 @@ public class BigIntegerTypeConverter implements TypeConverter<BigInteger> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public BigInteger convert(final String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value to convert must not be null");

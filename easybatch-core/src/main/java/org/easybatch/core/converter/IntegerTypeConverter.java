@@ -37,6 +37,7 @@ public class IntegerTypeConverter implements TypeConverter<Integer> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Integer convert(final String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value to convert must not be null");

@@ -45,6 +45,7 @@ public class Monitor implements MonitorMBean {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getEngineName() {
         return report.getEngineName();
     }
@@ -52,6 +53,7 @@ public class Monitor implements MonitorMBean {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getExecutionId() {
         return report.getExecutionId();
     }
@@ -59,6 +61,7 @@ public class Monitor implements MonitorMBean {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDataSource() {
         return report.getDataSource();
     }
@@ -66,6 +69,7 @@ public class Monitor implements MonitorMBean {
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getCurrentRecordNumber() {
         return report.getCurrentRecordNumber();
     }
@@ -73,6 +77,7 @@ public class Monitor implements MonitorMBean {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getTotalRecords() {
         Long totalRecords = report.getTotalRecords();
         return totalRecords == null ? "N/A" : totalRecords.toString();
@@ -81,6 +86,7 @@ public class Monitor implements MonitorMBean {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFilteredRecords() {
         return report.getFormattedFilteredRecords();
     }
@@ -88,6 +94,7 @@ public class Monitor implements MonitorMBean {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getIgnoredRecords() {
         return report.getFormattedIgnoredRecords();
     }
@@ -95,6 +102,7 @@ public class Monitor implements MonitorMBean {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getRejectedRecords() {
         return report.getFormattedRejectedRecords();
     }
@@ -102,6 +110,7 @@ public class Monitor implements MonitorMBean {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getErrorRecords() {
         return report.getFormattedErrorRecords();
     }
@@ -109,6 +118,7 @@ public class Monitor implements MonitorMBean {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSuccessRecords() {
         return report.getFormattedSuccessRecords();
     }
@@ -116,6 +126,7 @@ public class Monitor implements MonitorMBean {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getStartTime() {
         return report.getFormattedStartTime();
     }
@@ -123,6 +134,7 @@ public class Monitor implements MonitorMBean {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getEndTime() {
         return (report.getEndTime() == 0) ? "" : report.getFormattedEndTime();
     }
@@ -130,6 +142,7 @@ public class Monitor implements MonitorMBean {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getProgress() {
         return report.getFormattedProgress();
     }

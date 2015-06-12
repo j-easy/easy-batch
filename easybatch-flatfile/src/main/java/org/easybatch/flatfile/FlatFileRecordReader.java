@@ -102,6 +102,7 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
+    @Override
     public StringRecord readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new StringRecord(header, scanner.nextLine());
@@ -110,6 +111,7 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getTotalRecords() {
         long totalRecords = 0;
         try {
@@ -137,6 +139,7 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void open() throws RecordReaderOpeningException {
         currentRecordNumber = 0;
         try {
@@ -149,6 +152,7 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasNextRecord() {
         return scanner.hasNextLine();
     }
@@ -156,6 +160,7 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void close() {
         if (scanner != null) {
             scanner.close();
