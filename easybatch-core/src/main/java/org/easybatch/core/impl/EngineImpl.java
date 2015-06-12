@@ -266,7 +266,7 @@ final class EngineImpl implements Engine {
         return true;
     }
 
-    private void openRecordReader() throws Exception {
+    private void openRecordReader() throws RecordReaderOpeningException {
         eventManager.fireBeforeReaderOpening();
         recordReader.open();
         eventManager.fireAfterReaderOpening();
@@ -304,14 +304,14 @@ final class EngineImpl implements Engine {
         report.setStatus(Status.ABORTED);
     }
 
-    private Record readRecord() throws Exception {
+    private Record readRecord() throws RecordReadingException {
         eventManager.fireBeforeRecordReading();
         Record currentRecord = recordReader.readNextRecord();
         eventManager.fireAfterRecordReading(currentRecord);
         return currentRecord;
     }
 
-    private Object mapRecord(Record currentRecord) throws Exception {
+    private Object mapRecord(Record currentRecord) throws RecordMappingException {
         Object typedRecord;
         eventManager.fireBeforeRecordMapping(currentRecord);
         typedRecord = recordMapper.mapRecord(currentRecord);

@@ -136,8 +136,7 @@ public class ObjectMapper<T> {
             PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
             getSetters(propertyDescriptors);
         } catch (IntrospectionException e) {
-            LOGGER.log(Level.SEVERE, "Unable to introspect target type " + recordClass.getName(), e);
-            throw new RuntimeException(e);
+            throw new BeanIntrospectionException("Unable to introspect target type " + recordClass.getName(), e);
         }
     }
 
@@ -214,7 +213,7 @@ public class ObjectMapper<T> {
             Class clazz = Class.forName(getClassName(type));
             typeConverters.put(clazz, typeConverter);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to register custom type converter " + typeConverterClass.getName(), e);
+            throw new TypeConverterRegistrationException("Unable to register custom type converter " + typeConverterClass.getName(), e);
         }
     }
 
