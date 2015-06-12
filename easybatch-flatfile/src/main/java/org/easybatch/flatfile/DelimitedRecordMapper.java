@@ -204,35 +204,13 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
         String payload = (String) record.getPayload();
         String[] tokens = payload.split(delimiter, -1);
 
-        // convention over configuration : if expected record size is not specified, calculate it from the header record
-        if (this.recordExpectedLength == 0) {
-            this.recordExpectedLength = tokens.length;
-        }
+        setRecordExpectedLength(tokens);
 
-        // convention over configuration : if field names are not specified, retrieve them from the header record (done only once)
-        if (fieldNames == null) {
-            fieldNamesRetrievedFromHeader = true;
-            fieldNames = new String[tokens.length];
-            for (int i = 0; i < tokens.length; i++) {
-                String token = tokens[i];
-                token = trimWhitespaces(token);
-                token = removeQualifier(token);
-                fieldNames[i] = token;
-            }
-        }
+        setFieldNames(tokens);
 
-        if (tokens.length != recordExpectedLength) {
-            throw new RecordMappingException("record length (" + tokens.length + " fields) not equal to expected length of "
-                    + recordExpectedLength + " fields");
-        }
+        checkRecordLength(tokens);
 
-        if (qualifier.length() > 0) {
-            for (String token : tokens) {
-                if (!token.startsWith(qualifier) || !token.endsWith(qualifier)) {
-                    throw new RecordMappingException("field [" + token + "] is not enclosed as expected with '" + qualifier + "'");
-                }
-            }
-        }
+        checkQualifier(tokens);
 
         List<FlatFileField> fields = new ArrayList<FlatFileField>();
         int index = 0;
@@ -248,6 +226,44 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
         }
         flatFileRecord.getFlatFileFields().addAll(fields);
         return flatFileRecord;
+    }
+
+    private void checkQualifier(String[] tokens) throws RecordMappingException {
+        if (qualifier.length() > 0) {
+            for (String token : tokens) {
+                if (!token.startsWith(qualifier) || !token.endsWith(qualifier)) {
+                    throw new RecordMappingException("field [" + token + "] is not enclosed as expected with '" + qualifier + "'");
+                }
+            }
+        }
+    }
+
+    private void checkRecordLength(String[] tokens) throws RecordMappingException {
+        if (tokens.length != recordExpectedLength) {
+            throw new RecordMappingException("record length (" + tokens.length + " fields) not equal to expected length of "
+                    + recordExpectedLength + " fields");
+        }
+    }
+
+    private void setFieldNames(String[] tokens) {
+        // convention over configuration : if field names are not specified, retrieve them from the header record (done only once)
+        if (fieldNames == null) {
+            fieldNamesRetrievedFromHeader = true;
+            fieldNames = new String[tokens.length];
+            for (int i = 0; i < tokens.length; i++) {
+                String token = tokens[i];
+                token = trimWhitespaces(token);
+                token = removeQualifier(token);
+                fieldNames[i] = token;
+            }
+        }
+    }
+
+    private void setRecordExpectedLength(String[] tokens) {
+        // convention over configuration : if expected record size is not specified, calculate it from the header record
+        if (this.recordExpectedLength == 0) {
+            this.recordExpectedLength = tokens.length;
+        }
     }
 
     private void filterFields(List<FlatFileField> fields) {
@@ -274,6 +290,10 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
         }
         return token;
     }
+
+    /*
+     * Public setters for parameters
+     */
 
     /**
      * Set the delimiter to use.

@@ -63,43 +63,25 @@ public class DefaultReportMerger implements ReportMerger {
     public Report mergerReports(Report... reports) {
 
         List<Long> startTimes = new ArrayList<Long>();
-
         List<Long> endTimes = new ArrayList<Long>();
-
+        List<Object> results = new ArrayList<Object>();
+        List<String> dataSources = new ArrayList<String>();
         long totalRecords = 0;
 
-        List<Object> results = new ArrayList<Object>();
-
-        List<String> dataSources = new ArrayList<String>();
-
-        //calculate aggregate results
         Report finalReport = new Report(null);
         finalReport.setStatus(Status.FINISHED);
+
         for (Report report : reports) {
             startTimes.add(report.getStartTime());
             endTimes.add(report.getEndTime());
             totalRecords += report.getTotalRecords();
-            for (int i = 0; i < report.getFilteredRecordsCount(); i++) {
-                finalReport.incrementTotalFilteredRecords();
-            }
-            for (int i = 0; i < report.getIgnoredRecordsCount(); i++) {
-                finalReport.incrementTotalIgnoredRecord();
-            }
-            for (int i = 0; i < report.getRejectedRecordsCount(); i++) {
-                finalReport.incrementTotalRejectedRecord();
-            }
-            for (int i = 0; i < report.getErrorRecordsCount(); i++) {
-                finalReport.incrementTotalErrorRecord();
-            }
-            for (int i = 0; i < report.getSuccessRecordsCount(); i++) {
-                finalReport.incrementTotalSuccessRecord();
-            }
-            if (report.getBatchResult() != null) {
-                results.add(report.getBatchResult());
-            }
-            if (Status.ABORTED.equals(report.getStatus())) {
-                finalReport.setStatus(Status.ABORTED);
-            }
+            calculateFilteredRecords(finalReport, report);
+            calculateIgnoredRecords(finalReport, report);
+            calculateRejectedRecords(finalReport, report);
+            calculateErrorRecords(finalReport, report);
+            calculateSuccessRecords(finalReport, report);
+            addBatchResult(results, report);
+            setStatus(finalReport, report);
             dataSources.add(report.getDataSource());
         }
 
@@ -107,19 +89,68 @@ public class DefaultReportMerger implements ReportMerger {
         finalReport.setStartTime(Collections.min(startTimes));
         finalReport.setEndTime(Collections.max(endTimes));
         finalReport.setTotalRecords(totalRecords);
-        if (!results.isEmpty()) {
-            finalReport.setBatchResult(results);
-        }
 
-        //data sources
+        mergeResults(results, finalReport);
+
+        mergeDataSources(dataSources, finalReport);
+
+        return finalReport;
+    }
+
+    private void mergeDataSources(List<String> dataSources, Report finalReport) {
         StringBuilder stringBuilder = new StringBuilder();
         for (String dataSource : dataSources) {
             stringBuilder.append(dataSource).append("\n");
 
         }
         finalReport.setDataSource(stringBuilder.toString());
+    }
 
-        //return merged report
-        return finalReport;
+    private void mergeResults(List<Object> results, Report finalReport) {
+        if (!results.isEmpty()) {
+            finalReport.setBatchResult(results);
+        }
+    }
+
+    private void setStatus(Report finalReport, Report report) {
+        if (Status.ABORTED.equals(report.getStatus())) {
+            finalReport.setStatus(Status.ABORTED);
+        }
+    }
+
+    private void addBatchResult(List<Object> results, Report report) {
+        if (report.getBatchResult() != null) {
+            results.add(report.getBatchResult());
+        }
+    }
+
+    private void calculateSuccessRecords(Report finalReport, Report report) {
+        for (int i = 0; i < report.getSuccessRecordsCount(); i++) {
+            finalReport.incrementTotalSuccessRecord();
+        }
+    }
+
+    private void calculateErrorRecords(Report finalReport, Report report) {
+        for (int i = 0; i < report.getErrorRecordsCount(); i++) {
+            finalReport.incrementTotalErrorRecord();
+        }
+    }
+
+    private void calculateRejectedRecords(Report finalReport, Report report) {
+        for (int i = 0; i < report.getRejectedRecordsCount(); i++) {
+            finalReport.incrementTotalRejectedRecord();
+        }
+    }
+
+    private void calculateIgnoredRecords(Report finalReport, Report report) {
+        for (int i = 0; i < report.getIgnoredRecordsCount(); i++) {
+            finalReport.incrementTotalIgnoredRecord();
+        }
+    }
+
+    private void calculateFilteredRecords(Report finalReport, Report report) {
+        for (int i = 0; i < report.getFilteredRecordsCount(); i++) {
+            finalReport.incrementTotalFilteredRecords();
+        }
     }
 }
