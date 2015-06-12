@@ -80,6 +80,16 @@ public class EngineFactoryBean implements FactoryBean {
     public Object getObject() throws Exception {
         EngineBuilder engineBuilder = new EngineBuilder();
 
+        registerMainComponents(engineBuilder);
+
+        registerCustomHandlers(engineBuilder);
+
+        registerCustomEventListeners(engineBuilder);
+
+        return engineBuilder.build();
+    }
+
+    private void registerMainComponents(EngineBuilder engineBuilder) {
         if (recordReader != null) {
             engineBuilder.reader(recordReader);
         }
@@ -101,23 +111,9 @@ public class EngineFactoryBean implements FactoryBean {
                 engineBuilder.processor(recordProcessor);
             }
         }
+    }
 
-        if (filteredRecordHandler != null) {
-            engineBuilder.filteredRecordHandler(filteredRecordHandler);
-        }
-
-        if (ignoredRecordHandler != null) {
-            engineBuilder.ignoredRecordHandler(ignoredRecordHandler);
-        }
-
-        if (rejectedRecordHandler != null) {
-            engineBuilder.rejectedRecordHandler(rejectedRecordHandler);
-        }
-
-        if (errorRecordHandler != null) {
-            engineBuilder.errorRecordHandler(errorRecordHandler);
-        }
-
+    private void registerCustomEventListeners(EngineBuilder engineBuilder) {
         if (jobEventListeners != null) {
             for (JobEventListener jobEventListener : jobEventListeners) {
                 engineBuilder.jobEventListener(jobEventListener);
@@ -157,8 +153,24 @@ public class EngineFactoryBean implements FactoryBean {
         if (eventManager != null) {
             engineBuilder.eventManager(eventManager);
         }
+    }
 
-        return engineBuilder.build();
+    private void registerCustomHandlers(EngineBuilder engineBuilder) {
+        if (filteredRecordHandler != null) {
+            engineBuilder.filteredRecordHandler(filteredRecordHandler);
+        }
+
+        if (ignoredRecordHandler != null) {
+            engineBuilder.ignoredRecordHandler(ignoredRecordHandler);
+        }
+
+        if (rejectedRecordHandler != null) {
+            engineBuilder.rejectedRecordHandler(rejectedRecordHandler);
+        }
+
+        if (errorRecordHandler != null) {
+            engineBuilder.errorRecordHandler(errorRecordHandler);
+        }
     }
 
     @Override
