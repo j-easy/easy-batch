@@ -37,7 +37,7 @@ public class Report implements Serializable {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
     
-    private Engine engine;
+    private transient Engine engine;
 
     private long startTime;
 
@@ -60,7 +60,7 @@ public class Report implements Serializable {
 
     private long successRecords;
 
-    private Object batchResult;
+    private transient Object batchResult;
 
     private Status status;
 
