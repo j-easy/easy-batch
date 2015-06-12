@@ -158,6 +158,6 @@ public class FileRecordReader implements RecordReader {
      */
     @Override
     public void close() {
-
+        // no op
     }
 }

@@ -96,5 +96,6 @@ public class ListRecordReader<T> implements RecordReader {
 
     @Override
     public void close() {
+        // no op
     }
 }

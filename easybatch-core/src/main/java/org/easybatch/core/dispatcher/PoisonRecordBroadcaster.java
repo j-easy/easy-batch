@@ -48,7 +48,7 @@ public class PoisonRecordBroadcaster implements JobEventListener {
 
     @Override
     public void beforeJobStart() {
-
+        // no op
     }
 
     @Override
@@ -62,6 +62,6 @@ public class PoisonRecordBroadcaster implements JobEventListener {
 
     @Override
     public void onJobException(Throwable throwable) {
-
+        // no op
     }
 }

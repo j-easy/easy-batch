@@ -51,6 +51,7 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public void setJMSMessageID(String s) throws JMSException {
+        // no op
     }
 
     @Override
@@ -60,6 +61,7 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public void setJMSTimestamp(long l) throws JMSException {
+        // no op
     }
 
     @Override
@@ -69,10 +71,12 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public void setJMSCorrelationIDAsBytes(byte[] bytes) throws JMSException {
+        // no op
     }
 
     @Override
     public void setJMSCorrelationID(String s) throws JMSException {
+        // no op
     }
 
     @Override
@@ -87,6 +91,7 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public void setJMSReplyTo(Destination destination) throws JMSException {
+        // no op
     }
 
     @Override
@@ -96,6 +101,7 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public void setJMSDestination(Destination destination) throws JMSException {
+        // no op
     }
 
     @Override
@@ -105,6 +111,7 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public void setJMSDeliveryMode(int i) throws JMSException {
+        // no op
     }
 
     @Override
@@ -114,6 +121,7 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public void setJMSRedelivered(boolean b) throws JMSException {
+        // no op
     }
 
     @Override
@@ -123,6 +131,7 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public void setJMSType(String s) throws JMSException {
+        // no op
     }
 
     @Override
@@ -132,6 +141,7 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public void setJMSExpiration(long l) throws JMSException {
+        // no op
     }
 
     @Override
@@ -141,10 +151,12 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public void setJMSPriority(int i) throws JMSException {
+        // no op
     }
 
     @Override
     public void clearProperties() throws JMSException {
+        // no op
     }
 
     @Override
@@ -204,46 +216,57 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public void setBooleanProperty(String s, boolean b) throws JMSException {
+        // no op
     }
 
     @Override
     public void setByteProperty(String s, byte b) throws JMSException {
+        // no op
     }
 
     @Override
     public void setShortProperty(String s, short i) throws JMSException {
+        // no op
     }
 
     @Override
     public void setIntProperty(String s, int i) throws JMSException {
+        // no op
     }
 
     @Override
     public void setLongProperty(String s, long l) throws JMSException {
+        // no op
     }
 
     @Override
     public void setFloatProperty(String s, float v) throws JMSException {
+        // no op
     }
 
     @Override
     public void setDoubleProperty(String s, double v) throws JMSException {
+        // no op
     }
 
     @Override
     public void setStringProperty(String s, String s2) throws JMSException {
+        // no op
     }
 
     @Override
     public void setObjectProperty(String s, Object o) throws JMSException {
+        // no op
     }
 
     @Override
     public void acknowledge() throws JMSException {
+        // no op
     }
 
     @Override
     public void clearBody() throws JMSException {
+        // no op
     }
 
 }

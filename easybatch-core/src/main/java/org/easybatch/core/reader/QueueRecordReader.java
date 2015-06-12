@@ -54,6 +54,7 @@ public class QueueRecordReader implements RecordReader {
 
     @Override
     public void open() {
+        // no op
     }
 
     @Override
@@ -84,6 +85,7 @@ public class QueueRecordReader implements RecordReader {
 
     @Override
     public void close() {
+        // no op
     }
 
 }
