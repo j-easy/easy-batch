@@ -40,7 +40,7 @@ public class PoisonRecord implements Record<Object>, Serializable {
 
     @Override
     public Header getHeader() {
-        return new Header(0l, "Poison record", new Date());
+        return new Header(0L, "Poison record", new Date());
     }
 
     @Override
