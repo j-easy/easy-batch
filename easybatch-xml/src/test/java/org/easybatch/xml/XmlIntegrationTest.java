@@ -48,6 +48,34 @@ public class XmlIntegrationTest {
     private static final String EXPECTED_DATA_SOURCE_NAME = "XML stream";
 
     @Test
+    public void testWebsitesProcessing() throws Exception {
+        final InputStream xmlDataSource = getDataSource("/websites.xml");
+        Engine engine = EngineBuilder.aNewEngine()
+                .reader(new XmlRecordReader("website", xmlDataSource))
+                .mapper(new XmlRecordMapper(Website.class))
+                .processor(new Processor<Website>())
+                .build();
+
+        Report report = engine.call();
+
+        List<Website> websites = (List<Website>) report.getBatchResult();
+
+        assertThat(websites).isNotEmpty().hasSize(3);
+
+        Website website = websites.get(0);
+        assertThat(website.getName()).isEqualTo("google");
+        assertThat(website.getUrl()).isEqualTo("http://www.google.com?query=test&sort=asc");
+
+        website = websites.get(1);
+        assertThat(website.getName()).isEqualTo("l'équipe");
+        assertThat(website.getUrl()).isEqualTo("http://www.lequipe.fr");
+
+        website = websites.get(2);
+        assertThat(website.getName()).isEqualTo("l\"internaute.com");
+        assertThat(website.getUrl()).isEqualTo("http://www.linternaute.com");
+    }
+
+    @Test
     public void testPersonsProcessing() throws Exception {
 
         final InputStream xmlDataSource = getDataSource("/persons.xml");

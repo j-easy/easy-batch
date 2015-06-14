@@ -29,10 +29,13 @@ import org.easybatch.core.api.*;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.EndDocument;
+import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -103,7 +106,12 @@ public class XmlRecordReader implements RecordReader {
         StringBuilder stringBuilder = new StringBuilder("");
         try {
             while (!nextTagIsRootElementEnd()) {
-                stringBuilder.append(xmlEventReader.nextEvent().toString());
+                XMLEvent xmlEvent = xmlEventReader.nextEvent();
+                if (xmlEvent.isStartElement()) {
+                    escapeStartElementAttributes(stringBuilder, xmlEvent);
+                } else {
+                    stringBuilder.append(xmlEvent.toString());
+                }
             }
             //append root element end tag
             stringBuilder.append(xmlEventReader.nextEvent().toString());
@@ -155,6 +163,39 @@ public class XmlRecordReader implements RecordReader {
     private boolean nextTagIsRootElementEnd() throws XMLStreamException {
         return xmlEventReader.peek().isEndElement() &&
                 xmlEventReader.peek().asEndElement().getName().getLocalPart().equalsIgnoreCase(rootElementName);
+    }
+
+    /**
+     * Escape values of start element attributes.
+     *
+     * @param stringBuilder the builder in which writes escaped attributes.
+     * @param xmlEvent      the start element to escape
+     */
+    private void escapeStartElementAttributes(StringBuilder stringBuilder, XMLEvent xmlEvent) {
+        StartElement startElement = xmlEvent.asStartElement();
+        stringBuilder.append("<").append(startElement.getName());
+        Iterator<Attribute> iterator = startElement.getAttributes();
+        while (iterator.hasNext()) {
+            Attribute attribute = iterator.next();
+            stringBuilder.append(" ")
+                    .append(attribute.getName())
+                    .append("='")
+                    .append(escape(attribute.getValue()))
+                    .append("'");
+        }
+        stringBuilder.append(">");
+    }
+
+    /**
+     * Escape the xml content. Only &, " and ' need to be escaped.
+     *
+     * @param xmlToEscape the xml content to escape
+     * @return the escaped xml
+     */
+    private String escape(String xmlToEscape) {
+        return xmlToEscape.replaceAll("&", "&amp;")
+                .replaceAll("'", "&apos;")
+                .replaceAll("\"", "&quot;");
     }
 
 }
