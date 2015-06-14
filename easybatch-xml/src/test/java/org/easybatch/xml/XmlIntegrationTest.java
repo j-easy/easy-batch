@@ -169,12 +169,28 @@ public class XmlIntegrationTest {
 
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new XmlRecordReader("bean", xmlDataSource))
+                .mapper(new XmlRecordMapper(Bean.class))
+                .processor(new Processor<Bean>())
                 .build();
 
         Report report = engine.call();
 
         assertThat(report).isNotNull();
         assertThat(report.getTotalRecords()).isEqualTo(2);
+
+        List<Bean> beans = (List<Bean>) report.getBatchResult();
+
+        assertThat(beans).isNotEmpty().hasSize(2);
+
+        Bean bean = beans.get(0);
+        assertThat(bean).isNotNull();
+        assertThat(bean.getId()).isEqualTo("foo");
+        assertThat(bean.getClazz()).isEqualTo("java.lang.String");
+
+        bean = beans.get(1);
+        assertThat(bean).isNotNull();
+        assertThat(bean.getId()).isEqualTo("bar");
+        assertThat(bean.getClazz()).isEqualTo("java.lang.String");
 
     }
 

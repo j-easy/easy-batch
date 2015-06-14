@@ -29,10 +29,7 @@ import org.easybatch.core.api.*;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.EndDocument;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
+import javax.xml.stream.events.*;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Iterator;
@@ -113,8 +110,7 @@ public class XmlRecordReader implements RecordReader {
                     stringBuilder.append(xmlEvent.toString());
                 }
             }
-            //append root element end tag
-            stringBuilder.append(xmlEventReader.nextEvent().toString());
+            writeEndElement(stringBuilder);
             Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
             return new XmlRecord(header, stringBuilder.toString());
         } catch (XMLStreamException e) {
@@ -166,6 +162,20 @@ public class XmlRecordReader implements RecordReader {
     }
 
     /**
+     * Write end element.
+     *
+     * @param stringBuilder the string builder to write element into.
+     * @throws XMLStreamException thrown when an exception occurs during xml streaming
+     */
+    private void writeEndElement(StringBuilder stringBuilder) throws XMLStreamException {
+        XMLEvent xmlEvent = xmlEventReader.nextEvent();
+        if (xmlEvent.isEndElement()) {
+            EndElement endElement = xmlEvent.asEndElement();
+            stringBuilder.append("</").append(endElement.getName().getLocalPart()).append(">");
+        }
+    }
+
+    /**
      * Escape values of start element attributes.
      *
      * @param stringBuilder the builder in which writes escaped attributes.
@@ -173,7 +183,7 @@ public class XmlRecordReader implements RecordReader {
      */
     private void escapeStartElementAttributes(StringBuilder stringBuilder, XMLEvent xmlEvent) {
         StartElement startElement = xmlEvent.asStartElement();
-        stringBuilder.append("<").append(startElement.getName());
+        stringBuilder.append("<").append(startElement.getName().getLocalPart());
         Iterator<Attribute> iterator = startElement.getAttributes();
         while (iterator.hasNext()) {
             Attribute attribute = iterator.next();

@@ -95,6 +95,24 @@ public class XmlRecordReaderTest {
 
     }
 
+    @Test
+    public void testReadingXmlWithCustomNamespace() throws Exception {
+        xmlRecordReader.close();
+        xmlRecordReader = new XmlRecordReader("bean", getDataSource("/beans.xml"));
+        xmlRecordReader.open();
+
+        assertThat(xmlRecordReader.hasNextRecord()).isTrue();
+        XmlRecord record = xmlRecordReader.readNextRecord();
+        assertThat(record.getPayload()).isXmlEqualTo("<bean id=\"foo\" class=\"java.lang.String\"/>");
+
+        assertThat(xmlRecordReader.hasNextRecord()).isTrue();
+        record = xmlRecordReader.readNextRecord();
+        assertThat(record.getPayload()).isXmlEqualTo("<bean id=\"bar\" class=\"java.lang.String\"/>");
+
+        assertThat(xmlRecordReader.hasNextRecord()).isFalse();
+
+    }
+
     /*
      * Test empty files
      */
