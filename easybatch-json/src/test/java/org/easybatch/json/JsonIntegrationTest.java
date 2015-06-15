@@ -146,6 +146,32 @@ public class JsonIntegrationTest {
 
     }
 
+    @Test
+    public void testEmptyDataSourceProcessing() throws Exception {
+        final InputStream jsonDataSource = getDataSource("/empty.json");
+
+        Engine engine = EngineBuilder.aNewEngine()
+                .reader(new JsonRecordReader(jsonDataSource))
+                .processor(new JsonRecordProcessor())
+                .build();
+
+        Report report = engine.call();
+
+        assertThat(report).isNotNull();
+        assertThat(report.getTotalRecords()).isEqualTo(0);
+        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
+        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
+        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
+        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
+        assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
+        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
+        assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
+
+        List<JsonRecord> records = (List<JsonRecord>) report.getBatchResult();
+        assertThat(records).isNotNull().isEmpty();
+
+    }
+
     private InputStream getDataSource(String name) {
         return this.getClass().getResourceAsStream(name);
     }
