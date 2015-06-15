@@ -38,10 +38,11 @@ public interface RecordFilterEventListener {
 
     /**
      * Called before the filter step.
+     * If you create a new record, you <strong>must</strong> keep the original header of the modified record.
      *
      * @param record The record that gets filtered
      */
-    void beforeRecordFiltering(final Record record);
+    Record beforeRecordFiltering(final Record record);
 
     /**
      * Called after the filter step.

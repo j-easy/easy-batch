@@ -40,10 +40,11 @@ public interface RecordValidatorEventListener {
 
     /**
      * Called before each validation.
+     * If you create a new record, you <strong>must</strong> keep the original header of the modified record.
      *
      * @param mappedRecord The mapped record that is going to be validated.
      */
-    void beforeRecordValidation(Object mappedRecord);
+    Object beforeRecordValidation(Object mappedRecord);
 
     /**
      * Called after each validation.

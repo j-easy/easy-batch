@@ -60,10 +60,10 @@ final class ProcessingPipeline {
 
         boolean processingError = false;
         Object processingResult = null;
-        eventManager.fireBeforeRecordProcessing(typedRecord);
+        Object recordToProcess = eventManager.fireBeforeRecordProcessing(typedRecord);
         for (RecordProcessor recordProcessor : processors) {
             try {
-                typedRecord = recordProcessor.processRecord(typedRecord);
+                recordToProcess = recordProcessor.processRecord(recordToProcess);
                 if (recordProcessor instanceof ComputationalRecordProcessor) {
                     processingResult = ((ComputationalRecordProcessor) recordProcessor).getComputationResult();
                 }
@@ -72,11 +72,11 @@ final class ProcessingPipeline {
                 report.incrementTotalErrorRecord();
                 errorRecordHandler.handle(currentRecord, e);
                 eventManager.fireOnJobException(e);
-                eventManager.fireOnRecordProcessingException(typedRecord, e);
+                eventManager.fireOnRecordProcessingException(recordToProcess, e);
                 break;
             }
         }
-        eventManager.fireAfterRecordProcessing(typedRecord, processingResult);
+        eventManager.fireAfterRecordProcessing(recordToProcess, processingResult);
         return processingError;
     }
 

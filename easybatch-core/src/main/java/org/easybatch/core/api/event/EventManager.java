@@ -147,7 +147,7 @@ public interface EventManager {
      *
      * @param record The record to be filtered
      */
-    void fireBeforeRecordFiltering(final Record record);
+    Record fireBeforeRecordFiltering(final Record record);
 
     /**
      * Called after the record was filtered.
@@ -162,7 +162,7 @@ public interface EventManager {
      *
      * @param record The record that is going to be mapped.
      */
-    void fireBeforeRecordMapping(final Record record);
+    Record fireBeforeRecordMapping(final Record record);
 
     /**
      * Called after the mapping process.
@@ -177,7 +177,7 @@ public interface EventManager {
      *
      * @param mappedRecord the mapped record.
      */
-    void fireBeforeRecordValidation(final Object mappedRecord);
+    Object fireBeforeRecordValidation(final Object mappedRecord);
 
     /**
      * Called after the record is validated.
@@ -192,7 +192,7 @@ public interface EventManager {
      *
      * @param record The record to be processed.
      */
-    void fireBeforeRecordProcessing(final Object record);
+    Object fireBeforeRecordProcessing(final Object record);
 
     /**
      * Called after the processing is done.

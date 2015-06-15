@@ -53,16 +53,16 @@ class ValidationPipeline {
     }
 
     public Set<ValidationError> validateRecord(final Object record) {
-        eventManager.fireBeforeRecordValidation(record);
+        Object recordToValidate = eventManager.fireBeforeRecordValidation(record);
         Set<ValidationError> allErrors = new HashSet<ValidationError>();
         for (RecordValidator validator : validators) {
-            Set<ValidationError> validationsErrors = validator.validateRecord(record);
+            Set<ValidationError> validationsErrors = validator.validateRecord(recordToValidate);
             if (!validationsErrors.isEmpty()) {
                 allErrors.addAll(validationsErrors);
                 break;
             }
         }
-        eventManager.fireAfterRecordValidation(record, allErrors);
+        eventManager.fireAfterRecordValidation(recordToValidate, allErrors);
         return allErrors;
     }
 }

@@ -28,6 +28,7 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordValidator;
 import org.easybatch.core.api.ValidationError;
 import org.easybatch.core.api.event.EventManager;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -61,6 +62,11 @@ public class ValidationPipelineTest {
     ValidationError error1, error2;
 
     private ValidationPipeline validationPipeline;
+
+    @Before
+    public void setUp() throws Exception {
+        when(eventManager.fireBeforeRecordValidation(record)).thenReturn(record);
+    }
 
     @Test
     @SuppressWarnings("unchecked")

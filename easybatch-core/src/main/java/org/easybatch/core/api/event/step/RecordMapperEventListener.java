@@ -38,10 +38,11 @@ public interface RecordMapperEventListener {
 
     /**
      * Called before the mapper call.
+     * If you create a new record, you <strong>must</strong> keep the original header of the modified record.
      *
      * @param record The record that will be passed to the record call.
      */
-    void beforeRecordMapping(final Record record);
+    Record beforeRecordMapping(final Record record);
 
     /**
      * Called directly after the mapper call.

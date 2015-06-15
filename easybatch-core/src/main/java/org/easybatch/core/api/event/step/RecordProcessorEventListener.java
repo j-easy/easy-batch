@@ -36,10 +36,11 @@ public interface RecordProcessorEventListener {
 
     /**
      * Called before the record gets processed.
+     * If you create a new record, you <strong>must</strong> keep the original header of the modified record.
      *
      * @param record The record that will be processed.
      */
-    void beforeRecordProcessing(final Object record);
+    Object beforeRecordProcessing(final Object record);
 
     /**
      * Called after the record has been processed.

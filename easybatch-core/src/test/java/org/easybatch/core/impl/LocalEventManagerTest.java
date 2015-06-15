@@ -23,19 +23,25 @@
  */
 package org.easybatch.core.impl;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.ValidationError;
+import org.easybatch.core.api.*;
 import org.easybatch.core.api.event.job.JobEventListener;
 import org.easybatch.core.api.event.step.*;
+import org.easybatch.core.filter.StartWithStringRecordFilter;
+import org.easybatch.core.reader.StringRecordReader;
+import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashSet;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.when;
 
 /**
  * Test class for {@link LocalEventManager}.
@@ -60,7 +66,7 @@ public class LocalEventManagerTest {
     @Mock
     private Throwable throwable;
     @Mock
-    private Record record;
+    private Record record, record1, record2;
     @Mock
     private Object mappedRecord;
     @Mock
@@ -97,7 +103,7 @@ public class LocalEventManagerTest {
     public void fireBeforeBatchStart() {
         localEventManager.fireBeforeJobStart();
 
-        InOrder inOrder = Mockito.inOrder(jobEventListener1, jobEventListener2);
+        InOrder inOrder = inOrder(jobEventListener1, jobEventListener2);
 
         inOrder.verify(jobEventListener1).beforeJobStart();
         inOrder.verify(jobEventListener2).beforeJobStart();
@@ -107,7 +113,7 @@ public class LocalEventManagerTest {
     public void fireAfterBatchEnd() {
         localEventManager.fireAfterJobEnd();
 
-        InOrder inOrder = Mockito.inOrder(jobEventListener1, jobEventListener2);
+        InOrder inOrder = inOrder(jobEventListener1, jobEventListener2);
 
         inOrder.verify(jobEventListener1).afterJobEnd();
         inOrder.verify(jobEventListener2).afterJobEnd();
@@ -117,7 +123,7 @@ public class LocalEventManagerTest {
     public void fireOnBatchException() {
         localEventManager.fireOnJobException(throwable);
 
-        InOrder inOrder = Mockito.inOrder(jobEventListener1, jobEventListener2);
+        InOrder inOrder = inOrder(jobEventListener1, jobEventListener2);
 
         inOrder.verify(jobEventListener1).onJobException(throwable);
         inOrder.verify(jobEventListener2).onJobException(throwable);
@@ -127,7 +133,7 @@ public class LocalEventManagerTest {
     public void fireBeforeReaderOpen() {
         localEventManager.fireBeforeReaderOpening();
 
-        InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
+        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
         inOrder.verify(recordReaderEventListener1).beforeReaderOpening();
         inOrder.verify(recordReaderEventListener2).beforeReaderOpening();
@@ -137,137 +143,157 @@ public class LocalEventManagerTest {
     public void fireAfterReaderOpen() {
         localEventManager.fireAfterReaderOpening();
 
-        InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
+        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
         inOrder.verify(recordReaderEventListener1).afterReaderOpening();
         inOrder.verify(recordReaderEventListener2).afterReaderOpening();
     }
 
     @Test
-    public void fireBeforeRecordRead() {
+    public void fireBeforeRecordReading() {
         localEventManager.fireBeforeRecordReading();
 
-        InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
+        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
         inOrder.verify(recordReaderEventListener1).beforeRecordReading();
         inOrder.verify(recordReaderEventListener2).beforeRecordReading();
     }
 
     @Test
-    public void fireAfterRecordRead() {
+    public void fireAfterRecordReading() {
         localEventManager.fireAfterRecordReading(record);
 
-        InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
+        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
         inOrder.verify(recordReaderEventListener1).afterRecordReading(record);
         inOrder.verify(recordReaderEventListener2).afterRecordReading(record);
     }
 
     @Test
-    public void fireOnRecordReadException() {
+    public void fireOnRecordReadingException() {
         localEventManager.fireOnRecordReadingException(throwable);
 
-        InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
+        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
         inOrder.verify(recordReaderEventListener1).onRecordReadingException(throwable);
         inOrder.verify(recordReaderEventListener2).onRecordReadingException(throwable);
     }
 
     @Test
-    public void fireBeforeRecordReaderClose() {
+    public void fireBeforeRecordReaderClosing() {
         localEventManager.fireBeforeRecordReaderClosing();
 
-        InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
+        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
         inOrder.verify(recordReaderEventListener1).beforeReaderClosing();
         inOrder.verify(recordReaderEventListener2).beforeReaderClosing();
     }
 
     @Test
-    public void fireAfterRecordReaderClose() {
+    public void fireAfterRecordReaderClosing() {
         localEventManager.fireAfterRecordReaderClosing();
 
-        InOrder inOrder = Mockito.inOrder(recordReaderEventListener1, recordReaderEventListener2);
+        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
         inOrder.verify(recordReaderEventListener1).afterReaderClosing();
         inOrder.verify(recordReaderEventListener2).afterReaderClosing();
     }
 
     @Test
-    public void fireBeforeFilterRecord() {
-        localEventManager.fireBeforeRecordFiltering(record);
+    public void fireBeforeRecordFiltering() {
+        when(recordFilterEventListener1.beforeRecordFiltering(record)).thenReturn(record1);
+        when(recordFilterEventListener2.beforeRecordFiltering(record1)).thenReturn(record2);
 
-        InOrder inOrder = Mockito.inOrder(recordFilterEventListener1, recordFilterEventListener2);
+        Record result = localEventManager.fireBeforeRecordFiltering(record);
+
+        InOrder inOrder = inOrder(recordFilterEventListener1, recordFilterEventListener2);
 
         inOrder.verify(recordFilterEventListener1).beforeRecordFiltering(record);
-        inOrder.verify(recordFilterEventListener2).beforeRecordFiltering(record);
+        inOrder.verify(recordFilterEventListener2).beforeRecordFiltering(record1);
+
+        assertThat(result).isEqualTo(record2);
     }
 
     @Test
-    public void fireAfterFilterRecord() {
+    public void fireAfterRecordFiltering() {
         localEventManager.fireAfterRecordFiltering(record, true);
 
-        InOrder inOrder = Mockito.inOrder(recordFilterEventListener1, recordFilterEventListener2);
+        InOrder inOrder = inOrder(recordFilterEventListener1, recordFilterEventListener2);
 
         inOrder.verify(recordFilterEventListener1).afterRecordFiltering(record, true);
         inOrder.verify(recordFilterEventListener2).afterRecordFiltering(record, true);
     }
 
     @Test
-    public void fireBeforeMapRecord() {
-        localEventManager.fireBeforeRecordMapping(record);
+    public void fireBeforeRecordMapping() {
+        when(recordMapperEventListener1.beforeRecordMapping(record)).thenReturn(record1);
+        when(recordMapperEventListener2.beforeRecordMapping(record1)).thenReturn(record2);
 
-        InOrder inOrder = Mockito.inOrder(recordMapperEventListener1, recordMapperEventListener2);
+        Record result = localEventManager.fireBeforeRecordMapping(record);
+
+        InOrder inOrder = inOrder(recordMapperEventListener1, recordMapperEventListener2);
 
         inOrder.verify(recordMapperEventListener1).beforeRecordMapping(record);
-        inOrder.verify(recordMapperEventListener2).beforeRecordMapping(record);
+        inOrder.verify(recordMapperEventListener2).beforeRecordMapping(record1);
+
+        assertThat(result).isEqualTo(record2);
     }
 
     @Test
-    public void fireAfterMapRecord() {
+    public void fireAfterRecordMapping() {
         localEventManager.fireAfterRecordMapping(record, mappedRecord);
 
-        InOrder inOrder = Mockito.inOrder(recordMapperEventListener1, recordMapperEventListener2);
+        InOrder inOrder = inOrder(recordMapperEventListener1, recordMapperEventListener2);
 
         inOrder.verify(recordMapperEventListener1).afterRecordMapping(record, mappedRecord);
         inOrder.verify(recordMapperEventListener2).afterRecordMapping(record, mappedRecord);
     }
 
     @Test
-    public void fireBeforeValidateRecord() {
-        localEventManager.fireBeforeRecordValidation(mappedRecord);
+    public void fireBeforeRecordValidation() {
+        when(recordValidatorEventListener1.beforeRecordValidation(record)).thenReturn(record1);
+        when(recordValidatorEventListener2.beforeRecordValidation(record1)).thenReturn(record2);
 
-        InOrder inOrder = Mockito.inOrder(recordValidatorEventListener1, recordValidatorEventListener2);
+        Object result = localEventManager.fireBeforeRecordValidation(record);
 
-        inOrder.verify(recordValidatorEventListener1).beforeRecordValidation(mappedRecord);
-        inOrder.verify(recordValidatorEventListener2).beforeRecordValidation(mappedRecord);
+        InOrder inOrder = inOrder(recordValidatorEventListener1, recordValidatorEventListener2);
+
+        inOrder.verify(recordValidatorEventListener1).beforeRecordValidation(record);
+        inOrder.verify(recordValidatorEventListener2).beforeRecordValidation(record1);
+
+        assertThat(result).isEqualTo(record2);
     }
 
     @Test
-    public void fireAfterValidateRecord() {
+    public void fireAfterRecordValidation() {
         localEventManager.fireAfterRecordValidation(mappedRecord, validationErrors);
 
-        InOrder inOrder = Mockito.inOrder(recordValidatorEventListener1, recordValidatorEventListener2);
+        InOrder inOrder = inOrder(recordValidatorEventListener1, recordValidatorEventListener2);
 
         inOrder.verify(recordValidatorEventListener1).afterRecordValidation(mappedRecord, validationErrors);
         inOrder.verify(recordValidatorEventListener2).afterRecordValidation(mappedRecord, validationErrors);
     }
 
     @Test
-    public void fireBeforeProcessingRecord() {
-        localEventManager.fireBeforeRecordProcessing(mappedRecord);
+    public void fireBeforeRecordProcessing() {
+        when(recordProcessorEventListener1.beforeRecordProcessing(record)).thenReturn(record1);
+        when(recordProcessorEventListener2.beforeRecordProcessing(record1)).thenReturn(record2);
 
-        InOrder inOrder = Mockito.inOrder(recordProcessorEventListener1, recordProcessorEventListener2);
+        Object result = localEventManager.fireBeforeRecordProcessing(record);
 
-        inOrder.verify(recordProcessorEventListener1).beforeRecordProcessing(mappedRecord);
-        inOrder.verify(recordProcessorEventListener2).beforeRecordProcessing(mappedRecord);
+        InOrder inOrder = inOrder(recordProcessorEventListener1, recordProcessorEventListener2);
+
+        inOrder.verify(recordProcessorEventListener1).beforeRecordProcessing(record);
+        inOrder.verify(recordProcessorEventListener2).beforeRecordProcessing(record1);
+
+        assertThat(result).isEqualTo(record2);
     }
 
     @Test
-    public void fireAfterProcessingRecord() {
+    public void fireAfterRecordProcessing() {
         localEventManager.fireAfterRecordProcessing(mappedRecord, processingResult);
 
-        InOrder inOrder = Mockito.inOrder(recordProcessorEventListener1, recordProcessorEventListener2);
+        InOrder inOrder = inOrder(recordProcessorEventListener1, recordProcessorEventListener2);
 
         inOrder.verify(recordProcessorEventListener1).afterRecordProcessing(mappedRecord, processingResult);
         inOrder.verify(recordProcessorEventListener2).afterRecordProcessing(mappedRecord, processingResult);
@@ -277,9 +303,68 @@ public class LocalEventManagerTest {
     public void fireOnRecordProcessingException() {
         localEventManager.fireOnRecordProcessingException(mappedRecord, throwable);
 
-        InOrder inOrder = Mockito.inOrder(recordProcessorEventListener1, recordProcessorEventListener2);
+        InOrder inOrder = inOrder(recordProcessorEventListener1, recordProcessorEventListener2);
 
         inOrder.verify(recordProcessorEventListener1).onRecordProcessingException(mappedRecord, throwable);
         inOrder.verify(recordProcessorEventListener2).onRecordProcessingException(mappedRecord, throwable);
+    }
+
+    /*
+     * Integration tests for custom step listeners.
+     */
+
+    @Test
+    public void testRecordModificationThroughCustomRecordFilterEventListener() throws Exception {
+        Engine engine = EngineBuilder.aNewEngine()
+                .reader(new StringRecordReader("foo\nbar"))
+                .filter(new StartWithStringRecordFilter("#"))
+                .recordFilterEventListener(new RecordFilterEventListener() {
+                    @Override
+                    public Record beforeRecordFiltering(Record record) {
+                        return new StringRecord(record.getHeader(), "#" + record.getPayload());
+                    }
+
+                    @Override
+                    public void afterRecordFiltering(Record record, boolean filtered) {
+                        //no op
+                    }
+                }).build();
+
+        Report report = engine.call();
+
+        assertThat(report.getFilteredRecordsCount()).isEqualTo(2);
+    }
+
+    @Test
+    public void testRecordModificationThroughCustomRecordValidatorEventListener() throws Exception {
+        Engine engine = EngineBuilder.aNewEngine()
+                .reader(new StringRecordReader("foo\nbar"))
+                .validator(new RecordValidator<StringRecord>() {
+                    @Override
+                    public Set<ValidationError> validateRecord(StringRecord record) {
+                        Set<ValidationError> errors = new HashSet<ValidationError>();
+                        String payload = record.getPayload();
+                        if (payload.startsWith("#")) {
+                            errors.add(new ValidationError("Record " + payload + " must not start with #"));
+                        }
+                        return errors;
+                    }
+                })
+                .recordValidatorEventListener(new RecordValidatorEventListener() {
+                    @Override
+                    public Record beforeRecordValidation(Object record) {
+                        StringRecord stringRecord = (StringRecord) record;
+                        return new StringRecord(stringRecord.getHeader(), "#" + stringRecord.getPayload());
+                    }
+
+                    @Override
+                    public void afterRecordValidation(Object record, Set<ValidationError> validationErrors) {
+                        //no op
+                    }
+                }).build();
+
+        Report report = engine.call();
+
+        assertThat(report.getRejectedRecordsCount()).isEqualTo(2);
     }
 }

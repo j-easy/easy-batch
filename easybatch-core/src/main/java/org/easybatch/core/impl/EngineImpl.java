@@ -312,10 +312,9 @@ final class EngineImpl implements Engine {
     }
 
     private Object mapRecord(Record currentRecord) throws RecordMappingException {
-        Object typedRecord;
-        eventManager.fireBeforeRecordMapping(currentRecord);
-        typedRecord = recordMapper.mapRecord(currentRecord);
-        eventManager.fireAfterRecordMapping(currentRecord, typedRecord);
+        Record recordToMap = eventManager.fireBeforeRecordMapping(currentRecord);
+        Object typedRecord = recordMapper.mapRecord(recordToMap);
+        eventManager.fireAfterRecordMapping(recordToMap, typedRecord);
         return typedRecord;
     }
 

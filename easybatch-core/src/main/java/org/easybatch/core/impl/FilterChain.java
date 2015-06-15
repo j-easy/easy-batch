@@ -51,15 +51,15 @@ class FilterChain {
     }
 
     public boolean filterRecord(final Record currentRecord) {
-        eventManager.fireBeforeRecordFiltering(currentRecord);
+        Record recordToFilter = eventManager.fireBeforeRecordFiltering(currentRecord);
         boolean filtered = false;
         for (RecordFilter recordFilter : filters) {
-            if (recordFilter.filterRecord(currentRecord)) {
+            if (recordFilter.filterRecord(recordToFilter)) {
                 filtered = true;
                 break;
             }
         }
-        eventManager.fireAfterRecordFiltering(currentRecord, filtered);
+        eventManager.fireAfterRecordFiltering(recordToFilter, filtered);
         return filtered;
     }
 }

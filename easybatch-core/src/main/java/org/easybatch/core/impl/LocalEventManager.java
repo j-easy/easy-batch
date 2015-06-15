@@ -148,10 +148,12 @@ class LocalEventManager implements EventManager {
     }
 
     @Override
-    public void fireBeforeRecordFiltering(Record record) {
+    public Record fireBeforeRecordFiltering(Record record) {
+        Record recordToFilter = record;
         for (RecordFilterEventListener eventListener : recordFilterEventListeners) {
-            eventListener.beforeRecordFiltering(record);
+            recordToFilter = eventListener.beforeRecordFiltering(recordToFilter);
         }
+        return recordToFilter;
     }
 
     @Override
@@ -162,10 +164,12 @@ class LocalEventManager implements EventManager {
     }
 
     @Override
-    public void fireBeforeRecordMapping(Record record) {
+    public Record fireBeforeRecordMapping(Record record) {
+        Record recordToMap = record;
         for (RecordMapperEventListener eventListener : recordMapperEventListeners) {
-            eventListener.beforeRecordMapping(record);
+            recordToMap = eventListener.beforeRecordMapping(recordToMap);
         }
+        return recordToMap;
     }
 
     @Override
@@ -176,10 +180,12 @@ class LocalEventManager implements EventManager {
     }
 
     @Override
-    public void fireBeforeRecordValidation(Object mappedRecord) {
+    public Object fireBeforeRecordValidation(Object mappedRecord) {
+        Object recordToValidate = mappedRecord;
         for (RecordValidatorEventListener eventListener : recordValidatorEventListeners) {
-            eventListener.beforeRecordValidation(mappedRecord);
+            recordToValidate = eventListener.beforeRecordValidation(recordToValidate);
         }
+        return recordToValidate;
     }
 
     @Override
@@ -190,10 +196,12 @@ class LocalEventManager implements EventManager {
     }
 
     @Override
-    public void fireBeforeRecordProcessing(Object record) {
+    public Object fireBeforeRecordProcessing(Object record) {
+        Object recordToProcess = record;
         for (RecordProcessorEventListener eventListener : recordProcessorEventListeners) {
-            eventListener.beforeRecordProcessing(record);
+            recordToProcess = eventListener.beforeRecordProcessing(recordToProcess);
         }
+        return recordToProcess;
     }
 
     @Override

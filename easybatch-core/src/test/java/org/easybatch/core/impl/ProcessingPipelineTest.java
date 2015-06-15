@@ -27,17 +27,16 @@ package org.easybatch.core.impl;
 import org.easybatch.core.api.*;
 import org.easybatch.core.api.event.EventManager;
 import org.easybatch.core.api.handler.ErrorRecordHandler;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Test class for {@link ProcessingPipeline}.
@@ -75,6 +74,11 @@ public class ProcessingPipelineTest {
     private ComputationalRecordProcessor computationalRecordProcessor;
 
     private ProcessingPipeline processingPipeline;
+
+    @Before
+    public void setUp() throws Exception {
+        when(eventManager.fireBeforeRecordProcessing(typedRecord)).thenReturn(typedRecord);
+    }
 
     @Test
     @SuppressWarnings("unchecked")
@@ -120,7 +124,7 @@ public class ProcessingPipelineTest {
         inOrder.verify(eventManager).fireOnJobException(exception);
         inOrder.verify(eventManager).fireOnRecordProcessingException(typedRecord, exception);
 
-        Mockito.verifyZeroInteractions(computationalRecordProcessor);
+        verifyZeroInteractions(computationalRecordProcessor);
     }
 
     @Test

@@ -31,7 +31,6 @@ import org.easybatch.core.api.handler.ErrorRecordHandler;
 import org.easybatch.core.api.handler.FilteredRecordHandler;
 import org.easybatch.core.api.handler.IgnoredRecordHandler;
 import org.easybatch.core.api.handler.RejectedRecordHandler;
-import org.easybatch.core.record.StringRecord;
 import org.easybatch.core.util.Utils;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,7 +64,7 @@ public class EngineImplTest {
     @Mock
     private Header header1, header2;
     @Mock
-    private StringRecord record1, record2;
+    private Record record1, record2;
     @Mock
     private RecordReader reader;
     @Mock
@@ -342,7 +341,7 @@ public class EngineImplTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void batchProcessEventListenerShouldBeInvokedForEachEvent() throws Exception {
+    public void jobEventListenerShouldBeInvokedForEachEvent() throws Exception {
         when(firstProcessor.processRecord(record1)).thenThrow(recordProcessingException);
         engine = new EngineBuilder()
                 .reader(reader)
@@ -359,6 +358,18 @@ public class EngineImplTest {
     @Test
     @SuppressWarnings("unchecked")
     public void stepEventListenersShouldBeInvokedForEachEvent() throws Exception {
+        when(recordFilterEventListener.beforeRecordFiltering(record1)).thenReturn(record1);
+        when(recordFilterEventListener.beforeRecordFiltering(record2)).thenReturn(record2);
+
+        when(recordMapperEventListener.beforeRecordMapping(record1)).thenReturn(record1);
+        when(recordMapperEventListener.beforeRecordMapping(record2)).thenReturn(record2);
+
+        when(recordValidatorEventListener.beforeRecordValidation(record1)).thenReturn(record1);
+        when(recordValidatorEventListener.beforeRecordValidation(record2)).thenReturn(record2);
+
+        when(recordProcessorEventListener.beforeRecordProcessing(record1)).thenReturn(record1);
+        when(recordProcessorEventListener.beforeRecordProcessing(record2)).thenReturn(record2);
+
         engine = new EngineBuilder()
                 .reader(reader)
                 .recordReaderEventListener(recordReaderEventListener)

@@ -26,6 +26,7 @@ package org.easybatch.core.impl;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
 import org.easybatch.core.api.event.EventManager;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -56,6 +57,11 @@ public class FilterChainTest {
     private EventManager eventManager;
 
     private FilterChain filterChain;
+
+    @Before
+    public void setUp() throws Exception {
+        when(eventManager.fireBeforeRecordFiltering(record)).thenReturn(record);
+    }
 
     @Test
     public void theFilterChainShouldReturnTheSameResultAsTheRecordFilter() throws Exception {
