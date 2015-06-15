@@ -65,7 +65,7 @@ public class ReportTest {
         report.setEndTime(END_TIME);
         report.setStatus(Status.FINISHED);
         report.setDataSource("In-Memory");
-        report.setTotalRecords(10l);
+        report.setTotalRecords(10L);
         report.setCurrentRecordNumber(2);
         report.setBatchResult(50);
         report.incrementTotalFilteredRecords();
@@ -108,14 +108,24 @@ public class ReportTest {
 
     @Test
     public void whenTotalRecordsIsZero_ThenFormattedAverageRecordProcessingTimeShouldBeNA() {
-        report.setTotalRecords(0l);
+        report.setTotalRecords(0L);
         assertThat(report.getFormattedAverageRecordProcessingTime()).isEqualTo("N/A");
     }
 
     @Test
     public void whenTotalRecordsIsZero_ThenFormattedProgressShouldBeNA() {
-        report.setTotalRecords(0l);
+        report.setTotalRecords(0L);
         assertThat(report.getFormattedAverageRecordProcessingTime()).isEqualTo("N/A");
+    }
+
+    @Test
+    public void whenTotalRecordsIsZero_ThenStatisticsPercentsShouldNotBePrintedOut() throws Exception {
+        report.setTotalRecords(0L);
+        assertThat(report.getFormattedFilteredRecords()).doesNotContain("%");
+        assertThat(report.getFormattedIgnoredRecords()).doesNotContain("%");
+        assertThat(report.getFormattedRejectedRecords()).doesNotContain("%");
+        assertThat(report.getFormattedErrorRecords()).doesNotContain("%");
+        assertThat(report.getFormattedSuccessRecords()).doesNotContain("%");
     }
 
     @Test

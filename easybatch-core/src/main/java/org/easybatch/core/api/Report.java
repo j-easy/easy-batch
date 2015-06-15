@@ -226,7 +226,7 @@ public class Report implements Serializable {
     public String getFormattedFilteredRecords() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getFilteredRecordsCount());
-        if (totalRecords != null) {
+        if (totalRecords != null && totalRecords != 0) {
             sb.append(" (").append(getFilteredRecordsPercent()).append("%)");
         }
         return sb.toString();
@@ -235,7 +235,7 @@ public class Report implements Serializable {
     public String getFormattedIgnoredRecords() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getIgnoredRecordsCount());
-        if (totalRecords != null) {
+        if (totalRecords != null && totalRecords != 0) {
             sb.append(" (").append(getIgnoredRecordsPercent()).append("%)");
         }
         return sb.toString();
@@ -244,7 +244,7 @@ public class Report implements Serializable {
     public String getFormattedRejectedRecords() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getRejectedRecordsCount());
-        if (totalRecords != null) {
+        if (totalRecords != null && totalRecords != 0) {
             sb.append(" (").append(getRejectedRecordsPercent()).append("%)");
         }
         return sb.toString();
@@ -253,7 +253,7 @@ public class Report implements Serializable {
     public String getFormattedErrorRecords() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getErrorRecordsCount());
-        if (totalRecords != null) {
+        if (totalRecords != null && totalRecords != 0) {
             sb.append(" (").append(getErrorRecordsPercent()).append("%)");
         }
         return sb.toString();
@@ -262,7 +262,7 @@ public class Report implements Serializable {
     public String getFormattedSuccessRecords() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getSuccessRecordsCount());
-        if (totalRecords != null) {
+        if (totalRecords != null && totalRecords != 0) {
             sb.append(" (").append(getSuccessRecordsPercent()).append("%)");
         }
         return sb.toString();
