@@ -34,8 +34,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Test class for {@link BatchJobScheduler}.
@@ -47,54 +46,49 @@ public class BatchJobSchedulerTest {
 
     private static final Date now = new Date();
 
-    private static final int everyMinute = 1;
+    private BatchJobScheduler batchJobScheduler;
 
     @Mock
     private Engine engine1, engine2;
 
     @Before
     public void setUp() throws Exception {
+        batchJobScheduler = BatchJobScheduler.getInstance();
+
+        when(engine1.getExecutionId()).thenReturn("engine1");
         when(engine1.getExecutionId()).thenReturn("123");
+
+        when(engine2.getExecutionId()).thenReturn("engine2");
         when(engine2.getExecutionId()).thenReturn("456");
     }
 
     @Test
     public void testJobScheduling() throws Exception {
+        batchJobScheduler.scheduleAt(engine1, now);
+        batchJobScheduler.scheduleAt(engine2, now);
 
-        BatchJobScheduler batchScheduler = new BatchJobScheduler(engine1);
-        batchScheduler.scheduleAtWithInterval(now, everyMinute);
-        batchScheduler.start();
+        assertThat(batchJobScheduler.isScheduled(engine1)).isTrue();
+        assertThat(batchJobScheduler.isScheduled(engine2)).isTrue();
 
-        assertThat(batchScheduler.isStarted()).isTrue();
-        verify(engine1).call();
+        batchJobScheduler.start();
+        assertThat(batchJobScheduler.isStarted()).isTrue();
 
-        batchScheduler.stop();
-        assertThat(batchScheduler.isStopped()).isTrue();
-
-    }
-
-    @Test
-    public void testMultipleJobsScheduling() throws Exception {
-
-        BatchJobScheduler batchScheduler1 = new BatchJobScheduler(engine1);
-        batchScheduler1.scheduleAtWithInterval(now, everyMinute);
-        batchScheduler1.start();
-
-        BatchJobScheduler batchScheduler2 = new BatchJobScheduler(engine2);
-        batchScheduler2.scheduleAtWithInterval(now, everyMinute);
-        batchScheduler2.start();
-
-        assertThat(batchScheduler1).isNotEqualTo(batchScheduler2);
-
-        assertThat(batchScheduler1.isStarted()).isTrue();
-        assertThat(batchScheduler2.isStarted()).isTrue();
+        Thread.sleep(500); // sleep to ensure the next verify is called after calling the engine
 
         verify(engine1).call();
         verify(engine2).call();
 
-        batchScheduler1.stop();
-        batchScheduler2.stop();
+        batchJobScheduler.unschedule(engine1);
+        assertThat(batchJobScheduler.isScheduled(engine1)).isFalse();
 
+        batchJobScheduler.unschedule(engine2);
+        assertThat(batchJobScheduler.isScheduled(engine2)).isFalse();
+
+        verify(engine1, times(4)).getExecutionId();
+        verify(engine2, times(4)).getExecutionId();
+
+        batchJobScheduler.stop();
+        assertThat(batchJobScheduler.isStopped()).isTrue();
     }
 
 }
