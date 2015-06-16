@@ -59,7 +59,6 @@ public class ReportTest {
 
     @Before
     public void setUp() throws Exception {
-
         report = new Report(engine);
         report.setStartTime(START_TIME);
         report.setEndTime(END_TIME);
@@ -82,7 +81,6 @@ public class ReportTest {
 
     @Test
     public void reportStatisticsShouldBeValid() {
-
         assertThat(report.getFilteredRecordsCount()).isEqualTo(2);
         assertThat(report.getIgnoredRecordsCount()).isEqualTo(2);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(2);
@@ -90,10 +88,22 @@ public class ReportTest {
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
     }
 
+    @Test
+    public void reportStatisticsPercentsShouldBeCorrectlyRounded() {
+        report = new Report(engine);
+        report.setTotalRecords(5L);
+        report.incrementTotalFilteredRecords();
+        report.incrementTotalFilteredRecords();
+        report.incrementTotalSuccessRecord();
+        report.incrementTotalSuccessRecord();
+        report.incrementTotalSuccessRecord();
+
+        assertThat(report.getFormattedFilteredRecords()).isEqualTo("2 (40.0%)");
+        assertThat(report.getFormattedSuccessRecords()).isEqualTo("3 (60.0%)");
+    }
 
     @Test
     public void reportStatisticsShouldBeCorrectlyFormatted() {
-
         assertThat(report.getFormattedStartTime()).isEqualTo("2015-01-01 01:00:00");
         assertThat(report.getFormattedEndTime()).isEqualTo("2015-01-01 01:00:10");
         assertThat(report.getFormattedBatchDuration()).isEqualTo("10000ms");

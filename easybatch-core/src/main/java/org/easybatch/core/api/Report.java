@@ -36,8 +36,6 @@ import java.util.Date;
 public class Report implements Serializable {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
-    
-    private transient Engine engine;
 
     private long startTime;
 
@@ -60,9 +58,11 @@ public class Report implements Serializable {
 
     private long successRecords;
 
-    private transient Object batchResult;
-
     private Status status;
+
+    private transient Engine engine;
+
+    private transient Object batchResult;
 
     public Report(Engine engine) {
         this.engine = engine;
@@ -170,7 +170,11 @@ public class Report implements Serializable {
      */
 
     private float percent(final float current, final float total) {
-        return (current / total) * 100;
+        return (current * 100) / total;
+    }
+
+    private void appendPercent(final StringBuilder stringBuilder, final float percent) {
+        stringBuilder.append(" (").append(percent).append("%)");
     }
 
     private float getFilteredRecordsPercent() {
@@ -227,7 +231,7 @@ public class Report implements Serializable {
         final StringBuilder sb = new StringBuilder();
         sb.append(getFilteredRecordsCount());
         if (totalRecords != null && totalRecords != 0) {
-            sb.append(" (").append(getFilteredRecordsPercent()).append("%)");
+            appendPercent(sb, getFilteredRecordsPercent());
         }
         return sb.toString();
     }
@@ -236,7 +240,7 @@ public class Report implements Serializable {
         final StringBuilder sb = new StringBuilder();
         sb.append(getIgnoredRecordsCount());
         if (totalRecords != null && totalRecords != 0) {
-            sb.append(" (").append(getIgnoredRecordsPercent()).append("%)");
+            appendPercent(sb, getIgnoredRecordsPercent());
         }
         return sb.toString();
     }
@@ -245,7 +249,7 @@ public class Report implements Serializable {
         final StringBuilder sb = new StringBuilder();
         sb.append(getRejectedRecordsCount());
         if (totalRecords != null && totalRecords != 0) {
-            sb.append(" (").append(getRejectedRecordsPercent()).append("%)");
+            appendPercent(sb, getRejectedRecordsPercent());
         }
         return sb.toString();
     }
@@ -254,7 +258,7 @@ public class Report implements Serializable {
         final StringBuilder sb = new StringBuilder();
         sb.append(getErrorRecordsCount());
         if (totalRecords != null && totalRecords != 0) {
-            sb.append(" (").append(getErrorRecordsPercent()).append("%)");
+            appendPercent(sb, getErrorRecordsPercent());
         }
         return sb.toString();
     }
@@ -263,7 +267,7 @@ public class Report implements Serializable {
         final StringBuilder sb = new StringBuilder();
         sb.append(getSuccessRecordsCount());
         if (totalRecords != null && totalRecords != 0) {
-            sb.append(" (").append(getSuccessRecordsPercent()).append("%)");
+            appendPercent(sb, getSuccessRecordsPercent());
         }
         return sb.toString();
     }
