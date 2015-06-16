@@ -106,11 +106,13 @@ public class XmlRecordReader implements RecordReader {
                 XMLEvent xmlEvent = xmlEventReader.nextEvent();
                 if (xmlEvent.isStartElement()) {
                     escapeStartElementAttributes(stringBuilder, xmlEvent);
+                } else if (xmlEvent.isEndElement()) {
+                    writeEndElement(stringBuilder, xmlEvent);
                 } else {
                     stringBuilder.append(xmlEvent.toString());
                 }
             }
-            writeEndElement(stringBuilder);
+            writeEndElement(stringBuilder, xmlEventReader.nextEvent());
             Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
             return new XmlRecord(header, stringBuilder.toString());
         } catch (XMLStreamException e) {
@@ -167,8 +169,7 @@ public class XmlRecordReader implements RecordReader {
      * @param stringBuilder the string builder to write element into.
      * @throws XMLStreamException thrown when an exception occurs during xml streaming
      */
-    private void writeEndElement(StringBuilder stringBuilder) throws XMLStreamException {
-        XMLEvent xmlEvent = xmlEventReader.nextEvent();
+    private void writeEndElement(StringBuilder stringBuilder, XMLEvent xmlEvent) throws XMLStreamException {
         if (xmlEvent.isEndElement()) {
             EndElement endElement = xmlEvent.asEndElement();
             stringBuilder.append("</").append(endElement.getName().getLocalPart()).append(">");

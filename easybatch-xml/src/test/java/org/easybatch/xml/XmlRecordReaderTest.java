@@ -103,7 +103,7 @@ public class XmlRecordReaderTest {
 
         assertThat(xmlRecordReader.hasNextRecord()).isTrue();
         XmlRecord record = xmlRecordReader.readNextRecord();
-        assertThat(record.getPayload()).isXmlEqualTo("<bean id=\"foo\" class=\"java.lang.String\"/>");
+        assertThat(record.getPayload()).isXmlEqualTo("<bean id=\"foo\" class=\"java.lang.String\"><description>foo bean</description></bean>");
 
         assertThat(xmlRecordReader.hasNextRecord()).isTrue();
         record = xmlRecordReader.readNextRecord();
