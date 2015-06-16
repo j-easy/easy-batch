@@ -29,9 +29,9 @@ package org.easybatch.integration.quartz;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BatchSchedulerException extends Exception {
+public class BatchJobSchedulerException extends Exception {
 
-    public BatchSchedulerException(final String message, final Exception exception) {
+    public BatchJobSchedulerException(final String message, final Exception exception) {
         super(message, exception);
     }
 

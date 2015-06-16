@@ -77,9 +77,9 @@ public class BatchJobScheduler {
      * Create a job scheduler for the given engine.
      *
      * @param engine the engine to schedule
-     * @throws BatchSchedulerException thrown if an exception occurs while creating the scheduler
+     * @throws BatchJobSchedulerException thrown if an exception occurs while creating the scheduler
      */
-    public BatchJobScheduler(Engine engine) throws BatchSchedulerException {
+    public BatchJobScheduler(Engine engine) throws BatchJobSchedulerException {
         checkNotNull(engine, "engine");
         this.engine = engine;
         JobFactory jobFactory = new BatchJobFactory();
@@ -90,7 +90,7 @@ public class BatchJobScheduler {
             jobName = "batch-job-" + engine.getExecutionId();
             triggerName = "trigger-for-" + jobName;
         } catch (SchedulerException e) {
-            throw new BatchSchedulerException("An exception occurred during scheduler setup", e);
+            throw new BatchJobSchedulerException("An exception occurred during scheduler setup", e);
         }
     }
 
@@ -146,9 +146,9 @@ public class BatchJobScheduler {
     /**
      * Start the scheduler.
      *
-     * @throws BatchSchedulerException thrown if the scheduler cannot be started
+     * @throws BatchJobSchedulerException thrown if the scheduler cannot be started
      */
-    public void start() throws BatchSchedulerException {
+    public void start() throws BatchJobSchedulerException {
         LOGGER.log(Level.INFO, "Starting the scheduler for job {0}", jobName);
         try {
             JobDataMap jobDataMap = new JobDataMap();
@@ -157,7 +157,7 @@ public class BatchJobScheduler {
             scheduler.scheduleJob(job, trigger);
             scheduler.start();
         } catch (SchedulerException e) {
-            throw new BatchSchedulerException("An exception occurred during scheduler startup", e);
+            throw new BatchJobSchedulerException("An exception occurred during scheduler startup", e);
         }
     }
 
@@ -167,40 +167,40 @@ public class BatchJobScheduler {
      * <p/>
      * Note: The scheduler cannot be re-started.
      *
-     * @throws BatchSchedulerException thrown if the scheduler cannot be stopped
+     * @throws BatchJobSchedulerException thrown if the scheduler cannot be stopped
      */
-    public void stop() throws BatchSchedulerException {
+    public void stop() throws BatchJobSchedulerException {
         LOGGER.log(Level.INFO, "Stopping the scheduler for job {0}", jobName);
         try {
             scheduler.shutdown();
         } catch (SchedulerException e) {
-            throw new BatchSchedulerException("An exception occurred during scheduler shutdown", e);
+            throw new BatchJobSchedulerException("An exception occurred during scheduler shutdown", e);
         }
     }
 
     /**
      * Check if the scheduler is started.
      *
-     * @throws BatchSchedulerException thrown if the scheduler status cannot be checked
+     * @throws BatchJobSchedulerException thrown if the scheduler status cannot be checked
      */
-    public boolean isStarted() throws BatchSchedulerException {
+    public boolean isStarted() throws BatchJobSchedulerException {
         try {
             return scheduler.isStarted();
         } catch (SchedulerException e) {
-            throw new BatchSchedulerException("An exception occurred during checking if the scheduler is started", e);
+            throw new BatchJobSchedulerException("An exception occurred during checking if the scheduler is started", e);
         }
     }
 
     /**
      * Check if the scheduler is stopped.
      *
-     * @throws BatchSchedulerException thrown if the scheduler status cannot be checked
+     * @throws BatchJobSchedulerException thrown if the scheduler status cannot be checked
      */
-    public boolean isStopped() throws BatchSchedulerException {
+    public boolean isStopped() throws BatchJobSchedulerException {
         try {
             return scheduler.isShutdown();
         } catch (SchedulerException e) {
-            throw new BatchSchedulerException("An exception occurred during checking if the scheduler is stopped", e);
+            throw new BatchJobSchedulerException("An exception occurred during checking if the scheduler is stopped", e);
         }
     }
 
