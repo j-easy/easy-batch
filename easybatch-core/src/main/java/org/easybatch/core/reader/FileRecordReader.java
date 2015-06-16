@@ -36,9 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A convenient {@link RecordReader} that reads files in a directory.
- * <p/>
- * This reader is <strong>not</strong> recursive.
+ * A convenient {@link RecordReader} that recursively reads files in a directory.
  * <p/>
  * This reader produces {@link FileRecord} instances.
  *
@@ -81,18 +79,24 @@ public class FileRecordReader implements RecordReader {
     @Override
     public void open() {
         checkDirectory();
-
-        files = new ArrayList<File>();
+        files = getFiles(directory);
+        iterator = files.listIterator();
+        currentRecordNumber = 0;
+    }
+    
+    private List<File> getFiles(final File directory) {
+        List<File> files = new ArrayList<File>();
         File[] filesList = directory.listFiles();
         if (filesList != null) {
             for (File file : filesList) {
                 if (file.isFile()) {
                     files.add(file);
+                } else {
+                    files.addAll(getFiles(file));
                 }
             }
         }
-        this.iterator = files.listIterator();
-        currentRecordNumber = 0;
+        return files;
     }
 
     private void checkDirectory() {
