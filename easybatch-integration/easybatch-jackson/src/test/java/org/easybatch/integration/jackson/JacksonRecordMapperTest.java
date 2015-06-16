@@ -30,8 +30,9 @@ import org.easybatch.core.api.Record;
 import org.easybatch.json.JsonRecord;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Date;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,9 +41,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@RunWith(MockitoJUnitRunner.class)
 public class JacksonRecordMapperTest {
 
     private JacksonRecordMapper<Tweet> mapper;
+
+    @Mock
+    private Header header;
 
     @Before
     public void setUp() throws Exception {
@@ -53,7 +58,7 @@ public class JacksonRecordMapperTest {
     @Test
     public void testMapRecord() throws Exception {
         String jsonTweet = "{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}";
-        Record record = new JsonRecord(new Header(1l, "ds", new Date()), jsonTweet);
+        Record record = new JsonRecord(header, jsonTweet);
         Tweet tweet = mapper.mapRecord(record);
 
         assertThat(tweet.getId()).isEqualTo(1);
@@ -64,7 +69,7 @@ public class JacksonRecordMapperTest {
     @Test
     public void testMapIncompleteRecord() throws Exception {
         String jsonTweet = "{\"id\":1,\"user\":\"foo\"}";
-        Record record = new JsonRecord(new Header(1l, "ds", new Date()), jsonTweet);
+        Record record = new JsonRecord(header, jsonTweet);
         Tweet tweet = mapper.mapRecord(record);
 
         assertThat(tweet.getId()).isEqualTo(1);
@@ -75,7 +80,7 @@ public class JacksonRecordMapperTest {
     @Test
     public void testMapEmptyRecord() throws Exception {
         String jsonTweet = "{}";
-        Record record = new JsonRecord(new Header(1l, "ds", new Date()), jsonTweet);
+        Record record = new JsonRecord(header, jsonTweet);
         Tweet tweet = mapper.mapRecord(record);
 
         assertThat(tweet.getId()).isEqualTo(0);

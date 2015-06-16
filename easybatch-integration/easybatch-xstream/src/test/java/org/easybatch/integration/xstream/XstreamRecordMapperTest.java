@@ -26,44 +26,46 @@ package org.easybatch.integration.xstream;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.ConversionException;
-import org.easybatch.core.api.Header;
 import org.easybatch.xml.XmlRecord;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Date;
 import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * Test class for {@link XstreamRecordMapper}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@RunWith(MockitoJUnitRunner.class)
 public class XstreamRecordMapperTest {
 
     private XStream xStream;
 
     private XstreamRecordMapper xmlRecordMapper;
 
+    @Mock
     private XmlRecord xmlRecord;
-
-    private Header header;
 
     @Before
     public void setUp() throws Exception {
         xStream = new XStream();
         xStream.alias("person", Person.class);
         xmlRecordMapper = new XstreamRecordMapper<Person>(xStream);
-        String xml = getXmlFromFile("/person.xml");
-        header = new Header(1l, "DataSource", new Date());
-        xmlRecord = new XmlRecord(header, xml);
     }
 
     @Test
     public void testValidXmlPersonMapping() throws Exception {
+        when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person.xml"));
+
         Person person = (Person) xmlRecordMapper.mapRecord(xmlRecord);
+
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(1);
         assertThat(person.getFirstName()).isEqualTo("foo");
@@ -73,8 +75,10 @@ public class XstreamRecordMapperTest {
 
     @Test
     public void testEmptyXmlPersonMapping() throws Exception {
-        xmlRecord = new XmlRecord(header, "<person/>");
+        when(xmlRecord.getPayload()).thenReturn("<person/>");
+
         Person person = (Person) xmlRecordMapper.mapRecord(xmlRecord);
+
         assertThat(person.getId()).isEqualTo(0);
         assertThat(person.getFirstName()).isNull();
         assertThat(person.getLastName()).isNull();
@@ -83,8 +87,10 @@ public class XstreamRecordMapperTest {
 
     @Test
     public void testPartialXmlPersonMapping() throws Exception {
-        xmlRecord = new XmlRecord(header, getXmlFromFile("/person-partial.xml"));
+        when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person-partial.xml"));
+
         Person person = (Person) xmlRecordMapper.mapRecord(xmlRecord);
+
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(1);
         assertThat(person.getFirstName()).isEqualTo("foo");
@@ -94,7 +100,8 @@ public class XstreamRecordMapperTest {
 
     @Test(expected = ConversionException.class)
     public void testInvalidXmlPersonMapping() throws Exception {
-        xmlRecord = new XmlRecord(header, getXmlFromFile("/person-invalid.xml"));
+        when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person-invalid.xml"));
+
         xmlRecordMapper.mapRecord(xmlRecord);
     }
 

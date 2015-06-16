@@ -30,10 +30,12 @@ import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.api.Header;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,9 +44,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@RunWith(MockitoJUnitRunner.class)
 public class ApacheCommonCsvRecordMapperTest {
 
     private ApacheCommonCsvRecordMapper<Foo> mapper;
+
+    @Mock
+    private Header header;
 
     @Before
     public void setUp() throws Exception {
@@ -59,7 +65,11 @@ public class ApacheCommonCsvRecordMapperTest {
 
         Foo foo = mapper.mapRecord(record);
 
-        assertFoo(foo);
+        assertThat(foo).isNotNull();
+        assertThat(foo.getFirstName()).isEqualTo("foo");
+        assertThat(foo.getLastName()).isEqualTo("bar");
+        assertThat(foo.getAge()).isEqualTo(15);
+        assertThat(foo.isMarried()).isTrue();
     }
 
     @Test
@@ -72,7 +82,11 @@ public class ApacheCommonCsvRecordMapperTest {
 
         Foo foo = mapper.mapRecord(record);
 
-        assertFoo(foo);
+        assertThat(foo).isNotNull();
+        assertThat(foo.getFirstName()).isEqualTo("foo");
+        assertThat(foo.getLastName()).isEqualTo("bar");
+        assertThat(foo.getAge()).isEqualTo(15);
+        assertThat(foo.isMarried()).isTrue();
     }
 
     @Test
@@ -109,18 +123,10 @@ public class ApacheCommonCsvRecordMapperTest {
         assertThat(foo.isMarried()).isFalse();
     }
 
-    private void assertFoo(Foo foo) {
-        assertThat(foo).isNotNull();
-        assertThat(foo.getFirstName()).isEqualTo("foo");
-        assertThat(foo.getLastName()).isEqualTo("bar");
-        assertThat(foo.getAge()).isEqualTo(15);
-        assertThat(foo.isMarried()).isTrue();
-    }
-
     private ApacheCommonCsvRecord getApacheCommonCsvRecord(StringReader stringReader, CSVFormat csvFormat) throws IOException {
         CSVParser parser = new CSVParser(stringReader, csvFormat);
         CSVRecord csvRecord = parser.iterator().next();
-        return new ApacheCommonCsvRecord(new Header(1l, "DataSource", new Date()), csvRecord);
+        return new ApacheCommonCsvRecord(header, csvRecord);
     }
 
 }
