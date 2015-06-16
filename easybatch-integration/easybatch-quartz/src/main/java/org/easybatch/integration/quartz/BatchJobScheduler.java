@@ -121,7 +121,7 @@ public class BatchJobScheduler {
      *
      * @param engine the engine to schedule
      * @param startTime the start time
-     * @param interval  the repeat interval in minutes
+     * @param interval  the repeat interval in seconds
      */
     public void scheduleAtWithInterval(final Engine engine, final Date startTime, final int interval) throws BatchJobSchedulerException {
         checkNotNull(engine, "engine");
@@ -132,7 +132,7 @@ public class BatchJobScheduler {
         String triggerName = TRIGGER_NAME_PREFIX + executionId;
 
         ScheduleBuilder scheduleBuilder = simpleSchedule()
-                .withIntervalInMinutes(interval)
+                .withIntervalInSeconds(interval)
                 .repeatForever();
 
         Trigger trigger = newTrigger()
@@ -145,7 +145,7 @@ public class BatchJobScheduler {
         JobDetail job = getJobDetail(engine, jobName);
 
         try {
-            LOGGER.log(Level.INFO, "Scheduling engine {0} to start at {1} and every {2} minute(s)", new Object[]{engine, startTime, interval});
+            LOGGER.log(Level.INFO, "Scheduling engine {0} to start at {1} and every {2} second(s)", new Object[]{engine, startTime, interval});
             scheduler.scheduleJob(job, trigger);
         } catch (SchedulerException e) {
             throw new BatchJobSchedulerException("Unable to schedule engine " + engine, e);
