@@ -53,12 +53,12 @@ public class JmsPoisonRecordFilter implements RecordFilter {
         boolean isPoison = false;
         Message payload = jmsRecord.getPayload();
         try {
-            String type = payload.getStringProperty("type");
+            String type = payload.getJMSType();
             if (type != null && !type.isEmpty()) {
-                isPoison = "poison".equals(type);
+                isPoison = JmsPoisonMessage.TYPE.equals(type);
             }
         } catch (JMSException e) {
-            LOGGER.log(Level.WARNING, "Unable to get property type form JMS message " + payload, e);
+            LOGGER.log(Level.WARNING, "Unable to get type of JMS message " + payload, e);
             return false;
         }
         return isPoison || payload instanceof JmsPoisonMessage;

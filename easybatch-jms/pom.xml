@@ -50,25 +50,23 @@
         </license>
     </licenses>
 
+    <repositories>
+        <repository>
+            <id>jboss-maven2-release-repository</id>
+            <url>http://repository.jboss.org/nexus/content/repositories/root_repository/maven2</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.easybatch</groupId>
             <artifactId>easybatch-core</artifactId>
         </dependency>
 
-        <!-- FIXME unable to find jar file of jms api
         <dependency>
             <groupId>javax.jms</groupId>
             <artifactId>jms</artifactId>
             <version>1.1</version>
-        </dependency>
-        -->
-
-        <!-- import jms api from javaee-api -->
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>6.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -77,6 +75,29 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-all</artifactId>
+            <version>5.11.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <reporting>

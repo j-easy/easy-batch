@@ -38,10 +38,12 @@ import java.util.Properties;
  */
 public class JmsPoisonMessage implements Message, Serializable {
 
-    private Properties properties = new Properties();
+    public static final String TYPE = "org.easybatch.jms.JmsPoisonMessage";
+
+    private Properties properties;
 
     public JmsPoisonMessage() {
-        properties.setProperty("type", "poison");
+        properties = new Properties();
     }
 
     @Override
@@ -126,7 +128,7 @@ public class JmsPoisonMessage implements Message, Serializable {
 
     @Override
     public String getJMSType() throws JMSException {
-        return "org.easybatch.integration.jms.JmsPoisonMessage";
+        return TYPE;
     }
 
     @Override
