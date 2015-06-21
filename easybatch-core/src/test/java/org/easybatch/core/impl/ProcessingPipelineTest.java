@@ -82,7 +82,7 @@ public class ProcessingPipelineTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void testProcess() throws Exception {
+    public void testProcessWithoutException() throws Exception {
         processingPipeline = new ProcessingPipeline(asList(recordProcessor, computationalRecordProcessor),
                 errorRecordHandler, report, eventManager);
 
@@ -122,7 +122,7 @@ public class ProcessingPipelineTest {
         inOrder.verify(report).incrementTotalErrorRecord();
         inOrder.verify(errorRecordHandler).handle(record, exception);
         inOrder.verify(eventManager).fireOnJobException(exception);
-        inOrder.verify(eventManager).fireOnRecordProcessingException(typedRecord, exception);
+        inOrder.verify(eventManager).fireOnRecordProcessingException(record, exception);
 
         verifyZeroInteractions(computationalRecordProcessor);
     }

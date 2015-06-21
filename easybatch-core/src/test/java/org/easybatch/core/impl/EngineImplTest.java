@@ -111,12 +111,8 @@ public class EngineImplTest {
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
-        when(header1.getNumber()).thenReturn(1l);
-        when(header2.getNumber()).thenReturn(2l);
         when(record1.getHeader()).thenReturn(header1);
         when(record2.getHeader()).thenReturn(header2);
-        when(record1.getPayload()).thenReturn("test1");
-        when(record2.getPayload()).thenReturn("test2");
         when(reader.hasNextRecord()).thenReturn(true, true, false);
         when(reader.readNextRecord()).thenReturn(record1, record2);
         when(firstFilter.filterRecord(record1)).thenReturn(false);
@@ -467,6 +463,21 @@ public class EngineImplTest {
         engine.call();
 
         verify(errorRecordHandler).handle(record1, recordProcessingException);
+    }
+
+    @Test
+    public void exceptionsThrownByCustomRecordProcessingListenersShouldBeHandledProperly() throws Exception {
+        when(recordProcessorEventListener.beforeRecordProcessing(record1)).thenThrow(runtimeException);
+
+        engine = new EngineBuilder()
+                .reader(reader)
+                .errorRecordHandler(errorRecordHandler)
+                .recordProcessorEventListener(recordProcessorEventListener)
+                .build();
+
+        engine.call();
+
+        verify(errorRecordHandler).handle(record1, runtimeException);
     }
 
 }
