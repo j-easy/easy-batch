@@ -2,6 +2,20 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
+Changes in version 3.0.3 (2015-07-01)
+-------------------------------------
+
+* Fixed issue #67: Problem with Xml special characters
+* Fixed issue #68: Invalid XML when reading XML content with custom namespace
+* Fixed issue #70: Incorrect statistic percent in report when total records = 0
+* Fixed issue #71: Stopping a batch job scheduler affects other schedulers
+* Fixed issue #74: Report statistics percents are not correctly rounded
+* Fixed issue #75: JMS poison records are ignored
+* Fixed issue #76: Runtime exceptions thrown by custom listeners are not handled properly
+* Implemented improvement #69: Step event listeners should make it possible to modify the record's payload
+* Implemented improvement #72: Scheduling repeat interval should be in seconds
+* Implemented improvement #73: The FileRecordReader should be recursive
+
 Changes in version 3.0.2 (2015-06-10)
 -------------------------------------
 
