@@ -30,7 +30,7 @@ import java.util.Set;
 
 /**
  * Event interface collection for RecordValidator events.
- * <p>
+ * <p/>
  * You should implement this interface in your validator to
  * declare the ability to receive events from the batch process.
  *
@@ -40,14 +40,17 @@ public interface RecordValidatorEventListener {
 
     /**
      * Called before each validation.
+     * If you create a new record, you <strong>must</strong> keep the original header of the modified record.
+     *
      * @param mappedRecord The mapped record that is going to be validated.
      */
-    public void beforeValidateRecord(Object mappedRecord);
+    Object beforeRecordValidation(Object mappedRecord);
 
     /**
      * Called after each validation.
-     * @param validatedRecord The validated record.
+     *
+     * @param validatedRecord  The validated record.
      * @param validationErrors The Set of validation errors, if any.
      */
-    public void afterValidateRecord(Object validatedRecord, Set<ValidationError> validationErrors);
+    void afterRecordValidation(Object validatedRecord, Set<ValidationError> validationErrors);
 }

@@ -25,80 +25,106 @@
 package org.easybatch.core.jmx;
 
 /**
- *  JMX MBean interface to expose monitoring attributes.
+ * JMX MBean interface to expose monitoring attributes.
  *
- *  @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public interface MonitorMBean {
 
     /**
+     * Get the engine name.
+     * 
+     * @return the engine name
+     */
+    String getEngineName();
+
+    /**
+     * Get the job execution id.
+     * 
+     * @return the job execution id
+     */
+    String getExecutionId();
+    
+    /**
      * Get the data source name.
+     *
      * @return the data source name
      */
     String getDataSource();
 
     /**
      * Get the current record number being processed by the engine.
+     *
      * @return the current record number
      */
     long getCurrentRecordNumber();
 
     /**
      * Get total input records count.
+     *
      * @return total input records count
      */
     String getTotalRecords();
 
     /**
      * Get filtered records count.
+     *
      * @return filtered records count
      */
     String getFilteredRecords();
 
     /**
      * Get ignored records count.
+     *
      * @return ignored records count
      */
     String getIgnoredRecords();
 
     /**
      * Get rejected records count.
+     *
      * @return rejected records count
      */
     String getRejectedRecords();
 
     /**
      * Get error records count.
+     *
      * @return error records count
      */
     String getErrorRecords();
 
     /**
      * Get success records count.
+     *
      * @return success records count
      */
     String getSuccessRecords();
 
     /**
      * Get batch execution start time.
+     *
      * @return batch execution start time
      */
     String getStartTime();
 
     /**
      * Get batch execution end time.
+     *
      * @return batch execution end time
      */
     String getEndTime();
 
     /**
      * Get a human readable batch execution progress.
+     *
      * @return a human readable batch execution progress
      */
     String getProgress();
 
     /**
      * Get engine {@link org.easybatch.core.api.Status}.
+     *
      * @return engine status
      */
     String getStatus();

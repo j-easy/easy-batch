@@ -46,12 +46,18 @@ public class DefaultPredicate implements Predicate {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DefaultPredicate)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DefaultPredicate)) {
+            return false;
+        }
 
         DefaultPredicate that = (DefaultPredicate) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) {
+            return false;
+        }
 
         return true;
     }

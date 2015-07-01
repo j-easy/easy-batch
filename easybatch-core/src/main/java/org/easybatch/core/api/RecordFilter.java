@@ -34,6 +34,7 @@ public interface RecordFilter {
 
     /**
      * Return true if the record should be filtered (skipped).
+     *
      * @param record the record to filter
      * @return true if the record should be filtered (skipped)
      */

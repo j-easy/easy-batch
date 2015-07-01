@@ -29,10 +29,9 @@ import org.easybatch.core.api.Record;
 /**
  * Predicates are used to check if a record matches a criteria so that it is dispatched to the correct queue.
  *
+ * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  * @see org.easybatch.core.dispatcher.ContentBasedRecordDispatcher
  * @see org.easybatch.core.dispatcher.ContentBasedRecordDispatcherBuilder
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public interface Predicate {
 

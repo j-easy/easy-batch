@@ -55,7 +55,7 @@ public class FileExtensionFilterTest {
         Header header = new Header(1l, "Dummy Directory", new Date());
         txtRecord = new FileRecord(header, new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "CHANGELOG.txt"));
         xmlRecord = new FileRecord(header, new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "pom.xml"));
-        mdRecord = new FileRecord(header, new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR +"README.md"));
+        mdRecord = new FileRecord(header, new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "README.md"));
     }
 
     @Test

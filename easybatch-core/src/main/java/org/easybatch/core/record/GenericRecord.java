@@ -49,10 +49,12 @@ public class GenericRecord<P> implements Record<P> {
         this.payload = payload;
     }
 
+    @Override
     public Header getHeader() {
         return header;
     }
 
+    @Override
     public P getPayload() {
         return payload;
     }

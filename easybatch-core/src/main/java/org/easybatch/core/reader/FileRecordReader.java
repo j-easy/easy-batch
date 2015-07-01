@@ -25,18 +25,20 @@
 package org.easybatch.core.reader;
 
 import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.FileRecord;
 
 import java.io.File;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
- * A convenient {@link RecordReader} that reads files in a directory.
- *
- * This reader is <strong>not</strong> recursive.
+ * A convenient {@link RecordReader} that recursively reads files in a directory.
+ * <p/>
+ * This reader produces {@link FileRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -73,11 +75,31 @@ public class FileRecordReader implements RecordReader {
 
     /**
      * Open the reader.
-     *
-     * @throws Exception thrown if an exception occurs during reader opening
      */
     @Override
-    public void open() throws Exception {
+    public void open() {
+        checkDirectory();
+        files = getFiles(directory);
+        iterator = files.listIterator();
+        currentRecordNumber = 0;
+    }
+    
+    private List<File> getFiles(final File directory) {
+        List<File> files = new ArrayList<File>();
+        File[] filesList = directory.listFiles();
+        if (filesList != null) {
+            for (File file : filesList) {
+                if (file.isFile()) {
+                    files.add(file);
+                } else {
+                    files.addAll(getFiles(file));
+                }
+            }
+        }
+        return files;
+    }
+
+    private void checkDirectory() {
         if (!directory.exists()) {
             throw new IllegalArgumentException(MessageFormat.format(
                     "Directory {0} does not exist.", directory.getAbsoluteFile()));
@@ -91,18 +113,6 @@ public class FileRecordReader implements RecordReader {
                     "Unable to read files from directory {0}. Permission denied.",
                     directory.getAbsoluteFile()));
         }
-
-        files = new ArrayList<File>();
-        File[] filesList = directory.listFiles();
-        if( filesList != null ) {
-            for (File file : filesList) {
-                if (file.isFile()) {
-                    files.add(file);
-                }
-            }
-        }
-        this.iterator = files.listIterator();
-        currentRecordNumber = 0;
     }
 
     /**
@@ -119,10 +129,9 @@ public class FileRecordReader implements RecordReader {
      * Read next record from the data source.
      *
      * @return the next record from the data source.
-     * @throws Exception thrown if an exception occurs during reading next record
      */
     @Override
-    public Record readNextRecord() throws Exception {
+    public FileRecord readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new FileRecord(header, iterator.next());
     }
@@ -131,7 +140,7 @@ public class FileRecordReader implements RecordReader {
      * Get the total record number in the data source. This is useful to calculate execution progress.
      *
      * @return the total record number in the data source or null if the total records number cannot be
-     *         calculated in advance
+     * calculated in advance
      */
     @Override
     public Long getTotalRecords() {
@@ -150,11 +159,9 @@ public class FileRecordReader implements RecordReader {
 
     /**
      * Close the reader.
-     *
-     * @throws Exception thrown if an exception occurs during reader closing
      */
     @Override
-    public void close() throws Exception {
-
+    public void close() {
+        // no op
     }
 }

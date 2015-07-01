@@ -24,15 +24,15 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.record.PoisonRecord;
-import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -43,11 +43,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@RunWith(MockitoJUnitRunner.class)
 public class RoundRobinRecordDispatcherTest {
 
     private RoundRobinRecordDispatcher roundRobinRecordDispatcher;
 
     private BlockingQueue<Record> queue1, queue2;
+
+    @Mock
+    private Record record1, record2, record3;
+
+    @Mock
+    private PoisonRecord poisonRecord;
 
     @Before
     public void setUp() throws Exception {
@@ -59,47 +66,21 @@ public class RoundRobinRecordDispatcherTest {
     @Test
     public void regularRecordsShouldBeDispatchedToQueuesInRoundRobinFashion() throws Exception {
 
-        StringRecord record1 = new StringRecord(new Header(1l, "DataSource", new Date()), "test record1");
-        StringRecord record2 = new StringRecord(new Header(2l, "DataSource", new Date()), "test record2");
         roundRobinRecordDispatcher.dispatchRecord(record1);
         roundRobinRecordDispatcher.dispatchRecord(record2);
-
-        assertThat(queue1).isNotEmpty().containsOnly(record1);
-        assertThat(queue1.peek()).isNotNull().isInstanceOf(StringRecord.class);
-        Record r1 = queue1.poll();
-        assertThat(r1.getHeader().getNumber()).isEqualTo(1l);
-        assertThat(r1.getPayload()).isEqualTo("test record1");
-
-        assertThat(queue2).isNotEmpty().containsOnly(record2);
-        assertThat(queue2.peek()).isNotNull().isInstanceOf(StringRecord.class);
-        Record r2 = queue2.poll();
-        assertThat(r2.getHeader().getNumber()).isEqualTo(2l);
-        assertThat(r2.getPayload()).isEqualTo("test record2");
-
-        StringRecord record3 = new StringRecord(new Header(3l, "DataSource", new Date()), "test record3");
         roundRobinRecordDispatcher.dispatchRecord(record3);
 
-        assertThat(queue1).isNotEmpty();
-        assertThat(queue1.peek()).isNotNull().isInstanceOf(StringRecord.class);
-        Record r3 = queue1.poll();
-        assertThat(r3.getHeader().getNumber()).isEqualTo(3l);
-        assertThat(r3.getPayload()).isEqualTo("test record3");
-
-        assertThat(queue2).isEmpty();//r2 has been pulled from the queue earlier, but the queue should not contains record3
-
+        assertThat(queue1).isNotEmpty().containsExactly(record1, record3);
+        assertThat(queue2).isNotEmpty().containsOnly(record2);
     }
 
     @Test
     public void poisonRecordsShouldBeBroadcastToAllQueues() throws Exception {
 
-        PoisonRecord poisonRecord = new PoisonRecord();
         roundRobinRecordDispatcher.dispatchRecord(poisonRecord);
 
         assertThat(queue1).isNotEmpty().containsOnly(poisonRecord);
-        assertThat(queue1.peek()).isNotNull().isInstanceOf(PoisonRecord.class);
-
         assertThat(queue2).isNotEmpty().containsOnly(poisonRecord);
-        assertThat(queue2.peek()).isNotNull().isInstanceOf(PoisonRecord.class);
 
     }
 

@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains easy batch Jdbc related classes.
+ * This package contains JDBC support classes.
  */
 package org.easybatch.jdbc;

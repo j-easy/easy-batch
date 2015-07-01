@@ -28,20 +28,20 @@ import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
 
 import javax.json.Json;
-import javax.json.JsonException;
 import javax.json.JsonValue;
+import javax.json.stream.JsonGenerationException;
 import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
 import javax.json.stream.JsonParser;
-import java.io.*;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Record reader that reads Json records from an array of Json objects:
  *
+ *<p>
  * [
  *  {
  *      // JSON object
@@ -50,12 +50,13 @@ import java.util.logging.Logger;
  *      // JSON object
  *  }
  * ]
+ * </p>
+ *
+ * <p>This reader produces {@link JsonRecord} instances.</p>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JsonRecordReader implements RecordReader {
-
-    private static final Logger LOGGER = Logger.getLogger(JsonRecordReader.class.getSimpleName());
 
     /**
      * The data source stream.
@@ -93,13 +94,13 @@ public class JsonRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         parser = Json.createParser(inputStream);
     }
 
     @Override
     public boolean hasNextRecord() {
-        if(parser.hasNext()) {
+        if (parser.hasNext()) {
             currentEvent = parser.next();
             if (JsonParser.Event.START_ARRAY.equals(currentEvent)) {
                 arrayDepth++;
@@ -112,7 +113,7 @@ public class JsonRecordReader implements RecordReader {
             }
         }
 
-        if(parser.hasNext()) {
+        if (parser.hasNext()) {
             nextEvent = parser.next();
             if (JsonParser.Event.START_ARRAY.equals(nextEvent)) {
                 arrayDepth++;
@@ -134,13 +135,13 @@ public class JsonRecordReader implements RecordReader {
     }
 
     @Override
-    public JsonRecord readNextRecord() throws Exception {
+    public JsonRecord readNextRecord() {
         StringWriter stringWriter = new StringWriter();
         JsonGenerator jsonGenerator = jsonGeneratorFactory.createGenerator(stringWriter);
         writeRecordStart(jsonGenerator);
         do {
             moveToNextElement(jsonGenerator);
-        } while(!isEndRootObject());
+        } while (!isEndRootObject());
         if (arrayDepth != 2) {
             jsonGenerator.writeEnd();
         }
@@ -151,45 +152,16 @@ public class JsonRecordReader implements RecordReader {
 
     @Override
     public Long getTotalRecords() {
-        //Unable to use the same (or even another) json parser to calculate total record number of the input stream.
-        int data;
-        int rootObjectDepth = 0;
-        long totalRecords = 0;
-        try {
-            data = inputStream.read();
-            while(data != -1) {
-                char currentChar = (char)data;
-                if('{' == currentChar) {
-                    rootObjectDepth++;
-                }
-                if('}' == currentChar) {
-                    rootObjectDepth--;
-                    if (rootObjectDepth == 0) {
-                        totalRecords++;
-                    }
-                }
-                data = inputStream.read();
-            }
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Unable to calculate total records number in JSON stream.", e);
-            return null;
-        } finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "Unable to close JSON stream when calculating total records number.", e);
-            }
-        }
-        return totalRecords;
+        return null;
     }
 
     @Override
     public String getDataSourceName() {
-        return "Json stream: " + inputStream;
+        return "Json stream";
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         parser.close();
     }
 
@@ -199,7 +171,7 @@ public class JsonRecordReader implements RecordReader {
 
     private void writeRecordStart(JsonGenerator jsonGenerator) {
         if (currentEvent.equals(JsonParser.Event.START_ARRAY)) {
-            if(arrayDepth != 1) {
+            if (arrayDepth != 1) {
                 jsonGenerator.writeStartArray();
             }
             arrayDepth++;
@@ -220,38 +192,71 @@ public class JsonRecordReader implements RecordReader {
 
     private void moveToNextElement(JsonGenerator jsonGenerator) {
         JsonParser.Event event = parser.next();
-        switch(event) {
+        /*
+         * The jsonGenerator is stateful and its current context (array/object) is not public
+         * => There is no way to query it to know when to use write() or write(key) methods.
+         * The idea to track its state with two boolean inArray and inObject has been tried and was not successful
+         */
+        switch (event) {
             case START_ARRAY:
-                jsonGenerator.writeStartArray();
+                try {
+                    jsonGenerator.writeStartArray();
+                } catch(JsonGenerationException e) {
+                    jsonGenerator.writeStartArray(key);
+                }
                 break;
             case END_ARRAY:
                 jsonGenerator.writeEnd();
                 break;
             case START_OBJECT:
                 objectDepth++;
-                jsonGenerator.writeStartObject();
+                try {
+                    jsonGenerator.writeStartObject();
+                } catch (Exception e) {
+                    jsonGenerator.writeStartObject(key);
+                }
                 break;
             case END_OBJECT:
                 objectDepth--;
                 jsonGenerator.writeEnd();
                 break;
             case VALUE_FALSE:
-                jsonGenerator.write(key, JsonValue.FALSE);
+                try {
+                    jsonGenerator.write(JsonValue.FALSE);
+                } catch (Exception e) {
+                    jsonGenerator.write(key, JsonValue.FALSE);
+                }
                 break;
             case VALUE_NULL:
-                jsonGenerator.write(key, JsonValue.NULL);
+                try {
+                    jsonGenerator.write(JsonValue.NULL);
+                } catch (Exception e) {
+                    jsonGenerator.write(key, JsonValue.NULL);
+                }
                 break;
             case VALUE_TRUE:
-                jsonGenerator.write(key, JsonValue.TRUE);
+                try {
+                    jsonGenerator.write(JsonValue.TRUE);
+                } catch (Exception e) {
+                    jsonGenerator.write(key, JsonValue.TRUE);
+                }
                 break;
             case KEY_NAME:
                 key = parser.getString();
                 break;
             case VALUE_STRING:
-                jsonGenerator.write(key, parser.getString());
+                try {
+                    jsonGenerator.write(parser.getString());
+                } catch (Exception e) {
+                    jsonGenerator.write(key, parser.getString());
+                }
                 break;
             case VALUE_NUMBER:
-                jsonGenerator.write(key, parser.getBigDecimal());
+                try {
+                    jsonGenerator.write(parser.getBigDecimal());
+                } catch (Exception e) {
+                    jsonGenerator.write(key, parser.getBigDecimal());
+                }
                 break;
             default:
                 break;

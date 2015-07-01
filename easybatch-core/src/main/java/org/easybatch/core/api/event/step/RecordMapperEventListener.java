@@ -38,25 +38,26 @@ public interface RecordMapperEventListener {
 
     /**
      * Called before the mapper call.
+     * If you create a new record, you <strong>must</strong> keep the original header of the modified record.
      *
      * @param record The record that will be passed to the record call.
      */
-    public void beforeMapRecord(Record record);
+    Record beforeRecordMapping(final Record record);
 
     /**
      * Called directly after the mapper call.
      *
-     * @param record The incoming record.
+     * @param record      The incoming record.
      * @param typedRecord The mapping result.
      */
-    public void afterMapRecord(Record record, Object typedRecord);
+    void afterRecordMapping(final Record record, final Object typedRecord);
 
     /**
      * When the mapper throws an exception, this method will get the exception.
      * In addition you will receive the incoming record for further inspection.
      *
-     * @param t The exception thrown.
-     * @param record The record that was processed while the exception was thrown.
+     * @param record    The record that was processed while the exception was thrown.
+     * @param throwable The exception thrown.
      */
-    public void onMapperException(Throwable t, Record record);
+    void onRecordMappingException(final Record record, final Throwable throwable);
 }

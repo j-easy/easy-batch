@@ -24,10 +24,10 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.api.EventManager;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.ValidationError;
-import org.easybatch.core.api.event.batch.BatchProcessEventListener;
+import org.easybatch.core.api.event.EventManager;
+import org.easybatch.core.api.event.job.JobEventListener;
 import org.easybatch.core.api.event.step.*;
 
 import java.util.LinkedHashSet;
@@ -40,7 +40,7 @@ import java.util.Set;
  */
 class LocalEventManager implements EventManager {
 
-    private Set<BatchProcessEventListener> batchProcessEventListeners = new LinkedHashSet<BatchProcessEventListener>();
+    private Set<JobEventListener> jobEventListeners = new LinkedHashSet<JobEventListener>();
     private Set<RecordReaderEventListener> recordReaderEventListeners = new LinkedHashSet<RecordReaderEventListener>();
     private Set<RecordFilterEventListener> recordFilterEventListeners = new LinkedHashSet<RecordFilterEventListener>();
     private Set<RecordMapperEventListener> recordMapperEventListeners = new LinkedHashSet<RecordMapperEventListener>();
@@ -48,8 +48,8 @@ class LocalEventManager implements EventManager {
     private Set<RecordProcessorEventListener> recordProcessorEventListeners = new LinkedHashSet<RecordProcessorEventListener>();
 
     @Override
-    public void addBatchProcessListener(BatchProcessEventListener batchProcessEventListener) {
-        batchProcessEventListeners.add(batchProcessEventListener);
+    public void addJobEventListener(JobEventListener jobEventListener) {
+        jobEventListeners.add(jobEventListener);
     }
 
     @Override
@@ -78,131 +78,140 @@ class LocalEventManager implements EventManager {
     }
 
     @Override
-    public void fireBeforeBatchStart() {
-        for (BatchProcessEventListener eventListener : batchProcessEventListeners) {
-            eventListener.beforeBatchStart();
+    public void fireBeforeJobStart() {
+        for (JobEventListener eventListener : jobEventListeners) {
+            eventListener.beforeJobStart();
         }
     }
 
     @Override
-    public void fireAfterBatchEnd() {
-        for (BatchProcessEventListener eventListener : batchProcessEventListeners) {
-            eventListener.afterBatchEnd();
+    public void fireAfterJobEnd() {
+        for (JobEventListener eventListener : jobEventListeners) {
+            eventListener.afterJobEnd();
         }
     }
 
     @Override
-    public void fireOnBatchException(Throwable t) {
-        for (BatchProcessEventListener eventListener : batchProcessEventListeners) {
-            eventListener.onException(t);
+    public void fireOnJobException(Throwable t) {
+        for (JobEventListener eventListener : jobEventListeners) {
+            eventListener.onJobException(t);
         }
     }
 
     @Override
-    public void fireBeforeReaderOpen() {
+    public void fireBeforeReaderOpening() {
         for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
-            eventListener.beforeReaderOpen();
+            eventListener.beforeReaderOpening();
         }
     }
 
     @Override
-    public void fireAfterReaderOpen() {
+    public void fireAfterReaderOpening() {
         for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
-            eventListener.afterReaderOpen();
+            eventListener.afterReaderOpening();
         }
     }
 
     @Override
-    public void fireBeforeRecordRead() {
+    public void fireBeforeRecordReading() {
         for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
-            eventListener.beforeRecordRead();
+            eventListener.beforeRecordReading();
         }
     }
 
     @Override
-    public void fireAfterRecordRead(Record record) {
+    public void fireAfterRecordReading(Record record) {
         for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
-            eventListener.afterRecordRead(record);
+            eventListener.afterRecordReading(record);
         }
     }
 
     @Override
-    public void fireOnRecordReadException(Throwable throwable) {
+    public void fireOnRecordReadingException(Throwable throwable) {
         for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
-            eventListener.onRecordReadException(throwable);
+            eventListener.onRecordReadingException(throwable);
         }
     }
 
     @Override
-    public void fireBeforeRecordReaderClose() {
+    public void fireBeforeRecordReaderClosing() {
         for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
-            eventListener.beforeReaderClose();
+            eventListener.beforeReaderClosing();
         }
     }
 
     @Override
-    public void fireAfterRecordReaderClose() {
+    public void fireAfterRecordReaderClosing() {
         for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
-            eventListener.afterReaderClose();
+            eventListener.afterReaderClosing();
         }
     }
 
     @Override
-    public void fireBeforeFilterRecord(Record record) {
+    public Record fireBeforeRecordFiltering(Record record) {
+        Record recordToFilter = record;
         for (RecordFilterEventListener eventListener : recordFilterEventListeners) {
-            eventListener.beforeFilterRecord(record);
+            recordToFilter = eventListener.beforeRecordFiltering(recordToFilter);
         }
+        return recordToFilter;
     }
 
     @Override
-    public void fireAfterFilterRecord(Record record, boolean filterRecord) {
+    public void fireAfterRecordFiltering(Record record, boolean filtered) {
         for (RecordFilterEventListener eventListener : recordFilterEventListeners) {
-            eventListener.afterFilterRecord(record, filterRecord);
+            eventListener.afterRecordFiltering(record, filtered);
         }
     }
 
     @Override
-    public void fireBeforeMapRecord(Record record) {
+    public Record fireBeforeRecordMapping(Record record) {
+        Record recordToMap = record;
         for (RecordMapperEventListener eventListener : recordMapperEventListeners) {
-            eventListener.beforeMapRecord(record);
+            recordToMap = eventListener.beforeRecordMapping(recordToMap);
         }
+        return recordToMap;
     }
 
     @Override
-    public void fireAfterMapRecord(Record record, Object mapResult) {
+    public void fireAfterRecordMapping(Record record, Object mappedRecord) {
         for (RecordMapperEventListener eventListener : recordMapperEventListeners) {
-            eventListener.afterMapRecord(record, mapResult);
+            eventListener.afterRecordMapping(record, mappedRecord);
         }
     }
 
     @Override
-    public void fireBeforeValidateRecord(Object mappedRecord) {
+    public Object fireBeforeRecordValidation(Object mappedRecord) {
+        Object recordToValidate = mappedRecord;
         for (RecordValidatorEventListener eventListener : recordValidatorEventListeners) {
-            eventListener.beforeValidateRecord(mappedRecord);
+            recordToValidate = eventListener.beforeRecordValidation(recordToValidate);
         }
+        return recordToValidate;
     }
 
     @Override
-    public void fireAfterValidateRecord(Object validatedRecord, Set<ValidationError> validationErrors) {
+    public void fireAfterRecordValidation(Object validatedRecord, Set<ValidationError> validationErrors) {
         for (RecordValidatorEventListener eventListener : recordValidatorEventListeners) {
-            eventListener.afterValidateRecord(validatedRecord, validationErrors);
+            eventListener.afterRecordValidation(validatedRecord, validationErrors);
         }
     }
 
     @Override
-    public void fireBeforeProcessingRecord(Object record) {
+    public Object fireBeforeRecordProcessing(Object record) {
+        Object recordToProcess = record;
         for (RecordProcessorEventListener eventListener : recordProcessorEventListeners) {
-            eventListener.beforeProcessingRecord(record);
+            recordToProcess = eventListener.beforeRecordProcessing(recordToProcess);
+        }
+        return recordToProcess;
+    }
+
+    @Override
+    public void fireAfterRecordProcessing(Object record, Object processingResult) {
+        for (RecordProcessorEventListener eventListener : recordProcessorEventListeners) {
+            eventListener.afterRecordProcessing(record, processingResult);
         }
     }
 
     @Override
-    public void fireAfterProcessingRecord(Object record,Object processingResult) {
-        for (RecordProcessorEventListener eventListener : recordProcessorEventListeners) {
-            eventListener.afterProcessingRecord(record, processingResult);
-        }
-    }
-
     public void fireOnRecordProcessingException(final Object record, final Throwable throwable) {
         for (RecordProcessorEventListener eventListener : recordProcessorEventListeners) {
             eventListener.onRecordProcessingException(record, throwable);

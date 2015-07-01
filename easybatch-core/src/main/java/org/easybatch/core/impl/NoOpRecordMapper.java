@@ -37,7 +37,8 @@ class NoOpRecordMapper implements RecordMapper<Record> {
     /**
      * {@inheritDoc}
      */
-    public Record mapRecord(final Record record) throws Exception {
+    @Override
+    public Record mapRecord(final Record record) {
         return record;
     }
 

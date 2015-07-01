@@ -31,13 +31,13 @@ import java.util.Set;
  * This is used by the engine to apply validation logic on input records.
  *
  * @param <T> The target domain object type this validator can validate.
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public interface RecordValidator<T> {
 
     /**
      * Validate a record against application validation logic.
+     *
      * @param record the record to validate
      * @return a set of validation error if any
      */

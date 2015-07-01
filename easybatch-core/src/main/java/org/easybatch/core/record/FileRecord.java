@@ -33,7 +33,7 @@ import java.io.File;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class FileRecord extends GenericRecord<File>{
+public class FileRecord extends GenericRecord<File> {
 
     public FileRecord(final Header header, final File payload) {
         super(header, payload);

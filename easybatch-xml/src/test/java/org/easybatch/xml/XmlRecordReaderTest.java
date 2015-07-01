@@ -1,3 +1,27 @@
+/*
+ *  The MIT License
+ *
+ *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
+ *
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
+ *
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
+ */
+
 package org.easybatch.xml;
 
 import org.custommonkey.xmlunit.Diff;
@@ -6,6 +30,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.InputStream;
 import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,13 +46,13 @@ public class XmlRecordReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        xmlRecordReader = new XmlRecordReader("person", this.getClass().getResourceAsStream("/persons.xml"));
+        xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons.xml"));
         xmlRecordReader.open();
     }
 
     @Test
     public void testGetTotalRecords() throws Exception {
-        assertThat(xmlRecordReader.getTotalRecords()).isEqualTo(2);
+        assertThat(xmlRecordReader.getTotalRecords()).isNull();
     }
 
     @Test
@@ -49,6 +74,45 @@ public class XmlRecordReaderTest {
         assertThat(diff.similar()).isTrue();
     }
 
+    @Test
+    public void testReadingEscapedXml() throws Exception {
+        xmlRecordReader.close();
+        xmlRecordReader = new XmlRecordReader("website", getDataSource("/websites.xml"));
+        xmlRecordReader.open();
+        assertThat(xmlRecordReader.hasNextRecord()).isTrue();
+        XmlRecord record = xmlRecordReader.readNextRecord();
+        assertThat(record.getPayload()).isXmlEqualTo("<website name=\"google\" url=\"http://www.google.com?query=test&amp;sort=asc\"/>");
+
+        assertThat(xmlRecordReader.hasNextRecord()).isTrue();
+        record = xmlRecordReader.readNextRecord();
+        assertThat(record.getPayload()).isXmlEqualTo("<website name=\"l&apos;équipe\" url=\"http://www.lequipe.fr\"/>");
+
+        assertThat(xmlRecordReader.hasNextRecord()).isTrue();
+        record = xmlRecordReader.readNextRecord();
+        assertThat(record.getPayload()).isXmlEqualTo("<website name=\"l&quot;internaute.com\" url=\"http://www.linternaute.com\"/>");
+
+        assertThat(xmlRecordReader.hasNextRecord()).isFalse();
+
+    }
+
+    @Test
+    public void testReadingXmlWithCustomNamespace() throws Exception {
+        xmlRecordReader.close();
+        xmlRecordReader = new XmlRecordReader("bean", getDataSource("/beans.xml"));
+        xmlRecordReader.open();
+
+        assertThat(xmlRecordReader.hasNextRecord()).isTrue();
+        XmlRecord record = xmlRecordReader.readNextRecord();
+        assertThat(record.getPayload()).isXmlEqualTo("<bean id=\"foo\" class=\"java.lang.String\"><description>foo bean</description></bean>");
+
+        assertThat(xmlRecordReader.hasNextRecord()).isTrue();
+        record = xmlRecordReader.readNextRecord();
+        assertThat(record.getPayload()).isXmlEqualTo("<bean id=\"bar\" class=\"java.lang.String\"/>");
+
+        assertThat(xmlRecordReader.hasNextRecord()).isFalse();
+
+    }
+
     /*
      * Test empty files
      */
@@ -56,15 +120,15 @@ public class XmlRecordReaderTest {
     @Test
     public void testGetTotalRecordsForEmptyPersonsFile() throws Exception {
         xmlRecordReader.close();
-        xmlRecordReader = new XmlRecordReader("person", this.getClass().getResourceAsStream("/persons-empty.xml"));
+        xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons-empty.xml"));
         xmlRecordReader.open();
-        assertThat(xmlRecordReader.getTotalRecords()).isEqualTo(0);
+        assertThat(xmlRecordReader.getTotalRecords()).isNull();
     }
 
     @Test
     public void testHasNextRecordForEmptyPersonsFile() throws Exception {
         xmlRecordReader.close();
-        xmlRecordReader = new XmlRecordReader("person", this.getClass().getResourceAsStream("/persons-empty.xml"));
+        xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons-empty.xml"));
         xmlRecordReader.open();
         assertThat(xmlRecordReader.hasNextRecord()).isFalse();
     }
@@ -72,7 +136,7 @@ public class XmlRecordReaderTest {
     @Test
     public void testGetTotalRecordsForEmptyFile() throws Exception {
         xmlRecordReader.close();
-        xmlRecordReader = new XmlRecordReader("person", this.getClass().getResourceAsStream("/empty-file.xml"));
+        xmlRecordReader = new XmlRecordReader("person", getDataSource("/empty-file.xml"));
         xmlRecordReader.open();
         assertThat(xmlRecordReader.getTotalRecords()).isNull();
     }
@@ -80,7 +144,7 @@ public class XmlRecordReaderTest {
     @Test
     public void testHasNextRecordForEmptyFile() throws Exception {
         xmlRecordReader.close();
-        xmlRecordReader = new XmlRecordReader("person", this.getClass().getResourceAsStream("/empty-file.xml"));
+        xmlRecordReader = new XmlRecordReader("person", getDataSource("/empty-file.xml"));
         xmlRecordReader.open();
         assertThat(xmlRecordReader.hasNextRecord()).isFalse();
     }
@@ -92,7 +156,7 @@ public class XmlRecordReaderTest {
     @Test
     public void testReadNextNestedRecord() throws Exception {
         xmlRecordReader.close();
-        xmlRecordReader = new XmlRecordReader("person", this.getClass().getResourceAsStream("/persons-nested.xml"));
+        xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons-nested.xml"));
         xmlRecordReader.open();
         xmlRecordReader.hasNextRecord(); //should call this method to move the cursor forward to the first tag
         XmlRecord xmlRecord = xmlRecordReader.readNextRecord();
@@ -113,6 +177,10 @@ public class XmlRecordReaderTest {
     }
 
     private String getXmlFromFile(String file) {
-        return new Scanner(this.getClass().getResourceAsStream(file) ).useDelimiter("\\A").next();
+        return new Scanner(this.getClass().getResourceAsStream(file)).useDelimiter("\\A").next();
+    }
+
+    private InputStream getDataSource(String name) {
+        return this.getClass().getResourceAsStream(name);
     }
 }

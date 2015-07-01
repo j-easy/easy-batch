@@ -1,0 +1,69 @@
+[
+  {
+    "datasetid": "arbresalignementparis2010",
+    "recordid": "0e6cfe03082224225c54690e5a700987ffb1310f",
+    "fields": {
+      "adresse": "AVENUE GAMBETTA",
+      "hauteurenm": 0.0,
+      "espece": "Tilia tomentosa",
+      "circonfere": 78.0,
+      "geom_x_y": [
+        48.8691944661,
+        2.40210336054
+      ],
+      "dateplanta": "1971-02-27"
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        2.40210336054,
+        48.8691944661
+      ]
+    },
+    "record_timestamp": "2014-09-11T14:39:16.131843"
+  },
+  {
+    "datasetid": "arbresalignementparis2010",
+    "recordid": "f737f8efb565bbd36092495a9899ec612fe06d5e",
+    "fields": {
+      "circonfere": 0.0,
+      "hauteurenm": 0.0,
+      "espece": "Gymnocladus dioica",
+      "adresse": "BOULEVARD SERURIER",
+      "geom_x_y": [
+        48.8794011563,
+        2.4006442003
+      ]
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        2.4006442003,
+        48.8794011563
+      ]
+    },
+    "record_timestamp": "2014-09-11T14:39:16.131843"
+  },
+  {
+    "datasetid": "arbresalignementparis2010",
+    "recordid": "51c45ad287d0c91357545f5812ff79ed629c50c9",
+    "fields": {
+      "circonfere": 56.0,
+      "hauteurenm": 0.0,
+      "espece": "Platanus x hispanica",
+      "adresse": "BOULEVARD BEAUMARCHAIS",
+      "geom_x_y": [
+        48.8605686299,
+        2.36720956668
+      ]
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        2.36720956668,
+        48.8605686299
+      ]
+    },
+    "record_timestamp": "2014-09-11T14:39:16.131843"
+  }
+]

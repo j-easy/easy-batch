@@ -10,7 +10,7 @@
 
     <groupId>org.easybatch</groupId>
     <artifactId>easybatch</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>easybatch</name>
     <description>Easy Batch parent module</description>
@@ -30,20 +30,18 @@
         <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
         <cobertura-maven-plugin.version>2.6</cobertura-maven-plugin.version>
     </properties>
-    
+
     <modules>
         <module>easybatch-core</module>
         <module>easybatch-validation</module>
         <module>easybatch-flatfile</module>
         <module>easybatch-tools</module>
-        <module>easybatch-tutorials</module>
         <module>easybatch-jdbc</module>
         <module>easybatch-jpa</module>
         <module>easybatch-jms</module>
         <module>easybatch-xml</module>
         <module>easybatch-json</module>
         <module>easybatch-integration</module>
-        <module>easybatch-bench</module>
         <module>easybatch-archetype</module>
     </modules>
 
@@ -59,31 +57,16 @@
         </developer>
     </developers>
 
-    <contributors>
-        <contributor>
-            <name>Nihed MBAREK</name>
-            <url>https://github.com/nihed</url>
-        </contributor>
-        <contributor>
-            <name>chellan</name>
-            <url>https://github.com/chellan</url>
-        </contributor>
-        <contributor>
-            <name>xenji</name>
-            <url>https://github.com/xenji</url>
-        </contributor>
-    </contributors>
-
     <scm>
-        <url>git@github.com:benas/easy-batch.git</url>
-        <connection>scm:git:git@github.com:benas/easy-batch.git</connection>
-        <developerConnection>scm:git:git@github.com:benas/easy-batch.git</developerConnection>
-        <tag>easybatch-3.0.0</tag>
+        <url>git@github.com:easybatch/easybatch-framework.git</url>
+        <connection>scm:git:git@github.com:easybatch/easybatch-framework.git</connection>
+        <developerConnection>scm:git:git@github.com:easybatch/easybatch-framework.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/benas/easy-batch/issues</url>
+        <url>https://github.com/easybatch/easybatch-framework/issues</url>
     </issueManagement>
 
     <ciManagement>
@@ -100,13 +83,13 @@
 
     <dependencyManagement>
         <dependencies>
-            
+
             <dependency>
                 <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-flatfile</artifactId>
@@ -124,7 +107,7 @@
                 <artifactId>easybatch-jdbc</artifactId>
                 <version>${project.version}</version>
             </dependency>
-        
+
             <dependency>
                 <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-validation</artifactId>
@@ -172,7 +155,7 @@
                 <artifactId>easybatch-quartz</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>

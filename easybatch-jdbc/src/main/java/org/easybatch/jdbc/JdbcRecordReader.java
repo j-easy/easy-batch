@@ -26,6 +26,8 @@ package org.easybatch.jdbc;
 
 import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.api.RecordReaderClosingException;
+import org.easybatch.core.api.RecordReaderOpeningException;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -37,6 +39,8 @@ import java.util.logging.Logger;
 
 /**
  * A {@link org.easybatch.core.api.RecordReader} that reads records from a database using jdbc API.
+ * <p/>
+ * This reader produces {@link JdbcRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -74,14 +78,27 @@ public class JdbcRecordReader implements RecordReader {
     private boolean maxRowsEnabled;
 
     /**
+     * Parameter to set fetch size.
+     */
+    private int fetchSize;
+    private boolean fetchSizeEnabled;
+
+    /**
+     * Parameter to set the query timeout.
+     */
+    private int queryTimeout;
+    private boolean queryTimeoutEnabled;
+
+    /**
      * The current record number.
      */
     private long currentRecordNumber;
 
     /**
      * Create a JdbcRecordReader instance.
+     *
      * @param connection the connection to use to read data
-     * @param query the jdbc query to use to fetch data
+     * @param query      the jdbc query to use to fetch data
      */
     public JdbcRecordReader(final Connection connection, final String query) {
         this.connection = connection;
@@ -89,13 +106,24 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() throws RecordReaderOpeningException {
         currentRecordNumber = 0;
-        statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        if(maxRowsEnabled) {
-            statement.setMaxRows(maxRows);
+        try {
+            statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            if (maxRowsEnabled) {
+                statement.setMaxRows(maxRows);
+            }
+            if (fetchSizeEnabled) {
+                statement.setFetchSize(fetchSize);
+            }
+            if (queryTimeoutEnabled) {
+                statement.setQueryTimeout(queryTimeout);
+            }
+            resultSet = statement.executeQuery(query);
+
+        } catch (SQLException e) {
+            throw new RecordReaderOpeningException("Unable to open record reader", e);
         }
-        resultSet = statement.executeQuery(query);
     }
 
     @Override
@@ -116,18 +144,7 @@ public class JdbcRecordReader implements RecordReader {
 
     @Override
     public Long getTotalRecords() {
-        long rowCount = 0;
-
-        try {
-            if (resultSet.last()) {
-                rowCount = resultSet.getRow();
-                resultSet.beforeFirst();
-            }
-            return rowCount;
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "An exception occurred during fetching database record set size", e);
-            return null;
-        }
+        return null;
     }
 
     @Override
@@ -142,20 +159,26 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws Exception {
-        if (resultSet != null) {
-            resultSet.close();
+    public void close() throws RecordReaderClosingException {
+        try {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            throw new RecordReaderClosingException("Unable to close record reader", e);
         }
-        if (statement != null) {
-            statement.close();
-        }
-        if (connection != null) {
-            connection.close();
-        }
+
     }
 
     /**
      * Set the maximum number of rows to fetch.
+     *
      * @param maxRows the maximum number of rows to fetch
      */
     public void setMaxRows(int maxRows) {
@@ -163,4 +186,23 @@ public class JdbcRecordReader implements RecordReader {
         this.maxRowsEnabled = true;
     }
 
+    /**
+     * Set the statement fetch size.
+     *
+     * @param fetchSize the fetch size to set
+     */
+    public void setFetchSize(int fetchSize) {
+        this.fetchSize = fetchSize;
+        this.fetchSizeEnabled = true;
+    }
+
+    /**
+     * Set the statement query timeout.
+     *
+     * @param queryTimeout the query timeout in seconds
+     */
+    public void setQueryTimeout(int queryTimeout) {
+        this.queryTimeout = queryTimeout;
+        this.queryTimeoutEnabled = true;
+    }
 }

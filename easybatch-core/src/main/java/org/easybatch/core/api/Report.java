@@ -26,7 +26,7 @@ package org.easybatch.core.api;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
 
 /**
  * Class holding batch reporting data.
@@ -48,47 +48,45 @@ public class Report implements Serializable {
     // needed only for jmx monitoring
     private long currentRecordNumber;
 
-    private List<Long> filteredRecords;
+    private long filteredRecords;
 
-    private List<Long> ignoredRecords;
+    private long ignoredRecords;
 
-    private List<Long> rejectedRecords;
+    private long rejectedRecords;
 
-    private List<Long> errorRecords;
+    private long errorRecords;
 
-    private List<Long> successRecords;
-
-    private Object batchResult;
+    private long successRecords;
 
     private Status status;
 
-    public Report() {
-        filteredRecords = new ArrayList<Long>();
-        ignoredRecords = new ArrayList<Long>();
-        rejectedRecords = new ArrayList<Long>();
-        errorRecords = new ArrayList<Long>();
-        successRecords = new ArrayList<Long>();
-        status = Status.INITIALIZING;
+    private transient Engine engine;
+
+    private transient Object batchResult;
+
+    public Report(Engine engine) {
+        this.engine = engine;
+        this.status = Status.INITIALIZING;
     }
 
-    public void addFilteredRecord(final long recordNumber) {
-        filteredRecords.add(recordNumber);
+    public void incrementTotalFilteredRecords() {
+        filteredRecords++;
     }
 
-    public void addIgnoredRecord(final long recordNumber) {
-        ignoredRecords.add(recordNumber);
+    public void incrementTotalIgnoredRecord() {
+        ignoredRecords++;
     }
 
-    public void addRejectedRecord(final long recordNumber) {
-        rejectedRecords.add(recordNumber);
+    public void incrementTotalRejectedRecord() {
+        rejectedRecords++;
     }
 
-    public void addErrorRecord(final long recordNumber) {
-        errorRecords.add(recordNumber);
+    public void incrementTotalErrorRecord() {
+        errorRecords++;
     }
 
-    public void addSuccessRecord(final long recordNumber) {
-        successRecords.add(recordNumber);
+    public void incrementTotalSuccessRecord() {
+        successRecords++;
     }
 
     public void setTotalRecords(final Long totalRecords) {
@@ -97,26 +95,6 @@ public class Report implements Serializable {
 
     public Long getTotalRecords() {
         return totalRecords;
-    }
-
-    public List<Long> getFilteredRecords() {
-        return filteredRecords;
-    }
-
-    public List<Long> getIgnoredRecords() {
-        return ignoredRecords;
-    }
-
-    public List<Long> getRejectedRecords() {
-        return rejectedRecords;
-    }
-
-    public List<Long> getErrorRecords() {
-        return errorRecords;
-    }
-
-    public List<Long> getSuccessRecords() {
-        return successRecords;
     }
 
     public long getStartTime() {
@@ -167,24 +145,24 @@ public class Report implements Serializable {
         this.status = status;
     }
 
-    public int getFilteredRecordsCount() {
-        return filteredRecords.size();
+    public long getFilteredRecordsCount() {
+        return filteredRecords;
     }
 
-    public int getIgnoredRecordsCount() {
-        return ignoredRecords.size();
+    public long getIgnoredRecordsCount() {
+        return ignoredRecords;
     }
 
-    public int getRejectedRecordsCount() {
-        return rejectedRecords.size();
+    public long getRejectedRecordsCount() {
+        return rejectedRecords;
     }
 
-    public int getErrorRecordsCount() {
-        return errorRecords.size();
+    public long getErrorRecordsCount() {
+        return errorRecords;
     }
 
-    public int getSuccessRecordsCount() {
-        return successRecords.size();
+    public long getSuccessRecordsCount() {
+        return successRecords;
     }
 
     /*
@@ -192,7 +170,11 @@ public class Report implements Serializable {
      */
 
     private float percent(final float current, final float total) {
-        return (current / total) * 100;
+        return (current * 100) / total;
+    }
+
+    private void appendPercent(final StringBuilder stringBuilder, final float percent) {
+        stringBuilder.append(" (").append(percent).append("%)");
     }
 
     private float getFilteredRecordsPercent() {
@@ -223,6 +205,14 @@ public class Report implements Serializable {
      * Public utility methods to format report statistics
      */
 
+    public String getEngineName() {
+        return engine == null ? "N/A" : engine.getName();
+    }
+    
+    public String getExecutionId() {
+        return engine == null ? "N/A" : engine.getExecutionId();
+    }
+    
     public String getFormattedBatchDuration() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getBatchDuration()).append("ms");
@@ -240,8 +230,8 @@ public class Report implements Serializable {
     public String getFormattedFilteredRecords() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getFilteredRecordsCount());
-        if (totalRecords != null) {
-            sb.append(" (").append(getFilteredRecordsPercent()).append("%)");
+        if (totalRecords != null && totalRecords != 0) {
+            appendPercent(sb, getFilteredRecordsPercent());
         }
         return sb.toString();
     }
@@ -249,8 +239,8 @@ public class Report implements Serializable {
     public String getFormattedIgnoredRecords() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getIgnoredRecordsCount());
-        if (totalRecords != null) {
-            sb.append(" (").append(getIgnoredRecordsPercent()).append("%)");
+        if (totalRecords != null && totalRecords != 0) {
+            appendPercent(sb, getIgnoredRecordsPercent());
         }
         return sb.toString();
     }
@@ -258,8 +248,8 @@ public class Report implements Serializable {
     public String getFormattedRejectedRecords() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getRejectedRecordsCount());
-        if (totalRecords != null) {
-            sb.append(" (").append(getRejectedRecordsPercent()).append("%)");
+        if (totalRecords != null && totalRecords != 0) {
+            appendPercent(sb, getRejectedRecordsPercent());
         }
         return sb.toString();
     }
@@ -267,8 +257,8 @@ public class Report implements Serializable {
     public String getFormattedErrorRecords() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getErrorRecordsCount());
-        if (totalRecords != null) {
-            sb.append(" (").append(getErrorRecordsPercent()).append("%)");
+        if (totalRecords != null && totalRecords != 0) {
+            appendPercent(sb, getErrorRecordsPercent());
         }
         return sb.toString();
     }
@@ -276,8 +266,8 @@ public class Report implements Serializable {
     public String getFormattedSuccessRecords() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getSuccessRecordsCount());
-        if (totalRecords != null) {
-            sb.append(" (").append(getSuccessRecordsPercent()).append("%)");
+        if (totalRecords != null && totalRecords != 0) {
+            appendPercent(sb, getSuccessRecordsPercent());
         }
         return sb.toString();
     }
@@ -287,7 +277,7 @@ public class Report implements Serializable {
             return "N/A";
         }
         final StringBuilder sb = new StringBuilder();
-        sb.append( (float) getBatchDuration() / (float) totalRecords).append("ms");
+        sb.append((float) getBatchDuration() / (float) totalRecords).append("ms");
         return sb.toString();
     }
 
@@ -304,12 +294,14 @@ public class Report implements Serializable {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Batch Report:");
+        sb.append("\n\tEngine name = ").append(getEngineName());
+        sb.append("\n\tExecution Id = ").append(getExecutionId());
         sb.append("\n\tStart time = ").append(getFormattedStartTime());
         sb.append("\n\tEnd time = ").append(getFormattedEndTime());
-        sb.append("\n\tStatus = ").append(status);
         sb.append("\n\tBatch duration = ").append(getFormattedBatchDuration());
+        sb.append("\n\tStatus = ").append(status);
         sb.append("\n\tData source = ").append(dataSource);
-        sb.append("\n\tTotal records = ").append(totalRecords == null ? "N/A": totalRecords);
+        sb.append("\n\tTotal records = ").append(totalRecords == null ? "N/A" : totalRecords);
         sb.append("\n\tFiltered records = ").append(getFormattedFilteredRecords());
         sb.append("\n\tIgnored records = ").append(getFormattedIgnoredRecords());
         sb.append("\n\tRejected records = ").append(getFormattedRejectedRecords());

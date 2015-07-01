@@ -24,8 +24,8 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.api.ErrorRecordHandler;
 import org.easybatch.core.api.Record;
+import org.easybatch.core.api.handler.ErrorRecordHandler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,8 +43,8 @@ class NoOpErrorRecordHandler implements ErrorRecordHandler {
      * {@inheritDoc}
      */
     @Override
-    public void handle(final Record record, final Throwable e) {
-        LOGGER.log(Level.SEVERE, "Error while processing record " + record, e);
+    public void handle(final Record record, final Throwable throwable) {
+        LOGGER.log(Level.SEVERE, "An exception occurred while attempting to process record " + record, throwable);
     }
 
 }

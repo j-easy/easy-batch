@@ -24,14 +24,17 @@
 
 package org.easybatch.core.mapper;
 
+import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.core.api.TypeConverter;
-import org.easybatch.core.mapper.converter.*;
+import org.easybatch.core.converter.*;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -41,11 +44,12 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.lang.String.format;
+
 /**
  * A helper class that maps a record to a domain object instance.
  *
  * @param <T> the target domain object type
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class ObjectMapper<T> {
@@ -72,6 +76,7 @@ public class ObjectMapper<T> {
 
     /**
      * Construct an object mapper.
+     *
      * @param recordClass the target object type
      */
     public ObjectMapper(final Class<? extends T> recordClass) {
@@ -81,34 +86,15 @@ public class ObjectMapper<T> {
     }
 
     /**
-     * Initialize setters methods.
-     */
-    private void initializeSetters() {
-        setters = new HashMap<String, Method>();
-        try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(recordClass);
-            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-            for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-                setters.put(propertyDescriptor.getName(), propertyDescriptor.getWriteMethod());
-            }
-            //exclude property "class"
-            setters.remove("class");
-        } catch (IntrospectionException e) {
-            LOGGER.log(Level.SEVERE, "Unable to introspect target type " + recordClass.getName(), e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Map values to fields of the target object type.
      *
      * @param values fields values
      * @return A populated instance of the target type.
-     * @throws Exception thrown if values cannot be mapped to target object fields
+     * @throws RecordMappingException thrown if values cannot be mapped to target object fields
      */
-    public T mapObject(final Map<String, String> values) throws Exception {
+    public T mapObject(final Map<String, String> values) throws RecordMappingException {
 
-        T result = recordClass.newInstance();
+        T result = createInstance();
 
         // for each field
         for (String field : values.keySet()) {
@@ -116,32 +102,69 @@ public class ObjectMapper<T> {
             //get field raw value
             String value = values.get(field);
 
-            //convert the String raw value to the field type
-            Object typedValue = null;
-            Class<?> type = setters.get(field).getParameterTypes()[0];
-            TypeConverter typeConverter = typeConverters.get(type);
-            if (typeConverter != null) {
-                try {
-                    typedValue = typeConverter.convert(value);
-                } catch (Exception e) {
-                    throw new Exception("Unable to convert '" + value + "' to type " + type + " for field " + field, e);
-                }
-            } else {
-                LOGGER.log(Level.WARNING,
-                           "Type conversion not supported for type {0}, field {1} will be set to null (if object type) or default value (if primitive type)",
-                            new Object[]{type, field});
+            Method setter = setters.get(field);
+            if (setter == null) {
+                LOGGER.log(Level.WARNING, "No public setter found for field {0}, this field will be set to null (if object type) or default value (if primitive type)", field);
+                continue;
             }
 
-            //set the typed value to the object field
-            setters.get(field).invoke(result, typedValue);
+            Class<?> type = setter.getParameterTypes()[0];
+            TypeConverter typeConverter = typeConverters.get(type);
+            if (typeConverter == null) {
+                LOGGER.log(Level.WARNING,
+                        "Type conversion not supported for type {0}, field {1} will be set to null (if object type) or default value (if primitive type)",
+                        new Object[]{type, field});
+                continue;
+            }
+
+            if (value == null) {
+                LOGGER.log(Level.WARNING, "Attempting to convert null to type {0} for field {1}, this field will be set to null (if object type) or default value (if primitive type)", new Object[]{type, field});
+                continue;
+            }
+
+            convertValue(result, field, value, setter, type, typeConverter);
+
         }
 
         return result;
     }
 
-    /**
-     * Initialize default type converters.
-     */
+    private void initializeSetters() {
+        setters = new HashMap<String, Method>();
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(recordClass);
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            getSetters(propertyDescriptors);
+        } catch (IntrospectionException e) {
+            throw new BeanIntrospectionException("Unable to introspect target type " + recordClass.getName(), e);
+        }
+    }
+
+    private void getSetters(PropertyDescriptor[] propertyDescriptors) {
+        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+            setters.put(propertyDescriptor.getName(), propertyDescriptor.getWriteMethod());
+        }
+        //exclude property "class"
+        setters.remove("class");
+    }
+
+    private T createInstance() throws RecordMappingException {
+        try {
+            return recordClass.newInstance();
+        } catch (Exception e) {
+            throw new RecordMappingException("Unable to create a new instance of target type", e);
+        }
+    }
+
+    private void convertValue(T result, String field, String value, Method setter, Class<?> type, TypeConverter typeConverter) throws RecordMappingException {
+        try {
+            Object typedValue = typeConverter.convert(value);
+            setter.invoke(result, typedValue);
+        } catch (Exception e) {
+            throw new RecordMappingException(format("Unable to convert %s to type %s for field %s", value, type, field), e);
+        }
+    }
+
     private void initializeTypeConverters() {
         typeConverters = new HashMap<Class, TypeConverter>();
         typeConverters.put(AtomicInteger.class, new AtomicIntegerTypeConverter());
@@ -173,12 +196,29 @@ public class ObjectMapper<T> {
         typeConverters.put(String.class, new StringTypeConverter());
     }
 
-    /**
-     * Register a custom type converter.
-     * @param typeConverter the type converter to user
-     */
     public void registerTypeConverter(final TypeConverter typeConverter) {
-        typeConverters.put(recordClass, typeConverter);
+        //retrieve the target class name of the converter
+        Class<? extends TypeConverter> typeConverterClass = typeConverter.getClass();
+        Type[] genericInterfaces = typeConverterClass.getGenericInterfaces();
+        Type genericInterface = genericInterfaces[0];
+        if (!(genericInterface instanceof ParameterizedType)) {
+            LOGGER.log(Level.WARNING, "The type converter {0} should be a parametrized type", typeConverterClass.getName());
+            return;
+        }
+        ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
+        Type type = parameterizedType.getActualTypeArguments()[0];
+
+        // register the converter
+        try {
+            Class clazz = Class.forName(getClassName(type));
+            typeConverters.put(clazz, typeConverter);
+        } catch (ClassNotFoundException e) {
+            throw new TypeConverterRegistrationException("Unable to register custom type converter " + typeConverterClass.getName(), e);
+        }
+    }
+
+    private String getClassName(Type actualTypeArgument) {
+        return actualTypeArgument.toString().substring(6);
     }
 
 }

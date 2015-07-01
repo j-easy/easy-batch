@@ -36,7 +36,8 @@ class NoOpRecordProcessor implements RecordProcessor<Object, Object> {
     /**
      * {@inheritDoc}
      */
-    public Object processRecord(Object record) throws Exception {
+    @Override
+    public Object processRecord(Object record) {
         return record;
     }
 

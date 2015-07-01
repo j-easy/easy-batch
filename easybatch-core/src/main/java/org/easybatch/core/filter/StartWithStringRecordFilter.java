@@ -54,7 +54,7 @@ public class StartWithStringRecordFilter implements RecordFilter {
     }
 
     /**
-     * @param negate true if the filter should filter records that do not start with any of the given prefixes.
+     * @param negate   true if the filter should filter records that do not start with any of the given prefixes.
      * @param prefixes prefixes that cause the record to be filtered.
      */
     public StartWithStringRecordFilter(final boolean negate, final String... prefixes) {
@@ -65,11 +65,17 @@ public class StartWithStringRecordFilter implements RecordFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean filterRecord(final Record record) {
+        boolean result = doFilterRecord(record);
+        return negate ? !result: result;
+    }
+
+    private boolean doFilterRecord(Record record) {
         String payload = (String) record.getPayload();
         for (String prefix : prefixes) {
             if (payload.startsWith(prefix)) {
-                return !negate;
+                return true;
             }
         }
         return false;

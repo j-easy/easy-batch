@@ -25,7 +25,6 @@
 package org.easybatch.core.reader;
 
 import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.GenericRecord;
 
@@ -34,12 +33,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A convenient {@link org.easybatch.core.api.RecordReader} that reads data from a {@link java.util.List} of objects.<br/>
+ * A convenient {@link org.easybatch.core.api.RecordReader} that reads data from a {@link java.util.List} of objects.
+ * <p/>
+ * This reader returns {@link org.easybatch.core.record.GenericRecord} instances that should be mapped
+ * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects from the list.
  *
- * This reader returns {@link org.easybatch.core.record.GenericRecord} instances that should be mapped with {@link org.easybatch.core.mapper.GenericRecordMapper}
- *
- * in order to get the raw objects from the list.
- *
+ * @param <T> the type of objects contained in the list
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class ListRecordReader<T> implements RecordReader {
@@ -61,6 +60,7 @@ public class ListRecordReader<T> implements RecordReader {
 
     /**
      * Constructs a {@link ListRecordReader}.
+     *
      * @param dataSource The list data source
      */
     public ListRecordReader(final List<T> dataSource) {
@@ -69,7 +69,7 @@ public class ListRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         currentRecordNumber = 0;
     }
 
@@ -79,7 +79,7 @@ public class ListRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public Record<T> readNextRecord() {
+    public GenericRecord<T> readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new GenericRecord<T>(header, iterator.next());
     }
@@ -96,5 +96,6 @@ public class ListRecordReader<T> implements RecordReader {
 
     @Override
     public void close() {
+        // no op
     }
 }

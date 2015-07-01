@@ -24,15 +24,15 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.record.PoisonRecord;
-import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -43,11 +43,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@RunWith(MockitoJUnitRunner.class)
 public class RandomRecordDispatcherTest {
 
     private RandomRecordDispatcher randomRecordDispatcher;
 
     private BlockingQueue<Record> queue1, queue2;
+
+    @Mock
+    private Record record;
+
+    @Mock
+    private PoisonRecord poisonRecord;
 
     @Before
     public void setUp() throws Exception {
@@ -59,26 +66,13 @@ public class RandomRecordDispatcherTest {
     @Test
     public void regularRecordsShouldBeDispatchedRandomlyToOneOfTheQueues() throws Exception {
 
-        Header header = new Header(1l, "DataSource", new Date());
-        StringRecord record = new StringRecord(header, "test record");
         randomRecordDispatcher.dispatchRecord(record);
 
-        if(queue1.isEmpty()) {
+        if (queue1.isEmpty()) {
             assertThat(queue2).isNotEmpty().containsOnly(record);
-            assertThat(queue2.peek()).isNotNull().isInstanceOf(StringRecord.class);
-            Record record2 = queue2.poll();
-            assertThat(record2.getHeader().getNumber()).isEqualTo(1);
-            assertThat(record2.getPayload()).isEqualTo("test record");
-        }
-        if(!queue1.isEmpty()) {
+        } else {
             assertThat(queue2).isEmpty();
-            assertThat(queue2.peek()).isNull();
-
-            assertThat(queue1).isNotEmpty().containsOnly(record);
-            assertThat(queue1.peek()).isNotNull().isInstanceOf(StringRecord.class);
-            Record record1 = queue1.poll();
-            assertThat(record1.getHeader().getNumber()).isEqualTo(1);
-            assertThat(record1.getPayload()).isEqualTo("test record");
+            assertThat(queue1).containsOnly(record);
         }
 
     }
@@ -86,14 +80,10 @@ public class RandomRecordDispatcherTest {
     @Test
     public void poisonRecordsShouldBeBroadcastToAllQueues() throws Exception {
 
-        PoisonRecord poisonRecord = new PoisonRecord();
         randomRecordDispatcher.dispatchRecord(poisonRecord);
 
         assertThat(queue1).isNotEmpty().containsOnly(poisonRecord);
-        assertThat(queue1.peek()).isNotNull().isInstanceOf(PoisonRecord.class);
-
         assertThat(queue2).isNotEmpty().containsOnly(poisonRecord);
-        assertThat(queue2.peek()).isNotNull().isInstanceOf(PoisonRecord.class);
 
     }
 

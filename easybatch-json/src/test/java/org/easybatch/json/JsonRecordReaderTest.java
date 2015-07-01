@@ -28,6 +28,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -41,42 +44,65 @@ public class JsonRecordReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/tweets.json"));
+        jsonRecordReader = new JsonRecordReader(getDataSource("/tweets.json"));
         jsonRecordReader.open();
     }
 
     @Test
-    public void parsedJsonRecordPayloadShouldBeTheSameAsInInputFile() throws Exception {
+    public void whenTheDataSourceIsNotEmpty_ThenTheJsonRecordReaderShouldHaveNextRecord() throws Exception {
+        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
+    }
+
+    @Test
+    public void parsedJsonRecordPayloadShouldBeTheSameAsInTheDataSource() throws Exception {
 
         assertThat(jsonRecordReader.hasNextRecord()).isTrue();
 
-        String expectedJson1 = "{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}";
-        JsonRecord jsonRecord1 = jsonRecordReader.readNextRecord();
-        assertThat(jsonRecord1).isNotNull();
-        assertThat(jsonRecord1.getHeader().getNumber()).isEqualTo(1);
-        assertThat(jsonRecord1.getPayload()).isEqualTo(expectedJson1);
+        String expectedJson = "{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}";
+        JsonRecord jsonRecord = jsonRecordReader.readNextRecord();
+        assertThat(jsonRecord).isNotNull();
+        assertThat(jsonRecord.getHeader().getNumber()).isEqualTo(1);
+        assertThat(jsonRecord.getPayload()).isEqualTo(expectedJson);
 
         assertThat(jsonRecordReader.hasNextRecord()).isTrue();
 
-        String expectedJson2 = "{\"id\":2,\"user\":\"bar\",\"message\":\"Hi!\"}";
-        JsonRecord jsonRecord2 = jsonRecordReader.readNextRecord();
-        assertThat(jsonRecord2).isNotNull();
-        assertThat(jsonRecord2.getHeader().getNumber()).isEqualTo(2);
-        assertThat(jsonRecord2.getPayload()).isEqualTo(expectedJson2);
+        expectedJson = "{\"id\":2,\"user\":\"bar\",\"message\":\"Hi!\"}";
+        jsonRecord = jsonRecordReader.readNextRecord();
+        assertThat(jsonRecord).isNotNull();
+        assertThat(jsonRecord.getHeader().getNumber()).isEqualTo(2);
+        assertThat(jsonRecord.getPayload()).isEqualTo(expectedJson);
+
+        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
+
+        expectedJson = "{\"id\":3,\"user\":\"toto\",\"message\":\"yep ;-)\"}";
+        jsonRecord = jsonRecordReader.readNextRecord();
+        assertThat(jsonRecord).isNotNull();
+        assertThat(jsonRecord.getHeader().getNumber()).isEqualTo(3);
+        assertThat(jsonRecord.getPayload()).isEqualTo(expectedJson);
 
         assertThat(jsonRecordReader.hasNextRecord()).isFalse();
     }
 
     @Test
-    public void whenTheInputFileIsNotEmpty_ThenTheJsonRecordReaderShouldHaveNextRecord() throws Exception {
+    public void testEmbeddedObjectParsing() throws Exception {
+        String dataSource = "[{\"name\":\"foo\",\"address\":{\"zipcode\":1000,\"city\":\"brussels\"}}]";
+        jsonRecordReader.close();
+        jsonRecordReader = new JsonRecordReader(new ByteArrayInputStream(dataSource.getBytes()));
+        jsonRecordReader.open();
         assertThat(jsonRecordReader.hasNextRecord()).isTrue();
+        JsonRecord record = jsonRecordReader.readNextRecord();
+        assertThat(record.getPayload()).isEqualTo("{\"name\":\"foo\",\"address\":{\"zipcode\":1000,\"city\":\"brussels\"}}");
     }
 
     @Test
-    public void whenTheInputFileIsNotEmpty_ThenTheTotalRecordsCountShouldBeEqualToTheNumberOfRecordsInTheInputFile() throws Exception {
-        Long totalRecords = jsonRecordReader.getTotalRecords();
-        assertThat(totalRecords).isNotNull();
-        assertThat(totalRecords).isEqualTo(2);
+    public void testEmbeddedArrayParsing() throws Exception {
+        String dataSource = "[{\"friends\":[\"foo\",\"bar\"]}]";
+        jsonRecordReader.close();
+        jsonRecordReader = new JsonRecordReader(new ByteArrayInputStream(dataSource.getBytes()));
+        jsonRecordReader.open();
+        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
+        JsonRecord record = jsonRecordReader.readNextRecord();
+        assertThat(record.getPayload()).isEqualTo("{\"friends\":[\"foo\",\"bar\"]}");
     }
 
     /*
@@ -84,26 +110,31 @@ public class JsonRecordReaderTest {
      */
 
     @Test
-    public void whenTheInputFileIsEmpty_ThenTheJsonRecordReaderShouldHaveNoNextRecord() throws Exception {
+    public void whenTheDataSourceIsEmpty_ThenTheJsonRecordReaderShouldHaveNoNextRecord() throws Exception {
         jsonRecordReader.close();
-        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/empty.json"));
+        jsonRecordReader = new JsonRecordReader(getDataSource("/empty.json"));
         jsonRecordReader.open();
         assertThat(jsonRecordReader.hasNextRecord()).isFalse();
     }
 
-    @Test
-    public void whenTheInputFileIsEmpty_ThenTheTotalRecordsCountShouldBeEqualToZero() throws Exception {
+    @Test(expected = javax.json.stream.JsonParsingException.class) // TODO should be wrapped in an Easy Batch exception
+    public void whenJsonStreamIsIllformed_thenTheJsonRecordReaderShouldThrowAnException() throws Exception {
+        String dataSource = "[{\"name\":\"foo\",}]";// illegal trailing comma
         jsonRecordReader.close();
-        jsonRecordReader = new JsonRecordReader(this.getClass().getResourceAsStream("/empty.json"));
+        jsonRecordReader = new JsonRecordReader(new ByteArrayInputStream(dataSource.getBytes()));
         jsonRecordReader.open();
-        Long totalRecords = jsonRecordReader.getTotalRecords();
-        assertThat(totalRecords).isNotNull();
-        assertThat(totalRecords).isEqualTo(0);
+        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
+        jsonRecordReader.readNextRecord();
+
     }
 
     @After
     public void tearDown() throws Exception {
         jsonRecordReader.close();
+    }
+
+    private InputStream getDataSource(String fileName) {
+        return this.getClass().getResourceAsStream(fileName);
     }
 
 }

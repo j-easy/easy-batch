@@ -24,8 +24,10 @@
 
 package org.easybatch.tools.reporting;
 
+import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
+import org.easybatch.core.impl.EngineBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,39 +41,43 @@ import static org.junit.Assert.assertEquals;
 public class DefaultReportMergerTest {
 
     private ReportMerger reportMerger;
+    
+    private Engine engine1, engine2;
 
     @Before
     public void setUp() throws Exception {
         reportMerger = new DefaultReportMerger();
+        engine1 = EngineBuilder.aNewEngine().named("engine1").build();
+        engine2 = EngineBuilder.aNewEngine().named("engine2").build();
     }
 
     @Test
     public void testReportsMerging() throws Exception {
 
-        Report report1 = new Report();
+        Report report1 = new Report(engine1);
         long startTime1 = 1l;
         long endTime1 = 10l;
         report1.setTotalRecords(5l);
-        report1.addFilteredRecord(1);
-        report1.addIgnoredRecord(2);
-        report1.addRejectedRecord(3);
-        report1.addErrorRecord(4);
-        report1.addSuccessRecord(5);
+        report1.incrementTotalFilteredRecords();
+        report1.incrementTotalIgnoredRecord();
+        report1.incrementTotalRejectedRecord();
+        report1.incrementTotalErrorRecord();
+        report1.incrementTotalSuccessRecord();
         report1.setStartTime(startTime1);
         report1.setEndTime(endTime1);
         report1.setBatchResult("result1");
         report1.setDataSource("datasource1");
         report1.setStatus(Status.ABORTED);
 
-        Report report2 = new Report();
+        Report report2 = new Report(engine2);
         long startTime2 = 2l;
         long endTime2 = 11l;
         report2.setTotalRecords(5l);
-        report2.addFilteredRecord(6);
-        report2.addIgnoredRecord(7);
-        report2.addRejectedRecord(8);
-        report2.addErrorRecord(9);
-        report2.addSuccessRecord(10);
+        report2.incrementTotalFilteredRecords();
+        report2.incrementTotalIgnoredRecord();
+        report2.incrementTotalRejectedRecord();
+        report2.incrementTotalErrorRecord();
+        report2.incrementTotalSuccessRecord();
         report2.setStartTime(startTime2);
         report2.setEndTime(endTime2);
         report2.setBatchResult("result2");

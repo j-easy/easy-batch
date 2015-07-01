@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
+import static java.lang.String.format;
+
 /**
  * A record dispatcher that dispatches records randomly to a list of queues.
  *
@@ -60,6 +62,7 @@ public class RandomRecordDispatcher extends AbstractRecordDispatcher {
 
     /**
      * Create a {@link RandomRecordDispatcher} instance.
+     *
      * @param queues the list of queues to which records should be dispatched
      */
     public RandomRecordDispatcher(List<BlockingQueue<Record>> queues) {
@@ -70,14 +73,21 @@ public class RandomRecordDispatcher extends AbstractRecordDispatcher {
     }
 
     @Override
-    public void dispatchRecord(Record record) throws Exception {
+    public void dispatchRecord(Record record) throws RecordDispatchingException {
         // when receiving a poising record, broadcast it to all queues
         if (record instanceof PoisonRecord) {
             broadcastRecordDispatcher.dispatchRecord(record);
             return;
         }
         //dispatch record randomly to one of the queues
-        queues.get(random.nextInt(queuesNumber)).put(record);
+        BlockingQueue<Record> queue = null;
+        try {
+            queue = queues.get(random.nextInt(queuesNumber));
+            queue.put(record);
+        } catch (InterruptedException e) {
+            String message = format("Unable to put record %s in queue %s", record, queue);
+            throw new RecordDispatchingException(message, e);
+        }
     }
 
 }

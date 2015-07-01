@@ -24,11 +24,11 @@
 
 package org.easybatch.core.impl;
 
+import org.easybatch.core.api.Record;
+import org.easybatch.core.api.handler.IgnoredRecordHandler;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.easybatch.core.api.IgnoredRecordHandler;
-import org.easybatch.core.api.Record;
 
 /**
  * A No Operation {@link IgnoredRecordHandler} implementation used by default by easy batch engine.
@@ -44,15 +44,15 @@ class NoOpIgnoredRecordHandler implements IgnoredRecordHandler {
      */
     @Override
     public void handle(final Record record) {
-        LOGGER.log(Level.SEVERE, "The record mapper returned null for record {0}, it will be ignored", record);
+        LOGGER.log(Level.SEVERE, "The record mapper returned null for record {0}, this record will be ignored", record);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void handle(final Record record, final Throwable e) {
-        LOGGER.log(Level.SEVERE, "Record " + record + " has been ignored. Root exception:", e);
+    public void handle(final Record record, final Throwable throwable) {
+        LOGGER.log(Level.SEVERE, "An exception occurred while attempting to map record " + record, throwable);
     }
 
 }

@@ -26,20 +26,28 @@ package org.easybatch.flatfile;
 
 import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.api.RecordReaderOpeningException;
 import org.easybatch.core.record.StringRecord;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A {@link RecordReader} implementation that read data from a flat file.
+ * <p/>
+ * This reader produces {@link StringRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class FlatFileRecordReader implements RecordReader {
+
+    private static final Logger LOGGER = Logger.getLogger(FlatFileRecordReader.class.getName());
 
     /**
      * The current read record number.
@@ -70,6 +78,7 @@ public class FlatFileRecordReader implements RecordReader {
 
     /**
      * Constructs a flat file record reader.
+     *
      * @param input the input file
      * @throws FileNotFoundException thrown if the file does not exist
      */
@@ -79,7 +88,8 @@ public class FlatFileRecordReader implements RecordReader {
 
     /**
      * Constructs a flat file record reader.
-     * @param input the input file
+     *
+     * @param input       the input file
      * @param charsetName the encoding to use to read the file
      * @throws FileNotFoundException thrown if the file does not exist
      */
@@ -92,6 +102,7 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
+    @Override
     public StringRecord readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new StringRecord(header, scanner.nextLine());
@@ -100,13 +111,23 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getTotalRecords() {
         long totalRecords = 0;
-        while (recordCounterScanner.hasNextLine()) {
-            totalRecords++;
-            recordCounterScanner.nextLine();
+        try {
+            recordCounterScanner = new Scanner(new FileInputStream(input), charsetName);
+            while (recordCounterScanner.hasNextLine()) {
+                totalRecords++;
+                recordCounterScanner.nextLine();
+            }
+        } catch (FileNotFoundException e) {
+            LOGGER.log(Level.SEVERE, "Unable to calculate total records number", e);
+            return null;
+        } finally {
+            if (recordCounterScanner != null) {
+                recordCounterScanner.close();
+            }
         }
-        recordCounterScanner.close();
         return totalRecords;
     }
 
@@ -118,15 +139,20 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
-    public void open() throws Exception {
+    @Override
+    public void open() throws RecordReaderOpeningException {
         currentRecordNumber = 0;
-        scanner = new Scanner(input, charsetName);
-        recordCounterScanner = new Scanner(input);
+        try {
+            scanner = new Scanner(new FileInputStream(input), charsetName);
+        } catch (FileNotFoundException e) {
+            throw new RecordReaderOpeningException("Unable to find file " + input.getName(), e);
+        }
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasNextRecord() {
         return scanner.hasNextLine();
     }
@@ -134,8 +160,11 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void close() {
-        scanner.close();
+        if (scanner != null) {
+            scanner.close();
+        }
     }
 
 }

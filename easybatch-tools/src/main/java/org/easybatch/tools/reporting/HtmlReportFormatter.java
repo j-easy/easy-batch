@@ -24,11 +24,11 @@
 
 package org.easybatch.tools.reporting;
 
-import org.easybatch.core.api.Report;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
+import org.easybatch.core.api.Report;
 
 import java.io.StringWriter;
 import java.util.Properties;
@@ -56,6 +56,7 @@ public class HtmlReportFormatter implements ReportFormatter<String> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String formatReport(final Report report) {
         Template template = velocityEngine.getTemplate("/org/easybatch/tools/reporting/HtmlReport.vm");
         StringWriter stringWriter = new StringWriter();

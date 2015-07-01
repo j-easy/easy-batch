@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.quartz;
 
-import org.easybatch.core.impl.Engine;
+import org.easybatch.core.api.Engine;
 import org.quartz.Job;
 import org.quartz.Scheduler;
 import org.quartz.spi.JobFactory;
@@ -35,20 +35,11 @@ import org.quartz.spi.TriggerFiredBundle;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BatchJobFactory implements JobFactory {
-
-    /**
-     * Batch instance.
-     */
-    private Engine engine;
-
-    public BatchJobFactory(final Engine engine) {
-        this.engine = engine;
-    }
+class BatchJobFactory implements JobFactory {
 
     @Override
     public Job newJob(final TriggerFiredBundle bundle, final Scheduler scheduler) {
-        return new BatchJob(engine);
+        return new BatchJob((Engine) bundle.getJobDetail().getJobDataMap().get("engine"));
     }
 
 }

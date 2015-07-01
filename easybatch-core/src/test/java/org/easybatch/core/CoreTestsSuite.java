@@ -25,13 +25,13 @@
 package org.easybatch.core;
 
 import org.easybatch.core.api.ReportTest;
+import org.easybatch.core.converter.*;
 import org.easybatch.core.dispatcher.*;
-import org.easybatch.core.impl.EngineTest;
-import org.easybatch.core.mapper.converter.*;
 import org.easybatch.core.filter.*;
+import org.easybatch.core.impl.*;
+import org.easybatch.core.mapper.GenericRecordMapperTest;
 import org.easybatch.core.mapper.ObjectMapperTest;
-import org.easybatch.core.reader.FileRecordReaderTest;
-import org.easybatch.core.reader.ListRecordReaderTest;
+import org.easybatch.core.reader.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -41,12 +41,16 @@ import org.junit.runners.Suite;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses( {
+@Suite.SuiteClasses({
         // reader
         FileRecordReaderTest.class,
         ListRecordReaderTest.class,
+        QueueRecordReaderTest.class,
+        StringRecordReaderTest.class,
+        CliRecordReaderTest.class,
         // mapper
         ObjectMapperTest.class,
+        GenericRecordMapperTest.class,
         AtomicIntegerTypeConverterTest.class,
         AtomicLongTypeConverterTest.class,
         BigDecimalTypeConverterTest.class,
@@ -81,7 +85,12 @@ import org.junit.runners.Suite;
         // api
         ReportTest.class,
         // impl
-        EngineTest.class
+        EngineImplTest.class,
+        FilterChainTest.class,
+        ValidationPipelineTest.class,
+        ProcessingPipelineTest.class,
+        LocalEventManagerTest.class
+
 })
 public class CoreTestsSuite {
 }

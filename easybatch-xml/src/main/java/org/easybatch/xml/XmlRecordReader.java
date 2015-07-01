@@ -24,21 +24,22 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.api.*;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.EndDocument;
-import javax.xml.stream.events.XMLEvent;
+import javax.xml.stream.events.*;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A record reader that reads xml records from an xml file.
+ * A record reader that reads xml records from an xml stream.
+ * <p/>
+ * This reader produces {@link XmlRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -72,9 +73,13 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() throws RecordReaderOpeningException {
         currentRecordNumber = 0;
-        xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream);
+        try {
+            xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream);
+        } catch (XMLStreamException e) {
+            throw new RecordReaderOpeningException("Unable to open record reader", e);
+        }
     }
 
     @Override
@@ -94,76 +99,114 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public XmlRecord readNextRecord() throws Exception {
+    public XmlRecord readNextRecord() throws RecordReadingException {
         StringBuilder stringBuilder = new StringBuilder("");
-        while (!nextTagIsRootElementEnd()) {
-            stringBuilder.append(xmlEventReader.nextEvent().toString());
+        try {
+            while (!nextTagIsRootElementEnd()) {
+                XMLEvent xmlEvent = xmlEventReader.nextEvent();
+                if (xmlEvent.isStartElement()) {
+                    escapeStartElementAttributes(stringBuilder, xmlEvent);
+                } else if (xmlEvent.isEndElement()) {
+                    writeEndElement(stringBuilder, xmlEvent);
+                } else {
+                    stringBuilder.append(xmlEvent.toString());
+                }
+            }
+            writeEndElement(stringBuilder, xmlEventReader.nextEvent());
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            return new XmlRecord(header, stringBuilder.toString());
+        } catch (XMLStreamException e) {
+            throw new RecordReadingException("Unable to read next record", e);
         }
-        //append root element end tag
-        stringBuilder.append(xmlEventReader.nextEvent().toString());
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new XmlRecord(header, stringBuilder.toString());
     }
 
     @Override
     public Long getTotalRecords() {
-        long totalRecords = 0;
-        XMLEventReader totalRecordsXmlEventReader = null;
-        try {
-            totalRecordsXmlEventReader =
-                    XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream);
-            XMLEvent event;
-            while (totalRecordsXmlEventReader.hasNext()) {
-                event = totalRecordsXmlEventReader.nextEvent();
-                if (event.isStartElement() && event.asStartElement().getName().toString().equals(rootElementName)) {
-                    totalRecords++;
-                }
-            }
-        } catch (XMLStreamException e) {
-            LOGGER.log(Level.SEVERE, "Unable to read data from xml stream " + xmlInputStream, e);
-            return null;
-        } finally {
-            if (totalRecordsXmlEventReader != null) {
-                try {
-                    totalRecordsXmlEventReader.close();
-                } catch (XMLStreamException e) {
-                    LOGGER.log(Level.SEVERE, "An exception occurred during closing xml total record reader", e);
-                }
-            }
-        }
-        return totalRecords;
+        return null;
     }
 
     @Override
     public String getDataSourceName() {
-        return "XML stream: " + xmlInputStream;
+        return "XML stream";
     }
 
     @Override
-    public void close() throws Exception {
-        if (xmlEventReader != null) {
-            xmlEventReader.close();
+    public void close() throws RecordReaderClosingException {
+        try {
+            if (xmlEventReader != null) {
+                xmlEventReader.close();
+            }
+        } catch (XMLStreamException e) {
+            throw new RecordReaderClosingException("Unable to close record reader", e);
         }
     }
 
     /**
      * Utility method to check if the next tag matches a start tag of the root element.
+     *
      * @return true if the next tag matches a start element of the root element, false else
-     * @throws Exception thrown if no able to peek the next xml element
+     * @throws XMLStreamException thrown if no able to peek the next xml element
      */
-    private boolean nextTagIsRootElementStart() throws Exception {
+    private boolean nextTagIsRootElementStart() throws XMLStreamException {
         return xmlEventReader.peek().isStartElement() &&
-               xmlEventReader.peek().asStartElement().getName().toString().equalsIgnoreCase(rootElementName);
+                xmlEventReader.peek().asStartElement().getName().getLocalPart().equalsIgnoreCase(rootElementName);
     }
 
     /**
      * Utility method to check if the next tag matches an end tag of the root element.
+     *
      * @return true if the next tag matches an end tag of the root element, false else
-     * @throws Exception thrown if no able to peek the next xml element
+     * @throws XMLStreamException thrown if no able to peek the next xml element
      */
-    private boolean nextTagIsRootElementEnd() throws Exception {
+    private boolean nextTagIsRootElementEnd() throws XMLStreamException {
         return xmlEventReader.peek().isEndElement() &&
-                xmlEventReader.peek().asEndElement().getName().toString().equalsIgnoreCase(rootElementName);
+                xmlEventReader.peek().asEndElement().getName().getLocalPart().equalsIgnoreCase(rootElementName);
+    }
+
+    /**
+     * Write end element.
+     *
+     * @param stringBuilder the string builder to write element into.
+     * @throws XMLStreamException thrown when an exception occurs during xml streaming
+     */
+    private void writeEndElement(StringBuilder stringBuilder, XMLEvent xmlEvent) throws XMLStreamException {
+        if (xmlEvent.isEndElement()) {
+            EndElement endElement = xmlEvent.asEndElement();
+            stringBuilder.append("</").append(endElement.getName().getLocalPart()).append(">");
+        }
+    }
+
+    /**
+     * Escape values of start element attributes.
+     *
+     * @param stringBuilder the builder in which writes escaped attributes.
+     * @param xmlEvent      the start element to escape
+     */
+    private void escapeStartElementAttributes(StringBuilder stringBuilder, XMLEvent xmlEvent) {
+        StartElement startElement = xmlEvent.asStartElement();
+        stringBuilder.append("<").append(startElement.getName().getLocalPart());
+        Iterator<Attribute> iterator = startElement.getAttributes();
+        while (iterator.hasNext()) {
+            Attribute attribute = iterator.next();
+            stringBuilder.append(" ")
+                    .append(attribute.getName())
+                    .append("='")
+                    .append(escape(attribute.getValue()))
+                    .append("'");
+        }
+        stringBuilder.append(">");
+    }
+
+    /**
+     * Escape the xml content. Only &, " and ' need to be escaped.
+     *
+     * @param xmlToEscape the xml content to escape
+     * @return the escaped xml
+     */
+    private String escape(String xmlToEscape) {
+        return xmlToEscape.replaceAll("&", "&amp;")
+                .replaceAll("'", "&apos;")
+                .replaceAll("\"", "&quot;");
     }
 
 }

@@ -26,9 +26,12 @@ package org.easybatch.xml;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.api.RecordMappingException;
+import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -39,7 +42,6 @@ import java.io.File;
  * A record mapper that maps xml records to domain objects annotated with JaxB2 annotations.
  *
  * @param <T> the target domain object type
- *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class XmlRecordMapper<T> implements RecordMapper<T> {
@@ -56,21 +58,24 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Creates an XmlRecordMapper. Using this constructor, no validation against an xsd will be applied.
+     *
      * @param type the target domain object type.
-     * @throws Exception thrown if an error occurs during the creation of Jaxb context.
+     * @throws JAXBException thrown if an error occurs during the creation of Jaxb context.
      */
-    public XmlRecordMapper(Class<? extends T> type) throws Exception {
+    public XmlRecordMapper(Class<? extends T> type) throws JAXBException {
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
     }
 
     /**
-     *  Creates an XmlRecordMapper.
+     * Creates an XmlRecordMapper.
+     *
      * @param type the target domain object type.
-     * @param xsd the xsd file against which xml records will be validated
-     * @throws Exception thrown if an error occurs during the creation of Jaxb context.
+     * @param xsd  the xsd file against which xml records will be validated
+     * @throws JAXBException thrown if an error occurs during the creation of Jaxb context.
+     * @throws SAXException  thrown if an error occurs during the schema parsing.
      */
-    public XmlRecordMapper(Class<? extends T> type, File xsd) throws Exception {
+    public XmlRecordMapper(Class<? extends T> type, File xsd) throws JAXBException, SAXException {
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -89,12 +94,15 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
     }
 
     @Override
-    public T mapRecord(final Record record) throws Exception {
+    public T mapRecord(final Record record) throws RecordMappingException {
 
         XmlRecord xmlRecord = (XmlRecord) record;
 
-        //return mapped object
-        return (T) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(xmlRecord.getPayload().getBytes()));
+        try {
+            return (T) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(xmlRecord.getPayload().getBytes()));
+        } catch (JAXBException e) {
+            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
+        }
 
     }
 

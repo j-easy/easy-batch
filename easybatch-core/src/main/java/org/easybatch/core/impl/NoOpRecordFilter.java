@@ -37,6 +37,7 @@ class NoOpRecordFilter implements RecordFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean filterRecord(final Record record) {
         return false;
     }

@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
+import static java.lang.String.format;
+
 /**
  * A record dispatcher that dispatches records to a list of queues based on their content.
  *
@@ -60,26 +62,32 @@ public class ContentBasedRecordDispatcher extends AbstractRecordDispatcher {
     }
 
     @Override
-    public void dispatchRecord(Record record) throws Exception {
+    public void dispatchRecord(final Record record) throws RecordDispatchingException {
         // when receiving a poising record, broadcast it to all queues
         if (record instanceof PoisonRecord) {
             broadcastRecordDispatcher.dispatchRecord(record);
             return;
         }
 
-        for (Predicate predicate : queueMap.keySet()) {
-            //check if the record meets a given predicate
-            if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
-                //if so, put it in the mapped queue
-                queueMap.get(predicate).put(record);
-                return;
+        try {
+            for (Predicate predicate : queueMap.keySet()) {
+                //check if the record meets a given predicate
+                if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
+                    //if so, put it in the mapped queue
+                    queueMap.get(predicate).put(record);
+                    return;
+                }
             }
+            //if the record does not match any predicate, then put it in the default queue
+            BlockingQueue<Record> defaultQueue = queueMap.get(new DefaultPredicate());
+            if (defaultQueue != null) {
+                defaultQueue.put(record);
+            }
+        } catch (InterruptedException e) {
+            String message = format("Unable to put record %s in queue", record);
+            throw new RecordDispatchingException(message, e);
         }
-        //if the record does not match any predicate, then put it in the default queue
-        BlockingQueue<Record> defaultQueue = queueMap.get(new DefaultPredicate());
-        if (defaultQueue != null) {
-            defaultQueue.put(record);
-        }
+
     }
 
 }

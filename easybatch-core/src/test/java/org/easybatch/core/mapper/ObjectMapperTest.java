@@ -24,7 +24,9 @@
 
 package org.easybatch.core.mapper;
 
+import org.easybatch.core.api.TypeConverter;
 import org.easybatch.core.beans.ExtendedPerson;
+import org.easybatch.core.beans.Gender;
 import org.easybatch.core.beans.Person;
 import org.junit.Test;
 
@@ -33,9 +35,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 /**
  * Unit test class for {@link ObjectMapper}.
+ *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class ObjectMapperTest {
@@ -93,6 +97,54 @@ public class ObjectMapperTest {
         assertThat(new SimpleDateFormat("yyyy-MM-dd").format(extendedPerson.getBirthDate())).isEqualTo("1990-12-12");
         assertThat(extendedPerson.isMarried()).isTrue();
         assertThat(extendedPerson.getNickName()).isEqualTo("FB");
+    }
+
+    @Test
+    public void whenACustomTypeConverterIsRegistered_ThenItShouldBeUsedToConvertTheCustomType() throws Exception {
+
+        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class);
+        mapper.registerTypeConverter(new TypeConverter<Gender>() {
+            @Override
+            public Gender convert(String value) {
+                return Gender.valueOf(value.toUpperCase());
+            }
+        });
+
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("gender", "MALE");
+
+        Person person = mapper.mapObject(values);
+
+        assertThat(person.getGender()).isNotNull().isEqualTo(Gender.MALE);
+    }
+
+    @Test
+    public void whenASetterDoesNotExist_ThenShouldLogAWarning() throws Exception {
+
+        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class);
+
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("nickName", "foo");
+
+        try {
+            Person person = mapper.mapObject(values);
+            assertThat(person).isNotNull();
+        } catch (Exception e) {
+            fail("Should not throw an exception even if the setter does not exist");
+        }
+    }
+
+    @Test
+    public void whenAttemptingToSetANullValue_ThenShouldNotCallTheSetter() throws Exception {
+
+        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class);
+
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("age", null);
+
+        Person person = mapper.mapObject(values);
+        assertThat(person).isNotNull();
+        assertThat(person.getAge()).isEqualTo(0);
     }
 
 }

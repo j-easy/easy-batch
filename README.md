@@ -1,5 +1,6 @@
 ## What is Easy Batch?
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/benas/easy-batch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/EasyBatch/easybatch-framework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
 Easy Batch is a framework that aims to simplify batch processing with Java.
 
@@ -27,10 +28,10 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 [http://www.easybatch.org](http://www.easybatch.org)
 
 ### Continuous integration
-[Jenkins job @ cloudbees.com](https://buildhive.cloudbees.com/job/benas/job/easy-batch/)
+[Jenkins job @ cloudbees.com](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/)
 
 ### Agile Board
-[Backlog items @ waffle.io](https://waffle.io/benas/easy-batch)
+[Backlog items @ waffle.io](https://waffle.io/easybatch/easybatch-framework)
 
 ### Presentation slides
 [https://speakerdeck.com/benas/easy-batch](https://speakerdeck.com/benas/easy-batch)
@@ -46,31 +47,65 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 
 ## Current version
 
-* The current stable version is 3.0.0: [![Build Status](https://buildhive.cloudbees.com/job/benas/job/easy-batch/badge/icon)](https://buildhive.cloudbees.com/job/benas/job/easy-batch/)
-* The current development version is 3.0.1-SNAPSHOT
+* The current stable version is 3.0.3
+* The current development version is 3.1.0-SNAPSHOT : [![Build Status](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/badge/icon)](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/)
+
+If you would like to use the snapshot version, you need to add the following repository in your `pom.xml` file:
+
+```xml
+<repositories>
+    <repository>
+        <id>ossrh</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+</repositories>
+```
 
 ## Contribution
 
 You are welcome to contribute to the project with pull requests on GitHub.
 
-If you believe you found a bug, please use the [issue tracker](https://github.com/benas/easy-batch/issues).
+If you believe you found a bug, please use the [issue tracker](https://github.com/easybatch/easybatch-framework/issues).
+It would be great to attach a JUnit test that fails with the current version.
+And you will be an awesome contributor if you send a pull request with a patch that fixes the bug!
 
-It would be great to attach a JUnit test that fails and it would be awesome to send a pull request with a patch that fixes the bug!
-
-For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or chat with the team on [Gitter](https://gitter.im/benas/easy-batch).
+For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or chat with the team on [Gitter](https://gitter.im/EasyBatch/easybatch-framework).
 
 ## Awesome contributors
 
 * [ammachado](https://github.com/ammachado)
 * [anandhi](https://github.com/anandhi)
 * [chellan](https://github.com/chellan)
+* [gs-spadmanabhan](https://github.com/gs-spadmanabhan)
+* [imranrajjad](https://github.com/imranrajjad)
 * [jawher](https://github.com/jawher)
+* [jlcanibe](https://github.com/jlcanibe)
 * [natlantisprog](https://github.com/natlantisprog)
 * [nicopatch](https://github.com/nicopatch)
 * [nihed](https://github.com/nihed)
 * [xenji](https://github.com/xenji)
 
 Thank you all for your contributions!
+
+## Acknowledgments
+
+### JetBrains
+
+Many thanks to [JetBrains](https://www.jetbrains.com/) for providing a free license of [IntelliJ IDEA](https://www.jetbrains.com/idea/) to kindly support the development of Easy Batch.
+
+![IntelliJ IDEA](https://www.jetbrains.com/idea/docs/logo_intellij_idea.png)
+
+### YourKit
+
+Many thanks to [YourKit, LLC](https://www.yourkit.com/) for providing a free license of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/index.jsp) to kindly support the development of Easy Batch.
+
+![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)
+
+### CloudBees
+
+Many thanks to [CloudBees](https://www.cloudbees.com) for providing a free [Jenkins](http://jenkins-ci.org/) service to support continuous integration for open source projects.
+
+![CloudBees](https://www.cloudbees.com/sites/default/files/styles/large/public/Button-Powered-by-CB.png)
 
 ## License
 

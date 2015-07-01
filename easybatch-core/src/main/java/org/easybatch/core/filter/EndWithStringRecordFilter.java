@@ -54,7 +54,7 @@ public class EndWithStringRecordFilter implements RecordFilter {
     }
 
     /**
-     * @param negate true if the filter should filter records that do not end with any of the given suffixes.
+     * @param negate   true if the filter should filter records that do not end with any of the given suffixes.
      * @param suffixes suffixes that cause the record to be filtered.
      */
     public EndWithStringRecordFilter(final boolean negate, final String... suffixes) {
@@ -65,11 +65,17 @@ public class EndWithStringRecordFilter implements RecordFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean filterRecord(final Record record) {
+        boolean result = doFilterRecord(record);
+        return negate ? !result : result;
+    }
+
+    private boolean doFilterRecord(Record record) {
         String payload = (String) record.getPayload();
         for (String prefix : suffixes) {
             if (payload.endsWith(prefix)) {
-                return !negate;
+                return true;
             }
         }
         return false;

@@ -24,8 +24,10 @@
 
 package org.easybatch.tools.reporting;
 
+import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
+import org.easybatch.core.impl.EngineBuilder;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -49,7 +51,7 @@ public class HtmlReportFormatterTest {
     private static long START_TIME;
     private static long END_TIME;
 
-    static{
+    static {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2015, Calendar.JANUARY, 1, 1, 0, 0);
         START_TIME = calendar.getTime().getTime();
@@ -58,18 +60,24 @@ public class HtmlReportFormatterTest {
 
     @Before
     public void setUp() throws Exception {
+        Engine engine = EngineBuilder.aNewEngine().build();
         reportFormatter = new HtmlReportFormatter();
-        report = new Report();
+        report = new Report(engine);
         report.setStartTime(START_TIME);
         report.setEndTime(END_TIME);
         report.setStatus(Status.FINISHED);
         report.setDataSource("In-Memory String");
         report.setTotalRecords(10l);
-        report.addFilteredRecord(1);report.addFilteredRecord(2);
-        report.addIgnoredRecord(3);report.addIgnoredRecord(4);
-        report.addRejectedRecord(5);report.addRejectedRecord(6);
-        report.addErrorRecord(7);report.addErrorRecord(8);
-        report.addSuccessRecord(9);report.addSuccessRecord(10);
+        report.incrementTotalFilteredRecords();
+        report.incrementTotalFilteredRecords();
+        report.incrementTotalIgnoredRecord();
+        report.incrementTotalIgnoredRecord();
+        report.incrementTotalRejectedRecord();
+        report.incrementTotalRejectedRecord();
+        report.incrementTotalErrorRecord();
+        report.incrementTotalErrorRecord();
+        report.incrementTotalSuccessRecord();
+        report.incrementTotalSuccessRecord();
     }
 
     @Ignore("TODO: Contents are identical but assertion fails due to different whitespaces")
@@ -83,7 +91,7 @@ public class HtmlReportFormatterTest {
         }
 
         String expectedResult = stringBuilder.toString();
-        assertThat(result).isEqualTo(expectedResult);
+        assertThat(result).isXmlEqualTo(expectedResult);
     }
 
 }

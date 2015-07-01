@@ -25,7 +25,6 @@
 package org.easybatch.core.reader;
 
 import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.StringRecord;
 
@@ -34,6 +33,8 @@ import java.util.Scanner;
 
 /**
  * A convenient {@link RecordReader} that reads data from a String.
+ * <p/>
+ * This reader produces {@link StringRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -63,6 +64,7 @@ public class StringRecordReader implements RecordReader {
 
     /**
      * Constructs a StringRecordReader.
+     *
      * @param content The String data source
      */
     public StringRecordReader(final String content) {
@@ -70,7 +72,7 @@ public class StringRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         currentRecordNumber = 0;
         scanner = new Scanner(content);
         recordCounterScanner = new Scanner(content);
@@ -82,7 +84,7 @@ public class StringRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readNextRecord() {
+    public StringRecord readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new StringRecord(header, scanner.nextLine());
     }

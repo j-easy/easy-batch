@@ -24,8 +24,6 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.flatfile.dsv.DelimitedRecordMapperTest;
-import org.easybatch.flatfile.flr.FixedLengthRecordMapperTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -35,9 +33,10 @@ import org.junit.runners.Suite;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses( {
+@Suite.SuiteClasses({
         DelimitedRecordMapperTest.class,
         FixedLengthRecordMapperTest.class,
-        FlatFileRecordReaderTest.class})
+        FlatFileRecordReaderTest.class,
+        FlatFileIntegrationTest.class})
 public class FlatFileTestsSuite {
 }
