@@ -118,6 +118,20 @@ public final class EngineBuilder {
     }
 
     /**
+     * Set the limit number of records to process by the engine.
+     *
+     * @param number the limit number of records to process
+     * @return the engine builder
+     */
+    public EngineBuilder limit(final long number) {
+        if (number < 1) {
+            throw new IllegalArgumentException("The limit number of records should be at least 1");
+        }
+        engine.setLimit(number);
+        return this;
+    }
+
+    /**
      * Register a record reader.
      *
      * @param recordReader the record reader to register

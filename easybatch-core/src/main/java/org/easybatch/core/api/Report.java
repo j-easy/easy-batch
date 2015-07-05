@@ -28,6 +28,8 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
+
 /**
  * Class holding batch reporting data.
  *
@@ -61,6 +63,8 @@ public class Report implements Serializable {
     private long successRecords;
 
     private Status status;
+
+    private long limit;
 
     private transient Engine engine;
 
@@ -133,6 +137,14 @@ public class Report implements Serializable {
 
     public void setCurrentRecordNumber(final long currentRecordNumber) {
         this.currentRecordNumber = currentRecordNumber;
+    }
+
+    public long getLimit() {
+        return limit;
+    }
+
+    public void setLimit(long limit) {
+        this.limit = limit;
     }
 
     public Object getBatchResult() {
@@ -324,6 +336,9 @@ public class Report implements Serializable {
         sb.append("\n\tEnd time = ").append(getFormattedEndTime());
         sb.append("\n\tBatch duration = ").append(getFormattedBatchDuration());
         sb.append("\n\tStatus = ").append(status);
+        if( limit != DEFAULT_LIMIT) {
+            sb.append("\n\tRecords limit = ").append(limit);
+        }
         sb.append("\n\tTotal records = ").append(totalRecords == null ? "N/A" : totalRecords);
         sb.append("\n\tSkipped records = ").append(getFormattedSkippedRecords());
         sb.append("\n\tFiltered records = ").append(getFormattedFilteredRecords());

@@ -19,6 +19,9 @@
         <h1 class="text-center">Easy Batch Report</h1>
         <h3>Engine name: $report.engineName</h3>
         <h3>Data source: $report.dataSource</h3>
+        #if( $report.limit != 9223372036854775807 )
+            <h3>Records limit: $report.limit</h3>
+        #end
         <h3>Execution id: $report.executionId</h3>
         <br/>
     </div>

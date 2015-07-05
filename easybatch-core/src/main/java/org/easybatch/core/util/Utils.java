@@ -52,6 +52,8 @@ public abstract class Utils {
 
     public static final String JMX_MBEAN_NAME = "org.easybatch.core.jmx:";
 
+    public static final Long DEFAULT_LIMIT = Long.MAX_VALUE;
+
     private Utils() {
 
     }

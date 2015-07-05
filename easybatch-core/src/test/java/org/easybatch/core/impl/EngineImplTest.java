@@ -357,6 +357,23 @@ public class EngineImplTest {
         assertThat(report.getSuccessRecordsCount()).isEqualTo(1);
 
     }
+
+    @Test
+    public void testRecordLimit() throws Exception {
+        String dataSource = "foo\nbar\nbaz";
+
+        Engine engine = aNewEngine()
+                .reader(new StringRecordReader(dataSource))
+                .limit(2)
+                .build();
+
+        Report report = engine.call();
+
+        assertThat(report.getTotalRecords()).isEqualTo(2);
+        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
+
+    }
+
     /*
      * Batch/Step event listeners tests
      */

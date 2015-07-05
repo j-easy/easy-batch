@@ -67,6 +67,13 @@ public interface MonitorMBean {
     String getTotalRecords();
 
     /**
+     * Get records limit.
+     *
+     * @return records limit
+     */
+    String getRecordsLimit();
+
+    /**
      * Get skipped records count.
      *
      * @return skipped records count

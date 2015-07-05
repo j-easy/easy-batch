@@ -26,6 +26,9 @@ package org.easybatch.core.jmx;
 
 import org.easybatch.core.api.Report;
 
+import static java.lang.String.valueOf;
+import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
+
 /**
  * JMX MBean implementation of {@link MonitorMBean}.
  *
@@ -81,6 +84,17 @@ public class Monitor implements MonitorMBean {
     public String getTotalRecords() {
         Long totalRecords = report.getTotalRecords();
         return totalRecords == null ? "N/A" : totalRecords.toString();
+    }
+
+    /**
+     * Get records limit.
+     *
+     * @return records limit
+     */
+    @Override
+    public String getRecordsLimit() {
+        long limit = report.getLimit();
+        return limit != DEFAULT_LIMIT ? valueOf(limit) : "No limit";
     }
 
     /**

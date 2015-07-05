@@ -40,6 +40,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
+
 /**
  * Core Easy Batch engine implementation.
  *
@@ -83,6 +85,8 @@ final class EngineImpl implements Engine {
 
     private boolean jmxEnabled;
 
+    private long limit;
+
     EngineImpl(final String name,
                final RecordReader recordReader,
                final RecordSkipper recordSkipper,
@@ -97,6 +101,7 @@ final class EngineImpl implements Engine {
                final EventManager eventManager) {
         this.executionId = UUID.randomUUID().toString();
         this.name = name;
+        this.limit = DEFAULT_LIMIT;
         this.recordReader = recordReader;
         this.recordSkipper = recordSkipper;
         this.recordMapper = recordMapper;
@@ -137,7 +142,7 @@ final class EngineImpl implements Engine {
 
         try {
             long processedRecordsNumber = 0;
-            while (recordReader.hasNextRecord()) {
+            while (recordReader.hasNextRecord() && processedRecordsNumber < limit) {
                 /*
                  * read next record
                  */
@@ -264,6 +269,10 @@ final class EngineImpl implements Engine {
         LOGGER.log(Level.INFO, "Execution id: {0}", getExecutionId());
         LOGGER.log(Level.INFO, "Strict mode: {0}", strictMode);
         LOGGER.log(Level.INFO, "Skip records: {0}", recordSkipper.getNumberOfRecordsToSkip());
+        if (limit != DEFAULT_LIMIT ) {
+            LOGGER.log(Level.INFO, "Records limit: {0}", limit);
+        }
+        report.setLimit(limit);
         report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
     }
 
@@ -376,7 +385,7 @@ final class EngineImpl implements Engine {
         this.recordReader = recordReader;
     }
 
-    public void setRecordSkipper(RecordSkipper recordSkipper) {
+    void setRecordSkipper(RecordSkipper recordSkipper) {
         this.recordSkipper = recordSkipper;
     }
 
@@ -412,27 +421,27 @@ final class EngineImpl implements Engine {
         this.eventManager = eventManager;
     }
 
-    public void addJobEventListener(final JobEventListener jobEventListener) {
+    void addJobEventListener(final JobEventListener jobEventListener) {
         eventManager.addJobEventListener(jobEventListener);
     }
 
-    public void addRecordReaderEventListener(final RecordReaderEventListener recordReaderEventListener) {
+    void addRecordReaderEventListener(final RecordReaderEventListener recordReaderEventListener) {
         eventManager.addRecordReaderEventListener(recordReaderEventListener);
     }
 
-    public void addRecordFilterEventListener(final RecordFilterEventListener recordFilterEventListener) {
+    void addRecordFilterEventListener(final RecordFilterEventListener recordFilterEventListener) {
         eventManager.addRecordFilterEventListener(recordFilterEventListener);
     }
 
-    public void addRecordMapperEventListener(final RecordMapperEventListener recordMapperEventListener) {
+    void addRecordMapperEventListener(final RecordMapperEventListener recordMapperEventListener) {
         eventManager.addRecordMapperEventListener(recordMapperEventListener);
     }
 
-    public void addRecordValidatorEventListener(final RecordValidatorEventListener recordValidatorEventListener) {
+    void addRecordValidatorEventListener(final RecordValidatorEventListener recordValidatorEventListener) {
         eventManager.addRecordValidatorEventListener(recordValidatorEventListener);
     }
 
-    public void addRecordProcessorEventListener(final RecordProcessorEventListener recordProcessorEventListener) {
+    void addRecordProcessorEventListener(final RecordProcessorEventListener recordProcessorEventListener) {
         eventManager.addRecordProcessorEventListener(recordProcessorEventListener);
     }
 
@@ -442,6 +451,10 @@ final class EngineImpl implements Engine {
 
     void setSilentMode(boolean silentMode) {
         this.silentMode = silentMode;
+    }
+
+    void setLimit(final long limit) {
+        this.limit = limit;
     }
 
     void setName(String name) {
