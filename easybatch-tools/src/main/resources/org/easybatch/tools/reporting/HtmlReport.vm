@@ -9,6 +9,7 @@
             padding-top: 20px;
             padding-bottom: 20px;
         }
+        .label-skipped{background-color:#E0E1AA}
     </style>
 </head>
 <body>
@@ -16,8 +17,9 @@
 <div class="container col-md-8 col-md-offset-2">
     <div class="row">
         <h1 class="text-center">Easy Batch Report</h1>
-        <h3>Engine name: $report.engineName <span class="pull-right">Execution id: $report.executionId</span></h3>
-        <h3>Data source: $report.dataSource <span class="pull-right">Status: $report.status</span></h3>
+        <h3>Engine name: $report.engineName</h3>
+        <h3>Data source: $report.dataSource</h3>
+        <h3>Execution id: $report.executionId</h3>
         <br/>
     </div>
 
@@ -39,6 +41,10 @@
                     <td>$report.formattedBatchDuration</td>
                 </tr>
                 <tr>
+                    <td>Status</td>
+                    <td><span class="label label-status">$report.status</span></td>
+                </tr>
+                <tr>
                     <td>Total records</td>
                     <td>$report.totalRecords</td>
                 </tr>
@@ -52,6 +58,10 @@
         <div class="col-md-6">
             <table class="table table table-bordered table-hover table-condensed">
                 <tbody>
+                <tr>
+                    <td>Skipped records</td>
+                    <td><span class="label label-skipped skipped-records" data-total="$report.skippedRecordsCount">$report.formattedSkippedRecords</span></td>
+                </tr>
                 <tr>
                     <td>Filtered records</td>
                     <td><span class="label label-default filtered-records" data-total="$report.filteredRecordsCount">$report.formattedFilteredRecords</span></td>
@@ -88,6 +98,13 @@
 <script>
     jQuery(document).ready(function () {
 
+        var status = jQuery(".label-status");
+        if (status.html() == "FINISHED") {
+            status.addClass("label-success");
+        } else {
+            status.addClass("label-danger");
+        }
+
         jQuery('#chart').highcharts({
             chart: {
                 plotBackgroundColor: null,
@@ -120,6 +137,11 @@
             series: [{
                 type: 'pie',
                 data: [
+                    {
+                        name: 'Skipped',
+                        color: '#E0E1AA',
+                        y: jQuery(".skipped-records").data("total")
+                    },
                     {
                         name: 'Filtered',
                         color: '#999999',

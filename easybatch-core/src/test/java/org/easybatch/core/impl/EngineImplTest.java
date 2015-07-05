@@ -31,6 +31,7 @@ import org.easybatch.core.api.handler.ErrorRecordHandler;
 import org.easybatch.core.api.handler.FilteredRecordHandler;
 import org.easybatch.core.api.handler.IgnoredRecordHandler;
 import org.easybatch.core.api.handler.RejectedRecordHandler;
+import org.easybatch.core.reader.StringRecordReader;
 import org.easybatch.core.util.Utils;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,6 +68,8 @@ public class EngineImplTest {
     private Record record1, record2;
     @Mock
     private RecordReader reader;
+    @Mock
+    private RecordSkipper recordSkipper;
     @Mock
     private RecordFilter firstFilter, secondFilter;
     @Mock
@@ -314,6 +317,10 @@ public class EngineImplTest {
         verifyNoMoreInteractions(mapper);
     }
 
+    /*
+     * JMX tests
+     */
+
     @Test
     public void whenEngineNameIsNotSpecified_thenTheJmxMBeanShouldBeRegisteredWithDefaultEngineName() throws Exception {
         engine = new EngineBuilder().enableJMX(true).build();
@@ -331,6 +338,25 @@ public class EngineImplTest {
         assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + name + ",id=" + engine.getExecutionId()))).isTrue();
     }
 
+    /*
+     * Skip & limit parameters tests
+     */
+
+    @Test
+    public void testRecordSkipping() throws Exception {
+        String dataSource = "foo\nbar";
+
+        Engine engine = aNewEngine()
+                .reader(new StringRecordReader(dataSource))
+                .skip(1)
+                .build();
+
+        Report report = engine.call();
+
+        assertThat(report.getSkippedRecordsCount()).isEqualTo(1);
+        assertThat(report.getSuccessRecordsCount()).isEqualTo(1);
+
+    }
     /*
      * Batch/Step event listeners tests
      */

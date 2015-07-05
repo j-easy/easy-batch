@@ -87,6 +87,14 @@ public class Monitor implements MonitorMBean {
      * {@inheritDoc}
      */
     @Override
+    public String getSkippedRecords() {
+        return report.getFormattedSkippedRecords();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getFilteredRecords() {
         return report.getFormattedFilteredRecords();
     }

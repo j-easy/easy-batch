@@ -55,6 +55,7 @@ public final class EngineBuilder {
 
         RecordReader recordReader = new NoOpRecordReader();
         List<RecordFilter> filterChain = new ArrayList<RecordFilter>();
+        RecordSkipper recordSkipper = new RecordSkipper(-1);
         filterChain.add(new NoOpRecordFilter());
         RecordMapper recordMapper = new NoOpRecordMapper();
         List<RecordValidator> validationPipeline = new ArrayList<RecordValidator>();
@@ -69,6 +70,7 @@ public final class EngineBuilder {
         engine = new EngineImpl(
                 Utils.DEFAULT_ENGINE_NAME,
                 recordReader,
+                recordSkipper,
                 filterChain,
                 recordMapper,
                 validationPipeline,
@@ -98,6 +100,20 @@ public final class EngineBuilder {
     public EngineBuilder named(final String name) {
         checkNotNull(name, "engine name");
         engine.setName(name);
+        return this;
+    }
+
+    /**
+     * Set the number of records to skip by the engine.
+     *
+     * @param number the number of records to skip
+     * @return the engine builder
+     */
+    public EngineBuilder skip(final long number) {
+        if (number < 1) {
+            throw new IllegalArgumentException("The number of records to skip should be at least 1");
+        }
+        engine.setRecordSkipper(new RecordSkipper(number));
         return this;
     }
 

@@ -57,6 +57,8 @@ final class EngineImpl implements Engine {
 
     private RecordReader recordReader;
 
+    private RecordSkipper recordSkipper;
+
     private FilterChain filterChain;
 
     private RecordMapper recordMapper;
@@ -83,6 +85,7 @@ final class EngineImpl implements Engine {
 
     EngineImpl(final String name,
                final RecordReader recordReader,
+               final RecordSkipper recordSkipper,
                final List<RecordFilter> filters,
                final RecordMapper recordMapper,
                final List<RecordValidator> validators,
@@ -95,6 +98,7 @@ final class EngineImpl implements Engine {
         this.executionId = UUID.randomUUID().toString();
         this.name = name;
         this.recordReader = recordReader;
+        this.recordSkipper = recordSkipper;
         this.recordMapper = recordMapper;
         this.filteredRecordHandler = filteredRecordHandler;
         this.ignoredRecordHandler = ignoredRecordHandler;
@@ -153,6 +157,14 @@ final class EngineImpl implements Engine {
                     LOGGER.log(Level.SEVERE, "An exception occurred while reading next record, aborting execution", e);
                     reportAbortedStatus();
                     return report;
+                }
+
+                /*
+                 * Skip records if any
+                 */
+                if (recordSkipper.skipRecord(currentRecord)) {
+                    report.incrementTotalSkippedRecords();
+                    continue;
                 }
 
                 /*
@@ -251,6 +263,7 @@ final class EngineImpl implements Engine {
         LOGGER.log(Level.INFO, "Engine name: {0}", getName());
         LOGGER.log(Level.INFO, "Execution id: {0}", getExecutionId());
         LOGGER.log(Level.INFO, "Strict mode: {0}", strictMode);
+        LOGGER.log(Level.INFO, "Skip records: {0}", recordSkipper.getNumberOfRecordsToSkip());
         report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
     }
 
@@ -361,6 +374,10 @@ final class EngineImpl implements Engine {
 
     void setRecordReader(final RecordReader recordReader) {
         this.recordReader = recordReader;
+    }
+
+    public void setRecordSkipper(RecordSkipper recordSkipper) {
+        this.recordSkipper = recordSkipper;
     }
 
     void setRecordMapper(final RecordMapper recordMapper) {

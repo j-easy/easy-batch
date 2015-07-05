@@ -68,7 +68,7 @@ public class HtmlReportFormatterTest {
         report.setStatus(Status.FINISHED);
         report.setDataSource("In-Memory String");
         report.setTotalRecords(10l);
-        report.incrementTotalFilteredRecords();
+        report.incrementTotalSkippedRecords();
         report.incrementTotalFilteredRecords();
         report.incrementTotalIgnoredRecord();
         report.incrementTotalIgnoredRecord();

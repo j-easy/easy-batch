@@ -67,7 +67,7 @@ public class ReportTest {
         report.setTotalRecords(10L);
         report.setCurrentRecordNumber(2);
         report.setBatchResult(50);
-        report.incrementTotalFilteredRecords();
+        report.incrementTotalSkippedRecords();
         report.incrementTotalFilteredRecords();
         report.incrementTotalIgnoredRecord();
         report.incrementTotalIgnoredRecord();
@@ -81,7 +81,8 @@ public class ReportTest {
 
     @Test
     public void reportStatisticsShouldBeValid() {
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(2);
+        assertThat(report.getSkippedRecordsCount()).isEqualTo(1);
+        assertThat(report.getFilteredRecordsCount()).isEqualTo(1);
         assertThat(report.getIgnoredRecordsCount()).isEqualTo(2);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(2);
         assertThat(report.getErrorRecordsCount()).isEqualTo(2);
@@ -107,7 +108,8 @@ public class ReportTest {
         assertThat(report.getFormattedStartTime()).isEqualTo("2015-01-01 01:00:00");
         assertThat(report.getFormattedEndTime()).isEqualTo("2015-01-01 01:00:10");
         assertThat(report.getFormattedBatchDuration()).isEqualTo("10000ms");
-        assertThat(report.getFormattedFilteredRecords()).isEqualTo("2 (20.0%)");
+        assertThat(report.getFormattedSkippedRecords()).isEqualTo("1 (10.0%)");
+        assertThat(report.getFormattedFilteredRecords()).isEqualTo("1 (10.0%)");
         assertThat(report.getFormattedIgnoredRecords()).isEqualTo("2 (20.0%)");
         assertThat(report.getFormattedRejectedRecords()).isEqualTo("2 (20.0%)");
         assertThat(report.getFormattedErrorRecords()).isEqualTo("2 (20.0%)");
@@ -131,6 +133,7 @@ public class ReportTest {
     @Test
     public void whenTotalRecordsIsZero_ThenStatisticsPercentsShouldNotBePrintedOut() throws Exception {
         report.setTotalRecords(0L);
+        assertThat(report.getFormattedSkippedRecords()).doesNotContain("%");
         assertThat(report.getFormattedFilteredRecords()).doesNotContain("%");
         assertThat(report.getFormattedIgnoredRecords()).doesNotContain("%");
         assertThat(report.getFormattedRejectedRecords()).doesNotContain("%");

@@ -50,6 +50,8 @@ public class Report implements Serializable {
 
     private long filteredRecords;
 
+    private long skippedRecords;
+
     private long ignoredRecords;
 
     private long rejectedRecords;
@@ -71,6 +73,10 @@ public class Report implements Serializable {
 
     public void incrementTotalFilteredRecords() {
         filteredRecords++;
+    }
+
+    public void incrementTotalSkippedRecords() {
+        skippedRecords++;
     }
 
     public void incrementTotalIgnoredRecord() {
@@ -149,6 +155,10 @@ public class Report implements Serializable {
         return filteredRecords;
     }
 
+    public long getSkippedRecordsCount() {
+        return skippedRecords;
+    }
+
     public long getIgnoredRecordsCount() {
         return ignoredRecords;
     }
@@ -179,6 +189,10 @@ public class Report implements Serializable {
 
     private float getFilteredRecordsPercent() {
         return percent(getFilteredRecordsCount(), totalRecords);
+    }
+
+    private float getSkippedRecordsPercent() {
+        return percent(getSkippedRecordsCount(), totalRecords);
     }
 
     private float getIgnoredRecordsPercent() {
@@ -232,6 +246,15 @@ public class Report implements Serializable {
         sb.append(getFilteredRecordsCount());
         if (totalRecords != null && totalRecords != 0) {
             appendPercent(sb, getFilteredRecordsPercent());
+        }
+        return sb.toString();
+    }
+
+    public String getFormattedSkippedRecords() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(getSkippedRecordsCount());
+        if (totalRecords != null && totalRecords != 0) {
+            appendPercent(sb, getSkippedRecordsPercent());
         }
         return sb.toString();
     }
@@ -296,12 +319,13 @@ public class Report implements Serializable {
         final StringBuilder sb = new StringBuilder("Batch Report:");
         sb.append("\n\tEngine name = ").append(getEngineName());
         sb.append("\n\tExecution Id = ").append(getExecutionId());
+        sb.append("\n\tData source = ").append(dataSource);
         sb.append("\n\tStart time = ").append(getFormattedStartTime());
         sb.append("\n\tEnd time = ").append(getFormattedEndTime());
         sb.append("\n\tBatch duration = ").append(getFormattedBatchDuration());
         sb.append("\n\tStatus = ").append(status);
-        sb.append("\n\tData source = ").append(dataSource);
         sb.append("\n\tTotal records = ").append(totalRecords == null ? "N/A" : totalRecords);
+        sb.append("\n\tSkipped records = ").append(getFormattedSkippedRecords());
         sb.append("\n\tFiltered records = ").append(getFormattedFilteredRecords());
         sb.append("\n\tIgnored records = ").append(getFormattedIgnoredRecords());
         sb.append("\n\tRejected records = ").append(getFormattedRejectedRecords());

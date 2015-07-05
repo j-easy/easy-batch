@@ -67,6 +67,13 @@ public interface MonitorMBean {
     String getTotalRecords();
 
     /**
+     * Get skipped records count.
+     *
+     * @return skipped records count
+     */
+    String getSkippedRecords();
+
+    /**
      * Get filtered records count.
      *
      * @return filtered records count

@@ -38,7 +38,7 @@ public class RecordNumberLowerThanFilter implements RecordFilter {
     /**
      * Record number under which records will be filtered.
      */
-    private long number;
+    protected long number;
 
     /**
      * @param number record number under which records will be filtered.
