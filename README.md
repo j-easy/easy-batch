@@ -61,6 +61,25 @@ If you would like to use the snapshot version, you need to add the following rep
 </repositories>
 ```
 
+## What's coming in next version?
+
+Version 3.1.0 will be full of new goodies:
+
+* Writers: Writers are record processors that write records to a data sink. 
+This will save you a lot of boilerplate code and make writing ETL applications using Easy Batch a piece of cake!
+* Chunk processing: Finally, you will be able to process records in chunks. This is a long waited feature that has been asked
+by a lot of users and we have took into account your feedback.
+* Hibernate support: There will be a new `HibernateRecordReader` and `HibernateRecordWriter` to read and write data using Hibernate.
+* Neo4j support: Reading and writing data from/to Neo4j will be also added in this version
+* And more!
+
+See all features planned for next version [here](https://github.com/EasyBatch/easybatch-framework/issues?q=milestone%3A3.1.0).
+
+If a feature is implemented, you can already try it by importing the snapshot version in your project.
+Please give us your feedback in case of any issue to make Easy Batch more stable. 
+
+Feel free to send us your feature request, we will add it to the list!
+
 ## Contribution
 
 You are welcome to contribute to the project with pull requests on GitHub.
