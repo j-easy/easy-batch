@@ -27,6 +27,7 @@ package org.easybatch.core.reader;
 /**
  * Reads records in chunks from an iterable data source.
  *
+ * @param <T> the type of records in the iterable data source.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class IterableMultiRecordReader<T> extends AbstractMultiRecordReader {

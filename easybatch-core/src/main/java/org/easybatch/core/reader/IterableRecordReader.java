@@ -38,6 +38,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 /**
  * Reads record from an {@link Iterable} data source.
  *
+ * @param <T> the type of records in the iterable data source.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class IterableRecordReader<T> implements RecordReader {
