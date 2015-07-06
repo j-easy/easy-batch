@@ -106,6 +106,11 @@ public class JpaRecordReaderTest {
         assertThat(jpaRecordReader.hasNextRecord()).isFalse();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void maxResultParameterMustBeAtLeastEqualToOne() throws Exception {
+        jpaRecordReader.setMaxResults(0);
+    }
+
     @AfterClass
     public static void shutdownDatabase() throws Exception {
         if (connection != null && !connection.isClosed()) {

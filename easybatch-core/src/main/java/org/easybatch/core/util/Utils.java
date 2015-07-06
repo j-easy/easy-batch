@@ -103,4 +103,10 @@ public abstract class Utils {
             throw new IllegalArgumentException(format("The %s must not be null", argumentName));
         }
     }
+
+    public static void checkArgument(boolean assertion, String message) {
+        if (!assertion) {
+            throw new IllegalArgumentException(message);
+        }
+    }
 }

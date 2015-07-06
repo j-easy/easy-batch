@@ -37,6 +37,8 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.easybatch.core.util.Utils.checkArgument;
+
 /**
  * A {@link org.easybatch.core.api.RecordReader} that reads records from a database using jdbc API.
  * <p/>
@@ -75,19 +77,16 @@ public class JdbcRecordReader implements RecordReader {
      * Parameter to limit the number of fetched rows.
      */
     private int maxRows;
-    private boolean maxRowsEnabled;
 
     /**
      * Parameter to set fetch size.
      */
     private int fetchSize;
-    private boolean fetchSizeEnabled;
 
     /**
      * Parameter to set the query timeout.
      */
     private int queryTimeout;
-    private boolean queryTimeoutEnabled;
 
     /**
      * The current record number.
@@ -110,13 +109,13 @@ public class JdbcRecordReader implements RecordReader {
         currentRecordNumber = 0;
         try {
             statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-            if (maxRowsEnabled) {
+            if (maxRows >= 1) {
                 statement.setMaxRows(maxRows);
             }
-            if (fetchSizeEnabled) {
+            if (fetchSize >= 1) {
                 statement.setFetchSize(fetchSize);
             }
-            if (queryTimeoutEnabled) {
+            if (queryTimeout >= 1) {
                 statement.setQueryTimeout(queryTimeout);
             }
             resultSet = statement.executeQuery(query);
@@ -181,9 +180,9 @@ public class JdbcRecordReader implements RecordReader {
      *
      * @param maxRows the maximum number of rows to fetch
      */
-    public void setMaxRows(int maxRows) {
+    public void setMaxRows(final int maxRows) {
+        checkArgument(maxRows >= 1, "max rows parameter must be greater than or equal to 1");
         this.maxRows = maxRows;
-        this.maxRowsEnabled = true;
     }
 
     /**
@@ -191,9 +190,9 @@ public class JdbcRecordReader implements RecordReader {
      *
      * @param fetchSize the fetch size to set
      */
-    public void setFetchSize(int fetchSize) {
+    public void setFetchSize(final int fetchSize) {
+        checkArgument(fetchSize >= 1, "fetch size parameter must be greater than or equal to 1");
         this.fetchSize = fetchSize;
-        this.fetchSizeEnabled = true;
     }
 
     /**
@@ -201,8 +200,8 @@ public class JdbcRecordReader implements RecordReader {
      *
      * @param queryTimeout the query timeout in seconds
      */
-    public void setQueryTimeout(int queryTimeout) {
+    public void setQueryTimeout(final int queryTimeout) {
+        checkArgument(queryTimeout >= 1, "query timeout parameter must be greater than or equal to 1");
         this.queryTimeout = queryTimeout;
-        this.queryTimeoutEnabled = true;
     }
 }

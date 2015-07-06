@@ -29,6 +29,8 @@ import org.easybatch.core.api.TypeConverter;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import static org.easybatch.core.util.Utils.checkArgument;
+
 /**
  * {@link java.util.Calendar} type converter.
  * <p/>
@@ -50,12 +52,8 @@ public class GregorianCalendarTypeConverter implements TypeConverter<GregorianCa
 
     @Override
     public GregorianCalendar convert(String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value to convert must not be null");
-        }
-        if (value.isEmpty()) {
-            throw new IllegalArgumentException("Value to convert must not be empty");
-        }
+        checkArgument(value != null, "Value to convert must not be null");
+        checkArgument(!value.isEmpty(), "Value to convert must not be empty");
         Date date = dateTypeConverter.convert(value);
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setTime(date);

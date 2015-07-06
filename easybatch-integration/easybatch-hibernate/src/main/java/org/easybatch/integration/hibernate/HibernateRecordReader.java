@@ -31,6 +31,8 @@ import org.hibernate.*;
 
 import java.util.Date;
 
+import static org.easybatch.core.util.Utils.checkArgument;
+
 /**
  * Reader that reads data using Hibernate API.
  * <p/>
@@ -108,16 +110,12 @@ public class HibernateRecordReader<T> implements RecordReader {
     }
 
     public void setMaxResults(final int maxResults) {
-        if (maxResults < 1) {
-            throw new IllegalArgumentException("max result parameter should be at least 1");
-        }
+        checkArgument(maxResults >= 1, "max result parameter must be greater than or equal to 1");
         this.maxResults = maxResults;
     }
 
     public void setFetchSize(final int fetchSize) {
-        if (maxResults < 1) {
-            throw new IllegalArgumentException("fetch size parameter should be at least 1");
-        }
+        checkArgument(fetchSize >= 1, "fetch size parameter must be greater than or equal to 1");
         this.fetchSize = fetchSize;
     }
 

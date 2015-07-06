@@ -35,6 +35,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.easybatch.core.util.Utils.checkArgument;
+
 /**
  * Reader that reads data using the Java Persistence API.
  * <p/>
@@ -56,8 +58,6 @@ public class JpaRecordReader<T> implements RecordReader {
 
     private Iterator<T> iterator;
 
-    private boolean maxResultsEnabled;
-
     private int maxResults;
 
     private long currentRecordNumber;
@@ -72,7 +72,7 @@ public class JpaRecordReader<T> implements RecordReader {
     public void open() {
         currentRecordNumber = 0;
         TypedQuery<T> typedQuery = entityManager.createQuery(query, type);
-        if (maxResultsEnabled) {
+        if (maxResults >= 1) {
             typedQuery.setMaxResults(maxResults);
         }
         records = typedQuery.getResultList();
@@ -105,9 +105,9 @@ public class JpaRecordReader<T> implements RecordReader {
         entityManager.close();
     }
 
-    public void setMaxResults(int maxResults) {
+    public void setMaxResults(final int maxResults) {
+        checkArgument(maxResults >= 1, "max results parameter must be greater than or equal to 1");
         this.maxResults = maxResults;
-        this.maxResultsEnabled = true;
     }
 
 }

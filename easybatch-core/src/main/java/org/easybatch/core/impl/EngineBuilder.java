@@ -37,6 +37,7 @@ import org.easybatch.core.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.easybatch.core.util.Utils.checkArgument;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
@@ -110,9 +111,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder skip(final long number) {
-        if (number < 1) {
-            throw new IllegalArgumentException("The number of records to skip should be at least 1");
-        }
+        checkArgument(number >= 1, "The number of records to skip should be greater than or equal to 1");
         engine.setRecordSkipper(new RecordSkipper(number));
         return this;
     }
@@ -124,9 +123,7 @@ public final class EngineBuilder {
      * @return the engine builder
      */
     public EngineBuilder limit(final long number) {
-        if (number < 1) {
-            throw new IllegalArgumentException("The limit number of records should be at least 1");
-        }
+        checkArgument(number >= 1, "The limit number of records should be greater than or equal to 1");
         engine.setLimit(number);
         return this;
     }

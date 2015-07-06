@@ -28,6 +28,8 @@ import org.easybatch.core.api.TypeConverter;
 
 import java.math.BigInteger;
 
+import static org.easybatch.core.util.Utils.checkArgument;
+
 /**
  * BigInteger type converter.
  * Does not accept null or empty strings.
@@ -41,12 +43,8 @@ public class BigIntegerTypeConverter implements TypeConverter<BigInteger> {
      */
     @Override
     public BigInteger convert(final String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value to convert must not be null");
-        }
-        if (value.isEmpty()) {
-            throw new IllegalArgumentException("Value to convert must not be empty");
-        }
+        checkArgument(value != null, "Value to convert must not be null");
+        checkArgument(!value.isEmpty(), "Value to convert must not be empty");
         return new BigInteger(value);
     }
 

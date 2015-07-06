@@ -29,11 +29,13 @@ import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.record.FileRecord;
 
 import java.io.File;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import static java.lang.String.format;
+import static org.easybatch.core.util.Utils.checkArgument;
 
 /**
  * A convenient {@link RecordReader} that recursively reads files in a directory.
@@ -100,19 +102,9 @@ public class FileRecordReader implements RecordReader {
     }
 
     private void checkDirectory() {
-        if (!directory.exists()) {
-            throw new IllegalArgumentException(MessageFormat.format(
-                    "Directory {0} does not exist.", directory.getAbsoluteFile()));
-        }
-        if (!directory.isDirectory()) {
-            throw new IllegalArgumentException(MessageFormat.format(
-                    "{0} is not a directory.", directory.getAbsoluteFile()));
-        }
-        if (!directory.canRead()) {
-            throw new IllegalArgumentException(MessageFormat.format(
-                    "Unable to read files from directory {0}. Permission denied.",
-                    directory.getAbsoluteFile()));
-        }
+        checkArgument(directory.exists(), format("Directory %s does not exist.", directory.getAbsolutePath()));
+        checkArgument(directory.isDirectory(), format("%s is not a directory.", directory.getAbsolutePath()));
+        checkArgument(directory.canRead(), format("Unable to read files from directory %s. Permission denied.", directory.getAbsolutePath()));
     }
 
     /**

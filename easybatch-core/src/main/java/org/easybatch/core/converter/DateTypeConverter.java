@@ -30,6 +30,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static org.easybatch.core.util.Utils.checkArgument;
+
 /**
  * java.util.Date type converter.
  * Converts a String date (by default in the "yyyy-MM-dd" format) to a java.util.Date type.
@@ -70,12 +72,8 @@ public class DateTypeConverter implements TypeConverter<Date> {
      */
     @Override
     public Date convert(final String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value to convert must not be null");
-        }
-        if (value.isEmpty()) {
-            throw new IllegalArgumentException("Value to convert must not be empty");
-        }
+        checkArgument(value != null, "Value to convert must not be null");
+        checkArgument(!value.isEmpty(), "Value to convert must not be empty");
         try {
             return new SimpleDateFormat(dateFormat).parse(value);
         } catch (ParseException e) {
