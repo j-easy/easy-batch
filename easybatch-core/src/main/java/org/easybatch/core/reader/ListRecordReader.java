@@ -24,12 +24,6 @@
 
 package org.easybatch.core.reader;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.record.GenericRecord;
-
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -38,25 +32,16 @@ import java.util.List;
  * This reader returns {@link org.easybatch.core.record.GenericRecord} instances that should be mapped
  * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects from the list.
  *
+ * <p/>
+ * <strong>Deprecated:</strong> use {@link IterableReader} instead.
+ *
  * @param <T> the type of objects contained in the list
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ListRecordReader<T> implements RecordReader {
+@Deprecated
+public class ListRecordReader<T> extends IterableReader<T> {
 
-    /**
-     * The data source.
-     */
     private List<T> dataSource;
-
-    /**
-     * The current record number.
-     */
-    private long currentRecordNumber;
-
-    /**
-     * The data source iterator.
-     */
-    private Iterator<T> iterator;
 
     /**
      * Constructs a {@link ListRecordReader}.
@@ -64,24 +49,8 @@ public class ListRecordReader<T> implements RecordReader {
      * @param dataSource The list data source
      */
     public ListRecordReader(final List<T> dataSource) {
+        super(dataSource);
         this.dataSource = dataSource;
-        this.iterator = dataSource.listIterator();
-    }
-
-    @Override
-    public void open() {
-        currentRecordNumber = 0;
-    }
-
-    @Override
-    public boolean hasNextRecord() {
-        return iterator.hasNext();
-    }
-
-    @Override
-    public GenericRecord<T> readNextRecord() {
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new GenericRecord<T>(header, iterator.next());
     }
 
     @Override
@@ -94,8 +63,4 @@ public class ListRecordReader<T> implements RecordReader {
         return "In-Memory List";
     }
 
-    @Override
-    public void close() {
-        // no op
-    }
 }
