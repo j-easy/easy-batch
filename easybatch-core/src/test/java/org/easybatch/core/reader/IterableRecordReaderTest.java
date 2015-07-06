@@ -37,12 +37,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 /**
- * Test class for {@link IterableReader}.
+ * Test class for {@link IterableRecordReader}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 @RunWith(value = MockitoJUnitRunner.class)
-public class IterableReaderTest {
+public class IterableRecordReaderTest {
 
     private static final String EXPECTED_DATA_SOURCE_NAME = "In-Memory Iterable";
 
@@ -54,41 +54,41 @@ public class IterableReaderTest {
     @Mock
     Iterator<String> iterator;
 
-    private IterableReader<String> iterableReader;
+    private IterableRecordReader<String> iterableRecordReader;
 
     @Before
     public void setUp() throws Exception {
         when(dataSource.iterator()).thenReturn(iterator);
         when(iterator.hasNext()).thenReturn(true);
         when(iterator.next()).thenReturn(RECORD);
-        iterableReader = new IterableReader<String>(dataSource);
+        iterableRecordReader = new IterableRecordReader<String>(dataSource);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void whenDataSourceIsNull_thenShouldThrowAnIllegalArgumentException() throws Exception {
-        iterableReader = new IterableReader<String>(null);
+        iterableRecordReader = new IterableRecordReader<String>(null);
     }
 
     @Test
     public void testHasNextRecord() throws Exception {
-        assertThat(iterableReader.hasNextRecord()).isTrue();
+        assertThat(iterableRecordReader.hasNextRecord()).isTrue();
     }
 
     @Test
     public void testReadNextRecord() throws Exception {
-        GenericRecord genericRecord = iterableReader.readNextRecord();
+        GenericRecord genericRecord = iterableRecordReader.readNextRecord();
         assertThat(genericRecord).isNotNull();
         assertThat(genericRecord.getPayload()).isEqualTo(RECORD);
     }
 
     @Test
     public void testGetTotalRecords() throws Exception {
-        assertThat(iterableReader.getTotalRecords()).isNull();
+        assertThat(iterableRecordReader.getTotalRecords()).isNull();
     }
 
     @Test
     public void testGetDataSourceName() throws Exception {
-        assertThat(iterableReader.getDataSourceName()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
+        assertThat(iterableRecordReader.getDataSourceName()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
 
     }
 }

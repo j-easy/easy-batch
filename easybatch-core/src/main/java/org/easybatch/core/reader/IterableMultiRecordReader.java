@@ -38,7 +38,7 @@ public class IterableMultiRecordReader<T> extends AbstractMultiRecordReader {
      * @param dataSource the data source to read records from
      */
     public IterableMultiRecordReader(final int chunkSize, final Iterable<T> dataSource) {
-        super(chunkSize, new IterableReader<T>(dataSource));
+        super(chunkSize, new IterableRecordReader<T>(dataSource));
     }
 
 }

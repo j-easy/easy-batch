@@ -49,7 +49,7 @@ import org.junit.runners.Suite;
         QueueRecordReaderTest.class,
         StringRecordReaderTest.class,
         CliRecordReaderTest.class,
-        IterableReaderTest.class,
+        IterableRecordReaderTest.class,
         // mapper
         ObjectMapperTest.class,
         GenericRecordMapperTest.class,

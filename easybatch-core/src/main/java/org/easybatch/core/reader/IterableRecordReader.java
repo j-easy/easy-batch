@@ -40,7 +40,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class IterableReader<T> implements RecordReader {
+public class IterableRecordReader<T> implements RecordReader {
 
     /**
      * The current record number.
@@ -57,7 +57,7 @@ public class IterableReader<T> implements RecordReader {
      *
      * @param dataSource the data source to read records from.
      */
-    public IterableReader(final Iterable<T> dataSource) {
+    public IterableRecordReader(final Iterable<T> dataSource) {
         checkNotNull(dataSource, "data source");
         this.iterator = dataSource.iterator();
     }
