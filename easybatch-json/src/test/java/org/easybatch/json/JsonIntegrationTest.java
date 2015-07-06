@@ -24,15 +24,14 @@
 
 package org.easybatch.json;
 
-import org.easybatch.core.api.ComputationalRecordProcessor;
 import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
 import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.processor.RecordCollector;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,7 +53,7 @@ public class JsonIntegrationTest {
 
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new JsonRecordProcessor())
+                .processor(new RecordCollector<JsonRecord>())
                 .build();
 
         Report report = engine.call();
@@ -90,7 +89,7 @@ public class JsonIntegrationTest {
 
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new JsonRecordProcessor())
+                .processor(new RecordCollector<JsonRecord>())
                 .build();
 
         Report report = engine.call();
@@ -122,7 +121,7 @@ public class JsonIntegrationTest {
 
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new JsonRecordProcessor())
+                .processor(new RecordCollector<JsonRecord>())
                 .build();
 
         Report report = engine.call();
@@ -152,7 +151,7 @@ public class JsonIntegrationTest {
 
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new JsonRecordProcessor())
+                .processor(new RecordCollector<JsonRecord>())
                 .build();
 
         Report report = engine.call();
@@ -186,23 +185,6 @@ public class JsonIntegrationTest {
         assertThat(report.getSuccessRecordsCount()).isEqualTo(3);
         assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
         assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
-    }
-
-    private class JsonRecordProcessor implements ComputationalRecordProcessor<JsonRecord, JsonRecord, List<JsonRecord>> {
-
-        private List<JsonRecord> jsonRecords = new ArrayList<JsonRecord>();
-
-        @Override
-        public JsonRecord processRecord(JsonRecord jsonRecord) {
-            jsonRecords.add(jsonRecord);
-            return jsonRecord;
-        }
-
-        @Override
-        public List<JsonRecord> getComputationResult() {
-            return jsonRecords;
-        }
-
     }
 
 }

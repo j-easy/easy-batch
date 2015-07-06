@@ -26,11 +26,11 @@ package org.easybatch.jms;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.io.FileUtils;
-import org.easybatch.core.api.ComputationalRecordProcessor;
 import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.processor.RecordCollector;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +41,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -88,7 +87,7 @@ public class JmsIntegrationTest {
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new JmsRecordReader(queueConnectionFactory, queue))
                 .filter(new JmsPoisonRecordFilter())
-                .processor(new JmsRecordProcessor())
+                .processor(new RecordCollector<JmsRecord>())
                 .build();
 
         Report report = engine.call();
@@ -126,22 +125,5 @@ public class JmsIntegrationTest {
         Properties properties = new Properties();
         properties.load(JmsIntegrationTest.class.getResourceAsStream(("/jndi.properties")));
         return new InitialContext(properties);
-    }
-
-    private class JmsRecordProcessor implements ComputationalRecordProcessor<JmsRecord, JmsRecord, List<JmsRecord>> {
-
-        private List<JmsRecord> jsonRecords = new ArrayList<JmsRecord>();
-
-        @Override
-        public JmsRecord processRecord(JmsRecord jsonRecord) {
-            jsonRecords.add(jsonRecord);
-            return jsonRecord;
-        }
-
-        @Override
-        public List<JmsRecord> getComputationResult() {
-            return jsonRecords;
-        }
-
     }
 }

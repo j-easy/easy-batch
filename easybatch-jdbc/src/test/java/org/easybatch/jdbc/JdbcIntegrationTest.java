@@ -24,11 +24,11 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.ComputationalRecordProcessor;
 import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
 import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.processor.RecordCollector;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -39,7 +39,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -76,12 +75,10 @@ public class JdbcIntegrationTest {
     @Test
     public void testDatabaseProcessing() throws Exception {
 
-        ComputationalRecordProcessor personProcessor = new PersonProcessor();
-
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new JdbcRecordReader(connection, query))
                 .mapper(new JdbcRecordMapper<Person>(Person.class, new String[]{"id", "name"}))
-                .processor(personProcessor)
+                .processor(new RecordCollector<Person>())
                 .build();
 
         Report report = engine.call();
@@ -96,7 +93,7 @@ public class JdbcIntegrationTest {
         assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
         assertThat(report.getDataSource()).isEqualTo(DATA_SOURCE_NAME);
 
-        List<Person> persons = (List<Person>) personProcessor.getComputationResult();
+        List<Person> persons = (List<Person>) report.getBatchResult();
 
         assertThat(persons).isNotEmpty().hasSize(2);
 
@@ -140,23 +137,6 @@ public class JdbcIntegrationTest {
         Statement statement = connection.createStatement();
         statement.executeUpdate(query);
         statement.close();
-    }
-
-    private class PersonProcessor implements ComputationalRecordProcessor<Person, Person, List<Person>> {
-
-        private List<Person> persons = new ArrayList<Person>();
-
-        @Override
-        public Person processRecord(Person person) {
-            persons.add(person);
-            return person;
-        }
-
-        @Override
-        public List<Person> getComputationResult() {
-            return persons;
-        }
-
     }
 
 }

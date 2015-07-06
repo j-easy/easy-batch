@@ -1,16 +1,19 @@
 package org.easybatch.flatfile;
 
-import org.easybatch.core.api.*;
+import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Report;
+import org.easybatch.core.api.Status;
+import org.easybatch.core.api.TypeConverter;
 import org.easybatch.core.converter.DateTypeConverter;
 import org.easybatch.core.filter.HeaderRecordFilter;
 import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.processor.RecordCollector;
 import org.junit.Test;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,19 +31,18 @@ public class FlatFileIntegrationTest {
     public void testCsvProcessing() throws Exception {
 
         File dataSource = new File(getFileUri("/persons.csv"));
-        final ComputationalRecordProcessor personProcessor = new PersonProcessor();
 
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class, new String[]{"firstName", "lastName", "age", "birthDate", "married"}))
-                .processor(personProcessor)
+                .processor(new RecordCollector<Person>())
                 .build();
 
         Report report = engine.call();
 
         assertReportIsCorrect(report);
 
-        List<Person> persons = (List<Person>) personProcessor.getComputationResult();
+        List<Person> persons = (List<Person>) report.getBatchResult();
 
         assertPersons(persons);
 
@@ -50,19 +52,18 @@ public class FlatFileIntegrationTest {
     public void testCsvSubRecordProcessing() throws Exception {
 
         File dataSource = new File(getFileUri("/persons.csv"));
-        final ComputationalRecordProcessor personProcessor = new PersonProcessor();
 
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class, new Integer[]{2, 4}, new String[]{"age", "married"}))
-                .processor(personProcessor)
+                .processor(new RecordCollector<Person>())
                 .build();
 
         Report report = engine.call();
 
         assertReportIsCorrect(report);
 
-        List<Person> persons = (List<Person>) personProcessor.getComputationResult();
+        List<Person> persons = (List<Person>) report.getBatchResult();
 
         assertPersonsFieldSubsetMapping(persons);
 
@@ -76,19 +77,18 @@ public class FlatFileIntegrationTest {
     public void whenFieldNamesAreNotSpecified_thenTheyShouldBeRetrievedFromTheHeaderRecord() throws Exception {
 
         File dataSource = new File(getFileUri("/persons_with_header.csv"));
-        final ComputationalRecordProcessor personProcessor = new PersonProcessor();
 
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class))
-                .processor(personProcessor)
+                .processor(new RecordCollector<Person>())
                 .build();
 
         Report report = engine.call();
 
         assertReportWithIgnoredHeaderRecord(report);
 
-        List<Person> persons = (List<Person>) personProcessor.getComputationResult();
+        List<Person> persons = (List<Person>) report.getBatchResult();
 
         assertPersons(persons);
 
@@ -98,19 +98,18 @@ public class FlatFileIntegrationTest {
     public void whenOnlySubsetOfFieldsAreSpecified_thenOnlyCorrespondingFieldsShouldBeMapped() throws Exception {
 
         File dataSource = new File(getFileUri("/persons_with_header.csv"));
-        final ComputationalRecordProcessor personProcessor = new PersonProcessor();
 
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class, new Integer[]{2, 4}))
-                .processor(personProcessor)
+                .processor(new RecordCollector<Person>())
                 .build();
 
         Report report = engine.call();
 
         assertReportWithIgnoredHeaderRecord(report);
 
-        List<Person> persons = (List<Person>) personProcessor.getComputationResult();
+        List<Person> persons = (List<Person>) report.getBatchResult();
 
         assertPersonsFieldSubsetMapping(persons);
 
@@ -137,21 +136,7 @@ public class FlatFileIntegrationTest {
                 .reader(new FlatFileRecordReader(dataSource))
                 .filter(new HeaderRecordFilter())
                 .mapper(recordMapper)
-                .processor(new ComputationalRecordProcessor<Complaint, Complaint, List<Complaint>>() {
-
-                    private List<Complaint> complaints = new ArrayList<Complaint>();
-
-                    @Override
-                    public List<Complaint> getComputationResult() {
-                        return complaints;
-                    }
-
-                    @Override
-                    public Complaint processRecord(Complaint complaint) {
-                        complaints.add(complaint);
-                        return complaint;
-                    }
-                })
+                .processor(new RecordCollector<Complaint>())
                 .build();
 
         Report report = engine.call();
@@ -186,20 +171,19 @@ public class FlatFileIntegrationTest {
     public void testFlrProcessing() throws Exception {
 
         File dataSource = new File(getFileUri("/persons.flr"));
-        final ComputationalRecordProcessor personProcessor = new PersonProcessor();
 
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new FixedLengthRecordMapper(Person.class, new int[]{4, 4, 2, 10, 1},
                         new String[]{"firstName", "lastName", "age", "birthDate", "married"}))
-                .processor(personProcessor)
+                .processor(new RecordCollector<Person>())
                 .build();
 
         Report report = engine.call();
 
         assertReportIsCorrect(report);
 
-        List<Person> persons = (List<Person>) personProcessor.getComputationResult();
+        List<Person> persons = (List<Person>) report.getBatchResult();
 
         assertThat(persons).isNotEmpty().hasSize(2);
 
@@ -279,23 +263,6 @@ public class FlatFileIntegrationTest {
         assertThat(complaint.getCompanyResponse()).isEqualTo(companyResponse);
         assertThat(complaint.isTimelyResponse()).isEqualTo(timelyResponse);
         assertThat(complaint.isConsumerDisputed()).isEqualTo(consumerDisputed);
-    }
-
-    private static class PersonProcessor implements ComputationalRecordProcessor<Person, Person, List<Person>> {
-
-        private List<Person> persons = new ArrayList<Person>();
-
-        @Override
-        public Person processRecord(Person person) {
-            persons.add(person);
-            return person;
-        }
-
-        @Override
-        public List<Person> getComputationResult() {
-            return persons;
-        }
-
     }
 
     private URI getFileUri(String fileName) throws URISyntaxException {

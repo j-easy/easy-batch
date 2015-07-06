@@ -24,9 +24,9 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.ComputationalRecordProcessor;
 import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Report;
+import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.GenericRecord;
 import org.hibernate.SessionFactory;
 import org.junit.AfterClass;
@@ -34,7 +34,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,7 +64,7 @@ public class HibernateSupportIntegrationTest {
     public void testRecordReading() throws Exception {
         Engine engine = aNewEngine()
                 .reader(hibernateRecordReader)
-                .processor(new Processor<Tweet>())
+                .processor(new RecordCollector<Tweet>())
                 .build();
 
         Report report = engine.call();
@@ -92,23 +91,6 @@ public class HibernateSupportIntegrationTest {
     public static void tearDown() {
         DatabaseUtil.closeSessionFactory();
         DatabaseUtil.cleanUpWorkingDirectory();
-
-    }
-
-    private class Processor<T> implements ComputationalRecordProcessor<T, T, List<T>> {
-
-        private List<T> items = new ArrayList<T>();
-
-        @Override
-        public T processRecord(T item) {
-            items.add(item);
-            return item;
-        }
-
-        @Override
-        public List<T> getComputationResult() {
-            return items;
-        }
 
     }
 }

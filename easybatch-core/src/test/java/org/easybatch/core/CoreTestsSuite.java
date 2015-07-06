@@ -31,6 +31,7 @@ import org.easybatch.core.filter.*;
 import org.easybatch.core.impl.*;
 import org.easybatch.core.mapper.GenericRecordMapperTest;
 import org.easybatch.core.mapper.ObjectMapperTest;
+import org.easybatch.core.processor.RecordCollectorTest;
 import org.easybatch.core.reader.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -48,6 +49,7 @@ import org.junit.runners.Suite;
         QueueRecordReaderTest.class,
         StringRecordReaderTest.class,
         CliRecordReaderTest.class,
+        IterableReaderTest.class,
         // mapper
         ObjectMapperTest.class,
         GenericRecordMapperTest.class,
@@ -82,6 +84,8 @@ import org.junit.runners.Suite;
         ContentBasedRecordDispatcherBuilderTest.class,
         RandomRecordDispatcherTest.class,
         RoundRobinRecordDispatcherTest.class,
+        // processor
+        RecordCollectorTest.class,
         // api
         ReportTest.class,
         // impl

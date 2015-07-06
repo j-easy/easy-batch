@@ -24,15 +24,14 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.ComputationalRecordProcessor;
 import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
 import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.processor.RecordCollector;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,7 +52,7 @@ public class XmlIntegrationTest {
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new XmlRecordReader("website", xmlDataSource))
                 .mapper(new XmlRecordMapper(Website.class))
-                .processor(new Processor<Website>())
+                .processor(new RecordCollector<Website>())
                 .build();
 
         Report report = engine.call();
@@ -83,7 +82,7 @@ public class XmlIntegrationTest {
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new XmlRecordReader("person", xmlDataSource))
                 .mapper(new XmlRecordMapper<Person>(Person.class))
-                .processor(new Processor<Person>())
+                .processor(new RecordCollector<Person>())
                 .build();
 
         Report report = engine.call();
@@ -116,7 +115,7 @@ public class XmlIntegrationTest {
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new XmlRecordReader("dependency", xmlDataSource))
                 .mapper(new XmlRecordMapper<Dependency>(Dependency.class))
-                .processor(new Processor<Dependency>())
+                .processor(new RecordCollector<Dependency>())
                 .build();
 
         Report report = engine.call();
@@ -170,7 +169,7 @@ public class XmlIntegrationTest {
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new XmlRecordReader("bean", xmlDataSource))
                 .mapper(new XmlRecordMapper(Bean.class))
-                .processor(new Processor<Bean>())
+                .processor(new RecordCollector<Bean>())
                 .build();
 
         Report report = engine.call();
@@ -208,23 +207,6 @@ public class XmlIntegrationTest {
 
     private InputStream getDataSource(String name) {
         return this.getClass().getResourceAsStream(name);
-    }
-
-    private class Processor<T> implements ComputationalRecordProcessor<T, T, List<T>> {
-
-        private List<T> items = new ArrayList<T>();
-
-        @Override
-        public T processRecord(T item) {
-            items.add(item);
-            return item;
-        }
-
-        @Override
-        public List<T> getComputationResult() {
-            return items;
-        }
-
     }
 
 }
