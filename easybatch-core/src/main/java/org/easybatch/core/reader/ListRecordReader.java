@@ -33,13 +33,13 @@ import java.util.List;
  * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects from the list.
  *
  * <p/>
- * <strong>Deprecated:</strong> use {@link IterableReader} instead.
+ * <strong>Deprecated:</strong> use {@link IterableRecordReader} instead.
  *
  * @param <T> the type of objects contained in the list
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 @Deprecated
-public class ListRecordReader<T> extends IterableReader<T> {
+public class ListRecordReader<T> extends IterableRecordReader<T> {
 
     private List<T> dataSource;
 
