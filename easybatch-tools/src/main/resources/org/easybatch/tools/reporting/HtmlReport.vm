@@ -93,6 +93,20 @@
     <div class="row">
         <div id="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     </div>
+
+    <div class="row">
+        <h3>System properties</h3>
+        <table class="table table-bordered table-striped table-hover table-condensed">
+            <tbody>
+            #foreach( $entry in $properties )
+            <tr>
+                <td>$entry.key</td>
+                <td>$entry.value</td>
+            </tr>
+            #end
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery.js"></script>

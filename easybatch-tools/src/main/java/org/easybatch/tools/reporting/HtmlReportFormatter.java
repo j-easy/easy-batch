@@ -62,6 +62,7 @@ public class HtmlReportFormatter implements ReportFormatter<String> {
         StringWriter stringWriter = new StringWriter();
         Context context = new VelocityContext();
         context.put("report", report);
+        context.put("properties", report.getSystemProperties().entrySet());
         template.merge(context, stringWriter);
         return stringWriter.toString();
     }

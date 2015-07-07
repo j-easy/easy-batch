@@ -274,6 +274,7 @@ final class EngineImpl implements Engine {
         }
         report.setLimit(limit);
         report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
+        report.setSystemProperties(System.getProperties());
     }
 
     private boolean initializeRecordReader() {

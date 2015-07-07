@@ -27,6 +27,7 @@ package org.easybatch.core.api;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
 
 import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
 
@@ -69,6 +70,8 @@ public class Report implements Serializable {
     private transient Engine engine;
 
     private transient Object batchResult;
+
+    private Properties systemProperties;
 
     public Report(Engine engine) {
         this.engine = engine;
@@ -137,6 +140,14 @@ public class Report implements Serializable {
 
     public void setCurrentRecordNumber(final long currentRecordNumber) {
         this.currentRecordNumber = currentRecordNumber;
+    }
+
+    public Properties getSystemProperties() {
+        return systemProperties;
+    }
+
+    public void setSystemProperties(Properties systemProperties) {
+        this.systemProperties = systemProperties;
     }
 
     public long getLimit() {

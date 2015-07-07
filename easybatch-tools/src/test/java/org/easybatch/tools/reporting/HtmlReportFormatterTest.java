@@ -79,6 +79,7 @@ public class HtmlReportFormatterTest {
         report.incrementTotalErrorRecord();
         report.incrementTotalSuccessRecord();
         report.incrementTotalSuccessRecord();
+        report.setSystemProperties(System.getProperties());
     }
 
     @Ignore("TODO: Contents are identical but assertion fails due to different whitespaces")
