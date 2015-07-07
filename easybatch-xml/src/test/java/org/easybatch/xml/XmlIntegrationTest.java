@@ -66,7 +66,7 @@ public class XmlIntegrationTest {
         assertThat(website.getUrl()).isEqualTo("http://www.google.com?query=test&sort=asc");
 
         website = websites.get(1);
-        assertThat(website.getName()).isEqualTo("l'équipe");
+        assertThat(website.getName()).isEqualTo("l'equipe");
         assertThat(website.getUrl()).isEqualTo("http://www.lequipe.fr");
 
         website = websites.get(2);

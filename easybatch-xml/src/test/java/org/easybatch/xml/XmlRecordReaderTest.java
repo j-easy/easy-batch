@@ -85,7 +85,7 @@ public class XmlRecordReaderTest {
 
         assertThat(xmlRecordReader.hasNextRecord()).isTrue();
         record = xmlRecordReader.readNextRecord();
-        assertThat(record.getPayload()).isXmlEqualTo("<website name=\"l&apos;équipe\" url=\"http://www.lequipe.fr\"/>");
+        assertThat(record.getPayload()).isXmlEqualTo("<website name=\"l&apos;equipe\" url=\"http://www.lequipe.fr\"/>");
 
         assertThat(xmlRecordReader.hasNextRecord()).isTrue();
         record = xmlRecordReader.readNextRecord();

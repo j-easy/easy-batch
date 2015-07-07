@@ -103,10 +103,10 @@ public class XmlRecordMapperTest {
         assertThat(website.getName()).isEqualTo("google");
         assertThat(website.getUrl()).isEqualTo("http://www.google.com?query=test&sort=asc");
 
-        xmlRecord = new XmlRecord(header, "<website name='l&apos;équipe' url='http://www.lequipe.fr'/>");
+        xmlRecord = new XmlRecord(header, "<website name='l&apos;equipe' url='http://www.lequipe.fr'/>");
         website = xmlRecordMapper.mapRecord(xmlRecord);
         assertThat(website).isNotNull();
-        assertThat(website.getName()).isEqualTo("l'équipe");
+        assertThat(website.getName()).isEqualTo("l'equipe");
         assertThat(website.getUrl()).isEqualTo("http://www.lequipe.fr");
 
     }
