@@ -47,6 +47,7 @@ import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
  * Integration test for JMS support.
@@ -128,7 +129,7 @@ public class JmsIntegrationTest {
         QueueSession queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
         queueConnection.start();
 
-        String dataSource = "foo\nbar";
+        String dataSource = "foo" + LINE_SEPARATOR + "bar";
 
         aNewEngine()
                 .reader(new StringRecordReader(dataSource))

@@ -26,9 +26,11 @@ package org.easybatch.xml;
 
 import org.easybatch.core.processor.RecordFlattener;
 
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+
 /**
  * Flattens a Xml record payload.
- * 
+ *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class XmlRecordFlattener extends RecordFlattener {
@@ -43,7 +45,7 @@ public class XmlRecordFlattener extends RecordFlattener {
         }
 
         return payload
-                .replaceAll("\n", "")
+                .replaceAll(LINE_SEPARATOR, "")
                 .replaceAll("\t", "")
                 .replaceAll(">( *?)<", "><");
     }

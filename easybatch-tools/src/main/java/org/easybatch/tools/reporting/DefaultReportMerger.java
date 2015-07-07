@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+
 /**
  * A report merger that generates a merged report defined as follows:
  * <ul>
@@ -100,7 +102,7 @@ public class DefaultReportMerger implements ReportMerger {
     private void mergeDataSources(List<String> dataSources, Report finalReport) {
         StringBuilder stringBuilder = new StringBuilder();
         for (String dataSource : dataSources) {
-            stringBuilder.append(dataSource).append("\n");
+            stringBuilder.append(dataSource).append(LINE_SEPARATOR);
 
         }
         finalReport.setDataSource(stringBuilder.toString());

@@ -34,6 +34,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
  * Test class for {@link OpenCsvRecordMapper}.
@@ -87,11 +88,11 @@ public class OpenCsvRecordMapperTest {
     @Test
     public void testOpenCsvCarriageReturn() throws Exception {
         openCsvRecordMapper.setQualifier('\'');
-        StringRecord fooRecord = new StringRecord(header, "'foo\n','bar\n'");
+        StringRecord fooRecord = new StringRecord(header, "'foo" + LINE_SEPARATOR + "','bar" + LINE_SEPARATOR + "'");
         Foo foo = openCsvRecordMapper.mapRecord(fooRecord);
         assertThat(foo).isNotNull();
-        assertThat(foo.getFirstName()).isEqualTo("foo\n");
-        assertThat(foo.getLastName()).isEqualTo("bar\n");
+        assertThat(foo.getFirstName()).isEqualTo("foo" + LINE_SEPARATOR);
+        assertThat(foo.getLastName()).isEqualTo("bar" + LINE_SEPARATOR);
     }
 
 }

@@ -50,6 +50,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.mockito.Mockito.*;
 
 /**
@@ -344,7 +345,7 @@ public class EngineImplTest {
 
     @Test
     public void testRecordSkipping() throws Exception {
-        String dataSource = "foo\nbar";
+        String dataSource = "foo" + LINE_SEPARATOR + "bar";
 
         Engine engine = aNewEngine()
                 .reader(new StringRecordReader(dataSource))
@@ -360,7 +361,7 @@ public class EngineImplTest {
 
     @Test
     public void testRecordLimit() throws Exception {
-        String dataSource = "foo\nbar\nbaz";
+        String dataSource = "foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR + "baz";
 
         Engine engine = aNewEngine()
                 .reader(new StringRecordReader(dataSource))

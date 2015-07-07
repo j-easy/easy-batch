@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
@@ -73,28 +74,28 @@ public class LocalEventManagerTest {
     private Object processingResult;
     @Mock
     private HashSet<ValidationError> validationErrors;
-    
+
     private LocalEventManager localEventManager;
 
     @Before
     public void setUp() {
         localEventManager = new LocalEventManager();
-        
+
         localEventManager.addJobEventListener(jobEventListener1);
         localEventManager.addJobEventListener(jobEventListener2);
-        
+
         localEventManager.addRecordFilterEventListener(recordFilterEventListener1);
         localEventManager.addRecordFilterEventListener(recordFilterEventListener2);
-        
+
         localEventManager.addRecordReaderEventListener(recordReaderEventListener1);
         localEventManager.addRecordReaderEventListener(recordReaderEventListener2);
-        
+
         localEventManager.addRecordMapperEventListener(recordMapperEventListener1);
         localEventManager.addRecordMapperEventListener(recordMapperEventListener2);
-        
+
         localEventManager.addRecordValidatorEventListener(recordValidatorEventListener1);
         localEventManager.addRecordValidatorEventListener(recordValidatorEventListener2);
-        
+
         localEventManager.addRecordProcessorEventListener(recordProcessorEventListener1);
         localEventManager.addRecordProcessorEventListener(recordProcessorEventListener2);
     }
@@ -316,7 +317,7 @@ public class LocalEventManagerTest {
     @Test
     public void testRecordModificationThroughCustomRecordFilterEventListener() throws Exception {
         Engine engine = EngineBuilder.aNewEngine()
-                .reader(new StringRecordReader("foo\nbar"))
+                .reader(new StringRecordReader("foo" + LINE_SEPARATOR + "bar"))
                 .filter(new StartWithStringRecordFilter("#"))
                 .recordFilterEventListener(new RecordFilterEventListener() {
                     @Override
@@ -338,7 +339,7 @@ public class LocalEventManagerTest {
     @Test
     public void testRecordModificationThroughCustomRecordValidatorEventListener() throws Exception {
         Engine engine = EngineBuilder.aNewEngine()
-                .reader(new StringRecordReader("foo\nbar"))
+                .reader(new StringRecordReader("foo" + LINE_SEPARATOR + "bar"))
                 .validator(new RecordValidator<StringRecord>() {
                     @Override
                     public Set<ValidationError> validateRecord(StringRecord record) {

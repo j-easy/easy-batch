@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
  * Test class for {@link ApacheCommonCsvRecordMapper}.
@@ -108,7 +109,7 @@ public class ApacheCommonCsvRecordMapperTest {
 
     @Test
     public void testApacheCommonCsvLineFeed() throws Exception {
-        StringReader stringReader = new StringReader("'foo\n','bar\n'");
+        StringReader stringReader = new StringReader("'foo" + LINE_SEPARATOR + "','bar" + LINE_SEPARATOR + "'");
         CSVFormat csvFormat = CSVFormat.DEFAULT
                 .withQuote('\'')
                 .withHeader("firstName", "lastName", "age", "married");
@@ -117,8 +118,8 @@ public class ApacheCommonCsvRecordMapperTest {
         Foo foo = mapper.mapRecord(record);
 
         assertThat(foo).isNotNull();
-        assertThat(foo.getFirstName()).isEqualTo("foo\n");
-        assertThat(foo.getLastName()).isEqualTo("bar\n");
+        assertThat(foo.getFirstName()).isEqualTo("foo" + LINE_SEPARATOR);
+        assertThat(foo.getLastName()).isEqualTo("bar" + LINE_SEPARATOR);
         assertThat(foo.getAge()).isEqualTo(0);
         assertThat(foo.isMarried()).isFalse();
     }

@@ -34,6 +34,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -56,7 +57,11 @@ public class XmlRecordFlattenerTest {
     @Test
     public void testFlattenXmlRecord() throws RecordProcessingException {
         String expectedPayload = "<foo><bar><baz name='baz'/></bar></foo>";
-        String payload = "<foo>\n<bar>\n<baz name='baz'/>\n</bar>\n</foo>";
+        String payload = "<foo>" + LINE_SEPARATOR +
+                "<bar>" + LINE_SEPARATOR +
+                "<baz name='baz'/>" + LINE_SEPARATOR +
+                "</bar>" + LINE_SEPARATOR +
+                "</foo>";
         when(xmlRecord.getPayload()).thenReturn(payload);
 
         StringRecord flattenedRecord = xmlRecordFlattener.processRecord(xmlRecord);
@@ -64,5 +69,5 @@ public class XmlRecordFlattenerTest {
         assertThat(flattenedRecord.getHeader()).isEqualTo(header);
         assertThat(flattenedRecord.getPayload()).isEqualTo(expectedPayload);
     }
-    
+
 }

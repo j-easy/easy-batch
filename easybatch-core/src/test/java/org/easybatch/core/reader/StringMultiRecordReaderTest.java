@@ -34,6 +34,7 @@ import org.junit.contrib.java.lang.system.SystemOutRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
  * Test class for {@link StringMultiRecordReader}.
@@ -49,14 +50,26 @@ public class StringMultiRecordReaderTest {
 
     @Test
     public void chunkProcessingIntegrationTest() throws Exception {
-        String dataSource = "foo\nbar\ntoto\ntiti\nbaz";
+        String dataSource = "foo" + LINE_SEPARATOR +
+                "bar" + LINE_SEPARATOR +
+                "toto" + LINE_SEPARATOR +
+                "titi" + LINE_SEPARATOR +
+                "baz";
 
         aNewEngine()
                 .reader(new StringMultiRecordReader(CHUNK_SIZE, dataSource))
                 .processor(new MultiRecordProcessor())
                 .build().call();
 
-        assertThat(systemOut.getLog()).isEqualTo("Chunk 1:\nfoo\nbar\nChunk 2:\ntoto\ntiti\nChunk 3:\nbaz\n");
+        assertThat(systemOut.getLog()).isEqualTo("Chunk 1:" + LINE_SEPARATOR +
+                        "foo" + LINE_SEPARATOR +
+                        "bar" + LINE_SEPARATOR +
+                        "Chunk 2:" + LINE_SEPARATOR +
+                        "toto" + LINE_SEPARATOR +
+                        "titi" + LINE_SEPARATOR +
+                        "Chunk 3:" + LINE_SEPARATOR +
+                        "baz" + LINE_SEPARATOR
+        );
 
     }
 

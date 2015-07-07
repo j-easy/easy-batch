@@ -40,6 +40,7 @@ import java.io.OutputStreamWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -74,14 +75,14 @@ public class OutputStreamRecordWriterTest {
     public void testProcessRecord() throws Exception {
         outputStreamRecordWriter.processRecord(stringRecord);
 
-        verify(outputStreamWriter).write(PAYLOAD + "\n");
+        verify(outputStreamWriter).write(PAYLOAD + LINE_SEPARATOR);
         verify(outputStreamWriter).flush();
     }
 
     @Test
     public void outputStreamRecordWriterIntegrationTest() throws Exception {
         String outputFile = "test.txt";
-        String dataSource = "1,foo\n2,bar";
+        String dataSource = "1,foo" + LINE_SEPARATOR + "2,bar";
 
         aNewEngine()
                 .reader(new StringRecordReader(dataSource))
@@ -90,11 +91,11 @@ public class OutputStreamRecordWriterTest {
                 .build().call();
 
         // Assert that records have been written to System.out
-        assertThat(systemOut.getLog()).isEqualTo(dataSource + "\n");
+        assertThat(systemOut.getLog()).isEqualTo(dataSource + LINE_SEPARATOR);
 
         // Assert that records have been written to the Output file
         File file = new File(outputFile);
-        assertThat(file).hasContent(dataSource + "\n");
+        assertThat(file).hasContent(dataSource + LINE_SEPARATOR);
         file.delete();
     }
 }

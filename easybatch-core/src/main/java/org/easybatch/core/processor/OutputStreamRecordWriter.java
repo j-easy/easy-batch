@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import static java.lang.String.format;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
@@ -62,7 +63,7 @@ public class OutputStreamRecordWriter implements RecordProcessor<StringRecord, S
     @Override
     public StringRecord processRecord(StringRecord record) throws RecordProcessingException {
         try {
-            outputStreamWriter.write(record.getPayload() + "\n");
+            outputStreamWriter.write(record.getPayload() + LINE_SEPARATOR);
             outputStreamWriter.flush();
             return record;
         } catch (IOException exception) {

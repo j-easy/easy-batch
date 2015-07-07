@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
  * Test class for {@link StringRecordReader}.
@@ -43,11 +44,11 @@ public class StringRecordReaderTest {
 
     private StringRecordReader stringRecordReader;
 
-    String dataSource;
+    private String dataSource;
 
     @Before
     public void setUp() throws Exception {
-        dataSource = "foo\nbar";
+        dataSource = "foo" + LINE_SEPARATOR + "bar";
         stringRecordReader = new StringRecordReader(dataSource);
         stringRecordReader.open();
     }

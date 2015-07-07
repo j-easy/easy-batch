@@ -33,6 +33,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -41,7 +42,7 @@ import static org.junit.Assert.assertEquals;
 public class DefaultReportMergerTest {
 
     private ReportMerger reportMerger;
-    
+
     private Engine engine1, engine2;
 
     @Before
@@ -101,7 +102,7 @@ public class DefaultReportMergerTest {
         assertEquals("result2", results.get(1));
 
         //data sources
-        assertEquals("datasource1\ndatasource2\n", finalReport.getDataSource());
+        assertEquals("datasource1" + LINE_SEPARATOR + "datasource2" + LINE_SEPARATOR, finalReport.getDataSource());
 
         //if one partial report has aborted, the final result should be also aborted
         assertEquals(Status.ABORTED, finalReport.getStatus());

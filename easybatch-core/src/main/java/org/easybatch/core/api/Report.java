@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.Properties;
 
 import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
  * Class holding batch reporting data.
@@ -245,11 +246,11 @@ public class Report implements Serializable {
     public String getEngineName() {
         return engine == null ? "N/A" : engine.getName();
     }
-    
+
     public String getExecutionId() {
         return engine == null ? "N/A" : engine.getExecutionId();
     }
-    
+
     public String getFormattedBatchDuration() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getBatchDuration()).append("ms");
@@ -340,26 +341,26 @@ public class Report implements Serializable {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Batch Report:");
-        sb.append("\n\tEngine name = ").append(getEngineName());
-        sb.append("\n\tExecution Id = ").append(getExecutionId());
-        sb.append("\n\tData source = ").append(dataSource);
-        sb.append("\n\tStart time = ").append(getFormattedStartTime());
-        sb.append("\n\tEnd time = ").append(getFormattedEndTime());
-        sb.append("\n\tBatch duration = ").append(getFormattedBatchDuration());
-        sb.append("\n\tStatus = ").append(status);
-        if( limit != DEFAULT_LIMIT) {
-            sb.append("\n\tRecords limit = ").append(limit);
+        sb.append(LINE_SEPARATOR).append("\tEngine name = ").append(getEngineName());
+        sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(getExecutionId());
+        sb.append(LINE_SEPARATOR).append("\tData source = ").append(dataSource);
+        sb.append(LINE_SEPARATOR).append("\tStart time = ").append(getFormattedStartTime());
+        sb.append(LINE_SEPARATOR).append("\tEnd time = ").append(getFormattedEndTime());
+        sb.append(LINE_SEPARATOR).append("\tBatch duration = ").append(getFormattedBatchDuration());
+        sb.append(LINE_SEPARATOR).append("\tStatus = ").append(status);
+        if (limit != DEFAULT_LIMIT) {
+            sb.append(LINE_SEPARATOR).append("\tRecords limit = ").append(limit);
         }
-        sb.append("\n\tTotal records = ").append(totalRecords == null ? "N/A" : totalRecords);
-        sb.append("\n\tSkipped records = ").append(getFormattedSkippedRecords());
-        sb.append("\n\tFiltered records = ").append(getFormattedFilteredRecords());
-        sb.append("\n\tIgnored records = ").append(getFormattedIgnoredRecords());
-        sb.append("\n\tRejected records = ").append(getFormattedRejectedRecords());
-        sb.append("\n\tError records = ").append(getFormattedErrorRecords());
-        sb.append("\n\tSuccess records = ").append(getFormattedSuccessRecords());
-        sb.append("\n\tRecord processing time average = ").append(getFormattedAverageRecordProcessingTime());
+        sb.append(LINE_SEPARATOR).append("\tTotal records = ").append(totalRecords == null ? "N/A" : totalRecords);
+        sb.append(LINE_SEPARATOR).append("\tSkipped records = ").append(getFormattedSkippedRecords());
+        sb.append(LINE_SEPARATOR).append("\tFiltered records = ").append(getFormattedFilteredRecords());
+        sb.append(LINE_SEPARATOR).append("\tIgnored records = ").append(getFormattedIgnoredRecords());
+        sb.append(LINE_SEPARATOR).append("\tRejected records = ").append(getFormattedRejectedRecords());
+        sb.append(LINE_SEPARATOR).append("\tError records = ").append(getFormattedErrorRecords());
+        sb.append(LINE_SEPARATOR).append("\tSuccess records = ").append(getFormattedSuccessRecords());
+        sb.append(LINE_SEPARATOR).append("\tRecord processing time average = ").append(getFormattedAverageRecordProcessingTime());
         if (batchResult != null) {
-            sb.append("\n\tResult = ").append(batchResult);
+            sb.append(LINE_SEPARATOR).append("\tResult = ").append(batchResult);
         }
         return sb.toString();
     }
