@@ -29,8 +29,8 @@ import org.apache.commons.io.FileUtils;
 import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Report;
-import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.processor.RecordCollector;
+import org.easybatch.core.reader.StringRecordReader;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,10 +41,12 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 
 /**
  * Integration test for JMS support.
@@ -84,7 +86,7 @@ public class JmsIntegrationTest {
         //send a poison record to the queue
         queueSender.send(new JmsPoisonMessage());
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Engine engine = aNewEngine()
                 .reader(new JmsRecordReader(queueConnectionFactory, queue))
                 .filter(new JmsPoisonRecordFilter())
                 .processor(new RecordCollector<JmsRecord>())
@@ -112,6 +114,44 @@ public class JmsIntegrationTest {
 
         TextMessage textMessage = (TextMessage) payload;
         assertThat(textMessage.getText()).isNotNull().isEqualTo(MESSAGE_TEXT);
+
+        queueSession.close();
+        queueConnection.close();
+    }
+
+    @Test
+    public void testJmsRecordWriter() throws Exception {
+        Context jndiContext = getJndiContext();
+        Queue queue = (Queue) jndiContext.lookup("q");
+        QueueConnectionFactory queueConnectionFactory = (QueueConnectionFactory) jndiContext.lookup("QueueConnectionFactory");
+        QueueConnection queueConnection = queueConnectionFactory.createQueueConnection();
+        QueueSession queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+        queueConnection.start();
+
+        String dataSource = "foo\nbar";
+
+        aNewEngine()
+                .reader(new StringRecordReader(dataSource))
+                .processor(new JmsMessageTransformer(queueSession))
+                .processor(new JmsRecordWriter(queueConnectionFactory, queue))
+                .build().call();
+
+        // Assert that queue contains 2 messages: "foo" and "bar"
+        QueueBrowser queueBrowser = queueSession.createBrowser(queue);
+        Enumeration enumeration = queueBrowser.getEnumeration();
+
+        assertThat(enumeration.hasMoreElements()).isTrue();
+        TextMessage message1 = (TextMessage) enumeration.nextElement();
+        assertThat(message1.getText()).isEqualTo("foo");
+
+        assertThat(enumeration.hasMoreElements()).isTrue();
+        TextMessage message2 = (TextMessage) enumeration.nextElement();
+        assertThat(message2.getText()).isEqualTo("bar");
+
+        assertThat(enumeration.hasMoreElements()).isFalse();
+
+        queueSession.close();
+        queueConnection.close();
     }
 
     @After
