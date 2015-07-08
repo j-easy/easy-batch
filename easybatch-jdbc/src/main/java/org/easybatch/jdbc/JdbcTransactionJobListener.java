@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 
 /**
  * Listener that commits a transaction at the end of the job.
- *
+ * <p/>
  * This is useful to commit last records when using a {@link JdbcTransactionStepListener} with a commit-interval.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -44,13 +44,26 @@ public class JdbcTransactionJobListener implements JobEventListener {
 
     private Connection connection;
 
+    private boolean closeConnection;
+
     /**
-     * Create a JDBC transaction listener.
+     * Create a JDBC transaction listener. The connection will <strong>not</strong> be closed at the end of the job.
      *
      * @param connection the JDBC connection (should be in auto-commit = false)
      */
-    public JdbcTransactionJobListener(Connection connection) {
+    public JdbcTransactionJobListener(final Connection connection) {
+        this(connection, false);
+    }
+
+    /**
+     * Create a JDBC transaction listener.
+     *
+     * @param connection      the JDBC connection (should be in auto-commit = false)
+     * @param closeConnection True if the connection should be closed at the end of the job
+     */
+    public JdbcTransactionJobListener(final Connection connection, final boolean closeConnection) {
         this.connection = connection;
+        this.closeConnection = closeConnection;
     }
 
     @Override
@@ -61,8 +74,11 @@ public class JdbcTransactionJobListener implements JobEventListener {
     @Override
     public void afterJobEnd() {
         try {
-            connection.commit();
             LOGGER.info("Committing transaction after job end");
+            connection.commit();
+            if (closeConnection) {
+                connection.close();
+            }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Unable to commit transaction", e);
         }
