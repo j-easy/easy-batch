@@ -30,7 +30,7 @@ import org.easybatch.core.api.RecordProcessingException;
 import org.easybatch.core.api.RecordProcessor;
 
 /**
- * Writes a Mongo {DBObject} in a given collection.
+ * Writes a Mongo {@link DBObject} in a given collection.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -53,7 +53,7 @@ public class MongoDBRecordWriter implements RecordProcessor<DBObject, DBObject> 
             collection.save(record);
             return record;
         } catch (Exception e) {
-            throw new RecordProcessingException("Unable to write document to MongoDB server", e);
+            throw new RecordProcessingException("Unable to write document " + record + " to MongoDB server", e);
         }
     }
 
