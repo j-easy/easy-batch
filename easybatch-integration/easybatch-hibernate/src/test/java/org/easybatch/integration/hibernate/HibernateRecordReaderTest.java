@@ -44,13 +44,14 @@ import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class HibernateSupportIntegrationTest {
+public class HibernateRecordReaderTest {
 
     private HibernateRecordReader<Tweet> hibernateRecordReader;
 
     @BeforeClass
     public static void init() throws Exception {
         DatabaseUtil.startEmbeddedDatabase();
+        DatabaseUtil.populateTweetTable();
         DatabaseUtil.initializeSessionFactory();
     }
 
@@ -62,6 +63,7 @@ public class HibernateSupportIntegrationTest {
 
     @Test
     public void testRecordReading() throws Exception {
+
         Engine engine = aNewEngine()
                 .reader(hibernateRecordReader)
                 .processor(new RecordCollector<Tweet>())
@@ -91,6 +93,5 @@ public class HibernateSupportIntegrationTest {
     public static void tearDown() {
         DatabaseUtil.closeSessionFactory();
         DatabaseUtil.cleanUpWorkingDirectory();
-
     }
 }
