@@ -22,46 +22,28 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.reader;
+package org.easybatch.xml;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.api.RecordReadingException;
-import org.easybatch.core.record.MultiRecord;
+import org.easybatch.core.reader.AbstractMultiRecordReader;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.io.InputStream;
 
 /**
- * Reads records in chunks using a delegate {@link RecordReader}.
+ * Reads Xml records in chunks.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class AbstractMultiRecordReader extends MultiRecordReader {
+public class XmlMultiRecordReader extends AbstractMultiRecordReader {
 
-    public AbstractMultiRecordReader(int chunkSize, final RecordReader delegate) {
-        super(chunkSize, delegate);
+    /**
+     * Create a Xml multi-record reader.
+     *
+     * @param chunkSize       the number of xml records to read at a time
+     * @param rootElementName the root element name
+     * @param xmlInputStream  the xml data source
+     */
+    public XmlMultiRecordReader(int chunkSize, final String rootElementName, final InputStream xmlInputStream) {
+        super(chunkSize, new XmlRecordReader(rootElementName, xmlInputStream));
     }
 
-    @Override
-    public boolean hasNextRecord() {
-        try {
-            return delegate.hasNextRecord();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    @Override
-    public MultiRecord readNextRecord() throws RecordReadingException {
-        List<Record> records = new ArrayList<Record>();
-        int items = 0;
-        while (hasNextRecord() && items++ < chunkSize) {
-            records.add(delegate.readNextRecord());
-        }
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new MultiRecord(header, records);
-    }
 }

@@ -33,7 +33,6 @@ import javax.xml.stream.events.*;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -93,7 +92,6 @@ public class XmlRecordReader implements RecordReader {
             }
             return true;
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "An exception occurred during checking the existence of next xml record", e);
             return false;
         }
     }
