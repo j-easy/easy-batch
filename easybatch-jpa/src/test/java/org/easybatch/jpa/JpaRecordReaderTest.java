@@ -127,7 +127,9 @@ public class JpaRecordReaderTest {
 
     private static void createTweetTable(Connection connection) throws Exception {
         Statement statement = connection.createStatement();
-        String query = "CREATE TABLE if not exists tweet (\n" +
+        String query = "DROP TABLE IF EXISTS tweet";
+        statement.executeUpdate(query);
+        query = "CREATE TABLE if not exists tweet (\n" +
                 "  id integer NOT NULL PRIMARY KEY,\n" +
                 "  user varchar(32) NOT NULL,\n" +
                 "  message varchar(140) NOT NULL,\n" +
