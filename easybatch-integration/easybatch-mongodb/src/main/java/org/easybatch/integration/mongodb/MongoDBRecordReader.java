@@ -32,6 +32,9 @@ import org.easybatch.core.api.RecordReader;
 
 import java.util.Date;
 
+import static org.easybatch.core.util.Utils.checkArgument;
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Reader that reads documents from a MongoDB collection.
  * <p/>
@@ -47,18 +50,23 @@ public class MongoDBRecordReader implements RecordReader {
 
     private DBCursor cursor;
 
-    private boolean limit;
     private int nbLimit;
 
-    private boolean skip;
     private int nbSkip;
 
-    private boolean sort;
     private DBObject orderBy;
 
     private long currentRecordNumber;
 
-    public MongoDBRecordReader(DBCollection collection, DBObject query) {
+    /**
+     * Reader that reads documents from a MongoDB collection.
+     * <p/>
+     * This reader produces {@link MongoDBRecord} instances.
+     *
+     * @param collection the collection to read documents from
+     * @param query the query to fetch data
+     */
+    public MongoDBRecordReader(final DBCollection collection, final DBObject query) {
         this.collection = collection;
         this.query = query;
     }
@@ -67,13 +75,13 @@ public class MongoDBRecordReader implements RecordReader {
     public void open() {
         currentRecordNumber = 0;
         cursor = collection.find(query);
-        if (limit) {
+        if (nbLimit >= 1) {
             cursor.limit(nbLimit);
         }
-        if (skip) {
+        if (nbSkip >= 1) {
             cursor.skip(nbSkip);
         }
-        if (sort) {
+        if (orderBy != null) {
             cursor.sort(orderBy);
         }
     }
@@ -109,9 +117,9 @@ public class MongoDBRecordReader implements RecordReader {
      *
      * @param limit the number of documents limit
      */
-    public void setLimit(int limit) {
+    public void setLimit(final int limit) {
+        checkArgument(limit >= 1, "limit parameter should be greater than or equal to 1");
         this.nbLimit = limit;
-        this.limit = true;
     }
 
     /**
@@ -119,9 +127,9 @@ public class MongoDBRecordReader implements RecordReader {
      *
      * @param skip the number of documents to skip.
      */
-    public void setSkip(int skip) {
+    public void setSkip(final int skip) {
+        checkArgument(skip >= 1, "skip parameter should be greater than or equal to 1");
         this.nbSkip = skip;
-        this.skip = true;
     }
 
     /**
@@ -129,9 +137,9 @@ public class MongoDBRecordReader implements RecordReader {
      *
      * @param orderBy the sort criteria
      */
-    public void setSort(DBObject orderBy) {
+    public void setSort(final DBObject orderBy) {
+        checkNotNull(orderBy, "orderBy");
         this.orderBy = orderBy;
-        this.sort = true;
     }
 
 }

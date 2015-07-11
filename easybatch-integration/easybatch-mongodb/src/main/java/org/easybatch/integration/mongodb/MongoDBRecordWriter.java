@@ -43,12 +43,12 @@ public class MongoDBRecordWriter implements RecordProcessor<DBObject, DBObject> 
      *
      * @param collection the collection to write documents to.
      */
-    public MongoDBRecordWriter(DBCollection collection) {
+    public MongoDBRecordWriter(final DBCollection collection) {
         this.collection = collection;
     }
 
     @Override
-    public DBObject processRecord(DBObject record) throws RecordProcessingException {
+    public DBObject processRecord(final DBObject record) throws RecordProcessingException {
         try {
             collection.save(record);
             return record;
