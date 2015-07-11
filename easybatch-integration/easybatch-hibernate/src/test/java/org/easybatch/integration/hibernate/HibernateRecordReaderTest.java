@@ -70,11 +70,11 @@ public class HibernateRecordReaderTest {
                 .build();
 
         Report report = engine.call();
-        assertThat(report.getTotalRecords()).isEqualTo(2);
+        assertThat(report.getTotalRecords()).isEqualTo(3);
 
         List<GenericRecord<Tweet>> tweets = (List<GenericRecord<Tweet>>) report.getBatchResult();
 
-        assertThat(tweets).isNotEmpty().hasSize(2);
+        assertThat(tweets).isNotEmpty().hasSize(3);
 
         Tweet tweet = tweets.get(0).getPayload();
         assertThat(tweet).isNotNull();
@@ -87,6 +87,12 @@ public class HibernateRecordReaderTest {
         assertThat(tweet.getId()).isEqualTo(2);
         assertThat(tweet.getUser()).isEqualTo("bar");
         assertThat(tweet.getMessage()).isEqualTo("@foo I do confirm :-)");
+
+        tweet = tweets.get(2).getPayload();
+        assertThat(tweet).isNotNull();
+        assertThat(tweet.getId()).isEqualTo(3);
+        assertThat(tweet.getUser()).isEqualTo("baz");
+        assertThat(tweet.getMessage()).isEqualTo("yep");
     }
 
     @AfterClass
