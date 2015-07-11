@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.util.Utils.FILE_SEPARATOR;
 
 /**
  * Test class for {@link FileExtensionFilter}.
@@ -41,8 +42,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class FileExtensionFilterTest {
-
-    private static String FILE_SEPARATOR = System.getProperty("file.separator");
 
     private FileExtensionFilter filter;
 
