@@ -46,9 +46,13 @@ import static java.lang.String.format;
  */
 public abstract class Utils {
 
+    private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
+
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-    private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
+    public static final String FILE_SEPARATOR = System.getProperty("file.separator");
+
+    public static final String JAVA_IO_TMPDIR = System.getProperty("java.io.tmpdir");
 
     public static final String DEFAULT_ENGINE_NAME = "engine";
 
