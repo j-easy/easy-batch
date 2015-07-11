@@ -99,10 +99,9 @@ public class DatabaseUtil {
 
     public static void populateTweetTable() throws Exception {
         Connection connection = getConnection();
-        executeQuery(connection,
-                "INSERT INTO tweet VALUES (1,'foo','easy batch rocks! #EasyBatch');");
-        executeQuery(connection,
-                "INSERT INTO tweet VALUES (2,'bar','@foo I do confirm :-)');");
+        executeQuery(connection, "INSERT INTO tweet VALUES (1,'foo','easy batch rocks! #EasyBatch');");
+        executeQuery(connection, "INSERT INTO tweet VALUES (2,'bar','@foo I do confirm :-)');");
+        executeQuery(connection, "INSERT INTO tweet VALUES (3,'baz','yep');");
         connection.close();
     }
 
