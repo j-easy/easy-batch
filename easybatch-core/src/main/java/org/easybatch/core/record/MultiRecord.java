@@ -29,6 +29,8 @@ import org.easybatch.core.api.Record;
 
 import java.util.List;
 
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+
 /**
  * A multi-record is a record containing a list of records.
  *
@@ -43,9 +45,11 @@ public class MultiRecord extends GenericRecord<List<Record>> {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder("MultiRecord: {");
+        stringBuilder.append(LINE_SEPARATOR);
         for (Record record : payload) {
             stringBuilder.append("\trecord = ");
             stringBuilder.append(record);
+            stringBuilder.append(LINE_SEPARATOR);
         }
         stringBuilder.append("}");
         return stringBuilder.toString();
