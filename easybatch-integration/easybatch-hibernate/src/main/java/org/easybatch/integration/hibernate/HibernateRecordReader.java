@@ -59,7 +59,7 @@ public class HibernateRecordReader<T> implements RecordReader {
     private long currentRecordNumber;
 
     /**
-     * Create a hibernate recode reader.
+     * Create a hibernate record reader.
      *
      * @param sessionFactory a pre-configured hibernate session factory
      * @param query          the HQL query to use to fetch data
