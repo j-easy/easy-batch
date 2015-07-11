@@ -28,7 +28,6 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.MultiRecord;
-import org.easybatch.core.util.Utils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +38,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.util.Utils.FILE_SEPARATOR;
+import static org.easybatch.core.util.Utils.JAVA_IO_TMPDIR;
 
 /**
  * Test class for {@link FileMultiRecordReader}.
@@ -58,7 +59,7 @@ public class FileMultiRecordReaderTest {
     @Before
     public void setUp() throws Exception {
         // TODO use https://github.com/google/jimfs when moving to Java 7
-        dataSource = new File(Utils.JAVA_IO_TMPDIR + Utils.FILE_SEPARATOR + "testFileMultiMultiRecordReader");
+        dataSource = new File(JAVA_IO_TMPDIR + FILE_SEPARATOR + "testFileMultiRecordReader");
         dataSource.mkdir();
         createTestFiles(dataSource);
         fileMultiRecordReader = new FileMultiRecordReader(CHUNK_SIZE, dataSource);
@@ -93,7 +94,7 @@ public class FileMultiRecordReaderTest {
     }
 
     private void createTestFiles(File dataSource) throws IOException {
-        String basePath = dataSource.getAbsolutePath() + Utils.FILE_SEPARATOR;
+        String basePath = dataSource.getAbsolutePath() + FILE_SEPARATOR;
         test1 = new File(basePath + "test1.txt");
         test2 = new File(basePath + "test2.txt");
         test3 = new File(basePath + "test3.txt");
