@@ -25,10 +25,7 @@
 package org.easybatch.jpa;
 
 import org.easybatch.core.record.GenericRecord;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -49,11 +46,11 @@ public class JpaRecordReaderTest {
 
     private static final String DATABASE_URL = "jdbc:hsqldb:mem";
 
+    private static final int FETCH_SIZE = 2;
+
     private static Connection connection;
 
     private static EntityManagerFactory entityManagerFactory;
-
-    private static String query;
 
     private JpaRecordReader<Tweet> jpaRecordReader;
 
@@ -63,12 +60,13 @@ public class JpaRecordReaderTest {
         createTweetTable(connection);
         populateTweetTable(connection);
         entityManagerFactory = Persistence.createEntityManagerFactory("tweet");
-        query = "from Tweet";
     }
 
     @Before
     public void setUp() throws Exception {
+        String query = "from Tweet";
         jpaRecordReader = new JpaRecordReader<Tweet>(entityManagerFactory, query, Tweet.class);
+        jpaRecordReader.setFetchSize(FETCH_SIZE);
         jpaRecordReader.open();
     }
 
@@ -79,7 +77,7 @@ public class JpaRecordReaderTest {
 
     @Test
     public void testTotalRecords() throws Exception {
-        assertThat(jpaRecordReader.getTotalRecords()).isNotNull().isEqualTo(2);
+        assertThat(jpaRecordReader.getTotalRecords()).isNull();
     }
 
     @Test
@@ -96,19 +94,23 @@ public class JpaRecordReaderTest {
     }
 
     @Test
-    public void testMaxResultsParameter() throws Exception {
-        jpaRecordReader.close();
-        jpaRecordReader = new JpaRecordReader<Tweet>(entityManagerFactory, query, Tweet.class);
-        jpaRecordReader.setMaxResults(1);
-        jpaRecordReader.open();
-
-        jpaRecordReader.readNextRecord();
-        assertThat(jpaRecordReader.hasNextRecord()).isFalse();
+    public void testPaging() {
+        int nbRecords = 0;
+        while (jpaRecordReader.hasNextRecord()) {
+            jpaRecordReader.readNextRecord();
+            nbRecords++;
+        }
+        assertThat(nbRecords).isEqualTo(4);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void maxResultParameterMustBeAtLeastEqualToOne() throws Exception {
-        jpaRecordReader.setMaxResults(0);
+    public void fetchSizeParameterMustBeAtLeastEqualToOne() throws Exception {
+        jpaRecordReader.setFetchSize(0);
+    }
+
+    @After
+    public void tearDown() {
+        jpaRecordReader.close();
     }
 
     @AfterClass
@@ -137,6 +139,8 @@ public class JpaRecordReaderTest {
     private static void populateTweetTable(Connection connection) throws Exception {
         executeQuery(connection, "INSERT INTO tweet VALUES (1,'foo','easy batch rocks! #EasyBatch');");
         executeQuery(connection, "INSERT INTO tweet VALUES (2,'bar','@foo I do confirm :-)');");
+        executeQuery(connection, "INSERT INTO tweet VALUES (3,'baz','yep');");
+        executeQuery(connection, "INSERT INTO tweet VALUES (4,'toto','what?');");
     }
 
     private static void executeQuery(Connection connection, String query) throws SQLException {

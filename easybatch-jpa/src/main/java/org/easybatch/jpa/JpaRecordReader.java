@@ -39,18 +39,24 @@ import static org.easybatch.core.util.Utils.checkArgument;
 
 /**
  * Reader that reads data using the Java Persistence API.
- * <p/>
+ * <p>
  * This reader produces {@link GenericRecord} instances that can be mapped
  * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects.
+ * <p>
+ * Use the <code>fetchSize</code> parameter to speicify the number of records to read from the database at a time.
  *
  * @param <T> the type of objects this reader will read.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JpaRecordReader<T> implements RecordReader {
 
+    public static final int DEFAULT_FETCH_SIZE = 1000;
+
     private EntityManager entityManager;
 
     private String query;
+
+    private TypedQuery<T> typedQuery;
 
     private Class<T> type;
 
@@ -58,7 +64,9 @@ public class JpaRecordReader<T> implements RecordReader {
 
     private Iterator<T> iterator;
 
-    private int maxResults;
+    private int offset;
+
+    private int fetchSize;
 
     private long currentRecordNumber;
 
@@ -66,21 +74,27 @@ public class JpaRecordReader<T> implements RecordReader {
         this.entityManager = entityManagerFactory.createEntityManager();
         this.query = query;
         this.type = type;
+        this.fetchSize = DEFAULT_FETCH_SIZE;
     }
 
     @Override
     public void open() {
         currentRecordNumber = 0;
-        TypedQuery<T> typedQuery = entityManager.createQuery(query, type);
-        if (maxResults >= 1) {
-            typedQuery.setMaxResults(maxResults);
-        }
+        offset = 0;
+        typedQuery = entityManager.createQuery(query, type);
+        typedQuery.setFirstResult(offset);
+        typedQuery.setMaxResults(fetchSize);
         records = typedQuery.getResultList();
         iterator = records.iterator();
     }
 
     @Override
     public boolean hasNextRecord() {
+        if (!iterator.hasNext()) {
+            typedQuery.setFirstResult(offset += records.size());
+            records = typedQuery.getResultList();
+            iterator = records.iterator();
+        }
         return iterator.hasNext();
     }
 
@@ -92,7 +106,7 @@ public class JpaRecordReader<T> implements RecordReader {
 
     @Override
     public Long getTotalRecords() {
-        return (long) records.size();
+        return null;
     }
 
     @Override
@@ -105,9 +119,9 @@ public class JpaRecordReader<T> implements RecordReader {
         entityManager.close();
     }
 
-    public void setMaxResults(final int maxResults) {
-        checkArgument(maxResults >= 1, "max results parameter must be greater than or equal to 1");
-        this.maxResults = maxResults;
+    public void setFetchSize(final int fetchSize) {
+        checkArgument(fetchSize >= 1, "fetch size parameter must be greater than or equal to 1");
+        this.fetchSize = fetchSize;
     }
 
 }
