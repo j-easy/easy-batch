@@ -34,8 +34,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,8 +56,6 @@ public class FileMultiRecordReaderTest {
 
     private FileMultiRecordReader fileMultiRecordReader;
 
-    private Comparator<Record> recordComparator;
-
     @Before
     public void setUp() throws Exception {
         // TODO use https://github.com/google/jimfs when moving to Java 7
@@ -67,14 +63,6 @@ public class FileMultiRecordReaderTest {
         dataSource.mkdir();
         createTestFiles(dataSource);
         fileMultiRecordReader = new FileMultiRecordReader(CHUNK_SIZE, dataSource);
-
-        // Needed to sort FileRecords since the order of File.listFiles() is OS dependant.
-        recordComparator = new Comparator<Record>() {
-            @Override
-            public int compare(Record record1, Record record2) {
-                return record1.getPayload().toString().compareTo(record2.getPayload().toString());
-            }
-        };
     }
 
     @Test
@@ -89,18 +77,13 @@ public class FileMultiRecordReaderTest {
         assertThat(multiRecords).isNotNull().hasSize(2);
 
         MultiRecord chunk1 = multiRecords.get(0);
-        List<Record> records = chunk1.getPayload();
-        Collections.sort(records, recordComparator);
-        assertThat(records.size()).isEqualTo(2);
-        assertThat(records.get(0).getPayload().toString()).endsWith("test1.txt");
-        assertThat(records.get(1).getPayload().toString()).endsWith("test2.txt");
-        
         MultiRecord chunk2 = multiRecords.get(1);
-        Collections.sort(records, recordComparator);
+
+        List<Record> records = chunk1.getPayload();
+        assertThat(records.size()).isEqualTo(2);
+
         records = chunk2.getPayload();
         assertThat(records.size()).isEqualTo(2);
-        assertThat(records.get(0).getPayload().toString()).endsWith("test3.txt");
-        assertThat(records.get(1).getPayload().toString()).endsWith("test4.txt");
     }
 
     @After
