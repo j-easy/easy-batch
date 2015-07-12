@@ -35,7 +35,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class FlatFileRecord extends StringRecord {
+class FlatFileRecord extends StringRecord {
 
     /**
      * The record fields.
