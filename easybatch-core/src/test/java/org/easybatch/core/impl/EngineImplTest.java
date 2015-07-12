@@ -31,7 +31,10 @@ import org.easybatch.core.api.handler.ErrorRecordHandler;
 import org.easybatch.core.api.handler.FilteredRecordHandler;
 import org.easybatch.core.api.handler.IgnoredRecordHandler;
 import org.easybatch.core.api.handler.RejectedRecordHandler;
-import org.easybatch.core.reader.StringRecordReader;
+import org.easybatch.core.processor.RecordCollector;
+import org.easybatch.core.reader.IterableRecordReader;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.StringRecord;
 import org.easybatch.core.util.Utils;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,13 +47,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
-import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.mockito.Mockito.*;
 
 /**
@@ -58,6 +58,7 @@ import static org.mockito.Mockito.*;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
 public class EngineImplTest {
 
@@ -113,7 +114,6 @@ public class EngineImplTest {
     private RuntimeException runtimeException;
 
     @Before
-    @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         when(record1.getHeader()).thenReturn(header1);
         when(record2.getHeader()).thenReturn(header2);
@@ -150,7 +150,6 @@ public class EngineImplTest {
      */
 
     @Test
-    @SuppressWarnings("unchecked")
     public void allComponentsShouldBeInvokedForEachRecordInOrder() throws Exception {
 
         engine.call();
@@ -249,7 +248,6 @@ public class EngineImplTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void whenRecordValidatorThrowsARuntimeException_thenShouldRejectRecord() throws Exception {
         when(firstValidator.validateRecord(record1)).thenThrow(runtimeException);
         aNewEngine()
@@ -274,7 +272,6 @@ public class EngineImplTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void whenStrictModeIsEnabled_ThenTheEngineShouldAbortOnFirstProcessingExceptionIfAny() throws Exception {
         when(firstProcessor.processRecord(record1)).thenReturn(record1);
         when(secondProcessor.processRecord(record1)).thenThrow(recordProcessingException);
@@ -345,33 +342,47 @@ public class EngineImplTest {
 
     @Test
     public void testRecordSkipping() throws Exception {
-        String dataSource = "foo" + LINE_SEPARATOR + "bar";
+        List<String> dataSource = Arrays.asList("foo", "bar");
 
         Engine engine = aNewEngine()
-                .reader(new StringRecordReader(dataSource))
+                .reader(new IterableRecordReader(dataSource))
                 .skip(1)
+                .processor(new RecordCollector<StringRecord>())
                 .build();
 
         Report report = engine.call();
 
+        assertThat(report.getTotalRecords()).isEqualTo(2);
         assertThat(report.getSkippedRecordsCount()).isEqualTo(1);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(1);
+
+        List<GenericRecord> records = (List<GenericRecord>) report.getBatchResult();
+
+        assertThat(records).isNotNull().hasSize(1);
+        assertThat(records.get(0).getPayload()).isNotNull().isEqualTo("bar");
 
     }
 
     @Test
     public void testRecordLimit() throws Exception {
-        String dataSource = "foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR + "baz";
+        List<String> dataSource = Arrays.asList("foo", "bar", "baz");
 
         Engine engine = aNewEngine()
-                .reader(new StringRecordReader(dataSource))
+                .reader(new IterableRecordReader(dataSource))
                 .limit(2)
+                .processor(new RecordCollector<StringRecord>())
                 .build();
 
         Report report = engine.call();
 
         assertThat(report.getTotalRecords()).isEqualTo(2);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
+
+        List<GenericRecord> records = (List<GenericRecord>) report.getBatchResult();
+
+        assertThat(records).isNotNull().hasSize(2);
+        assertThat(records.get(0).getPayload()).isNotNull().isEqualTo("foo");
+        assertThat(records.get(1).getPayload()).isNotNull().isEqualTo("bar");
 
     }
 
@@ -380,7 +391,6 @@ public class EngineImplTest {
      */
 
     @Test
-    @SuppressWarnings("unchecked")
     public void jobEventListenerShouldBeInvokedForEachEvent() throws Exception {
         when(firstProcessor.processRecord(record1)).thenThrow(recordProcessingException);
         engine = new EngineBuilder()
@@ -396,7 +406,6 @@ public class EngineImplTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void stepEventListenersShouldBeInvokedForEachEvent() throws Exception {
         when(recordFilterEventListener.beforeRecordFiltering(record1)).thenReturn(record1);
         when(recordFilterEventListener.beforeRecordFiltering(record2)).thenReturn(record2);
@@ -480,7 +489,6 @@ public class EngineImplTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void whenARecordIsRejected_thenTheCustomRejectedRecordHandlerShouldBeInvoked() throws Exception {
         Set<ValidationError> validationErrors = new HashSet<ValidationError>();
         validationErrors.add(new ValidationError("error"));
@@ -496,7 +504,6 @@ public class EngineImplTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void whenARecordIsInError_thenTheCustomErrorRecordHandlerShouldBeInvoked() throws Exception {
         when(firstProcessor.processRecord(record1)).thenThrow(recordProcessingException);
         engine = new EngineBuilder()
