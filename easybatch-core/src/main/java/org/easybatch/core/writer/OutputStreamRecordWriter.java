@@ -22,7 +22,7 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.processor;
+package org.easybatch.core.writer;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordProcessingException;

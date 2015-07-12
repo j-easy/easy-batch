@@ -22,10 +22,9 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.processor;
+package org.easybatch.core.writer;
 
-import org.easybatch.core.reader.StringRecordReader;
-import org.easybatch.core.record.StringRecord;
+import org.easybatch.core.api.Record;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,68 +33,38 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.OutputStreamWriter;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Test class for {@link OutputStreamRecordWriter}.
+ * Test class for {@link StandardOutputRecordWriter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 @RunWith(MockitoJUnitRunner.class)
-public class OutputStreamRecordWriterTest {
+public class StandardOutputRecordWriterTest {
+
+    public static final String PAYLOAD = "Foo";
 
     @Rule
     public final SystemOutRule systemOut = new SystemOutRule().enableLog();
 
-    public static final String PAYLOAD = "test";
-
     @Mock
-    private OutputStreamWriter outputStreamWriter;
+    private Record record;
 
-    @Mock
-    private StringRecord stringRecord;
-
-    private OutputStreamRecordWriter outputStreamRecordWriter;
+    private StandardOutputRecordWriter writer;
 
     @Before
     public void setUp() throws Exception {
-        when(stringRecord.getPayload()).thenReturn(PAYLOAD);
-        outputStreamRecordWriter = new OutputStreamRecordWriter(outputStreamWriter);
+        when(record.getPayload()).thenReturn(PAYLOAD);
+        writer = new StandardOutputRecordWriter();
     }
 
     @Test
-    public void testProcessRecord() throws Exception {
-        outputStreamRecordWriter.processRecord(stringRecord);
+    public void testRecordPayloadWriting() throws Exception {
+        writer.processRecord(record);
 
-        verify(outputStreamWriter).write(PAYLOAD + LINE_SEPARATOR);
-        verify(outputStreamWriter).flush();
-    }
-
-    @Test
-    public void outputStreamRecordWriterIntegrationTest() throws Exception {
-        String outputFile = "test.txt";
-        String dataSource = "1,foo" + LINE_SEPARATOR + "2,bar";
-
-        aNewEngine()
-                .reader(new StringRecordReader(dataSource))
-                .processor(new OutputStreamRecordWriter(new OutputStreamWriter(System.out)))
-                .processor(new OutputStreamRecordWriter(new FileWriter(outputFile)))
-                .build().call();
-
-        // Assert that records have been written to System.out
-        assertThat(systemOut.getLog()).isEqualTo(dataSource + LINE_SEPARATOR);
-
-        // Assert that records have been written to the Output file
-        File file = new File(outputFile);
-        assertThat(file).hasContent(dataSource + LINE_SEPARATOR);
-        file.delete();
+        assertThat(systemOut.getLog()).isEqualTo(PAYLOAD + LINE_SEPARATOR);
     }
 }
