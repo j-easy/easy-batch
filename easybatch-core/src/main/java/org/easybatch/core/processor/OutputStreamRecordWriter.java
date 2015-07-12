@@ -24,9 +24,9 @@
 
 package org.easybatch.core.processor;
 
+import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordProcessingException;
 import org.easybatch.core.api.RecordProcessor;
-import org.easybatch.core.record.StringRecord;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -36,19 +36,19 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Convenient processor to write the <strong>payload</strong> of a {@link StringRecord} to an output stream.
+ * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
  * <p/>
  * The user of this class is responsible for opening/closing the output stream, maybe using
  * a {@link org.easybatch.core.api.event.job.JobEventListener}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class OutputStreamRecordWriter implements RecordProcessor<StringRecord, StringRecord> {
+public class OutputStreamRecordWriter implements RecordProcessor<Record, Record> {
 
     private OutputStreamWriter outputStreamWriter;
 
     /**
-     * Convenient processor to write the <strong>payload</strong> of a {@link StringRecord} to an output stream.
+     * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
      * <p/>
      * The user of this class is responsible for opening/closing the output stream, maybe using
      * a {@link org.easybatch.core.api.event.job.JobEventListener}.
@@ -61,7 +61,7 @@ public class OutputStreamRecordWriter implements RecordProcessor<StringRecord, S
     }
 
     @Override
-    public StringRecord processRecord(StringRecord record) throws RecordProcessingException {
+    public Record processRecord(final Record record) throws RecordProcessingException {
         try {
             outputStreamWriter.write(record.getPayload() + LINE_SEPARATOR);
             outputStreamWriter.flush();
