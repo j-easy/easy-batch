@@ -64,7 +64,7 @@ public class ApacheCommonCsvRecordReader implements RecordReader {
 
     @Override
     public ApacheCommonCsvRecord readNextRecord() {
-        Header header = new Header(parser.getRecordNumber() + 1, getDataSourceName(), new Date());
+        Header header = new Header(parser.getRecordNumber(), getDataSourceName(), new Date());
         return new ApacheCommonCsvRecord(header, iterator.next());
     }
 

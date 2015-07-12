@@ -26,6 +26,7 @@ package org.easybatch.integration.apache.common.csv;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.api.Record;
 import org.junit.After;
 import org.junit.Assert;
@@ -61,15 +62,19 @@ public class ApacheCommonCsvRecordReaderTest {
 
     @Test
     public void testReadNextRecord() throws Exception {
+        recordReader.hasNextRecord();
         Record record = recordReader.readNextRecord();
-        assertThat(record).isInstanceOf(ApacheCommonCsvRecord.class);
+        assertThat(record).isNotNull().isInstanceOf(ApacheCommonCsvRecord.class);
 
         ApacheCommonCsvRecord apacheCommonCsvRecord = (ApacheCommonCsvRecord) record;
+        assertThat(apacheCommonCsvRecord.getHeader()).isNotNull();
         assertThat(apacheCommonCsvRecord.getHeader().getNumber()).isEqualTo(1);
-        assertThat(apacheCommonCsvRecord.getPayload().get("firstName")).isEqualTo("foo");
-        assertThat(apacheCommonCsvRecord.getPayload().get("lastName")).isEqualTo("bar");
-        assertThat(apacheCommonCsvRecord.getPayload().get("age")).isEqualTo("15");
-        assertThat(apacheCommonCsvRecord.getPayload().get("married")).isEqualTo("true");
+
+        CSVRecord csvRecord = apacheCommonCsvRecord.getPayload();
+        assertThat(csvRecord.get("firstName")).isEqualTo("foo");
+        assertThat(csvRecord.get("lastName")).isEqualTo("bar");
+        assertThat(csvRecord.get("age")).isEqualTo("15");
+        assertThat(csvRecord.get("married")).isEqualTo("true");
     }
 
     @After
