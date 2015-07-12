@@ -33,6 +33,7 @@ import org.easybatch.core.mapper.GenericRecordMapperTest;
 import org.easybatch.core.mapper.ObjectMapperTest;
 import org.easybatch.core.processor.RecordCollectorTest;
 import org.easybatch.core.reader.*;
+import org.easybatch.core.writer.FileRecordWriterTest;
 import org.easybatch.core.writer.OutputStreamRecordWriterTest;
 import org.easybatch.core.writer.StandardOutputRecordWriterTest;
 import org.junit.runner.RunWith;
@@ -91,6 +92,7 @@ import org.junit.runners.Suite;
         //writer
         OutputStreamRecordWriterTest.class,
         StandardOutputRecordWriterTest.class,
+        FileRecordWriterTest.class,
         // processor
         RecordCollectorTest.class,
         // api
