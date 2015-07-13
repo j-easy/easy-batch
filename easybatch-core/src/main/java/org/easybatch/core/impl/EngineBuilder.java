@@ -189,6 +189,18 @@ public final class EngineBuilder {
     }
 
     /**
+     * Register a record writer.
+     *
+     * @param recordWriter the record writer to register
+     * @return the engine builder
+     */
+    public EngineBuilder writer(final RecordWriter recordWriter) {
+        checkNotNull(recordWriter, "record writer");
+        engine.addRecordProcessor(recordWriter);
+        return this;
+    }
+
+    /**
      * Register a filtered record handler.
      *
      * @param filteredRecordHandler the handler to process filtered record
