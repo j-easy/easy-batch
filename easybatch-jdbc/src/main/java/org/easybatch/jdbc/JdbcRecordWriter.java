@@ -26,7 +26,7 @@ package org.easybatch.jdbc;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordProcessingException;
-import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.writer.AbstractRecordWriter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,7 +37,7 @@ import java.sql.SQLException;
  * 
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JdbcRecordWriter implements RecordProcessor<Record, Record> {
+public class JdbcRecordWriter extends AbstractRecordWriter<Record> {
 
     private Connection connection;
 
@@ -59,12 +59,11 @@ public class JdbcRecordWriter implements RecordProcessor<Record, Record> {
     }
 
     @Override
-    public Record processRecord(final Record record) throws RecordProcessingException {
+    public void writeRecord(final Record record) throws RecordProcessingException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatementProvider.prepareStatement(preparedStatement, record);
             preparedStatement.executeUpdate();
-            return record;
         } catch (SQLException e) {
             throw new RecordProcessingException("Unable to write record " + record + " to database", e);
         }

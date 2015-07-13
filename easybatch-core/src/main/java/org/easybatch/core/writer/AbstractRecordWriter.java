@@ -22,37 +22,23 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.jpa;
+package org.easybatch.core.writer;
 
 import org.easybatch.core.api.RecordProcessingException;
-import org.easybatch.core.writer.AbstractRecordWriter;
-
-import javax.persistence.EntityManager;
+import org.easybatch.core.api.RecordWriter;
 
 /**
- * Write entities to a database using JPA.
- * <p/>
- * This writer does not commit a transaction after writing records.
- * You can use a {@link JpaTransactionStepListener} for this purpose.
+ * Abstract class for record writers.
  *
- * @param <T> the entity type.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JpaRecordWriter<T> extends AbstractRecordWriter<T> {
-
-    private EntityManager entityManager;
-
-    /**
-     * Create a JPA record writer.
-     *
-     * @param entityManager the entity manager to write records.
-     */
-    public JpaRecordWriter(final EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+public abstract class AbstractRecordWriter<T> implements RecordWriter<T> {
 
     @Override
-    public void writeRecord(final T record) throws RecordProcessingException {
-        entityManager.persist(record);
+    public T processRecord(T record) throws RecordProcessingException {
+        writeRecord(record);
+        return record;
     }
+
+    protected abstract void writeRecord(T record) throws RecordProcessingException;
 }

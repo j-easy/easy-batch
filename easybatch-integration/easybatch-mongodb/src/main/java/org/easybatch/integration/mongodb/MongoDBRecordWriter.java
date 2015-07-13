@@ -27,14 +27,14 @@ package org.easybatch.integration.mongodb;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import org.easybatch.core.api.RecordProcessingException;
-import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.writer.AbstractRecordWriter;
 
 /**
  * Writes a Mongo {@link DBObject} in a given collection.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class MongoDBRecordWriter implements RecordProcessor<DBObject, DBObject> {
+public class MongoDBRecordWriter extends AbstractRecordWriter<DBObject> {
 
     private DBCollection collection;
 
@@ -48,10 +48,9 @@ public class MongoDBRecordWriter implements RecordProcessor<DBObject, DBObject> 
     }
 
     @Override
-    public DBObject processRecord(final DBObject record) throws RecordProcessingException {
+    public void writeRecord(final DBObject record) throws RecordProcessingException {
         try {
             collection.save(record);
-            return record;
         } catch (Exception e) {
             throw new RecordProcessingException("Unable to write document " + record + " to MongoDB server", e);
         }

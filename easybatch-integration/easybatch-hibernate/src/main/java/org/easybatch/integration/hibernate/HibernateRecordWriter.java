@@ -25,7 +25,7 @@
 package org.easybatch.integration.hibernate;
 
 import org.easybatch.core.api.RecordProcessingException;
-import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.writer.AbstractRecordWriter;
 import org.hibernate.Session;
 
 /**
@@ -36,7 +36,7 @@ import org.hibernate.Session;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class HibernateRecordWriter<T> implements RecordProcessor<T, T>{
+public class HibernateRecordWriter<T> extends AbstractRecordWriter<T> {
 
     private Session session;
 
@@ -50,8 +50,7 @@ public class HibernateRecordWriter<T> implements RecordProcessor<T, T>{
     }
 
     @Override
-    public T processRecord(T record) throws RecordProcessingException {
+    public void writeRecord(T record) throws RecordProcessingException {
         session.saveOrUpdate(record);
-        return record;
     }
 }
