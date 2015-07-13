@@ -87,7 +87,7 @@ public class HibernateRecordWriterTest {
         Report report = aNewEngine()
                 .reader(new IterableRecordReader<Tweet>(tweets))
                 .mapper(new GenericRecordMapper())
-                .processor(hibernateRecordWriter)
+                .writer(hibernateRecordWriter)
                 .recordProcessorEventListener(hibernateTransactionStepListener)
                 .jobEventListener(hibernateTransactionJobListener)
                 .build().call();

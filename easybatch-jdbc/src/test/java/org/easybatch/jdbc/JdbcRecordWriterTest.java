@@ -93,7 +93,7 @@ public class JdbcRecordWriterTest {
 
         Report report = aNewEngine()
                 .reader(new IterableRecordReader<Tweet>(tweets))
-                .processor(jdbcRecordWriter)
+                .writer(jdbcRecordWriter)
                 .recordProcessorEventListener(new JdbcTransactionStepListener(connection, commitInterval))
                 .jobEventListener(new JdbcTransactionJobListener(connection))
                 .build().call();

@@ -86,8 +86,8 @@ public class OutputStreamRecordWriterTest {
 
         aNewEngine()
                 .reader(new StringRecordReader(dataSource))
-                .processor(new OutputStreamRecordWriter(new OutputStreamWriter(System.out)))
-                .processor(new OutputStreamRecordWriter(new FileWriter(outputFile)))
+                .writer(new OutputStreamRecordWriter(new OutputStreamWriter(System.out)))
+                .writer(new OutputStreamRecordWriter(new FileWriter(outputFile)))
                 .build().call();
 
         // Assert that records have been written to System.out

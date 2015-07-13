@@ -94,7 +94,7 @@ public class JpaRecordWriterTest {
         Report report = aNewEngine()
                 .reader(new IterableRecordReader<Tweet>(tweets))
                 .mapper(new GenericRecordMapper())
-                .processor(jpaRecordWriter)
+                .writer(jpaRecordWriter)
                 .recordProcessorEventListener(jpaTransactionStepListener)
                 .jobEventListener(jpaTransactionJobListener)
                 .build().call();

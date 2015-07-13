@@ -120,7 +120,7 @@ public class MongoDBMultiRecordWriterTest {
         Report report = aNewEngine()
                 .reader(new IterableMultiRecordReader<DBObject>(chunkSize, tweets))
                 .mapper(new MultiRecordToDBObjectListMapper())
-                .processor(new MongoDBMultiRecordWriter(collection))
+                .writer(new MongoDBMultiRecordWriter(collection))
                 .build().call();
 
         assertThat(report).isNotNull();
@@ -148,7 +148,7 @@ public class MongoDBMultiRecordWriterTest {
         mongoClient.close();
     }
 
-    class MultiRecordToDBObjectListMapper implements RecordMapper<List<DBObject>> {
+    private class MultiRecordToDBObjectListMapper implements RecordMapper<List<DBObject>> {
 
         //TODO Should be type safe and built-in in core module
         @Override
