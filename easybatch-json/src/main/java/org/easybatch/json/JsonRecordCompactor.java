@@ -22,21 +22,21 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.xml;
+package org.easybatch.json;
 
-import org.easybatch.core.processor.RecordFlattener;
+import org.easybatch.core.processor.RecordCompactor;
 
-import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import java.io.ByteArrayInputStream;
 
 /**
- * Flattens a Xml record payload.
+ * Compacts a Json record payload.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class XmlRecordFlattener extends RecordFlattener {
+public class JsonRecordCompactor extends RecordCompactor {
 
     @Override
-    protected String flatten(final String payload) {
+    protected String compact(final String payload) {
         if (payload == null) {
             return null;
         }
@@ -44,9 +44,26 @@ public class XmlRecordFlattener extends RecordFlattener {
             return EMPTY_STRING;
         }
 
-        return payload
-                .replaceAll(LINE_SEPARATOR, "")
-                .replaceAll("\t", "")
-                .replaceAll(">( *?)<", "><");
+        String dataSource = "[" + payload + "]";
+        return doCompactPayload(dataSource);
+    }
+
+    private String doCompactPayload(final String dataSource) {
+        String flatJson = EMPTY_STRING;
+        JsonRecordReader jsonRecordReader = null;
+        try {
+            jsonRecordReader = new JsonRecordReader(new ByteArrayInputStream(dataSource.getBytes()));
+            jsonRecordReader.open();
+            if (jsonRecordReader.hasNextRecord()) {
+                flatJson = jsonRecordReader.readNextRecord().getPayload();
+            }
+            return flatJson;
+        } catch (Exception exception) {
+            return EMPTY_STRING;
+        } finally {
+            if (jsonRecordReader != null) {
+                jsonRecordReader.close();
+            }
+        }
     }
 }

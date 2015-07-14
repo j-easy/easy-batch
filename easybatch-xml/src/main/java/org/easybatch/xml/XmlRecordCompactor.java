@@ -24,38 +24,29 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.RecordProcessingException;
-import org.junit.Before;
-import org.junit.Test;
+import org.easybatch.core.processor.RecordCompactor;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
- * Test class for {@link XmlRecordFlattener}.
+ * Compacts a Xml record payload.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class XmlRecordFlattenerTest {
+public class XmlRecordCompactor extends RecordCompactor {
 
-    private XmlRecordFlattener xmlRecordFlattener;
+    @Override
+    protected String compact(final String payload) {
+        if (payload == null) {
+            return null;
+        }
+        if (payload.trim().isEmpty()) {
+            return EMPTY_STRING;
+        }
 
-    @Before
-    public void setUp() {
-        xmlRecordFlattener = new XmlRecordFlattener();
+        return payload
+                .replaceAll(LINE_SEPARATOR, "")
+                .replaceAll("\t", "")
+                .replaceAll(">( *?)<", "><");
     }
-
-    @Test
-    public void testFlattenXmlRecord() throws RecordProcessingException {
-        String expectedPayload = "<foo><bar><baz name='baz'/></bar></foo>";
-        String payload = "<foo>" + LINE_SEPARATOR +
-                "<bar>" + LINE_SEPARATOR +
-                "<baz name='baz'/>" + LINE_SEPARATOR +
-                "</bar>" + LINE_SEPARATOR +
-                "</foo>";
-
-        String flattenedRecord = xmlRecordFlattener.processRecord(payload);
-        assertThat(flattenedRecord).isNotNull().isEqualTo(expectedPayload);
-    }
-
 }

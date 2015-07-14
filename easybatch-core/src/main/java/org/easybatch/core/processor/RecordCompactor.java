@@ -28,19 +28,19 @@ import org.easybatch.core.api.RecordProcessingException;
 import org.easybatch.core.api.RecordProcessor;
 
 /**
- * Convenient processor to flatten hierarchical data (Json, Xml, etc).
+ * Convenient processor to compact hierarchical data (Json, Xml, etc).
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public abstract class RecordFlattener implements RecordProcessor<String, String> {
+public abstract class RecordCompactor implements RecordProcessor<String, String> {
 
     protected static final String EMPTY_STRING = "";
 
-    protected abstract String flatten(final String payload);
+    protected abstract String compact(final String payload);
     
     @Override
     public String processRecord(final String record) throws RecordProcessingException {
-        return flatten(record);
+        return compact(record);
     }
 
 }

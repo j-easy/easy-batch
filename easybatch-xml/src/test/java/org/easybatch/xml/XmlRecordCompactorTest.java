@@ -22,48 +22,40 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.json;
+package org.easybatch.xml;
 
-import org.easybatch.core.processor.RecordFlattener;
+import org.easybatch.core.api.RecordProcessingException;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
- * Flattens a Json record payload.
+ * Test class for {@link XmlRecordCompactor}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JsonRecordFlattener extends RecordFlattener {
+public class XmlRecordCompactorTest {
 
-    @Override
-    protected String flatten(final String payload) {
-        if (payload == null) {
-            return null;
-        }
-        if (payload.trim().isEmpty()) {
-            return EMPTY_STRING;
-        }
+    private XmlRecordCompactor xmlRecordFlattener;
 
-        String dataSource = "[" + payload + "]";
-        return doFlattenPayload(dataSource);
+    @Before
+    public void setUp() {
+        xmlRecordFlattener = new XmlRecordCompactor();
     }
 
-    private String doFlattenPayload(final String dataSource) {
-        String flatJson = EMPTY_STRING;
-        JsonRecordReader jsonRecordReader = null;
-        try {
-            jsonRecordReader = new JsonRecordReader(new ByteArrayInputStream(dataSource.getBytes()));
-            jsonRecordReader.open();
-            if (jsonRecordReader.hasNextRecord()) {
-                flatJson = jsonRecordReader.readNextRecord().getPayload();
-            }
-            return flatJson;
-        } catch (Exception exception) {
-            return EMPTY_STRING;
-        } finally {
-            if (jsonRecordReader != null) {
-                jsonRecordReader.close();
-            }
-        }
+    @Test
+    public void testFlattenXmlRecord() throws RecordProcessingException {
+        String expectedPayload = "<foo><bar><baz name='baz'/></bar></foo>";
+        String payload = "<foo>" + LINE_SEPARATOR +
+                "<bar>" + LINE_SEPARATOR +
+                "<baz name='baz'/>" + LINE_SEPARATOR +
+                "</bar>" + LINE_SEPARATOR +
+                "</foo>";
+
+        String compactRecord = xmlRecordFlattener.processRecord(payload);
+        assertThat(compactRecord).isNotNull().isEqualTo(expectedPayload);
     }
+
 }
