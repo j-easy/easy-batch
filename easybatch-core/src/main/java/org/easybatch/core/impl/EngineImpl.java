@@ -108,7 +108,7 @@ final class EngineImpl implements Engine {
         this.filteredRecordHandler = filteredRecordHandler;
         this.ignoredRecordHandler = ignoredRecordHandler;
         this.rejectedRecordHandler = rejectedRecordHandler;
-        this.report = new Report(this);
+        this.report = new Report();
         this.eventManager = eventManager;
         this.filterChain = new FilterChain(filters, eventManager);
         this.validationPipeline = new ValidationPipeline(validators, eventManager);
@@ -275,6 +275,8 @@ final class EngineImpl implements Engine {
         report.setLimit(limit);
         report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
         report.setSystemProperties(System.getProperties());
+        report.setEngineName(name);
+        report.setExecutionId(executionId);
     }
 
     private boolean initializeRecordReader() {

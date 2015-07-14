@@ -70,7 +70,7 @@ public class DefaultReportMerger implements ReportMerger {
         List<String> dataSources = new ArrayList<String>();
         long totalRecords = 0;
 
-        Report finalReport = new Report(null);
+        Report finalReport = new Report();
         finalReport.setStatus(Status.FINISHED);
 
         for (Report report : reports) {

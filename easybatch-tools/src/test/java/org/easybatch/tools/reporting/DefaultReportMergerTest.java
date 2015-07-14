@@ -24,10 +24,8 @@
 
 package org.easybatch.tools.reporting;
 
-import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
-import org.easybatch.core.impl.EngineBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,19 +41,15 @@ public class DefaultReportMergerTest {
 
     private ReportMerger reportMerger;
 
-    private Engine engine1, engine2;
-
     @Before
     public void setUp() throws Exception {
         reportMerger = new DefaultReportMerger();
-        engine1 = EngineBuilder.aNewEngine().named("engine1").build();
-        engine2 = EngineBuilder.aNewEngine().named("engine2").build();
     }
 
     @Test
     public void testReportsMerging() throws Exception {
 
-        Report report1 = new Report(engine1);
+        Report report1 = new Report();
         long startTime1 = 1l;
         long endTime1 = 10l;
         report1.setTotalRecords(5l);
@@ -70,7 +64,7 @@ public class DefaultReportMergerTest {
         report1.setDataSource("datasource1");
         report1.setStatus(Status.ABORTED);
 
-        Report report2 = new Report(engine2);
+        Report report2 = new Report();
         long startTime2 = 2l;
         long endTime2 = 11l;
         report2.setTotalRecords(5l);

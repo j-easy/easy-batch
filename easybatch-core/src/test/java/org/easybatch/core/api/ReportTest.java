@@ -26,9 +26,6 @@ package org.easybatch.core.api;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Calendar;
 
@@ -39,11 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ReportTest {
-
-    @Mock
-    private Engine engine;
     
     private Report report;
 
@@ -59,7 +52,7 @@ public class ReportTest {
 
     @Before
     public void setUp() throws Exception {
-        report = new Report(engine);
+        report = new Report();
         report.setStartTime(START_TIME);
         report.setEndTime(END_TIME);
         report.setStatus(Status.FINISHED);
@@ -91,7 +84,7 @@ public class ReportTest {
 
     @Test
     public void reportStatisticsPercentsShouldBeCorrectlyRounded() {
-        report = new Report(engine);
+        report = new Report();
         report.setTotalRecords(5L);
         report.incrementTotalFilteredRecords();
         report.incrementTotalFilteredRecords();

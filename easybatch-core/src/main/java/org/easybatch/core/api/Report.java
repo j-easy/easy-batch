@@ -68,14 +68,15 @@ public class Report implements Serializable {
 
     private long limit;
 
-    private transient Engine engine;
+    private String engineName;
+
+    private String executionId;
 
     private transient Object batchResult;
 
     private Properties systemProperties;
 
-    public Report(Engine engine) {
-        this.engine = engine;
+    public Report() {
         this.status = Status.INITIALIZING;
     }
 
@@ -175,6 +176,22 @@ public class Report implements Serializable {
         this.status = status;
     }
 
+    public void setEngineName(String engineName) {
+        this.engineName = engineName;
+    }
+
+    public void setExecutionId(String executionId) {
+        this.executionId = executionId;
+    }
+
+    public String getEngineName() {
+        return engineName;
+    }
+
+    public String getExecutionId() {
+        return executionId;
+    }
+
     public long getFilteredRecordsCount() {
         return filteredRecords;
     }
@@ -242,14 +259,6 @@ public class Report implements Serializable {
     /*
      * Public utility methods to format report statistics
      */
-
-    public String getEngineName() {
-        return engine == null ? "N/A" : engine.getName();
-    }
-
-    public String getExecutionId() {
-        return engine == null ? "N/A" : engine.getExecutionId();
-    }
 
     public String getFormattedBatchDuration() {
         final StringBuilder sb = new StringBuilder();
