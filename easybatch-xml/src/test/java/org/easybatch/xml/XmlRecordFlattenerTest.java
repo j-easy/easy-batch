@@ -24,33 +24,24 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.Header;
 import org.easybatch.core.api.RecordProcessingException;
-import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
-import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+/**
+ * Test class for {@link XmlRecordFlattener}.
+ *
+ * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ */
 public class XmlRecordFlattenerTest {
-
-    @Mock
-    private Header header;
-
-    @Mock
-    private XmlRecord xmlRecord;
 
     private XmlRecordFlattener xmlRecordFlattener;
 
     @Before
     public void setUp() {
-        when(xmlRecord.getHeader()).thenReturn(header);
         xmlRecordFlattener = new XmlRecordFlattener();
     }
 
@@ -62,12 +53,9 @@ public class XmlRecordFlattenerTest {
                 "<baz name='baz'/>" + LINE_SEPARATOR +
                 "</bar>" + LINE_SEPARATOR +
                 "</foo>";
-        when(xmlRecord.getPayload()).thenReturn(payload);
 
-        StringRecord flattenedRecord = xmlRecordFlattener.processRecord(xmlRecord);
-        assertThat(flattenedRecord).isNotNull();
-        assertThat(flattenedRecord.getHeader()).isEqualTo(header);
-        assertThat(flattenedRecord.getPayload()).isEqualTo(expectedPayload);
+        String flattenedRecord = xmlRecordFlattener.processRecord(payload);
+        assertThat(flattenedRecord).isNotNull().isEqualTo(expectedPayload);
     }
 
 }

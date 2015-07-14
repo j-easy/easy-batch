@@ -36,7 +36,7 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 public class XmlRecordFlattener extends RecordFlattener {
 
     @Override
-    protected String flattenPayload(final String payload) {
+    protected String flatten(final String payload) {
         if (payload == null) {
             return null;
         }

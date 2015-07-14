@@ -36,7 +36,7 @@ import java.io.ByteArrayInputStream;
 public class JsonRecordFlattener extends RecordFlattener {
 
     @Override
-    protected String flattenPayload(final String payload) {
+    protected String flatten(final String payload) {
         if (payload == null) {
             return null;
         }

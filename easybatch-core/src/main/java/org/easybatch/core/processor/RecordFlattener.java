@@ -26,23 +26,21 @@ package org.easybatch.core.processor;
 
 import org.easybatch.core.api.RecordProcessingException;
 import org.easybatch.core.api.RecordProcessor;
-import org.easybatch.core.record.StringRecord;
 
 /**
  * Convenient processor to flatten hierarchical data (Json, Xml, etc).
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public abstract class RecordFlattener implements RecordProcessor<StringRecord, StringRecord> {
+public abstract class RecordFlattener implements RecordProcessor<String, String> {
 
     protected static final String EMPTY_STRING = "";
 
-    protected abstract String flattenPayload(final String payload);
+    protected abstract String flatten(final String payload);
     
     @Override
-    public StringRecord processRecord(final StringRecord record) throws RecordProcessingException {
-        String flatPayload = flattenPayload(record.getPayload());
-        return new StringRecord(record.getHeader(), flatPayload);
+    public String processRecord(final String record) throws RecordProcessingException {
+        return flatten(record);
     }
 
 }
