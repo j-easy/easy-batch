@@ -42,7 +42,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class OutputStreamRecordWriter extends AbstractRecordWriter<Record> {
+public class OutputStreamRecordWriter extends AbstractRecordWriter {
 
     private OutputStreamWriter outputStreamWriter;
 
@@ -60,9 +60,11 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter<Record> {
     }
 
     @Override
-    public void writeRecord(final Record record) throws RecordProcessingException {
+    public void writeRecord(final Object record) throws RecordProcessingException {
+        boolean isRecord = Record.class.isAssignableFrom(record.getClass());
+        Object payload = isRecord ? ((Record) record).getPayload() : record;
         try {
-            outputStreamWriter.write(record.getPayload() + LINE_SEPARATOR);
+            outputStreamWriter.write(payload + LINE_SEPARATOR);
             outputStreamWriter.flush();
         } catch (IOException exception) {
             String message = format("Unable to write record %s to the output stream writer", record);
