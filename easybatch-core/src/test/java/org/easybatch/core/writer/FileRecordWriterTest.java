@@ -33,6 +33,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
+import java.io.FileWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.*;
@@ -60,7 +61,7 @@ public class FileRecordWriterTest {
         when(record.getPayload()).thenReturn(PAYLOAD);
         file = new File(JAVA_IO_TMPDIR + FILE_SEPARATOR + "test.txt");
         file.createNewFile();
-        writer = new FileRecordWriter(file);
+        writer = new FileRecordWriter(new FileWriter(file));
     }
 
     @Test
