@@ -24,8 +24,6 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.Record;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -43,6 +41,6 @@ public interface PreparedStatementProvider {
      * @param record            the record holding input data
      * @throws SQLException thrown when a problem occurs when preparing the statement
      */
-    void prepareStatement(PreparedStatement preparedStatement, Record record) throws SQLException;
+    void prepareStatement(PreparedStatement preparedStatement, Object record) throws SQLException;
 
 }

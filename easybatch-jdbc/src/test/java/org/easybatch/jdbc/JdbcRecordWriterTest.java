@@ -24,8 +24,8 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.Report;
+import org.easybatch.core.mapper.GenericRecordMapper;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -67,8 +67,8 @@ public class JdbcRecordWriterTest {
         String query = "INSERT INTO tweet VALUES (?,?,?);";
         PreparedStatementProvider preparedStatementProvider = new PreparedStatementProvider() {
             @Override
-            public void prepareStatement(PreparedStatement statement, Record record) throws SQLException {
-                Tweet tweet = (Tweet) record.getPayload();
+            public void prepareStatement(PreparedStatement statement, Object record) throws SQLException {
+                Tweet tweet = (Tweet) record;
                 statement.setInt(1, tweet.getId());
                 statement.setString(2, tweet.getUser());
                 statement.setString(3, tweet.getMessage());
@@ -93,6 +93,7 @@ public class JdbcRecordWriterTest {
 
         Report report = aNewEngine()
                 .reader(new IterableRecordReader<Tweet>(tweets))
+                .mapper(new GenericRecordMapper())
                 .writer(jdbcRecordWriter)
                 .recordProcessorEventListener(new JdbcTransactionStepListener(connection, commitInterval))
                 .jobEventListener(new JdbcTransactionJobListener(connection))
