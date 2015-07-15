@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains Gson integration module classes.
+ * This package contains Gson support classes.
  */
 package org.easybatch.integration.gson;

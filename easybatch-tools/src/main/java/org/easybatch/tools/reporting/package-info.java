@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains easy batch reporting tools.
+ * This package contains reporting tools.
  */
 package org.easybatch.tools.reporting;

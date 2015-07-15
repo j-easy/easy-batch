@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains Apache Common Csv integration module classes.
+ * This package contains Apache Common Csv support classes.
  */
 package org.easybatch.integration.apache.common.csv;

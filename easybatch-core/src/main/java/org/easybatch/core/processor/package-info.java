@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains MongoDB support classes.
+ * This package contains built-in implementations of the {@link org.easybatch.core.api.RecordProcessor} interface.
  */
-package org.easybatch.integration.mongodb;
+package org.easybatch.core.processor;

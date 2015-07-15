@@ -75,7 +75,7 @@ public class CliRecordReader implements RecordReader {
     }
 
     /**
-     * Constructs a CliRecordReader instance with a termination word.
+     * Constructs a {@link CliRecordReader} instance with a termination word.
      *
      * @param terminationInput the word to type to stop reading from the standard input.
      */

@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains OpenCsv integration module classes.
+ * This package contains OpenCsv support classes.
  */
 package org.easybatch.integration.opencsv;

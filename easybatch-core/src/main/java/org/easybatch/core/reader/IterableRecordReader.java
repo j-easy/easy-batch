@@ -37,6 +37,10 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Reads record from an {@link Iterable} data source.
+ * <p/>
+ * This reader produces {@link GenericRecord} instances containing original objects from the datasource.
+ * You can use a {@link org.easybatch.core.mapper.GenericRecordMapper} to get the payload of a generic record
+ * which is the original object from the datasource
  *
  * @param <T> the type of records in the iterable data source.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -54,7 +58,11 @@ public class IterableRecordReader<T> implements RecordReader {
     private Iterator<T> iterator;
 
     /**
-     * Constructs a reader to read records from an iterable data source.
+     * Reads record from an {@link Iterable} data source.
+     * <p/>
+     * This reader produces {@link GenericRecord} instances containing original objects from the datasource.
+     * You can use a {@link org.easybatch.core.mapper.GenericRecordMapper} to get the payload of a generic record
+     * which is the original object from the datasource
      *
      * @param dataSource the data source to read records from.
      */

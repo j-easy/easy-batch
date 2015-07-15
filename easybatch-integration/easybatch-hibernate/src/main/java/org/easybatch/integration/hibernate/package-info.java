@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains MongoDB support classes.
+ * This package contains Hibernate support classes.
  */
-package org.easybatch.integration.mongodb;
+package org.easybatch.integration.hibernate;

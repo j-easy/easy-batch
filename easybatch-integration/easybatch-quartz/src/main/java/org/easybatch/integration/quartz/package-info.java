@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains Quartz integration module classes.
+ * This package contains Quartz support classes.
  */
 package org.easybatch.integration.quartz;

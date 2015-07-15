@@ -32,12 +32,14 @@ import java.util.List;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
- * A multi-record is a record containing a list of records.
+ * A multi-record is a record containing a list of records (chunks).
+ * <p/>
+ * Multi-records are the central point for chunk processing support.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class MultiRecord extends GenericRecord<List<Record>> {
-    
+
     public MultiRecord(Header header, List<Record> payload) {
         super(header, payload);
     }
