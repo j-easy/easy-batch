@@ -39,7 +39,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class AbstractMultiRecordReader extends MultiRecordReader {
+public abstract class AbstractMultiRecordReader extends MultiRecordReader {
 
     public AbstractMultiRecordReader(int chunkSize, final RecordReader delegate) {
         super(chunkSize, delegate);
