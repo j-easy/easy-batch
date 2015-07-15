@@ -68,9 +68,8 @@ Version 3.1.0 will be full of new goodies:
 * Writers: Writers are record processors that write records to a data sink. 
 This will save you a lot of boilerplate code and make writing ETL applications using Easy Batch a piece of cake!
 * Chunk processing: Finally, you will be able to process records in chunks. This is a long waited feature that has been asked
-by a lot of users and we have took into account your feedback.
+by a lot of users and we have taken into account your feedback.
 * Hibernate support: There will be a new `HibernateRecordReader` and `HibernateRecordWriter` to read and write data using Hibernate.
-* Neo4j support: Reading and writing data from/to Neo4j will be also added in this version
 * And more!
 
 See all features planned for next version [here](https://github.com/EasyBatch/easybatch-framework/issues?q=milestone%3A3.1.0).
