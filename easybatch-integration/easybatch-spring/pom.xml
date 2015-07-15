@@ -43,7 +43,7 @@
 
     <ciManagement>
         <system>Jenkins</system>
-        <url>https://buildhive.cloudbees.com/job/benas/job/easy-batch/</url>
+        <url>https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/</url>
     </ciManagement>
 
     <licenses>
