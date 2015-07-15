@@ -55,9 +55,11 @@ import org.junit.runners.Suite;
         IterableRecordReaderTest.class,
         IterableMultiRecordReaderTest.class,
         StringMultiRecordReaderTest.class,
+        FileMultiRecordReaderTest.class,
         // mapper
         ObjectMapperTest.class,
         GenericRecordMapperTest.class,
+        // converter
         AtomicIntegerTypeConverterTest.class,
         AtomicLongTypeConverterTest.class,
         BigDecimalTypeConverterTest.class,
@@ -102,7 +104,8 @@ import org.junit.runners.Suite;
         FilterChainTest.class,
         ValidationPipelineTest.class,
         ProcessingPipelineTest.class,
-        LocalEventManagerTest.class
+        LocalEventManagerTest.class,
+        RecordSkipperTest.class
 
 })
 public class CoreTestsSuite {
