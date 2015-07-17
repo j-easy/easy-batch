@@ -39,6 +39,16 @@ public class Person {
 
     private boolean married;
 
+    public Person() {
+    }
+
+    public Person(int id, String firstName, String lastName, boolean married) {
+        this.firstName = firstName;
+        this.id = id;
+        this.lastName = lastName;
+        this.married = married;
+    }
+
     public int getId() {
         return id;
     }
