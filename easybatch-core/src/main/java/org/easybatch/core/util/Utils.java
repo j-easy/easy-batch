@@ -30,8 +30,15 @@ import org.easybatch.core.jmx.Monitor;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.management.ManagementFactory;
+import java.lang.reflect.Method;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -114,5 +121,15 @@ public abstract class Utils {
         if (!assertion) {
             throw new IllegalArgumentException(message);
         }
+    }
+
+    public static Map<String, Method> getGetters(final Class type) throws IntrospectionException {
+        Map<String, Method> getters = new HashMap<String, Method>();
+        BeanInfo beanInfo = Introspector.getBeanInfo(type);
+        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+            getters.put(propertyDescriptor.getName(), propertyDescriptor.getReadMethod());
+        }
+        return getters;
     }
 }

@@ -28,15 +28,16 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.easybatch.core.api.RecordMarshallingException;
 import org.easybatch.core.processor.AbstractRecordMarshaller;
+import org.easybatch.core.util.Utils;
 
-import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Marshals a record to CSV format.
@@ -48,7 +49,7 @@ public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
     private List<String> fields;
 
     private Map<String, Method> getters;
-    
+
     private CSVFormat csvFormat;
 
     /**
@@ -62,16 +63,7 @@ public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
     public ApacheCommonCsvRecordMarshaller(final Class type, final String[] fields, CSVFormat csvFormat) throws IntrospectionException {
         this.fields = Arrays.asList(fields);
         this.csvFormat = csvFormat;
-        getters = new HashMap<String, Method>();
-        introspectBean(type);
-    }
-
-    private void introspectBean(Class type) throws IntrospectionException {
-        BeanInfo beanInfo = Introspector.getBeanInfo(type);
-        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-            getters.put(propertyDescriptor.getName(), propertyDescriptor.getReadMethod());
-        }
+        getters = Utils.getGetters(type);
     }
 
     @Override

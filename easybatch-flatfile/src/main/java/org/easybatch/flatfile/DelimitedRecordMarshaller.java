@@ -26,14 +26,15 @@ package org.easybatch.flatfile;
 
 import org.easybatch.core.api.RecordMarshallingException;
 import org.easybatch.core.processor.AbstractRecordMarshaller;
+import org.easybatch.core.util.Utils;
 
-import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Marshals a POJO to CSV format.
@@ -92,16 +93,7 @@ public class DelimitedRecordMarshaller extends AbstractRecordMarshaller {
         this.fields = Arrays.asList(fields);
         this.delimiter = delimiter;
         this.qualifier = qualifier;
-        getters = new HashMap<String, Method>();
-        introspectBean(type);
-    }
-
-    private void introspectBean(Class type) throws IntrospectionException {
-        BeanInfo beanInfo = Introspector.getBeanInfo(type);
-        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-            getters.put(propertyDescriptor.getName(), propertyDescriptor.getReadMethod());
-        }
+        getters = Utils.getGetters(type);
     }
 
     @Override
