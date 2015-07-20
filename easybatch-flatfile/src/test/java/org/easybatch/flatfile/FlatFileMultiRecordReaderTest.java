@@ -54,7 +54,7 @@ public class FlatFileMultiRecordReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        flatFileMultiRecordReader = new FlatFileMultiRecordReader(CHUNK_SIZE, new File(getFileUri("/complaints.csv")));
+        flatFileMultiRecordReader = new FlatFileMultiRecordReader(new File(getFileUri("/complaints.csv")), CHUNK_SIZE);
         flatFileMultiRecordReader.open();
     }
 
@@ -96,7 +96,7 @@ public class FlatFileMultiRecordReaderTest {
     public void chunkProcessingIntegrationTest() throws Exception {
 
         Report report = aNewEngine()
-                .reader(new FlatFileMultiRecordReader(CHUNK_SIZE, new File(getFileUri("/complaints.csv"))))
+                .reader(new FlatFileMultiRecordReader(new File(getFileUri("/complaints.csv")), CHUNK_SIZE))
                 .processor(new RecordCollector<MultiRecord>())
                 .build().call();
 

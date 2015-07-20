@@ -38,11 +38,11 @@ public class MongoDBMultiRecordReader extends AbstractMultiRecordReader {
     /**
      * Create a multi-record reader.
      *
-     * @param chunkSize the number of records to read at a time
      * @param collection the collection to read documents from
      * @param query the query to fetch data
+     * @param chunkSize the number of records to read at a time
      */
-    public MongoDBMultiRecordReader(int chunkSize, final DBCollection collection, final DBObject query) {
+    public MongoDBMultiRecordReader(final DBCollection collection, final DBObject query, final int chunkSize) {
         super(chunkSize, new MongoDBRecordReader(collection, query));
     }
 }

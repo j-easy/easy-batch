@@ -39,10 +39,10 @@ public class FlatFileMultiRecordReader extends AbstractMultiRecordReader {
     /**
      * Constructs a flat file multi-record reader.
      *
-     * @param chunkSize the number of records to read at a time
      * @param file the flat file to read records from
+     * @param chunkSize the number of records to read at a time
      */
-    public FlatFileMultiRecordReader(final int chunkSize, final File file) throws FileNotFoundException {
+    public FlatFileMultiRecordReader(final File file, final int chunkSize) throws FileNotFoundException {
         super(chunkSize, new FlatFileRecordReader(file));
     }
 

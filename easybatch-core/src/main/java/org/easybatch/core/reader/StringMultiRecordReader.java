@@ -34,10 +34,10 @@ public class StringMultiRecordReader extends AbstractMultiRecordReader {
     /**
      * Constructs a string multi-record reader.
      *
-     * @param chunkSize the number of records to read at a time
      * @param dataSource the data source to read records from
+     * @param chunkSize the number of records to read at a time
      */
-    public StringMultiRecordReader(final int chunkSize, final String dataSource) {
+    public StringMultiRecordReader(final String dataSource, final int chunkSize) {
         super(chunkSize, new StringRecordReader(dataSource));
     }
 

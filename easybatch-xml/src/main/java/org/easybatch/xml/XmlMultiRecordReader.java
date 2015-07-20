@@ -38,11 +38,11 @@ public class XmlMultiRecordReader extends AbstractMultiRecordReader {
     /**
      * Create a Xml multi-record reader.
      *
-     * @param chunkSize       the number of xml records to read at a time
-     * @param rootElementName the root element name
      * @param xmlInputStream  the xml data source
+     * @param rootElementName the root element name
+     * @param chunkSize       the number of xml records to read at a time
      */
-    public XmlMultiRecordReader(int chunkSize, final String rootElementName, final InputStream xmlInputStream) {
+    public XmlMultiRecordReader(final InputStream xmlInputStream, final String rootElementName, int chunkSize) {
         super(chunkSize, new XmlRecordReader(rootElementName, xmlInputStream));
     }
 

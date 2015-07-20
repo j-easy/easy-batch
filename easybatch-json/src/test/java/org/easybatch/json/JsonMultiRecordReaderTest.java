@@ -51,7 +51,7 @@ public class JsonMultiRecordReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        jsonMultiRecordReader = new JsonMultiRecordReader(CHUNK_SIZE, getDataSource("/tweets.json"));
+        jsonMultiRecordReader = new JsonMultiRecordReader(getDataSource("/tweets.json"), CHUNK_SIZE);
     }
 
     @Test
@@ -83,7 +83,7 @@ public class JsonMultiRecordReaderTest {
 
     @Test
     public void testEmptyDataSource() throws Exception {
-        jsonMultiRecordReader = new JsonMultiRecordReader(CHUNK_SIZE, getDataSource("/empty.json"));
+        jsonMultiRecordReader = new JsonMultiRecordReader(getDataSource("/empty.json"), CHUNK_SIZE);
         Report report = aNewEngine()
                 .reader(jsonMultiRecordReader)
                 .processor(new RecordCollector<MultiRecord>())

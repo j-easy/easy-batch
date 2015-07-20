@@ -118,7 +118,7 @@ public class MongoDBMultiRecordWriterTest {
         int chunkSize = 2;
 
         Report report = aNewEngine()
-                .reader(new IterableMultiRecordReader<DBObject>(chunkSize, tweets))
+                .reader(new IterableMultiRecordReader<DBObject>(tweets, chunkSize))
                 .mapper(new MultiRecordToDBObjectListMapper())
                 .writer(new MongoDBMultiRecordWriter(collection))
                 .build().call();

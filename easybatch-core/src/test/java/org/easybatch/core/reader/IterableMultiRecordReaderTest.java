@@ -59,7 +59,7 @@ public class IterableMultiRecordReaderTest {
         List<Object> dataSource = asList(record1, record2, record3, record4, record5);
 
         Report report = aNewEngine()
-                .reader(new IterableMultiRecordReader<Object>(CHUNK_SIZE, dataSource))
+                .reader(new IterableMultiRecordReader<Object>(dataSource, CHUNK_SIZE))
                 .processor(new RecordCollector<Object>())
                 .build().call();
 

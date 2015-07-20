@@ -35,10 +35,10 @@ public class IterableMultiRecordReader<T> extends AbstractMultiRecordReader {
     /**
      * Constructs an iterable multi-record reader.
      *
-     * @param chunkSize the number of records to read at a time
      * @param dataSource the data source to read records from
+     * @param chunkSize the number of records to read at a time
      */
-    public IterableMultiRecordReader(final int chunkSize, final Iterable<T> dataSource) {
+    public IterableMultiRecordReader(final Iterable<T> dataSource, final int chunkSize) {
         super(chunkSize, new IterableRecordReader<T>(dataSource));
     }
 

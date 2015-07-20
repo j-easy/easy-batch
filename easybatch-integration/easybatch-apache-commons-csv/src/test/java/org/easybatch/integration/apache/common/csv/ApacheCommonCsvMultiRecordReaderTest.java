@@ -57,9 +57,10 @@ public class ApacheCommonCsvMultiRecordReaderTest {
     public void setUp() throws Exception {
         CSVFormat csvFormat = CSVFormat.DEFAULT;
         CSVParser parser = new CSVParser(new FileReader(new File(getDataSource("/tweets.csv").getFile())), csvFormat);
-        apacheCommonCsvMultiRecordReader = new ApacheCommonCsvMultiRecordReader(CHUNK_SIZE, parser);
+        apacheCommonCsvMultiRecordReader = new ApacheCommonCsvMultiRecordReader(parser, CHUNK_SIZE);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testChunkProcessing() throws Exception {
 

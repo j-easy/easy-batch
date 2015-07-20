@@ -45,10 +45,10 @@ public class JsonMultiRecordReader extends AbstractMultiRecordReader {
     /**
      * Create a Json multi-record reader.
      *
-     * @param chunkSize       the number of Json records to read at a time
      * @param jsonInputStream the Json data source
+     * @param chunkSize       the number of Json records to read at a time
      */
-    public JsonMultiRecordReader(final int chunkSize, final InputStream jsonInputStream) {
+    public JsonMultiRecordReader(final InputStream jsonInputStream, final int chunkSize) {
         super(chunkSize, new JsonRecordReader(jsonInputStream));
     }
 

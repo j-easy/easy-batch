@@ -37,10 +37,10 @@ public class ApacheCommonCsvMultiRecordReader extends AbstractMultiRecordReader 
     /**
      * Create a multi-record reader.
      *
-     * @param chunkSize the number of records to read at a time
      * @param parser the pre-configured Apache common CSV parser
+     * @param chunkSize the number of records to read at a time
      */
-    public ApacheCommonCsvMultiRecordReader(final int chunkSize, final CSVParser parser) {
+    public ApacheCommonCsvMultiRecordReader(final CSVParser parser, final int chunkSize) {
         super(chunkSize, new ApacheCommonCsvRecordReader(parser));
     }
 }

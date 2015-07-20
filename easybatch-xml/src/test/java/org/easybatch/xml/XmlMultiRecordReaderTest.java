@@ -51,7 +51,7 @@ public class XmlMultiRecordReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        xmlMultiRecordReader = new XmlMultiRecordReader(CHUNK_SIZE, "data", getDataSource("/data.xml"));
+        xmlMultiRecordReader = new XmlMultiRecordReader(getDataSource("/data.xml"), "data", CHUNK_SIZE);
     }
 
     @Test
@@ -91,7 +91,7 @@ public class XmlMultiRecordReaderTest {
 
     @Test
     public void testEmptyDataSource() throws Exception {
-        xmlMultiRecordReader = new XmlMultiRecordReader(CHUNK_SIZE, "data", getDataSource("/empty-file.xml"));
+        xmlMultiRecordReader = new XmlMultiRecordReader(getDataSource("/empty-file.xml"), "data", CHUNK_SIZE);
         Report report = aNewEngine()
                 .reader(xmlMultiRecordReader)
                 .processor(new RecordCollector<MultiRecord>())

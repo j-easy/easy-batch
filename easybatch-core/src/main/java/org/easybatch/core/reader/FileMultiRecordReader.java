@@ -36,10 +36,10 @@ public class FileMultiRecordReader extends AbstractMultiRecordReader {
     /**
      * Constructs a file multi-record reader.
      *
-     * @param chunkSize the number of records to read at a time
      * @param dataSource the directory to read files from
+     * @param chunkSize the number of records to read at a time
      */
-    public FileMultiRecordReader(final int chunkSize, final File dataSource) {
+    public FileMultiRecordReader(final File dataSource, final int chunkSize) {
         super(chunkSize, new FileRecordReader(dataSource));
     }
 

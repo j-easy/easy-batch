@@ -62,9 +62,10 @@ public class FileMultiRecordReaderTest {
         dataSource = new File(JAVA_IO_TMPDIR + FILE_SEPARATOR + "testFileMultiRecordReader");
         dataSource.mkdir();
         createTestFiles(dataSource);
-        fileMultiRecordReader = new FileMultiRecordReader(CHUNK_SIZE, dataSource);
+        fileMultiRecordReader = new FileMultiRecordReader(dataSource, CHUNK_SIZE);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testMultiFileReading() throws Exception {
         Report report = aNewEngine()

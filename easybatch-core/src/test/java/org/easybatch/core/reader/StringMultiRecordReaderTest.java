@@ -57,7 +57,7 @@ public class StringMultiRecordReaderTest {
                 "baz";
 
         aNewEngine()
-                .reader(new StringMultiRecordReader(CHUNK_SIZE, dataSource))
+                .reader(new StringMultiRecordReader(dataSource, CHUNK_SIZE))
                 .processor(new MultiRecordProcessor())
                 .build().call();
 

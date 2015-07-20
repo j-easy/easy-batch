@@ -60,12 +60,13 @@ public class MongoDBMultiRecordReaderTest {
         DBCollection collection = mongoClient.getDB("test").getCollection("tweets");
         DBObject query = new BasicDBObject();
 
-        mongoDBMultiRecordReader = new MongoDBMultiRecordReader(CHUNK_SIZE, collection, query);
+        mongoDBMultiRecordReader = new MongoDBMultiRecordReader(collection, query, CHUNK_SIZE);
         //db.tweets.insert({name:'foo'})
         //db.tweets.insert({name:'bar'})
         //db.tweets.insert({name:'baz'})
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testChunkProcessing() throws Exception {
 
