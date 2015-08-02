@@ -26,10 +26,10 @@ package org.easybatch.integration.mongodb;
 
 import com.mongodb.*;
 import org.assertj.core.api.Assertions;
-import org.easybatch.core.api.*;
+import org.easybatch.core.api.RecordProcessingException;
+import org.easybatch.core.api.Report;
+import org.easybatch.core.mapper.GenericMultiRecordMapper;
 import org.easybatch.core.reader.IterableMultiRecordReader;
-import org.easybatch.core.record.GenericRecord;
-import org.easybatch.core.record.MultiRecord;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,7 +39,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -119,7 +118,7 @@ public class MongoDBMultiRecordWriterTest {
 
         Report report = aNewEngine()
                 .reader(new IterableMultiRecordReader<DBObject>(tweets, chunkSize))
-                .mapper(new MultiRecordToDBObjectListMapper())
+                .mapper(new GenericMultiRecordMapper<DBObject>())
                 .writer(new MongoDBMultiRecordWriter(collection))
                 .build().call();
 
@@ -146,20 +145,5 @@ public class MongoDBMultiRecordWriterTest {
         Assertions.assertThat(tweet.get("message")).isEqualTo("hi");
 
         mongoClient.close();
-    }
-
-    private class MultiRecordToDBObjectListMapper implements RecordMapper<List<DBObject>> {
-
-        //TODO Should be type safe and built-in in core module
-        @Override
-        public List<DBObject> mapRecord(Record record) throws RecordMappingException {
-            MultiRecord multiRecord = (MultiRecord) record;
-            List<Record> records = multiRecord.getPayload();
-            List<DBObject> dbObjects = new ArrayList<DBObject>();
-            for (Record r : records) {
-                dbObjects.add(((GenericRecord<DBObject>) r).getPayload());
-            }
-            return dbObjects;
-        }
     }
 }
