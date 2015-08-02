@@ -28,6 +28,7 @@ import org.easybatch.core.api.event.job.JobEventListener;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.lang.String.format;
@@ -46,7 +47,7 @@ public class XmlWrapperTagWriter implements JobEventListener {
 
     private String encoding = "UTF-8";
 
-    private boolean standalone = false;
+    private boolean standalone = true;
 
     private String wrapperTag;
 
@@ -120,9 +121,14 @@ public class XmlWrapperTagWriter implements JobEventListener {
         try {
             outputStreamWriter.write("</" + wrapperTag + ">");
             outputStreamWriter.flush();
-            outputStreamWriter.close();
         } catch (IOException e) {
             LOGGER.warning("Unable to write closing wrapper tag to the output stream writer");
+        } finally {
+            try {
+                outputStreamWriter.close();
+            } catch (IOException e) {
+                LOGGER.log(Level.WARNING, "Unable to close the output stream writer", e);
+            }
         }
     }
 

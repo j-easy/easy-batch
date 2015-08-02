@@ -41,7 +41,7 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
  */
 public class XmlWrapperTagWriterTest {
 
-    private static final String DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
+    private static final String DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
 
     @Rule
     public final SystemOutRule systemOut = new SystemOutRule().enableLog();
