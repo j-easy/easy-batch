@@ -25,6 +25,7 @@
 package org.easybatch.core.util;
 
 import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Record;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.jmx.Monitor;
 
@@ -131,5 +132,9 @@ public abstract class Utils {
             getters.put(propertyDescriptor.getName(), propertyDescriptor.getReadMethod());
         }
         return getters;
+    }
+
+    public static boolean isRecord(final Object record) {
+        return Record.class.isAssignableFrom(record.getClass());
     }
 }

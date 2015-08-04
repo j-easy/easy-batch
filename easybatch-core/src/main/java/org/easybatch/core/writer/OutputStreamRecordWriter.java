@@ -31,8 +31,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import static java.lang.String.format;
-import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
-import static org.easybatch.core.util.Utils.checkNotNull;
+import static org.easybatch.core.util.Utils.*;
 
 /**
  * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
@@ -61,8 +60,7 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter {
 
     @Override
     public void writeRecord(final Object record) throws RecordProcessingException {
-        boolean isRecord = Record.class.isAssignableFrom(record.getClass());
-        Object payload = isRecord ? ((Record) record).getPayload() : record;
+        Object payload = isRecord(record) ? ((Record) record).getPayload() : record;
         try {
             outputStreamWriter.write(payload + LINE_SEPARATOR);
             outputStreamWriter.flush();
