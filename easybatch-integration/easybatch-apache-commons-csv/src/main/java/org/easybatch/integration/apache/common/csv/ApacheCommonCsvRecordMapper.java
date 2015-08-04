@@ -28,6 +28,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
+import org.easybatch.core.api.TypeConverter;
 import org.easybatch.core.mapper.ObjectMapper;
 
 /**
@@ -47,6 +48,15 @@ public class ApacheCommonCsvRecordMapper<T> implements RecordMapper {
     public T mapRecord(Record record) throws RecordMappingException {
         CSVRecord csvRecord = (CSVRecord) record.getPayload();
         return objectMapper.mapObject(csvRecord.toMap());
+    }
+
+    /**
+     * Register a custom type converter.
+     *
+     * @param typeConverter the type converter to user
+     */
+    public void registerTypeConverter(final TypeConverter typeConverter) {
+        objectMapper.registerTypeConverter(typeConverter);
     }
 
 }
