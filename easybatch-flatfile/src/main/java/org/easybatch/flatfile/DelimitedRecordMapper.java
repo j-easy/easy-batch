@@ -27,7 +27,7 @@ package org.easybatch.flatfile;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
-import org.easybatch.core.api.TypeConverter;
+import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.ObjectMapper;
 
 import java.util.*;
@@ -38,7 +38,7 @@ import java.util.*;
  * @param <T> the target domain object type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class DelimitedRecordMapper<T> implements RecordMapper<T> {
+public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * The default delimiter.
@@ -69,11 +69,6 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
      * Data qualifier.
      */
     private String qualifier;
-
-    /**
-     * The object mapper.
-     */
-    private ObjectMapper<T> objectMapper;
 
     /**
      * Total number of fields expected per record.
@@ -325,15 +320,6 @@ public class DelimitedRecordMapper<T> implements RecordMapper<T> {
      */
     public void setQualifier(final String qualifier) {
         this.qualifier = qualifier;
-    }
-
-    /**
-     * Register a custom type converter.
-     *
-     * @param typeConverter the type converter to user
-     */
-    public void registerTypeConverter(final TypeConverter typeConverter) {
-        objectMapper.registerTypeConverter(typeConverter);
     }
 
 }

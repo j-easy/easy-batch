@@ -27,7 +27,7 @@ package org.easybatch.flatfile;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
-import org.easybatch.core.api.TypeConverter;
+import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.ObjectMapper;
 
 import java.util.HashMap;
@@ -39,9 +39,7 @@ import java.util.Map;
  * @param <T> the target domain object type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
-
-    private ObjectMapper<T> objectMapper;
+public class FixedLengthRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Fields length array.
@@ -126,15 +124,6 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
             offsets[i + 1] = offsets[i] + lengths[i];
         }
         return offsets;
-    }
-
-    /**
-     * Register a custom type converter.
-     *
-     * @param typeConverter the type converter to user
-     */
-    public void registerTypeConverter(final TypeConverter typeConverter) {
-        objectMapper.registerTypeConverter(typeConverter);
     }
 
 }

@@ -27,7 +27,7 @@ package org.easybatch.jdbc;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
-import org.easybatch.core.api.TypeConverter;
+import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.ObjectMapper;
 
 import java.sql.ResultSet;
@@ -41,12 +41,7 @@ import java.util.Map;
  * @param <T> the target domain object type.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JdbcRecordMapper<T> implements RecordMapper<T> {
-
-    /**
-     * The object mapper.
-     */
-    private ObjectMapper<T> objectMapper;
+public class JdbcRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<T> {
 
     /**
      * Field names used for custom column mapping.
@@ -109,14 +104,4 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
             }
         }
     }
-
-    /**
-     * Register a custom type converter.
-     *
-     * @param typeConverter the type converter to user
-     */
-    public void registerTypeConverter(final TypeConverter typeConverter) {
-        objectMapper.registerTypeConverter(typeConverter);
-    }
-
 }
