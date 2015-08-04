@@ -65,6 +65,11 @@ public class ObjectMapper<T> {
     private Class<? extends T> recordClass;
 
     /**
+     * convert empty values to null.
+     */
+    private boolean emptyToNull;
+
+    /**
      * A map holding setter methods for each field.
      */
     private Map<String, Method> setters;
@@ -80,7 +85,18 @@ public class ObjectMapper<T> {
      * @param recordClass the target object type
      */
     public ObjectMapper(final Class<? extends T> recordClass) {
+        this(recordClass, false);
+    }
+
+    /**
+     * Construct an object mapper.
+     *
+     * @param recordClass the target object type
+     * @param emptyToNull convert empty values to null
+     */
+    public ObjectMapper(final Class<? extends T> recordClass, boolean emptyToNull) {
         this.recordClass = recordClass;
+        this.emptyToNull = emptyToNull;
         initializeTypeConverters();
         initializeSetters();
     }
@@ -158,8 +174,12 @@ public class ObjectMapper<T> {
 
     private void convertValue(T result, String field, String value, Method setter, Class<?> type, TypeConverter typeConverter) throws RecordMappingException {
         try {
-            Object typedValue = typeConverter.convert(value);
-            setter.invoke(result, typedValue);
+            if (emptyToNull && value.isEmpty()) {
+                setter.invoke(result, new Object[]{null});
+            } else {
+                Object typedValue = typeConverter.convert(value);
+                setter.invoke(result, typedValue);
+            }
         } catch (Exception e) {
             throw new RecordMappingException(format("Unable to convert %s to type %s for field %s", value, type, field), e);
         }

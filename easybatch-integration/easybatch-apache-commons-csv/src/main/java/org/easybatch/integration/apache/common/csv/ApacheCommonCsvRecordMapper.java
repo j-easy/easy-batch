@@ -30,6 +30,9 @@ import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.core.mapper.ObjectMapper;
 
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * Mapper that maps {@link ApacheCommonCsvRecord} instances to domain objects.
  *
@@ -40,7 +43,11 @@ public class ApacheCommonCsvRecordMapper<T> implements RecordMapper {
     private ObjectMapper<T> objectMapper;
 
     public ApacheCommonCsvRecordMapper(Class<? extends T> recordClass) {
-        this.objectMapper = new ObjectMapper<T>(recordClass);
+        this(recordClass, true);
+    }
+
+    public ApacheCommonCsvRecordMapper(Class<? extends T> recordClass, boolean emptyToNull) {
+        this.objectMapper = new ObjectMapper<T>(recordClass, emptyToNull);
     }
 
     @Override
