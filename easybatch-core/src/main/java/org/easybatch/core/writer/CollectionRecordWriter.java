@@ -28,6 +28,8 @@ import org.easybatch.core.api.RecordProcessingException;
 
 import java.util.Collection;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Convenient processor that writes records to a {@link java.util.Collection}.
  *
@@ -37,7 +39,13 @@ public class CollectionRecordWriter<T> extends AbstractRecordWriter<T> {
 
     private Collection<T> collection;
 
+    /**
+     * Convenient processor that writes records to a {@link java.util.Collection}.
+     *
+     * @param collection the collection to write records to
+     */
     public CollectionRecordWriter(final Collection<T> collection) {
+        checkNotNull(collection, "collection");
         this.collection = collection;
     }
 
