@@ -39,7 +39,7 @@ import org.easybatch.core.mapper.ObjectMapper;
 public class ApacheCommonCsvRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper {
 
     public ApacheCommonCsvRecordMapper(Class<? extends T> recordClass) {
-        this.objectMapper = new ObjectMapper<T>(recordClass);
+        super(recordClass);
     }
 
     @Override
