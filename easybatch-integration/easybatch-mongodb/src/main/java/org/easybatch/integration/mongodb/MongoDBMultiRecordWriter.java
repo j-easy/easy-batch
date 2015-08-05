@@ -28,8 +28,10 @@ import com.mongodb.BulkWriteOperation;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import org.easybatch.core.api.RecordProcessingException;
-import org.easybatch.core.writer.AbstractRecordWriter;
+import org.easybatch.core.writer.AbstractMultiRecordWriter;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -39,7 +41,7 @@ import static java.lang.String.format;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class MongoDBMultiRecordWriter extends AbstractRecordWriter<List<DBObject>> {
+public class MongoDBMultiRecordWriter extends AbstractMultiRecordWriter {
 
     private DBCollection collection;
 
@@ -53,7 +55,9 @@ public class MongoDBMultiRecordWriter extends AbstractRecordWriter<List<DBObject
     }
 
     @Override
-    protected void writeRecord(List<DBObject> documents) throws RecordProcessingException {
+    protected void writeRecord(final Object multiRecord) throws RecordProcessingException {
+        List records = getRecords(multiRecord);
+        Collection<DBObject> documents = asDocuments(records);
         BulkWriteOperation bulkWriteOperation = collection.initializeOrderedBulkOperation();
 
         for (DBObject document : documents) {
@@ -65,6 +69,16 @@ public class MongoDBMultiRecordWriter extends AbstractRecordWriter<List<DBObject
         } catch (Exception e) {
             throw new RecordProcessingException(format("Unable to write documents [%s] to Mongo DB server", documents), e);
         }
+    }
+
+    private List<DBObject> asDocuments(List records) {
+        List<DBObject> documents = new ArrayList<DBObject>();
+        for (Object record : records) {
+            if (DBObject.class.isAssignableFrom(record.getClass())) {
+                documents.add((DBObject) record);
+            }
+        }
+        return documents;
     }
 
 }
