@@ -69,6 +69,7 @@ public class FixedLengthRecordMapper<T> extends AbstractRecordMapper<T> implemen
      * @param fieldNames   a String array representing fields name in the same order in the FLR flat file.
      */
     public FixedLengthRecordMapper(Class<? extends T> recordClass, int[] fieldsLength, String[] fieldNames) {
+        super(recordClass);
         this.fieldsLength = fieldsLength.clone();
         this.fieldNames = fieldNames.clone();
         objectMapper = new ObjectMapper<T>(recordClass);

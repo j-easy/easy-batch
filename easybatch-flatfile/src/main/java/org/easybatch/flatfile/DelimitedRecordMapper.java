@@ -58,17 +58,17 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
     /**
      * Fields delimiter.
      */
-    private String delimiter;
+    private String delimiter = DEFAULT_DELIMITER;
 
     /**
      * Parameter to trim whitespaces.
      */
-    private boolean trimWhitespaces;
+    private boolean trimWhitespaces = DEFAULT_WHITESPACE_TRIMMING;
 
     /**
      * Data qualifier.
      */
-    private String qualifier;
+    private String qualifier = DEFAULT_QUALIFIER;
 
     /**
      * Total number of fields expected per record.
@@ -91,15 +91,6 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
     private boolean fieldNamesRetrievedFromHeader;
 
     /**
-     * private default constructor to initialize the mapper with default parameter values.
-     */
-    private DelimitedRecordMapper() {
-        this.delimiter = DEFAULT_DELIMITER;
-        this.qualifier = DEFAULT_QUALIFIER;
-        this.trimWhitespaces = DEFAULT_WHITESPACE_TRIMMING;
-    }
-
-    /**
      * Constructs a default DelimitedRecordMapper instance.
      * Column names and expected record size will be calculated from the header record.
      * and set to fields with the same name of the target object.
@@ -107,7 +98,7 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
      * @param recordClass the target domain object class
      */
     public DelimitedRecordMapper(final Class<? extends T> recordClass) {
-        this();
+        super(recordClass);
         objectMapper = new ObjectMapper<T>(recordClass);
     }
 

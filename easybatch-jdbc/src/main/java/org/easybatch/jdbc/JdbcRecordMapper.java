@@ -55,7 +55,7 @@ public class JdbcRecordMapper<T> extends AbstractRecordMapper<T> implements Reco
      * @param recordClass the target domain object class
      */
     public JdbcRecordMapper(final Class<? extends T> recordClass) {
-        objectMapper = new ObjectMapper<T>(recordClass);
+        super(recordClass);
     }
 
     /**

@@ -122,6 +122,11 @@ public class ObjectMapper<T> {
                 continue;
             }
 
+            if (value.isEmpty()) {
+                LOGGER.log(Level.FINE, "Attempting to convert an empty string to type {0} for field {1}, this field will be ignored", new Object[]{type, field});
+                continue;
+            }
+
             convertValue(result, field, value, setter, type, typeConverter);
 
         }
