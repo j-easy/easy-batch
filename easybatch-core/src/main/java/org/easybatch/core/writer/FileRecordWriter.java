@@ -24,20 +24,37 @@
 
 package org.easybatch.core.writer;
 
-import org.easybatch.core.api.Record;
-
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to a file.
+ * Convenient processor that writes records to a file.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class FileRecordWriter extends OutputStreamRecordWriter {
 
     /**
-     * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to a file.
+     * Convenient processor that writes records to a file.
+     *
+     * @param fileName the output file name.
+     */
+    public FileRecordWriter(final String fileName) throws IOException {
+        super(new FileWriter(fileName));
+    }
+
+    /**
+     * Convenient processor that writes records to a file.
+     *
+     * @param file the output file.
+     */
+    public FileRecordWriter(final File file) throws IOException {
+        super(new FileWriter(file));
+    }
+
+    /**
+     * Convenient processor that writes records to a file.
      *
      * @param fileWriter the output file writer.
      */
