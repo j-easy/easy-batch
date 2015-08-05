@@ -28,6 +28,7 @@ import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.jmx.Monitor;
+import org.easybatch.core.record.MultiRecord;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -37,6 +38,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -136,5 +138,13 @@ public abstract class Utils {
 
     public static boolean isRecord(final Object record) {
         return Record.class.isAssignableFrom(record.getClass());
+    }
+
+    public static boolean isMultiRecord(final Object record) {
+        return MultiRecord.class.isAssignableFrom(record.getClass());
+    }
+
+    public static boolean isCollection(final Object record) {
+        return Collection.class.isAssignableFrom(record.getClass());
     }
 }
