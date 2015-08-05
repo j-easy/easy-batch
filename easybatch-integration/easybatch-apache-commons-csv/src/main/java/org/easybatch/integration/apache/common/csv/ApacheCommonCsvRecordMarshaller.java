@@ -90,7 +90,7 @@ public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
         return result.substring(0, result.indexOf(recordSeparator));
     }
 
-    private Object getValue(final String field, final Object object) throws InvocationTargetException, IllegalAccessException {
+    protected Object getValue(final String field, final Object object) throws InvocationTargetException, IllegalAccessException {
         return getters.get(field).invoke(object);
     }
 }
