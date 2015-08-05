@@ -107,8 +107,20 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
      * @param recordClass the target domain object class
      */
     public DelimitedRecordMapper(final Class<? extends T> recordClass) {
+        this(recordClass, true);
+    }
+
+    /**
+     * Constructs a default DelimitedRecordMapper instance.
+     * Column names and expected record size will be calculated from the header record.
+     * and set to fields with the same name of the target object.
+     *
+     * @param recordClass the target domain object class
+     * @param emptyToNull convert empty values to null
+     */
+    public DelimitedRecordMapper(final Class<? extends T> recordClass, boolean emptyToNull) {
         this();
-        objectMapper = new ObjectMapper<T>(recordClass);
+        objectMapper = new ObjectMapper<T>(recordClass, emptyToNull);
     }
 
     /**

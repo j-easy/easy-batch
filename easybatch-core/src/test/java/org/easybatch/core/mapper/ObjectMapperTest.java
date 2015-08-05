@@ -147,6 +147,32 @@ public class ObjectMapperTest {
         assertThat(person.getAge()).isEqualTo(0);
     }
 
+    @Test
+    public void whenAttemptingToSetAnEmptyValue_ThenShouldSetNullIfOptionEnabled() throws Exception {
+
+        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class, true);
+
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("firstName", "");
+
+        Person person = mapper.mapObject(values);
+        assertThat(person).isNotNull();
+        assertThat(person.getFirstName()).isEqualTo(null);
+    }
+
+    @Test
+    public void whenAttemptingToSetAnEmptyValue_ThenShouldSetEmptyIfOptionDisabled() throws Exception {
+
+        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class);
+
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("firstName", "");
+
+        Person person = mapper.mapObject(values);
+        assertThat(person).isNotNull();
+        assertThat(person.getFirstName()).isEqualTo("");
+    }
+
 }
 
 
