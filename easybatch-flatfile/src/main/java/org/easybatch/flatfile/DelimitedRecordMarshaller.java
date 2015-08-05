@@ -116,7 +116,7 @@ public class DelimitedRecordMarshaller extends AbstractRecordMarshaller {
         }
     }
 
-    private Object getValue(final String field, final Object object) throws InvocationTargetException, IllegalAccessException {
+    protected Object getValue(final String field, final Object object) throws InvocationTargetException, IllegalAccessException {
         return getters.get(field).invoke(object);
     }
 }
