@@ -150,14 +150,14 @@ public class FlatFileIntegrationTest {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
         assertComplaint(complaints.get(0),
                 1355160, "Student loan", "Non-federal student loan",
-                "Dealing with my lender or servicer", "", "NJ",
+                "Dealing with my lender or servicer", null, "NJ",
                 "08807", Channel.WEB,
                 simpleDateFormat.parse("04/30/2015"), simpleDateFormat.parse("04/30/2015"),
                 "Transworld Systems Inc.", "In progress", true, false);
 
         assertComplaint(complaints.get(9),
                 1351334, "Money transfers", "International money transfer",
-                "Money was not available when promised", "", "TX", "78666", Channel.PHONE,
+                "Money was not available when promised", null, "TX", "78666", Channel.PHONE,
                 simpleDateFormat.parse("04/28/2015"), simpleDateFormat.parse("04/29/2015"),
                 "MoneyGram", "In progress", true, false);
 
