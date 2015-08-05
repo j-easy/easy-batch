@@ -129,7 +129,7 @@ public class JpaRecordReaderTest {
         Statement statement = connection.createStatement();
         String query = "DROP TABLE IF EXISTS tweet";
         statement.executeUpdate(query);
-        query = "CREATE TABLE if not exists tweet (\n" +
+        query = "CREATE TABLE tweet (\n" +
                 "  id integer NOT NULL PRIMARY KEY,\n" +
                 "  user varchar(32) NOT NULL,\n" +
                 "  message varchar(140) NOT NULL,\n" +

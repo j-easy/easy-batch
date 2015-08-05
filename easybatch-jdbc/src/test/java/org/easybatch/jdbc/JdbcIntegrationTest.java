@@ -120,7 +120,9 @@ public class JdbcIntegrationTest {
 
     private void createPersonTable(Connection connection) throws Exception {
         Statement statement = connection.createStatement();
-        String query = "CREATE TABLE if not exists person (\n" +
+        String query = "DROP TABLE IF EXISTS person";
+        statement.executeUpdate(query);
+        query = "CREATE TABLE person (\n" +
                 "  id integer NOT NULL PRIMARY KEY,\n" +
                 "  name varchar(32) NOT NULL,\n" +
                 ");";
