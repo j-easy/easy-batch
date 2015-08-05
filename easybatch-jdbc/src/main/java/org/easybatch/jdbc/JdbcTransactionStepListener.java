@@ -40,6 +40,8 @@ public class JdbcTransactionStepListener implements RecordProcessorEventListener
 
     private static final Logger LOGGER = Logger.getLogger(JdbcTransactionStepListener.class.getSimpleName());
 
+    private static final int DEFAULT_COMMIT_INTERVAL = 1;
+
     private Connection connection;
 
     private int commitInterval;
@@ -50,6 +52,15 @@ public class JdbcTransactionStepListener implements RecordProcessorEventListener
      * Create a JDBC transaction listener.
      *
      * @param connection the JDBC connection (should be in auto-commit = false)
+     */
+    public JdbcTransactionStepListener(final Connection connection) {
+        this(connection, DEFAULT_COMMIT_INTERVAL);
+    }
+
+    /**
+     * Create a JDBC transaction listener.
+     *
+     * @param connection     the JDBC connection (should be in auto-commit = false)
      * @param commitInterval the commit interval
      */
     public JdbcTransactionStepListener(final Connection connection, final int commitInterval) {
