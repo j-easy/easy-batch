@@ -79,6 +79,16 @@ public class FlatFileRecordReader implements RecordReader {
     /**
      * Constructs a flat file record reader.
      *
+     * @param fileName the input file
+     * @throws FileNotFoundException thrown if the file does not exist
+     */
+    public FlatFileRecordReader(final String fileName) throws FileNotFoundException {
+        this(new File(fileName), Charset.defaultCharset().name());
+    }
+
+    /**
+     * Constructs a flat file record reader.
+     *
      * @param input the input file
      * @throws FileNotFoundException thrown if the file does not exist
      */
