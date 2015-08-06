@@ -26,18 +26,13 @@ package org.easybatch.integration.apache.common.csv;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.easybatch.core.api.RecordFieldExtractor;
 import org.easybatch.core.api.RecordMarshallingException;
+import org.easybatch.core.field.BeanRecordFieldExtractor;
 import org.easybatch.core.processor.AbstractRecordMarshaller;
-import org.easybatch.core.util.Utils;
 
 import java.beans.IntrospectionException;
 import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Marshals a record to CSV format.
@@ -46,10 +41,7 @@ import java.util.Map;
  */
 public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
 
-    private List<String> fields;
-
-    private Map<String, Method> getters;
-
+    private final RecordFieldExtractor fieldExtractor;
     private CSVFormat csvFormat;
 
     /**
@@ -61,9 +53,19 @@ public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
      * @throws IntrospectionException if the object to marshal cannot be introspected
      */
     public ApacheCommonCsvRecordMarshaller(final Class type, final String[] fields, CSVFormat csvFormat) throws IntrospectionException {
-        this.fields = Arrays.asList(fields);
+        this(new BeanRecordFieldExtractor(type, fields), csvFormat);
+    }
+
+    /**
+     * Create a record marshaller.
+     *
+     * @param fieldExtractor the field extractor
+     * @param csvFormat a pre-configured {@link CSVFormat} instance
+     * @throws IntrospectionException if the object to marshal cannot be introspected
+     */
+    public ApacheCommonCsvRecordMarshaller(RecordFieldExtractor fieldExtractor, CSVFormat csvFormat) throws IntrospectionException {
+        this.fieldExtractor = fieldExtractor;
         this.csvFormat = csvFormat;
-        getters = Utils.getGetters(type);
     }
 
     @Override
@@ -71,11 +73,8 @@ public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
         try {
             StringWriter stringWriter = new StringWriter();
             CSVPrinter csvPrinter = new CSVPrinter(stringWriter, csvFormat);
-            List<Object> values = new ArrayList<Object>();
-            for (String field : fields) {
-                values.add(getValue(field, record));
-            }
-            csvPrinter.printRecord(values);
+            Iterable<?> iterable = fieldExtractor.extractFields(record);
+            csvPrinter.printRecord(iterable);
             csvPrinter.flush();
             // by default, the csvPrinter adds a line separator, this should be removed since Easy Batch writers will add it
             return removeRecordSeparator(stringWriter);
@@ -88,9 +87,5 @@ public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
         String result = stringWriter.toString();
         String recordSeparator = csvFormat.getRecordSeparator();
         return result.substring(0, result.indexOf(recordSeparator));
-    }
-
-    protected Object getValue(final String field, final Object object) throws InvocationTargetException, IllegalAccessException {
-        return getters.get(field).invoke(object);
     }
 }

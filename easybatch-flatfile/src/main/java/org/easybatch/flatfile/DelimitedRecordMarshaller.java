@@ -24,17 +24,14 @@
 
 package org.easybatch.flatfile;
 
+import org.easybatch.core.api.RecordFieldExtractor;
 import org.easybatch.core.api.RecordMarshallingException;
+import org.easybatch.core.field.BeanRecordFieldExtractor;
 import org.easybatch.core.processor.AbstractRecordMarshaller;
-import org.easybatch.core.util.Utils;
 
 import java.beans.IntrospectionException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Marshals a POJO to CSV format.
@@ -49,13 +46,11 @@ public class DelimitedRecordMarshaller extends AbstractRecordMarshaller {
 
     public static final String DEFAULT_QUALIFIER = "\"";
 
-    private List<String> fields;
-
     private String delimiter;
 
     private String qualifier;
 
-    private Map<String, Method> getters;
+    private final RecordFieldExtractor fieldExtractor;
 
     /**
      * Create a delimited record marshaller.
@@ -90,21 +85,33 @@ public class DelimitedRecordMarshaller extends AbstractRecordMarshaller {
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
     public DelimitedRecordMarshaller(final Class type, final String[] fields, final String delimiter, final String qualifier) throws IntrospectionException {
-        this.fields = Arrays.asList(fields);
+        this(new BeanRecordFieldExtractor(type, fields), delimiter, qualifier);
+    }
+
+    /**
+     * Create a delimited record marshaller.
+     *
+     * @param fieldExtractor the field extractor
+     * @param delimiter      the field delimiter
+     * @param qualifier      the field qualifier
+     * @throws IntrospectionException If the object to marshal cannot be introspected
+     */
+    public DelimitedRecordMarshaller(RecordFieldExtractor fieldExtractor, final String delimiter, final String qualifier) throws IntrospectionException {
+        this.fieldExtractor = fieldExtractor;
         this.delimiter = delimiter;
         this.qualifier = qualifier;
-        getters = Utils.getGetters(type);
     }
 
     @Override
     protected String marshal(final Object record) throws RecordMarshallingException {
+        Iterable<?> values = fieldExtractor.extractFields(record);
         try {
             StringBuilder stringBuilder = new StringBuilder();
-            Iterator<String> iterator = fields.iterator();
+            Iterator<?> iterator = values.iterator();
             while (iterator.hasNext()) {
-                String field = iterator.next();
+                Object value = iterator.next();
                 stringBuilder.append(qualifier);
-                stringBuilder.append(getValue(field, record));
+                stringBuilder.append(value);
                 stringBuilder.append(qualifier);
                 if (iterator.hasNext()) {
                     stringBuilder.append(delimiter);
@@ -114,9 +121,5 @@ public class DelimitedRecordMarshaller extends AbstractRecordMarshaller {
         } catch (Exception e) {
             throw new RecordMarshallingException(e);
         }
-    }
-
-    protected Object getValue(final String field, final Object object) throws InvocationTargetException, IllegalAccessException {
-        return getters.get(field).invoke(object);
     }
 }

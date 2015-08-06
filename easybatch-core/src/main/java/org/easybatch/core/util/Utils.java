@@ -133,6 +133,7 @@ public abstract class Utils {
         for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
             getters.put(propertyDescriptor.getName(), propertyDescriptor.getReadMethod());
         }
+        getters.remove("class"); //exclude property "class"
         return getters;
     }
 
