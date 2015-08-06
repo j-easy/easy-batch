@@ -33,7 +33,6 @@ import javax.xml.stream.events.*;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.logging.Logger;
 
 /**
  * A record reader that reads xml records from an xml stream.
@@ -43,8 +42,6 @@ import java.util.logging.Logger;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class XmlRecordReader implements RecordReader {
-
-    private static final Logger LOGGER = Logger.getLogger(XmlRecordReader.class.getSimpleName());
 
     /**
      * The root element name.
