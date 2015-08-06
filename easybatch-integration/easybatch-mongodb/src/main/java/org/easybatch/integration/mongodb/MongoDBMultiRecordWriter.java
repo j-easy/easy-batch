@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static java.lang.String.format;
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Writes a list of Mongo {@link DBObject} to a given collection in bulk mode.
@@ -51,6 +52,7 @@ public class MongoDBMultiRecordWriter extends AbstractMultiRecordWriter {
      * @param collection the collection to write documents to.
      */
     public MongoDBMultiRecordWriter(final DBCollection collection) {
+        checkNotNull(collection, "collection");
         this.collection = collection;
     }
 
@@ -71,7 +73,7 @@ public class MongoDBMultiRecordWriter extends AbstractMultiRecordWriter {
         }
     }
 
-    private List<DBObject> asDocuments(List records) {
+    private List<DBObject> asDocuments(final List records) {
         List<DBObject> documents = new ArrayList<DBObject>();
         for (Object record : records) {
             if (DBObject.class.isAssignableFrom(record.getClass())) {

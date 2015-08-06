@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Reader that uses <a href="http://commons.apache.org/proper/commons-csv/">Apache Common CSV</a>
  * to read {@link ApacheCommonCsvRecord} instances from a CSV data source.
@@ -48,7 +50,14 @@ public class ApacheCommonCsvRecordReader implements RecordReader {
 
     private Iterator<CSVRecord> iterator;
 
-    public ApacheCommonCsvRecordReader(CSVParser parser) {
+    /**
+     * Reader that uses <a href="http://commons.apache.org/proper/commons-csv/">Apache Common CSV</a>
+     * to read {@link ApacheCommonCsvRecord} instances from a CSV data source.
+     * <p/>
+     * This reader produces {@link ApacheCommonCsvRecord} instances.
+     */
+    public ApacheCommonCsvRecordReader(final CSVParser parser) {
+        checkNotNull(parser, "csv parser");
         this.parser = parser;
     }
 

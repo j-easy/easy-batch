@@ -40,7 +40,7 @@ public class RecordCollector<T> implements ComputationalRecordProcessor<T, T, Li
     private List<T> items = new ArrayList<T>();
 
     @Override
-    public T processRecord(T item) {
+    public T processRecord(final T item) {
         items.add(item);
         return item;
     }

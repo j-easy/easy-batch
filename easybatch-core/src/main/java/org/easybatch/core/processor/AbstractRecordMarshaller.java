@@ -33,6 +33,7 @@ import org.easybatch.core.api.RecordProcessingException;
  * <p>
  * Implementations should simply override the {@link AbstractRecordMarshaller#marshal(java.lang.Object)} method
  *
+ * @param <T> the type of object to marshall
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public abstract class AbstractRecordMarshaller<T> implements RecordMarshaller<T> {

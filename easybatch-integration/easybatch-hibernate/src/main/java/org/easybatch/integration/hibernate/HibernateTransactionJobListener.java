@@ -31,6 +31,8 @@ import org.hibernate.Transaction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Listener that commits a transaction at the end of the job.
  * <p/>
@@ -62,6 +64,7 @@ public class HibernateTransactionJobListener implements JobEventListener {
      * @param closeSession True if the session should be closed at the end of the job
      */
     public HibernateTransactionJobListener(final Session session, final boolean closeSession) {
+        checkNotNull(session, "session");
         this.session = session;
         this.closeSession = closeSession;
     }

@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 
 import static java.lang.String.format;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Utility class to write an Xml declaration and a configurable wrapper tag to an output stream.
@@ -59,7 +60,8 @@ public class XmlWrapperTagWriter implements JobEventListener {
      * @param outputStreamWriter the output stream writer
      * @param wrapperTag         the wrapper tag to write around xml content
      */
-    public XmlWrapperTagWriter(OutputStreamWriter outputStreamWriter, String wrapperTag) {
+    public XmlWrapperTagWriter(final OutputStreamWriter outputStreamWriter, final String wrapperTag) {
+        checkNotNull(outputStreamWriter, "output stream writer");
         this.wrapperTag = wrapperTag;
         this.outputStreamWriter = outputStreamWriter;
     }
@@ -71,8 +73,9 @@ public class XmlWrapperTagWriter implements JobEventListener {
      * @param wrapperTag         the wrapper tag to write around xml content
      * @param version            the xml version
      */
-    public XmlWrapperTagWriter(OutputStreamWriter outputStreamWriter, String wrapperTag, String version) {
+    public XmlWrapperTagWriter(final OutputStreamWriter outputStreamWriter, final String wrapperTag, final String version) {
         this(outputStreamWriter, wrapperTag);
+        checkNotNull(version, "version");
         this.version = version;
     }
 
@@ -84,8 +87,9 @@ public class XmlWrapperTagWriter implements JobEventListener {
      * @param version            the xml version
      * @param encoding           the xml encoding
      */
-    public XmlWrapperTagWriter(OutputStreamWriter outputStreamWriter, String wrapperTag, String version, String encoding) {
+    public XmlWrapperTagWriter(final OutputStreamWriter outputStreamWriter, final String wrapperTag, final String version, final String encoding) {
         this(outputStreamWriter, wrapperTag, version);
+        checkNotNull(encoding, "encoding");
         this.encoding = encoding;
     }
 
@@ -98,7 +102,7 @@ public class XmlWrapperTagWriter implements JobEventListener {
      * @param encoding           the xml encoding
      * @param standalone         true if the xml is standalone
      */
-    public XmlWrapperTagWriter(OutputStreamWriter outputStreamWriter, String wrapperTag, String version, String encoding, boolean standalone) {
+    public XmlWrapperTagWriter(final OutputStreamWriter outputStreamWriter, final String wrapperTag, final String version, final String encoding, final boolean standalone) {
         this(outputStreamWriter, wrapperTag, version, encoding);
         this.standalone = standalone;
     }
@@ -134,6 +138,6 @@ public class XmlWrapperTagWriter implements JobEventListener {
 
     @Override
     public void onJobException(Throwable throwable) {
-
+        // No Op
     }
 }

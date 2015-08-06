@@ -30,6 +30,8 @@ import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.json.JsonRecord;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Mapper that uses <a href="http://jackson.codehaus.org/">Jackson</a>
  * to map json records to domain objects.
@@ -43,14 +45,23 @@ public class JacksonRecordMapper<T> implements RecordMapper<T> {
 
     private Class<T> type;
 
-    public JacksonRecordMapper(ObjectMapper mapper, Class<T> type) {
+    /**
+     * Mapper that uses <a href="http://jackson.codehaus.org/">Jackson</a>
+     * to map json records to domain objects.
+     *
+     * @param mapper The Jackson mapper
+     * @param type The target type
+     */
+    public JacksonRecordMapper(final ObjectMapper mapper, final Class<T> type) {
+        checkNotNull(mapper, "object mapper");
+        checkNotNull(type, "target type");
         this.mapper = mapper;
         this.type = type;
     }
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public T mapRecord(Record record) throws RecordMappingException {
+    public T mapRecord(final Record record) throws RecordMappingException {
         JsonRecord jsonRecord = (JsonRecord) record;
         try {
             return mapper.readValue(jsonRecord.getPayload().getBytes(), type);

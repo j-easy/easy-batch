@@ -29,6 +29,8 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.xml.XmlRecord;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Mapper that uses <a href="http://xstream.codehaus.org/">XStream</a>
  * to map XML records to domain objects.
@@ -40,13 +42,20 @@ public class XstreamRecordMapper<T> implements RecordMapper<T> {
 
     private XStream xStream;
 
-    public XstreamRecordMapper(XStream xStream) {
+    /**
+     * Mapper that uses <a href="http://xstream.codehaus.org/">XStream</a>
+     * to map XML records to domain objects.
+     *
+     * @param xStream the {@link XStream} mapper.
+     */
+    public XstreamRecordMapper(final XStream xStream) {
+        checkNotNull(xStream, "xStream");
         this.xStream = xStream;
     }
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public T mapRecord(Record record) {
+    public T mapRecord(final Record record) {
         XmlRecord xmlRecord = (XmlRecord) record;
         return (T) xStream.fromXML(xmlRecord.getPayload());
     }

@@ -29,6 +29,8 @@ import org.easybatch.core.api.RecordProcessingException;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Writes a chunks of records to an output stream.
  *
@@ -43,12 +45,13 @@ public class OutputStreamMultiRecordWriter extends AbstractMultiRecordWriter {
      *
      * @param outputStreamWriter the output stream to write records to
      */
-    public OutputStreamMultiRecordWriter(OutputStreamWriter outputStreamWriter) {
+    public OutputStreamMultiRecordWriter(final OutputStreamWriter outputStreamWriter) {
+        checkNotNull(outputStreamWriter, "output stream writer");
         outputStreamRecordWriter = new OutputStreamRecordWriter(outputStreamWriter);
     }
 
     @Override
-    protected void writeRecord(Object multiRecord) throws RecordProcessingException {
+    protected void writeRecord(final Object multiRecord) throws RecordProcessingException {
         List records = getRecords(multiRecord);
         for (Object record : records) {
             outputStreamRecordWriter.writeRecord(record);

@@ -28,7 +28,6 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.core.mapper.AbstractRecordMapper;
-import org.easybatch.core.mapper.ObjectMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -95,7 +94,7 @@ public class JdbcRecordMapper<T> extends AbstractRecordMapper<T> implements Reco
      * @param resultSet the result set to fetch column names.
      * @throws SQLException thrown if not able to get ResultSet meta data
      */
-    private void initFieldNames(ResultSet resultSet) throws SQLException {
+    private void initFieldNames(final ResultSet resultSet) throws SQLException {
         int columnCount = resultSet.getMetaData().getColumnCount();
         if (fields == null) {
             fields = new String[columnCount];

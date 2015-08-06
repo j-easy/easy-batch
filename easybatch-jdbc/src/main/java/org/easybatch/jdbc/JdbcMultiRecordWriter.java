@@ -32,9 +32,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Write a chunk of records to a database using the JDBC API.
- * 
+ *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JdbcMultiRecordWriter extends AbstractMultiRecordWriter {
@@ -48,11 +50,14 @@ public class JdbcMultiRecordWriter extends AbstractMultiRecordWriter {
     /**
      * Create a new JDBC multi record writer.
      *
-     * @param connection the JDBC connection
-     * @param query the query to insert data
+     * @param connection                the JDBC connection
+     * @param query                     the query to insert data
      * @param preparedStatementProvider the prepared statement provider to map data to the query parameters
      */
     public JdbcMultiRecordWriter(final Connection connection, final String query, final PreparedStatementProvider preparedStatementProvider) {
+        checkNotNull(connection, "connection");
+        checkNotNull(query, "query");
+        checkNotNull(preparedStatementProvider, "prepared statement");
         this.connection = connection;
         this.query = query;
         this.preparedStatementProvider = preparedStatementProvider;

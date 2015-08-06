@@ -38,6 +38,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.checkArgument;
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * A {@link org.easybatch.core.api.RecordReader} that reads records from a database using jdbc API.
@@ -100,6 +101,8 @@ public class JdbcRecordReader implements RecordReader {
      * @param query      the jdbc query to use to fetch data
      */
     public JdbcRecordReader(final Connection connection, final String query) {
+        checkNotNull(connection, "connection");
+        checkNotNull(query, "query");
         this.connection = connection;
         this.query = query;
     }

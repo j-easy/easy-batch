@@ -29,6 +29,8 @@ import org.easybatch.core.api.RecordProcessingException;
 import java.io.StringWriter;
 import java.util.List;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Writes a chunk of records to a {@link StringWriter}.
  *
@@ -43,11 +45,12 @@ public class StringMultiRecordWriter extends AbstractMultiRecordWriter {
      * @param stringWriter the string writer to write records to
      */
     public StringMultiRecordWriter(final StringWriter stringWriter) {
+        checkNotNull(stringWriter, "string writer");
         stringRecordWriter = new StringRecordWriter(stringWriter);
     }
 
     @Override
-    protected void writeRecord(Object multiRecord) throws RecordProcessingException {
+    protected void writeRecord(final Object multiRecord) throws RecordProcessingException {
         List records = getRecords(multiRecord);
         for (Object record : records) {
             stringRecordWriter.writeRecord(record);

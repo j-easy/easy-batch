@@ -36,8 +36,16 @@ import javax.persistence.EntityManagerFactory;
  */
 public class JpaMultiRecordReader<T> extends AbstractMultiRecordReader {
 
-    public JpaMultiRecordReader(int chunkSize, EntityManagerFactory entityManagerFactory, String query, Class<T> type) {
+    /**
+     * Reads records in chunks using the Java Persistence API.
+     *
+     * @param chunkSize            the number of records to read at a time
+     * @param entityManagerFactory the entity manager factory
+     * @param query                the JPQL query to fetch data
+     * @param type                 the target type
+     */
+    public JpaMultiRecordReader(final int chunkSize, final EntityManagerFactory entityManagerFactory, final String query, final Class<T> type) {
         super(chunkSize, new JpaRecordReader<T>(entityManagerFactory, query, type));
     }
-    
+
 }

@@ -29,6 +29,8 @@ import org.easybatch.core.writer.AbstractRecordWriter;
 
 import javax.persistence.EntityManager;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Write entities to a database using JPA.
  * <p/>
@@ -48,6 +50,7 @@ public class JpaRecordWriter<T> extends AbstractRecordWriter<T> {
      * @param entityManager the entity manager to write records.
      */
     public JpaRecordWriter(final EntityManager entityManager) {
+        checkNotNull(entityManager, "entity manager");
         this.entityManager = entityManager;
     }
 

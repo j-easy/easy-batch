@@ -27,8 +27,10 @@ package org.easybatch.integration.xstream;
 import com.thoughtworks.xstream.XStream;
 import org.easybatch.core.processor.AbstractRecordMarshaller;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
- * Marshals an object to XML.
+ * Marshals an object to XML using <a href="http://xstream.codehaus.org/">XStream</a>.
  * 
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -36,6 +38,9 @@ public class XstreamRecordMarshaller extends AbstractRecordMarshaller {
 
     private XStream xStream;
 
+    /**
+     * Create a record marshaller.
+     */
     public XstreamRecordMarshaller() {
         this.xStream = new XStream();
     }
@@ -46,8 +51,10 @@ public class XstreamRecordMarshaller extends AbstractRecordMarshaller {
      * @param elementName the alias of the object in the corresponding xml tag
      * @param type the type of the object to marshal
      */
-    public XstreamRecordMarshaller(String elementName, Class type) {
+    public XstreamRecordMarshaller(final String elementName, final Class type) {
         this();
+        checkNotNull(elementName, "element name");
+        checkNotNull(type, "target type");
         xStream.alias(elementName, type);
     }
 
@@ -56,12 +63,13 @@ public class XstreamRecordMarshaller extends AbstractRecordMarshaller {
      *
      * @param xStream a pre-configured xstream instance
      */
-    public XstreamRecordMarshaller(XStream xStream) {
+    public XstreamRecordMarshaller(final XStream xStream) {
+        checkNotNull(xStream, "xStream");
         this.xStream = xStream;
     }
 
     @Override
-    protected String marshal(Object record) {
+    protected String marshal(final Object record) {
         return xStream.toXML(record);
     }
 }

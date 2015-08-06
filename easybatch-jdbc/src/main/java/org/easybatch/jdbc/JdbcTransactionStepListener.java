@@ -31,6 +31,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Listener that commits a transaction after writing a predefined number of records (commit-interval).
  *
@@ -64,6 +66,7 @@ public class JdbcTransactionStepListener implements RecordProcessorEventListener
      * @param commitInterval the commit interval
      */
     public JdbcTransactionStepListener(final Connection connection, final int commitInterval) {
+        checkNotNull(connection, "connection");
         this.commitInterval = commitInterval;
         this.connection = connection;
         this.recordNumber = 0;

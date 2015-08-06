@@ -29,6 +29,8 @@ import org.easybatch.core.api.RecordProcessingException;
 import java.util.Collection;
 import java.util.List;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Convenient processor that writes a chunk of records to a {@link Collection}.
  *
@@ -45,6 +47,7 @@ public class CollectionMultiRecordWriter extends AbstractMultiRecordWriter {
      * @param collection the collection to write records to
      */
     public CollectionMultiRecordWriter(final Collection collection) {
+        checkNotNull(collection, "collection");
         collectionRecordWriter = new CollectionRecordWriter(collection);
     }
 

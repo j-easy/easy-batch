@@ -31,6 +31,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Listener that commits a transaction at the end of the job.
  * <p/>
@@ -62,6 +64,7 @@ public class JdbcTransactionJobListener implements JobEventListener {
      * @param closeConnection True if the connection should be closed at the end of the job
      */
     public JdbcTransactionJobListener(final Connection connection, final boolean closeConnection) {
+        checkNotNull(connection, "connection");
         this.connection = connection;
         this.closeConnection = closeConnection;
     }

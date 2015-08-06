@@ -45,7 +45,7 @@ public class StandardOutputMultiRecordWriter extends AbstractMultiRecordWriter {
     }
 
     @Override
-    protected void writeRecord(Object multiRecord) throws RecordProcessingException {
+    protected void writeRecord(final Object multiRecord) throws RecordProcessingException {
         List records = getRecords(multiRecord);
         for (Object record : records) {
             standardOutputRecordWriter.writeRecord(record);

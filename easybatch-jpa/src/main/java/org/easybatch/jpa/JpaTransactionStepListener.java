@@ -31,6 +31,8 @@ import javax.persistence.EntityTransaction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Listener that commits a JPA transaction after inserting a predefined number of records (commit-interval).
  *
@@ -66,6 +68,7 @@ public class JpaTransactionStepListener implements RecordProcessorEventListener 
      * @param commitInterval the commit interval
      */
     public JpaTransactionStepListener(final EntityManager entityManager, final int commitInterval) {
+        checkNotNull(entityManager, "entity manager");
         this.commitInterval = commitInterval;
         this.entityManager = entityManager;
         this.recordNumber = 0;

@@ -62,7 +62,7 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
      * @param type the target domain object type.
      * @throws JAXBException thrown if an error occurs during the creation of Jaxb context.
      */
-    public XmlRecordMapper(Class<? extends T> type) throws JAXBException {
+    public XmlRecordMapper(final Class<? extends T> type) throws JAXBException {
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
     }
@@ -75,7 +75,7 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
      * @throws JAXBException thrown if an error occurs during the creation of Jaxb context.
      * @throws SAXException  thrown if an error occurs during the schema parsing.
      */
-    public XmlRecordMapper(Class<? extends T> type, File xsd) throws JAXBException, SAXException {
+    public XmlRecordMapper(final Class<? extends T> type, final File xsd) throws JAXBException, SAXException {
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -84,8 +84,7 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
     }
 
     /**
-     * A constructor that let's you preconfigure the unmarshaller (with custom adapter, custom listener, etc)
-     * to be used by the Xml record mapper.
+     * Creates a XmlRecordMapper with a pre-configured Unmarshaller (with custom adapter, custom listener, etc).
      *
      * @param unmarshaller the unmarshaller to use
      */

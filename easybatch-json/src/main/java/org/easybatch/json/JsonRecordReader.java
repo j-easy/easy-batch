@@ -38,6 +38,8 @@ import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashMap;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Record reader that reads Json records from an array of Json objects:
  *
@@ -88,7 +90,24 @@ public class JsonRecordReader implements RecordReader {
 
     private String key;
 
-    public JsonRecordReader(InputStream inputStream) {
+    /**
+     * Record reader that reads Json records from an array of Json objects:
+     *
+     *<p>
+     * [
+     *  {
+     *      // JSON object
+     *  },
+     *  {
+     *      // JSON object
+     *  }
+     * ]
+     * </p>
+     *
+     * <p>This reader produces {@link JsonRecord} instances.</p>
+     */
+    public JsonRecordReader(final InputStream inputStream) {
+        checkNotNull(inputStream, "input stream");
         this.inputStream = inputStream;
         this.jsonGeneratorFactory = Json.createGeneratorFactory(new HashMap<String, Object>());
     }

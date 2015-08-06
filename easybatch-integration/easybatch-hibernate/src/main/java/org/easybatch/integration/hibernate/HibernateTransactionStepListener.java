@@ -31,12 +31,17 @@ import org.hibernate.Transaction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.easybatch.core.util.Utils.checkArgument;
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Listener that commits a Hibernate transaction after inserting a predefined number of records (commit-interval).
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class HibernateTransactionStepListener implements RecordProcessorEventListener {
+
+    public static final int DEFAULT_COMMIT_INTERVAL = 1;
 
     private static final Logger LOGGER = Logger.getLogger(HibernateTransactionStepListener.class.getSimpleName());
 
@@ -56,10 +61,7 @@ public class HibernateTransactionStepListener implements RecordProcessorEventLis
      * @param session the Hibernate session
      */
     public HibernateTransactionStepListener(final Session session) {
-        this.commitInterval = 1;
-        this.session = session;
-        this.recordNumber = 0;
-        this.transaction = this.session.beginTransaction();
+        this(session, DEFAULT_COMMIT_INTERVAL);
     }
 
     /**
@@ -69,6 +71,8 @@ public class HibernateTransactionStepListener implements RecordProcessorEventLis
      * @param commitInterval the commit interval
      */
     public HibernateTransactionStepListener(final Session session, final int commitInterval) {
+        checkNotNull(session, "session");
+        checkArgument(commitInterval >= 1, "max commit interval parameter must be greater than or equal to 1");
         this.commitInterval = commitInterval;
         this.session = session;
         this.recordNumber = 0;

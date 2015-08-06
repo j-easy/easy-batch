@@ -36,14 +36,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import static org.easybatch.core.util.Utils.checkArgument;
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Reader that reads data using the Java Persistence API.
- * <p>
+ * <p/>
  * This reader produces {@link GenericRecord} instances that can be mapped
  * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects.
- * <p>
- * Use the <code>fetchSize</code> parameter to speicify the number of records to read from the database at a time.
+ * <p/>
+ * Use the <code>fetchSize</code> parameter to specify the number of records to read from the database at a time.
  *
  * @param <T> the type of objects this reader will read.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -70,7 +71,22 @@ public class JpaRecordReader<T> implements RecordReader {
 
     private long currentRecordNumber;
 
-    public JpaRecordReader(EntityManagerFactory entityManagerFactory, String query, Class<T> type) {
+    /**
+     * Reader that reads data using the Java Persistence API.
+     * <p/>
+     * This reader produces {@link GenericRecord} instances that can be mapped
+     * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects.
+     * <p/>
+     * Use the <code>fetchSize</code> parameter to specify the number of records to read from the database at a time.
+     *
+     * @param entityManagerFactory the entity manager factory
+     * @param query                the JPQL query to fetch data
+     * @param type                 the target type
+     */
+    public JpaRecordReader(final EntityManagerFactory entityManagerFactory, final String query, final Class<T> type) {
+        checkNotNull(entityManagerFactory, "entity manager factory");
+        checkNotNull(query, "query");
+        checkNotNull(type, "target type");
         this.entityManager = entityManagerFactory.createEntityManager();
         this.query = query;
         this.type = type;

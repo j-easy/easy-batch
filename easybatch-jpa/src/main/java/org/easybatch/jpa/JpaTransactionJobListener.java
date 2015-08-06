@@ -31,6 +31,8 @@ import javax.persistence.EntityTransaction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Listener that commits a transaction at the end of the job.
  * <p/>
@@ -62,6 +64,7 @@ public class JpaTransactionJobListener implements JobEventListener {
      * @param closeEntityManager True if the entity manager should be closed at the end of the job
      */
     public JpaTransactionJobListener(final EntityManager entityManager, final boolean closeEntityManager) {
+        checkNotNull(entityManager, "entity manager");
         this.entityManager = entityManager;
         this.closeEntityManager = closeEntityManager;
     }

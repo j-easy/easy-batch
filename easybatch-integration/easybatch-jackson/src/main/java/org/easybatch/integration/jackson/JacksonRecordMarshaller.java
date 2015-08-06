@@ -30,8 +30,10 @@ import org.easybatch.core.processor.AbstractRecordMarshaller;
 
 import java.io.IOException;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
- * Marshals a POJO to Json using Jackson.
+ * Marshals a POJO to Json using <a href="http://jackson.codehaus.org/">Jackson</a>.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -44,11 +46,12 @@ public class JacksonRecordMarshaller extends AbstractRecordMarshaller {
     }
 
     /**
-     * Create a record marshaller.
+     * Create a Json record marshaller.
      *
      * @param mapper a pre-configured {@link ObjectMapper} instance
      */
     public JacksonRecordMarshaller(final ObjectMapper mapper) {
+        checkNotNull(mapper, "object mapper");
         this.mapper = mapper;
     }
 

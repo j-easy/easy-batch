@@ -50,7 +50,7 @@ import java.util.List;
 public class GenericMultiRecordMapper<P> implements RecordMapper<List<P>> {
 
     @Override
-    public List<P> mapRecord(Record record) throws RecordMappingException {
+    public List<P> mapRecord(final Record record) throws RecordMappingException {
         MultiRecord multiRecord = (MultiRecord) record;
         List<Record> records = multiRecord.getPayload();
         List<P> payloads = new ArrayList<P>();

@@ -52,6 +52,12 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<T> {
 
     private CsvToBean csvToBean;
 
+    /**
+     * Create a record mapper.
+     *
+     * @param recordClass The target type
+     * @param columns Fields name in the same order as in the delimited record
+     */
     public OpenCsvRecordMapper(Class<? extends T> recordClass, String[] columns) {
         this.strategy = new ColumnPositionMappingStrategy<T>();
         this.strategy.setType((Class<T>) recordClass);
@@ -60,7 +66,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<T> {
     }
 
     @Override
-    public T mapRecord(Record record) {
+    public T mapRecord(final Record record) {
         String payload = (String) record.getPayload();
         openCsvReader = new CSVReader(
                 new StringReader(payload),

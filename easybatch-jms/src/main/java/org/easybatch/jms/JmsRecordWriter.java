@@ -29,6 +29,8 @@ import org.easybatch.core.writer.AbstractRecordWriter;
 
 import javax.jms.*;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Sends a Jms message to a given queue.
  *
@@ -42,10 +44,12 @@ public class JmsRecordWriter extends AbstractRecordWriter<Message> {
      * Create a Jms record writer.
      *
      * @param queueConnectionFactory the factory to use to create connections.
-     * @param queue the target queue
+     * @param queue                  the target queue
      * @throws JMSException if an exception occurs while sending the Jms message
      */
-    public JmsRecordWriter(QueueConnectionFactory queueConnectionFactory, Queue queue) throws JMSException {
+    public JmsRecordWriter(final QueueConnectionFactory queueConnectionFactory, final Queue queue) throws JMSException {
+        checkNotNull(queueConnectionFactory, "queue connection factory");
+        checkNotNull(queue, "queue");
         QueueConnection queueConnection = queueConnectionFactory.createQueueConnection();
         QueueSession queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
         queueSender = queueSession.createSender(queue);

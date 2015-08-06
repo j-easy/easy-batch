@@ -35,7 +35,7 @@ import org.easybatch.core.api.RecordWriter;
 public abstract class AbstractRecordWriter<T> implements RecordWriter<T> {
 
     @Override
-    public T processRecord(T record) throws RecordProcessingException {
+    public T processRecord(final T record) throws RecordProcessingException {
         writeRecord(record);
         return record;
     }

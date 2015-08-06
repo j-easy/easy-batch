@@ -30,6 +30,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Writes a chunk of records to a file.
  *
@@ -49,6 +51,7 @@ public class FileMultiRecordWriter extends AbstractMultiRecordWriter {
      * @throws IOException thrown if the file cannot be opened
      */
     public FileMultiRecordWriter(final FileWriter fileWriter) throws IOException {
+        checkNotNull(fileWriter, "file writer");
         this.fileRecordWriter = new FileRecordWriter(fileWriter);
     }
 

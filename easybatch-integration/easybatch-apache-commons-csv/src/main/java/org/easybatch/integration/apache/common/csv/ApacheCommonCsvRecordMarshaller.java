@@ -67,7 +67,7 @@ public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
     }
 
     @Override
-    protected String marshal(Object record) throws RecordMarshallingException {
+    protected String marshal(final Object record) throws RecordMarshallingException {
         try {
             StringWriter stringWriter = new StringWriter();
             CSVPrinter csvPrinter = new CSVPrinter(stringWriter, csvFormat);
@@ -84,7 +84,7 @@ public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
         }
     }
 
-    private String removeRecordSeparator(StringWriter stringWriter) {
+    private String removeRecordSeparator(final StringWriter stringWriter) {
         String result = stringWriter.toString();
         String recordSeparator = csvFormat.getRecordSeparator();
         return result.substring(0, result.indexOf(recordSeparator));

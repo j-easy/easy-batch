@@ -30,6 +30,7 @@ import org.easybatch.core.util.Utils;
 
 import java.io.StringWriter;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
 import static org.easybatch.core.util.Utils.isRecord;
 
 /**
@@ -46,7 +47,8 @@ public class StringRecordWriter extends AbstractRecordWriter {
      *
      * @param stringWriter the String writer to write strings to
      */
-    public StringRecordWriter(StringWriter stringWriter) {
+    public StringRecordWriter(final StringWriter stringWriter) {
+        checkNotNull(stringWriter, "string writer");
         this.stringWriter = stringWriter;
     }
 

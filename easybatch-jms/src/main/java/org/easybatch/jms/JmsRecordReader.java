@@ -29,6 +29,8 @@ import org.easybatch.core.api.*;
 import javax.jms.*;
 import java.util.Date;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * A record reader that reads records from a JMS queue.
  * <p/>
@@ -61,6 +63,8 @@ public class JmsRecordReader implements RecordReader {
      * @param queue                  the jms queue to read records from
      */
     public JmsRecordReader(final QueueConnectionFactory queueConnectionFactory, final Queue queue) {
+        checkNotNull(queueConnectionFactory, "queue connection factory");
+        checkNotNull(queue, "queue");
         this.queueConnectionFactory = queueConnectionFactory;
         this.queue = queue;
     }

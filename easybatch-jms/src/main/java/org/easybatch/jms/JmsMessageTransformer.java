@@ -32,6 +32,8 @@ import javax.jms.JMSException;
 import javax.jms.QueueSession;
 import javax.jms.TextMessage;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Convenient processor that creates a Jms {@link TextMessage} from the payload of a {@link StringRecord}.
  *
@@ -46,12 +48,13 @@ public class JmsMessageTransformer implements RecordProcessor<StringRecord, Text
      *
      * @param queueSession the queue session to create text messages
      */
-    public JmsMessageTransformer(QueueSession queueSession) {
+    public JmsMessageTransformer(final QueueSession queueSession) {
+        checkNotNull(queueSession, "queue session");
         this.queueSession = queueSession;
     }
 
     @Override
-    public TextMessage processRecord(StringRecord record) throws RecordProcessingException {
+    public TextMessage processRecord(final StringRecord record) throws RecordProcessingException {
         TextMessage message;
         try {
             message = queueSession.createTextMessage();

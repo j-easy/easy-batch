@@ -28,6 +28,8 @@ import com.google.gson.Gson;
 import org.easybatch.core.api.RecordMarshallingException;
 import org.easybatch.core.processor.AbstractRecordMarshaller;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Marshals a POJO to Json using Gson.
  *
@@ -47,11 +49,12 @@ public class GsonRecordMarshaller extends AbstractRecordMarshaller {
      * @param gson a pre-configured Gson instance
      */
     public GsonRecordMarshaller(final Gson gson) {
+        checkNotNull(gson, "gson parameter");
         this.gson = gson;
     }
 
     @Override
-    protected String marshal(Object record) throws RecordMarshallingException {
+    protected String marshal(final Object record) throws RecordMarshallingException {
         return gson.toJson(record);
     }
 

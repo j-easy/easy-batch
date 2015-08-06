@@ -53,7 +53,7 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter {
      *
      * @param outputStreamWriter the output stream to write records to.
      */
-    public OutputStreamRecordWriter(OutputStreamWriter outputStreamWriter) {
+    public OutputStreamRecordWriter(final OutputStreamWriter outputStreamWriter) {
         checkNotNull(outputStreamWriter, "output stream writer");
         this.outputStreamWriter = outputStreamWriter;
     }

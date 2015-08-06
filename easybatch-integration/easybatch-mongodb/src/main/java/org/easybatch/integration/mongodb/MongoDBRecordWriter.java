@@ -29,6 +29,8 @@ import com.mongodb.DBObject;
 import org.easybatch.core.api.RecordProcessingException;
 import org.easybatch.core.writer.AbstractRecordWriter;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Writes a Mongo {@link DBObject} in a given collection.
  *
@@ -44,6 +46,7 @@ public class MongoDBRecordWriter extends AbstractRecordWriter<DBObject> {
      * @param collection the collection to write documents to.
      */
     public MongoDBRecordWriter(final DBCollection collection) {
+        checkNotNull(collection, "collection");
         this.collection = collection;
     }
 

@@ -28,6 +28,8 @@ import org.easybatch.core.api.RecordProcessingException;
 import org.easybatch.core.writer.AbstractRecordWriter;
 import org.hibernate.Session;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Writes entities to a database using Hibernate.
  *
@@ -46,11 +48,12 @@ public class HibernateRecordWriter<T> extends AbstractRecordWriter<T> {
      * @param session the hibernate session to use to write entities.
      */
     public HibernateRecordWriter(final Session session) {
+        checkNotNull(session, "session");
         this.session = session;
     }
 
     @Override
-    public void writeRecord(T record) throws RecordProcessingException {
+    public void writeRecord(final T record) throws RecordProcessingException {
         session.saveOrUpdate(record);
     }
 }

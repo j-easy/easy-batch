@@ -33,6 +33,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 import java.io.StringWriter;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Marshals an object to XML using JAXB.
  *
@@ -49,6 +51,7 @@ public class XmlRecordMarshaller extends AbstractRecordMarshaller {
      * @throws JAXBException if an exception occurs during JAXB context setup
      */
     public XmlRecordMarshaller(final Class type) throws JAXBException {
+        checkNotNull(type, "target type");
         JAXBContext jaxbContext = JAXBContext.newInstance(type);
         marshaller = jaxbContext.createMarshaller();
         disableXmlDeclaration();
@@ -61,6 +64,7 @@ public class XmlRecordMarshaller extends AbstractRecordMarshaller {
      * @throws JAXBException if an exception occurs during Jaxb context setup
      */
     public XmlRecordMarshaller(final JAXBContext jaxbContext) throws JAXBException {
+        checkNotNull(jaxbContext, "jaxb context");
         marshaller = jaxbContext.createMarshaller();
         disableXmlDeclaration();
     }

@@ -55,7 +55,7 @@ public class DelimitedRecordMarshaller extends AbstractRecordMarshaller {
 
     private String qualifier;
 
-    Map<String, Method> getters;
+    private Map<String, Method> getters;
 
     /**
      * Create a delimited record marshaller.

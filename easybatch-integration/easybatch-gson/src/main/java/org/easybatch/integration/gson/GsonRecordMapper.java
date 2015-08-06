@@ -31,6 +31,8 @@ import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.json.JsonRecord;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
  * Mapper that uses <a href="https://code.google.com/p/google-gson/">Google Gson</a>
  * to map json records to domain objects.
@@ -44,14 +46,23 @@ public class GsonRecordMapper<T> implements RecordMapper<T> {
 
     private Class<T> type;
 
-    public GsonRecordMapper(Gson mapper, Class<T> type) {
+    /**
+     * Mapper that uses <a href="https://code.google.com/p/google-gson/">Google Gson</a>
+     * to map json records to domain objects.
+     *
+     * @param mapper The Gson mapper
+     * @param type The target type
+     */
+    public GsonRecordMapper(final Gson mapper, final Class<T> type) {
+        checkNotNull(mapper, "Gson mapper");
+        checkNotNull(type, "target type");
         this.mapper = mapper;
         this.type = type;
     }
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public T mapRecord(Record record) throws RecordMappingException {
+    public T mapRecord(final Record record) throws RecordMappingException {
         JsonRecord jsonRecord = (JsonRecord) record;
         try {
             return mapper.fromJson(jsonRecord.getPayload(), type);

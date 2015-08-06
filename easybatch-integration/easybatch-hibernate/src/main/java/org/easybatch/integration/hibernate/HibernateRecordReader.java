@@ -32,6 +32,7 @@ import org.hibernate.*;
 import java.util.Date;
 
 import static org.easybatch.core.util.Utils.checkArgument;
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Reader that reads data using Hibernate API.
@@ -65,6 +66,8 @@ public class HibernateRecordReader<T> implements RecordReader {
      * @param query          the HQL query to use to fetch data
      */
     public HibernateRecordReader(final SessionFactory sessionFactory, final String query) {
+        checkNotNull(sessionFactory, "session factory");
+        checkNotNull(query, "query");
         this.session = sessionFactory.openSession();
         this.query = query;
     }
