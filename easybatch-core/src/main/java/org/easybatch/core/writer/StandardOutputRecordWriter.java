@@ -42,4 +42,13 @@ public class StandardOutputRecordWriter extends OutputStreamRecordWriter {
         super(new OutputStreamWriter(System.out));
     }
 
+    /**
+     * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to the standard output.
+     *
+     * @param lineSeparator line separator.
+     */
+    public StandardOutputRecordWriter(String lineSeparator) {
+        super(new OutputStreamWriter(System.out), lineSeparator);
+    }
+
 }

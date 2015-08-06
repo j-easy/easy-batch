@@ -47,6 +47,16 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     /**
      * Convenient processor that writes records to a file.
      *
+     * @param fileName the output file name.
+     * @param lineSeparator the line separator.
+     */
+    public FileRecordWriter(final String fileName, String lineSeparator) throws IOException {
+        super(new FileWriter(fileName), lineSeparator);
+    }
+
+    /**
+     * Convenient processor that writes records to a file.
+     *
      * @param file the output file.
      */
     public FileRecordWriter(final File file) throws IOException {
@@ -56,9 +66,29 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     /**
      * Convenient processor that writes records to a file.
      *
+     * @param file the output file.
+     * @param lineSeparator the line separator.
+     */
+    public FileRecordWriter(final File file, String lineSeparator) throws IOException {
+        super(new FileWriter(file), lineSeparator);
+    }
+
+    /**
+     * Convenient processor that writes records to a file.
+     *
      * @param fileWriter the output file writer.
      */
     public FileRecordWriter(final FileWriter fileWriter) throws IOException {
         super(fileWriter);
+    }
+
+    /**
+     * Convenient processor that writes records to a file.
+     *
+     * @param fileWriter the output file writer.
+     * @param lineSeparator the line separator.
+     */
+    public FileRecordWriter(final FileWriter fileWriter, String lineSeparator) throws IOException {
+        super(fileWriter, lineSeparator);
     }
 }
