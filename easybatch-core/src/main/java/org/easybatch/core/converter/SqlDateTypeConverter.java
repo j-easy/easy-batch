@@ -34,7 +34,7 @@ import java.sql.Date;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class SqlDateTypeConverter implements TypeConverter<Date> {
+public class SqlDateTypeConverter implements TypeConverter<String, Date> {
 
     /**
      * {@inheritDoc}

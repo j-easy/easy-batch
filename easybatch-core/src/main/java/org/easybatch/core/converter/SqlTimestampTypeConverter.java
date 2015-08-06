@@ -34,7 +34,7 @@ import java.sql.Timestamp;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class SqlTimestampTypeConverter implements TypeConverter<Timestamp> {
+public class SqlTimestampTypeConverter implements TypeConverter<String, Timestamp> {
 
     /**
      * {@inheritDoc}

@@ -32,7 +32,7 @@ import org.easybatch.core.api.TypeConverter;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BooleanTypeConverter implements TypeConverter<Boolean> {
+public class BooleanTypeConverter implements TypeConverter<String, Boolean> {
 
     /**
      * {@inheritDoc}

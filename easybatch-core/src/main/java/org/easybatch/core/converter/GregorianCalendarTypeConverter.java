@@ -38,7 +38,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class GregorianCalendarTypeConverter implements TypeConverter<GregorianCalendar> {
+public class GregorianCalendarTypeConverter implements TypeConverter<String, GregorianCalendar> {
 
     private DateTypeConverter dateTypeConverter;
 

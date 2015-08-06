@@ -39,7 +39,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class DateTypeConverter implements TypeConverter<Date> {
+public class DateTypeConverter implements TypeConverter<String, Date> {
 
     /**
      * The default date format.

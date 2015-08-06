@@ -34,7 +34,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class IntegerTypeConverter implements TypeConverter<Integer> {
+public class IntegerTypeConverter implements TypeConverter<String, Integer> {
 
     /**
      * {@inheritDoc}

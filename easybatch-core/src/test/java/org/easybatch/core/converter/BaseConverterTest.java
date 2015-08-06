@@ -34,7 +34,7 @@ import org.junit.Test;
  */
 public abstract class BaseConverterTest<T> {
 
-    protected TypeConverter<T> converter;
+    protected TypeConverter<String, T> converter;
 
     @Test(expected = IllegalArgumentException.class)
     public void whenInputIsNull_ThenShouldThrowIllegalArgumentException() {

@@ -211,7 +211,7 @@ public class ObjectMapper<T> {
             return;
         }
         ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
-        Type type = parameterizedType.getActualTypeArguments()[0];
+        Type type = parameterizedType.getActualTypeArguments()[1];
 
         // register the converter
         try {

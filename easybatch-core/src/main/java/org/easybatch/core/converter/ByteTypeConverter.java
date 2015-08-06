@@ -34,7 +34,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ByteTypeConverter implements TypeConverter<Byte> {
+public class ByteTypeConverter implements TypeConverter<String, Byte> {
 
     /**
      * {@inheritDoc}

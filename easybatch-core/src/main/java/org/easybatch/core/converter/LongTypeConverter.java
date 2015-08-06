@@ -34,7 +34,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class LongTypeConverter implements TypeConverter<Long> {
+public class LongTypeConverter implements TypeConverter<String, Long> {
 
     /**
      * {@inheritDoc}

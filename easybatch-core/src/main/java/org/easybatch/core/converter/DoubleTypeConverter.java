@@ -34,7 +34,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class DoubleTypeConverter implements TypeConverter<Double> {
+public class DoubleTypeConverter implements TypeConverter<String, Double> {
 
     /**
      * {@inheritDoc}

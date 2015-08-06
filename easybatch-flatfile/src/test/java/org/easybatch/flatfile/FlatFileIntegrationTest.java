@@ -124,7 +124,7 @@ public class FlatFileIntegrationTest {
         DelimitedRecordMapper recordMapper = new DelimitedRecordMapper(Complaint.class,
                 new String[]{"id", "product", "subProduct", "issue", "subIssue", "state", "zipCode", "channel",
                         "receivedDate", "sentDate", "company", "companyResponse", "timelyResponse", "consumerDisputed"});
-        recordMapper.registerTypeConverter(new TypeConverter<Channel>() {
+        recordMapper.registerTypeConverter(new TypeConverter<String, Channel>() {
             @Override
             public Channel convert(String value) {
                 return Channel.valueOf(value.toUpperCase());

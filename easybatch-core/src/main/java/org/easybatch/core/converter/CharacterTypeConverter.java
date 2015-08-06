@@ -35,7 +35,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class CharacterTypeConverter implements TypeConverter<Character> {
+public class CharacterTypeConverter implements TypeConverter<String, Character> {
 
     /**
      * {@inheritDoc}

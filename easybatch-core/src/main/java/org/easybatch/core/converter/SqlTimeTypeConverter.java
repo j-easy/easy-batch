@@ -34,7 +34,7 @@ import java.sql.Time;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class SqlTimeTypeConverter implements TypeConverter<Time> {
+public class SqlTimeTypeConverter implements TypeConverter<String, Time> {
 
     /**
      * {@inheritDoc}

@@ -36,7 +36,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BigIntegerTypeConverter implements TypeConverter<BigInteger> {
+public class BigIntegerTypeConverter implements TypeConverter<String, BigInteger> {
 
     /**
      * {@inheritDoc}

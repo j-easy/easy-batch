@@ -36,7 +36,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BigDecimalTypeConverter implements TypeConverter<BigDecimal> {
+public class BigDecimalTypeConverter implements TypeConverter<String, BigDecimal> {
 
     /**
      * {@inheritDoc}

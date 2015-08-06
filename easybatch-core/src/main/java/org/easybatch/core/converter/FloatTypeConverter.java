@@ -34,7 +34,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class FloatTypeConverter implements TypeConverter<Float> {
+public class FloatTypeConverter implements TypeConverter<String, Float> {
 
     /**
      * {@inheritDoc}

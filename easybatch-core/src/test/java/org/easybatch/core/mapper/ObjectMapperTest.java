@@ -103,7 +103,7 @@ public class ObjectMapperTest {
     public void whenACustomTypeConverterIsRegistered_ThenItShouldBeUsedToConvertTheCustomType() throws Exception {
 
         ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class);
-        mapper.registerTypeConverter(new TypeConverter<Gender>() {
+        mapper.registerTypeConverter(new TypeConverter<String, Gender>() {
             @Override
             public Gender convert(String value) {
                 return Gender.valueOf(value.toUpperCase());
