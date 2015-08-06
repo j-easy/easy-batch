@@ -43,6 +43,8 @@ import static org.easybatch.core.util.Utils.*;
  */
 public class OutputStreamRecordWriter extends AbstractRecordWriter {
 
+    private String lineSeparator;
+
     private OutputStreamWriter outputStreamWriter;
 
     /**
@@ -54,15 +56,30 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter {
      * @param outputStreamWriter the output stream to write records to.
      */
     public OutputStreamRecordWriter(OutputStreamWriter outputStreamWriter) {
+        this(outputStreamWriter, LINE_SEPARATOR);
+    }
+
+    /**
+     * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
+     * <p/>
+     * The user of this class is responsible for opening/closing the output stream, maybe using
+     * a {@link org.easybatch.core.api.event.job.JobEventListener}.
+     *
+     * @param outputStreamWriter the output stream to write records to.
+     * @param lineSeparator the line separator.
+     */
+    public OutputStreamRecordWriter(OutputStreamWriter outputStreamWriter, String lineSeparator) {
         checkNotNull(outputStreamWriter, "output stream writer");
         this.outputStreamWriter = outputStreamWriter;
+        this.lineSeparator = lineSeparator;
     }
 
     @Override
     public void writeRecord(final Object record) throws RecordProcessingException {
         Object payload = isRecord(record) ? ((Record) record).getPayload() : record;
         try {
-            outputStreamWriter.write(payload + LINE_SEPARATOR);
+            outputStreamWriter.write(payload.toString());
+            outputStreamWriter.write(lineSeparator);
             outputStreamWriter.flush();
         } catch (IOException exception) {
             String message = format("Unable to write record %s to the output stream writer", record);

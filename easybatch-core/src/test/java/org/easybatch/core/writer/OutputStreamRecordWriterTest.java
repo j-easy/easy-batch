@@ -75,7 +75,8 @@ public class OutputStreamRecordWriterTest {
     public void testProcessRecord() throws Exception {
         outputStreamRecordWriter.processRecord(stringRecord);
 
-        verify(outputStreamWriter).write(PAYLOAD + LINE_SEPARATOR);
+        verify(outputStreamWriter).write(PAYLOAD);
+        verify(outputStreamWriter).write(LINE_SEPARATOR);
         verify(outputStreamWriter).flush();
     }
 
