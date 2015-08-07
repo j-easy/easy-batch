@@ -30,7 +30,6 @@ import org.easybatch.core.field.BeanRecordFieldExtractor;
 import org.easybatch.core.processor.AbstractRecordMarshaller;
 
 import java.beans.IntrospectionException;
-import java.util.Arrays;
 import java.util.Iterator;
 
 /**
