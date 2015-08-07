@@ -2,6 +2,27 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
+Changes in version 3.1.0 (2015-08-09)
+-------------------------------------
+
+* Added the "skip" parameter (issue #77)
+* Added the "limit" parameter (issue #78)
+* Added record writers: OutputStream (issue #79), JPA (issue #80), MongoDB (issue #82), JDBC (issue #83), JMS (issue #85), Collection (issue #106), String (issue #109)
+* Added Hibernate support: new HibernateRecordReader and HibernateRecordWriter APIs (issue #81)
+* Added XmlRecordCompactor and JsonRecordCompactor to flatten hierarchical data (issue #86)
+* Added IterableRecordReader and deprecated ListRecordReader (issue #88)
+* Added RecordCollector (issue #89)
+* Added record marshallers: Xstream (issue #94), Xml (issue #95), Delimited (issue #96), FixedLength (issue #97), ApacheCommonCsv (issue #98), Gson (issue #99), Jackson (issue #100)
+* Added multi-record readers to support chunk processing (issue #87): Flat files, Iterable, String, File, Xml, Json, JPA, Apache Common Csv, Hibernate, MongoDB
+* Added multi-record writers: Collection (issue #110), File (issue #111), OutputStream (issue #112), StandardOutput (issue #113), String (issue #115), JDBC (issue #116)
+* Added GenericMultiRecordMapper (issue #101)
+* Implemented improvement #91: Add system properties to the execution report
+* Implemented improvement #93: Make the JpaRecordReader stream records
+* Implemented improvement #103: Make the ObjectMapper properly handle empty values
+* Implemented improvement #119: Use CSVFormat null recordSeparator to skip new line creation
+* Merged PR #117: Add RecordFieldExtractor
+* Merged PR #118: Add lineSeparator parameter to OutputStreamRecordWriter
+
 Changes in version 3.0.3 (2015-07-01)
 -------------------------------------
 
