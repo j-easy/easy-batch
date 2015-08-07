@@ -24,9 +24,7 @@
 
 package org.easybatch.core.writer;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Convenient processor that writes records to a file.
@@ -47,11 +45,22 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     /**
      * Convenient processor that writes records to a file.
      *
-     * @param fileName the output file name.
+     * @param fileName      the output file name.
      * @param lineSeparator the line separator.
      */
     public FileRecordWriter(final String fileName, final String lineSeparator) throws IOException {
         super(new FileWriter(fileName), lineSeparator);
+    }
+
+    /**
+     * Convenient processor that writes records to a file.
+     *
+     * @param fileName      the output file name.
+     * @param lineSeparator the line separator.
+     * @param charsetName   the charest name
+     */
+    public FileRecordWriter(final String fileName, final String lineSeparator, final String charsetName) throws IOException {
+        super(new OutputStreamWriter(new FileOutputStream(fileName), charsetName), lineSeparator);
     }
 
     /**
@@ -66,11 +75,22 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     /**
      * Convenient processor that writes records to a file.
      *
-     * @param file the output file.
+     * @param file          the output file.
      * @param lineSeparator the line separator.
      */
     public FileRecordWriter(final File file, final String lineSeparator) throws IOException {
         super(new FileWriter(file), lineSeparator);
+    }
+
+    /**
+     * Convenient processor that writes records to a file.
+     *
+     * @param file          the output file.
+     * @param lineSeparator the line separator.
+     * @param charsetName   the charest name
+     */
+    public FileRecordWriter(final File file, final String lineSeparator, final String charsetName) throws IOException {
+        super(new OutputStreamWriter(new FileOutputStream(file), charsetName), lineSeparator);
     }
 
     /**
@@ -85,7 +105,7 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     /**
      * Convenient processor that writes records to a file.
      *
-     * @param fileWriter the output file writer.
+     * @param fileWriter    the output file writer.
      * @param lineSeparator the line separator.
      */
     public FileRecordWriter(final FileWriter fileWriter, final String lineSeparator) throws IOException {
