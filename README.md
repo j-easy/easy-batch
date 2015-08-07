@@ -6,15 +6,50 @@ Easy Batch is a framework that aims to simplify batch processing with Java.
 
 It addresses common tedious tasks such as reading, filtering, parsing and validating input data and lets you keep focus on your batch processing business logic.
 
+Let's see a quick example. Suppose you have the following `tweets.csv` file:
+
+```
+id,user,message
+1,foo,hello
+2,bar,@foo hi!
+```
+
+and you would like to transform these tweets to XML format. Here is how you can do that with Easy Batch:
+
+```java
+Engine engine = new EngineBuilder()
+        .reader(new FlatFileRecordReader("tweets.csv"))
+        .filter(new HeaderRecordFilter())
+        .mapper(new DelimitedRecordMapper(Tweet.class, new String[]{"id", "user", "message"}))
+        .processor(new XmlRecordMarshaller(Tweet.class))
+        .writer(new FileRecordWriter("tweets.xml"))
+        .build();
+
+Report report = engine.call();
+```
+
+In this example, we have created a engine that:
+
+* reads flat records one by one from the input file `tweets.csv`
+* filter the header record (that contains field names)
+* map each tweet to an instance of the `Tweet` bean
+* transform the tweet to XML format 
+* and finally write this XML to an output file `tweets.xml`
+
+At the end of execution, we get an execution report with statistics about the job run (Number of errors, execution time, etc).
+
+All the boilerplate code of resources I/O, filtering and parsing records, mapping data to the domain object `Tweet`, writing output and reporting
+ is handled by Easy Batch.
+ 
 ## Key features
 
- * Lightweight: The framework's core has no dependencies and hence a small memory footprint : a 80Ko jar file with a lot of features.
+ * Lightweight: The framework's core has no dependencies and hence a small memory footprint : a 100Ko jar file with a lot of features.
 
+ * Easy to learn and use: Easy Batch uses a simple and natural data model and API. You can learn it easily and start using it quickly.
+ 
  * POJO-oriented development: Map records to your domain objects so you can still work with the Object Oriented aspect of Java.
 
  * Declarative data validation: Declare data validation constraints on your domain objects and let Easy Batch handle the validation code for you.
-
- * Easy to learn and use: Easy Batch uses a simple and natural data model and API. You can learn it easily and start using it quickly.
 
  * Statistics reporting: Easy Batch provides a simple and customizable reporting tools for common statistics including validation errors and processing time.
 
@@ -47,8 +82,8 @@ It addresses common tedious tasks such as reading, filtering, parsing and valida
 
 ## Current version
 
-* The current stable version is 3.0.3
-* The current development version is 3.1.0-SNAPSHOT : [![Build Status](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/badge/icon)](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/)
+* The current stable version is 3.1.0
+* The current development version is 3.1.1-SNAPSHOT : [![Build Status](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/badge/icon)](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/)
 
 If you would like to use the snapshot version, you need to add the following repository in your `pom.xml` file:
 
@@ -60,24 +95,6 @@ If you would like to use the snapshot version, you need to add the following rep
     </repository>
 </repositories>
 ```
-
-## What's coming in next version?
-
-Version 3.1.0 will be full of new goodies:
-
-* Writers: Writers are record processors that write records to a data sink. 
-This will save you a lot of boilerplate code and make writing ETL applications using Easy Batch a piece of cake!
-* Chunk processing: Finally, you will be able to process records in chunks. This is a long waited feature that has been asked
-by a lot of users and we have taken into account your feedback.
-* Hibernate support: There will be a new `HibernateRecordReader` and `HibernateRecordWriter` to read and write data using Hibernate.
-* And more!
-
-See all features planned for next version [here](https://github.com/EasyBatch/easybatch-framework/issues?q=milestone%3A3.1.0).
-
-If a feature is implemented, you can already try it by importing the snapshot version in your project.
-Please give us your feedback in case of any issue to make Easy Batch more stable. 
-
-Feel free to send us your feature request, we will add it to the list!
 
 ## Contribution
 
@@ -101,6 +118,7 @@ For any further question, you can use the [forum](https://groups.google.com/d/fo
 * [natlantisprog](https://github.com/natlantisprog)
 * [nicopatch](https://github.com/nicopatch)
 * [nihed](https://github.com/nihed)
+* [Toilal](https://github.com/Toilal)
 * [xenji](https://github.com/xenji)
 
 Thank you all for your contributions!
