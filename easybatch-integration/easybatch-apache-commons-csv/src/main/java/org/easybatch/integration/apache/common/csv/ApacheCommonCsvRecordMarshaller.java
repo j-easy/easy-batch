@@ -72,20 +72,16 @@ public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
     protected String marshal(final Object record) throws RecordMarshallingException {
         try {
             StringWriter stringWriter = new StringWriter();
-            CSVPrinter csvPrinter = new CSVPrinter(stringWriter, csvFormat);
+            // recordSeparator is forced to null to avoid CSVPrinter to print new lines.
+            // New lines are written later by EasyBatch RecordWriter
+            CSVPrinter csvPrinter = new CSVPrinter(stringWriter, csvFormat.withRecordSeparator(null));
             Iterable<?> iterable = fieldExtractor.extractFields(record);
             csvPrinter.printRecord(iterable);
             csvPrinter.flush();
-            // by default, the csvPrinter adds a line separator, this should be removed since Easy Batch writers will add it
-            return removeRecordSeparator(stringWriter);
+            return stringWriter.toString();
         } catch (Exception e) {
             throw new RecordMarshallingException(e);
         }
     }
 
-    private String removeRecordSeparator(final StringWriter stringWriter) {
-        String result = stringWriter.toString();
-        String recordSeparator = csvFormat.getRecordSeparator();
-        return result.substring(0, result.indexOf(recordSeparator));
-    }
 }
