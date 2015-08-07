@@ -24,6 +24,7 @@
 
 package org.easybatch.flatfile;
 
+import org.easybatch.core.api.RecordFieldExtractor;
 import org.easybatch.core.api.RecordMarshallingException;
 import org.easybatch.core.processor.AbstractRecordMarshaller;
 
@@ -47,6 +48,16 @@ public class FixedLengthRecordMarshaller extends AbstractRecordMarshaller {
      */
     public FixedLengthRecordMarshaller(final Class type, final String[] fields) throws IntrospectionException {
         delimitedRecordMarshaller = new DelimitedRecordMarshaller(type, fields, "", "");
+    }
+
+    /**
+     * Create a fixed length record marshaller.
+     *
+     * @param fieldExtractor the field extractor
+     * @throws IntrospectionException If the object to marshal cannot be introspected
+     */
+    public FixedLengthRecordMarshaller(RecordFieldExtractor fieldExtractor) throws IntrospectionException {
+        delimitedRecordMarshaller = new DelimitedRecordMarshaller(fieldExtractor, "", "");
     }
 
     @Override
