@@ -36,7 +36,7 @@ In this example, we have created a engine that:
 * transform the tweet to XML format 
 * and finally write this XML to an output file `tweets.xml`
 
-At the end of execution, we get an execution report with statistics about the job run (Number of errors, execution time, etc).
+At the end of execution, we get a report with statistics about the job run (Number of errors, execution time, etc).
 
 All the boilerplate code of resources I/O, filtering and parsing records, mapping data to the domain object `Tweet`, writing output and reporting
  is handled by Easy Batch.
