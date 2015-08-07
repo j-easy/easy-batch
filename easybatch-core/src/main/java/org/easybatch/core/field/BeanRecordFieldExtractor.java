@@ -36,13 +36,14 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- * Use JavaBean convention with Introspector to extract properties values from records of a specified class.
+ * Use JavaBean convention with {@link java.beans.Introspector} to extract properties values from records of a specified class.
  *
  * @author Rémi Alvergnat (toilal.dev@gmail.com)
  */
 public class BeanRecordFieldExtractor implements RecordFieldExtractor {
 
     private final String[] fields;
+
     private final Map<String, Method> getters;
 
     public BeanRecordFieldExtractor(final Class type, final String... fields) throws IntrospectionException {
@@ -55,7 +56,7 @@ public class BeanRecordFieldExtractor implements RecordFieldExtractor {
     }
 
     @Override
-    public Iterable<Object> extractFields(Object record) throws RecordFieldExtractionException {
+    public Iterable<Object> extractFields(final Object record) throws RecordFieldExtractionException {
         Object[] values = new Object[fields.length];
         for (int i = 0; i < fields.length; i++) {
             try {

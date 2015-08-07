@@ -26,21 +26,16 @@ package org.easybatch.core.field;
 
 import org.easybatch.core.beans.Gender;
 import org.easybatch.core.beans.Person;
-import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Date;
 import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 /**
- * Test class for {@link BeanRecordFieldExtractor.
+ * Test class for {@link BeanRecordFieldExtractor}.
  *
  * @author Rémi Alvergnat (toilal.dev@gmail.com)
  */
@@ -73,7 +68,7 @@ public class BeanRecordFieldExtractorTest {
 
     @Test
     public void whenFieldsIsNotEmpty_ThenItShouldExtractAllPropertiesValuesInRightOrder() throws Exception {
-        BeanRecordFieldExtractor fieldExtractor = new BeanRecordFieldExtractor(Person.class, "lastName", "age", "married");
+        fieldExtractor = new BeanRecordFieldExtractor(Person.class, "lastName", "age", "married");
         Iterable<?> values = fieldExtractor.extractFields(record);
         assertThat(values).hasSize(3);
         Iterator<?> iterator = values.iterator();

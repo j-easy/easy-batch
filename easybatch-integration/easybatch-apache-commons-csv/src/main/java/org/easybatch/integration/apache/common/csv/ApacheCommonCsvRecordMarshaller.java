@@ -35,7 +35,7 @@ import java.beans.IntrospectionException;
 import java.io.StringWriter;
 
 /**
- * Marshals a record to CSV format.
+ * Marshals a POJO to CSV format using <a href="http://commons.apache.org/proper/commons-csv/">Apache Common CSV</a>.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -52,7 +52,7 @@ public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
      * @param csvFormat a pre-configured {@link CSVFormat} instance
      * @throws IntrospectionException if the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(final Class type, final String[] fields, CSVFormat csvFormat) throws IntrospectionException {
+    public ApacheCommonCsvRecordMarshaller(final Class type, final String[] fields, final CSVFormat csvFormat) throws IntrospectionException {
         this(new BeanRecordFieldExtractor(type, fields), csvFormat);
     }
 
@@ -63,7 +63,7 @@ public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
      * @param csvFormat a pre-configured {@link CSVFormat} instance
      * @throws IntrospectionException if the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(RecordFieldExtractor fieldExtractor, CSVFormat csvFormat) throws IntrospectionException {
+    public ApacheCommonCsvRecordMarshaller(final RecordFieldExtractor fieldExtractor, final CSVFormat csvFormat) throws IntrospectionException {
         this.fieldExtractor = fieldExtractor;
         this.csvFormat = csvFormat;
     }
