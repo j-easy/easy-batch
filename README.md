@@ -1,7 +1,6 @@
 ## What is Easy Batch?
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/EasyBatch/easybatch-framework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|3.1.0|)
 [![Dependencies](https://www.versioneye.com/user/projects/5589cb2e3133630061000022/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5589cb2e3133630061000022)
 [![Coverage](https://coveralls.io/repos/EasyBatch/easybatch-framework/badge.svg?style=flat&branch=master&service=github)](https://coveralls.io/github/EasyBatch/easybatch-framework?branch=master)
 
@@ -85,8 +84,8 @@ All the boilerplate code of resources I/O, filtering and parsing records, mappin
 
 ## Current version
 
-* The current stable version is 3.1.0
-* The current development version is 3.1.1-SNAPSHOT : [![Build Status](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/badge/icon)](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/)
+* The current stable version is 3.1.0 : [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|3.1.0|)
+* The current development version is 3.1.1-SNAPSHOT : [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)
 
 If you would like to use the snapshot version, you need to add the following repository in your `pom.xml` file:
 
@@ -140,11 +139,11 @@ Many thanks to [YourKit, LLC](https://www.yourkit.com/) for providing a free lic
 
 ![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)
 
-### CloudBees
+### Travis CI
 
-Many thanks to [CloudBees](https://www.cloudbees.com) for providing a free [Jenkins](http://jenkins-ci.org/) service to support continuous integration for open source projects.
+Many thanks to [Travis CI](https://travis-ci.org) for providing a free continuous integration service for open source projects.
 
-![CloudBees](https://www.cloudbees.com/sites/default/files/styles/large/public/Button-Powered-by-CB.png)
+![Travis CI](https://travis-ci.com/img/brand-standards/logo-downloads/TravisCI-Full-Color.png)
 
 ## License
 
