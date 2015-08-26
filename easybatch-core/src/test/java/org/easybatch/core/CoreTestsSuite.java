@@ -85,6 +85,7 @@ import org.junit.runners.Suite;
         RecordNumberEqualsToFilterTest.class,
         RecordNumberGreaterThanFilterTest.class,
         RecordNumberLowerThanFilterTest.class,
+        EmptyRecordFilterTest.class,
         // dispatcher
         BroadcastRecordDispatcherTest.class,
         ContentBasedRecordDispatcherTest.class,
