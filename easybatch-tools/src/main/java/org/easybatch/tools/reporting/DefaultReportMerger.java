@@ -39,6 +39,7 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
  * <li>The start time is the minimum of start times</li>
  * <li>The end time is the maximum of end times</li>
  * <li>The total records is the sum of total records</li>
+ * <li>The total skipped records is the sum of total skipped records</li>
  * <li>The total filtered records is the sum of total filtered records</li>
  * <li>The total ignored records is the sum of total ignored records</li>
  * <li>The total rejected records is the sum of total rejected records</li>
@@ -77,6 +78,7 @@ public class DefaultReportMerger implements ReportMerger {
             startTimes.add(report.getStartTime());
             endTimes.add(report.getEndTime());
             totalRecords += report.getTotalRecords();
+            calculateSkippedRecords(finalReport, report);
             calculateFilteredRecords(finalReport, report);
             calculateIgnoredRecords(finalReport, report);
             calculateRejectedRecords(finalReport, report);
@@ -153,6 +155,12 @@ public class DefaultReportMerger implements ReportMerger {
     private void calculateFilteredRecords(Report finalReport, Report report) {
         for (int i = 0; i < report.getFilteredRecordsCount(); i++) {
             finalReport.incrementTotalFilteredRecords();
+        }
+    }
+
+    private void calculateSkippedRecords(Report finalReport, Report report) {
+        for (int i = 0; i < report.getSkippedRecordsCount(); i++) {
+            finalReport.incrementTotalSkippedRecords();
         }
     }
 }

@@ -52,7 +52,8 @@ public class DefaultReportMergerTest {
         Report report1 = new Report();
         long startTime1 = 1l;
         long endTime1 = 10l;
-        report1.setTotalRecords(5l);
+        report1.setTotalRecords(6l);
+        report1.incrementTotalSkippedRecords();
         report1.incrementTotalFilteredRecords();
         report1.incrementTotalIgnoredRecord();
         report1.incrementTotalRejectedRecord();
@@ -67,7 +68,8 @@ public class DefaultReportMergerTest {
         Report report2 = new Report();
         long startTime2 = 2l;
         long endTime2 = 11l;
-        report2.setTotalRecords(5l);
+        report2.setTotalRecords(6l);
+        report2.incrementTotalSkippedRecords();
         report2.incrementTotalFilteredRecords();
         report2.incrementTotalIgnoredRecord();
         report2.incrementTotalRejectedRecord();
@@ -81,7 +83,8 @@ public class DefaultReportMergerTest {
 
         Report finalReport = reportMerger.mergerReports(report1, report2);
 
-        assertEquals(new Long(10), finalReport.getTotalRecords()); //sum of total records
+        assertEquals(new Long(12), finalReport.getTotalRecords()); //sum of total records
+        assertEquals(2, finalReport.getSkippedRecordsCount());// sum of skipped records
         assertEquals(2, finalReport.getFilteredRecordsCount());// sum of filtered records
         assertEquals(2, finalReport.getIgnoredRecordsCount());// sum of ignored records
         assertEquals(2, finalReport.getRejectedRecordsCount());// sum of rejected records
