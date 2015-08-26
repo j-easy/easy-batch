@@ -1,6 +1,7 @@
 ## What is Easy Batch?
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/EasyBatch/easybatch-framework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.png?style=plastic)](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.png?style=plastic)
 
 Easy Batch is a framework that aims to simplify batch processing with Java.
 
