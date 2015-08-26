@@ -65,7 +65,7 @@ All the boilerplate code of resources I/O, filtering and parsing records, mappin
 [http://www.easybatch.org](http://www.easybatch.org)
 
 ### Continuous integration
-[Jenkins job @ cloudbees.com](https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/)
+[Build job @ Travis CI](https://travis-ci.org/EasyBatch/easybatch-framework)
 
 ### Agile Board
 [Backlog items @ waffle.io](https://waffle.io/easybatch/easybatch-framework)
