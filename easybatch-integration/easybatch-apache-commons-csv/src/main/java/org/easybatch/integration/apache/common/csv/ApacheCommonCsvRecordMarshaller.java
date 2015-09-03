@@ -24,61 +24,70 @@
 
 package org.easybatch.integration.apache.common.csv;
 
+import java.beans.IntrospectionException;
+
+import java.io.IOException;
+import java.io.StringWriter;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+
 import org.easybatch.core.api.RecordFieldExtractor;
 import org.easybatch.core.api.RecordMarshallingException;
 import org.easybatch.core.field.BeanRecordFieldExtractor;
 import org.easybatch.core.processor.AbstractRecordMarshaller;
 
-import java.beans.IntrospectionException;
-import java.io.StringWriter;
-
 /**
  * Marshals a POJO to CSV format using <a href="http://commons.apache.org/proper/commons-csv/">Apache Common CSV</a>.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author  Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
 
     private final RecordFieldExtractor fieldExtractor;
     private CSVFormat csvFormat;
 
+    private CSVPrinter csvPrinter;
+
     /**
      * Create a record marshaller.
      *
-     * @param type the type of object to marshal
-     * @param fields the list of fields to marshal in order
-     * @param csvFormat a pre-configured {@link CSVFormat} instance
-     * @throws IntrospectionException if the object to marshal cannot be introspected
+     * @param   type       the type of object to marshal
+     * @param   fields     the list of fields to marshal in order
+     * @param   csvFormat  a pre-configured {@link CSVFormat} instance
+     *
+     * @throws  IntrospectionException  if the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(final Class type, final String[] fields, final CSVFormat csvFormat) throws IntrospectionException {
+    public ApacheCommonCsvRecordMarshaller(final Class type, final String[] fields, final CSVFormat csvFormat)
+        throws IntrospectionException, IOException {
         this(new BeanRecordFieldExtractor(type, fields), csvFormat);
     }
 
     /**
      * Create a record marshaller.
      *
-     * @param fieldExtractor the field extractor
-     * @param csvFormat a pre-configured {@link CSVFormat} instance
-     * @throws IntrospectionException if the object to marshal cannot be introspected
+     * @param   fieldExtractor  the field extractor
+     * @param   csvFormat       a pre-configured {@link CSVFormat} instance
+     *
+     * @throws  IntrospectionException  if the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(final RecordFieldExtractor fieldExtractor, final CSVFormat csvFormat) throws IntrospectionException {
+    public ApacheCommonCsvRecordMarshaller(final RecordFieldExtractor fieldExtractor, final CSVFormat csvFormat)
+        throws IntrospectionException, IOException {
         this.fieldExtractor = fieldExtractor;
         this.csvFormat = csvFormat;
+        csvPrinter = new CSVPrinter(new StringWriter(), csvFormat.withRecordSeparator(null));
     }
 
     @Override
     protected String marshal(final Object record) throws RecordMarshallingException {
         try {
-            StringWriter stringWriter = new StringWriter();
+
             // recordSeparator is forced to null to avoid CSVPrinter to print new lines.
             // New lines are written later by EasyBatch RecordWriter
-            CSVPrinter csvPrinter = new CSVPrinter(stringWriter, csvFormat.withRecordSeparator(null));
             Iterable<?> iterable = fieldExtractor.extractFields(record);
             csvPrinter.printRecord(iterable);
             csvPrinter.flush();
-            return stringWriter.toString();
+            return csvPrinter.getOut().toString();
         } catch (Exception e) {
             throw new RecordMarshallingException(e);
         }
