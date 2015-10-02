@@ -85,6 +85,8 @@ final class EngineImpl implements Engine {
 
     private boolean jmxEnabled;
 
+    private boolean keepAlive;
+
     private long limit;
 
     EngineImpl(final String name,
@@ -368,7 +370,9 @@ final class EngineImpl implements Engine {
         LOGGER.info("Shutting down the engine");
         eventManager.fireBeforeRecordReaderClosing();
         try {
-            recordReader.close();
+            if (!keepAlive) {
+                recordReader.close();
+            }
             eventManager.fireAfterRecordReaderClosing();
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "An exception occurred while closing the record reader", e);
@@ -462,6 +466,10 @@ final class EngineImpl implements Engine {
 
     void setName(String name) {
         this.name = name;
+    }
+
+    void setKeepAlive(final boolean keepAlive) {
+        this.keepAlive = keepAlive;
     }
 
     void enableJMX(boolean jmx) {

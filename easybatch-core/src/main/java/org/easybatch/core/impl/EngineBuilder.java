@@ -141,6 +141,20 @@ public final class EngineBuilder {
     }
 
     /**
+     * Register a record reader.
+     *
+     * @param recordReader the record reader to register
+     * @param keepAlive true if the reader should not be closed
+     * @return the engine builder
+     */
+    public EngineBuilder reader(final RecordReader recordReader, final boolean keepAlive) {
+        checkNotNull(recordReader, "record reader");
+        engine.setRecordReader(recordReader);
+        engine.setKeepAlive(keepAlive);
+        return this;
+    }
+
+    /**
      * Register a record filter.
      *
      * @param recordFilter the record filter to register

@@ -186,6 +186,17 @@ public class EngineImplTest {
     }
 
     @Test
+    public void whenKeepAliveIsActivated_thenTheRecordReaderShouldNotBeClosedAtTheEndOfExecution() throws Exception {
+        when(reader.hasNextRecord()).thenReturn(true, false);
+        when(reader.readNextRecord()).thenReturn(record1);
+        engine = new EngineBuilder().reader(reader, true).build();
+
+        engine.call();
+
+        verify(reader, times(0)).close();
+    }
+
+    @Test
     public void whenNotAbleToOpenReader_ThenTheEngineShouldAbortExecution() throws Exception {
         doThrow(recordReaderOpeningException).when(reader).open();
         engine = new EngineBuilder()
