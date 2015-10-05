@@ -85,7 +85,7 @@ All the boilerplate code of resources I/O, filtering and parsing records, mappin
 ## Current version
 
 * The current stable version is 3.1.0 : [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|3.1.0|)
-* The current development version is 3.1.1-SNAPSHOT : [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)
+* The current development version is 3.2.0-SNAPSHOT : [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)
 
 If you would like to use the snapshot version, you need to add the following repository in your `pom.xml` file:
 

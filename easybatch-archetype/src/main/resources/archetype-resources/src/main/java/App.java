@@ -16,16 +16,16 @@ public class App {
                 "1,foo,easy batch rocks! #EasyBatch" + LINE_SEPARATOR +
                 "2,bar,@foo I do confirm :-)";
 
-        // Build a batch engine
+        // Build a batch job engine
         Engine engine = aNewEngine()
                 .reader(new StringRecordReader(dataSource))
                 .processor(new TweetProcessor())
                 .build();
 
-        // Run the batch engine
+        // Run the engine
         Report report = engine.call();
 
-        // Print the batch execution report
+        // Print the job execution report
         System.out.println(report);
     }
 
