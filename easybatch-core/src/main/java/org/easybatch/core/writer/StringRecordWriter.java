@@ -25,7 +25,7 @@
 package org.easybatch.core.writer;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordProcessingException;
+import org.easybatch.core.api.RecordWritingException;
 import org.easybatch.core.util.Utils;
 
 import java.io.StringWriter;
@@ -53,7 +53,7 @@ public class StringRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    protected void writeRecord(final Object record) throws RecordProcessingException {
+    protected void writeRecord(final Object record) throws RecordWritingException {
         Object payload = isRecord(record) ? ((Record) record).getPayload() : record;
         stringWriter.write(payload.toString());
         stringWriter.write(Utils.LINE_SEPARATOR);

@@ -51,7 +51,7 @@ public class FixedLengthRecordMarshallerTest {
         bean.setField3("cccc");
 
         String expected = "aaabbcccc";
-        String actual = marshaller.marshal(bean);
+        String actual = marshaller.processRecord(bean);
 
         assertThat(actual).isEqualTo(expected);
     }

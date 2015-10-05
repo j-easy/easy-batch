@@ -24,9 +24,9 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.job.JobEventListener;
-import org.easybatch.core.api.event.step.*;
-import org.easybatch.core.filter.StartWithStringRecordFilter;
+import org.easybatch.core.api.event.JobEventListener;
+import org.easybatch.core.api.event.PipelineEventListener;
+import org.easybatch.core.api.event.RecordReaderEventListener;
 import org.easybatch.core.reader.StringRecordReader;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
@@ -36,19 +36,11 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
-/**
- * Test class for {@link LocalEventManager}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class LocalEventManagerTest {
 
@@ -57,23 +49,13 @@ public class LocalEventManagerTest {
     @Mock
     private RecordReaderEventListener recordReaderEventListener1, recordReaderEventListener2;
     @Mock
-    private RecordFilterEventListener recordFilterEventListener1, recordFilterEventListener2;
-    @Mock
-    private RecordMapperEventListener recordMapperEventListener1, recordMapperEventListener2;
-    @Mock
-    private RecordValidatorEventListener recordValidatorEventListener1, recordValidatorEventListener2;
-    @Mock
-    private RecordProcessorEventListener recordProcessorEventListener1, recordProcessorEventListener2;
+    private PipelineEventListener pipelineEventListener1, pipelineEventListener2;
     @Mock
     private Throwable throwable;
     @Mock
     private Record record, record1, record2;
     @Mock
-    private Object mappedRecord;
-    @Mock
     private Object processingResult;
-    @Mock
-    private HashSet<ValidationError> validationErrors;
 
     private LocalEventManager localEventManager;
 
@@ -84,24 +66,15 @@ public class LocalEventManagerTest {
         localEventManager.addJobEventListener(jobEventListener1);
         localEventManager.addJobEventListener(jobEventListener2);
 
-        localEventManager.addRecordFilterEventListener(recordFilterEventListener1);
-        localEventManager.addRecordFilterEventListener(recordFilterEventListener2);
-
         localEventManager.addRecordReaderEventListener(recordReaderEventListener1);
         localEventManager.addRecordReaderEventListener(recordReaderEventListener2);
 
-        localEventManager.addRecordMapperEventListener(recordMapperEventListener1);
-        localEventManager.addRecordMapperEventListener(recordMapperEventListener2);
-
-        localEventManager.addRecordValidatorEventListener(recordValidatorEventListener1);
-        localEventManager.addRecordValidatorEventListener(recordValidatorEventListener2);
-
-        localEventManager.addRecordProcessorEventListener(recordProcessorEventListener1);
-        localEventManager.addRecordProcessorEventListener(recordProcessorEventListener2);
+        localEventManager.addPipelineEventListener(pipelineEventListener1);
+        localEventManager.addPipelineEventListener(pipelineEventListener2);
     }
 
     @Test
-    public void fireBeforeBatchStart() {
+    public void fireBeforeJobStart() {
         localEventManager.fireBeforeJobStart();
 
         InOrder inOrder = inOrder(jobEventListener1, jobEventListener2);
@@ -111,43 +84,13 @@ public class LocalEventManagerTest {
     }
 
     @Test
-    public void fireAfterBatchEnd() {
+    public void fireAfterJobEnd() {
         localEventManager.fireAfterJobEnd();
 
         InOrder inOrder = inOrder(jobEventListener1, jobEventListener2);
 
         inOrder.verify(jobEventListener1).afterJobEnd();
         inOrder.verify(jobEventListener2).afterJobEnd();
-    }
-
-    @Test
-    public void fireOnBatchException() {
-        localEventManager.fireOnJobException(throwable);
-
-        InOrder inOrder = inOrder(jobEventListener1, jobEventListener2);
-
-        inOrder.verify(jobEventListener1).onJobException(throwable);
-        inOrder.verify(jobEventListener2).onJobException(throwable);
-    }
-
-    @Test
-    public void fireBeforeReaderOpen() {
-        localEventManager.fireBeforeReaderOpening();
-
-        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
-
-        inOrder.verify(recordReaderEventListener1).beforeReaderOpening();
-        inOrder.verify(recordReaderEventListener2).beforeReaderOpening();
-    }
-
-    @Test
-    public void fireAfterReaderOpen() {
-        localEventManager.fireAfterReaderOpening();
-
-        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
-
-        inOrder.verify(recordReaderEventListener1).afterReaderOpening();
-        inOrder.verify(recordReaderEventListener2).afterReaderOpening();
     }
 
     @Test
@@ -179,135 +122,39 @@ public class LocalEventManagerTest {
         inOrder.verify(recordReaderEventListener1).onRecordReadingException(throwable);
         inOrder.verify(recordReaderEventListener2).onRecordReadingException(throwable);
     }
-
-    @Test
-    public void fireBeforeRecordReaderClosing() {
-        localEventManager.fireBeforeRecordReaderClosing();
-
-        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
-
-        inOrder.verify(recordReaderEventListener1).beforeReaderClosing();
-        inOrder.verify(recordReaderEventListener2).beforeReaderClosing();
-    }
-
-    @Test
-    public void fireAfterRecordReaderClosing() {
-        localEventManager.fireAfterRecordReaderClosing();
-
-        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
-
-        inOrder.verify(recordReaderEventListener1).afterReaderClosing();
-        inOrder.verify(recordReaderEventListener2).afterReaderClosing();
-    }
-
-    @Test
-    public void fireBeforeRecordFiltering() {
-        when(recordFilterEventListener1.beforeRecordFiltering(record)).thenReturn(record1);
-        when(recordFilterEventListener2.beforeRecordFiltering(record1)).thenReturn(record2);
-
-        Record result = localEventManager.fireBeforeRecordFiltering(record);
-
-        InOrder inOrder = inOrder(recordFilterEventListener1, recordFilterEventListener2);
-
-        inOrder.verify(recordFilterEventListener1).beforeRecordFiltering(record);
-        inOrder.verify(recordFilterEventListener2).beforeRecordFiltering(record1);
-
-        assertThat(result).isEqualTo(record2);
-    }
-
-    @Test
-    public void fireAfterRecordFiltering() {
-        localEventManager.fireAfterRecordFiltering(record, true);
-
-        InOrder inOrder = inOrder(recordFilterEventListener1, recordFilterEventListener2);
-
-        inOrder.verify(recordFilterEventListener1).afterRecordFiltering(record, true);
-        inOrder.verify(recordFilterEventListener2).afterRecordFiltering(record, true);
-    }
-
-    @Test
-    public void fireBeforeRecordMapping() {
-        when(recordMapperEventListener1.beforeRecordMapping(record)).thenReturn(record1);
-        when(recordMapperEventListener2.beforeRecordMapping(record1)).thenReturn(record2);
-
-        Record result = localEventManager.fireBeforeRecordMapping(record);
-
-        InOrder inOrder = inOrder(recordMapperEventListener1, recordMapperEventListener2);
-
-        inOrder.verify(recordMapperEventListener1).beforeRecordMapping(record);
-        inOrder.verify(recordMapperEventListener2).beforeRecordMapping(record1);
-
-        assertThat(result).isEqualTo(record2);
-    }
-
-    @Test
-    public void fireAfterRecordMapping() {
-        localEventManager.fireAfterRecordMapping(record, mappedRecord);
-
-        InOrder inOrder = inOrder(recordMapperEventListener1, recordMapperEventListener2);
-
-        inOrder.verify(recordMapperEventListener1).afterRecordMapping(record, mappedRecord);
-        inOrder.verify(recordMapperEventListener2).afterRecordMapping(record, mappedRecord);
-    }
-
-    @Test
-    public void fireBeforeRecordValidation() {
-        when(recordValidatorEventListener1.beforeRecordValidation(record)).thenReturn(record1);
-        when(recordValidatorEventListener2.beforeRecordValidation(record1)).thenReturn(record2);
-
-        Object result = localEventManager.fireBeforeRecordValidation(record);
-
-        InOrder inOrder = inOrder(recordValidatorEventListener1, recordValidatorEventListener2);
-
-        inOrder.verify(recordValidatorEventListener1).beforeRecordValidation(record);
-        inOrder.verify(recordValidatorEventListener2).beforeRecordValidation(record1);
-
-        assertThat(result).isEqualTo(record2);
-    }
-
-    @Test
-    public void fireAfterRecordValidation() {
-        localEventManager.fireAfterRecordValidation(mappedRecord, validationErrors);
-
-        InOrder inOrder = inOrder(recordValidatorEventListener1, recordValidatorEventListener2);
-
-        inOrder.verify(recordValidatorEventListener1).afterRecordValidation(mappedRecord, validationErrors);
-        inOrder.verify(recordValidatorEventListener2).afterRecordValidation(mappedRecord, validationErrors);
-    }
-
     @Test
     public void fireBeforeRecordProcessing() {
-        when(recordProcessorEventListener1.beforeRecordProcessing(record)).thenReturn(record1);
-        when(recordProcessorEventListener2.beforeRecordProcessing(record1)).thenReturn(record2);
+        when(pipelineEventListener1.beforeRecordProcessing(record)).thenReturn(record1);
+        when(pipelineEventListener2.beforeRecordProcessing(record1)).thenReturn(record2);
 
         Object result = localEventManager.fireBeforeRecordProcessing(record);
 
-        InOrder inOrder = inOrder(recordProcessorEventListener1, recordProcessorEventListener2);
+        InOrder inOrder = inOrder(pipelineEventListener1, pipelineEventListener2);
 
-        inOrder.verify(recordProcessorEventListener1).beforeRecordProcessing(record);
-        inOrder.verify(recordProcessorEventListener2).beforeRecordProcessing(record1);
+        inOrder.verify(pipelineEventListener1).beforeRecordProcessing(record);
+        inOrder.verify(pipelineEventListener2).beforeRecordProcessing(record1);
 
         assertThat(result).isEqualTo(record2);
     }
 
     @Test
     public void fireAfterRecordProcessing() {
-        localEventManager.fireAfterRecordProcessing(mappedRecord, processingResult);
+        localEventManager.fireAfterRecordProcessing(record, processingResult);
 
-        InOrder inOrder = inOrder(recordProcessorEventListener1, recordProcessorEventListener2);
+        InOrder inOrder = inOrder(pipelineEventListener1, pipelineEventListener2);
 
-        inOrder.verify(recordProcessorEventListener1).afterRecordProcessing(mappedRecord, processingResult);
-        inOrder.verify(recordProcessorEventListener2).afterRecordProcessing(mappedRecord, processingResult);
+        inOrder.verify(pipelineEventListener1).afterRecordProcessing(record, processingResult);
+        inOrder.verify(pipelineEventListener2).afterRecordProcessing(record, processingResult);
     }
 
     @Test
     public void fireOnRecordProcessingException() {
-        localEventManager.fireOnRecordProcessingException(mappedRecord, throwable);
+        localEventManager.fireOnRecordProcessingException(record, throwable);
 
-        InOrder inOrder = inOrder(recordProcessorEventListener1, recordProcessorEventListener2);
+        InOrder inOrder = inOrder(pipelineEventListener1, pipelineEventListener2);
 
-        inOrder.verify(recordProcessorEventListener1).onRecordProcessingException(mappedRecord, throwable);
-        inOrder.verify(recordProcessorEventListener2).onRecordProcessingException(mappedRecord, throwable);
+        inOrder.verify(pipelineEventListener1).onRecordProcessingException(record, throwable);
+        inOrder.verify(pipelineEventListener2).onRecordProcessingException(record, throwable);
     }
 
     /*
@@ -315,54 +162,37 @@ public class LocalEventManagerTest {
      */
 
     @Test
-    public void testRecordModificationThroughCustomRecordFilterEventListener() throws Exception {
+    public void testRecordModificationThroughCustomPipelineEventListener() throws Exception {
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new StringRecordReader("foo" + LINE_SEPARATOR + "bar"))
-                .filter(new StartWithStringRecordFilter("#"))
-                .recordFilterEventListener(new RecordFilterEventListener() {
+
+                .pipelineEventListener(new PipelineEventListener() {
                     @Override
-                    public Record beforeRecordFiltering(Record record) {
-                        return new StringRecord(record.getHeader(), "#" + record.getPayload());
+                    public Object beforeRecordProcessing(Object record) {
+                        StringRecord stringRecord = (StringRecord) record;
+                        return new StringRecord(stringRecord.getHeader(), ";" + stringRecord.getPayload());
                     }
 
                     @Override
-                    public void afterRecordFiltering(Record record, boolean filtered) {
-                        //no op
+                    public void afterRecordProcessing(Object record, Object processingResult) {
+
                     }
-                }).build();
 
-        Report report = engine.call();
-
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(2);
-    }
-
-    @Test
-    public void testRecordModificationThroughCustomRecordValidatorEventListener() throws Exception {
-        Engine engine = EngineBuilder.aNewEngine()
-                .reader(new StringRecordReader("foo" + LINE_SEPARATOR + "bar"))
-                .validator(new RecordValidator<StringRecord>() {
                     @Override
-                    public Set<ValidationError> validateRecord(StringRecord record) {
-                        Set<ValidationError> errors = new HashSet<ValidationError>();
-                        String payload = record.getPayload();
-                        if (payload.startsWith("#")) {
-                            errors.add(new ValidationError("Record " + payload + " must not start with #"));
-                        }
-                        return errors;
+                    public void onRecordProcessingException(Object record, Throwable throwable) {
+
                     }
                 })
-                .recordValidatorEventListener(new RecordValidatorEventListener() {
+                .validator(new RecordValidator<StringRecord>() {
                     @Override
-                    public Record beforeRecordValidation(Object record) {
-                        StringRecord stringRecord = (StringRecord) record;
-                        return new StringRecord(stringRecord.getHeader(), "#" + stringRecord.getPayload());
+                    public StringRecord processRecord(StringRecord record) throws RecordValidationException {
+                        if (record.getPayload().startsWith(";")) {
+                            throw new RecordValidationException();
+                        }
+                        return record;
                     }
-
-                    @Override
-                    public void afterRecordValidation(Object record, Set<ValidationError> validationErrors) {
-                        //no op
-                    }
-                }).build();
+                })
+                .build();
 
         Report report = engine.call();
 

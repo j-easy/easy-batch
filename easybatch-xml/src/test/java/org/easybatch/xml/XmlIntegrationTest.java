@@ -57,7 +57,7 @@ public class XmlIntegrationTest {
 
         Report report = engine.call();
 
-        List<Website> websites = (List<Website>) report.getBatchResult();
+        List<Website> websites = (List<Website>) report.getJobResult();
 
         assertThat(websites).isNotEmpty().hasSize(3);
 
@@ -89,7 +89,7 @@ public class XmlIntegrationTest {
 
         assertThatReportIsCorrect(report);
 
-        List<Person> persons = (List<Person>) report.getBatchResult();
+        List<Person> persons = (List<Person>) report.getJobResult();
 
         assertThat(persons).isNotEmpty().hasSize(2);
 
@@ -122,7 +122,7 @@ public class XmlIntegrationTest {
 
         assertThatReportIsCorrect(report);
 
-        List<Dependency> dependencies = (List<Dependency>) report.getBatchResult();
+        List<Dependency> dependencies = (List<Dependency>) report.getJobResult();
 
         assertThat(dependencies).isNotEmpty().hasSize(2);
 
@@ -177,7 +177,7 @@ public class XmlIntegrationTest {
         assertThat(report).isNotNull();
         assertThat(report.getTotalRecords()).isEqualTo(2);
 
-        List<Bean> beans = (List<Bean>) report.getBatchResult();
+        List<Bean> beans = (List<Bean>) report.getJobResult();
 
         assertThat(beans).isNotEmpty().hasSize(2);
 
@@ -198,7 +198,6 @@ public class XmlIntegrationTest {
         assertThat(report.getTotalRecords()).isEqualTo(2);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
         assertThat(report.getStatus()).isEqualTo(Status.FINISHED);

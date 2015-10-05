@@ -24,7 +24,7 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.event.job.JobEventListener;
+import org.easybatch.core.api.event.JobEventListener;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -36,7 +36,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 /**
  * Listener that commits a transaction at the end of the job.
  * <p/>
- * This is useful to commit last records when using a {@link JdbcTransactionStepListener} with a commit-interval.
+ * This is useful to commit last records when using a {@link JdbcTransactionPipelineListener} with a commit-interval.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -87,8 +87,4 @@ public class JdbcTransactionJobListener implements JobEventListener {
         }
     }
 
-    @Override
-    public void onJobException(final Throwable throwable) {
-        // No op
-    }
 }

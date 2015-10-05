@@ -52,11 +52,9 @@ public class Report implements Serializable {
     // needed only for jmx monitoring
     private long currentRecordNumber;
 
-    private long filteredRecords;
-
     private long skippedRecords;
 
-    private long ignoredRecords;
+    private long filteredRecords;
 
     private long rejectedRecords;
 
@@ -67,12 +65,14 @@ public class Report implements Serializable {
     private Status status;
 
     private long limit;
+    
+    private long skip;
 
     private String engineName;
 
     private String executionId;
 
-    private transient Object batchResult;
+    private transient Object jobResult;
 
     private Properties systemProperties;
 
@@ -86,10 +86,6 @@ public class Report implements Serializable {
 
     public void incrementTotalSkippedRecords() {
         skippedRecords++;
-    }
-
-    public void incrementTotalIgnoredRecord() {
-        ignoredRecords++;
     }
 
     public void incrementTotalRejectedRecord() {
@@ -160,12 +156,20 @@ public class Report implements Serializable {
         this.limit = limit;
     }
 
-    public Object getBatchResult() {
-        return batchResult;
+    public long getSkip() {
+        return skip;
     }
 
-    public void setBatchResult(final Object batchResult) {
-        this.batchResult = batchResult;
+    public void setSkip(long skip) {
+        this.skip = skip;
+    }
+
+    public Object getJobResult() {
+        return jobResult;
+    }
+
+    public void setJobResult(final Object jobResult) {
+        this.jobResult = jobResult;
     }
 
     public Status getStatus() {
@@ -200,10 +204,6 @@ public class Report implements Serializable {
         return skippedRecords;
     }
 
-    public long getIgnoredRecordsCount() {
-        return ignoredRecords;
-    }
-
     public long getRejectedRecordsCount() {
         return rejectedRecords;
     }
@@ -234,10 +234,6 @@ public class Report implements Serializable {
 
     private float getSkippedRecordsPercent() {
         return percent(getSkippedRecordsCount(), totalRecords);
-    }
-
-    private float getIgnoredRecordsPercent() {
-        return percent(getIgnoredRecordsCount(), totalRecords);
     }
 
     private float getRejectedRecordsPercent() {
@@ -288,15 +284,6 @@ public class Report implements Serializable {
         sb.append(getSkippedRecordsCount());
         if (totalRecords != null && totalRecords != 0) {
             appendPercent(sb, getSkippedRecordsPercent());
-        }
-        return sb.toString();
-    }
-
-    public String getFormattedIgnoredRecords() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(getIgnoredRecordsCount());
-        if (totalRecords != null && totalRecords != 0) {
-            appendPercent(sb, getIgnoredRecordsPercent());
         }
         return sb.toString();
     }
@@ -363,13 +350,12 @@ public class Report implements Serializable {
         sb.append(LINE_SEPARATOR).append("\tTotal records = ").append(totalRecords == null ? "N/A" : totalRecords);
         sb.append(LINE_SEPARATOR).append("\tSkipped records = ").append(getFormattedSkippedRecords());
         sb.append(LINE_SEPARATOR).append("\tFiltered records = ").append(getFormattedFilteredRecords());
-        sb.append(LINE_SEPARATOR).append("\tIgnored records = ").append(getFormattedIgnoredRecords());
         sb.append(LINE_SEPARATOR).append("\tRejected records = ").append(getFormattedRejectedRecords());
         sb.append(LINE_SEPARATOR).append("\tError records = ").append(getFormattedErrorRecords());
         sb.append(LINE_SEPARATOR).append("\tSuccess records = ").append(getFormattedSuccessRecords());
         sb.append(LINE_SEPARATOR).append("\tRecord processing time average = ").append(getFormattedAverageRecordProcessingTime());
-        if (batchResult != null) {
-            sb.append(LINE_SEPARATOR).append("\tResult = ").append(batchResult);
+        if (jobResult != null) {
+            sb.append(LINE_SEPARATOR).append("\tResult = ").append(jobResult);
         }
         return sb.toString();
     }

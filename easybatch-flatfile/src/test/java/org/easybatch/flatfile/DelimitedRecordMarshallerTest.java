@@ -50,7 +50,7 @@ public class DelimitedRecordMarshallerTest {
         person.setLastName("bar");
 
         String expected = "\"foo\",\"bar\",\"false\"";
-        String actual = marshaller.marshal(person);
+        String actual = marshaller.processRecord(person);
 
         assertThat(actual).isEqualTo(expected);
     }

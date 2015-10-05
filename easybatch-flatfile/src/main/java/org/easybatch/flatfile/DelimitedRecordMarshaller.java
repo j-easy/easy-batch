@@ -25,9 +25,9 @@
 package org.easybatch.flatfile;
 
 import org.easybatch.core.api.RecordFieldExtractor;
+import org.easybatch.core.api.RecordMarshaller;
 import org.easybatch.core.api.RecordMarshallingException;
 import org.easybatch.core.field.BeanRecordFieldExtractor;
-import org.easybatch.core.processor.AbstractRecordMarshaller;
 
 import java.beans.IntrospectionException;
 import java.util.Iterator;
@@ -39,7 +39,7 @@ import java.util.Iterator;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class DelimitedRecordMarshaller extends AbstractRecordMarshaller {
+public class DelimitedRecordMarshaller implements RecordMarshaller {
 
     public static final String DEFAULT_DELIMITER = ",";
 
@@ -102,7 +102,7 @@ public class DelimitedRecordMarshaller extends AbstractRecordMarshaller {
     }
 
     @Override
-    protected String marshal(final Object record) throws RecordMarshallingException {
+    public String processRecord(final Object record) throws RecordMarshallingException {
         Iterable<?> values = fieldExtractor.extractFields(record);
         try {
             StringBuilder stringBuilder = new StringBuilder();

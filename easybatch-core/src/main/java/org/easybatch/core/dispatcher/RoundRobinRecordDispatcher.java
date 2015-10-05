@@ -25,6 +25,7 @@
 package org.easybatch.core.dispatcher;
 
 import org.easybatch.core.api.Record;
+import org.easybatch.core.api.RecordDispatchingException;
 import org.easybatch.core.record.PoisonRecord;
 
 import java.util.List;

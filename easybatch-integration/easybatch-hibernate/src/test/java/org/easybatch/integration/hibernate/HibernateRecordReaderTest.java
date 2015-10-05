@@ -72,7 +72,7 @@ public class HibernateRecordReaderTest {
         Report report = engine.call();
         assertThat(report.getTotalRecords()).isEqualTo(3);
 
-        List<GenericRecord<Tweet>> tweets = (List<GenericRecord<Tweet>>) report.getBatchResult();
+        List<GenericRecord<Tweet>> tweets = (List<GenericRecord<Tweet>>) report.getJobResult();
 
         assertThat(tweets).isNotEmpty().hasSize(3);
 

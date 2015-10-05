@@ -26,18 +26,19 @@ package org.easybatch.core.api;
 
 /**
  * Interface for record filter.
- * This will be used by the engine to skip record from being processed.
+ * This will be used by the engine to filter records.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface RecordFilter {
+public interface RecordFilter<I> extends RecordProcessor<I, I> {
 
     /**
-     * Return true if the record should be filtered (skipped).
+     * Filter a record.
      *
-     * @param record the record to filter
-     * @return true if the record should be filtered (skipped)
+     * @param record the record to filter.
+     * @return the original record if it should continue in the pipeline
+     * @throws RecordFilteringException thrown if the record should be filtered
      */
-    boolean filterRecord(final Record record);
-
+    @Override
+    I processRecord(I record) throws RecordFilteringException;
 }

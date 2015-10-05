@@ -31,11 +31,6 @@ import java.util.Calendar;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link org.easybatch.core.api.Report} formatting utility methods.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class ReportTest {
     
     private Report report;
@@ -59,11 +54,9 @@ public class ReportTest {
         report.setDataSource("In-Memory");
         report.setTotalRecords(10L);
         report.setCurrentRecordNumber(2);
-        report.setBatchResult(50);
+        report.setJobResult(50);
         report.incrementTotalSkippedRecords();
         report.incrementTotalFilteredRecords();
-        report.incrementTotalIgnoredRecord();
-        report.incrementTotalIgnoredRecord();
         report.incrementTotalRejectedRecord();
         report.incrementTotalRejectedRecord();
         report.incrementTotalErrorRecord();
@@ -76,7 +69,6 @@ public class ReportTest {
     public void reportStatisticsShouldBeValid() {
         assertThat(report.getSkippedRecordsCount()).isEqualTo(1);
         assertThat(report.getFilteredRecordsCount()).isEqualTo(1);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(2);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(2);
         assertThat(report.getErrorRecordsCount()).isEqualTo(2);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
@@ -103,7 +95,6 @@ public class ReportTest {
         assertThat(report.getFormattedBatchDuration()).isEqualTo("10000ms");
         assertThat(report.getFormattedSkippedRecords()).isEqualTo("1 (10.0%)");
         assertThat(report.getFormattedFilteredRecords()).isEqualTo("1 (10.0%)");
-        assertThat(report.getFormattedIgnoredRecords()).isEqualTo("2 (20.0%)");
         assertThat(report.getFormattedRejectedRecords()).isEqualTo("2 (20.0%)");
         assertThat(report.getFormattedErrorRecords()).isEqualTo("2 (20.0%)");
         assertThat(report.getFormattedSuccessRecords()).isEqualTo("2 (20.0%)");
@@ -128,7 +119,6 @@ public class ReportTest {
         report.setTotalRecords(0L);
         assertThat(report.getFormattedSkippedRecords()).doesNotContain("%");
         assertThat(report.getFormattedFilteredRecords()).doesNotContain("%");
-        assertThat(report.getFormattedIgnoredRecords()).doesNotContain("%");
         assertThat(report.getFormattedRejectedRecords()).doesNotContain("%");
         assertThat(report.getFormattedErrorRecords()).doesNotContain("%");
         assertThat(report.getFormattedSuccessRecords()).doesNotContain("%");
@@ -148,7 +138,7 @@ public class ReportTest {
 
     @Test
     public void whenBatchResultIsNull_ThenITShouldNotBePrintedOut() {
-        report.setBatchResult(null);
+        report.setJobResult(null);
         assertThat(report.toString()).doesNotContain("Result");
     }
 

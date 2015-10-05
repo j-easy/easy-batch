@@ -26,7 +26,6 @@ package org.easybatch.integration.gson;
 
 import com.google.gson.Gson;
 import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.json.JsonRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +34,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * Test class for {@link GsonRecordMapper}.
@@ -48,18 +48,21 @@ public class GsonRecordMapperTest {
 
     @Mock
     private Header header;
+    @Mock
+    private JsonRecord record;
 
     @Before
     public void setUp() throws Exception {
         Gson gson = new Gson();
         mapper = new GsonRecordMapper<Tweet>(gson, Tweet.class);
+        when(record.getHeader()).thenReturn(header);
     }
 
     @Test
     public void testMapRecord() throws Exception {
         String jsonTweet = "{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}";
-        Record record = new JsonRecord(header, jsonTweet);
-        Tweet tweet = mapper.mapRecord(record);
+        when(record.getPayload()).thenReturn(jsonTweet);
+        Tweet tweet = mapper.processRecord(record);
 
         assertThat(tweet.getId()).isEqualTo(1);
         assertThat(tweet.getUser()).isEqualTo("foo");
@@ -69,8 +72,8 @@ public class GsonRecordMapperTest {
     @Test
     public void testMapIncompleteRecord() throws Exception {
         String jsonTweet = "{\"id\":1,\"user\":\"foo\"}";
-        Record record = new JsonRecord(header, jsonTweet);
-        Tweet tweet = mapper.mapRecord(record);
+        when(record.getPayload()).thenReturn(jsonTweet);
+        Tweet tweet = mapper.processRecord(record);
 
         assertThat(tweet.getId()).isEqualTo(1);
         assertThat(tweet.getUser()).isEqualTo("foo");
@@ -80,8 +83,8 @@ public class GsonRecordMapperTest {
     @Test
     public void testMapEmptyRecord() throws Exception {
         String jsonTweet = "{}";
-        Record record = new JsonRecord(header, jsonTweet);
-        Tweet tweet = mapper.mapRecord(record);
+        when(record.getPayload()).thenReturn(jsonTweet);
+        Tweet tweet = mapper.processRecord(record);
 
         assertThat(tweet.getId()).isEqualTo(0);
         assertThat(tweet.getUser()).isNull();

@@ -171,7 +171,7 @@ public class DelimitedRecordMapperTest {
         delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class);
 
         delimitedRecordMapper.parseRecord(headerRecord);
-        Person person = (Person) delimitedRecordMapper.mapRecord(record);
+        Person person = (Person) delimitedRecordMapper.processRecord(record);
         assertThat(person).isNotNull();
         assertThat(person.getFirstName()).isEqualTo("foo");
         assertThat(person.getLastName()).isEqualTo("bar");
@@ -184,7 +184,7 @@ public class DelimitedRecordMapperTest {
     public void testFieldSubsetMappingWithConventionOverConfiguration() throws Exception {
         delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class, new Integer[]{0, 4});
         delimitedRecordMapper.parseRecord(headerRecord);
-        Person person = (Person) delimitedRecordMapper.mapRecord(record);
+        Person person = (Person) delimitedRecordMapper.processRecord(record);
 
         assertThat(person).isNotNull();
         assertThat(person.getFirstName()).isEqualTo("foo");

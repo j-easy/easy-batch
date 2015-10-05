@@ -24,9 +24,7 @@
 
 package org.easybatch.validation;
 
-import org.easybatch.core.api.ValidationError;
-
-import java.util.Set;
+import org.easybatch.core.api.RecordValidationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,18 +42,17 @@ public class BeanValidationRecordValidatorTest {
         validator = new BeanValidationRecordValidator<Foo>();
     }
 
-    @org.junit.Test
+    @org.junit.Test(expected = RecordValidationException.class)
     public void nonValidBeanShouldBeRejected() throws Exception {
         Foo foo = new Foo(-1, null);
-        Set<ValidationError> errors = validator.validateRecord(foo);
-        assertThat(errors).isNotEmpty();
+        validator.processRecord(foo);
     }
 
     @org.junit.Test
     public void validBeanShouldBeAccepted() throws Exception {
         Foo foo = new Foo(1, "bar");
-        Set<ValidationError> errors = validator.validateRecord(foo);
-        assertThat(errors).isEmpty();
+        Foo result = validator.processRecord(foo);
+        assertThat(result).isNotNull();
     }
 
 }

@@ -61,7 +61,7 @@ public class XmlRecordMapperTest {
     @Test
     public void testValidXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person.xml"));
-        Person person = (Person) xmlRecordMapper.mapRecord(xmlRecord);
+        Person person = (Person) xmlRecordMapper.processRecord(xmlRecord);
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(1);
         assertThat(person.getFirstName()).isEqualTo("foo");
@@ -73,7 +73,7 @@ public class XmlRecordMapperTest {
     @Test
     public void testEmptyXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(header, "<person/>");
-        Person person = (Person) xmlRecordMapper.mapRecord(xmlRecord);
+        Person person = (Person) xmlRecordMapper.processRecord(xmlRecord);
         assertThat(person.getId()).isEqualTo(0);
         assertThat(person.getFirstName()).isNull();
         assertThat(person.getLastName()).isNull();
@@ -84,7 +84,7 @@ public class XmlRecordMapperTest {
     @Test
     public void testPartialXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-partial.xml"));
-        Person person = (Person) xmlRecordMapper.mapRecord(xmlRecord);
+        Person person = (Person) xmlRecordMapper.processRecord(xmlRecord);
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(1);
         assertThat(person.getFirstName()).isEqualTo("foo");
@@ -98,13 +98,13 @@ public class XmlRecordMapperTest {
         XmlRecordMapper<Website> xmlRecordMapper = new XmlRecordMapper<Website>(Website.class);
 
         xmlRecord = new XmlRecord(header, "<website name='google' url='http://www.google.com?query=test&amp;sort=asc'/>");
-        Website website = xmlRecordMapper.mapRecord(xmlRecord);
+        Website website = xmlRecordMapper.processRecord(xmlRecord);
         assertThat(website).isNotNull();
         assertThat(website.getName()).isEqualTo("google");
         assertThat(website.getUrl()).isEqualTo("http://www.google.com?query=test&sort=asc");
 
         xmlRecord = new XmlRecord(header, "<website name='l&apos;equipe' url='http://www.lequipe.fr'/>");
-        website = xmlRecordMapper.mapRecord(xmlRecord);
+        website = xmlRecordMapper.processRecord(xmlRecord);
         assertThat(website).isNotNull();
         assertThat(website.getName()).isEqualTo("l'equipe");
         assertThat(website.getUrl()).isEqualTo("http://www.lequipe.fr");
@@ -115,20 +115,20 @@ public class XmlRecordMapperTest {
     public void testMappingWithUnescapedXmlSpecialCharacter() throws Exception {
         xmlRecord = new XmlRecord(header, "<website name='google' url='http://www.google.com?query=test&sort=asc'/>");
         XmlRecordMapper<Website> xmlRecordMapper = new XmlRecordMapper<Website>(Website.class);
-        xmlRecordMapper.mapRecord(xmlRecord);
+        xmlRecordMapper.processRecord(xmlRecord);
     }
 
     @Test(expected = RecordMappingException.class)
     public void testInvalidXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-invalid.xml"));
-        xmlRecordMapper.mapRecord(xmlRecord);
+        xmlRecordMapper.processRecord(xmlRecord);
     }
 
     @Test(expected = RecordMappingException.class)
     public void testMappingOfInvalidXmlAccordingToXsd() throws Exception {
         xmlRecordMapper = new XmlRecordMapper<Person>(Person.class, getFile("/person.xsd"));
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-invalid-xsd.xml"));
-        xmlRecordMapper.mapRecord(xmlRecord);
+        xmlRecordMapper.processRecord(xmlRecord);
     }
 
     private File getFile(String fileName) {

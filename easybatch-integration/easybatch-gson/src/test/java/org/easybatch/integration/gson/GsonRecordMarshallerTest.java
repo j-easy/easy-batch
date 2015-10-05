@@ -49,7 +49,7 @@ public class GsonRecordMarshallerTest {
         Tweet tweet = new Tweet(1, "foo", "hi");
 
         String expected = "{\"id\":1,\"user\":\"foo\",\"message\":\"hi\"}";
-        String actual = marshaller.marshal(tweet);
+        String actual = marshaller.processRecord(tweet);
 
         assertThat(actual).isEqualTo(expected);
     }

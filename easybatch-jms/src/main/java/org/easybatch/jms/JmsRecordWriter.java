@@ -24,7 +24,7 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.api.RecordProcessingException;
+import org.easybatch.core.api.RecordWritingException;
 import org.easybatch.core.writer.AbstractRecordWriter;
 
 import javax.jms.*;
@@ -56,11 +56,11 @@ public class JmsRecordWriter extends AbstractRecordWriter<Message> {
     }
 
     @Override
-    public void writeRecord(final Message message) throws RecordProcessingException {
+    public void writeRecord(final Message message) throws RecordWritingException {
         try {
             queueSender.send(message);
         } catch (JMSException e) {
-            throw new RecordProcessingException("Unable to send message " + message + " to queue", e);
+            throw new RecordWritingException("Unable to send message " + message + " to queue", e);
         }
     }
 

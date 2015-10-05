@@ -24,8 +24,8 @@
 
 package org.easybatch.xml;
 
+import org.easybatch.core.api.RecordMarshaller;
 import org.easybatch.core.api.RecordMarshallingException;
-import org.easybatch.core.processor.AbstractRecordMarshaller;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -40,7 +40,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class XmlRecordMarshaller extends AbstractRecordMarshaller {
+public class XmlRecordMarshaller implements RecordMarshaller {
 
     private Marshaller marshaller;
 
@@ -74,7 +74,7 @@ public class XmlRecordMarshaller extends AbstractRecordMarshaller {
     }
     
     @Override
-    protected String marshal(final Object record) throws RecordMarshallingException {
+    public String processRecord(final Object record) throws RecordMarshallingException {
         StringWriter stringWriter = new StringWriter();
         try {
             marshaller.marshal(record, stringWriter);

@@ -24,8 +24,8 @@
 
 package org.easybatch.core.writer;
 
-import org.easybatch.core.api.RecordProcessingException;
 import org.easybatch.core.api.RecordWriter;
+import org.easybatch.core.api.RecordWritingException;
 
 /**
  * Abstract class for record writers.
@@ -35,10 +35,10 @@ import org.easybatch.core.api.RecordWriter;
 public abstract class AbstractRecordWriter<T> implements RecordWriter<T> {
 
     @Override
-    public T processRecord(final T record) throws RecordProcessingException {
+    public T processRecord(final T record) throws RecordWritingException {
         writeRecord(record);
         return record;
     }
 
-    protected abstract void writeRecord(T record) throws RecordProcessingException;
+    protected abstract void writeRecord(T record) throws RecordWritingException;
 }

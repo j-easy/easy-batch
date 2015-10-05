@@ -31,4 +31,13 @@ package org.easybatch.core.api;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public interface RecordMarshaller<T> extends RecordProcessor<T, String> {
+
+    /**
+     *
+     * @param record the record to process.
+     * @return
+     * @throws RecordMarshallingException
+     */
+    @Override
+    String processRecord(T record) throws RecordMarshallingException;
 }

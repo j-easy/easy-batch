@@ -22,24 +22,43 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.impl;
+package org.easybatch.core.filter;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.api.RecordFilteringException;
 
 /**
- * A No Operation {@link RecordMapper} implementation used by default by easy batch engine.
+ * A {@link org.easybatch.core.api.RecordFilter} that filters records based on their number.
+ * <p/>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-class NoOpRecordMapper implements RecordMapper<Record> {
+public class RecordNumberEqualToFilter implements RecordFilter<Record> {
+
+    /**
+     * Record numbers that causes the record to be filtered.
+     */
+    private long[] numbers;
+
+    /**
+     * @param numbers record numbers that cause the record to be filtered.
+     */
+    public RecordNumberEqualToFilter(final long... numbers) {
+        this.numbers = numbers;
+    }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public Record mapRecord(final Record record) {
+    public Record processRecord(final Record record) throws RecordFilteringException {
+        for (long number : numbers) {
+            if (record.getHeader().getNumber() == number) {
+                throw new RecordFilteringException();
+            }
+        }
         return record;
+
     }
 
 }

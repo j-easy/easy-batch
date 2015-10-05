@@ -31,10 +31,6 @@ package org.easybatch.core.mapper;
  */
 public class BeanIntrospectionException extends RuntimeException {
 
-    public BeanIntrospectionException(String message) {
-        super(message);
-    }
-
     public BeanIntrospectionException(String message, Throwable cause) {
         super(message, cause);
     }

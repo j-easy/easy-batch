@@ -48,7 +48,7 @@ public class XstreamRecordMarshallerTest {
         Person person = new Person(1, "foo", "bar", false);
 
         String expected = "<person><id>1</id><firstName>foo</firstName><lastName>bar</lastName><married>false</married></person>";
-        String actual = xstreamRecordMarshaller.marshal(person);
+        String actual = xstreamRecordMarshaller.processRecord(person);
 
         assertThat(actual).isXmlEqualTo(expected);
     }

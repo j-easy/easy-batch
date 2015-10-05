@@ -64,7 +64,7 @@ public class ApacheCommonCsvRecordMapperTest {
         CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        Foo foo = mapper.mapRecord(record);
+        Foo foo = mapper.processRecord(record);
 
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo");
@@ -81,7 +81,7 @@ public class ApacheCommonCsvRecordMapperTest {
                 .withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        Foo foo = mapper.mapRecord(record);
+        Foo foo = mapper.processRecord(record);
 
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo");
@@ -98,7 +98,7 @@ public class ApacheCommonCsvRecordMapperTest {
                 .withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        Foo foo = mapper.mapRecord(record);
+        Foo foo = mapper.processRecord(record);
 
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo,s");
@@ -115,7 +115,7 @@ public class ApacheCommonCsvRecordMapperTest {
                 .withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        Foo foo = mapper.mapRecord(record);
+        Foo foo = mapper.processRecord(record);
 
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo" + LINE_SEPARATOR);

@@ -24,9 +24,10 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.record.StringRecord;
+import org.easybatch.core.util.Utils;
 
 /**
  * Convenient filter that mimics the unix grep utility: it keeps records containing the given pattern
@@ -36,31 +37,21 @@ import org.easybatch.core.record.StringRecord;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class GrepFilter implements RecordFilter {
+public class GrepFilter implements RecordFilter<StringRecord> {
 
     private String pattern;
 
-    private boolean negate;
-
-    public GrepFilter(String pattern) {
+    public GrepFilter(final String pattern) {
+        Utils.checkNotNull(pattern, "pattern");
         this.pattern = pattern;
     }
 
-    public GrepFilter(String pattern, boolean negate) {
-        this.pattern = pattern;
-        this.negate = negate;
-    }
-
-    @Override
-    public boolean filterRecord(Record record) {
-        StringRecord stringRecord = (StringRecord) record;
-        String payload = stringRecord.getPayload();
-        boolean result = doFilterRecord(payload);
-        return negate ? !result : result;
-    }
-
-    private boolean doFilterRecord(String payload) {
-        return !payload.contains(pattern);
+    public StringRecord processRecord(final StringRecord record) throws RecordFilteringException {
+        String payload = record.getPayload();
+        if (!payload.contains(pattern)) {
+            throw new RecordFilteringException();
+        }
+        return record;
     }
 
 }

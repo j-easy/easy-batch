@@ -22,28 +22,16 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.impl;
+package org.easybatch.core.api;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.filter.RecordNumberLowerThanFilter;
+public interface RecordDispatcher<I> extends RecordProcessor<I, I> {
 
-/**
- * Skip records which number is lower than a given number.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
-class RecordSkipper extends RecordNumberLowerThanFilter {
-
-    public RecordSkipper(long number) {
-        super(number + 1);
-    }
-
-    public boolean skipRecord(Record record) {
-        return super.filterRecord(record);
-    }
-
-    public long getNumberOfRecordsToSkip() {
-        return number == 0 ? number : number - 1;
-    }
-
+    /**
+     *
+     * @param record the record to process.
+     * @return
+     * @throws RecordDispatchingException
+     */
+    @Override
+    I processRecord(I record) throws RecordDispatchingException;
 }

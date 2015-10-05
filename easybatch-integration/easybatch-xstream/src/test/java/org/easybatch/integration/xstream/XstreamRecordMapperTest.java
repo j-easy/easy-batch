@@ -46,8 +46,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class XstreamRecordMapperTest {
 
-    private XStream xStream;
-
     private XstreamRecordMapper xmlRecordMapper;
 
     @Mock
@@ -55,7 +53,7 @@ public class XstreamRecordMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        xStream = new XStream();
+        XStream xStream = new XStream();
         xStream.alias("person", Person.class);
         xmlRecordMapper = new XstreamRecordMapper<Person>(xStream);
     }
@@ -64,7 +62,7 @@ public class XstreamRecordMapperTest {
     public void testValidXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person.xml"));
 
-        Person person = (Person) xmlRecordMapper.mapRecord(xmlRecord);
+        Person person = (Person) xmlRecordMapper.processRecord(xmlRecord);
 
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(1);
@@ -77,7 +75,7 @@ public class XstreamRecordMapperTest {
     public void testEmptyXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn("<person/>");
 
-        Person person = (Person) xmlRecordMapper.mapRecord(xmlRecord);
+        Person person = (Person) xmlRecordMapper.processRecord(xmlRecord);
 
         assertThat(person.getId()).isEqualTo(0);
         assertThat(person.getFirstName()).isNull();
@@ -89,7 +87,7 @@ public class XstreamRecordMapperTest {
     public void testPartialXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person-partial.xml"));
 
-        Person person = (Person) xmlRecordMapper.mapRecord(xmlRecord);
+        Person person = (Person) xmlRecordMapper.processRecord(xmlRecord);
 
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(1);
@@ -102,7 +100,7 @@ public class XstreamRecordMapperTest {
     public void testInvalidXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person-invalid.xml"));
 
-        xmlRecordMapper.mapRecord(xmlRecord);
+        xmlRecordMapper.processRecord(xmlRecord);
     }
 
     private String getXmlFromFile(String file) {

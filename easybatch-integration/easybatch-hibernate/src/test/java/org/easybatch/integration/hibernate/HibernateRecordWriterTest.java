@@ -81,14 +81,14 @@ public class HibernateRecordWriterTest {
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        HibernateTransactionStepListener hibernateTransactionStepListener = new HibernateTransactionStepListener(session, commitInterval);
+        HibernateTransactionPipelineListener hibernateTransactionPipelineListener = new HibernateTransactionPipelineListener(session, commitInterval);
         HibernateTransactionJobListener hibernateTransactionJobListener = new HibernateTransactionJobListener(session, true);
 
         Report report = aNewEngine()
                 .reader(new IterableRecordReader<Tweet>(tweets))
                 .mapper(new GenericRecordMapper())
                 .writer(hibernateRecordWriter)
-                .recordProcessorEventListener(hibernateTransactionStepListener)
+                .pipelineEventListener(hibernateTransactionPipelineListener)
                 .jobEventListener(hibernateTransactionJobListener)
                 .build().call();
 

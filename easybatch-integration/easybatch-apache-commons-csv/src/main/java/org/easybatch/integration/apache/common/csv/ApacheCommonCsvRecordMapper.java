@@ -25,7 +25,6 @@
 package org.easybatch.integration.apache.common.csv;
 
 import org.apache.commons.csv.CSVRecord;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.core.mapper.AbstractRecordMapper;
@@ -35,15 +34,15 @@ import org.easybatch.core.mapper.AbstractRecordMapper;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ApacheCommonCsvRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper {
+public class ApacheCommonCsvRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<ApacheCommonCsvRecord, T> {
 
     public ApacheCommonCsvRecordMapper(Class<? extends T> recordClass) {
         super(recordClass);
     }
 
     @Override
-    public T mapRecord(final Record record) throws RecordMappingException {
-        CSVRecord csvRecord = (CSVRecord) record.getPayload();
+    public T processRecord(final ApacheCommonCsvRecord record) throws RecordMappingException {
+        CSVRecord csvRecord = record.getPayload();
         return objectMapper.mapObject(csvRecord.toMap());
     }
 

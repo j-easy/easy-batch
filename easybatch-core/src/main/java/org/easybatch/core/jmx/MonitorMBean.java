@@ -88,13 +88,6 @@ public interface MonitorMBean {
     String getFilteredRecords();
 
     /**
-     * Get ignored records count.
-     *
-     * @return ignored records count
-     */
-    String getIgnoredRecords();
-
-    /**
      * Get rejected records count.
      *
      * @return rejected records count

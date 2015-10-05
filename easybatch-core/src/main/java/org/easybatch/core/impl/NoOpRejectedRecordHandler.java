@@ -24,11 +24,9 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.ValidationError;
+import org.easybatch.core.api.RecordValidationException;
 import org.easybatch.core.api.handler.RejectedRecordHandler;
 
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,23 +40,12 @@ class NoOpRejectedRecordHandler implements RejectedRecordHandler {
     private static final Logger LOGGER = Logger.getLogger(NoOpRejectedRecordHandler.class.getName());
 
     /**
-     * {@inheritDoc}
+     * @param record    the rejected record to handle
+     * @param exception the exception that caused the record to be rejected
      */
     @Override
-    public void handle(final Record record, final Throwable throwable) {
-        LOGGER.log(Level.SEVERE, "An exception occurred while attempting to validate record " + record, throwable);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void handle(final Record record, final Set<ValidationError> validationsErrors) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (ValidationError validationError : validationsErrors) {
-            stringBuilder.append(validationError.getMessage()).append(" | ");
-        }
-        LOGGER.log(Level.SEVERE, "Record {0} has been rejected. Validation error(s): {1}", new Object[]{record, stringBuilder.toString()});
+    public void handle(Object record, RecordValidationException exception) {
+        LOGGER.log(Level.SEVERE, "An exception occurred while attempting to validate record " + record, exception);
     }
 
 }

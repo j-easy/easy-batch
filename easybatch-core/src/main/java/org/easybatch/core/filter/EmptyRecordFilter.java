@@ -24,20 +24,24 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.api.RecordFilteringException;
+import org.easybatch.core.record.StringRecord;
 
 /**
  * Filters empty {@link org.easybatch.core.record.StringRecord}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class EmptyRecordFilter implements RecordFilter {
+public class EmptyRecordFilter implements RecordFilter<StringRecord> {
 
     @Override
-    public boolean filterRecord(final Record record) {
-        String payload = (String) record.getPayload();
-        return payload.isEmpty();
+    public StringRecord processRecord(final StringRecord record) throws RecordFilteringException {
+        String payload = record.getPayload();
+        if (payload.isEmpty()) {
+            throw new RecordFilteringException();
+        }
+        return record;
     }
 
 }

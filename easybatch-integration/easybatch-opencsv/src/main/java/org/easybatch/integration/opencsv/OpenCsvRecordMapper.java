@@ -27,8 +27,8 @@ package org.easybatch.integration.opencsv;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.record.StringRecord;
 
 import java.io.StringReader;
 import java.util.List;
@@ -38,7 +38,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class OpenCsvRecordMapper<T> implements RecordMapper<T> {
+public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, T> {
 
     private CSVReader openCsvReader;
 
@@ -66,8 +66,8 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<T> {
     }
 
     @Override
-    public T mapRecord(final Record record) {
-        String payload = (String) record.getPayload();
+    public T processRecord(final StringRecord record) {
+        String payload = record.getPayload();
         openCsvReader = new CSVReader(
                 new StringReader(payload),
                 delimiter,

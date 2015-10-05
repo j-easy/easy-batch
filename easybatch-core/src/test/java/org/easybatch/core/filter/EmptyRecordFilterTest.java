@@ -25,6 +25,7 @@
 package org.easybatch.core.filter;
 
 import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.mapper.GenericRecordMapper;
@@ -43,34 +44,29 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.mockito.Mockito.when;
 
-/**
- * Test class for {@link EmptyRecordFilter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class EmptyRecordFilterTest {
 
     @Mock
     private StringRecord stringRecord;
 
-    private RecordFilter recordFilter;
+    private RecordFilter<StringRecord> recordFilter;
 
     @Before
     public void setUp() throws Exception {
         recordFilter = new EmptyRecordFilter();
     }
 
-    @Test
-    public void testFilterEmptyRecord() throws Exception {
+    @Test(expected = RecordFilteringException.class)
+    public void testFilterEmptyRecord() throws RecordFilteringException {
         when(stringRecord.getPayload()).thenReturn("");
-        assertThat(recordFilter.filterRecord(stringRecord)).isTrue();
+        recordFilter.processRecord(stringRecord);
     }
 
     @Test
-    public void testFilterNonEmptyRecord() throws Exception {
+    public void testFilterNonEmptyRecord() throws RecordFilteringException {
         when(stringRecord.getPayload()).thenReturn("foo");
-        assertThat(recordFilter.filterRecord(stringRecord)).isFalse();
+        assertThat(recordFilter.processRecord(stringRecord)).isEqualTo(stringRecord);
     }
 
     @Test
@@ -90,7 +86,7 @@ public class EmptyRecordFilterTest {
         assertThat(report.getFilteredRecordsCount()).isEqualTo(2);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
 
-        List<String> records = (List<String>) report.getBatchResult();
+        List<String> records = (List<String>) report.getJobResult();
         assertThat(records).hasSize(2).containsExactly("foo", "bar");
     }
 }

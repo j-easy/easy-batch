@@ -24,20 +24,16 @@
 
 package org.easybatch.core.filter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
+import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * Test class for {@link StartWithStringRecordFilter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 public class StartWithStringRecordFilterTest {
 
@@ -46,76 +42,32 @@ public class StartWithStringRecordFilterTest {
 
     private StartWithStringRecordFilter startWithStringRecordFilter;
 
-    /*
-    * Test the regular behavior
-    */
-
-    @Test
-    public void whenTheRecordStartsWithExpectedPrefix_ThenItShouldBeFiltered() {
+    @Test(expected = RecordFilteringException.class)
+    public void whenTheRecordStartsWithExpectedPrefix_ThenItShouldBeFiltered() throws RecordFilteringException {
         when(stringRecord.getPayload()).thenReturn("prefix_content");
         startWithStringRecordFilter = new StartWithStringRecordFilter("prefix");
-        assertThat(startWithStringRecordFilter.filterRecord(stringRecord)).isTrue();
+        startWithStringRecordFilter.processRecord(stringRecord);
     }
 
     @Test
-    public void whenTheRecordDoesNotStartWithExpectedPrefix_ThenItShouldNotBeFiltered() {
+    public void whenTheRecordDoesNotStartWithExpectedPrefix_ThenItShouldNotBeFiltered() throws RecordFilteringException {
         when(stringRecord.getPayload()).thenReturn("content");
         startWithStringRecordFilter = new StartWithStringRecordFilter("prefix");
-        assertThat(startWithStringRecordFilter.filterRecord(stringRecord)).isFalse();
+        assertThat(startWithStringRecordFilter.processRecord(stringRecord)).isEqualTo(stringRecord);
     }
 
-    @Test
-    public void whenTheRecordStartsWithOneOfTheExpectedPrefixes_ThenItShouldBeFiltered() {
+    @Test(expected = RecordFilteringException.class)
+    public void whenTheRecordStartsWithOneOfTheExpectedPrefixes_ThenItShouldBeFiltered() throws RecordFilteringException {
         when(stringRecord.getPayload()).thenReturn("prefix1_content");
         startWithStringRecordFilter = new StartWithStringRecordFilter("prefix1", "prefix2");
-        assertThat(startWithStringRecordFilter.filterRecord(stringRecord)).isTrue();
-
-        when(stringRecord.getPayload()).thenReturn("prefix2_content");
-        startWithStringRecordFilter = new StartWithStringRecordFilter("prefix1", "prefix2");
-        assertThat(startWithStringRecordFilter.filterRecord(stringRecord)).isTrue();
+        startWithStringRecordFilter.processRecord(stringRecord);
     }
 
     @Test
-    public void whenTheRecordDoesNotStartWithOneOfTheExpectedPrefixes_ThenItShouldNotBeFiltered() {
+    public void whenTheRecordDoesNotStartWithOneOfTheExpectedPrefixes_ThenItShouldNotBeFiltered() throws RecordFilteringException {
         when(stringRecord.getPayload()).thenReturn("content");
         startWithStringRecordFilter = new StartWithStringRecordFilter("prefix1", "prefix2");
-        assertThat(startWithStringRecordFilter.filterRecord(stringRecord)).isFalse();
-    }
-
-    /*
-     * Test the negate behavior
-     */
-
-    @Test
-    public void whenTheRecordStartsWithExpectedPrefix_ThenItShouldNotBeFiltered() {
-        when(stringRecord.getPayload()).thenReturn("prefix_content");
-        startWithStringRecordFilter = new StartWithStringRecordFilter(true, "prefix");
-        assertThat(startWithStringRecordFilter.filterRecord(stringRecord)).isFalse();
-    }
-
-    @Test
-    public void whenTheRecordDoesNoStartWithExpectedPrefix_ThenItShouldBeFiltered() {
-        when(stringRecord.getPayload()).thenReturn("content");
-        startWithStringRecordFilter = new StartWithStringRecordFilter(true, "prefix");
-        assertThat(startWithStringRecordFilter.filterRecord(stringRecord)).isTrue();
-    }
-
-    @Test
-    public void whenTheRecordStartsWithOneOfTheExpectedPrefixes_ThenItShouldNotBeFiltered() {
-        when(stringRecord.getPayload()).thenReturn("prefix1_content");
-        startWithStringRecordFilter = new StartWithStringRecordFilter(true, "prefix1", "prefix2");
-        assertThat(startWithStringRecordFilter.filterRecord(stringRecord)).isFalse();
-
-        when(stringRecord.getPayload()).thenReturn("prefix2_content");
-        startWithStringRecordFilter = new StartWithStringRecordFilter(true, "prefix1", "prefix2");
-        assertThat(startWithStringRecordFilter.filterRecord(stringRecord)).isFalse();
-    }
-
-    @Test
-    public void whenTheRecordDoesNotStartWithOneOfTheExpectedPrefixes_ThenItShouldBeFiltered() {
-        when(stringRecord.getPayload()).thenReturn("content");
-        startWithStringRecordFilter = new StartWithStringRecordFilter(true, "prefix1", "prefix2");
-        assertThat(startWithStringRecordFilter.filterRecord(stringRecord)).isTrue();
+        assertThat(startWithStringRecordFilter.processRecord(stringRecord)).isEqualTo(stringRecord);
     }
 
 }

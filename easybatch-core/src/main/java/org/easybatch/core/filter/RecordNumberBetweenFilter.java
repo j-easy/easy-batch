@@ -26,6 +26,7 @@ package org.easybatch.core.filter;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.api.RecordFilteringException;
 
 /**
  * A {@link org.easybatch.core.api.RecordFilter} that filters records
@@ -33,7 +34,7 @@ import org.easybatch.core.api.RecordFilter;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordNumberBetweenFilter implements RecordFilter {
+public class RecordNumberBetweenFilter implements RecordFilter<Record> {
 
     /**
      * Record number range lower bound.
@@ -57,9 +58,11 @@ public class RecordNumberBetweenFilter implements RecordFilter {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public boolean filterRecord(final Record record) {
-        return record.getHeader().getNumber() >= lowerBound && record.getHeader().getNumber() <= higherBound;
+    public Record processRecord(final Record record) throws RecordFilteringException {
+        if (record.getHeader().getNumber() >= lowerBound && record.getHeader().getNumber() <= higherBound) {
+            throw new RecordFilteringException();
+        }
+        return record;
     }
 
 }

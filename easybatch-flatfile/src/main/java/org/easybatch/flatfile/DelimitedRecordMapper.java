@@ -24,11 +24,11 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.ObjectMapper;
+import org.easybatch.core.record.StringRecord;
 
 import java.util.*;
 
@@ -38,7 +38,7 @@ import java.util.*;
  * @param <T> the target domain object type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<T> {
+public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<StringRecord, T> {
 
     /**
      * The default delimiter.
@@ -167,7 +167,7 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
     }
 
     @Override
-    public T mapRecord(final Record record) throws RecordMappingException {
+    public T processRecord(final StringRecord record) throws RecordMappingException {
 
         FlatFileRecord flatFileRecord = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<String, String>();
@@ -185,9 +185,9 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
         return objectMapper.mapObject(fieldsContents);
     }
 
-    FlatFileRecord parseRecord(final Record record) throws RecordMappingException {
+    FlatFileRecord parseRecord(final StringRecord record) throws RecordMappingException {
 
-        String payload = (String) record.getPayload();
+        String payload = record.getPayload();
         String[] tokens = payload.split(delimiter, -1);
 
         setRecordExpectedLength(tokens);

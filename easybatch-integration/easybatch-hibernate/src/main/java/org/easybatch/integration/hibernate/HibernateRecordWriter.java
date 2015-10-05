@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.RecordProcessingException;
+import org.easybatch.core.api.RecordWritingException;
 import org.easybatch.core.writer.AbstractRecordWriter;
 import org.hibernate.Session;
 
@@ -34,7 +34,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * Writes entities to a database using Hibernate.
  *
  * This writer does not commit a transaction after writing entities.
- * You can use a {@link HibernateTransactionStepListener} for this purpose.
+ * You can use a {@link HibernateTransactionPipelineListener} for this purpose.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -53,7 +53,7 @@ public class HibernateRecordWriter<T> extends AbstractRecordWriter<T> {
     }
 
     @Override
-    public void writeRecord(final T record) throws RecordProcessingException {
+    public void writeRecord(final T record) throws RecordWritingException {
         session.saveOrUpdate(record);
     }
 }

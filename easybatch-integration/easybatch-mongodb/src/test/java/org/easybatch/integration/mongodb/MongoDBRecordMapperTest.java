@@ -72,7 +72,7 @@ public class MongoDBRecordMapperTest {
                 .append("married", MARRIED);
         MongoDBRecord mongoDBRecord = new MongoDBRecord(header, personDBObject);
 
-        Person person = mapper.mapRecord(mongoDBRecord);
+        Person person = mapper.processRecord(mongoDBRecord);
 
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(ID);

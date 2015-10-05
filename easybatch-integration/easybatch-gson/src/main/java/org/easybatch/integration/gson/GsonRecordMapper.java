@@ -26,7 +26,6 @@ package org.easybatch.integration.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.json.JsonRecord;
@@ -40,7 +39,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * @param <T> Target domain object class.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class GsonRecordMapper<T> implements RecordMapper<T> {
+public class GsonRecordMapper<T> implements RecordMapper<JsonRecord, T> {
 
     private Gson mapper;
 
@@ -62,10 +61,9 @@ public class GsonRecordMapper<T> implements RecordMapper<T> {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public T mapRecord(final Record record) throws RecordMappingException {
-        JsonRecord jsonRecord = (JsonRecord) record;
+    public T processRecord(final JsonRecord record) throws RecordMappingException {
         try {
-            return mapper.fromJson(jsonRecord.getPayload(), type);
+            return mapper.fromJson(record.getPayload(), type);
         } catch (JsonSyntaxException e) {
             throw new RecordMappingException("Unable to map record " + record + " to target type", e);
         }

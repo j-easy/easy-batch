@@ -24,20 +24,16 @@
 
 package org.easybatch.core.filter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
+import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * Test class for {@link EndWithStringRecordFilter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 public class EndWithStringRecordFilterTest {
 
@@ -46,76 +42,32 @@ public class EndWithStringRecordFilterTest {
     
     private EndWithStringRecordFilter endWithStringRecordFilter;
 
-    /*
-    * Test the regular behavior
-    */
-
-    @Test
-    public void whenTheRecordEndsWithExpectedSuffix_ThenItShouldBeFiltered() {
+    @Test(expected = RecordFilteringException.class)
+    public void whenTheRecordEndsWithExpectedSuffix_ThenItShouldBeFiltered() throws RecordFilteringException {
         when(stringRecord.getPayload()).thenReturn("content_suffix");
         endWithStringRecordFilter = new EndWithStringRecordFilter("suffix");
-        assertThat(endWithStringRecordFilter.filterRecord(stringRecord)).isTrue();
+        endWithStringRecordFilter.processRecord(stringRecord);
     }
 
     @Test
-    public void whenTheRecordDoesNotEndWithExpectedSuffix_ThenItShouldNotBeFiltered() {
+    public void whenTheRecordDoesNotEndWithExpectedSuffix_ThenItShouldNotBeFiltered() throws RecordFilteringException {
         when(stringRecord.getPayload()).thenReturn("content");
         endWithStringRecordFilter = new EndWithStringRecordFilter("suffix");
-        assertThat(endWithStringRecordFilter.filterRecord(stringRecord)).isFalse();
+        assertThat(endWithStringRecordFilter.processRecord(stringRecord)).isEqualTo(stringRecord);
     }
 
-    @Test
-    public void whenTheRecordEndsWithOneOfTheExpectedSuffixes_ThenItShouldBeFiltered() {
+    @Test(expected = RecordFilteringException.class)
+    public void whenTheRecordEndsWithOneOfTheExpectedSuffixes_ThenItShouldBeFiltered() throws RecordFilteringException{
         when(stringRecord.getPayload()).thenReturn("content_suffix1");
         endWithStringRecordFilter = new EndWithStringRecordFilter("suffix1", "suffix2");
-        assertThat(endWithStringRecordFilter.filterRecord(stringRecord)).isTrue();
-
-        when(stringRecord.getPayload()).thenReturn("content_suffix2");
-        endWithStringRecordFilter = new EndWithStringRecordFilter("suffix1", "suffix2");
-        assertThat(endWithStringRecordFilter.filterRecord(stringRecord)).isTrue();
+        endWithStringRecordFilter.processRecord(stringRecord);
     }
 
     @Test
-    public void whenTheRecordDoesNotEndWithOneOfTheExpectedSuffixes_ThenItShouldNotBeFiltered() {
+    public void whenTheRecordDoesNotEndWithOneOfTheExpectedSuffixes_ThenItShouldNotBeFiltered() throws RecordFilteringException {
         when(stringRecord.getPayload()).thenReturn("content");
         endWithStringRecordFilter = new EndWithStringRecordFilter("suffix1", "suffix2");
-        assertThat(endWithStringRecordFilter.filterRecord(stringRecord)).isFalse();
-    }
-
-    /*
-     * Test the negate behavior
-     */
-
-    @Test
-    public void whenTheRecordEndsWithExpectedSuffix_ThenItShouldNotBeFiltered() {
-        when(stringRecord.getPayload()).thenReturn("content_suffix");
-        endWithStringRecordFilter = new EndWithStringRecordFilter(true, "suffix");
-        assertThat(endWithStringRecordFilter.filterRecord(stringRecord)).isFalse();
-    }
-
-    @Test
-    public void whenTheRecordDoesNoEndWithExpectedSuffix_ThenItShouldBeFiltered() {
-        when(stringRecord.getPayload()).thenReturn("content");
-        endWithStringRecordFilter = new EndWithStringRecordFilter(true, "suffix");
-        assertThat(endWithStringRecordFilter.filterRecord(stringRecord)).isTrue();
-    }
-
-    @Test
-    public void whenTheRecordEndsWithOneOfTheExpectedSuffixes_ThenItShouldNotBeFiltered() {
-        when(stringRecord.getPayload()).thenReturn("content_suffix1");
-        endWithStringRecordFilter = new EndWithStringRecordFilter(true, "suffix1", "suffix2");
-        assertThat(endWithStringRecordFilter.filterRecord(stringRecord)).isFalse();
-
-        when(stringRecord.getPayload()).thenReturn("content_suffix2");
-        endWithStringRecordFilter = new EndWithStringRecordFilter(true, "suffix1", "suffix2");
-        assertThat(endWithStringRecordFilter.filterRecord(stringRecord)).isFalse();
-    }
-
-    @Test
-    public void whenTheRecordDoesNotEndWithOneOfTheExpectedSuffixes_ThenItShouldBeFiltered() {
-        when(stringRecord.getPayload()).thenReturn("content");
-        endWithStringRecordFilter = new EndWithStringRecordFilter(true, "suffix1", "suffix2");
-        assertThat(endWithStringRecordFilter.filterRecord(stringRecord)).isTrue();
+        assertThat(endWithStringRecordFilter.processRecord(stringRecord)).isEqualTo(stringRecord);
     }
 
 }

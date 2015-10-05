@@ -55,13 +55,12 @@ public class DefaultReportMergerTest {
         report1.setTotalRecords(6l);
         report1.incrementTotalSkippedRecords();
         report1.incrementTotalFilteredRecords();
-        report1.incrementTotalIgnoredRecord();
         report1.incrementTotalRejectedRecord();
         report1.incrementTotalErrorRecord();
         report1.incrementTotalSuccessRecord();
         report1.setStartTime(startTime1);
         report1.setEndTime(endTime1);
-        report1.setBatchResult("result1");
+        report1.setJobResult("result1");
         report1.setDataSource("datasource1");
         report1.setStatus(Status.ABORTED);
 
@@ -71,13 +70,12 @@ public class DefaultReportMergerTest {
         report2.setTotalRecords(6l);
         report2.incrementTotalSkippedRecords();
         report2.incrementTotalFilteredRecords();
-        report2.incrementTotalIgnoredRecord();
         report2.incrementTotalRejectedRecord();
         report2.incrementTotalErrorRecord();
         report2.incrementTotalSuccessRecord();
         report2.setStartTime(startTime2);
         report2.setEndTime(endTime2);
-        report2.setBatchResult("result2");
+        report2.setJobResult("result2");
         report2.setDataSource("datasource2");
         report2.setStatus(Status.ABORTED);
 
@@ -86,7 +84,6 @@ public class DefaultReportMergerTest {
         assertEquals(new Long(12), finalReport.getTotalRecords()); //sum of total records
         assertEquals(2, finalReport.getSkippedRecordsCount());// sum of skipped records
         assertEquals(2, finalReport.getFilteredRecordsCount());// sum of filtered records
-        assertEquals(2, finalReport.getIgnoredRecordsCount());// sum of ignored records
         assertEquals(2, finalReport.getRejectedRecordsCount());// sum of rejected records
         assertEquals(2, finalReport.getErrorRecordsCount());// sum of error records
         assertEquals(2, finalReport.getSuccessRecordsCount());// sum of success records
@@ -94,7 +91,7 @@ public class DefaultReportMergerTest {
         assertEquals(11, finalReport.getEndTime());// max of end times
 
         //batch results
-        List<Object> results = (List<Object>) finalReport.getBatchResult();
+        List<Object> results = (List<Object>) finalReport.getJobResult();
         assertEquals("result1", results.get(0));
         assertEquals("result2", results.get(1));
 

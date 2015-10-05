@@ -86,7 +86,7 @@ public class JdbcMultiRecordWriterTest {
         Report report = aNewEngine()
                 .reader(new IterableMultiRecordReader<Tweet>(tweets, chunkSize))
                 .writer(jdbcMultiRecordWriter)
-                .recordProcessorEventListener(new JdbcTransactionStepListener(connection))
+                .pipelineEventListener(new JdbcTransactionPipelineListener(connection))
                 .build().call();
 
         assertThat(report).isNotNull();

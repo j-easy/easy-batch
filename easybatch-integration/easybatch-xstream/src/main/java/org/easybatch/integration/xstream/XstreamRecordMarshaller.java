@@ -25,7 +25,7 @@
 package org.easybatch.integration.xstream;
 
 import com.thoughtworks.xstream.XStream;
-import org.easybatch.core.processor.AbstractRecordMarshaller;
+import org.easybatch.core.api.RecordMarshaller;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -34,7 +34,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * 
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class XstreamRecordMarshaller extends AbstractRecordMarshaller {
+public class XstreamRecordMarshaller implements RecordMarshaller {
 
     private XStream xStream;
 
@@ -69,7 +69,7 @@ public class XstreamRecordMarshaller extends AbstractRecordMarshaller {
     }
 
     @Override
-    protected String marshal(final Object record) {
+    public String processRecord(final Object record) {
         return xStream.toXML(record);
     }
 }

@@ -22,44 +22,20 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.impl;
-
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
-import org.easybatch.core.api.event.EventManager;
-
-import java.util.List;
+package org.easybatch.core.api;
 
 /**
- * The list of filters to apply for each record.
+ * Exception thrown when an error occurs during record writing.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-class FilterChain {
+public class RecordWritingException extends RecordProcessingException {
 
-    private List<RecordFilter> filters;
-
-    private EventManager eventManager;
-
-    FilterChain(List<RecordFilter> filters, EventManager eventManager) {
-        this.filters = filters;
-        this.eventManager = eventManager;
+    public RecordWritingException(String message) {
+        super(message);
     }
 
-    public void addRecordFilter(final RecordFilter recordFilter) {
-        filters.add(recordFilter);
-    }
-
-    public boolean filterRecord(final Record currentRecord) {
-        Record recordToFilter = eventManager.fireBeforeRecordFiltering(currentRecord);
-        boolean filtered = false;
-        for (RecordFilter recordFilter : filters) {
-            if (recordFilter.filterRecord(recordToFilter)) {
-                filtered = true;
-                break;
-            }
-        }
-        eventManager.fireAfterRecordFiltering(recordToFilter, filtered);
-        return filtered;
+    public RecordWritingException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

@@ -24,13 +24,15 @@
 
 package org.easybatch.integration.spring;
 
-import org.easybatch.core.api.*;
+import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.api.event.EventManager;
-import org.easybatch.core.api.event.job.JobEventListener;
-import org.easybatch.core.api.event.step.*;
+import org.easybatch.core.api.event.JobEventListener;
+import org.easybatch.core.api.event.PipelineEventListener;
+import org.easybatch.core.api.event.RecordReaderEventListener;
 import org.easybatch.core.api.handler.ErrorRecordHandler;
 import org.easybatch.core.api.handler.FilteredRecordHandler;
-import org.easybatch.core.api.handler.IgnoredRecordHandler;
 import org.easybatch.core.api.handler.RejectedRecordHandler;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,22 +51,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class EngineFactoryBeanTest {
 
-    EngineFactoryBean engineFactoryBean;
+    private EngineFactoryBean engineFactoryBean;
 
     @Mock
     private RecordReader recordReader;
     @Mock
-    private RecordFilter recordFilter;
-    @Mock
-    private RecordMapper recordMapper;
-    @Mock
-    private RecordValidator recordValidator;
-    @Mock
     private RecordProcessor recordProcessor;
     @Mock
     private FilteredRecordHandler filteredRecordHandler;
-    @Mock
-    private IgnoredRecordHandler ignoredRecordHandler;
     @Mock
     private RejectedRecordHandler rejectedRecordHandler;
     @Mock
@@ -74,13 +68,7 @@ public class EngineFactoryBeanTest {
     @Mock
     private RecordReaderEventListener recordReaderEventListener;
     @Mock
-    private RecordFilterEventListener recordFilterEventListener;
-    @Mock
-    private RecordMapperEventListener recordMapperEventListener;
-    @Mock
-    private RecordValidatorEventListener recordValidatorEventListener;
-    @Mock
-    private RecordProcessorEventListener recordProcessorEventListener;
+    private PipelineEventListener pipelineEventListener;
     @Mock
     private EventManager eventManager;
 
@@ -89,21 +77,15 @@ public class EngineFactoryBeanTest {
         engineFactoryBean = new EngineFactoryBean();
 
         engineFactoryBean.setRecordReader(recordReader);
-        engineFactoryBean.setFilterChain(singletonList(recordFilter));
-        engineFactoryBean.setRecordMapper(recordMapper);
-        engineFactoryBean.setValidationPipeline(singletonList(recordValidator));
         engineFactoryBean.setProcessingPipeline(singletonList(recordProcessor));
 
         engineFactoryBean.setFilteredRecordHandler(filteredRecordHandler);
-        engineFactoryBean.setIgnoredRecordHandler(ignoredRecordHandler);
         engineFactoryBean.setRejectedRecordHandler(rejectedRecordHandler);
         engineFactoryBean.setErrorRecordHandler(errorRecordHandler);
 
         engineFactoryBean.setJobEventListeners(singletonList(jobEventListener));
         engineFactoryBean.setRecordReaderEventListeners(singletonList(recordReaderEventListener));
-        engineFactoryBean.setRecordFilterEventListeners(singletonList(recordFilterEventListener));
-        engineFactoryBean.setRecordMapperEventListeners(singletonList(recordMapperEventListener));
-        engineFactoryBean.setRecordProcessorEventListeners(singletonList(recordProcessorEventListener));
+        engineFactoryBean.setPipelineEventListeners(singletonList(pipelineEventListener));
         engineFactoryBean.setEventManager(eventManager);
 
     }

@@ -31,14 +31,6 @@ package org.easybatch.core.api;
  */
 public class RecordFieldExtractionException extends RecordMarshallingException {
 
-    public RecordFieldExtractionException(String message) {
-        super(message);
-    }
-
-    public RecordFieldExtractionException(Throwable cause) {
-        super(cause);
-    }
-
     public RecordFieldExtractionException(String message, Throwable cause) {
         super(message, cause);
     }

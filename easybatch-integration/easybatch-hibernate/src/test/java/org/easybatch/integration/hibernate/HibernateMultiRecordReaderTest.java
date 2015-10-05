@@ -74,7 +74,7 @@ public class HibernateMultiRecordReaderTest {
         Report report = engine.call();
         assertThat(report.getTotalRecords()).isEqualTo(2);
 
-        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getBatchResult();
+        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
         assertThat(multiRecords).isNotNull().hasSize(2);
 
         MultiRecord chunk1 = multiRecords.get(0);

@@ -25,6 +25,7 @@
 package org.easybatch.core.api.handler;
 
 import org.easybatch.core.api.Record;
+import org.easybatch.core.api.RecordFilteringException;
 
 /**
  * Interface for handling filtered records.
@@ -34,14 +35,9 @@ import org.easybatch.core.api.Record;
 public interface FilteredRecordHandler {
 
     /**
-     * @param record the filtered record to handle
-     */
-    void handle(final Record record);
-
-    /**
      * @param record    the filtered record to handle
-     * @param throwable the exception thrown while attempting to filter the record
+     * @param exception the exception thrown while attempting to filter the record
      */
-    void handle(final Record record, final Throwable throwable);
+    void handle(final Record record, final RecordFilteringException exception);
 
 }

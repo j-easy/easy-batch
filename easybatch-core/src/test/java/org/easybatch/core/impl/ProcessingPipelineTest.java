@@ -27,6 +27,8 @@ package org.easybatch.core.impl;
 import org.easybatch.core.api.*;
 import org.easybatch.core.api.event.EventManager;
 import org.easybatch.core.api.handler.ErrorRecordHandler;
+import org.easybatch.core.api.handler.FilteredRecordHandler;
+import org.easybatch.core.api.handler.RejectedRecordHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,11 +40,6 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-/**
- * Test class for {@link ProcessingPipeline}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class ProcessingPipelineTest {
 
@@ -50,7 +47,7 @@ public class ProcessingPipelineTest {
     private Record record;
 
     @Mock
-    private Object typedRecord, processedRecord, secondlyProcessedRecord;
+    private Object preProcessedRecord, processedRecord, secondlyProcessedRecord;
 
     @Mock
     private Object processingResult;
@@ -65,6 +62,12 @@ public class ProcessingPipelineTest {
     private ErrorRecordHandler errorRecordHandler;
 
     @Mock
+    private RejectedRecordHandler rejectedRecordHandler;
+
+    @Mock
+    private FilteredRecordHandler filteredRecordHandler;
+
+    @Mock
     private EventManager eventManager;
 
     @Mock
@@ -73,31 +76,30 @@ public class ProcessingPipelineTest {
     @Mock
     private ComputationalRecordProcessor computationalRecordProcessor;
 
-    private ProcessingPipeline processingPipeline;
+    private Pipeline processingPipeline;
 
     @Before
     public void setUp() throws Exception {
-        when(eventManager.fireBeforeRecordProcessing(typedRecord)).thenReturn(typedRecord);
+        when(eventManager.fireBeforeRecordProcessing(record)).thenReturn(preProcessedRecord);
+        processingPipeline = new Pipeline(asList(recordProcessor, computationalRecordProcessor),
+                report, eventManager, errorRecordHandler, rejectedRecordHandler, filteredRecordHandler);
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void testProcessWithoutException() throws Exception {
-        processingPipeline = new ProcessingPipeline(asList(recordProcessor, computationalRecordProcessor),
-                errorRecordHandler, report, eventManager);
-
-        when(recordProcessor.processRecord(typedRecord)).thenReturn(processedRecord);
+        when(recordProcessor.processRecord(preProcessedRecord)).thenReturn(processedRecord);
         when(computationalRecordProcessor.processRecord(processedRecord)).thenReturn(secondlyProcessedRecord);
         when(computationalRecordProcessor.getComputationResult()).thenReturn(processingResult);
 
-        boolean processingError = processingPipeline.process(record, typedRecord);
+        boolean processingError = processingPipeline.process(record);
 
         assertThat(processingError).isFalse();
 
         InOrder inOrder = inOrder(eventManager, recordProcessor, computationalRecordProcessor);
 
-        inOrder.verify(eventManager).fireBeforeRecordProcessing(typedRecord);
-        inOrder.verify(recordProcessor).processRecord(typedRecord);
+        inOrder.verify(eventManager).fireBeforeRecordProcessing(record);
+        inOrder.verify(recordProcessor).processRecord(preProcessedRecord);
         inOrder.verify(computationalRecordProcessor).processRecord(processedRecord);
         inOrder.verify(computationalRecordProcessor).getComputationResult();
         inOrder.verify(eventManager).fireAfterRecordProcessing(secondlyProcessedRecord, processingResult);
@@ -106,22 +108,18 @@ public class ProcessingPipelineTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testProcessWithException() throws Exception {
-        processingPipeline = new ProcessingPipeline(asList(recordProcessor, computationalRecordProcessor),
-                errorRecordHandler, report, eventManager);
+        when(recordProcessor.processRecord(preProcessedRecord)).thenThrow(exception);
 
-        when(recordProcessor.processRecord(typedRecord)).thenThrow(exception);
-
-        boolean processingError = processingPipeline.process(record, typedRecord);
+        boolean processingError = processingPipeline.process(record);
 
         assertThat(processingError).isTrue();
 
         InOrder inOrder = inOrder(eventManager, report, recordProcessor, errorRecordHandler, computationalRecordProcessor);
 
-        inOrder.verify(eventManager).fireBeforeRecordProcessing(typedRecord);
-        inOrder.verify(recordProcessor).processRecord(typedRecord);
-        inOrder.verify(report).incrementTotalErrorRecord();
+        inOrder.verify(eventManager).fireBeforeRecordProcessing(record);
+        inOrder.verify(recordProcessor).processRecord(preProcessedRecord);
         inOrder.verify(errorRecordHandler).handle(record, exception);
-        inOrder.verify(eventManager).fireOnJobException(exception);
+        inOrder.verify(report).incrementTotalErrorRecord();
         inOrder.verify(eventManager).fireOnRecordProcessingException(record, exception);
 
         verifyZeroInteractions(computationalRecordProcessor);
@@ -129,9 +127,6 @@ public class ProcessingPipelineTest {
 
     @Test
     public void testGetLastProcessor() throws Exception {
-        processingPipeline = new ProcessingPipeline(asList(recordProcessor, computationalRecordProcessor),
-                errorRecordHandler, report, eventManager);
-
         assertThat(processingPipeline.getLastProcessor()).isEqualTo(computationalRecordProcessor);
     }
 }

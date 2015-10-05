@@ -24,17 +24,17 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.api.RecordFilteringException;
+import org.easybatch.core.record.StringRecord;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters string records starting with one of the given prefixes.<br/>
- * The parameter negate can be set to true to inverse this behavior :
- * this filter will filter records that do not start with one of the given prefixes.
+ * A {@link org.easybatch.core.api.RecordFilter} that filters string records starting with one of the given prefixes.
+ * <p/>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class StartWithStringRecordFilter implements RecordFilter {
+public class StartWithStringRecordFilter implements RecordFilter<StringRecord> {
 
     /**
      * Prefixes that causes the record to be filtered.
@@ -42,43 +42,23 @@ public class StartWithStringRecordFilter implements RecordFilter {
     private String[] prefixes;
 
     /**
-     * Parameter to filter a record if it does not start with one of the given prefixes.
-     */
-    private boolean negate;
-
-    /**
      * @param prefixes prefixes that cause the record to be filtered.
      */
     public StartWithStringRecordFilter(final String... prefixes) {
-        this(false, prefixes);
-    }
-
-    /**
-     * @param negate   true if the filter should filter records that do not start with any of the given prefixes.
-     * @param prefixes prefixes that cause the record to be filtered.
-     */
-    public StartWithStringRecordFilter(final boolean negate, final String... prefixes) {
-        this.negate = negate;
         this.prefixes = prefixes;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public boolean filterRecord(final Record record) {
-        boolean result = doFilterRecord(record);
-        return negate ? !result: result;
-    }
-
-    private boolean doFilterRecord(Record record) {
-        String payload = (String) record.getPayload();
+    public StringRecord processRecord(final StringRecord record) throws RecordFilteringException {
+        String payload = record.getPayload();
         for (String prefix : prefixes) {
             if (payload.startsWith(prefix)) {
-                return true;
+                throw new RecordFilteringException();
             }
         }
-        return false;
+        return record;
     }
 
 }

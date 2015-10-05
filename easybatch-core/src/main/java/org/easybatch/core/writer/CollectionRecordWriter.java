@@ -24,7 +24,7 @@
 
 package org.easybatch.core.writer;
 
-import org.easybatch.core.api.RecordProcessingException;
+import org.easybatch.core.api.RecordWritingException;
 
 import java.util.Collection;
 
@@ -50,7 +50,7 @@ public class CollectionRecordWriter<T> extends AbstractRecordWriter<T> {
     }
 
     @Override
-    protected void writeRecord(final T record) throws RecordProcessingException {
+    protected void writeRecord(final T record) throws RecordWritingException {
         collection.add(record);
     }
 }

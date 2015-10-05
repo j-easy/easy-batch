@@ -31,10 +31,6 @@ package org.easybatch.core.mapper;
  */
 public class TypeConverterRegistrationException extends RuntimeException {
 
-    public TypeConverterRegistrationException(String message) {
-        super(message);
-    }
-
     public TypeConverterRegistrationException(String message, Throwable cause) {
         super(message, cause);
     }

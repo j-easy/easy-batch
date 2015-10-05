@@ -48,6 +48,7 @@ import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 @Ignore("Ignored since it's impossible to embed a MongoDB instance ..")
+@SuppressWarnings("unchecked")
 public class MongoDBMultiRecordReaderTest {
 
     private static final int CHUNK_SIZE = 2;
@@ -66,7 +67,6 @@ public class MongoDBMultiRecordReaderTest {
         //db.tweets.insert({name:'baz'})
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testChunkProcessing() throws Exception {
 
@@ -77,7 +77,7 @@ public class MongoDBMultiRecordReaderTest {
 
         Report report = engine.call();
 
-        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getBatchResult();
+        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
 
         assertThat(multiRecords).isNotNull().hasSize(2);
 

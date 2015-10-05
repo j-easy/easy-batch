@@ -24,13 +24,15 @@
 
 package org.easybatch.integration.spring;
 
-import org.easybatch.core.api.*;
+import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.api.event.EventManager;
-import org.easybatch.core.api.event.job.JobEventListener;
-import org.easybatch.core.api.event.step.*;
+import org.easybatch.core.api.event.JobEventListener;
+import org.easybatch.core.api.event.PipelineEventListener;
+import org.easybatch.core.api.event.RecordReaderEventListener;
 import org.easybatch.core.api.handler.ErrorRecordHandler;
 import org.easybatch.core.api.handler.FilteredRecordHandler;
-import org.easybatch.core.api.handler.IgnoredRecordHandler;
 import org.easybatch.core.api.handler.RejectedRecordHandler;
 import org.easybatch.core.impl.EngineBuilder;
 import org.springframework.beans.factory.FactoryBean;
@@ -46,17 +48,9 @@ public class EngineFactoryBean implements FactoryBean {
 
     private RecordReader recordReader;
 
-    private List<RecordFilter> filterChain;
-
-    private RecordMapper recordMapper;
-
-    private List<RecordValidator> validationPipeline;
-
     private List<RecordProcessor> processingPipeline;
 
     private FilteredRecordHandler filteredRecordHandler;
-
-    private IgnoredRecordHandler ignoredRecordHandler;
 
     private RejectedRecordHandler rejectedRecordHandler;
 
@@ -66,13 +60,7 @@ public class EngineFactoryBean implements FactoryBean {
 
     private List<RecordReaderEventListener> recordReaderEventListeners;
 
-    private List<RecordFilterEventListener> recordFilterEventListeners;
-
-    private List<RecordMapperEventListener> recordMapperEventListeners;
-
-    private List<RecordValidatorEventListener> recordValidatorEventListeners;
-
-    private List<RecordProcessorEventListener> recordProcessorEventListeners;
+    private List<PipelineEventListener> pipelineEventListeners;
 
     private EventManager eventManager;
 
@@ -92,19 +80,6 @@ public class EngineFactoryBean implements FactoryBean {
     private void registerMainComponents(EngineBuilder engineBuilder) {
         if (recordReader != null) {
             engineBuilder.reader(recordReader);
-        }
-        if (filterChain != null) {
-            for (RecordFilter recordFilter : filterChain) {
-                engineBuilder.filter(recordFilter);
-            }
-        }
-        if (recordMapper != null) {
-            engineBuilder.mapper(recordMapper);
-        }
-        if (validationPipeline != null) {
-            for (RecordValidator recordValidator : validationPipeline) {
-                engineBuilder.validator(recordValidator);
-            }
         }
         if (processingPipeline != null) {
             for (RecordProcessor recordProcessor : processingPipeline) {
@@ -126,27 +101,9 @@ public class EngineFactoryBean implements FactoryBean {
             }
         }
 
-        if (recordFilterEventListeners != null) {
-            for (RecordFilterEventListener recordFilterEventListener : recordFilterEventListeners) {
-                engineBuilder.recordFilterEventListener(recordFilterEventListener);
-            }
-        }
-
-        if (recordMapperEventListeners != null) {
-            for (RecordMapperEventListener recordMapperEventListener : recordMapperEventListeners) {
-                engineBuilder.recordMapperEventListener(recordMapperEventListener);
-            }
-        }
-
-        if (recordValidatorEventListeners != null) {
-            for (RecordValidatorEventListener recordValidatorEventListener : recordValidatorEventListeners) {
-                engineBuilder.recordValidatorEventListener(recordValidatorEventListener);
-            }
-        }
-
-        if (recordProcessorEventListeners != null) {
-            for (RecordProcessorEventListener recordProcessorEventListener : recordProcessorEventListeners) {
-                engineBuilder.recordProcessorEventListener(recordProcessorEventListener);
+        if (pipelineEventListeners != null) {
+            for (PipelineEventListener pipelineEventListener : pipelineEventListeners) {
+                engineBuilder.pipelineEventListener(pipelineEventListener);
             }
         }
 
@@ -158,10 +115,6 @@ public class EngineFactoryBean implements FactoryBean {
     private void registerCustomHandlers(EngineBuilder engineBuilder) {
         if (filteredRecordHandler != null) {
             engineBuilder.filteredRecordHandler(filteredRecordHandler);
-        }
-
-        if (ignoredRecordHandler != null) {
-            engineBuilder.ignoredRecordHandler(ignoredRecordHandler);
         }
 
         if (rejectedRecordHandler != null) {
@@ -189,18 +142,6 @@ public class EngineFactoryBean implements FactoryBean {
         this.recordReader = recordReader;
     }
 
-    public void setFilterChain(List<RecordFilter> filterChain) {
-        this.filterChain = filterChain;
-    }
-
-    public void setRecordMapper(RecordMapper recordMapper) {
-        this.recordMapper = recordMapper;
-    }
-
-    public void setValidationPipeline(List<RecordValidator> validationPipeline) {
-        this.validationPipeline = validationPipeline;
-    }
-
     public void setProcessingPipeline(List<RecordProcessor> processingPipeline) {
         this.processingPipeline = processingPipeline;
     }
@@ -209,9 +150,6 @@ public class EngineFactoryBean implements FactoryBean {
         this.filteredRecordHandler = filteredRecordHandler;
     }
 
-    public void setIgnoredRecordHandler(IgnoredRecordHandler ignoredRecordHandler) {
-        this.ignoredRecordHandler = ignoredRecordHandler;
-    }
 
     public void setRejectedRecordHandler(RejectedRecordHandler rejectedRecordHandler) {
         this.rejectedRecordHandler = rejectedRecordHandler;
@@ -229,20 +167,8 @@ public class EngineFactoryBean implements FactoryBean {
         this.recordReaderEventListeners = recordReaderEventListeners;
     }
 
-    public void setRecordFilterEventListeners(List<RecordFilterEventListener> recordFilterEventListeners) {
-        this.recordFilterEventListeners = recordFilterEventListeners;
-    }
-
-    public void setRecordMapperEventListeners(List<RecordMapperEventListener> recordMapperEventListeners) {
-        this.recordMapperEventListeners = recordMapperEventListeners;
-    }
-
-    public void setRecordValidatorEventListeners(List<RecordValidatorEventListener> recordValidatorEventListeners) {
-        this.recordValidatorEventListeners = recordValidatorEventListeners;
-    }
-
-    public void setRecordProcessorEventListeners(List<RecordProcessorEventListener> recordProcessorEventListeners) {
-        this.recordProcessorEventListeners = recordProcessorEventListeners;
+    public void setPipelineEventListeners(List<PipelineEventListener> pipelineEventListeners) {
+        this.pipelineEventListeners = pipelineEventListeners;
     }
 
     public void setEventManager(EventManager eventManager) {

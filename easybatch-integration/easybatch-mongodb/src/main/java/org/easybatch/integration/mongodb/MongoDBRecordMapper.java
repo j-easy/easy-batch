@@ -25,7 +25,6 @@
 package org.easybatch.integration.mongodb;
 
 import com.mongodb.DBObject;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.mongodb.morphia.Morphia;
 
@@ -36,7 +35,7 @@ import org.mongodb.morphia.Morphia;
  * @param <T> The target object type.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class MongoDBRecordMapper<T> implements RecordMapper<T> {
+public class MongoDBRecordMapper<T> implements RecordMapper<MongoDBRecord, T> {
 
     private Morphia morphia;
 
@@ -56,9 +55,8 @@ public class MongoDBRecordMapper<T> implements RecordMapper<T> {
     }
 
     @Override
-    public T mapRecord(final Record record) {
-        MongoDBRecord mongoDBRecord = (MongoDBRecord) record;
-        DBObject dbObject = mongoDBRecord.getPayload();
+    public T processRecord(final MongoDBRecord record) {
+        DBObject dbObject = record.getPayload();
         return morphia.fromDBObject(type, dbObject);
     }
 

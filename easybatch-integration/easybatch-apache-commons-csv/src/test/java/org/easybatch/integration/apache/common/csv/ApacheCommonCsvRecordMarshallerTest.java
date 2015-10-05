@@ -53,7 +53,7 @@ public class ApacheCommonCsvRecordMarshallerTest {
         foo.setLastName("bar");
 
         String expected = "foo,bar,false";
-        String actual = marshaller.marshal(foo);
+        String actual = marshaller.processRecord(foo);
 
         System.out.println(actual);
 

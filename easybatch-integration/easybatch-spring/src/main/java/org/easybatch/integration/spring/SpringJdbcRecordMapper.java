@@ -24,9 +24,9 @@
 
 package org.easybatch.integration.spring;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
+import org.easybatch.jdbc.JdbcRecord;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import java.sql.ResultSet;
@@ -40,7 +40,7 @@ import java.sql.SQLException;
  * @param <T> Target domain object type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class SpringJdbcRecordMapper<T> implements RecordMapper<T> {
+public class SpringJdbcRecordMapper<T> implements RecordMapper<JdbcRecord, T> {
 
     private final Class<T> type;
 
@@ -50,8 +50,8 @@ public class SpringJdbcRecordMapper<T> implements RecordMapper<T> {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public T mapRecord(Record record) throws RecordMappingException {
-        ResultSet resultSet = (ResultSet) record.getPayload();
+    public T processRecord(JdbcRecord record) throws RecordMappingException {
+        ResultSet resultSet = record.getPayload();
         BeanPropertyRowMapper beanPropertyRowMapper = new BeanPropertyRowMapper(type);
         try {
             return (T) beanPropertyRowMapper.mapRow(resultSet, record.getHeader().getNumber().intValue());

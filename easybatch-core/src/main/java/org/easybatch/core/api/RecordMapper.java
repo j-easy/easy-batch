@@ -28,18 +28,18 @@ package org.easybatch.core.api;
  * Interface for record mapper.
  * This will be used by the engine to map input record to domain objects.
  *
- * @param <T> The target domain object type.
+ * @param <I> The target domain object type.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface RecordMapper<T> {
+public interface RecordMapper<I, O> extends RecordProcessor<I, O> {
 
     /**
-     * Map a record to domain object.
      *
-     * @param record the record to map.
-     * @return an instance of the domain object.
-     * @throws RecordMappingException thrown if an exception occurs during record mapping
+     * @param record the record to process.
+     * @return
+     * @throws RecordMappingException
      */
-    T mapRecord(final Record record) throws RecordMappingException;
+    @Override
+    O processRecord(I record) throws RecordMappingException;
 
 }

@@ -80,7 +80,7 @@ public class SpringJdbcRecordMapperTest {
         when(payload.getString(2)).thenReturn("foo");
         when(payload.getString(3)).thenReturn("message");
 
-        Tweet tweet = mapper.mapRecord(jdbcRecord);
+        Tweet tweet = mapper.processRecord(jdbcRecord);
 
         assertThat(tweet).isNotNull();
         assertThat(tweet.getId()).isEqualTo(1);

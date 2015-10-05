@@ -24,9 +24,10 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.event.step.RecordProcessorEventListener;
+import org.easybatch.core.api.event.PipelineEventListener;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.engine.transaction.spi.LocalStatus;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,11 +40,11 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class HibernateTransactionStepListener implements RecordProcessorEventListener {
+public class HibernateTransactionPipelineListener implements PipelineEventListener {
 
     public static final int DEFAULT_COMMIT_INTERVAL = 1;
 
-    private static final Logger LOGGER = Logger.getLogger(HibernateTransactionStepListener.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(HibernateTransactionPipelineListener.class.getSimpleName());
 
     private Session session;
 
@@ -60,7 +61,7 @@ public class HibernateTransactionStepListener implements RecordProcessorEventLis
      *
      * @param session the Hibernate session
      */
-    public HibernateTransactionStepListener(final Session session) {
+    public HibernateTransactionPipelineListener(final Session session) {
         this(session, DEFAULT_COMMIT_INTERVAL);
     }
 
@@ -70,7 +71,7 @@ public class HibernateTransactionStepListener implements RecordProcessorEventLis
      * @param session        the Hibernate session
      * @param commitInterval the commit interval
      */
-    public HibernateTransactionStepListener(final Session session, final int commitInterval) {
+    public HibernateTransactionPipelineListener(final Session session, final int commitInterval) {
         checkNotNull(session, "session");
         checkArgument(commitInterval >= 1, "max commit interval parameter must be greater than or equal to 1");
         this.commitInterval = commitInterval;
@@ -93,7 +94,9 @@ public class HibernateTransactionStepListener implements RecordProcessorEventLis
                 //commit current transaction
                 session.flush();
                 session.clear();
-                transaction.commit();
+                if (transaction.isActive()) {
+                    transaction.commit();
+                }
 
                 //begin a new transaction for next chunk
                 transaction = session.beginTransaction();
@@ -107,7 +110,9 @@ public class HibernateTransactionStepListener implements RecordProcessorEventLis
     @Override
     public void onRecordProcessingException(final Object record, final Throwable throwable) {
         try {
-            transaction.rollback();
+            if (!transaction.getLocalStatus().equals(LocalStatus.ROLLED_BACK)) {
+                transaction.rollback();
+            }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unable to rollback transaction", e);
         }

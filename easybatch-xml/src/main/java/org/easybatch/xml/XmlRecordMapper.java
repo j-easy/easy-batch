@@ -24,7 +24,6 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
 import org.xml.sax.SAXException;
@@ -44,7 +43,7 @@ import java.io.File;
  * @param <T> the target domain object type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class XmlRecordMapper<T> implements RecordMapper<T> {
+public class XmlRecordMapper<T> implements RecordMapper<XmlRecord, T> {
 
     /**
      * Jaxb context.
@@ -93,12 +92,10 @@ public class XmlRecordMapper<T> implements RecordMapper<T> {
     }
 
     @Override
-    public T mapRecord(final Record record) throws RecordMappingException {
-
-        XmlRecord xmlRecord = (XmlRecord) record;
+    public T processRecord(final XmlRecord record) throws RecordMappingException {
 
         try {
-            return (T) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(xmlRecord.getPayload().getBytes()));
+            return (T) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(record.getPayload().getBytes()));
         } catch (JAXBException e) {
             throw new RecordMappingException("Unable to map record " + record + " to target type", e);
         }

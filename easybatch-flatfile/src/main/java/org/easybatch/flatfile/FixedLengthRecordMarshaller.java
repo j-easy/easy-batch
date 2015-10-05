@@ -25,8 +25,8 @@
 package org.easybatch.flatfile;
 
 import org.easybatch.core.api.RecordFieldExtractor;
+import org.easybatch.core.api.RecordMarshaller;
 import org.easybatch.core.api.RecordMarshallingException;
-import org.easybatch.core.processor.AbstractRecordMarshaller;
 
 import java.beans.IntrospectionException;
 
@@ -35,7 +35,7 @@ import java.beans.IntrospectionException;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class FixedLengthRecordMarshaller extends AbstractRecordMarshaller {
+public class FixedLengthRecordMarshaller implements RecordMarshaller {
 
     private DelimitedRecordMarshaller delimitedRecordMarshaller;
 
@@ -61,8 +61,8 @@ public class FixedLengthRecordMarshaller extends AbstractRecordMarshaller {
     }
 
     @Override
-    protected String marshal(final Object record) throws RecordMarshallingException {
-        return delimitedRecordMarshaller.marshal(record);
+    public String processRecord(final Object record) throws RecordMarshallingException {
+        return delimitedRecordMarshaller.processRecord(record);
     }
 
 }

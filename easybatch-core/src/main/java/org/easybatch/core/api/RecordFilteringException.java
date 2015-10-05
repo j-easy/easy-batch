@@ -22,31 +22,29 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.processor;
-
-import org.easybatch.core.api.RecordMarshaller;
-import org.easybatch.core.api.RecordMarshallingException;
-import org.easybatch.core.api.RecordProcessingException;
+package org.easybatch.core.api;
 
 /**
- * Abstract implementation of the {@link RecordMarshaller} interface.
- * <p>
- * Implementations should simply override the {@link AbstractRecordMarshaller#marshal(java.lang.Object)} method
+ * Exception thrown when an error occurs during record filtering.
  *
- * @param <T> the type of object to marshall
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public abstract class AbstractRecordMarshaller<T> implements RecordMarshaller<T> {
+public class RecordFilteringException extends RecordProcessingException {
 
-    @Override
-    public String processRecord(final T record) throws RecordProcessingException {
-        try {
-            return marshal(record);
-        } catch (Exception e) {
-            throw new RecordProcessingException("Unable to marshal record " + record, e);
-        }
+    public RecordFilteringException() {
     }
 
-    protected abstract String marshal(final T record) throws RecordMarshallingException;
+    public RecordFilteringException(Throwable e) {
+        super(e);
+    }
+
+    public RecordFilteringException(String message) {
+        super(message);
+    }
+
+    public RecordFilteringException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 
 }

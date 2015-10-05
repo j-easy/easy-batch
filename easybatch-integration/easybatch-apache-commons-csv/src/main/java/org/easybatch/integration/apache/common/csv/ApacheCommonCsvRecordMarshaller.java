@@ -27,9 +27,9 @@ package org.easybatch.integration.apache.common.csv;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.easybatch.core.api.RecordFieldExtractor;
+import org.easybatch.core.api.RecordMarshaller;
 import org.easybatch.core.api.RecordMarshallingException;
 import org.easybatch.core.field.BeanRecordFieldExtractor;
-import org.easybatch.core.processor.AbstractRecordMarshaller;
 
 import java.beans.IntrospectionException;
 import java.io.StringWriter;
@@ -39,7 +39,7 @@ import java.io.StringWriter;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
+public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller {
 
     private final RecordFieldExtractor fieldExtractor;
     private CSVFormat csvFormat;
@@ -69,7 +69,7 @@ public class ApacheCommonCsvRecordMarshaller extends AbstractRecordMarshaller {
     }
 
     @Override
-    protected String marshal(final Object record) throws RecordMarshallingException {
+    public String processRecord(final Object record) throws RecordMarshallingException {
         try {
             StringWriter stringWriter = new StringWriter();
             // recordSeparator is forced to null to avoid CSVPrinter to print new lines.

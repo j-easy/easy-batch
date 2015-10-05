@@ -88,14 +88,14 @@ public class JpaRecordWriterTest {
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        JpaTransactionStepListener jpaTransactionStepListener = new JpaTransactionStepListener(entityManager, commitInterval);
+        JpaTransactionPipelineListener jpaTransactionPipelineListener = new JpaTransactionPipelineListener(entityManager, commitInterval);
         JpaTransactionJobListener jpaTransactionJobListener = new JpaTransactionJobListener(entityManager, true);
 
         Report report = aNewEngine()
                 .reader(new IterableRecordReader<Tweet>(tweets))
                 .mapper(new GenericRecordMapper())
                 .writer(jpaRecordWriter)
-                .recordProcessorEventListener(jpaTransactionStepListener)
+                .pipelineEventListener(jpaTransactionPipelineListener)
                 .jobEventListener(jpaTransactionJobListener)
                 .build().call();
 

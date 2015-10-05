@@ -100,7 +100,7 @@ public class FlatFileMultiRecordReaderTest {
                 .processor(new RecordCollector<MultiRecord>())
                 .build().call();
 
-        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getBatchResult();
+        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
 
         assertThat(multiRecords).isNotNull().isNotEmpty().hasSize(3);
 

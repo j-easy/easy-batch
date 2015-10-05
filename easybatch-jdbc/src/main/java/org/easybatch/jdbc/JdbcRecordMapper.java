@@ -24,7 +24,6 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.core.mapper.AbstractRecordMapper;
@@ -40,7 +39,7 @@ import java.util.Map;
  * @param <T> the target domain object type.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JdbcRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<T> {
+public class JdbcRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<JdbcRecord, T> {
 
     /**
      * Field names used for custom column mapping.
@@ -69,10 +68,9 @@ public class JdbcRecordMapper<T> extends AbstractRecordMapper<T> implements Reco
     }
 
     @Override
-    public T mapRecord(final Record record) throws RecordMappingException {
+    public T processRecord(final JdbcRecord record) throws RecordMappingException {
 
-        JdbcRecord jdbcRecord = (JdbcRecord) record;
-        ResultSet resultSet = jdbcRecord.getPayload();
+        ResultSet resultSet = record.getPayload();
 
         try {
             initFieldNames(resultSet);

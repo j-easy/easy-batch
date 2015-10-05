@@ -24,6 +24,7 @@
 
 package org.easybatch.jms;
 
+import org.easybatch.core.api.RecordFilteringException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,21 +61,24 @@ public class JmsPoisonRecordFilterTest {
         when(jmsRecord.getPayload()).thenReturn(payload);
     }
 
-    @Test
-    public void testFilterPoisonRecord() throws Exception {
+    @Test(expected = RecordFilteringException.class)
+    public void testFilterPoisonRecordByType() throws Exception {
         when(payload.getJMSType()).thenReturn(JmsPoisonMessage.TYPE);
-        assertThat(jmsPoisonRecordFilter.filterRecord(jmsRecord)).isTrue();
+        jmsPoisonRecordFilter.processRecord(jmsRecord);
+    }
 
+    @Test(expected = RecordFilteringException.class)
+    public void testFilterPoisonRecordByPayload() throws Exception {
         when(jmsRecord.getPayload()).thenReturn(jmsPoisonMessage);
-        assertThat(jmsPoisonRecordFilter.filterRecord(jmsRecord)).isTrue();
+        jmsPoisonRecordFilter.processRecord(jmsRecord);
     }
 
     @Test
     public void testFilterNonPoisonRecord() throws Exception {
         when(payload.getJMSType()).thenReturn("foo");
-        assertThat(jmsPoisonRecordFilter.filterRecord(jmsRecord)).isFalse();
+        assertThat(jmsPoisonRecordFilter.processRecord(jmsRecord)).isEqualTo(jmsRecord);
 
         when(jmsRecord.getPayload()).thenReturn(nonJmsPoisonMessage);
-        assertThat(jmsPoisonRecordFilter.filterRecord(jmsRecord)).isFalse();
+        assertThat(jmsPoisonRecordFilter.processRecord(jmsRecord)).isEqualTo(jmsRecord);
     }
 }

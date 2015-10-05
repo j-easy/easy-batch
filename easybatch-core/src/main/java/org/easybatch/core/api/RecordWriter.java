@@ -32,4 +32,12 @@ package org.easybatch.core.api;
  */
 public interface RecordWriter<T> extends RecordProcessor<T, T> {
 
+    /**
+     *
+     * @param record the record to process.
+     * @return
+     * @throws RecordWritingException
+     */
+    @Override
+    T processRecord(T record) throws RecordWritingException;
 }

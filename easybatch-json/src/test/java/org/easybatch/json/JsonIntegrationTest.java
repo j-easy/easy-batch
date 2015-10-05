@@ -60,7 +60,7 @@ public class JsonIntegrationTest {
 
         assertThatReportIsValid(report);
 
-        List<JsonRecord> tweets = (List<JsonRecord>) report.getBatchResult();
+        List<JsonRecord> tweets = (List<JsonRecord>) report.getJobResult();
 
         assertThat(tweets).isNotEmpty().hasSize(3);
 
@@ -96,7 +96,7 @@ public class JsonIntegrationTest {
 
         assertThatReportIsValid(report);
 
-        List<JsonRecord> trees = (List<JsonRecord>) report.getBatchResult();
+        List<JsonRecord> trees = (List<JsonRecord>) report.getJobResult();
         assertThat(trees).isNotEmpty().hasSize(3);
 
         JsonRecord record = trees.get(0);
@@ -128,7 +128,7 @@ public class JsonIntegrationTest {
 
         assertThatReportIsValid(report);
 
-        List<JsonRecord> complaints = (List<JsonRecord>) report.getBatchResult();
+        List<JsonRecord> complaints = (List<JsonRecord>) report.getJobResult();
         assertThat(complaints).isNotEmpty().hasSize(3);
 
         JsonRecord record = complaints.get(0);
@@ -160,13 +160,12 @@ public class JsonIntegrationTest {
         assertThat(report.getTotalRecords()).isEqualTo(0);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
         assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
         assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
 
-        List<JsonRecord> records = (List<JsonRecord>) report.getBatchResult();
+        List<JsonRecord> records = (List<JsonRecord>) report.getJobResult();
         assertThat(records).isNotNull().isEmpty();
 
     }
@@ -180,7 +179,6 @@ public class JsonIntegrationTest {
         assertThat(report.getTotalRecords()).isEqualTo(3);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(3);
         assertThat(report.getStatus()).isEqualTo(Status.FINISHED);

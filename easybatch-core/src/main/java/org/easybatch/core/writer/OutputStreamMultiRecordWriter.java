@@ -24,7 +24,7 @@
 
 package org.easybatch.core.writer;
 
-import org.easybatch.core.api.RecordProcessingException;
+import org.easybatch.core.api.RecordWritingException;
 
 import java.io.OutputStreamWriter;
 import java.util.List;
@@ -51,7 +51,7 @@ public class OutputStreamMultiRecordWriter extends AbstractMultiRecordWriter {
     }
 
     @Override
-    protected void writeRecord(final Object multiRecord) throws RecordProcessingException {
+    protected void writeRecord(final Object multiRecord) throws RecordWritingException {
         List records = getRecords(multiRecord);
         for (Object record : records) {
             outputStreamRecordWriter.writeRecord(record);

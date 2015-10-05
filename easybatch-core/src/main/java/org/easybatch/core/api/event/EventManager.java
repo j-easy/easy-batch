@@ -25,11 +25,6 @@
 package org.easybatch.core.api.event;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.ValidationError;
-import org.easybatch.core.api.event.job.JobEventListener;
-import org.easybatch.core.api.event.step.*;
-
-import java.util.Set;
 
 /**
  * Interface for the event manager.
@@ -59,32 +54,11 @@ public interface EventManager {
     void addRecordReaderEventListener(final RecordReaderEventListener recordReaderEventListener);
 
     /**
-     * Add an event listener.
+     * Add a pipeline event listener.
      *
-     * @param recordFilterEventListener The listener to add.
+     * @param pipelineEventListener The listener to add.
      */
-    void addRecordFilterEventListener(final RecordFilterEventListener recordFilterEventListener);
-
-    /**
-     * Add an event listener.
-     *
-     * @param recordMapperEventListener The listener to add.
-     */
-    void addRecordMapperEventListener(final RecordMapperEventListener recordMapperEventListener);
-
-    /**
-     * Add an event listener.
-     *
-     * @param recordValidatorEventListener The listener to add.
-     */
-    void addRecordValidatorEventListener(final RecordValidatorEventListener recordValidatorEventListener);
-
-    /**
-     * Add an event listener.
-     *
-     * @param recordProcessorEventListener The listener to add.
-     */
-    void addRecordProcessorEventListener(final RecordProcessorEventListener recordProcessorEventListener);
+    void addPipelineEventListener(final PipelineEventListener pipelineEventListener);
 
     /**
      * Called before the whole batch starts.
@@ -95,23 +69,6 @@ public interface EventManager {
      * Called after the whole batch ends.
      */
     void fireAfterJobEnd();
-
-    /**
-     * Called on any exception thrown in the whole process.
-     *
-     * @param throwable The exception that has been thrown.
-     */
-    void fireOnJobException(Throwable throwable);
-
-    /**
-     * Called before the reader opens
-     */
-    void fireBeforeReaderOpening();
-
-    /**
-     * Called after the reader has been opened.
-     */
-    void fireAfterReaderOpening();
 
     /**
      * Called before a record gets read.
@@ -133,66 +90,11 @@ public interface EventManager {
     void fireOnRecordReadingException(Throwable throwable);
 
     /**
-     * Called before the record reader has been closed.
-     */
-    void fireBeforeRecordReaderClosing();
-
-    /**
-     * Called after the record reader has been closed.
-     */
-    void fireAfterRecordReaderClosing();
-
-    /**
-     * Called before the record is passed to the filter.
-     *
-     * @param record The record to be filtered
-     */
-    Record fireBeforeRecordFiltering(final Record record);
-
-    /**
-     * Called after the record was filtered.
-     *
-     * @param record   Can be null in case the record was filtered.
-     * @param filtered Record identified for filtering?
-     */
-    void fireAfterRecordFiltering(final Record record, boolean filtered);
-
-    /**
-     * Called before the record is passed into the mapper.
-     *
-     * @param record The record that is going to be mapped.
-     */
-    Record fireBeforeRecordMapping(final Record record);
-
-    /**
-     * Called after the mapping process.
-     *
-     * @param record       The record that came in.
-     * @param mappedRecord The result that came out.
-     */
-    void fireAfterRecordMapping(final Record record, final Object mappedRecord);
-
-    /**
-     * Called before the mapped record gets validated.
-     *
-     * @param mappedRecord the mapped record.
-     */
-    Object fireBeforeRecordValidation(final Object mappedRecord);
-
-    /**
-     * Called after the record is validated.
-     *
-     * @param validatedRecord  The validated record.
-     * @param validationErrors The set of validation errors that came out.
-     */
-    void fireAfterRecordValidation(final Object validatedRecord, final Set<ValidationError> validationErrors);
-
-    /**
      * Called before the record gets processed.
      *
      * @param record The record to be processed.
      */
-    Object fireBeforeRecordProcessing(final Object record);
+    Object fireBeforeRecordProcessing(final Record record);
 
     /**
      * Called after the processing is done.

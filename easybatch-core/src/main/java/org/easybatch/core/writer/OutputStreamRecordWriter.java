@@ -25,7 +25,8 @@
 package org.easybatch.core.writer;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordProcessingException;
+import org.easybatch.core.api.RecordWritingException;
+import org.easybatch.core.api.event.JobEventListener;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -37,7 +38,7 @@ import static org.easybatch.core.util.Utils.*;
  * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
  * <p/>
  * Users of this class are responsible for opening/closing the output stream, maybe using
- * a {@link org.easybatch.core.api.event.job.JobEventListener}.
+ * a {@link JobEventListener}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -51,7 +52,7 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter {
      * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
      * <p/>
      * The user of this class is responsible for opening/closing the output stream, maybe using
-     * a {@link org.easybatch.core.api.event.job.JobEventListener}.
+     * a {@link JobEventListener}.
      *
      * @param outputStreamWriter the output stream to write records to.
      */
@@ -63,7 +64,7 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter {
      * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
      * <p/>
      * The user of this class is responsible for opening/closing the output stream, maybe using
-     * a {@link org.easybatch.core.api.event.job.JobEventListener}.
+     * a {@link JobEventListener}.
      *
      * @param outputStreamWriter the output stream to write records to.
      * @param lineSeparator the line separator.
@@ -76,7 +77,7 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    public void writeRecord(final Object record) throws RecordProcessingException {
+    public void writeRecord(final Object record) throws RecordWritingException {
         Object payload = isRecord(record) ? ((Record) record).getPayload() : record;
         try {
             outputStreamWriter.write(payload.toString());
@@ -84,7 +85,7 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter {
             outputStreamWriter.flush();
         } catch (IOException exception) {
             String message = format("Unable to write record %s to the output stream writer", record);
-            throw new RecordProcessingException(message, exception);
+            throw new RecordWritingException(message, exception);
         }
     }
 

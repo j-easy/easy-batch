@@ -62,7 +62,7 @@ public class XmlMultiRecordReaderTest {
                 .processor(new RecordCollector<MultiRecord>())
                 .build().call();
 
-        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getBatchResult();
+        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
 
         assertThat(multiRecords).isNotNull().hasSize(3);
 
@@ -97,7 +97,7 @@ public class XmlMultiRecordReaderTest {
                 .processor(new RecordCollector<MultiRecord>())
                 .build().call();
 
-        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getBatchResult();
+        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
 
         assertThat(multiRecords).isNotNull().isEmpty();
     }

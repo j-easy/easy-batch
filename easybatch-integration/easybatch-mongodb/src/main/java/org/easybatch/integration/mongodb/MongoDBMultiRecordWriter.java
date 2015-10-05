@@ -27,7 +27,7 @@ package org.easybatch.integration.mongodb;
 import com.mongodb.BulkWriteOperation;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import org.easybatch.core.api.RecordProcessingException;
+import org.easybatch.core.api.RecordWritingException;
 import org.easybatch.core.writer.AbstractMultiRecordWriter;
 
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class MongoDBMultiRecordWriter extends AbstractMultiRecordWriter {
     }
 
     @Override
-    protected void writeRecord(final Object multiRecord) throws RecordProcessingException {
+    protected void writeRecord(final Object multiRecord) throws RecordWritingException {
         List records = getRecords(multiRecord);
         Collection<DBObject> documents = asDocuments(records);
         BulkWriteOperation bulkWriteOperation = collection.initializeOrderedBulkOperation();
@@ -69,7 +69,7 @@ public class MongoDBMultiRecordWriter extends AbstractMultiRecordWriter {
         try {
             bulkWriteOperation.execute();
         } catch (Exception e) {
-            throw new RecordProcessingException(format("Unable to write documents [%s] to Mongo DB server", documents), e);
+            throw new RecordWritingException(format("Unable to write documents [%s] to Mongo DB server", documents), e);
         }
     }
 

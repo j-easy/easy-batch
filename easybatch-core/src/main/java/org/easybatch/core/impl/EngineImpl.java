@@ -26,21 +26,21 @@ package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
 import org.easybatch.core.api.event.EventManager;
-import org.easybatch.core.api.event.job.JobEventListener;
-import org.easybatch.core.api.event.step.*;
+import org.easybatch.core.api.event.JobEventListener;
+import org.easybatch.core.api.event.PipelineEventListener;
+import org.easybatch.core.api.event.RecordReaderEventListener;
 import org.easybatch.core.api.handler.ErrorRecordHandler;
 import org.easybatch.core.api.handler.FilteredRecordHandler;
-import org.easybatch.core.api.handler.IgnoredRecordHandler;
 import org.easybatch.core.api.handler.RejectedRecordHandler;
 import org.easybatch.core.util.Utils;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
+import static org.easybatch.core.util.Utils.DEFAULT_SKIP;
 
 /**
  * Core Easy Batch engine implementation.
@@ -59,21 +59,7 @@ final class EngineImpl implements Engine {
 
     private RecordReader recordReader;
 
-    private RecordSkipper recordSkipper;
-
-    private FilterChain filterChain;
-
-    private RecordMapper recordMapper;
-
-    private ValidationPipeline validationPipeline;
-
-    private ProcessingPipeline processingPipeline;
-
-    private FilteredRecordHandler filteredRecordHandler;
-
-    private IgnoredRecordHandler ignoredRecordHandler;
-
-    private RejectedRecordHandler rejectedRecordHandler;
+    private Pipeline pipeline;
 
     private EventManager eventManager;
 
@@ -88,33 +74,24 @@ final class EngineImpl implements Engine {
     private boolean keepAlive;
 
     private long limit;
+    
+    private long skip;
 
     EngineImpl(final String name,
                final RecordReader recordReader,
-               final RecordSkipper recordSkipper,
-               final List<RecordFilter> filters,
-               final RecordMapper recordMapper,
-               final List<RecordValidator> validators,
                final List<RecordProcessor> processors,
-               final FilteredRecordHandler filteredRecordHandler,
-               final IgnoredRecordHandler ignoredRecordHandler,
-               final RejectedRecordHandler rejectedRecordHandler,
                final ErrorRecordHandler errorRecordHandler,
+               final RejectedRecordHandler rejectedRecordHandler,
+               final FilteredRecordHandler filteredRecordHandler,
                final EventManager eventManager) {
         this.executionId = UUID.randomUUID().toString();
         this.name = name;
         this.limit = DEFAULT_LIMIT;
+        this.skip = DEFAULT_SKIP;
         this.recordReader = recordReader;
-        this.recordSkipper = recordSkipper;
-        this.recordMapper = recordMapper;
-        this.filteredRecordHandler = filteredRecordHandler;
-        this.ignoredRecordHandler = ignoredRecordHandler;
-        this.rejectedRecordHandler = rejectedRecordHandler;
         this.report = new Report();
         this.eventManager = eventManager;
-        this.filterChain = new FilterChain(filters, eventManager);
-        this.validationPipeline = new ValidationPipeline(validators, eventManager);
-        this.processingPipeline = new ProcessingPipeline(processors, errorRecordHandler, report, eventManager);
+        this.pipeline = new Pipeline(processors, report, eventManager, errorRecordHandler, rejectedRecordHandler, filteredRecordHandler);
     }
 
     @Override
@@ -159,7 +136,6 @@ final class EngineImpl implements Engine {
                     processedRecordsNumber++;
                     report.setCurrentRecordNumber(currentRecord.getHeader().getNumber());
                 } catch (Exception e) {
-                    eventManager.fireOnJobException(e);
                     eventManager.fireOnRecordReadingException(e);
                     LOGGER.log(Level.SEVERE, "An exception occurred while reading next record, aborting execution", e);
                     reportAbortedStatus();
@@ -169,85 +145,20 @@ final class EngineImpl implements Engine {
                 /*
                  * Skip records if any
                  */
-                if (recordSkipper.skipRecord(currentRecord)) {
+                if (processedRecordsNumber <= skip) {
                     report.incrementTotalSkippedRecords();
                     continue;
                 }
-
+                
                 /*
-                 * apply filter chain
+                 * Process record
                  */
-                try {
-                    boolean filtered = filterChain.filterRecord(currentRecord);
-                    if (filtered) {
-                        report.incrementTotalFilteredRecords();
-                        filteredRecordHandler.handle(currentRecord);
-                        continue;
-                    }
-                } catch (Exception e) {
-                    report.incrementTotalFilteredRecords();
-                    filteredRecordHandler.handle(currentRecord, e);
-                    continue;
-                }
-
-                /*
-                 * map record to domain object
-                 */
-                Object typedRecord;
-                try {
-                    typedRecord = mapRecord(currentRecord);
-                    if (typedRecord == null) {
-                        report.incrementTotalIgnoredRecord();
-                        ignoredRecordHandler.handle(currentRecord);
-                        continue;
-                    }
-                } catch (Exception e) {
-                    report.incrementTotalIgnoredRecord();
-                    ignoredRecordHandler.handle(currentRecord, e);
-                    eventManager.fireOnJobException(e);
-                    if (strictMode) {
-                        reportAbortDueToStrictMode();
-                        break;
-                    }
-                    continue;
-                }
-
-                /*
-                 * apply validation pipeline
-                 */
-                try {
-                    Set<ValidationError> validationsErrors = validateRecord(typedRecord);
-                    if (!validationsErrors.isEmpty()) {
-                        report.incrementTotalRejectedRecord();
-                        rejectedRecordHandler.handle(currentRecord, validationsErrors);
-                        if (strictMode) {
-                            reportAbortDueToStrictMode();
-                            break;
-                        }
-                        continue;
-                    }
-                } catch (Exception e) {
-                    report.incrementTotalRejectedRecord();
-                    rejectedRecordHandler.handle(currentRecord, e);
-                    eventManager.fireOnJobException(e);
-                    if (strictMode) {
-                        reportAbortDueToStrictMode();
-                        break;
-                    }
-                    continue;
-                }
-
-                /*
-                 * apply processing pipeline
-                 */
-                boolean processingError = processingPipeline.process(currentRecord, typedRecord);
+                boolean processingError = pipeline.process(currentRecord);
                 if (processingError) {
                     if (strictMode) {
                         reportAbortDueToStrictMode();
                         break;
                     }
-                } else {
-                    report.incrementTotalSuccessRecord();
                 }
             }
 
@@ -270,7 +181,9 @@ final class EngineImpl implements Engine {
         LOGGER.log(Level.INFO, "Engine name: {0}", getName());
         LOGGER.log(Level.INFO, "Execution id: {0}", getExecutionId());
         LOGGER.log(Level.INFO, "Strict mode: {0}", strictMode);
-        LOGGER.log(Level.INFO, "Skip records: {0}", recordSkipper.getNumberOfRecordsToSkip());
+        if (skip != DEFAULT_SKIP) {
+            LOGGER.log(Level.INFO, "Skip records: {0}", skip);
+        }
         if (limit != DEFAULT_LIMIT ) {
             LOGGER.log(Level.INFO, "Records limit: {0}", limit);
         }
@@ -286,7 +199,6 @@ final class EngineImpl implements Engine {
             openRecordReader();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An exception occurred while opening the record reader", e);
-            eventManager.fireOnJobException(e);
             reportAbortedStatus();
             return false;
         }
@@ -294,9 +206,7 @@ final class EngineImpl implements Engine {
     }
 
     private void openRecordReader() throws RecordReaderOpeningException {
-        eventManager.fireBeforeReaderOpening();
         recordReader.open();
-        eventManager.fireAfterReaderOpening();
     }
 
     private void initializeDatasource() {
@@ -338,18 +248,6 @@ final class EngineImpl implements Engine {
         return currentRecord;
     }
 
-    private Object mapRecord(Record currentRecord) throws RecordMappingException {
-        Record recordToMap = eventManager.fireBeforeRecordMapping(currentRecord);
-        Object typedRecord = recordMapper.mapRecord(recordToMap);
-        eventManager.fireAfterRecordMapping(recordToMap, typedRecord);
-        return typedRecord;
-    }
-
-    @SuppressWarnings({"unchecked"})
-    private Set<ValidationError> validateRecord(Object typedRecord) {
-        return validationPipeline.validateRecord(typedRecord);
-    }
-
     private void tearDownEngine(long processedRecordsNumber) {
         report.setTotalRecords(processedRecordsNumber);
         report.setEndTime(System.currentTimeMillis());
@@ -357,26 +255,23 @@ final class EngineImpl implements Engine {
             report.setStatus(Status.FINISHED);
         }
 
-        // The batch result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
-        RecordProcessor lastRecordProcessor = processingPipeline.getLastProcessor();
+        // The job result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
+        RecordProcessor lastRecordProcessor = pipeline.getLastProcessor();
         if (lastRecordProcessor instanceof ComputationalRecordProcessor) {
             ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor) lastRecordProcessor;
-            Object batchResult = computationalRecordProcessor.getComputationResult();
-            report.setBatchResult(batchResult);
+            Object jobResult = computationalRecordProcessor.getComputationResult();
+            report.setJobResult(jobResult);
         }
     }
 
     private void closeRecordReader() {
         LOGGER.info("Shutting down the engine");
-        eventManager.fireBeforeRecordReaderClosing();
         try {
             if (!keepAlive) {
                 recordReader.close();
             }
-            eventManager.fireAfterRecordReaderClosing();
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "An exception occurred while closing the record reader", e);
-            eventManager.fireOnJobException(e);
         }
     }
 
@@ -384,44 +279,24 @@ final class EngineImpl implements Engine {
      * Setters for engine parameters
      */
 
-    void addRecordFilter(final RecordFilter recordFilter) {
-        filterChain.addRecordFilter(recordFilter);
-    }
-
     void setRecordReader(final RecordReader recordReader) {
         this.recordReader = recordReader;
     }
 
-    void setRecordSkipper(RecordSkipper recordSkipper) {
-        this.recordSkipper = recordSkipper;
-    }
-
-    void setRecordMapper(final RecordMapper recordMapper) {
-        this.recordMapper = recordMapper;
-    }
-
-    void addRecordValidator(final RecordValidator recordValidator) {
-        validationPipeline.addRecordValidator(recordValidator);
-    }
-
     void addRecordProcessor(final RecordProcessor recordProcessor) {
-        processingPipeline.addProcessor(recordProcessor);
-    }
-
-    void setFilteredRecordHandler(final FilteredRecordHandler filteredRecordHandler) {
-        this.filteredRecordHandler = filteredRecordHandler;
-    }
-
-    void setIgnoredRecordHandler(final IgnoredRecordHandler ignoredRecordHandler) {
-        this.ignoredRecordHandler = ignoredRecordHandler;
-    }
-
-    void setRejectedRecordHandler(final RejectedRecordHandler rejectedRecordHandler) {
-        this.rejectedRecordHandler = rejectedRecordHandler;
+        pipeline.addProcessor(recordProcessor);
     }
 
     void setErrorRecordHandler(final ErrorRecordHandler errorRecordHandler) {
-        processingPipeline.setErrorRecordHandler(errorRecordHandler);
+        pipeline.setErrorRecordHandler(errorRecordHandler);
+    }
+
+    void setFilteredRecordHandler(final FilteredRecordHandler filteredRecordHandler) {
+        pipeline.setFilteredRecordHandler(filteredRecordHandler);
+    }
+
+    void setRejectedRecordHandler(final RejectedRecordHandler rejectedRecordHandler) {
+        pipeline.setRejectedRecordHandler(rejectedRecordHandler);
     }
 
     void setEventManager(EventManager eventManager) {
@@ -435,21 +310,9 @@ final class EngineImpl implements Engine {
     void addRecordReaderEventListener(final RecordReaderEventListener recordReaderEventListener) {
         eventManager.addRecordReaderEventListener(recordReaderEventListener);
     }
-
-    void addRecordFilterEventListener(final RecordFilterEventListener recordFilterEventListener) {
-        eventManager.addRecordFilterEventListener(recordFilterEventListener);
-    }
-
-    void addRecordMapperEventListener(final RecordMapperEventListener recordMapperEventListener) {
-        eventManager.addRecordMapperEventListener(recordMapperEventListener);
-    }
-
-    void addRecordValidatorEventListener(final RecordValidatorEventListener recordValidatorEventListener) {
-        eventManager.addRecordValidatorEventListener(recordValidatorEventListener);
-    }
-
-    void addRecordProcessorEventListener(final RecordProcessorEventListener recordProcessorEventListener) {
-        eventManager.addRecordProcessorEventListener(recordProcessorEventListener);
+    
+    void addPipelineEventListener(final PipelineEventListener pipelineEventListener) {
+        eventManager.addPipelineEventListener(pipelineEventListener);
     }
 
     void setStrictMode(final boolean strictMode) {
@@ -462,6 +325,10 @@ final class EngineImpl implements Engine {
 
     void setLimit(final long limit) {
         this.limit = limit;
+    }
+
+    public void setSkip(long skip) {
+        this.skip = skip;
     }
 
     void setName(String name) {

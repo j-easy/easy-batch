@@ -22,18 +22,14 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.dispatcher;
+package org.easybatch.core.api;
 
 /**
- * Exception thrown when an error occurs during record mapping.
+ * Exception thrown when an error occurs during record dispatching.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordDispatchingException extends Exception {
-
-    public RecordDispatchingException(String message) {
-        super(message);
-    }
+public class RecordDispatchingException extends RecordProcessingException {
 
     public RecordDispatchingException(String message, Throwable cause) {
         super(message, cause);

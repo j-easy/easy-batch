@@ -80,7 +80,6 @@ public class DefaultReportMerger implements ReportMerger {
             totalRecords += report.getTotalRecords();
             calculateSkippedRecords(finalReport, report);
             calculateFilteredRecords(finalReport, report);
-            calculateIgnoredRecords(finalReport, report);
             calculateRejectedRecords(finalReport, report);
             calculateErrorRecords(finalReport, report);
             calculateSuccessRecords(finalReport, report);
@@ -112,7 +111,7 @@ public class DefaultReportMerger implements ReportMerger {
 
     private void mergeResults(List<Object> results, Report finalReport) {
         if (!results.isEmpty()) {
-            finalReport.setBatchResult(results);
+            finalReport.setJobResult(results);
         }
     }
 
@@ -123,8 +122,8 @@ public class DefaultReportMerger implements ReportMerger {
     }
 
     private void addBatchResult(List<Object> results, Report report) {
-        if (report.getBatchResult() != null) {
-            results.add(report.getBatchResult());
+        if (report.getJobResult() != null) {
+            results.add(report.getJobResult());
         }
     }
 
@@ -143,12 +142,6 @@ public class DefaultReportMerger implements ReportMerger {
     private void calculateRejectedRecords(Report finalReport, Report report) {
         for (int i = 0; i < report.getRejectedRecordsCount(); i++) {
             finalReport.incrementTotalRejectedRecord();
-        }
-    }
-
-    private void calculateIgnoredRecords(Report finalReport, Report report) {
-        for (int i = 0; i < report.getIgnoredRecordsCount(); i++) {
-            finalReport.incrementTotalIgnoredRecord();
         }
     }
 

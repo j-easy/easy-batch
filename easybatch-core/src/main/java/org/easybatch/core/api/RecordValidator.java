@@ -24,23 +24,22 @@
 
 package org.easybatch.core.api;
 
-import java.util.Set;
-
 /**
  * Interface for record validator.
  * This is used by the engine to apply validation logic on input records.
  *
- * @param <T> The target domain object type this validator can validate.
+ * @param <I> The record type this validator can validate.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface RecordValidator<T> {
+public interface RecordValidator<I> extends RecordProcessor<I, I> {
 
     /**
-     * Validate a record against application validation logic.
+     * Validate a record.
      *
-     * @param record the record to validate
-     * @return a set of validation error if any
+     * @param record the record to validate.
+     * @return the record if it should continue in the pipeline
+     * @throws RecordValidationException thrown if the record is not valid and should be rejected
      */
-    Set<ValidationError> validateRecord(final T record);
-
+    @Override
+    I processRecord(I record) throws RecordValidationException;
 }

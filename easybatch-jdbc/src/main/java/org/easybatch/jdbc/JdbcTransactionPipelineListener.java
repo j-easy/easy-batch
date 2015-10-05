@@ -24,7 +24,7 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.event.step.RecordProcessorEventListener;
+import org.easybatch.core.api.event.PipelineEventListener;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -38,9 +38,9 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JdbcTransactionStepListener implements RecordProcessorEventListener {
+public class JdbcTransactionPipelineListener implements PipelineEventListener {
 
-    private static final Logger LOGGER = Logger.getLogger(JdbcTransactionStepListener.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(JdbcTransactionPipelineListener.class.getSimpleName());
 
     private static final int DEFAULT_COMMIT_INTERVAL = 1;
 
@@ -55,7 +55,7 @@ public class JdbcTransactionStepListener implements RecordProcessorEventListener
      *
      * @param connection the JDBC connection (should be in auto-commit = false)
      */
-    public JdbcTransactionStepListener(final Connection connection) {
+    public JdbcTransactionPipelineListener(final Connection connection) {
         this(connection, DEFAULT_COMMIT_INTERVAL);
     }
 
@@ -65,7 +65,7 @@ public class JdbcTransactionStepListener implements RecordProcessorEventListener
      * @param connection     the JDBC connection (should be in auto-commit = false)
      * @param commitInterval the commit interval
      */
-    public JdbcTransactionStepListener(final Connection connection, final int commitInterval) {
+    public JdbcTransactionPipelineListener(final Connection connection, final int commitInterval) {
         checkNotNull(connection, "connection");
         this.commitInterval = commitInterval;
         this.connection = connection;

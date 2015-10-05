@@ -66,10 +66,12 @@ public class HtmlReportFormatterTest {
         report.setDataSource("In-Memory String");
         report.setTotalRecords(10L);
         report.setLimit(10L);
+        report.setEngineName("engine");
+        report.setExecutionId("c8d6a5fc-b2b4-4ee0-9dda-f9ec042d5864");
+        report.incrementTotalSkippedRecords();
         report.incrementTotalSkippedRecords();
         report.incrementTotalFilteredRecords();
-        report.incrementTotalIgnoredRecord();
-        report.incrementTotalIgnoredRecord();
+        report.incrementTotalFilteredRecords();
         report.incrementTotalRejectedRecord();
         report.incrementTotalRejectedRecord();
         report.incrementTotalErrorRecord();
@@ -83,6 +85,7 @@ public class HtmlReportFormatterTest {
     @Test
     public void testReportFormatting() {
         String result = reportFormatter.formatReport(report);
+        System.out.println(result);
         Scanner scanner = new Scanner(HtmlReportFormatterTest.class.getResourceAsStream("expectedReport.html"));
         StringBuilder stringBuilder = new StringBuilder();
         while (scanner.hasNextLine()) {

@@ -24,14 +24,14 @@
 
 package org.easybatch.validation;
 
+import org.easybatch.core.api.RecordValidationException;
 import org.easybatch.core.api.RecordValidator;
-import org.easybatch.core.api.ValidationError;
+import org.easybatch.core.util.Utils;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -52,23 +52,20 @@ public class BeanValidationRecordValidator<T> implements RecordValidator<T> {
         validator = factory.getValidator();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Set<ValidationError> validateRecord(final T record) {
-
-        Set<ValidationError> validationErrors = new HashSet<ValidationError>();
+    @Override
+    public T processRecord(T record) throws RecordValidationException {
         Set<ConstraintViolation<T>> constraintViolationSet = validator.validate(record);
-        for (ConstraintViolation<T> constraintViolation : constraintViolationSet) {
-            String validationErrorMessage = new StringBuilder()
-                    .append("Invalid value '").append(constraintViolation.getInvalidValue()).append("' ")
-                    .append("for property '").append(constraintViolation.getPropertyPath()).append("' : ")
-                    .append(constraintViolation.getMessage()).toString();
-            validationErrors.add(new ValidationError(validationErrorMessage));
-
+        if (!constraintViolationSet.isEmpty()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (ConstraintViolation<T> constraintViolation : constraintViolationSet) {
+                stringBuilder
+                        .append("Invalid value '").append(constraintViolation.getInvalidValue()).append("' ")
+                        .append("for property '").append(constraintViolation.getPropertyPath()).append("' : ")
+                        .append(constraintViolation.getMessage())
+                        .append(Utils.LINE_SEPARATOR);
+            }
+            throw new RecordValidationException(stringBuilder.toString());
         }
-
-        return validationErrors;
+        return record;
     }
-
 }

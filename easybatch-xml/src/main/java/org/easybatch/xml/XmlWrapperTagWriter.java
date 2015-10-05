@@ -24,7 +24,7 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.event.job.JobEventListener;
+import org.easybatch.core.api.event.JobEventListener;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -134,10 +134,5 @@ public class XmlWrapperTagWriter implements JobEventListener {
                 LOGGER.log(Level.WARNING, "Unable to close the output stream writer", e);
             }
         }
-    }
-
-    @Override
-    public void onJobException(Throwable throwable) {
-        // No Op
     }
 }

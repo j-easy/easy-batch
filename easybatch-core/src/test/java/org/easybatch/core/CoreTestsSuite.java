@@ -28,7 +28,9 @@ import org.easybatch.core.api.ReportTest;
 import org.easybatch.core.converter.*;
 import org.easybatch.core.dispatcher.*;
 import org.easybatch.core.filter.*;
-import org.easybatch.core.impl.*;
+import org.easybatch.core.impl.EngineImplTest;
+import org.easybatch.core.impl.LocalEventManagerTest;
+import org.easybatch.core.impl.ProcessingPipelineTest;
 import org.easybatch.core.mapper.GenericRecordMapperTest;
 import org.easybatch.core.mapper.ObjectMapperTest;
 import org.easybatch.core.processor.RecordCollectorTest;
@@ -82,7 +84,7 @@ import org.junit.runners.Suite;
         HeaderRecordFilterTest.class,
         PoisonRecordFilterTest.class,
         RecordNumberBetweenFilterTest.class,
-        RecordNumberEqualsToFilterTest.class,
+        RecordNumberEqualToFilterTest.class,
         RecordNumberGreaterThanFilterTest.class,
         RecordNumberLowerThanFilterTest.class,
         EmptyRecordFilterTest.class,
@@ -102,12 +104,8 @@ import org.junit.runners.Suite;
         ReportTest.class,
         // impl
         EngineImplTest.class,
-        FilterChainTest.class,
-        ValidationPipelineTest.class,
         ProcessingPipelineTest.class,
-        LocalEventManagerTest.class,
-        RecordSkipperTest.class
-
+        LocalEventManagerTest.class
 })
 public class CoreTestsSuite {
 }

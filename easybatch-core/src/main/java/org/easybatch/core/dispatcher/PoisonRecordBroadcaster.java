@@ -24,7 +24,9 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.event.job.JobEventListener;
+import org.easybatch.core.api.Record;
+import org.easybatch.core.api.RecordDispatcher;
+import org.easybatch.core.api.event.JobEventListener;
 import org.easybatch.core.record.PoisonRecord;
 
 /**
@@ -35,14 +37,14 @@ import org.easybatch.core.record.PoisonRecord;
  */
 public class PoisonRecordBroadcaster implements JobEventListener {
 
-    private AbstractRecordDispatcher recordDispatcher;
+    private RecordDispatcher<Record> recordDispatcher;
 
     /**
      * Create a new {@link PoisonRecordBroadcaster}.
      *
      * @param recordDispatcher the delegate record dispatcher used to dispatch the poison record
      */
-    public PoisonRecordBroadcaster(AbstractRecordDispatcher recordDispatcher) {
+    public PoisonRecordBroadcaster(RecordDispatcher<Record> recordDispatcher) {
         this.recordDispatcher = recordDispatcher;
     }
 
@@ -54,14 +56,10 @@ public class PoisonRecordBroadcaster implements JobEventListener {
     @Override
     public void afterJobEnd() {
         try {
-            recordDispatcher.dispatchRecord(new PoisonRecord());
+            recordDispatcher.processRecord(new PoisonRecord());
         } catch (Exception e) {
             throw new RuntimeException("Unable to broadcast poison record.", e);
         }
     }
 
-    @Override
-    public void onJobException(Throwable throwable) {
-        // no op
-    }
 }

@@ -40,9 +40,15 @@ public class FlatFileIntegrationTest {
 
         Report report = engine.call();
 
-        assertReportIsCorrect(report);
+        assertThat(report).isNotNull();
+        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
+        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
+        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
+        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
+        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
+        assertThat(report.getTotalRecords()).isEqualTo(2);
 
-        List<Person> persons = (List<Person>) report.getBatchResult();
+        List<Person> persons = (List<Person>) report.getJobResult();
 
         assertPersons(persons);
 
@@ -61,9 +67,15 @@ public class FlatFileIntegrationTest {
 
         Report report = engine.call();
 
-        assertReportIsCorrect(report);
+        assertThat(report).isNotNull();
+        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
+        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
+        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
+        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
+        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
+        assertThat(report.getTotalRecords()).isEqualTo(2);
 
-        List<Person> persons = (List<Person>) report.getBatchResult();
+        List<Person> persons = (List<Person>) report.getJobResult();
 
         assertPersonsFieldSubsetMapping(persons);
 
@@ -86,9 +98,15 @@ public class FlatFileIntegrationTest {
 
         Report report = engine.call();
 
-        assertReportWithIgnoredHeaderRecord(report);
+        assertThat(report).isNotNull();
+        assertThat(report.getErrorRecordsCount()).isEqualTo(1);
+        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
+        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
+        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
+        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
+        assertThat(report.getTotalRecords()).isEqualTo(3);
 
-        List<Person> persons = (List<Person>) report.getBatchResult();
+        List<Person> persons = (List<Person>) report.getJobResult();
 
         assertPersons(persons);
 
@@ -107,9 +125,15 @@ public class FlatFileIntegrationTest {
 
         Report report = engine.call();
 
-        assertReportWithIgnoredHeaderRecord(report);
+        assertThat(report).isNotNull();
+        assertThat(report.getErrorRecordsCount()).isEqualTo(1);
+        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
+        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
+        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
+        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
+        assertThat(report.getTotalRecords()).isEqualTo(3);
 
-        List<Person> persons = (List<Person>) report.getBatchResult();
+        List<Person> persons = (List<Person>) report.getJobResult();
 
         assertPersonsFieldSubsetMapping(persons);
 
@@ -143,7 +167,7 @@ public class FlatFileIntegrationTest {
 
         assertThat(report).isNotNull();
 
-        List<Complaint> complaints = (List<Complaint>) report.getBatchResult();
+        List<Complaint> complaints = (List<Complaint>) report.getJobResult();
 
         assertThat(complaints).isNotEmpty().hasSize(10);
 
@@ -181,36 +205,21 @@ public class FlatFileIntegrationTest {
 
         Report report = engine.call();
 
-        assertReportIsCorrect(report);
-
-        List<Person> persons = (List<Person>) report.getBatchResult();
-
-        assertThat(persons).isNotEmpty().hasSize(2);
-
-        assertPerson(persons.get(0), "foo ", "bar ", 30, true);
-        assertPerson(persons.get(1), "toto", "titi", 15, false);
-
-    }
-
-    private void assertReportIsCorrect(Report report) {
-        assertReport(report);
-        assertThat(report.getTotalRecords()).isEqualTo(2);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
-    }
-
-    private void assertReportWithIgnoredHeaderRecord(Report report) {
-        assertReport(report);
-        assertThat(report.getTotalRecords()).isEqualTo(3);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(1);
-    }
-
-    private void assertReport(Report report) {
         assertThat(report).isNotNull();
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
         assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
+        assertThat(report.getTotalRecords()).isEqualTo(2);
+
+        List<Person> persons = (List<Person>) report.getJobResult();
+
+        assertThat(persons).isNotEmpty().hasSize(2);
+
+        assertPerson(persons.get(0), "foo ", "bar ", 30, true);
+        assertPerson(persons.get(1), "toto", "titi", 15, false);
+
     }
 
     private void assertPersonsFieldSubsetMapping(List<Person> persons) {

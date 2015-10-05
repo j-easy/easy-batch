@@ -24,64 +24,81 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.api.ComputationalRecordProcessor;
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordProcessor;
-import org.easybatch.core.api.Report;
+import org.easybatch.core.api.*;
 import org.easybatch.core.api.event.EventManager;
 import org.easybatch.core.api.handler.ErrorRecordHandler;
+import org.easybatch.core.api.handler.FilteredRecordHandler;
+import org.easybatch.core.api.handler.RejectedRecordHandler;
 
 import java.util.List;
 
 /**
- * The processing pipeline is the set of stages to process a record.
+ * The processing pipeline is the list of stages to process a record.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-final class ProcessingPipeline {
+final class Pipeline {
 
     private List<RecordProcessor> processors;
 
     private ErrorRecordHandler errorRecordHandler;
+    private FilteredRecordHandler filteredRecordHandler;
+    private RejectedRecordHandler rejectedRecordHandler;
 
     private Report report;
 
     private EventManager eventManager;
 
-    ProcessingPipeline(List<RecordProcessor> processors, ErrorRecordHandler errorRecordHandler, Report report, EventManager eventManager) {
+    Pipeline(List<RecordProcessor> processors,
+             Report report,
+             EventManager eventManager,
+             ErrorRecordHandler errorRecordHandler,
+             RejectedRecordHandler rejectedRecordHandler,
+             FilteredRecordHandler filteredRecordHandler) {
         this.processors = processors;
         this.errorRecordHandler = errorRecordHandler;
+        this.rejectedRecordHandler = rejectedRecordHandler;
+        this.filteredRecordHandler = filteredRecordHandler;
         this.report = report;
         this.eventManager = eventManager;
     }
 
     @SuppressWarnings({"unchecked"})
-    public boolean process(Record currentRecord, Object typedRecord) {
+    public boolean process(Record currentRecord) {
 
         boolean processingError = false;
         Object processingResult = null;
         try {
-            Object recordToProcess = eventManager.fireBeforeRecordProcessing(typedRecord);
-            for (RecordProcessor recordProcessor : processors) {
-                recordToProcess = recordProcessor.processRecord(recordToProcess);
-                if (recordProcessor instanceof ComputationalRecordProcessor) {
-                    processingResult = ((ComputationalRecordProcessor) recordProcessor).getComputationResult();
-                }
-
+            Object recordToProcess = eventManager.fireBeforeRecordProcessing(currentRecord);
+            for (RecordProcessor processor : processors) {
+                recordToProcess = processor.processRecord(recordToProcess);
             }
+            RecordProcessor lastRecordProcessor = getLastProcessor();
+            if (lastRecordProcessor != null && lastRecordProcessor instanceof ComputationalRecordProcessor) {
+                processingResult = ((ComputationalRecordProcessor) lastRecordProcessor).getComputationResult();
+            }
+            report.incrementTotalSuccessRecord();
             eventManager.fireAfterRecordProcessing(recordToProcess, processingResult);
+        } catch (RecordFilteringException e) {
+            filteredRecordHandler.handle(currentRecord, e);
+            report.incrementTotalFilteredRecords();
+        } catch (RecordValidationException e) {
+            rejectedRecordHandler.handle(currentRecord, e);
+            report.incrementTotalRejectedRecord();
         } catch (Exception e) {
             processingError = true;
-            report.incrementTotalErrorRecord();
             errorRecordHandler.handle(currentRecord, e);
-            eventManager.fireOnJobException(e);
+            report.incrementTotalErrorRecord();
             eventManager.fireOnRecordProcessingException(currentRecord, e);
         }
         return processingError;
     }
 
     public RecordProcessor getLastProcessor() {
-        return processors.get(processors.size() - 1);
+        if (!processors.isEmpty()) {
+            return processors.get(processors.size() - 1);
+        }
+        return null;
     }
 
     public void addProcessor(RecordProcessor recordProcessor) {
@@ -92,4 +109,11 @@ final class ProcessingPipeline {
         this.errorRecordHandler = errorRecordHandler;
     }
 
+    public void setFilteredRecordHandler(FilteredRecordHandler filteredRecordHandler) {
+        this.filteredRecordHandler = filteredRecordHandler;
+    }
+
+    public void setRejectedRecordHandler(RejectedRecordHandler rejectedRecordHandler) {
+        this.rejectedRecordHandler = rejectedRecordHandler;
+    }
 }

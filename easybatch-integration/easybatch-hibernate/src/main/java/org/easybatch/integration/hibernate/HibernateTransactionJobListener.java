@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.event.job.JobEventListener;
+import org.easybatch.core.api.event.JobEventListener;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -36,7 +36,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 /**
  * Listener that commits a transaction at the end of the job.
  * <p/>
- * This listener should be used in conjunction with a {@link HibernateTransactionStepListener} to commit last records.
+ * This listener should be used in conjunction with a {@link HibernateTransactionPipelineListener} to commit last records.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -51,7 +51,7 @@ public class HibernateTransactionJobListener implements JobEventListener {
     /**
      * Create a Hibernate transaction listener. The session will <strong>not</strong> be closed at the end of the job.
      *
-     * @param session     the Hibernate session
+     * @param session the Hibernate session
      */
     public HibernateTransactionJobListener(final Session session) {
         this(session, false);
@@ -91,22 +91,5 @@ public class HibernateTransactionJobListener implements JobEventListener {
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unable to commit transaction after job end", e);
         }
-    }
-
-    @Override
-    public void onJobException(final Throwable throwable) {
-        try {
-            Transaction transaction = session.getTransaction();
-            if (transaction != null && transaction.isActive()) {
-                LOGGER.log(Level.SEVERE, "Rolling back transaction after job end", throwable);
-                transaction.rollback();
-            }
-            if (session != null && closeSession) {
-                session.close();
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to rollback transaction after job end", e);
-        }
-
     }
 }

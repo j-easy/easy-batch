@@ -22,35 +22,28 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.api.event.step;
-
-import org.easybatch.core.api.ValidationError;
-
-import java.util.Set;
+package org.easybatch.core.api.event;
 
 /**
- * Event interface collection for RecordValidator events.
+ * Enables the implementing class to get an event on different steps within the batch job.
  * <p/>
- * You should implement this interface in your validator to
- * declare the ability to receive events from the batch process.
+ * Use this interface when you want a listener that is not bound to a specific processor type, otherwise look at:
+ * <ul>
+ * <li>{@link RecordReaderEventListener}: for pre/post reading events</li>
+ * <li>{@link PipelineEventListener}: for pre/post processing events</li>
+ * </ul>
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordValidatorEventListener {
+public interface JobEventListener {
 
     /**
-     * Called before each validation.
-     * If you create a new record, you <strong>must</strong> keep the original header of the modified record.
-     *
-     * @param mappedRecord The mapped record that is going to be validated.
+     * Called before the {@link org.easybatch.core.api.RecordReader#open()} call.
      */
-    Object beforeRecordValidation(Object mappedRecord);
+    void beforeJobStart();
 
     /**
-     * Called after each validation.
-     *
-     * @param validatedRecord  The validated record.
-     * @param validationErrors The Set of validation errors, if any.
+     * Called after the {@link org.easybatch.core.api.RecordReader#close()} call.
      */
-    void afterRecordValidation(Object validatedRecord, Set<ValidationError> validationErrors);
+    void afterJobEnd();
 }

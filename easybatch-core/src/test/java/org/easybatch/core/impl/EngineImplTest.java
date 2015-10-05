@@ -25,11 +25,11 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.job.JobEventListener;
-import org.easybatch.core.api.event.step.*;
+import org.easybatch.core.api.event.JobEventListener;
+import org.easybatch.core.api.event.PipelineEventListener;
+import org.easybatch.core.api.event.RecordReaderEventListener;
 import org.easybatch.core.api.handler.ErrorRecordHandler;
 import org.easybatch.core.api.handler.FilteredRecordHandler;
-import org.easybatch.core.api.handler.IgnoredRecordHandler;
 import org.easybatch.core.api.handler.RejectedRecordHandler;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.IterableRecordReader;
@@ -47,17 +47,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 import static org.mockito.Mockito.*;
 
-/**
- * Test class for {@link EngineImpl}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
 public class EngineImplTest {
@@ -71,45 +67,37 @@ public class EngineImplTest {
     @Mock
     private RecordReader reader;
     @Mock
-    private RecordSkipper recordSkipper;
+    private RecordFilter filter;
     @Mock
-    private RecordFilter firstFilter, secondFilter;
-    @Mock
-    private RecordMapper mapper;
-    @Mock
-    private RecordValidator firstValidator, secondValidator;
+    private RecordValidator validator;
     @Mock
     private RecordProcessor firstProcessor, secondProcessor;
     @Mock
     private ComputationalRecordProcessor computationalRecordProcessor;
     @Mock
+    private Object jobResult;
+    @Mock
     private JobEventListener jobEventListener;
     @Mock
     private RecordReaderEventListener recordReaderEventListener;
     @Mock
-    private RecordFilterEventListener recordFilterEventListener;
-    @Mock
-    private RecordMapperEventListener recordMapperEventListener;
-    @Mock
-    private RecordValidatorEventListener recordValidatorEventListener;
-    @Mock
-    private RecordProcessorEventListener recordProcessorEventListener;
+    private PipelineEventListener pipelineEventListener;
     @Mock
     private FilteredRecordHandler filteredRecordHandler;
-    @Mock
-    private IgnoredRecordHandler ignoredRecordHandler;
     @Mock
     private RejectedRecordHandler rejectedRecordHandler;
     @Mock
     private ErrorRecordHandler errorRecordHandler;
-    @Mock
-    private RecordMappingException recordMappingException;
     @Mock
     private RecordReadingException recordReadingException;
     @Mock
     private RecordReaderOpeningException recordReaderOpeningException;
     @Mock
     private RecordProcessingException recordProcessingException;
+    @Mock
+    private RecordFilteringException recordFilteringException;
+    @Mock
+    private RecordValidationException recordValidationException;
     @Mock
     private RuntimeException runtimeException;
 
@@ -119,27 +107,12 @@ public class EngineImplTest {
         when(record2.getHeader()).thenReturn(header2);
         when(reader.hasNextRecord()).thenReturn(true, true, false);
         when(reader.readNextRecord()).thenReturn(record1, record2);
-        when(firstFilter.filterRecord(record1)).thenReturn(false);
-        when(secondFilter.filterRecord(record1)).thenReturn(false);
-        when(firstFilter.filterRecord(record2)).thenReturn(false);
-        when(secondFilter.filterRecord(record2)).thenReturn(false);
-        when(mapper.mapRecord(record1)).thenReturn(record1);
-        when(mapper.mapRecord(record2)).thenReturn(record2);
-        when(firstValidator.validateRecord(record1)).thenReturn(Collections.emptySet());
-        when(secondValidator.validateRecord(record1)).thenReturn(Collections.emptySet());
-        when(firstValidator.validateRecord(record2)).thenReturn(Collections.emptySet());
-        when(secondValidator.validateRecord(record2)).thenReturn(Collections.emptySet());
         when(firstProcessor.processRecord(record1)).thenReturn(record1);
         when(firstProcessor.processRecord(record2)).thenReturn(record2);
         when(secondProcessor.processRecord(record1)).thenReturn(record1);
         when(secondProcessor.processRecord(record2)).thenReturn(record2);
         engine = new EngineBuilder()
                 .reader(reader)
-                .filter(firstFilter)
-                .filter(secondFilter)
-                .mapper(mapper)
-                .validator(firstValidator)
-                .validator(secondValidator)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
                 .build();
@@ -154,21 +127,13 @@ public class EngineImplTest {
 
         engine.call();
 
-        InOrder inOrder = Mockito.inOrder(record1, record2, firstFilter, secondFilter, mapper, firstValidator, secondValidator, firstProcessor, secondProcessor);
+        InOrder inOrder = Mockito.inOrder(reader, record1, record2, firstProcessor, secondProcessor);
 
-        inOrder.verify(firstFilter).filterRecord(record1);
-        inOrder.verify(secondFilter).filterRecord(record1);
-        inOrder.verify(mapper).mapRecord(record1);
-        inOrder.verify(firstValidator).validateRecord(record1);
-        inOrder.verify(secondValidator).validateRecord(record1);
+        inOrder.verify(reader).readNextRecord();
         inOrder.verify(firstProcessor).processRecord(record1);
         inOrder.verify(secondProcessor).processRecord(record1);
 
-        inOrder.verify(firstFilter).filterRecord(record2);
-        inOrder.verify(secondFilter).filterRecord(record2);
-        inOrder.verify(mapper).mapRecord(record2);
-        inOrder.verify(firstValidator).validateRecord(record2);
-        inOrder.verify(secondValidator).validateRecord(record2);
+        inOrder.verify(reader).readNextRecord();
         inOrder.verify(firstProcessor).processRecord(record2);
         inOrder.verify(secondProcessor).processRecord(record2);
 
@@ -182,6 +147,8 @@ public class EngineImplTest {
 
         engine.call();
 
+        verify(reader, times(2)).hasNextRecord();
+        verify(reader).readNextRecord();
         verify(reader).close();
     }
 
@@ -202,10 +169,11 @@ public class EngineImplTest {
         engine = new EngineBuilder()
                 .reader(reader)
                 .build();
+
         Report report = engine.call();
+
         assertThat(report).isNotNull();
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
@@ -217,15 +185,14 @@ public class EngineImplTest {
     public void whenNotAbleToReadNextRecord_ThenTheEngineShouldAbortExecution() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true);
         when(reader.readNextRecord()).thenThrow(recordReadingException);
-        when(reader.getTotalRecords()).thenReturn(null);
 
         engine = new EngineBuilder()
                 .reader(reader)
                 .build();
+
         Report report = engine.call();
 
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
@@ -234,8 +201,8 @@ public class EngineImplTest {
     }
 
     @Test
-    public void batchResultShouldBeReturnedFromTheLastProcessorInThePipeline() throws Exception {
-        when(computationalRecordProcessor.getComputationResult()).thenReturn(5);
+    public void jobResultShouldBeReturnedFromTheLastProcessorInThePipeline() throws Exception {
+        when(computationalRecordProcessor.getComputationResult()).thenReturn(jobResult);
 
         engine = new EngineBuilder()
                 .reader(reader)
@@ -243,38 +210,50 @@ public class EngineImplTest {
                 .build();
         Report report = engine.call();
 
-        assertThat(report.getBatchResult()).isEqualTo(computationalRecordProcessor.getComputationResult());
+        assertThat(report.getJobResult()).isEqualTo(jobResult);
     }
 
+
     @Test
-    public void whenRecordFilterThrowsARuntimeException_thenShouldFilterRecord() throws Exception {
-        when(firstFilter.filterRecord(record1)).thenThrow(runtimeException);
+    public void whenRecordFilterThrowsARecordFilteringException_thenShouldFilterRecord() throws Exception {
+        when(filter.processRecord(record1)).thenThrow(recordFilteringException);
         aNewEngine()
                 .reader(reader)
-                .filter(firstFilter)
+                .filter(filter)
                 .filteredRecordHandler(filteredRecordHandler)
                 .build().call();
 
-        verify(filteredRecordHandler).handle(record1, runtimeException);
+        verify(filteredRecordHandler).handle(record1, recordFilteringException);
     }
 
     @Test
-    public void whenRecordValidatorThrowsARuntimeException_thenShouldRejectRecord() throws Exception {
-        when(firstValidator.validateRecord(record1)).thenThrow(runtimeException);
+    public void whenRecordValidatorThrowsARecordValidationException_thenShouldRejectRecord() throws Exception {
+        when(validator.processRecord(record1)).thenThrow(recordValidationException);
         aNewEngine()
                 .reader(reader)
-                .validator(firstValidator)
+                .validator(validator)
                 .rejectedRecordHandler(rejectedRecordHandler)
                 .build().call();
 
-        verify(rejectedRecordHandler).handle(record1, runtimeException);
+        verify(rejectedRecordHandler).handle(record1, recordValidationException);
+    }
+
+    @Test
+    public void whenRecordProcessorThrowsARecordProcessingException_thenRecordShouldBeInError() throws Exception {
+        when(firstProcessor.processRecord(record1)).thenThrow(recordProcessingException);
+        aNewEngine()
+                .reader(reader)
+                .processor(firstProcessor)
+                .errorRecordHandler(errorRecordHandler)
+                .build().call();
+
+        verify(errorRecordHandler).handle(record1, recordProcessingException);
     }
 
     @Test
     public void reportShouldBeCorrect() throws Exception {
         Report report = engine.call();
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
@@ -294,7 +273,6 @@ public class EngineImplTest {
                 .build();
         Report report = engine.call();
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getErrorRecordsCount()).isEqualTo(1);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
@@ -307,23 +285,24 @@ public class EngineImplTest {
     }
 
     @Test
-    public void whenStrictModeIsEnabled_ThenTheEngineShouldAbortOnFirstMappingExceptionIfAny() throws Exception {
-        when(mapper.mapRecord(record1)).thenThrow(recordMappingException);
+    public void whenStrictModeIsEnabled_ThenTheEngineShouldAbortOnFirstRecordProcessingExceptionIfAny() throws Exception {
+        when(firstProcessor.processRecord(record1)).thenThrow(recordProcessingException);
+
         engine = new EngineBuilder()
                 .reader(reader)
-                .mapper(mapper)
+                .processor(firstProcessor)
+                .processor(secondProcessor)
                 .strictMode(true)
                 .build();
         Report report = engine.call();
+
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(1);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
+        assertThat(report.getErrorRecordsCount()).isEqualTo(1);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
         assertThat(report.getTotalRecords()).isEqualTo(1);
         assertThat(report.getStatus()).isEqualTo(Status.ABORTED);
-        verify(mapper).mapRecord(record1);
-        verifyNoMoreInteractions(mapper);
+        Mockito.verifyZeroInteractions(secondProcessor);
     }
 
     /*
@@ -367,7 +346,7 @@ public class EngineImplTest {
         assertThat(report.getSkippedRecordsCount()).isEqualTo(1);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(1);
 
-        List<GenericRecord> records = (List<GenericRecord>) report.getBatchResult();
+        List<GenericRecord> records = (List<GenericRecord>) report.getJobResult();
 
         assertThat(records).isNotNull().hasSize(1);
         assertThat(records.get(0).getPayload()).isNotNull().isEqualTo("bar");
@@ -389,7 +368,7 @@ public class EngineImplTest {
         assertThat(report.getTotalRecords()).isEqualTo(2);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
 
-        List<GenericRecord> records = (List<GenericRecord>) report.getBatchResult();
+        List<GenericRecord> records = (List<GenericRecord>) report.getJobResult();
 
         assertThat(records).isNotNull().hasSize(2);
         assertThat(records.get(0).getPayload()).isNotNull().isEqualTo("foo");
@@ -398,75 +377,44 @@ public class EngineImplTest {
     }
 
     /*
-     * Batch/Step event listeners tests
+     * Job/Step event listeners tests
      */
 
     @Test
-    public void jobEventListenerShouldBeInvokedForEachEvent() throws Exception {
-        when(firstProcessor.processRecord(record1)).thenThrow(recordProcessingException);
+    public void recordReaderEventListenerShouldBeInvokedForEachEvent() throws Exception {
+        when(reader.hasNextRecord()).thenReturn(true, false);
+        when(reader.readNextRecord()).thenReturn(record1);
         engine = new EngineBuilder()
                 .reader(reader)
-                .processor(firstProcessor)
-                .jobEventListener(jobEventListener)
+                .recordReaderEventListener(recordReaderEventListener)
                 .build();
         engine.call();
 
-        verify(jobEventListener).beforeJobStart();
-        verify(jobEventListener).onJobException(recordProcessingException);
-        verify(jobEventListener).afterJobEnd();
+        verify(recordReaderEventListener).beforeRecordReading();
+        verify(recordReaderEventListener).afterRecordReading(record1);
     }
 
     @Test
-    public void stepEventListenersShouldBeInvokedForEachEvent() throws Exception {
-        when(recordFilterEventListener.beforeRecordFiltering(record1)).thenReturn(record1);
-        when(recordFilterEventListener.beforeRecordFiltering(record2)).thenReturn(record2);
+    public void pipelineEventListenersShouldBeInvokedForEachEvent() throws Exception {
 
-        when(recordMapperEventListener.beforeRecordMapping(record1)).thenReturn(record1);
-        when(recordMapperEventListener.beforeRecordMapping(record2)).thenReturn(record2);
-
-        when(recordValidatorEventListener.beforeRecordValidation(record1)).thenReturn(record1);
-        when(recordValidatorEventListener.beforeRecordValidation(record2)).thenReturn(record2);
-
-        when(recordProcessorEventListener.beforeRecordProcessing(record1)).thenReturn(record1);
-        when(recordProcessorEventListener.beforeRecordProcessing(record2)).thenReturn(record2);
+        when(pipelineEventListener.beforeRecordProcessing(record1)).thenReturn(record1);
+        when(pipelineEventListener.beforeRecordProcessing(record2)).thenReturn(record2);
 
         engine = new EngineBuilder()
                 .reader(reader)
                 .recordReaderEventListener(recordReaderEventListener)
-                .recordFilterEventListener(recordFilterEventListener)
-                .recordMapperEventListener(recordMapperEventListener)
-                .recordValidatorEventListener(recordValidatorEventListener)
-                .recordProcessorEventListener(recordProcessorEventListener)
+                .pipelineEventListener(pipelineEventListener)
                 .build();
         engine.call();
 
-        verify(recordReaderEventListener).beforeReaderOpening();
-        verify(recordReaderEventListener).afterReaderOpening();
         verify(recordReaderEventListener, times(2)).beforeRecordReading();
         verify(recordReaderEventListener).afterRecordReading(record1);
         verify(recordReaderEventListener).afterRecordReading(record2);
-        verify(recordReaderEventListener).beforeReaderClosing();
-        verify(recordReaderEventListener).afterReaderClosing();
 
-        verify(recordFilterEventListener).beforeRecordFiltering(record1);
-        verify(recordFilterEventListener).beforeRecordFiltering(record2);
-        verify(recordFilterEventListener).afterRecordFiltering(record1, false);
-        verify(recordFilterEventListener).afterRecordFiltering(record2, false);
-
-        verify(recordMapperEventListener).beforeRecordMapping(record1);
-        verify(recordMapperEventListener).beforeRecordMapping(record2);
-        verify(recordMapperEventListener).afterRecordMapping(record1, record1);
-        verify(recordMapperEventListener).afterRecordMapping(record2, record2);
-
-        verify(recordValidatorEventListener).beforeRecordValidation(record1);
-        verify(recordValidatorEventListener).beforeRecordValidation(record2);
-        verify(recordValidatorEventListener).afterRecordValidation(record1, Collections.<ValidationError>emptySet());
-        verify(recordValidatorEventListener).afterRecordValidation(record2, Collections.<ValidationError>emptySet());
-
-        verify(recordProcessorEventListener).beforeRecordProcessing(record1);
-        verify(recordProcessorEventListener).afterRecordProcessing(record1, null);
-        verify(recordProcessorEventListener).beforeRecordProcessing(record2);
-        verify(recordProcessorEventListener).afterRecordProcessing(record2, null);
+        verify(pipelineEventListener).beforeRecordProcessing(record1);
+        verify(pipelineEventListener).afterRecordProcessing(record1, null);
+        verify(pipelineEventListener).beforeRecordProcessing(record2);
+        verify(pipelineEventListener).afterRecordProcessing(record2, null);
     }
 
     /*
@@ -474,67 +422,13 @@ public class EngineImplTest {
      */
 
     @Test
-    public void whenARecordIsFiltered_thenTheCustomFilteredRecordHandlerShouldBeInvoked() throws Exception {
-        when(firstFilter.filterRecord(record1)).thenReturn(true);
-        engine = new EngineBuilder()
-                .reader(reader)
-                .filter(firstFilter)
-                .filteredRecordHandler(filteredRecordHandler)
-                .build();
-        engine.call();
-
-        verify(filteredRecordHandler).handle(record1);
-    }
-
-    @Test
-    public void whenARecordIsIgnored_thenTheCustomIgnoredRecordHandlerShouldBeInvoked() throws Exception {
-        when(mapper.mapRecord(record1)).thenThrow(recordMappingException);
-        engine = new EngineBuilder()
-                .reader(reader)
-                .mapper(mapper)
-                .ignoredRecordHandler(ignoredRecordHandler)
-                .build();
-        engine.call();
-
-        verify(ignoredRecordHandler).handle(record1, recordMappingException);
-    }
-
-    @Test
-    public void whenARecordIsRejected_thenTheCustomRejectedRecordHandlerShouldBeInvoked() throws Exception {
-        Set<ValidationError> validationErrors = new HashSet<ValidationError>();
-        validationErrors.add(new ValidationError("error"));
-        when(firstValidator.validateRecord(record1)).thenReturn(validationErrors);
-        engine = new EngineBuilder()
-                .reader(reader)
-                .validator(firstValidator)
-                .rejectedRecordHandler(rejectedRecordHandler)
-                .build();
-        engine.call();
-
-        verify(rejectedRecordHandler).handle(record1, validationErrors);
-    }
-
-    @Test
-    public void whenARecordIsInError_thenTheCustomErrorRecordHandlerShouldBeInvoked() throws Exception {
-        when(firstProcessor.processRecord(record1)).thenThrow(recordProcessingException);
-        engine = new EngineBuilder()
-                .reader(reader)
-                .processor(firstProcessor)
-                .errorRecordHandler(errorRecordHandler)
-                .build();
-        engine.call();
-
-        verify(errorRecordHandler).handle(record1, recordProcessingException);
-    }
-
-    @Test
     public void exceptionsThrownByCustomRecordProcessingListenersShouldBeHandledProperly() throws Exception {
-        when(recordProcessorEventListener.beforeRecordProcessing(record1)).thenThrow(runtimeException);
+        when(pipelineEventListener.beforeRecordProcessing(record1)).thenThrow(runtimeException);
 
         engine = new EngineBuilder()
                 .reader(reader)
                 .errorRecordHandler(errorRecordHandler)
-                .recordProcessorEventListener(recordProcessorEventListener)
+                .pipelineEventListener(pipelineEventListener)
                 .build();
 
         engine.call();

@@ -22,39 +22,37 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.api.event.step;
+package org.easybatch.core.api.event;
+
+import org.easybatch.core.api.Record;
 
 /**
- * Event interface collection for RecordProcessor events.
+ * Event interface collection for RecordReader events.
  * <p/>
- * You should implement this interface in your processor to
+ * You should implement this interface in your reader to
  * declare the ability to receive events from the batch process.
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordProcessorEventListener {
+public interface RecordReaderEventListener {
 
     /**
-     * Called before the record gets processed.
-     * If you create a new record, you <strong>must</strong> keep the original header of the modified record.
-     *
-     * @param record The record that will be processed.
+     * Called before each record read
      */
-    Object beforeRecordProcessing(final Object record);
+    void beforeRecordReading();
 
     /**
-     * Called after the record has been processed.
+     * Called after each record read operation.
      *
-     * @param record           The processed record.
-     * @param processingResult The processing result if any, called from {@link org.easybatch.core.api.ComputationalRecordProcessor#getComputationResult()}
+     * @param record The record that has been read.
      */
-    void afterRecordProcessing(final Object record, final Object processingResult);
+    void afterRecordReading(final Record record);
 
     /**
-     * Called when an exception occurs during record processing
+     * Called when an exception occurs during record reading.
      *
-     * @param record    the currently processed record
-     * @param throwable the exception occurred during record processing
+     * @param throwable the throwable thrown during record reading
      */
-    void onRecordProcessingException(final Object record, final Throwable throwable);
+    void onRecordReadingException(final Throwable throwable);
+    
 }

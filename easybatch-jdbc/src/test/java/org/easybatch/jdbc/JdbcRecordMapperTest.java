@@ -73,7 +73,7 @@ public class JdbcRecordMapperTest {
         when(payload.getString(2)).thenReturn("foo");
         when(payload.getString(3)).thenReturn("Hello!");
 
-        Tweet tweet = tweetMapper.mapRecord(jdbcRecord);
+        Tweet tweet = tweetMapper.processRecord(jdbcRecord);
 
         assertThat(tweet).isNotNull();
         assertThat(tweet.getId()).isEqualTo(1);
@@ -95,7 +95,7 @@ public class JdbcRecordMapperTest {
         when(payload.getString(2)).thenReturn("foo");
         when(payload.getString(3)).thenReturn("Hello!");
 
-        Tweet tweet = tweetMapper.mapRecord(jdbcRecord);
+        Tweet tweet = tweetMapper.processRecord(jdbcRecord);
 
         assertThat(tweet).isNotNull();
         assertThat(tweet.getId()).isEqualTo(1);

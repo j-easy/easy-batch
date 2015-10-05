@@ -24,11 +24,11 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.ObjectMapper;
+import org.easybatch.core.record.StringRecord;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +39,7 @@ import java.util.Map;
  * @param <T> the target domain object type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class FixedLengthRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<T> {
+public class FixedLengthRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<StringRecord, T> {
 
     /**
      * Fields length array.
@@ -80,7 +80,7 @@ public class FixedLengthRecordMapper<T> extends AbstractRecordMapper<T> implemen
     }
 
     @Override
-    public T mapRecord(final Record record) throws RecordMappingException {
+    public T processRecord(final StringRecord record) throws RecordMappingException {
 
         FlatFileRecord flatFileRecord = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<String, String>();
@@ -92,9 +92,9 @@ public class FixedLengthRecordMapper<T> extends AbstractRecordMapper<T> implemen
         return objectMapper.mapObject(fieldsContents);
     }
 
-    FlatFileRecord parseRecord(final Record record) throws RecordMappingException {
+    FlatFileRecord parseRecord(final StringRecord record) throws RecordMappingException {
 
-        String payload = (String) record.getPayload();
+        String payload = record.getPayload();
         int recordLength = payload.length();
 
         if (recordLength != recordExpectedLength) {

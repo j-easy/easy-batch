@@ -31,10 +31,6 @@ package org.easybatch.core.api;
  */
 public class RecordReaderOpeningException extends Exception {
 
-    public RecordReaderOpeningException(String message) {
-        super(message);
-    }
-
     public RecordReaderOpeningException(String message, Throwable cause) {
         super(message, cause);
     }

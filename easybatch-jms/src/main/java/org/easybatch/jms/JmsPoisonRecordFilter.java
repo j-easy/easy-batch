@@ -24,8 +24,8 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.api.RecordFilteringException;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -37,7 +37,7 @@ import java.util.logging.Logger;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JmsPoisonRecordFilter implements RecordFilter {
+public class JmsPoisonRecordFilter implements RecordFilter<JmsRecord> {
 
     private static final Logger LOGGER = Logger.getLogger(JmsPoisonRecordFilter.class.getName());
 
@@ -48,10 +48,9 @@ public class JmsPoisonRecordFilter implements RecordFilter {
      * @return true if the record should be filtered (skipped)
      */
     @Override
-    public boolean filterRecord(Record record) {
-        JmsRecord jmsRecord = (JmsRecord) record;
+    public JmsRecord processRecord(JmsRecord record) throws RecordFilteringException{
         boolean isPoison = false;
-        Message payload = jmsRecord.getPayload();
+        Message payload = record.getPayload();
         try {
             String type = payload.getJMSType();
             if (type != null && !type.isEmpty()) {
@@ -59,9 +58,12 @@ public class JmsPoisonRecordFilter implements RecordFilter {
             }
         } catch (JMSException e) {
             LOGGER.log(Level.WARNING, "Unable to get type of JMS message " + payload, e);
-            return false;
+            throw new RecordFilteringException(e);
         }
-        return isPoison || payload instanceof JmsPoisonMessage;
+        if (isPoison || payload instanceof JmsPoisonMessage) {
+            throw new RecordFilteringException();
+        }
+        return record;
     }
 
 }

@@ -56,6 +56,6 @@ public class GenericRecordMapperTest {
 
     @Test
     public void testMapRecord() throws Exception {
-        assertThat(genericRecordMapper.mapRecord(record)).isEqualTo(payload);
+        assertThat(genericRecordMapper.processRecord(record)).isEqualTo(payload);
     }
 }

@@ -69,7 +69,7 @@ public class GenericMultiRecordMapperTest {
 
     @Test
     public void testMapRecord() throws Exception {
-        assertThat(multiRecordMapper.mapRecord(multiRecord)).containsExactly("foo", "bar");
+        assertThat(multiRecordMapper.processRecord(multiRecord)).containsExactly("foo", "bar");
     }
 
     @SuppressWarnings("unchecked")
@@ -84,7 +84,7 @@ public class GenericMultiRecordMapperTest {
                 .processor(new RecordCollector())
                 .build().call();
 
-        List<List<String>> result = (List<List<String>>) report.getBatchResult();
+        List<List<String>> result = (List<List<String>>) report.getJobResult();
         assertThat(result).hasSize(3);
 
         assertThat(result.get(0)).containsExactly("foo", "bar");

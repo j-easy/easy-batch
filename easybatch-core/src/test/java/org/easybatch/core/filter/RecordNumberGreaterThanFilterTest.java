@@ -24,21 +24,17 @@
 
 package org.easybatch.core.filter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
 import org.easybatch.core.api.Record;
+import org.easybatch.core.api.RecordFilteringException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * Test class for {@link RecordNumberEqualsToFilter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 public class RecordNumberGreaterThanFilterTest {
 
@@ -47,25 +43,22 @@ public class RecordNumberGreaterThanFilterTest {
     
     private RecordNumberGreaterThanFilter recordNumberGreaterThanFilter;
 
-    @Test
-    public void whenTheRecordNumberIsGreaterThanExpectedNumber_ThenItShouldBeFiltered() {
+    @Test(expected = RecordFilteringException.class)
+    public void whenTheRecordNumberIsGreaterThanExpectedNumber_ThenItShouldBeFiltered() throws RecordFilteringException {
         recordNumberGreaterThanFilter = new RecordNumberGreaterThanFilter(0);
 
         when(record.getHeader().getNumber()).thenReturn(1l);
-        assertThat(recordNumberGreaterThanFilter.filterRecord(record)).isTrue();
-
-        when(record.getHeader().getNumber()).thenReturn(2l);
-        assertThat(recordNumberGreaterThanFilter.filterRecord(record)).isTrue();
+        recordNumberGreaterThanFilter.processRecord(record);
     }
 
     @Test
-    public void whenTheRecordNumberIsLowerThanOrEqualToExpectedNumber_ThenItShouldNotBeFiltered() {
+    public void whenTheRecordNumberIsLowerThanOrEqualToExpectedNumber_ThenItShouldNotBeFiltered() throws RecordFilteringException {
         recordNumberGreaterThanFilter = new RecordNumberGreaterThanFilter(2);
 
         when(record.getHeader().getNumber()).thenReturn(1l);
-        assertThat(recordNumberGreaterThanFilter.filterRecord(record)).isFalse();
+        assertThat(recordNumberGreaterThanFilter.processRecord(record)).isEqualTo(record);
         when(record.getHeader().getNumber()).thenReturn(2l);
-        assertThat(recordNumberGreaterThanFilter.filterRecord(record)).isFalse();
+        assertThat(recordNumberGreaterThanFilter.processRecord(record)).isEqualTo(record);
     }
 
 }

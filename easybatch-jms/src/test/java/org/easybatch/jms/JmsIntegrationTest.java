@@ -54,6 +54,7 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@SuppressWarnings("unchecked")
 public class JmsIntegrationTest {
 
     public static final String EXPECTED_DATA_SOURCE_NAME = "JMS queue: q";
@@ -100,7 +101,7 @@ public class JmsIntegrationTest {
         assertThat(report.getTotalRecords()).isEqualTo(2);
         assertThat(report.getFilteredRecordsCount()).isEqualTo(1);
 
-        List<JmsRecord> records = (List<JmsRecord>) report.getBatchResult();
+        List<JmsRecord> records = (List<JmsRecord>) report.getJobResult();
 
         assertThat(records).isNotNull().isNotEmpty().hasSize(1);
 

@@ -29,7 +29,7 @@ package org.easybatch.core.api;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordMappingException extends Exception {
+public class RecordMappingException extends RecordProcessingException {
 
     public RecordMappingException(String message) {
         super(message);

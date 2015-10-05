@@ -25,8 +25,8 @@
 package org.easybatch.integration.jackson;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.easybatch.core.api.RecordMarshaller;
 import org.easybatch.core.api.RecordMarshallingException;
-import org.easybatch.core.processor.AbstractRecordMarshaller;
 
 import java.io.IOException;
 
@@ -37,7 +37,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JacksonRecordMarshaller extends AbstractRecordMarshaller {
+public class JacksonRecordMarshaller implements RecordMarshaller {
 
     private ObjectMapper mapper;
 
@@ -56,7 +56,7 @@ public class JacksonRecordMarshaller extends AbstractRecordMarshaller {
     }
 
     @Override
-    protected String marshal(final Object record) throws RecordMarshallingException {
+    public String processRecord(final Object record) throws RecordMarshallingException {
         try {
             return mapper.writeValueAsString(record);
         } catch (IOException e) {

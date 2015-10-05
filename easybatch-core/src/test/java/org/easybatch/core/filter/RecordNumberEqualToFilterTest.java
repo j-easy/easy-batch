@@ -24,48 +24,47 @@
 
 package org.easybatch.core.filter;
 
+import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilteringException;
-import org.easybatch.core.record.PoisonRecord;
-import org.easybatch.core.record.StringRecord;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PoisonRecordFilterTest {
+public class RecordNumberEqualToFilterTest {
 
-    private PoisonRecordFilter poisonRecordFilter;
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private Record record;
 
-    @Mock
-    private StringRecord record;
+    private RecordNumberEqualToFilter recordNumberEqualToFilter;
 
-    @Before
-    public void setUp() throws Exception {
-        poisonRecordFilter = new PoisonRecordFilter();
+    @Test(expected = RecordFilteringException.class)
+    public void whenTheRecordNumberIsEqualToExpectedNumber_ThenItShouldBeFiltered() throws RecordFilteringException {
+        recordNumberEqualToFilter = new RecordNumberEqualToFilter(1);
+
+        when(record.getHeader().getNumber()).thenReturn(1l);
+        recordNumberEqualToFilter.processRecord(record);
     }
 
     @Test(expected = RecordFilteringException.class)
-    public void whenTheRecordIsOfTypePoisonRecord_ThenItShouldBeFiltered() throws RecordFilteringException {
-        poisonRecordFilter.processRecord(new PoisonRecord());
-    }
+    public void whenTheRecordNumberIsEqualToOneOfTheExpectedNumbers_ThenItShouldBeFiltered() throws RecordFilteringException {
+        recordNumberEqualToFilter = new RecordNumberEqualToFilter(1, 2);
 
-    @Test(expected = RecordFilteringException.class)
-    public void whenTheRecordIsOfCustomTypePoisonRecord_ThenItShouldBeFiltered() throws RecordFilteringException {
-        poisonRecordFilter.processRecord(new CustomPoisonRecord());
+        when(record.getHeader().getNumber()).thenReturn(2l);
+        recordNumberEqualToFilter.processRecord(record);
     }
 
     @Test
-    public void whenTheRecordIsNotOfTypePoisonRecord_ThenItNotShouldBeFiltered() throws RecordFilteringException {
-        assertThat(poisonRecordFilter.processRecord(record)).isEqualTo(record);
-    }
+    public void whenTheRecordNumberIsNotEqualToOneOfTheExpectedNumbers_ThenItShouldNotBeFiltered() throws RecordFilteringException {
+        recordNumberEqualToFilter = new RecordNumberEqualToFilter(1, 2);
 
-    class CustomPoisonRecord extends PoisonRecord {
-        public CustomPoisonRecord() {
-        }
+        when(record.getHeader().getNumber()).thenReturn(3l);
+        assertThat(recordNumberEqualToFilter.processRecord(record)).isEqualTo(record);
     }
 
 }

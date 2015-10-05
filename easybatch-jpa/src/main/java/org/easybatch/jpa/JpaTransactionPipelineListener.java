@@ -24,7 +24,7 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.api.event.step.RecordProcessorEventListener;
+import org.easybatch.core.api.event.PipelineEventListener;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -38,9 +38,9 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JpaTransactionStepListener implements RecordProcessorEventListener {
+public class JpaTransactionPipelineListener implements PipelineEventListener {
 
-    private static final Logger LOGGER = Logger.getLogger(JpaTransactionStepListener.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(JpaTransactionPipelineListener.class.getSimpleName());
 
     private EntityManager entityManager;
 
@@ -57,7 +57,7 @@ public class JpaTransactionStepListener implements RecordProcessorEventListener 
      *
      * @param entityManager the JPA entity manager
      */
-    public JpaTransactionStepListener(final EntityManager entityManager) {
+    public JpaTransactionPipelineListener(final EntityManager entityManager) {
         this(entityManager, 1);
     }
 
@@ -67,7 +67,7 @@ public class JpaTransactionStepListener implements RecordProcessorEventListener 
      * @param entityManager  the JPA entity manager
      * @param commitInterval the commit interval
      */
-    public JpaTransactionStepListener(final EntityManager entityManager, final int commitInterval) {
+    public JpaTransactionPipelineListener(final EntityManager entityManager, final int commitInterval) {
         checkNotNull(entityManager, "entity manager");
         this.commitInterval = commitInterval;
         this.entityManager = entityManager;

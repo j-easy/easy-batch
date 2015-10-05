@@ -25,6 +25,7 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.Record;
+import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.api.handler.FilteredRecordHandler;
 
 import java.util.logging.Level;
@@ -43,16 +44,8 @@ class NoOpFilteredRecordHandler implements FilteredRecordHandler {
      * {@inheritDoc}
      */
     @Override
-    public void handle(final Record record) {
+    public void handle(final Record record, final RecordFilteringException throwable) {
         LOGGER.log(Level.INFO, "Record {0} has been filtered", record);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void handle(Record record, Throwable throwable) {
-        LOGGER.log(Level.SEVERE, "An exception occurred while attempting to filter record " + record, throwable);
     }
 
 

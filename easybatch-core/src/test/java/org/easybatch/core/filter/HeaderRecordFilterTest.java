@@ -24,10 +24,8 @@
 
 package org.easybatch.core.filter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
 import org.easybatch.core.api.Record;
+import org.easybatch.core.api.RecordFilteringException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,17 +33,15 @@ import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * Test class for {@link HeaderRecordFilter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 public class HeaderRecordFilterTest {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Record record;
-    
+
     private HeaderRecordFilter headerRecordFilter;
 
     @Before
@@ -53,16 +49,16 @@ public class HeaderRecordFilterTest {
         headerRecordFilter = new HeaderRecordFilter();
     }
 
-    @Test
-    public void whenTheRecordNumberIsEqualToOne_ThenItShouldBeFiltered() {
+    @Test(expected = RecordFilteringException.class)
+    public void whenTheRecordNumberIsEqualToOne_ThenItShouldBeFiltered() throws RecordFilteringException {
         when(record.getHeader().getNumber()).thenReturn(1l);
-        assertThat(headerRecordFilter.filterRecord(record)).isTrue();
+        headerRecordFilter.processRecord(record);
     }
 
     @Test
-    public void whenTheRecordNumberIsDifferentFromOne_ThenItShouldNotBeFiltered() {
+    public void whenTheRecordNumberIsDifferentFromOne_ThenItShouldNotBeFiltered() throws RecordFilteringException {
         when(record.getHeader().getNumber()).thenReturn(2l);
-        assertThat(headerRecordFilter.filterRecord(record)).isFalse();
+        assertThat(headerRecordFilter.processRecord(record)).isEqualTo(record);
     }
 
 }

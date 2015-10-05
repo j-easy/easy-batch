@@ -26,17 +26,20 @@ package org.easybatch.core.filter;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.api.RecordFilteringException;
 
 /**
  * A filter that filters the header record (first record in the data source).
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class HeaderRecordFilter implements RecordFilter {
+public class HeaderRecordFilter implements RecordFilter<Record> {
 
-    @Override
-    public boolean filterRecord(Record record) {
-        return record.getHeader().getNumber() == 1;
+    public Record processRecord(final Record record) throws RecordFilteringException {
+        if (record.getHeader().getNumber() == 1) {
+            throw new RecordFilteringException();
+        }
+        return record;
     }
 
 }

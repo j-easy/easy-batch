@@ -95,7 +95,7 @@ public class JdbcRecordWriterTest {
                 .reader(new IterableRecordReader<Tweet>(tweets))
                 .mapper(new GenericRecordMapper())
                 .writer(jdbcRecordWriter)
-                .recordProcessorEventListener(new JdbcTransactionStepListener(connection, commitInterval))
+                .pipelineEventListener(new JdbcTransactionPipelineListener(connection, commitInterval))
                 .jobEventListener(new JdbcTransactionJobListener(connection))
                 .build().call();
 

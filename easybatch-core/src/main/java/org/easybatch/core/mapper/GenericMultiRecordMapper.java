@@ -47,11 +47,10 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class GenericMultiRecordMapper<P> implements RecordMapper<List<P>> {
+public class GenericMultiRecordMapper<P> implements RecordMapper<MultiRecord, List<P>> {
 
     @Override
-    public List<P> mapRecord(final Record record) throws RecordMappingException {
-        MultiRecord multiRecord = (MultiRecord) record;
+    public List<P> processRecord(final MultiRecord multiRecord) throws RecordMappingException {
         List<Record> records = multiRecord.getPayload();
         List<P> payloads = new ArrayList<P>();
         for (Record r : records) {

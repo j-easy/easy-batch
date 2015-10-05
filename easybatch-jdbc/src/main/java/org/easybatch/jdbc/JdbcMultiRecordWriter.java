@@ -24,7 +24,7 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.RecordProcessingException;
+import org.easybatch.core.api.RecordWritingException;
 import org.easybatch.core.writer.AbstractMultiRecordWriter;
 
 import java.sql.Connection;
@@ -64,7 +64,7 @@ public class JdbcMultiRecordWriter extends AbstractMultiRecordWriter {
     }
 
     @Override
-    public void writeRecord(final Object multiRecord) throws RecordProcessingException {
+    public void writeRecord(final Object multiRecord) throws RecordWritingException {
         List records = getRecords(multiRecord);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -74,7 +74,7 @@ public class JdbcMultiRecordWriter extends AbstractMultiRecordWriter {
             }
             preparedStatement.executeBatch();
         } catch (SQLException e) {
-            throw new RecordProcessingException("Unable to write multi record " + multiRecord + " to database", e);
+            throw new RecordWritingException("Unable to write multi record " + multiRecord + " to database", e);
         }
     }
 

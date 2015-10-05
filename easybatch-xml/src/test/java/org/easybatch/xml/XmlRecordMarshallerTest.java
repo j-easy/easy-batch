@@ -48,7 +48,7 @@ public class XmlRecordMarshallerTest {
         Person person = new Person(1, "foo", "bar", null, false);
 
         String expected = "<person><firstName>foo</firstName><id>1</id><lastName>bar</lastName><married>false</married></person>";
-        String actual = xmlRecordMarshaller.marshal(person);
+        String actual = xmlRecordMarshaller.processRecord(person);
 
         assertThat(actual).isXmlEqualTo(expected);
     }

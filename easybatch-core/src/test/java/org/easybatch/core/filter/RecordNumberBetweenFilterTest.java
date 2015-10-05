@@ -24,21 +24,17 @@
 
 package org.easybatch.core.filter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
 import org.easybatch.core.api.Record;
+import org.easybatch.core.api.RecordFilteringException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * Test class for {@link RecordNumberBetweenFilter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 public class RecordNumberBetweenFilterTest {
 
@@ -47,26 +43,23 @@ public class RecordNumberBetweenFilterTest {
     
     private RecordNumberBetweenFilter recordNumberBetweenFilter;
 
-    @Test
-    public void whenTheRecordNumberIsInsideRange_ThenItShouldBeFiltered() {
+    @Test(expected = RecordFilteringException.class)
+    public void whenTheRecordNumberIsInsideRange_ThenItShouldBeFiltered() throws RecordFilteringException {
         recordNumberBetweenFilter = new RecordNumberBetweenFilter(1, 2);
 
         when(record.getHeader().getNumber()).thenReturn(1l);
-        assertThat(recordNumberBetweenFilter.filterRecord(record)).isTrue();
-        
-        when(record.getHeader().getNumber()).thenReturn(2l);
-        assertThat(recordNumberBetweenFilter.filterRecord(record)).isTrue();
+        recordNumberBetweenFilter.processRecord(record);
     }
 
     @Test
-    public void whenTheRecordNumberIsOutsideRange_ThenItShouldNotBeFiltered() {
+    public void whenTheRecordNumberIsOutsideRange_ThenItShouldNotBeFiltered() throws RecordFilteringException {
         recordNumberBetweenFilter = new RecordNumberBetweenFilter(3, 4);
 
         when(record.getHeader().getNumber()).thenReturn(2l);
-        assertThat(recordNumberBetweenFilter.filterRecord(record)).isFalse();
+        assertThat(recordNumberBetweenFilter.processRecord(record)).isEqualTo(record);
 
         when(record.getHeader().getNumber()).thenReturn(5l);
-        assertThat(recordNumberBetweenFilter.filterRecord(record)).isFalse();
+        assertThat(recordNumberBetweenFilter.processRecord(record)).isEqualTo(record);
     }
 
 }

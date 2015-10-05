@@ -22,25 +22,20 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.dispatcher;
-
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordDispatcher;
-import org.easybatch.core.api.RecordDispatchingException;
+package org.easybatch.core.api;
 
 /**
- * Base class for record dispatchers.
+ * Exception thrown when an error occurs during record mapping.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public abstract class AbstractRecordDispatcher implements RecordDispatcher<Record> {
+public class RecordValidationException extends RecordProcessingException {
 
-    protected abstract void dispatchRecord(final Record record) throws RecordDispatchingException;
+    public RecordValidationException() {
+    }
 
-    @Override
-    public Record processRecord(final Record record) throws RecordDispatchingException {
-        dispatchRecord(record);
-        return record;
+    public RecordValidationException(String message) {
+        super(message);
     }
 
 }

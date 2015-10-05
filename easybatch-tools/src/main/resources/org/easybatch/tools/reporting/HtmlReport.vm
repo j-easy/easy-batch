@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Easy Batch Report</title>
+    <title>Job Report</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
     <style>
@@ -16,13 +16,14 @@
 
 <div class="container col-md-8 col-md-offset-2">
     <div class="row">
-        <h1 class="text-center">Easy Batch Report</h1>
+        <h1 class="text-center">Job Report</h1>
         <h3>Engine name: $report.engineName</h3>
         <h3>Data source: $report.dataSource</h3>
         #if( $report.limit != 9223372036854775807 )
             <h3>Records limit: $report.limit</h3>
         #end
         <h3>Execution id: $report.executionId</h3>
+        <h3>Status: <span class="label label-status">$report.status</span></h3>
         <br/>
     </div>
 
@@ -40,12 +41,8 @@
                     <td>$report.formattedEndTime</td>
                 </tr>
                 <tr>
-                    <td>Batch duration</td>
+                    <td>Job duration</td>
                     <td>$report.formattedBatchDuration</td>
-                </tr>
-                <tr>
-                    <td>Status</td>
-                    <td><span class="label label-status">$report.status</span></td>
                 </tr>
                 <tr>
                     <td>Total records</td>
@@ -68,10 +65,6 @@
                 <tr>
                     <td>Filtered records</td>
                     <td><span class="label label-default filtered-records" data-total="$report.filteredRecordsCount">$report.formattedFilteredRecords</span></td>
-                </tr>
-                <tr>
-                    <td>Ignored records</td>
-                    <td><span class="label label-info ignored-records" data-total="$report.ignoredRecordsCount">$report.formattedIgnoredRecords</span></td>
                 </tr>
                 <tr>
                     <td>Rejected records</td>
@@ -163,11 +156,6 @@
                         name: 'Filtered',
                         color: '#999999',
                         y: jQuery(".filtered-records").data("total")
-                    },
-                    {
-                        name: 'Ignored',
-                        color: '#5BC0DE',
-                        y: jQuery(".ignored-records").data("total")
                     },
                     {
                         name: 'Rejected',

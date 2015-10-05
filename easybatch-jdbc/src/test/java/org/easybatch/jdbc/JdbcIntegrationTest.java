@@ -48,6 +48,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@SuppressWarnings("unchecked")
 public class JdbcIntegrationTest {
 
     private static final String DATABASE_URL = "jdbc:hsqldb:mem";
@@ -71,7 +72,6 @@ public class JdbcIntegrationTest {
         query = "select id, name from person";
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testDatabaseProcessing() throws Exception {
 
@@ -87,13 +87,12 @@ public class JdbcIntegrationTest {
         assertThat(report.getTotalRecords()).isEqualTo(2);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
         assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
         assertThat(report.getDataSource()).isEqualTo(DATA_SOURCE_NAME);
 
-        List<Person> persons = (List<Person>) report.getBatchResult();
+        List<Person> persons = (List<Person>) report.getJobResult();
 
         assertThat(persons).isNotEmpty().hasSize(2);
 

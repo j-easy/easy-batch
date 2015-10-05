@@ -24,7 +24,7 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.api.event.job.JobEventListener;
+import org.easybatch.core.api.event.JobEventListener;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -36,7 +36,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 /**
  * Listener that commits a transaction at the end of the job.
  * <p/>
- * This listener should be used in conjunction with a {@link JpaTransactionStepListener} to commit last records.
+ * This listener should be used in conjunction with a {@link JpaTransactionPipelineListener} to commit last records.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -91,22 +91,5 @@ public class JpaTransactionJobListener implements JobEventListener {
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unable to commit transaction after job end", e);
         }
-    }
-
-    @Override
-    public void onJobException(final Throwable throwable) {
-        try {
-            EntityTransaction transaction = entityManager.getTransaction();
-            if (transaction != null && transaction.isActive()) {
-                LOGGER.log(Level.SEVERE, "Rolling back transaction after job end", throwable);
-                transaction.rollback();
-            }
-            if (entityManager != null && closeEntityManager) {
-                entityManager.close();
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to rollback transaction after job end", e);
-        }
-
     }
 }

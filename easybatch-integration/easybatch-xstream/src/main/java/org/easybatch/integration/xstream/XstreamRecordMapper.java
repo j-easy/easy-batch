@@ -25,7 +25,6 @@
 package org.easybatch.integration.xstream;
 
 import com.thoughtworks.xstream.XStream;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.xml.XmlRecord;
 
@@ -38,7 +37,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * @param <T> Target domain object class.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class XstreamRecordMapper<T> implements RecordMapper<T> {
+public class XstreamRecordMapper<T> implements RecordMapper<XmlRecord, T> {
 
     private XStream xStream;
 
@@ -55,9 +54,8 @@ public class XstreamRecordMapper<T> implements RecordMapper<T> {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public T mapRecord(final Record record) {
-        XmlRecord xmlRecord = (XmlRecord) record;
-        return (T) xStream.fromXML(xmlRecord.getPayload());
+    public T processRecord(final XmlRecord record) {
+        return (T) xStream.fromXML(record.getPayload());
     }
 
 }

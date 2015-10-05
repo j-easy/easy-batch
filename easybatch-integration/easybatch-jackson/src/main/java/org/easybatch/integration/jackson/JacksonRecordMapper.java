@@ -25,7 +25,6 @@
 package org.easybatch.integration.jackson;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordMapper;
 import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.json.JsonRecord;
@@ -39,7 +38,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * @param <T> Target domain object class.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JacksonRecordMapper<T> implements RecordMapper<T> {
+public class JacksonRecordMapper<T> implements RecordMapper<JsonRecord, T> {
 
     private ObjectMapper mapper;
 
@@ -61,10 +60,9 @@ public class JacksonRecordMapper<T> implements RecordMapper<T> {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public T mapRecord(final Record record) throws RecordMappingException {
-        JsonRecord jsonRecord = (JsonRecord) record;
+    public T processRecord(final JsonRecord record) throws RecordMappingException {
         try {
-            return mapper.readValue(jsonRecord.getPayload().getBytes(), type);
+            return mapper.readValue(record.getPayload().getBytes(), type);
         } catch (Exception e) {
             throw new RecordMappingException("Unable to map record " + record + " to target type", e);
         }

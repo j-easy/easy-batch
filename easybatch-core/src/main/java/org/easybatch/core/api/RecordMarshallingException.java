@@ -29,7 +29,7 @@ package org.easybatch.core.api;
  * 
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordMarshallingException extends Exception {
+public class RecordMarshallingException extends RecordProcessingException {
 
     public RecordMarshallingException(String message) {
         super(message);

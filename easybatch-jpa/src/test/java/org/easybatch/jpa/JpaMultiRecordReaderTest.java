@@ -50,6 +50,7 @@ import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@SuppressWarnings("unchecked")
 public class JpaMultiRecordReaderTest {
 
     private static final String DATABASE_URL = "jdbc:hsqldb:mem";
@@ -88,7 +89,7 @@ public class JpaMultiRecordReaderTest {
         Report report = engine.call();
         assertThat(report.getTotalRecords()).isEqualTo(2);
 
-        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getBatchResult();
+        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
         assertThat(multiRecords).isNotNull().hasSize(2);
 
         MultiRecord chunk1 = multiRecords.get(0);
