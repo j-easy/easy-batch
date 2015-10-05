@@ -28,11 +28,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * Java bean representing a tweet.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @Entity
 @Table(name = "tweet")
 public class Tweet {

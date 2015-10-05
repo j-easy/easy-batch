@@ -27,11 +27,6 @@ package org.easybatch.core.converter;
 import org.easybatch.core.api.TypeConverter;
 import org.junit.Test;
 
-/**
- * Base class for {@link org.easybatch.core.api.TypeConverter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public abstract class BaseConverterTest<T> {
 
     protected TypeConverter<String, T> converter;

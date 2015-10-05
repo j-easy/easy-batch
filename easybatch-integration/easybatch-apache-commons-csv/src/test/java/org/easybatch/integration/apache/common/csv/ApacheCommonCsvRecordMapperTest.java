@@ -40,11 +40,6 @@ import java.io.StringReader;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
-/**
- * Test class for {@link ApacheCommonCsvRecordMapper}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class ApacheCommonCsvRecordMapperTest {
 

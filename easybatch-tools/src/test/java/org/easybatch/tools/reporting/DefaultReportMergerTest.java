@@ -34,9 +34,6 @@ import java.util.List;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Test class for {@link org.easybatch.tools.reporting.ReportMerger}.
- */
 public class DefaultReportMergerTest {
 
     private ReportMerger reportMerger;

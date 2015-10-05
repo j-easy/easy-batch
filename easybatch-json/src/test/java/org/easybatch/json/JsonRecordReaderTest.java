@@ -33,11 +33,6 @@ import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link JsonRecordReader}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class JsonRecordReaderTest {
 
     private JsonRecordReader jsonRecordReader;

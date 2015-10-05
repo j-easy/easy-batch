@@ -31,11 +31,6 @@ import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link org.easybatch.core.converter.DateTypeConverter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class DateTypeConverterTest extends BaseConverterTest<Date> {
 
     @Before

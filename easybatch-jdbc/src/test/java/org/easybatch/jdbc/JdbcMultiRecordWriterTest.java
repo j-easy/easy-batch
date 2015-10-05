@@ -39,11 +39,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 
-/**
- * Test class for {@link JdbcMultiRecordWriter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class JdbcMultiRecordWriterTest {
 
     private static final String DATABASE_URL = "jdbc:hsqldb:mem";

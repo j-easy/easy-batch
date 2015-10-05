@@ -35,9 +35,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- * Utility class for embedded database and hibernate services.
- */
 public class DatabaseUtil {
 
     private static final String DATABASE_URL = "jdbc:hsqldb:mem";

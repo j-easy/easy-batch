@@ -26,11 +26,6 @@ package org.easybatch.core.beans;
 
 import java.util.Date;
 
-/**
- * A person java bean used for tests.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class Person {
 
     protected String firstName;

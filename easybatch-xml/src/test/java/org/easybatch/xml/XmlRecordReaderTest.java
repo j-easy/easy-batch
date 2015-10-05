@@ -35,11 +35,6 @@ import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link XmlRecordReader}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class XmlRecordReaderTest {
 
     private XmlRecordReader xmlRecordReader;

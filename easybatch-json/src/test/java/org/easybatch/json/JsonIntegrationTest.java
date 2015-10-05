@@ -36,11 +36,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Integration test for json processing.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @SuppressWarnings("unchecked")
 public class JsonIntegrationTest {
 

@@ -35,11 +35,6 @@ import javax.jms.*;
 
 import static org.mockito.Mockito.*;
 
-/**
- * Test class for {@link JmsRecordWriter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class JmsRecordWriterTest {
 

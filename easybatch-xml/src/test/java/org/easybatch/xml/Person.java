@@ -27,11 +27,6 @@ package org.easybatch.xml;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
-/**
- * A person java bean used for tests.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @XmlRootElement
 public class Person {
 

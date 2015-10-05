@@ -44,11 +44,6 @@ import static java.lang.Long.valueOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 
-/**
- * Test class for {@link HibernateRecordWriter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class HibernateRecordWriterTest {
 
     private Session session;

@@ -39,11 +39,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 
-/**
- * Integration test for {@link HibernateMultiRecordReader}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class HibernateMultiRecordReaderTest {
 
     private static final int CHUNK_SIZE = 2;

@@ -24,11 +24,6 @@
 
 package org.easybatch.jdbc;
 
-/**
- * Java bean representing a tweet.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class Tweet {
 
     private int id;

@@ -31,11 +31,6 @@ import java.math.BigInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link org.easybatch.core.converter.BigIntegerTypeConverter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class BigIntegerTypeConverterTest extends BaseConverterTest<BigInteger> {
 
     @Before

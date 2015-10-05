@@ -34,11 +34,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link org.easybatch.core.reader.ListRecordReader}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class ListRecordReaderTest {
 
     public static final String EXPECTED_DATA_SOURCE_NAME = "In-Memory List";

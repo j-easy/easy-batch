@@ -43,11 +43,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link EngineFactoryBean}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class EngineFactoryBeanTest {
 

@@ -27,11 +27,6 @@ package org.easybatch.flatfile;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-/**
- * Test suite for easy batch flat file module.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         DelimitedRecordMapperTest.class,

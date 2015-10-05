@@ -49,11 +49,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
-/**
- * Integration test for JMS support.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @SuppressWarnings("unchecked")
 public class JmsIntegrationTest {
 

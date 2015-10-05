@@ -29,11 +29,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link org.easybatch.core.converter.DoubleTypeConverter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class DoubleTypeConverterTest extends BaseConverterTest<Double> {
 
     @Before

@@ -38,11 +38,6 @@ import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link XmlRecordMapper}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class XmlRecordMapperTest {
 

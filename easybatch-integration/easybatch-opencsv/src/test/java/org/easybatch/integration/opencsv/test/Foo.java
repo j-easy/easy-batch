@@ -24,11 +24,6 @@
 
 package org.easybatch.integration.opencsv.test;
 
-/**
- * Dummy class used for tests.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class Foo {
 
     private String firstName;

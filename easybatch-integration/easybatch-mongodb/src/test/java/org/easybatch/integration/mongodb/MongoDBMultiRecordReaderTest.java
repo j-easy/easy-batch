@@ -42,11 +42,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 
-/**
- * Integration test for {@link MongoDBMultiRecordReader}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @Ignore("Ignored since it's impossible to embed a MongoDB instance ..")
 @SuppressWarnings("unchecked")
 public class MongoDBMultiRecordReaderTest {

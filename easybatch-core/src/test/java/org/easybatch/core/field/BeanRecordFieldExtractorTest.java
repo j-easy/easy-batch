@@ -34,11 +34,6 @@ import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link BeanRecordFieldExtractor}.
- *
- * @author Rémi Alvergnat (toilal.dev@gmail.com)
- */
 public class BeanRecordFieldExtractorTest {
 
     private Person record;

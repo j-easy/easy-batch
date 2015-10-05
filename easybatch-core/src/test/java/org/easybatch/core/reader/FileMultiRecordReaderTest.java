@@ -41,11 +41,6 @@ import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 import static org.easybatch.core.util.Utils.FILE_SEPARATOR;
 import static org.easybatch.core.util.Utils.JAVA_IO_TMPDIR;
 
-/**
- * Test class for {@link FileMultiRecordReader}.
- * 
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class FileMultiRecordReaderTest {
 
     private static final int CHUNK_SIZE = 2;

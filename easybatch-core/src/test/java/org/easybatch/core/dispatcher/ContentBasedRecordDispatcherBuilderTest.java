@@ -30,11 +30,6 @@ import org.junit.Test;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * Test class for {@link org.easybatch.core.dispatcher.ContentBasedRecordDispatcherBuilder}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class ContentBasedRecordDispatcherBuilderTest {
 
     private ContentBasedRecordDispatcherBuilder builder;

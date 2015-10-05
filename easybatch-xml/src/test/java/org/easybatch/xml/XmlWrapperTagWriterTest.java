@@ -34,11 +34,6 @@ import java.io.OutputStreamWriter;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
-/**
- * Test class for {@link XmlWrapperTagWriter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class XmlWrapperTagWriterTest {
 
     private static final String DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";

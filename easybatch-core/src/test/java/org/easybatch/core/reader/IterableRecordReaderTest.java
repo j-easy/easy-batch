@@ -36,11 +36,6 @@ import java.util.Iterator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-/**
- * Test class for {@link IterableRecordReader}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(value = MockitoJUnitRunner.class)
 public class IterableRecordReaderTest {
 

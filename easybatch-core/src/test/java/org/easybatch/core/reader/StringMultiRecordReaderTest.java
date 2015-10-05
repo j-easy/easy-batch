@@ -36,11 +36,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
-/**
- * Test class for {@link StringMultiRecordReader}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class StringMultiRecordReaderTest {
 
     public static final int CHUNK_SIZE = 2;

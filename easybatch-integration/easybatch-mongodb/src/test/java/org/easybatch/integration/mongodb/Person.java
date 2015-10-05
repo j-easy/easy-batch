@@ -30,11 +30,6 @@ import org.mongodb.morphia.annotations.Id;
 
 import java.util.Date;
 
-/**
- * A java bean used for tests.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @Entity
 public class Person {
 

@@ -24,11 +24,6 @@
 
 package org.easybatch.core.beans;
 
-/**
- * Extended Person bean.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class ExtendedPerson extends Person {
 
     protected String nickName;

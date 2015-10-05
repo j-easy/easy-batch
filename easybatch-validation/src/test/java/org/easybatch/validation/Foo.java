@@ -27,11 +27,6 @@ package org.easybatch.validation;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-/**
- * Dummy bean used to test {@link BeanValidationRecordValidator}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class Foo {
 
     @Min(0)

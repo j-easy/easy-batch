@@ -31,11 +31,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
-/**
- * Test class for {@link JsonRecordCompactor}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class JsonRecordCompactorTest {
 
     private String payload, expectedPayload;

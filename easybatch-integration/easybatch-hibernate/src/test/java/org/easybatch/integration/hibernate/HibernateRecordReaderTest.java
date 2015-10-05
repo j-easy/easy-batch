@@ -39,11 +39,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 
-/**
- * Integration test for hibernate support.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class HibernateRecordReaderTest {
 
     private HibernateRecordReader<Tweet> hibernateRecordReader;

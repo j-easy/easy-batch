@@ -34,11 +34,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.FILE_SEPARATOR;
 import static org.easybatch.core.util.Utils.JAVA_IO_TMPDIR;
 
-/**
- * Test class for {@link FileRecordReaderTest}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class FileRecordReaderTest {
 
     private FileRecordReader fileRecordReader;
