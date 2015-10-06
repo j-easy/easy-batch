@@ -178,6 +178,18 @@ public final class EngineBuilder {
     }
 
     /**
+     * Register a record marshaller.
+     *
+     * @param recordMarshaller the record marshaller to register
+     * @return the engine builder
+     */
+    public EngineBuilder marshaller(final RecordMarshaller recordMarshaller) {
+        checkNotNull(recordMarshaller, "record marshaller");
+        engine.addRecordProcessor(recordMarshaller);
+        return this;
+    }
+
+    /**
      * Register a record writer.
      *
      * @param recordWriter the record writer to register
