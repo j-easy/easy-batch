@@ -63,29 +63,19 @@ public class HibernateRecordWriterTest {
     }
 
     @Test
-    public void testRecordWriting() throws Exception {
+    public void testSingleRecordWriting() throws Exception {
 
-        Integer nbTweetsToInsert = 13;
-        Integer commitInterval = 5;
-
-        /*
-         * The first chunk of 5 records will be committed by the HibernateTransactionStepListener
-         * The second chunk of 5 records will be committed by the HibernateTransactionStepListener
-         * The last chunk of 3 records will be committed by the HibernateTransactionJobListener
-         */
+        Integer nbTweetsToInsert = 5;
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
-
-        HibernateTransactionPipelineListener hibernateTransactionPipelineListener = new HibernateTransactionPipelineListener(session, commitInterval);
-        HibernateTransactionJobListener hibernateTransactionJobListener = new HibernateTransactionJobListener(session, true);
 
         Report report = aNewEngine()
                 .reader(new IterableRecordReader<Tweet>(tweets))
                 .mapper(new GenericRecordMapper())
                 .writer(hibernateRecordWriter)
-                .pipelineEventListener(hibernateTransactionPipelineListener)
-                .jobEventListener(hibernateTransactionJobListener)
-                .build().call();
+                .pipelineEventListener(new HibernateTransactionPipelineListener(session))
+                .jobEventListener(new HibernateSessionJobListener(session))
+                .call();
 
         assertThat(report).isNotNull();
         assertThat(report.getTotalRecords()).isEqualTo(valueOf(nbTweetsToInsert));

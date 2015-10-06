@@ -24,7 +24,7 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.event.PipelineEventListener;
+import org.easybatch.core.api.event.JobEventListener;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -34,51 +34,41 @@ import java.util.logging.Logger;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Listener that commits a transaction after writing a record.
+ * Listener that closes a JDBC connection at the end of the job.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JdbcTransactionPipelineListener implements PipelineEventListener {
+public class JdbcConnectionJobListener implements JobEventListener {
 
-    private static final Logger LOGGER = Logger.getLogger(JdbcTransactionPipelineListener.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(JdbcConnectionJobListener.class.getSimpleName());
 
     private Connection connection;
 
-    private long recordNumber;
-
     /**
-     * Create a JDBC transaction listener.
+     * Create a JDBC connection listener.
      *
-     * @param connection the JDBC connection (should be in auto-commit = false)
+     * @param connection      the JDBC connection.
      */
-    public JdbcTransactionPipelineListener(final Connection connection) {
+    public JdbcConnectionJobListener(final Connection connection) {
         checkNotNull(connection, "connection");
         this.connection = connection;
-        this.recordNumber = 0;
     }
 
     @Override
-    public Object beforeRecordProcessing(final Object record) {
-        return record;
+    public void beforeJobStart() {
+        // No op
     }
 
     @Override
-    public void afterRecordProcessing(final Object record, final Object processingResult) {
-        recordNumber++;
+    public void afterJobEnd() {
         try {
-            connection.commit();
-            LOGGER.info("Committing transaction after record " + recordNumber);
+            if (connection != null && !connection.isClosed()) {
+                LOGGER.info("Closing connection after job end");
+                connection.close();
+            }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Unable to commit transaction after record " + recordNumber, e);
+            LOGGER.log(Level.SEVERE, "Unable to close connection after job end", e);
         }
     }
 
-    @Override
-    public void onRecordProcessingException(final Object record, final Throwable throwable) {
-        try {
-            connection.rollback();
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Unable to rollback transaction after record " + recordNumber, e);
-        }
-    }
 }

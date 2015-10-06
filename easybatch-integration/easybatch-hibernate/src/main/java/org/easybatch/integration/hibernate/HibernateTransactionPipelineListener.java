@@ -27,22 +27,18 @@ package org.easybatch.integration.hibernate;
 import org.easybatch.core.api.event.PipelineEventListener;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.engine.transaction.spi.LocalStatus;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.easybatch.core.util.Utils.checkArgument;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Listener that commits a Hibernate transaction after inserting a predefined number of records (commit-interval).
+ * Listener that commits a Hibernate transaction after inserting a record.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class HibernateTransactionPipelineListener implements PipelineEventListener {
-
-    public static final int DEFAULT_COMMIT_INTERVAL = 1;
 
     private static final Logger LOGGER = Logger.getLogger(HibernateTransactionPipelineListener.class.getSimpleName());
 
@@ -50,38 +46,23 @@ public class HibernateTransactionPipelineListener implements PipelineEventListen
 
     private Transaction transaction;
 
-    private int commitInterval;
-
-    private int recordNumber;
+    private long recordNumber;
 
     /**
      * Create a Hibernate transaction listener.
-     * <p/>
-     * A Hibernate transaction will be committed after each record.
      *
      * @param session the Hibernate session
      */
     public HibernateTransactionPipelineListener(final Session session) {
-        this(session, DEFAULT_COMMIT_INTERVAL);
-    }
-
-    /**
-     * Create a Hibernate transaction listener with a commit-interval value.
-     *
-     * @param session        the Hibernate session
-     * @param commitInterval the commit interval
-     */
-    public HibernateTransactionPipelineListener(final Session session, final int commitInterval) {
         checkNotNull(session, "session");
-        checkArgument(commitInterval >= 1, "max commit interval parameter must be greater than or equal to 1");
-        this.commitInterval = commitInterval;
         this.session = session;
-        this.recordNumber = 0;
-        this.transaction = this.session.beginTransaction();
+        recordNumber = 0;
     }
 
     @Override
     public Object beforeRecordProcessing(final Object record) {
+        transaction = session.getTransaction();
+        transaction.begin();
         return record;
     }
 
@@ -89,32 +70,22 @@ public class HibernateTransactionPipelineListener implements PipelineEventListen
     public void afterRecordProcessing(final Object record, final Object processingResult) {
         recordNumber++;
         try {
-            if (recordNumber % commitInterval == 0) {
-                LOGGER.info("Committing transaction after " + recordNumber + " record(s)");
-                //commit current transaction
-                session.flush();
-                session.clear();
-                if (transaction.isActive()) {
-                    transaction.commit();
-                }
-
-                //begin a new transaction for next chunk
-                transaction = session.beginTransaction();
-                recordNumber = 0;
-            }
+            session.flush();
+            session.clear();
+            transaction.commit();
+            LOGGER.info("Transaction committed after record " + recordNumber);
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to commit transaction", e);
+            LOGGER.log(Level.SEVERE, "Unable to commit transaction after record " + recordNumber, e);
         }
     }
 
     @Override
     public void onRecordProcessingException(final Object record, final Throwable throwable) {
         try {
-            if (!transaction.getLocalStatus().equals(LocalStatus.ROLLED_BACK)) {
-                transaction.rollback();
-            }
+            transaction.rollback();
+            LOGGER.info("Transaction rolled back after record " + recordNumber);
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to rollback transaction", e);
+            LOGGER.log(Level.SEVERE, "Unable to rollback transaction after record " + recordNumber, e);
         }
     }
 

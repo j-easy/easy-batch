@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Listener that commits a JPA transaction after inserting a predefined number of records (commit-interval).
+ * Listener that commits a JPA transaction after each record.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -46,9 +46,7 @@ public class JpaTransactionPipelineListener implements PipelineEventListener {
 
     private EntityTransaction transaction;
 
-    private int commitInterval;
-
-    private int recordNumber;
+    private long recordNumber;
 
     /**
      * Create a JPA transaction listener.
@@ -58,26 +56,14 @@ public class JpaTransactionPipelineListener implements PipelineEventListener {
      * @param entityManager the JPA entity manager
      */
     public JpaTransactionPipelineListener(final EntityManager entityManager) {
-        this(entityManager, 1);
-    }
-
-    /**
-     * Create a JPA transaction listener with a commit-interval value.
-     *
-     * @param entityManager  the JPA entity manager
-     * @param commitInterval the commit interval
-     */
-    public JpaTransactionPipelineListener(final EntityManager entityManager, final int commitInterval) {
         checkNotNull(entityManager, "entity manager");
-        this.commitInterval = commitInterval;
         this.entityManager = entityManager;
-        this.recordNumber = 0;
-        this.transaction = entityManager.getTransaction();
-        this.transaction.begin();
     }
 
     @Override
     public Object beforeRecordProcessing(final Object record) {
+        this.transaction = entityManager.getTransaction();
+        this.transaction.begin();
         return record;
     }
 
@@ -85,20 +71,12 @@ public class JpaTransactionPipelineListener implements PipelineEventListener {
     public void afterRecordProcessing(final Object record, final Object processingResult) {
         recordNumber++;
         try {
-            if (recordNumber % commitInterval == 0) {
-                LOGGER.info("Committing transaction after " + recordNumber + " record(s)");
-                //commit current transaction
-                entityManager.flush();
-                entityManager.clear();
-                transaction.commit();
-
-                //begin a new transaction for next chunk
-                transaction = entityManager.getTransaction();
-                transaction.begin();
-                recordNumber = 0;
-            }
+            entityManager.flush();
+            entityManager.clear();
+            transaction.commit();
+            LOGGER.info("Transaction Committed after record " + recordNumber);
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to commit transaction", e);
+            LOGGER.log(Level.SEVERE, "Unable to commit transaction for record " + recordNumber, e);
         }
     }
 
@@ -106,8 +84,9 @@ public class JpaTransactionPipelineListener implements PipelineEventListener {
     public void onRecordProcessingException(final Object record, final Throwable throwable) {
         try {
             transaction.rollback();
+            LOGGER.info("Transaction rolled back after record " + recordNumber);
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to rollback transaction", e);
+            LOGGER.log(Level.SEVERE, "Unable to rollback transaction for record " + recordNumber, e);
         }
     }
 

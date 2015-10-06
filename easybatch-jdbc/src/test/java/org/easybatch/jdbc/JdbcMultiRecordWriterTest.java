@@ -42,6 +42,8 @@ import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
 public class JdbcMultiRecordWriterTest {
 
     private static final String DATABASE_URL = "jdbc:hsqldb:mem";
+    private static final String USER = "sa";
+    private static final String PASSWORD = "pwd";
 
     private static Connection connection;
 
@@ -71,7 +73,7 @@ public class JdbcMultiRecordWriterTest {
     }
 
     @Test
-    public void testProcessRecord() throws Exception {
+    public void testRecordWritingInChunks() throws Exception {
 
         Integer nbTweetsToInsert = 13;
         Integer chunkSize = 5;
@@ -81,12 +83,13 @@ public class JdbcMultiRecordWriterTest {
         Report report = aNewEngine()
                 .reader(new IterableMultiRecordReader<Tweet>(tweets, chunkSize))
                 .writer(jdbcMultiRecordWriter)
-                .pipelineEventListener(new JdbcTransactionPipelineListener(connection))
-                .build().call();
+                .pipelineEventListener(new JdbcTransactionPipelineListener(connection)) // needed since autocommit = false
+                .jobEventListener(new JdbcConnectionJobListener(connection))
+                .call();
 
         assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(3); // 3 multi-records
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(3); // 3 multi-records
+        assertThat(report.getTotalRecords()).isEqualTo(3);// 3 multi-records
+        assertThat(report.getSuccessRecordsCount()).isEqualTo(3);// 3 multi-records
 
         int nbTweetsInDatabase = countTweetsInDatabase();
 
@@ -94,6 +97,7 @@ public class JdbcMultiRecordWriterTest {
     }
 
     private int countTweetsInDatabase() throws SQLException {
+        Connection connection = getConnection();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("select * from tweet");
         int nbTweets = 0;
@@ -102,6 +106,7 @@ public class JdbcMultiRecordWriterTest {
         }
         resultSet.close();
         statement.close();
+        connection.close();
         return nbTweets;
     }
 
@@ -138,6 +143,10 @@ public class JdbcMultiRecordWriterTest {
         statement.executeUpdate(query);
         statement.close();
         connection.commit();
+    }
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
     }
 
 }

@@ -54,10 +54,9 @@ public class JpaRecordWriterTest {
 
     private EntityManager entityManager;
 
-    private JpaRecordWriter<Tweet> jpaRecordWriter;
-
     @BeforeClass
     public static void initDatabase() throws Exception {
+        System.setProperty("hsqldb.reconfig_logging", "false");
         connection = DriverManager.getConnection(DATABASE_URL, "sa", "pwd");
         createTweetTable(connection);
         entityManagerFactory = Persistence.createEntityManagerFactory("tweet");
@@ -66,33 +65,22 @@ public class JpaRecordWriterTest {
     @Before
     public void setUp() throws Exception {
         entityManager = entityManagerFactory.createEntityManager();
-        jpaRecordWriter = new JpaRecordWriter<Tweet>(entityManager);
     }
 
     @Test
-    public void testRecordWritingInChunks() throws Exception {
+         public void testSingleRecordWriting() throws Exception {
 
-        Integer nbTweetsToInsert = 13;
-        Integer commitInterval = 5;
-
-        /*
-         * The first chunk of 5 records will be committed by the JpaTransactionStepListener
-         * The second chunk of 5 records will be committed by the JpaTransactionStepListener
-         * The last chunk of 3 records will be committed by the JpaTransactionJobListener
-         */
+        Integer nbTweetsToInsert = 5;
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
-
-        JpaTransactionPipelineListener jpaTransactionPipelineListener = new JpaTransactionPipelineListener(entityManager, commitInterval);
-        JpaTransactionJobListener jpaTransactionJobListener = new JpaTransactionJobListener(entityManager, true);
 
         Report report = aNewEngine()
                 .reader(new IterableRecordReader<Tweet>(tweets))
                 .mapper(new GenericRecordMapper())
-                .writer(jpaRecordWriter)
-                .pipelineEventListener(jpaTransactionPipelineListener)
-                .jobEventListener(jpaTransactionJobListener)
-                .build().call();
+                .writer(new JpaRecordWriter<Tweet>(entityManager))
+                .pipelineEventListener(new JpaTransactionPipelineListener(entityManager))
+                .jobEventListener(new JpaEntityManagerJobListener(entityManager))
+                .call();
 
         assertThat(report).isNotNull();
         assertThat(report.getTotalRecords()).isEqualTo(valueOf(nbTweetsToInsert));

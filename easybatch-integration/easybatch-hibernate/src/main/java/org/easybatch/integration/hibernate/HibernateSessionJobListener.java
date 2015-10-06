@@ -22,51 +22,36 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.jdbc;
+package org.easybatch.integration.hibernate;
 
 import org.easybatch.core.api.event.JobEventListener;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Listener that commits a transaction at the end of the job.
- * <p/>
- * This is useful to commit last records when using a {@link JdbcTransactionPipelineListener} with a commit-interval.
+ * Listener that closes a Hibernate session at the end of the job.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JdbcTransactionJobListener implements JobEventListener {
+public class HibernateSessionJobListener implements JobEventListener {
 
-    private static final Logger LOGGER = Logger.getLogger(JdbcTransactionJobListener.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(HibernateSessionJobListener.class.getSimpleName());
 
-    private Connection connection;
-
-    private boolean closeConnection;
+    private Session session;
 
     /**
-     * Create a JDBC transaction listener. The connection will <strong>not</strong> be closed at the end of the job.
+     * Create a Hibernate session listener.
      *
-     * @param connection the JDBC connection (should be in auto-commit = false)
+     * @param session the Hibernate session
      */
-    public JdbcTransactionJobListener(final Connection connection) {
-        this(connection, false);
-    }
-
-    /**
-     * Create a JDBC transaction listener.
-     *
-     * @param connection      the JDBC connection (should be in auto-commit = false)
-     * @param closeConnection True if the connection should be closed at the end of the job
-     */
-    public JdbcTransactionJobListener(final Connection connection, final boolean closeConnection) {
-        checkNotNull(connection, "connection");
-        this.connection = connection;
-        this.closeConnection = closeConnection;
+    public HibernateSessionJobListener(final Session session) {
+        checkNotNull(session, "session");
+        this.session = session;
     }
 
     @Override
@@ -77,14 +62,12 @@ public class JdbcTransactionJobListener implements JobEventListener {
     @Override
     public void afterJobEnd() {
         try {
-            LOGGER.info("Committing transaction after job end");
-            connection.commit();
-            if (closeConnection) {
-                connection.close();
+            if (session != null) {
+                LOGGER.info("Closing session after job end");
+                session.close();
             }
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Unable to commit transaction", e);
+        } catch (HibernateException e) {
+            LOGGER.log(Level.SEVERE, "Unable to close session after job end", e);
         }
     }
-
 }

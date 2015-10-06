@@ -27,46 +27,29 @@ package org.easybatch.jpa;
 import org.easybatch.core.api.event.JobEventListener;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Listener that commits a transaction at the end of the job.
- * <p/>
- * This listener should be used in conjunction with a {@link JpaTransactionPipelineListener} to commit last records.
+ * Job listener that closes the entity manager at the end of the job.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JpaTransactionJobListener implements JobEventListener {
+public class JpaEntityManagerJobListener implements JobEventListener {
 
-    private static final Logger LOGGER = Logger.getLogger(JpaTransactionJobListener.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(JpaEntityManagerJobListener.class.getSimpleName());
 
     private EntityManager entityManager;
 
-    private boolean closeEntityManager;
-
     /**
-     * Create a JPA transaction listener. The entity manager will <strong>not</strong> be closed at the end of the job.
+     * Create a JPA entity manager job listener.
      *
      * @param entityManager the JPA entity manager
      */
-    public JpaTransactionJobListener(final EntityManager entityManager) {
-        this(entityManager, false);
-    }
-
-    /**
-     * Create a JPA transaction listener.
-     *
-     * @param entityManager      the JPA entity manager
-     * @param closeEntityManager True if the entity manager should be closed at the end of the job
-     */
-    public JpaTransactionJobListener(final EntityManager entityManager, final boolean closeEntityManager) {
+    public JpaEntityManagerJobListener(final EntityManager entityManager) {
         checkNotNull(entityManager, "entity manager");
         this.entityManager = entityManager;
-        this.closeEntityManager = closeEntityManager;
     }
 
     @Override
@@ -76,20 +59,9 @@ public class JpaTransactionJobListener implements JobEventListener {
 
     @Override
     public void afterJobEnd() {
-        try {
-            EntityTransaction transaction = entityManager.getTransaction();
-            if (transaction != null && transaction.isActive()) {
-                LOGGER.info("Committing transaction after job end");
-                entityManager.flush();
-                entityManager.clear();
-                transaction.commit();
-            }
-            if (entityManager != null && closeEntityManager) {
-                LOGGER.info("Closing entity manager after job end");
-                entityManager.close();
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to commit transaction after job end", e);
+        if (entityManager != null) {
+            LOGGER.info("Closing entity manager after job end");
+            entityManager.close();
         }
     }
 }
