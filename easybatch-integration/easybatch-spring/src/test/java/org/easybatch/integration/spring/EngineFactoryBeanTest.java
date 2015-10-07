@@ -27,7 +27,6 @@ package org.easybatch.integration.spring;
 import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.RecordProcessor;
 import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.api.event.EventManager;
 import org.easybatch.core.api.event.JobEventListener;
 import org.easybatch.core.api.event.PipelineEventListener;
 import org.easybatch.core.api.event.RecordReaderEventListener;
@@ -55,8 +54,6 @@ public class EngineFactoryBeanTest {
     private RecordReaderEventListener recordReaderEventListener;
     @Mock
     private PipelineEventListener pipelineEventListener;
-    @Mock
-    private EventManager eventManager;
 
     @Before
     public void setUp() throws Exception {
@@ -68,8 +65,6 @@ public class EngineFactoryBeanTest {
         engineFactoryBean.setJobEventListeners(singletonList(jobEventListener));
         engineFactoryBean.setRecordReaderEventListeners(singletonList(recordReaderEventListener));
         engineFactoryBean.setPipelineEventListeners(singletonList(pipelineEventListener));
-        engineFactoryBean.setEventManager(eventManager);
-
     }
 
     @Test

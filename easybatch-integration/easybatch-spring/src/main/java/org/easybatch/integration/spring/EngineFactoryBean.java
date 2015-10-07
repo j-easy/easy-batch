@@ -27,7 +27,6 @@ package org.easybatch.integration.spring;
 import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.RecordProcessor;
 import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.api.event.EventManager;
 import org.easybatch.core.api.event.JobEventListener;
 import org.easybatch.core.api.event.PipelineEventListener;
 import org.easybatch.core.api.event.RecordReaderEventListener;
@@ -52,8 +51,6 @@ public class EngineFactoryBean implements FactoryBean {
     private List<RecordReaderEventListener> recordReaderEventListeners;
 
     private List<PipelineEventListener> pipelineEventListeners;
-
-    private EventManager eventManager;
 
     @Override
     public Engine getObject() throws Exception {
@@ -95,10 +92,7 @@ public class EngineFactoryBean implements FactoryBean {
                 engineBuilder.pipelineEventListener(pipelineEventListener);
             }
         }
-
-        if (eventManager != null) {
-            engineBuilder.eventManager(eventManager);
-        }
+        
     }
 
     @Override
@@ -132,8 +126,5 @@ public class EngineFactoryBean implements FactoryBean {
     public void setPipelineEventListeners(List<PipelineEventListener> pipelineEventListeners) {
         this.pipelineEventListeners = pipelineEventListeners;
     }
-
-    public void setEventManager(EventManager eventManager) {
-        this.eventManager = eventManager;
-    }
+    
 }

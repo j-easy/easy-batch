@@ -42,7 +42,7 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LocalEventManagerTest {
+public class EventManagerTest {
 
     @Mock
     private JobEventListener jobEventListener1, jobEventListener2;
@@ -57,25 +57,25 @@ public class LocalEventManagerTest {
     @Mock
     private Object processingResult;
 
-    private LocalEventManager localEventManager;
+    private EventManager eventManager;
 
     @Before
     public void setUp() {
-        localEventManager = new LocalEventManager();
+        eventManager = new EventManager();
 
-        localEventManager.addJobEventListener(jobEventListener1);
-        localEventManager.addJobEventListener(jobEventListener2);
+        eventManager.addJobEventListener(jobEventListener1);
+        eventManager.addJobEventListener(jobEventListener2);
 
-        localEventManager.addRecordReaderEventListener(recordReaderEventListener1);
-        localEventManager.addRecordReaderEventListener(recordReaderEventListener2);
+        eventManager.addRecordReaderEventListener(recordReaderEventListener1);
+        eventManager.addRecordReaderEventListener(recordReaderEventListener2);
 
-        localEventManager.addPipelineEventListener(pipelineEventListener1);
-        localEventManager.addPipelineEventListener(pipelineEventListener2);
+        eventManager.addPipelineEventListener(pipelineEventListener1);
+        eventManager.addPipelineEventListener(pipelineEventListener2);
     }
 
     @Test
     public void fireBeforeJobStart() {
-        localEventManager.fireBeforeJobStart();
+        eventManager.fireBeforeJobStart();
 
         InOrder inOrder = inOrder(jobEventListener1, jobEventListener2);
 
@@ -85,7 +85,7 @@ public class LocalEventManagerTest {
 
     @Test
     public void fireAfterJobEnd() {
-        localEventManager.fireAfterJobEnd();
+        eventManager.fireAfterJobEnd();
 
         InOrder inOrder = inOrder(jobEventListener1, jobEventListener2);
 
@@ -95,7 +95,7 @@ public class LocalEventManagerTest {
 
     @Test
     public void fireBeforeRecordReading() {
-        localEventManager.fireBeforeRecordReading();
+        eventManager.fireBeforeRecordReading();
 
         InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
@@ -105,7 +105,7 @@ public class LocalEventManagerTest {
 
     @Test
     public void fireAfterRecordReading() {
-        localEventManager.fireAfterRecordReading(record);
+        eventManager.fireAfterRecordReading(record);
 
         InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
@@ -115,7 +115,7 @@ public class LocalEventManagerTest {
 
     @Test
     public void fireOnRecordReadingException() {
-        localEventManager.fireOnRecordReadingException(throwable);
+        eventManager.fireOnRecordReadingException(throwable);
 
         InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
 
@@ -127,7 +127,7 @@ public class LocalEventManagerTest {
         when(pipelineEventListener1.beforeRecordProcessing(record)).thenReturn(record1);
         when(pipelineEventListener2.beforeRecordProcessing(record1)).thenReturn(record2);
 
-        Object result = localEventManager.fireBeforeRecordProcessing(record);
+        Object result = eventManager.fireBeforeRecordProcessing(record);
 
         InOrder inOrder = inOrder(pipelineEventListener1, pipelineEventListener2);
 
@@ -139,7 +139,7 @@ public class LocalEventManagerTest {
 
     @Test
     public void fireAfterRecordProcessing() {
-        localEventManager.fireAfterRecordProcessing(record, processingResult);
+        eventManager.fireAfterRecordProcessing(record, processingResult);
 
         InOrder inOrder = inOrder(pipelineEventListener1, pipelineEventListener2);
 
@@ -149,7 +149,7 @@ public class LocalEventManagerTest {
 
     @Test
     public void fireOnRecordProcessingException() {
-        localEventManager.fireOnRecordProcessingException(record, throwable);
+        eventManager.fireOnRecordProcessingException(record, throwable);
 
         InOrder inOrder = inOrder(pipelineEventListener1, pipelineEventListener2);
 

@@ -25,7 +25,6 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.EventManager;
 import org.easybatch.core.api.event.JobEventListener;
 import org.easybatch.core.api.event.PipelineEventListener;
 import org.easybatch.core.api.event.RecordReaderEventListener;
@@ -277,10 +276,6 @@ final class EngineImpl implements Engine {
 
     void addRecordProcessor(final RecordProcessor recordProcessor) {
         pipeline.addProcessor(recordProcessor);
-    }
-
-    void setEventManager(EventManager eventManager) {
-        this.eventManager = eventManager;
     }
 
     void addJobEventListener(final JobEventListener jobEventListener) {

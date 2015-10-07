@@ -25,7 +25,6 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.EventManager;
 import org.easybatch.core.api.event.JobEventListener;
 import org.easybatch.core.api.event.PipelineEventListener;
 import org.easybatch.core.api.event.RecordReaderEventListener;
@@ -51,7 +50,7 @@ public final class EngineBuilder {
                 DEFAULT_ENGINE_NAME,
                 new NoOpRecordReader(),
                 new ArrayList<RecordProcessor>(),
-                new LocalEventManager());
+                new EventManager());
     }
 
     /**
@@ -264,18 +263,6 @@ public final class EngineBuilder {
     public EngineBuilder pipelineEventListener(final PipelineEventListener pipelineEventListener) {
         checkNotNull(pipelineEventListener, "pipeline event listener");
         engine.addPipelineEventListener(pipelineEventListener);
-        return this;
-    }
-
-    /**
-     * Register a custom event manager.
-     *
-     * @param eventManager The event manager to use instead of the default {@link org.easybatch.core.impl.LocalEventManager}
-     * @return the engine builder
-     */
-    public EngineBuilder eventManager(final EventManager eventManager) {
-        checkNotNull(eventManager, "event manager");
-        engine.setEventManager(eventManager);
         return this;
     }
 

@@ -25,7 +25,6 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.EventManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

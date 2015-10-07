@@ -25,7 +25,6 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.event.EventManager;
 import org.easybatch.core.api.event.JobEventListener;
 import org.easybatch.core.api.event.PipelineEventListener;
 import org.easybatch.core.api.event.RecordReaderEventListener;
@@ -34,67 +33,58 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Local implementation of {@link EventManager}.
+ * Manager of event listeners.
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-class LocalEventManager implements EventManager {
+class EventManager {
 
     private Set<JobEventListener> jobEventListeners = new LinkedHashSet<JobEventListener>();
     private Set<RecordReaderEventListener> recordReaderEventListeners = new LinkedHashSet<RecordReaderEventListener>();
     private Set<PipelineEventListener> pipelineEventListeners = new LinkedHashSet<PipelineEventListener>();
 
-    @Override
     public void addJobEventListener(JobEventListener jobEventListener) {
         jobEventListeners.add(jobEventListener);
     }
 
-    @Override
     public void addRecordReaderEventListener(RecordReaderEventListener recordReaderEventListener) {
         recordReaderEventListeners.add(recordReaderEventListener);
     }
 
-    @Override
     public void addPipelineEventListener(PipelineEventListener pipelineEventListener) {
         pipelineEventListeners.add(pipelineEventListener);
     }
 
-    @Override
     public void fireBeforeJobStart() {
         for (JobEventListener eventListener : jobEventListeners) {
             eventListener.beforeJobStart();
         }
     }
 
-    @Override
     public void fireAfterJobEnd() {
         for (JobEventListener eventListener : jobEventListeners) {
             eventListener.afterJobEnd();
         }
     }
 
-    @Override
     public void fireBeforeRecordReading() {
         for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
             eventListener.beforeRecordReading();
         }
     }
 
-    @Override
     public void fireAfterRecordReading(Record record) {
         for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
             eventListener.afterRecordReading(record);
         }
     }
 
-    @Override
     public void fireOnRecordReadingException(Throwable throwable) {
         for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
             eventListener.onRecordReadingException(throwable);
         }
     }
 
-    @Override
     public Object fireBeforeRecordProcessing(Record record) {
         Object recordToProcess = record;
         for (PipelineEventListener eventListener : pipelineEventListeners) {
@@ -103,14 +93,12 @@ class LocalEventManager implements EventManager {
         return recordToProcess;
     }
 
-    @Override
     public void fireAfterRecordProcessing(Object record, Object processingResult) {
         for (PipelineEventListener eventListener : pipelineEventListeners) {
             eventListener.afterRecordProcessing(record, processingResult);
         }
     }
 
-    @Override
     public void fireOnRecordProcessingException(final Object record, final Throwable throwable) {
         for (PipelineEventListener eventListener : pipelineEventListeners) {
             eventListener.onRecordProcessingException(record, throwable);

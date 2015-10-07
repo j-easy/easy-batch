@@ -25,7 +25,6 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.EventManager;
 
 import java.util.List;
 import java.util.logging.Level;

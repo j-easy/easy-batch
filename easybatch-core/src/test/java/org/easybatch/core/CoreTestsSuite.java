@@ -29,7 +29,7 @@ import org.easybatch.core.converter.*;
 import org.easybatch.core.dispatcher.*;
 import org.easybatch.core.filter.*;
 import org.easybatch.core.impl.EngineImplTest;
-import org.easybatch.core.impl.LocalEventManagerTest;
+import org.easybatch.core.impl.EventManagerTest;
 import org.easybatch.core.impl.ProcessingPipelineTest;
 import org.easybatch.core.mapper.GenericRecordMapperTest;
 import org.easybatch.core.mapper.ObjectMapperTest;
@@ -105,7 +105,7 @@ import org.junit.runners.Suite;
         // impl
         EngineImplTest.class,
         ProcessingPipelineTest.class,
-        LocalEventManagerTest.class
+        EventManagerTest.class
 })
 public class CoreTestsSuite {
 }
