@@ -97,7 +97,7 @@ public class EngineFactoryBean implements FactoryBean {
 
         if (recordReaderEventListeners != null) {
             for (RecordReaderEventListener recordReaderEventListener : recordReaderEventListeners) {
-                engineBuilder.recordReaderEventListener(recordReaderEventListener);
+                engineBuilder.readerEventListener(recordReaderEventListener);
             }
         }
 

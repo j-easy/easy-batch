@@ -386,7 +386,7 @@ public class EngineImplTest {
         when(reader.readNextRecord()).thenReturn(record1);
         engine = new EngineBuilder()
                 .reader(reader)
-                .recordReaderEventListener(recordReaderEventListener)
+                .readerEventListener(recordReaderEventListener)
                 .build();
         engine.call();
 
@@ -402,7 +402,7 @@ public class EngineImplTest {
 
         engine = new EngineBuilder()
                 .reader(reader)
-                .recordReaderEventListener(recordReaderEventListener)
+                .readerEventListener(recordReaderEventListener)
                 .pipelineEventListener(pipelineEventListener)
                 .build();
         engine.call();

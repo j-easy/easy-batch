@@ -290,7 +290,7 @@ public final class EngineBuilder {
      * @param recordReaderEventListener The record reader listener to add.
      * @return the engine builder
      */
-    public EngineBuilder recordReaderEventListener(final RecordReaderEventListener recordReaderEventListener) {
+    public EngineBuilder readerEventListener(final RecordReaderEventListener recordReaderEventListener) {
         checkNotNull(recordReaderEventListener, "record reader event listener");
         engine.addRecordReaderEventListener(recordReaderEventListener);
         return this;
