@@ -29,9 +29,6 @@ import org.easybatch.core.api.event.EventManager;
 import org.easybatch.core.api.event.JobEventListener;
 import org.easybatch.core.api.event.PipelineEventListener;
 import org.easybatch.core.api.event.RecordReaderEventListener;
-import org.easybatch.core.api.handler.ErrorRecordHandler;
-import org.easybatch.core.api.handler.FilteredRecordHandler;
-import org.easybatch.core.api.handler.RejectedRecordHandler;
 
 import java.util.ArrayList;
 
@@ -54,9 +51,6 @@ public final class EngineBuilder {
                 DEFAULT_ENGINE_NAME,
                 new NoOpRecordReader(),
                 new ArrayList<RecordProcessor>(),
-                new NoOpErrorRecordHandler(),
-                new NoOpRejectedRecordHandler(),
-                new NoOpFilteredRecordHandler(),
                 new LocalEventManager());
     }
 
@@ -198,42 +192,6 @@ public final class EngineBuilder {
     public EngineBuilder writer(final RecordWriter recordWriter) {
         checkNotNull(recordWriter, "record writer");
         engine.addRecordProcessor(recordWriter);
-        return this;
-    }
-
-    /**
-     * Register a filtered record handler.
-     *
-     * @param filteredRecordHandler the handler to process filtered record
-     * @return the engine builder
-     */
-    public EngineBuilder filteredRecordHandler(final FilteredRecordHandler filteredRecordHandler) {
-        checkNotNull(filteredRecordHandler, "filtered record handler");
-        engine.setFilteredRecordHandler(filteredRecordHandler);
-        return this;
-    }
-
-    /**
-     * Register a rejected record handler.
-     *
-     * @param rejectedRecordHandler the handler to process rejected record
-     * @return the engine builder
-     */
-    public EngineBuilder rejectedRecordHandler(final RejectedRecordHandler rejectedRecordHandler) {
-        checkNotNull(rejectedRecordHandler, "rejected record handler");
-        engine.setRejectedRecordHandler(rejectedRecordHandler);
-        return this;
-    }
-
-    /**
-     * Register a error record handler.
-     *
-     * @param errorRecordHandler the handler to process error record
-     * @return the engine builder
-     */
-    public EngineBuilder errorRecordHandler(final ErrorRecordHandler errorRecordHandler) {
-        checkNotNull(errorRecordHandler, "error record handler");
-        engine.setErrorRecordHandler(errorRecordHandler);
         return this;
     }
 

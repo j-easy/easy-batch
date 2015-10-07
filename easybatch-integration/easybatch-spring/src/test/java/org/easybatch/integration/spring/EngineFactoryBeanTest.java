@@ -31,9 +31,6 @@ import org.easybatch.core.api.event.EventManager;
 import org.easybatch.core.api.event.JobEventListener;
 import org.easybatch.core.api.event.PipelineEventListener;
 import org.easybatch.core.api.event.RecordReaderEventListener;
-import org.easybatch.core.api.handler.ErrorRecordHandler;
-import org.easybatch.core.api.handler.FilteredRecordHandler;
-import org.easybatch.core.api.handler.RejectedRecordHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,12 +50,6 @@ public class EngineFactoryBeanTest {
     @Mock
     private RecordProcessor recordProcessor;
     @Mock
-    private FilteredRecordHandler filteredRecordHandler;
-    @Mock
-    private RejectedRecordHandler rejectedRecordHandler;
-    @Mock
-    private ErrorRecordHandler errorRecordHandler;
-    @Mock
     private JobEventListener jobEventListener;
     @Mock
     private RecordReaderEventListener recordReaderEventListener;
@@ -73,10 +64,6 @@ public class EngineFactoryBeanTest {
 
         engineFactoryBean.setRecordReader(recordReader);
         engineFactoryBean.setProcessingPipeline(singletonList(recordProcessor));
-
-        engineFactoryBean.setFilteredRecordHandler(filteredRecordHandler);
-        engineFactoryBean.setRejectedRecordHandler(rejectedRecordHandler);
-        engineFactoryBean.setErrorRecordHandler(errorRecordHandler);
 
         engineFactoryBean.setJobEventListeners(singletonList(jobEventListener));
         engineFactoryBean.setRecordReaderEventListeners(singletonList(recordReaderEventListener));

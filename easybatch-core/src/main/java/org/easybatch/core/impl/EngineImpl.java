@@ -29,9 +29,6 @@ import org.easybatch.core.api.event.EventManager;
 import org.easybatch.core.api.event.JobEventListener;
 import org.easybatch.core.api.event.PipelineEventListener;
 import org.easybatch.core.api.event.RecordReaderEventListener;
-import org.easybatch.core.api.handler.ErrorRecordHandler;
-import org.easybatch.core.api.handler.FilteredRecordHandler;
-import org.easybatch.core.api.handler.RejectedRecordHandler;
 import org.easybatch.core.util.Utils;
 
 import java.util.List;
@@ -80,9 +77,6 @@ final class EngineImpl implements Engine {
     EngineImpl(final String name,
                final RecordReader recordReader,
                final List<RecordProcessor> processors,
-               final ErrorRecordHandler errorRecordHandler,
-               final RejectedRecordHandler rejectedRecordHandler,
-               final FilteredRecordHandler filteredRecordHandler,
                final EventManager eventManager) {
         this.executionId = UUID.randomUUID().toString();
         this.name = name;
@@ -91,7 +85,7 @@ final class EngineImpl implements Engine {
         this.recordReader = recordReader;
         this.report = new Report();
         this.eventManager = eventManager;
-        this.pipeline = new Pipeline(processors, report, eventManager, errorRecordHandler, rejectedRecordHandler, filteredRecordHandler);
+        this.pipeline = new Pipeline(processors, report, eventManager);
     }
 
     @Override
@@ -154,11 +148,9 @@ final class EngineImpl implements Engine {
                  * Process record
                  */
                 boolean processingError = pipeline.process(currentRecord);
-                if (processingError) {
-                    if (strictMode) {
-                        reportAbortDueToStrictMode();
-                        break;
-                    }
+                if (processingError && strictMode) {
+                    reportAbortedStatusDueToStrictMode();
+                    break;
                 }
             }
 
@@ -236,7 +228,7 @@ final class EngineImpl implements Engine {
         report.setEndTime(System.currentTimeMillis());
     }
 
-    private void reportAbortDueToStrictMode() {
+    private void reportAbortedStatusDueToStrictMode() {
         LOGGER.info(STRICT_MODE_MESSAGE);
         report.setStatus(Status.ABORTED);
     }
@@ -287,18 +279,6 @@ final class EngineImpl implements Engine {
         pipeline.addProcessor(recordProcessor);
     }
 
-    void setErrorRecordHandler(final ErrorRecordHandler errorRecordHandler) {
-        pipeline.setErrorRecordHandler(errorRecordHandler);
-    }
-
-    void setFilteredRecordHandler(final FilteredRecordHandler filteredRecordHandler) {
-        pipeline.setFilteredRecordHandler(filteredRecordHandler);
-    }
-
-    void setRejectedRecordHandler(final RejectedRecordHandler rejectedRecordHandler) {
-        pipeline.setRejectedRecordHandler(rejectedRecordHandler);
-    }
-
     void setEventManager(EventManager eventManager) {
         this.eventManager = eventManager;
     }
@@ -327,7 +307,7 @@ final class EngineImpl implements Engine {
         this.limit = limit;
     }
 
-    public void setSkip(long skip) {
+    void setSkip(long skip) {
         this.skip = skip;
     }
 

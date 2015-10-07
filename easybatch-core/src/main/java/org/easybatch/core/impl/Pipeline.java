@@ -26,11 +26,10 @@ package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
 import org.easybatch.core.api.event.EventManager;
-import org.easybatch.core.api.handler.ErrorRecordHandler;
-import org.easybatch.core.api.handler.FilteredRecordHandler;
-import org.easybatch.core.api.handler.RejectedRecordHandler;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The processing pipeline is the list of stages to process a record.
@@ -39,26 +38,16 @@ import java.util.List;
  */
 final class Pipeline {
 
-    private List<RecordProcessor> processors;
+    private static final Logger LOGGER = Logger.getLogger(Pipeline.class.getName());
 
-    private ErrorRecordHandler errorRecordHandler;
-    private FilteredRecordHandler filteredRecordHandler;
-    private RejectedRecordHandler rejectedRecordHandler;
+    private List<RecordProcessor> processors;
 
     private Report report;
 
     private EventManager eventManager;
 
-    Pipeline(List<RecordProcessor> processors,
-             Report report,
-             EventManager eventManager,
-             ErrorRecordHandler errorRecordHandler,
-             RejectedRecordHandler rejectedRecordHandler,
-             FilteredRecordHandler filteredRecordHandler) {
+    Pipeline(List<RecordProcessor> processors, Report report, EventManager eventManager) {
         this.processors = processors;
-        this.errorRecordHandler = errorRecordHandler;
-        this.rejectedRecordHandler = rejectedRecordHandler;
-        this.filteredRecordHandler = filteredRecordHandler;
         this.report = report;
         this.eventManager = eventManager;
     }
@@ -80,16 +69,16 @@ final class Pipeline {
             report.incrementTotalSuccessRecord();
             eventManager.fireAfterRecordProcessing(recordToProcess, processingResult);
         } catch (RecordFilteringException e) {
-            filteredRecordHandler.handle(currentRecord, e);
+            LOGGER.log(Level.INFO, "Record {0} has been filtered", currentRecord);
             report.incrementTotalFilteredRecords();
             eventManager.fireOnRecordProcessingException(currentRecord, e);
         } catch (RecordValidationException e) {
-            rejectedRecordHandler.handle(currentRecord, e);
+            LOGGER.log(Level.SEVERE, "Record " + currentRecord + " has been rejected", e);
             report.incrementTotalRejectedRecord();
             eventManager.fireOnRecordProcessingException(currentRecord, e);
         } catch (Exception e) {
             processingError = true;
-            errorRecordHandler.handle(currentRecord, e);
+            LOGGER.log(Level.SEVERE, "An exception occurred while attempting to process record " + currentRecord, e);
             report.incrementTotalErrorRecord();
             eventManager.fireOnRecordProcessingException(currentRecord, e);
         }
@@ -106,16 +95,5 @@ final class Pipeline {
     public void addProcessor(RecordProcessor recordProcessor) {
         processors.add(recordProcessor);
     }
-
-    void setErrorRecordHandler(ErrorRecordHandler errorRecordHandler) {
-        this.errorRecordHandler = errorRecordHandler;
-    }
-
-    public void setFilteredRecordHandler(FilteredRecordHandler filteredRecordHandler) {
-        this.filteredRecordHandler = filteredRecordHandler;
-    }
-
-    public void setRejectedRecordHandler(RejectedRecordHandler rejectedRecordHandler) {
-        this.rejectedRecordHandler = rejectedRecordHandler;
-    }
+    
 }

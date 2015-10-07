@@ -26,9 +26,6 @@ package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
 import org.easybatch.core.api.event.EventManager;
-import org.easybatch.core.api.handler.ErrorRecordHandler;
-import org.easybatch.core.api.handler.FilteredRecordHandler;
-import org.easybatch.core.api.handler.RejectedRecordHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,15 +56,6 @@ public class ProcessingPipelineTest {
     private Report report;
 
     @Mock
-    private ErrorRecordHandler errorRecordHandler;
-
-    @Mock
-    private RejectedRecordHandler rejectedRecordHandler;
-
-    @Mock
-    private FilteredRecordHandler filteredRecordHandler;
-
-    @Mock
     private EventManager eventManager;
 
     @Mock
@@ -81,8 +69,7 @@ public class ProcessingPipelineTest {
     @Before
     public void setUp() throws Exception {
         when(eventManager.fireBeforeRecordProcessing(record)).thenReturn(preProcessedRecord);
-        processingPipeline = new Pipeline(asList(recordProcessor, computationalRecordProcessor),
-                report, eventManager, errorRecordHandler, rejectedRecordHandler, filteredRecordHandler);
+        processingPipeline = new Pipeline(asList(recordProcessor, computationalRecordProcessor), report, eventManager);
     }
 
     @Test
@@ -114,11 +101,10 @@ public class ProcessingPipelineTest {
 
         assertThat(processingError).isTrue();
 
-        InOrder inOrder = inOrder(eventManager, report, recordProcessor, errorRecordHandler, computationalRecordProcessor);
+        InOrder inOrder = inOrder(eventManager, report, recordProcessor, computationalRecordProcessor);
 
         inOrder.verify(eventManager).fireBeforeRecordProcessing(record);
         inOrder.verify(recordProcessor).processRecord(preProcessedRecord);
-        inOrder.verify(errorRecordHandler).handle(record, exception);
         inOrder.verify(report).incrementTotalErrorRecord();
         inOrder.verify(eventManager).fireOnRecordProcessingException(record, exception);
 

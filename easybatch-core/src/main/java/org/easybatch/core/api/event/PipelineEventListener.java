@@ -57,4 +57,20 @@ public interface PipelineEventListener {
      * @param throwable the exception occurred during record processing
      */
     void onRecordProcessingException(final Object record, final Throwable throwable);
+
+    /**
+     * Called when a record is rejected.
+     *
+     * @param record    the currently processed record
+     * @param throwable the exception occurred during record validation
+     
+    void onRecordValidationException(final Object record, final RecordValidationException throwable);*/
+
+    /**
+     * Called when a record is filtered.
+     *
+     * @param record    the currently processed record
+     * @param throwable the exception occurred during record filtering
+     
+    void onRecordFilteringException(final Object record, final RecordFilteringException throwable);*/
 }

@@ -28,9 +28,6 @@ import org.easybatch.core.api.*;
 import org.easybatch.core.api.event.JobEventListener;
 import org.easybatch.core.api.event.PipelineEventListener;
 import org.easybatch.core.api.event.RecordReaderEventListener;
-import org.easybatch.core.api.handler.ErrorRecordHandler;
-import org.easybatch.core.api.handler.FilteredRecordHandler;
-import org.easybatch.core.api.handler.RejectedRecordHandler;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.easybatch.core.record.GenericRecord;
@@ -82,12 +79,6 @@ public class EngineImplTest {
     private RecordReaderEventListener recordReaderEventListener;
     @Mock
     private PipelineEventListener pipelineEventListener;
-    @Mock
-    private FilteredRecordHandler filteredRecordHandler;
-    @Mock
-    private RejectedRecordHandler rejectedRecordHandler;
-    @Mock
-    private ErrorRecordHandler errorRecordHandler;
     @Mock
     private RecordReadingException recordReadingException;
     @Mock
@@ -213,43 +204,6 @@ public class EngineImplTest {
         assertThat(report.getJobResult()).isEqualTo(jobResult);
     }
 
-
-    @Test
-    public void whenRecordFilterThrowsARecordFilteringException_thenShouldFilterRecord() throws Exception {
-        when(filter.processRecord(record1)).thenThrow(recordFilteringException);
-        aNewEngine()
-                .reader(reader)
-                .filter(filter)
-                .filteredRecordHandler(filteredRecordHandler)
-                .build().call();
-
-        verify(filteredRecordHandler).handle(record1, recordFilteringException);
-    }
-
-    @Test
-    public void whenRecordValidatorThrowsARecordValidationException_thenShouldRejectRecord() throws Exception {
-        when(validator.processRecord(record1)).thenThrow(recordValidationException);
-        aNewEngine()
-                .reader(reader)
-                .validator(validator)
-                .rejectedRecordHandler(rejectedRecordHandler)
-                .build().call();
-
-        verify(rejectedRecordHandler).handle(record1, recordValidationException);
-    }
-
-    @Test
-    public void whenRecordProcessorThrowsARecordProcessingException_thenRecordShouldBeInError() throws Exception {
-        when(firstProcessor.processRecord(record1)).thenThrow(recordProcessingException);
-        aNewEngine()
-                .reader(reader)
-                .processor(firstProcessor)
-                .errorRecordHandler(errorRecordHandler)
-                .build().call();
-
-        verify(errorRecordHandler).handle(record1, recordProcessingException);
-    }
-
     @Test
     public void reportShouldBeCorrect() throws Exception {
         Report report = engine.call();
@@ -288,13 +242,12 @@ public class EngineImplTest {
     public void whenStrictModeIsEnabled_ThenTheEngineShouldAbortOnFirstRecordProcessingExceptionIfAny() throws Exception {
         when(firstProcessor.processRecord(record1)).thenThrow(recordProcessingException);
 
-        engine = new EngineBuilder()
+        Report report = new EngineBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
                 .strictMode(true)
-                .build();
-        Report report = engine.call();
+                .call();
 
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
         assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
@@ -415,25 +368,6 @@ public class EngineImplTest {
         verify(pipelineEventListener).afterRecordProcessing(record1, null);
         verify(pipelineEventListener).beforeRecordProcessing(record2);
         verify(pipelineEventListener).afterRecordProcessing(record2, null);
-    }
-
-    /*
-     * Custom reporting handlers tests
-     */
-
-    @Test
-    public void exceptionsThrownByCustomRecordProcessingListenersShouldBeHandledProperly() throws Exception {
-        when(pipelineEventListener.beforeRecordProcessing(record1)).thenThrow(runtimeException);
-
-        engine = new EngineBuilder()
-                .reader(reader)
-                .errorRecordHandler(errorRecordHandler)
-                .pipelineEventListener(pipelineEventListener)
-                .build();
-
-        engine.call();
-
-        verify(errorRecordHandler).handle(record1, runtimeException);
     }
 
 }

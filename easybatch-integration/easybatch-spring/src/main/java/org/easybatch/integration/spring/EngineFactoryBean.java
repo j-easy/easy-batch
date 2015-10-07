@@ -31,9 +31,6 @@ import org.easybatch.core.api.event.EventManager;
 import org.easybatch.core.api.event.JobEventListener;
 import org.easybatch.core.api.event.PipelineEventListener;
 import org.easybatch.core.api.event.RecordReaderEventListener;
-import org.easybatch.core.api.handler.ErrorRecordHandler;
-import org.easybatch.core.api.handler.FilteredRecordHandler;
-import org.easybatch.core.api.handler.RejectedRecordHandler;
 import org.easybatch.core.impl.EngineBuilder;
 import org.springframework.beans.factory.FactoryBean;
 
@@ -50,12 +47,6 @@ public class EngineFactoryBean implements FactoryBean {
 
     private List<RecordProcessor> processingPipeline;
 
-    private FilteredRecordHandler filteredRecordHandler;
-
-    private RejectedRecordHandler rejectedRecordHandler;
-
-    private ErrorRecordHandler errorRecordHandler;
-
     private List<JobEventListener> jobEventListeners;
 
     private List<RecordReaderEventListener> recordReaderEventListeners;
@@ -69,8 +60,6 @@ public class EngineFactoryBean implements FactoryBean {
         EngineBuilder engineBuilder = new EngineBuilder();
 
         registerMainComponents(engineBuilder);
-
-        registerCustomHandlers(engineBuilder);
 
         registerCustomEventListeners(engineBuilder);
 
@@ -112,20 +101,6 @@ public class EngineFactoryBean implements FactoryBean {
         }
     }
 
-    private void registerCustomHandlers(EngineBuilder engineBuilder) {
-        if (filteredRecordHandler != null) {
-            engineBuilder.filteredRecordHandler(filteredRecordHandler);
-        }
-
-        if (rejectedRecordHandler != null) {
-            engineBuilder.rejectedRecordHandler(rejectedRecordHandler);
-        }
-
-        if (errorRecordHandler != null) {
-            engineBuilder.errorRecordHandler(errorRecordHandler);
-        }
-    }
-
     @Override
     public Class<Engine> getObjectType() {
         return Engine.class;
@@ -144,19 +119,6 @@ public class EngineFactoryBean implements FactoryBean {
 
     public void setProcessingPipeline(List<RecordProcessor> processingPipeline) {
         this.processingPipeline = processingPipeline;
-    }
-
-    public void setFilteredRecordHandler(FilteredRecordHandler filteredRecordHandler) {
-        this.filteredRecordHandler = filteredRecordHandler;
-    }
-
-
-    public void setRejectedRecordHandler(RejectedRecordHandler rejectedRecordHandler) {
-        this.rejectedRecordHandler = rejectedRecordHandler;
-    }
-
-    public void setErrorRecordHandler(ErrorRecordHandler errorRecordHandler) {
-        this.errorRecordHandler = errorRecordHandler;
     }
 
     public void setJobEventListeners(List<JobEventListener> jobEventListeners) {
