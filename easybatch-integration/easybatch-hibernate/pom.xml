@@ -39,8 +39,8 @@
     </issueManagement>
 
     <ciManagement>
-        <system>Jenkins</system>
-        <url>https://buildhive.cloudbees.com/job/EasyBatch/job/easybatch-framework/</url>
+        <system>Travis CI</system>
+        <url>https://travis-ci.org/EasyBatch/easybatch-framework</url>
     </ciManagement>
 
     <licenses>
