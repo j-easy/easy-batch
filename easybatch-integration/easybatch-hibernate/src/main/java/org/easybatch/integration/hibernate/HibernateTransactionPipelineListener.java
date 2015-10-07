@@ -56,19 +56,18 @@ public class HibernateTransactionPipelineListener implements PipelineEventListen
     public HibernateTransactionPipelineListener(final Session session) {
         checkNotNull(session, "session");
         this.session = session;
-        recordNumber = 0;
     }
 
     @Override
     public Object beforeRecordProcessing(final Object record) {
         transaction = session.getTransaction();
         transaction.begin();
+        recordNumber++;
         return record;
     }
 
     @Override
     public void afterRecordProcessing(final Object record, final Object processingResult) {
-        recordNumber++;
         try {
             session.flush();
             session.clear();

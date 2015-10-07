@@ -64,12 +64,12 @@ public class JpaTransactionPipelineListener implements PipelineEventListener {
     public Object beforeRecordProcessing(final Object record) {
         this.transaction = entityManager.getTransaction();
         this.transaction.begin();
+        recordNumber++;
         return record;
     }
 
     @Override
     public void afterRecordProcessing(final Object record, final Object processingResult) {
-        recordNumber++;
         try {
             entityManager.flush();
             entityManager.clear();

@@ -54,17 +54,16 @@ public class JdbcTransactionPipelineListener implements PipelineEventListener {
     public JdbcTransactionPipelineListener(final Connection connection) {
         checkNotNull(connection, "connection");
         this.connection = connection;
-        this.recordNumber = 0;
     }
 
     @Override
     public Object beforeRecordProcessing(final Object record) {
+        recordNumber++;
         return record;
     }
 
     @Override
     public void afterRecordProcessing(final Object record, final Object processingResult) {
-        recordNumber++;
         try {
             connection.commit();
             LOGGER.info("Committing transaction after record " + recordNumber);

@@ -82,9 +82,11 @@ final class Pipeline {
         } catch (RecordFilteringException e) {
             filteredRecordHandler.handle(currentRecord, e);
             report.incrementTotalFilteredRecords();
+            eventManager.fireOnRecordProcessingException(currentRecord, e);
         } catch (RecordValidationException e) {
             rejectedRecordHandler.handle(currentRecord, e);
             report.incrementTotalRejectedRecord();
+            eventManager.fireOnRecordProcessingException(currentRecord, e);
         } catch (Exception e) {
             processingError = true;
             errorRecordHandler.handle(currentRecord, e);
