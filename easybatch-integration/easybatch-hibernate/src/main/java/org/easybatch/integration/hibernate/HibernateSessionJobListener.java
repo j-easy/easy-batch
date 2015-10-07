@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.event.JobEventListener;
+import org.easybatch.core.api.listener.JobListener;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -38,7 +38,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class HibernateSessionJobListener implements JobEventListener {
+public class HibernateSessionJobListener implements JobListener {
 
     private static final Logger LOGGER = Logger.getLogger(HibernateSessionJobListener.class.getSimpleName());
 

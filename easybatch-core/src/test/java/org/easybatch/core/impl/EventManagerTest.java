@@ -24,9 +24,9 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.JobEventListener;
-import org.easybatch.core.api.event.PipelineEventListener;
-import org.easybatch.core.api.event.RecordReaderEventListener;
+import org.easybatch.core.api.listener.JobListener;
+import org.easybatch.core.api.listener.PipelineListener;
+import org.easybatch.core.api.listener.RecordReaderListener;
 import org.easybatch.core.reader.StringRecordReader;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
@@ -45,11 +45,11 @@ import static org.mockito.Mockito.when;
 public class EventManagerTest {
 
     @Mock
-    private JobEventListener jobEventListener1, jobEventListener2;
+    private JobListener jobListener1, jobListener2;
     @Mock
-    private RecordReaderEventListener recordReaderEventListener1, recordReaderEventListener2;
+    private RecordReaderListener recordReaderListener1, recordReaderListener2;
     @Mock
-    private PipelineEventListener pipelineEventListener1, pipelineEventListener2;
+    private PipelineListener pipelineListener1, pipelineListener2;
     @Mock
     private Throwable throwable;
     @Mock
@@ -63,76 +63,76 @@ public class EventManagerTest {
     public void setUp() {
         eventManager = new EventManager();
 
-        eventManager.addJobEventListener(jobEventListener1);
-        eventManager.addJobEventListener(jobEventListener2);
+        eventManager.addJobListener(jobListener1);
+        eventManager.addJobListener(jobListener2);
 
-        eventManager.addRecordReaderEventListener(recordReaderEventListener1);
-        eventManager.addRecordReaderEventListener(recordReaderEventListener2);
+        eventManager.addRecordReaderListener(recordReaderListener1);
+        eventManager.addRecordReaderListener(recordReaderListener2);
 
-        eventManager.addPipelineEventListener(pipelineEventListener1);
-        eventManager.addPipelineEventListener(pipelineEventListener2);
+        eventManager.addPipelineListener(pipelineListener1);
+        eventManager.addPipelineListener(pipelineListener2);
     }
 
     @Test
     public void fireBeforeJobStart() {
         eventManager.fireBeforeJobStart();
 
-        InOrder inOrder = inOrder(jobEventListener1, jobEventListener2);
+        InOrder inOrder = inOrder(jobListener1, jobListener2);
 
-        inOrder.verify(jobEventListener1).beforeJobStart();
-        inOrder.verify(jobEventListener2).beforeJobStart();
+        inOrder.verify(jobListener1).beforeJobStart();
+        inOrder.verify(jobListener2).beforeJobStart();
     }
 
     @Test
     public void fireAfterJobEnd() {
         eventManager.fireAfterJobEnd();
 
-        InOrder inOrder = inOrder(jobEventListener1, jobEventListener2);
+        InOrder inOrder = inOrder(jobListener1, jobListener2);
 
-        inOrder.verify(jobEventListener1).afterJobEnd();
-        inOrder.verify(jobEventListener2).afterJobEnd();
+        inOrder.verify(jobListener1).afterJobEnd();
+        inOrder.verify(jobListener2).afterJobEnd();
     }
 
     @Test
     public void fireBeforeRecordReading() {
         eventManager.fireBeforeRecordReading();
 
-        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
+        InOrder inOrder = inOrder(recordReaderListener1, recordReaderListener2);
 
-        inOrder.verify(recordReaderEventListener1).beforeRecordReading();
-        inOrder.verify(recordReaderEventListener2).beforeRecordReading();
+        inOrder.verify(recordReaderListener1).beforeRecordReading();
+        inOrder.verify(recordReaderListener2).beforeRecordReading();
     }
 
     @Test
     public void fireAfterRecordReading() {
         eventManager.fireAfterRecordReading(record);
 
-        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
+        InOrder inOrder = inOrder(recordReaderListener1, recordReaderListener2);
 
-        inOrder.verify(recordReaderEventListener1).afterRecordReading(record);
-        inOrder.verify(recordReaderEventListener2).afterRecordReading(record);
+        inOrder.verify(recordReaderListener1).afterRecordReading(record);
+        inOrder.verify(recordReaderListener2).afterRecordReading(record);
     }
 
     @Test
     public void fireOnRecordReadingException() {
         eventManager.fireOnRecordReadingException(throwable);
 
-        InOrder inOrder = inOrder(recordReaderEventListener1, recordReaderEventListener2);
+        InOrder inOrder = inOrder(recordReaderListener1, recordReaderListener2);
 
-        inOrder.verify(recordReaderEventListener1).onRecordReadingException(throwable);
-        inOrder.verify(recordReaderEventListener2).onRecordReadingException(throwable);
+        inOrder.verify(recordReaderListener1).onRecordReadingException(throwable);
+        inOrder.verify(recordReaderListener2).onRecordReadingException(throwable);
     }
     @Test
     public void fireBeforeRecordProcessing() {
-        when(pipelineEventListener1.beforeRecordProcessing(record)).thenReturn(record1);
-        when(pipelineEventListener2.beforeRecordProcessing(record1)).thenReturn(record2);
+        when(pipelineListener1.beforeRecordProcessing(record)).thenReturn(record1);
+        when(pipelineListener2.beforeRecordProcessing(record1)).thenReturn(record2);
 
         Object result = eventManager.fireBeforeRecordProcessing(record);
 
-        InOrder inOrder = inOrder(pipelineEventListener1, pipelineEventListener2);
+        InOrder inOrder = inOrder(pipelineListener1, pipelineListener2);
 
-        inOrder.verify(pipelineEventListener1).beforeRecordProcessing(record);
-        inOrder.verify(pipelineEventListener2).beforeRecordProcessing(record1);
+        inOrder.verify(pipelineListener1).beforeRecordProcessing(record);
+        inOrder.verify(pipelineListener2).beforeRecordProcessing(record1);
 
         assertThat(result).isEqualTo(record2);
     }
@@ -141,20 +141,20 @@ public class EventManagerTest {
     public void fireAfterRecordProcessing() {
         eventManager.fireAfterRecordProcessing(record, processingResult);
 
-        InOrder inOrder = inOrder(pipelineEventListener1, pipelineEventListener2);
+        InOrder inOrder = inOrder(pipelineListener1, pipelineListener2);
 
-        inOrder.verify(pipelineEventListener1).afterRecordProcessing(record, processingResult);
-        inOrder.verify(pipelineEventListener2).afterRecordProcessing(record, processingResult);
+        inOrder.verify(pipelineListener1).afterRecordProcessing(record, processingResult);
+        inOrder.verify(pipelineListener2).afterRecordProcessing(record, processingResult);
     }
 
     @Test
     public void fireOnRecordProcessingException() {
         eventManager.fireOnRecordProcessingException(record, throwable);
 
-        InOrder inOrder = inOrder(pipelineEventListener1, pipelineEventListener2);
+        InOrder inOrder = inOrder(pipelineListener1, pipelineListener2);
 
-        inOrder.verify(pipelineEventListener1).onRecordProcessingException(record, throwable);
-        inOrder.verify(pipelineEventListener2).onRecordProcessingException(record, throwable);
+        inOrder.verify(pipelineListener1).onRecordProcessingException(record, throwable);
+        inOrder.verify(pipelineListener2).onRecordProcessingException(record, throwable);
     }
 
     /*
@@ -166,7 +166,7 @@ public class EventManagerTest {
         Engine engine = EngineBuilder.aNewEngine()
                 .reader(new StringRecordReader("foo" + LINE_SEPARATOR + "bar"))
 
-                .pipelineEventListener(new PipelineEventListener() {
+                .pipelineEventListener(new PipelineListener() {
                     @Override
                     public Object beforeRecordProcessing(Object record) {
                         StringRecord stringRecord = (StringRecord) record;

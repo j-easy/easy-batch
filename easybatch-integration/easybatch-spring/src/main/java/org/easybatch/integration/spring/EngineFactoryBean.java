@@ -27,9 +27,9 @@ package org.easybatch.integration.spring;
 import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.RecordProcessor;
 import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.api.event.JobEventListener;
-import org.easybatch.core.api.event.PipelineEventListener;
-import org.easybatch.core.api.event.RecordReaderEventListener;
+import org.easybatch.core.api.listener.JobListener;
+import org.easybatch.core.api.listener.PipelineListener;
+import org.easybatch.core.api.listener.RecordReaderListener;
 import org.easybatch.core.impl.EngineBuilder;
 import org.springframework.beans.factory.FactoryBean;
 
@@ -46,11 +46,11 @@ public class EngineFactoryBean implements FactoryBean {
 
     private List<RecordProcessor> processingPipeline;
 
-    private List<JobEventListener> jobEventListeners;
+    private List<JobListener> jobListeners;
 
-    private List<RecordReaderEventListener> recordReaderEventListeners;
+    private List<RecordReaderListener> recordReaderListeners;
 
-    private List<PipelineEventListener> pipelineEventListeners;
+    private List<PipelineListener> pipelineListeners;
 
     @Override
     public Engine getObject() throws Exception {
@@ -75,21 +75,21 @@ public class EngineFactoryBean implements FactoryBean {
     }
 
     private void registerCustomEventListeners(EngineBuilder engineBuilder) {
-        if (jobEventListeners != null) {
-            for (JobEventListener jobEventListener : jobEventListeners) {
-                engineBuilder.jobEventListener(jobEventListener);
+        if (jobListeners != null) {
+            for (JobListener jobListener : jobListeners) {
+                engineBuilder.jobEventListener(jobListener);
             }
         }
 
-        if (recordReaderEventListeners != null) {
-            for (RecordReaderEventListener recordReaderEventListener : recordReaderEventListeners) {
-                engineBuilder.readerEventListener(recordReaderEventListener);
+        if (recordReaderListeners != null) {
+            for (RecordReaderListener recordReaderListener : recordReaderListeners) {
+                engineBuilder.readerEventListener(recordReaderListener);
             }
         }
 
-        if (pipelineEventListeners != null) {
-            for (PipelineEventListener pipelineEventListener : pipelineEventListeners) {
-                engineBuilder.pipelineEventListener(pipelineEventListener);
+        if (pipelineListeners != null) {
+            for (PipelineListener pipelineListener : pipelineListeners) {
+                engineBuilder.pipelineEventListener(pipelineListener);
             }
         }
         
@@ -115,16 +115,16 @@ public class EngineFactoryBean implements FactoryBean {
         this.processingPipeline = processingPipeline;
     }
 
-    public void setJobEventListeners(List<JobEventListener> jobEventListeners) {
-        this.jobEventListeners = jobEventListeners;
+    public void setJobListeners(List<JobListener> jobListeners) {
+        this.jobListeners = jobListeners;
     }
 
-    public void setRecordReaderEventListeners(List<RecordReaderEventListener> recordReaderEventListeners) {
-        this.recordReaderEventListeners = recordReaderEventListeners;
+    public void setRecordReaderListeners(List<RecordReaderListener> recordReaderListeners) {
+        this.recordReaderListeners = recordReaderListeners;
     }
 
-    public void setPipelineEventListeners(List<PipelineEventListener> pipelineEventListeners) {
-        this.pipelineEventListeners = pipelineEventListeners;
+    public void setPipelineListeners(List<PipelineListener> pipelineListeners) {
+        this.pipelineListeners = pipelineListeners;
     }
     
 }

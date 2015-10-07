@@ -24,7 +24,7 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.event.JobEventListener;
+import org.easybatch.core.api.listener.JobListener;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -38,7 +38,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JdbcConnectionJobListener implements JobEventListener {
+public class JdbcConnectionJobListener implements JobListener {
 
     private static final Logger LOGGER = Logger.getLogger(JdbcConnectionJobListener.class.getSimpleName());
 

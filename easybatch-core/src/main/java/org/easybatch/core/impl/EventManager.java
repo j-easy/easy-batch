@@ -25,82 +25,82 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.event.JobEventListener;
-import org.easybatch.core.api.event.PipelineEventListener;
-import org.easybatch.core.api.event.RecordReaderEventListener;
+import org.easybatch.core.api.listener.JobListener;
+import org.easybatch.core.api.listener.PipelineListener;
+import org.easybatch.core.api.listener.RecordReaderListener;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Manager of event listeners.
+ * Manager of job/steps listeners.
  *
  * @author Mario Mueller (mario@xenji.com)
  */
 class EventManager {
 
-    private Set<JobEventListener> jobEventListeners = new LinkedHashSet<JobEventListener>();
-    private Set<RecordReaderEventListener> recordReaderEventListeners = new LinkedHashSet<RecordReaderEventListener>();
-    private Set<PipelineEventListener> pipelineEventListeners = new LinkedHashSet<PipelineEventListener>();
+    private Set<JobListener> jobListeners = new LinkedHashSet<JobListener>();
+    private Set<RecordReaderListener> recordReaderListeners = new LinkedHashSet<RecordReaderListener>();
+    private Set<PipelineListener> pipelineListeners = new LinkedHashSet<PipelineListener>();
 
-    public void addJobEventListener(JobEventListener jobEventListener) {
-        jobEventListeners.add(jobEventListener);
+    public void addJobListener(JobListener jobListener) {
+        jobListeners.add(jobListener);
     }
 
-    public void addRecordReaderEventListener(RecordReaderEventListener recordReaderEventListener) {
-        recordReaderEventListeners.add(recordReaderEventListener);
+    public void addRecordReaderListener(RecordReaderListener recordReaderListener) {
+        recordReaderListeners.add(recordReaderListener);
     }
 
-    public void addPipelineEventListener(PipelineEventListener pipelineEventListener) {
-        pipelineEventListeners.add(pipelineEventListener);
+    public void addPipelineListener(PipelineListener pipelineListener) {
+        pipelineListeners.add(pipelineListener);
     }
 
     public void fireBeforeJobStart() {
-        for (JobEventListener eventListener : jobEventListeners) {
+        for (JobListener eventListener : jobListeners) {
             eventListener.beforeJobStart();
         }
     }
 
     public void fireAfterJobEnd() {
-        for (JobEventListener eventListener : jobEventListeners) {
+        for (JobListener eventListener : jobListeners) {
             eventListener.afterJobEnd();
         }
     }
 
     public void fireBeforeRecordReading() {
-        for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
+        for (RecordReaderListener eventListener : recordReaderListeners) {
             eventListener.beforeRecordReading();
         }
     }
 
     public void fireAfterRecordReading(Record record) {
-        for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
+        for (RecordReaderListener eventListener : recordReaderListeners) {
             eventListener.afterRecordReading(record);
         }
     }
 
     public void fireOnRecordReadingException(Throwable throwable) {
-        for (RecordReaderEventListener eventListener : recordReaderEventListeners) {
+        for (RecordReaderListener eventListener : recordReaderListeners) {
             eventListener.onRecordReadingException(throwable);
         }
     }
 
     public Object fireBeforeRecordProcessing(Record record) {
         Object recordToProcess = record;
-        for (PipelineEventListener eventListener : pipelineEventListeners) {
+        for (PipelineListener eventListener : pipelineListeners) {
             recordToProcess = eventListener.beforeRecordProcessing(recordToProcess);
         }
         return recordToProcess;
     }
 
     public void fireAfterRecordProcessing(Object record, Object processingResult) {
-        for (PipelineEventListener eventListener : pipelineEventListeners) {
+        for (PipelineListener eventListener : pipelineListeners) {
             eventListener.afterRecordProcessing(record, processingResult);
         }
     }
 
     public void fireOnRecordProcessingException(final Object record, final Throwable throwable) {
-        for (PipelineEventListener eventListener : pipelineEventListeners) {
+        for (PipelineListener eventListener : pipelineListeners) {
             eventListener.onRecordProcessingException(record, throwable);
         }
     }

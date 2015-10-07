@@ -25,9 +25,9 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.JobEventListener;
-import org.easybatch.core.api.event.PipelineEventListener;
-import org.easybatch.core.api.event.RecordReaderEventListener;
+import org.easybatch.core.api.listener.JobListener;
+import org.easybatch.core.api.listener.PipelineListener;
+import org.easybatch.core.api.listener.RecordReaderListener;
 import org.easybatch.core.util.Utils;
 
 import java.util.List;
@@ -278,16 +278,16 @@ final class EngineImpl implements Engine {
         pipeline.addProcessor(recordProcessor);
     }
 
-    void addJobEventListener(final JobEventListener jobEventListener) {
-        eventManager.addJobEventListener(jobEventListener);
+    void addJobListener(final JobListener jobListener) {
+        eventManager.addJobListener(jobListener);
     }
 
-    void addRecordReaderEventListener(final RecordReaderEventListener recordReaderEventListener) {
-        eventManager.addRecordReaderEventListener(recordReaderEventListener);
+    void addRecordReaderListener(final RecordReaderListener recordReaderListener) {
+        eventManager.addRecordReaderListener(recordReaderListener);
     }
     
-    void addPipelineEventListener(final PipelineEventListener pipelineEventListener) {
-        eventManager.addPipelineEventListener(pipelineEventListener);
+    void addPipelineListener(final PipelineListener pipelineListener) {
+        eventManager.addPipelineListener(pipelineListener);
     }
 
     void setStrictMode(final boolean strictMode) {

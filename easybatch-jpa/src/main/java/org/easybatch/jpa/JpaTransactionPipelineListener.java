@@ -24,7 +24,7 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.api.event.PipelineEventListener;
+import org.easybatch.core.api.listener.PipelineListener;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -38,7 +38,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JpaTransactionPipelineListener implements PipelineEventListener {
+public class JpaTransactionPipelineListener implements PipelineListener {
 
     private static final Logger LOGGER = Logger.getLogger(JpaTransactionPipelineListener.class.getSimpleName());
 

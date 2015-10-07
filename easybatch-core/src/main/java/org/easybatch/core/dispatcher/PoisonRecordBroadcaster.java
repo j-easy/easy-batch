@@ -26,16 +26,16 @@ package org.easybatch.core.dispatcher;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordDispatcher;
-import org.easybatch.core.api.event.JobEventListener;
+import org.easybatch.core.api.listener.JobListener;
 import org.easybatch.core.record.PoisonRecord;
 
 /**
- * A utility job event listener that broadcasts a {@link PoisonRecord} record at the end of the job
+ * A utility job listener that broadcasts a {@link PoisonRecord} record at the end of the job
  * using a delegate record dispatcher.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class PoisonRecordBroadcaster implements JobEventListener {
+public class PoisonRecordBroadcaster implements JobListener {
 
     private RecordDispatcher<Record> recordDispatcher;
 

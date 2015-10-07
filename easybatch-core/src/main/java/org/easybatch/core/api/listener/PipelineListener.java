@@ -22,37 +22,37 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.api.event;
-
-import org.easybatch.core.api.Record;
+package org.easybatch.core.api.listener;
 
 /**
- * Event interface collection for RecordReader events.
- * <p/>
- * You should implement this interface in your reader to
- * declare the ability to receive events from the batch process.
+ * Enables the implementing class to get notified before/after the processing pipeline.
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordReaderEventListener {
+public interface PipelineListener {
 
     /**
-     * Called before each record read
-     */
-    void beforeRecordReading();
-
-    /**
-     * Called after each record read operation.
+     * Called before the record gets processed.
+     * If you create a new record, you <strong>must</strong> keep the original header of the modified record.
      *
-     * @param record The record that has been read.
+     * @param record The record that will be processed.
      */
-    void afterRecordReading(final Record record);
+    Object beforeRecordProcessing(final Object record);
 
     /**
-     * Called when an exception occurs during record reading.
+     * Called after the record has been processed.
      *
-     * @param throwable the throwable thrown during record reading
+     * @param record           The processed record.
+     * @param processingResult The processing result if any, called from {@link org.easybatch.core.api.ComputationalRecordProcessor#getComputationResult()}
      */
-    void onRecordReadingException(final Throwable throwable);
+    void afterRecordProcessing(final Object record, final Object processingResult);
+
+    /**
+     * Called when an exception occurs during record processing
+     *
+     * @param record    the currently processed record
+     * @param throwable the exception occurred during record processing
+     */
+    void onRecordProcessingException(final Object record, final Throwable throwable);
     
 }

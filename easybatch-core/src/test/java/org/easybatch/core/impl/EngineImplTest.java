@@ -25,9 +25,9 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.JobEventListener;
-import org.easybatch.core.api.event.PipelineEventListener;
-import org.easybatch.core.api.event.RecordReaderEventListener;
+import org.easybatch.core.api.listener.JobListener;
+import org.easybatch.core.api.listener.PipelineListener;
+import org.easybatch.core.api.listener.RecordReaderListener;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.easybatch.core.record.GenericRecord;
@@ -74,11 +74,11 @@ public class EngineImplTest {
     @Mock
     private Object jobResult;
     @Mock
-    private JobEventListener jobEventListener;
+    private JobListener jobListener;
     @Mock
-    private RecordReaderEventListener recordReaderEventListener;
+    private RecordReaderListener recordReaderListener;
     @Mock
-    private PipelineEventListener pipelineEventListener;
+    private PipelineListener pipelineListener;
     @Mock
     private RecordReadingException recordReadingException;
     @Mock
@@ -330,44 +330,39 @@ public class EngineImplTest {
     }
 
     /*
-     * Job/Step event listeners tests
+     * Job/Step listeners tests
      */
 
     @Test
-    public void recordReaderEventListenerShouldBeInvokedForEachEvent() throws Exception {
+    public void recordReaderListenerShouldBeInvokedForEachEvent() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true, false);
         when(reader.readNextRecord()).thenReturn(record1);
         engine = new EngineBuilder()
                 .reader(reader)
-                .readerEventListener(recordReaderEventListener)
+                .readerEventListener(recordReaderListener)
                 .build();
         engine.call();
 
-        verify(recordReaderEventListener).beforeRecordReading();
-        verify(recordReaderEventListener).afterRecordReading(record1);
+        verify(recordReaderListener).beforeRecordReading();
+        verify(recordReaderListener).afterRecordReading(record1);
     }
 
     @Test
-    public void pipelineEventListenersShouldBeInvokedForEachEvent() throws Exception {
+    public void pipelineListenerShouldBeInvokedForEachEvent() throws Exception {
 
-        when(pipelineEventListener.beforeRecordProcessing(record1)).thenReturn(record1);
-        when(pipelineEventListener.beforeRecordProcessing(record2)).thenReturn(record2);
+        when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
+        when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(record2);
 
         engine = new EngineBuilder()
                 .reader(reader)
-                .readerEventListener(recordReaderEventListener)
-                .pipelineEventListener(pipelineEventListener)
+                .pipelineEventListener(pipelineListener)
                 .build();
         engine.call();
 
-        verify(recordReaderEventListener, times(2)).beforeRecordReading();
-        verify(recordReaderEventListener).afterRecordReading(record1);
-        verify(recordReaderEventListener).afterRecordReading(record2);
-
-        verify(pipelineEventListener).beforeRecordProcessing(record1);
-        verify(pipelineEventListener).afterRecordProcessing(record1, null);
-        verify(pipelineEventListener).beforeRecordProcessing(record2);
-        verify(pipelineEventListener).afterRecordProcessing(record2, null);
+        verify(pipelineListener).beforeRecordProcessing(record1);
+        verify(pipelineListener).afterRecordProcessing(record1, null);
+        verify(pipelineListener).beforeRecordProcessing(record2);
+        verify(pipelineListener).afterRecordProcessing(record2, null);
     }
 
 }

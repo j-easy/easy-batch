@@ -25,9 +25,9 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.*;
-import org.easybatch.core.api.event.JobEventListener;
-import org.easybatch.core.api.event.PipelineEventListener;
-import org.easybatch.core.api.event.RecordReaderEventListener;
+import org.easybatch.core.api.listener.JobListener;
+import org.easybatch.core.api.listener.PipelineListener;
+import org.easybatch.core.api.listener.RecordReaderListener;
 
 import java.util.ArrayList;
 
@@ -228,41 +228,41 @@ public final class EngineBuilder {
     }
 
     /**
-     * Register a job event listener.
-     * See {@link JobEventListener} for available callback methods.
+     * Register a job listener.
+     * See {@link JobListener} for available callback methods.
      *
-     * @param jobEventListener The event listener to add.
+     * @param jobListener The job listener to add.
      * @return the engine builder
      */
-    public EngineBuilder jobEventListener(final JobEventListener jobEventListener) {
-        checkNotNull(jobEventListener, "job event listener");
-        engine.addJobEventListener(jobEventListener);
+    public EngineBuilder jobEventListener(final JobListener jobListener) {
+        checkNotNull(jobListener, "job listener");
+        engine.addJobListener(jobListener);
         return this;
     }
 
     /**
-     * Register a record reader event listener.
-     * See {@link RecordReaderEventListener} for available callback methods.
+     * Register a record reader listener.
+     * See {@link RecordReaderListener} for available callback methods.
      *
-     * @param recordReaderEventListener The record reader listener to add.
+     * @param recordReaderListener The record reader listener to add.
      * @return the engine builder
      */
-    public EngineBuilder readerEventListener(final RecordReaderEventListener recordReaderEventListener) {
-        checkNotNull(recordReaderEventListener, "record reader event listener");
-        engine.addRecordReaderEventListener(recordReaderEventListener);
+    public EngineBuilder readerEventListener(final RecordReaderListener recordReaderListener) {
+        checkNotNull(recordReaderListener, "record reader listener");
+        engine.addRecordReaderListener(recordReaderListener);
         return this;
     }
 
     /**
-     * Register a pipeline event listener.
-     * See {@link PipelineEventListener} for available callback methods.
+     * Register a pipeline listener.
+     * See {@link PipelineListener} for available callback methods.
      *
-     * @param pipelineEventListener The event listener to add.
+     * @param pipelineListener The pipeline listener to add.
      * @return the engine builder
      */
-    public EngineBuilder pipelineEventListener(final PipelineEventListener pipelineEventListener) {
-        checkNotNull(pipelineEventListener, "pipeline event listener");
-        engine.addPipelineEventListener(pipelineEventListener);
+    public EngineBuilder pipelineEventListener(final PipelineListener pipelineListener) {
+        checkNotNull(pipelineListener, "pipeline listener");
+        engine.addPipelineListener(pipelineListener);
         return this;
     }
 

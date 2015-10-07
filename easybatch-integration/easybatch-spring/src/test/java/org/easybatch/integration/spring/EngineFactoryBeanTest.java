@@ -27,9 +27,9 @@ package org.easybatch.integration.spring;
 import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.RecordProcessor;
 import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.api.event.JobEventListener;
-import org.easybatch.core.api.event.PipelineEventListener;
-import org.easybatch.core.api.event.RecordReaderEventListener;
+import org.easybatch.core.api.listener.JobListener;
+import org.easybatch.core.api.listener.PipelineListener;
+import org.easybatch.core.api.listener.RecordReaderListener;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,11 +49,11 @@ public class EngineFactoryBeanTest {
     @Mock
     private RecordProcessor recordProcessor;
     @Mock
-    private JobEventListener jobEventListener;
+    private JobListener jobListener;
     @Mock
-    private RecordReaderEventListener recordReaderEventListener;
+    private RecordReaderListener recordReaderListener;
     @Mock
-    private PipelineEventListener pipelineEventListener;
+    private PipelineListener pipelineListener;
 
     @Before
     public void setUp() throws Exception {
@@ -62,9 +62,9 @@ public class EngineFactoryBeanTest {
         engineFactoryBean.setRecordReader(recordReader);
         engineFactoryBean.setProcessingPipeline(singletonList(recordProcessor));
 
-        engineFactoryBean.setJobEventListeners(singletonList(jobEventListener));
-        engineFactoryBean.setRecordReaderEventListeners(singletonList(recordReaderEventListener));
-        engineFactoryBean.setPipelineEventListeners(singletonList(pipelineEventListener));
+        engineFactoryBean.setJobListeners(singletonList(jobListener));
+        engineFactoryBean.setRecordReaderListeners(singletonList(recordReaderListener));
+        engineFactoryBean.setPipelineListeners(singletonList(pipelineListener));
     }
 
     @Test

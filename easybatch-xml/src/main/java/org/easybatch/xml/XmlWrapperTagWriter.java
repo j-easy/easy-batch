@@ -24,7 +24,7 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.event.JobEventListener;
+import org.easybatch.core.api.listener.JobListener;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -40,7 +40,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class XmlWrapperTagWriter implements JobEventListener {
+public class XmlWrapperTagWriter implements JobListener {
 
     private static final Logger LOGGER = Logger.getLogger(XmlWrapperTagWriter.class.getSimpleName());
 

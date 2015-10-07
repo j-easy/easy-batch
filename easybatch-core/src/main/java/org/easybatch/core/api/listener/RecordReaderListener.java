@@ -22,28 +22,34 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.api.event;
+package org.easybatch.core.api.listener;
+
+import org.easybatch.core.api.Record;
 
 /**
- * Enables the implementing class to get an event on different steps within the batch job.
- * <p/>
- * Use this interface when you want a listener that is not bound to a specific processor type, otherwise look at:
- * <ul>
- * <li>{@link RecordReaderEventListener}: for pre/post reading events</li>
- * <li>{@link PipelineEventListener}: for pre/post processing events</li>
- * </ul>
+ * Enables the implementing class to get notified before/after reading a record.
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface JobEventListener {
+public interface RecordReaderListener {
 
     /**
-     * Called before the {@link org.easybatch.core.api.RecordReader#open()} call.
+     * Called before each record read operation.
      */
-    void beforeJobStart();
+    void beforeRecordReading();
 
     /**
-     * Called after the {@link org.easybatch.core.api.RecordReader#close()} call.
+     * Called after each record read operation.
+     *
+     * @param record The record that has been read.
      */
-    void afterJobEnd();
+    void afterRecordReading(final Record record);
+
+    /**
+     * Called when an exception occurs during record reading.
+     *
+     * @param throwable the throwable thrown during record reading
+     */
+    void onRecordReadingException(final Throwable throwable);
+    
 }

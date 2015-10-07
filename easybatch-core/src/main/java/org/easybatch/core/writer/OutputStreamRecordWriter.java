@@ -26,7 +26,7 @@ package org.easybatch.core.writer;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordWritingException;
-import org.easybatch.core.api.event.JobEventListener;
+import org.easybatch.core.api.listener.JobListener;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -38,7 +38,7 @@ import static org.easybatch.core.util.Utils.*;
  * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
  * <p/>
  * Users of this class are responsible for opening/closing the output stream, maybe using
- * a {@link JobEventListener}.
+ * a {@link JobListener}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -52,7 +52,7 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter {
      * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
      * <p/>
      * The user of this class is responsible for opening/closing the output stream, maybe using
-     * a {@link JobEventListener}.
+     * a {@link JobListener}.
      *
      * @param outputStreamWriter the output stream to write records to.
      */
@@ -64,7 +64,7 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter {
      * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
      * <p/>
      * The user of this class is responsible for opening/closing the output stream, maybe using
-     * a {@link JobEventListener}.
+     * a {@link JobListener}.
      *
      * @param outputStreamWriter the output stream to write records to.
      * @param lineSeparator the line separator.

@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.event.PipelineEventListener;
+import org.easybatch.core.api.listener.PipelineListener;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -38,7 +38,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class HibernateTransactionPipelineListener implements PipelineEventListener {
+public class HibernateTransactionPipelineListener implements PipelineListener {
 
     private static final Logger LOGGER = Logger.getLogger(HibernateTransactionPipelineListener.class.getSimpleName());
 

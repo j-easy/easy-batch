@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains event listeners API.
+ * This package contains listeners API.
  */
-package org.easybatch.core.api.event;
+package org.easybatch.core.api.listener;

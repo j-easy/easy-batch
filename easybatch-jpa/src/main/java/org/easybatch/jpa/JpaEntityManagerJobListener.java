@@ -24,7 +24,7 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.api.event.JobEventListener;
+import org.easybatch.core.api.listener.JobListener;
 
 import javax.persistence.EntityManager;
 import java.util.logging.Logger;
@@ -36,7 +36,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JpaEntityManagerJobListener implements JobEventListener {
+public class JpaEntityManagerJobListener implements JobListener {
 
     private static final Logger LOGGER = Logger.getLogger(JpaEntityManagerJobListener.class.getSimpleName());
 
