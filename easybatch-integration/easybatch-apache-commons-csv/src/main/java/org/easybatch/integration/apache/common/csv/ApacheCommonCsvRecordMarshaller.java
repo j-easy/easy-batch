@@ -26,6 +26,7 @@ package org.easybatch.integration.apache.common.csv;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.QuoteMode;
 import org.easybatch.core.api.RecordFieldExtractor;
 import org.easybatch.core.api.RecordMarshaller;
 import org.easybatch.core.api.RecordMarshallingException;
@@ -40,41 +41,72 @@ import java.io.StringWriter;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller {
+    
+    public static final char DEFAULT_DELIMITER = ',';
 
+    public static final char DEFAULT_QUALIFIER = '\"';
+    
     private final RecordFieldExtractor fieldExtractor;
+    
     private CSVFormat csvFormat;
 
     /**
      * Create a record marshaller.
      *
-     * @param type the type of object to marshal
+     * @param type   the type of object to marshal
      * @param fields the list of fields to marshal in order
-     * @param csvFormat a pre-configured {@link CSVFormat} instance
-     * @throws IntrospectionException if the object to marshal cannot be introspected
+     * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(final Class type, final String[] fields, final CSVFormat csvFormat) throws IntrospectionException {
-        this(new BeanRecordFieldExtractor(type, fields), csvFormat);
+    public ApacheCommonCsvRecordMarshaller(final Class type, final String[] fields) throws IntrospectionException {
+        this(type, fields, DEFAULT_DELIMITER, DEFAULT_QUALIFIER);
+    }
+
+    /**
+     * Create a record marshaller.
+     *
+     * @param type      the type of object to marshal
+     * @param fields    the list of fields to marshal in order
+     * @param delimiter the field delimiter
+     * @throws IntrospectionException If the object to marshal cannot be introspected
+     */
+    public ApacheCommonCsvRecordMarshaller(final Class type, final String[] fields, final char delimiter) throws IntrospectionException {
+        this(type, fields, delimiter, DEFAULT_QUALIFIER);
+    }
+
+    /**
+     * Create a record marshaller.
+     *
+     * @param type      the type of object to marshal
+     * @param fields    the list of fields to marshal in order
+     * @param delimiter the field delimiter
+     * @param qualifier the field qualifier
+     * @throws IntrospectionException If the object to marshal cannot be introspected
+     */
+    public ApacheCommonCsvRecordMarshaller(final Class type, final String[] fields, final char delimiter, final char qualifier) throws IntrospectionException {
+        this(new BeanRecordFieldExtractor(type, fields), delimiter, qualifier);
     }
 
     /**
      * Create a record marshaller.
      *
      * @param fieldExtractor the field extractor
-     * @param csvFormat a pre-configured {@link CSVFormat} instance
-     * @throws IntrospectionException if the object to marshal cannot be introspected
+     * @param delimiter      the field delimiter
+     * @param qualifier      the field qualifier
+     * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(final RecordFieldExtractor fieldExtractor, final CSVFormat csvFormat) throws IntrospectionException {
+    public ApacheCommonCsvRecordMarshaller(RecordFieldExtractor fieldExtractor, final char delimiter, final char qualifier) throws IntrospectionException {
         this.fieldExtractor = fieldExtractor;
-        this.csvFormat = csvFormat;
+        this.csvFormat = CSVFormat.newFormat(delimiter)
+                .withQuote(qualifier)
+                .withQuoteMode(QuoteMode.ALL)
+                .withRecordSeparator(null);// recordSeparator is forced to null to avoid CSVPrinter to print new lines. New lines are written later by EasyBatch RecordWriter
     }
 
     @Override
     public String processRecord(final Object record) throws RecordMarshallingException {
         try {
             StringWriter stringWriter = new StringWriter();
-            // recordSeparator is forced to null to avoid CSVPrinter to print new lines.
-            // New lines are written later by EasyBatch RecordWriter
-            CSVPrinter csvPrinter = new CSVPrinter(stringWriter, csvFormat.withRecordSeparator(null));
+            CSVPrinter csvPrinter = new CSVPrinter(stringWriter, csvFormat);
             Iterable<?> iterable = fieldExtractor.extractFields(record);
             csvPrinter.printRecord(iterable);
             csvPrinter.flush();

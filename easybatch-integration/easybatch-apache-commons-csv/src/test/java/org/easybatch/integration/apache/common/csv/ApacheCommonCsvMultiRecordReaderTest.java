@@ -34,9 +34,7 @@ import org.easybatch.core.record.MultiRecord;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.FileReader;
-import java.net.URL;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,7 +49,7 @@ public class ApacheCommonCsvMultiRecordReaderTest {
     @Before
     public void setUp() throws Exception {
         CSVFormat csvFormat = CSVFormat.DEFAULT;
-        CSVParser parser = new CSVParser(new FileReader(new File(getDataSource("/tweets.csv").getFile())), csvFormat);
+        CSVParser parser = new CSVParser(new FileReader("src/test/resources/tweets.csv"), csvFormat);
         apacheCommonCsvMultiRecordReader = new ApacheCommonCsvMultiRecordReader(parser, CHUNK_SIZE);
     }
 
@@ -91,10 +89,6 @@ public class ApacheCommonCsvMultiRecordReaderTest {
         assertThat(tweet.get(0)).isEqualTo("3");
         assertThat(tweet.get(1)).isEqualTo("baz");
         assertThat(tweet.get(2)).isEqualTo("hi");
-    }
-
-    private URL getDataSource(String name) {
-        return this.getClass().getResource(name);
     }
 
 }

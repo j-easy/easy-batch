@@ -24,30 +24,55 @@
 
 package org.easybatch.integration.apache.common.csv;
 
-import org.easybatch.core.api.RecordMarshallingException;
-import org.junit.Before;
-import org.junit.Test;
+public class Tweet {
 
-import static org.assertj.core.api.Assertions.assertThat;
+    private int id;
 
-public class ApacheCommonCsvRecordMarshallerTest {
+    private String user;
 
-    private ApacheCommonCsvRecordMarshaller marshaller;
+    private String message;
 
-    @Before
-    public void setUp() throws Exception {
-        marshaller = new ApacheCommonCsvRecordMarshaller(Foo.class, new String[]{"firstName", "lastName", "married"}, ';', '\'');
+    public Tweet() {
     }
 
-    @Test
-    public void marshal() throws RecordMarshallingException {
-        Foo foo = new Foo();
-        foo.setFirstName("foo");
-        foo.setLastName("bar");
-
-        String expected = "'foo';'bar';'false'";
-        String actual = marshaller.processRecord(foo);
-
-        assertThat(actual).isEqualTo(expected);
+    public Tweet(int id, String user, String message) {
+        this.id = id;
+        this.user = user;
+        this.message = message;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Tweet{");
+        sb.append("id=").append(id);
+        sb.append(", user='").append(user).append('\'');
+        sb.append(", message='").append(message).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
+
 }
