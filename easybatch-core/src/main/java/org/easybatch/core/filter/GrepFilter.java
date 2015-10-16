@@ -32,7 +32,7 @@ import org.easybatch.core.util.Utils;
 /**
  * Convenient filter that mimics the unix grep utility: it keeps records containing the given pattern
  * instead of filtering them.
- * <p/>
+ * <p>
  * Should be used with {@link org.easybatch.core.record.StringRecord} type. Search is case sensitive.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -41,6 +41,11 @@ public class GrepFilter implements RecordFilter<StringRecord> {
 
     private String pattern;
 
+    /**
+     * Create a {@link GrepFilter} instance.
+     *
+     * @param pattern the pattern to look for
+     */
     public GrepFilter(final String pattern) {
         Utils.checkNotNull(pattern, "pattern");
         this.pattern = pattern;

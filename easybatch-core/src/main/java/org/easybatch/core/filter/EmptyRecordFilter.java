@@ -35,7 +35,6 @@ import org.easybatch.core.record.StringRecord;
  */
 public class EmptyRecordFilter implements RecordFilter<StringRecord> {
 
-    @Override
     public StringRecord processRecord(final StringRecord record) throws RecordFilteringException {
         String payload = record.getPayload();
         if (payload.isEmpty()) {

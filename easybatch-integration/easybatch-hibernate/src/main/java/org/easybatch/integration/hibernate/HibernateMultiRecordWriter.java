@@ -39,6 +39,11 @@ public class HibernateMultiRecordWriter<T> extends AbstractMultiRecordWriter {
 
     private HibernateRecordWriter<T> hibernateRecordWriter;
 
+    /**
+     * Create a {@link HibernateMultiRecordWriter}.
+     * 
+     * @param session the session to use to write objects
+     */
     public HibernateMultiRecordWriter(final Session session) {
         this.hibernateRecordWriter = new HibernateRecordWriter<T>(session);
     }

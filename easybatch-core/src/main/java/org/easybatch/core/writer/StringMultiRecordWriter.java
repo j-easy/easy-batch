@@ -42,6 +42,7 @@ public class StringMultiRecordWriter extends AbstractMultiRecordWriter {
 
     /**
      * Writes a chunk of records to a {@link StringWriter}.
+     *
      * @param stringWriter the string writer to write records to
      */
     public StringMultiRecordWriter(final StringWriter stringWriter) {

@@ -32,7 +32,7 @@ package org.easybatch.core.reader;
 public class StringMultiRecordReader extends AbstractMultiRecordReader {
 
     /**
-     * Constructs a string multi-record reader.
+     * Create a string multi-record reader.
      *
      * @param dataSource the data source to read records from
      * @param chunkSize the number of records to read at a time

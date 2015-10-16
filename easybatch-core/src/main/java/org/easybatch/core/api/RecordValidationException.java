@@ -25,7 +25,7 @@
 package org.easybatch.core.api;
 
 /**
- * Exception thrown when an error occurs during record mapping.
+ * Exception thrown during record validation.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

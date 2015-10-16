@@ -30,12 +30,18 @@ import org.easybatch.core.record.GenericRecord;
 import javax.jms.Message;
 
 /**
- * Record containing a JMS message.
+ * Record containing a JMS {@link Message} as payload.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JmsRecord extends GenericRecord<Message> {
 
+    /**
+     * Create a {@link JmsRecord}.
+     *
+     * @param header the record header
+     * @param payload the record payload
+     */
     public JmsRecord(final Header header, final Message payload) {
         super(header, payload);
     }

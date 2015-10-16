@@ -37,7 +37,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Reads record from an {@link Iterable} data source.
- * <p/>
+ * <p>
  * This reader produces {@link GenericRecord} instances containing original objects from the datasource.
  * You can use a {@link org.easybatch.core.mapper.GenericRecordMapper} to get the payload of a generic record
  * which is the original object from the datasource
@@ -59,7 +59,7 @@ public class IterableRecordReader<T> implements RecordReader {
 
     /**
      * Reads record from an {@link Iterable} data source.
-     * <p/>
+     * <p>
      * This reader produces {@link GenericRecord} instances containing original objects from the datasource.
      * You can use a {@link org.easybatch.core.mapper.GenericRecordMapper} to get the payload of a generic record
      * which is the original object from the datasource

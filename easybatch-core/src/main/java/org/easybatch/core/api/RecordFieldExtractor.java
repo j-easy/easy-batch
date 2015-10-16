@@ -26,12 +26,14 @@ package org.easybatch.core.api;
 
 /**
  * Interface for field extractor.
- * This will be used by RecordMarshaller to convert a record to an iterable of its fields.
+ * This will be used by {@link RecordMarshaller} to convert a record to an iterable of its fields.
  *
  * @author Rémi Alvergnat (toilal.dev@gmail.com)
  */
 public interface RecordFieldExtractor<T> {
     /**
+     * Extract field from the record.
+     *
      * @param record the record
      * @return an array containing item's parts
      */

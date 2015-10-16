@@ -34,15 +34,15 @@ import java.util.List;
 
 /**
  * This mapper extracts the list of objects contained in a MultiRecord.
- * <p/>
+ * <p>
  * Example: Let MR = MultiRecord {
- * <p/>
+ * <p>
  * record1: StringRecord with payload "foo",
- * <p/>
+ * <p>
  * record2: StringRecord with payload "bar"
- * <p/>
+ * <p>
  * }
- * <p/>
+ * <p>
  * GenericMultiRecordMapper.mapRecord(MR) yields in ["foo", "bar"]
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

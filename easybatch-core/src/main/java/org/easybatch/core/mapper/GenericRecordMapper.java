@@ -29,11 +29,11 @@ import org.easybatch.core.api.RecordMapper;
 
 /**
  * Convenient no-op record mapper that returns the record's <strong>payload</strong> as is.
- * <p/>
+ * <p>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class GenericRecordMapper<P> implements RecordMapper<Record<P>, Object> {
+public class GenericRecordMapper<P> implements RecordMapper<Record<P>, P> {
 
     @Override
     public P processRecord(Record<P> record) {

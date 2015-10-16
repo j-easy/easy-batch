@@ -39,7 +39,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 /**
  * Reader that uses <a href="http://commons.apache.org/proper/commons-csv/">Apache Common CSV</a>
  * to read {@link ApacheCommonCsvRecord} instances from a CSV data source.
- * <p/>
+ * <p>
  * This reader produces {@link ApacheCommonCsvRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -53,7 +53,7 @@ public class ApacheCommonCsvRecordReader implements RecordReader {
     /**
      * Reader that uses <a href="http://commons.apache.org/proper/commons-csv/">Apache Common CSV</a>
      * to read {@link ApacheCommonCsvRecord} instances from a CSV data source.
-     * <p/>
+     * <p>
      * This reader produces {@link ApacheCommonCsvRecord} instances.
      */
     public ApacheCommonCsvRecordReader(final CSVParser parser) {

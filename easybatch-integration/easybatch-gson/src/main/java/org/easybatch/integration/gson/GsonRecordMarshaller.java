@@ -39,12 +39,15 @@ public class GsonRecordMarshaller implements RecordMarshaller {
 
     private Gson gson;
 
+    /**
+     * Create a {@link GsonRecordMarshaller}.
+     */
     public GsonRecordMarshaller() {
         gson = new Gson();
     }
 
     /**
-     * Create a Json record marshaller.
+     * Create a {@link GsonRecordMarshaller}.
      *
      * @param gson a pre-configured Gson instance
      */

@@ -30,7 +30,6 @@ import org.easybatch.core.record.StringRecord;
 
 /**
  * A {@link org.easybatch.core.api.RecordFilter} that filters string records starting with one of the given prefixes.
- * <p/>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -42,15 +41,14 @@ public class StartWithStringRecordFilter implements RecordFilter<StringRecord> {
     private String[] prefixes;
 
     /**
+     * Create a {@link StartWithStringRecordFilter} instance.
+     *
      * @param prefixes prefixes that cause the record to be filtered.
      */
     public StartWithStringRecordFilter(final String... prefixes) {
         this.prefixes = prefixes;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public StringRecord processRecord(final StringRecord record) throws RecordFilteringException {
         String payload = record.getPayload();
         for (String prefix : prefixes) {

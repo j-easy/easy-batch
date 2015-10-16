@@ -32,6 +32,7 @@ import org.easybatch.core.api.TypeConverter;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public abstract class AbstractRecordMapper<T> {
+    
     /**
      * The object mapper.
      */

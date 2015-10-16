@@ -31,7 +31,7 @@ import org.easybatch.core.record.GenericRecord;
 import java.sql.ResultSet;
 
 /**
- * A {@link Record} implementation that has database row as raw content.
+ * A {@link Record} implementation that has {@link java.sql.ResultSet} as payload.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

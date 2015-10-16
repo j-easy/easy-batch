@@ -36,6 +36,11 @@ import org.easybatch.core.mapper.AbstractRecordMapper;
  */
 public class ApacheCommonCsvRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<ApacheCommonCsvRecord, T> {
 
+    /**
+     * Create a {@link ApacheCommonCsvRecordMapper}.
+     *
+     * @param recordClass the target type class
+     */
     public ApacheCommonCsvRecordMapper(Class<? extends T> recordClass) {
         super(recordClass);
     }

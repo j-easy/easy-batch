@@ -53,7 +53,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, T> {
     private CsvToBean csvToBean;
 
     /**
-     * Create a record mapper.
+     * Create a {@link OpenCsvRecordMapper}.
      *
      * @param recordClass The target type
      * @param columns Fields name in the same order as in the delimited record

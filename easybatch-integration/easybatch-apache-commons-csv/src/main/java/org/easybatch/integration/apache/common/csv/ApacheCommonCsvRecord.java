@@ -35,6 +35,12 @@ import org.easybatch.core.record.GenericRecord;
  */
 public class ApacheCommonCsvRecord extends GenericRecord<CSVRecord> {
 
+    /**
+     * Create a {@link ApacheCommonCsvRecord}.
+     *
+     * @param header the record header
+     * @param payload the record payload
+     */
     public ApacheCommonCsvRecord(final Header header, final CSVRecord payload) {
         super(header, payload);
     }

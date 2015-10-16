@@ -33,7 +33,7 @@ package org.easybatch.core.reader;
 public class IterableMultiRecordReader<T> extends AbstractMultiRecordReader {
 
     /**
-     * Constructs an iterable multi-record reader.
+     * Create an iterable multi-record reader.
      *
      * @param dataSource the data source to read records from
      * @param chunkSize the number of records to read at a time

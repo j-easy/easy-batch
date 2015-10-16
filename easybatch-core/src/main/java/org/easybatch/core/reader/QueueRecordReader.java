@@ -48,7 +48,12 @@ public class QueueRecordReader implements RecordReader {
      */
     private BlockingQueue<Record> queue;
 
-    public QueueRecordReader(BlockingQueue<Record> queue) {
+    /**
+     * Create a {@link QueueRecordReader}.
+     *
+     * @param queue the queue to read records from
+     */
+    public QueueRecordReader(final BlockingQueue<Record> queue) {
         this.queue = queue;
     }
 

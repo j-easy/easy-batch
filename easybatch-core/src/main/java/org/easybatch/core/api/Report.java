@@ -33,7 +33,7 @@ import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
- * Class holding batch reporting data.
+ * Class holding reporting data.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

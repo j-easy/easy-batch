@@ -91,7 +91,7 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
     private boolean fieldNamesRetrievedFromHeader;
 
     /**
-     * Constructs a default DelimitedRecordMapper instance.
+     * Create a {@link DelimitedRecordMapper} instance.
      * Column names and expected record size will be calculated from the header record.
      * and set to fields with the same name of the target object.
      *
@@ -103,7 +103,7 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
     }
 
     /**
-     * Constructs a DelimitedRecordMapper instance.
+     * Create a {@link DelimitedRecordMapper} instance.
      * Expected record size will be calculated from the header record.
      *
      * @param recordClass the target domain object class
@@ -116,7 +116,7 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
     }
 
     /**
-     * Constructs a DelimitedRecordMapper instance.
+     * Create a {@link DelimitedRecordMapper} instance.
      *
      * @param recordClass          the target domain object class
      * @param fieldNames           a String array containing target type field names in the same order as in the delimited flat file.
@@ -128,7 +128,7 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
     }
 
     /**
-     * Constructs a DelimitedRecordMapper instance.
+     * Create a {@link DelimitedRecordMapper} instance.
      * Expected record size will be calculated from the header record.
      *
      * @param recordClass     the target domain object class
@@ -140,7 +140,7 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
     }
 
     /**
-     * Constructs a DelimitedRecordMapper instance.
+     * Create a {@link DelimitedRecordMapper} instance.
      * Expected record size will be calculated from the header record.
      *
      * @param recordClass     the target domain object class
@@ -154,7 +154,7 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
     }
 
     /**
-     * Constructs a DelimitedRecordMapper instance.
+     * Create a {@link DelimitedRecordMapper} instance.
      *
      * @param recordClass          the target domain object class
      * @param fieldsPositions      array of indexes of fields to retain

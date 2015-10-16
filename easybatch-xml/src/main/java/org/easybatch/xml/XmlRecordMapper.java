@@ -38,7 +38,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 
 /**
- * A record mapper that maps xml records to domain objects annotated with JaxB2 annotations.
+ * A record mapper that maps xml records to domain objects annotated with JAXB annotations.
  *
  * @param <T> the target domain object type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -46,17 +46,17 @@ import java.io.File;
 public class XmlRecordMapper<T> implements RecordMapper<XmlRecord, T> {
 
     /**
-     * Jaxb context.
+     * JAXB context.
      */
     private JAXBContext jaxbContext;
 
     /**
-     * The Jaxb Unmarshaller used to map xml records to domain objects.
+     * The JAXB Unmarshaller used to map xml records to domain objects.
      */
     private Unmarshaller jaxbUnmarshaller;
 
     /**
-     * Creates an XmlRecordMapper. Using this constructor, no validation against an xsd will be applied.
+     * Create a {@link XmlRecordMapper}. Using this constructor, no validation against an xsd will be applied.
      *
      * @param type the target domain object type.
      * @throws JAXBException thrown if an error occurs during the creation of Jaxb context.
@@ -67,7 +67,7 @@ public class XmlRecordMapper<T> implements RecordMapper<XmlRecord, T> {
     }
 
     /**
-     * Creates an XmlRecordMapper.
+     * Create a {@link XmlRecordMapper}.
      *
      * @param type the target domain object type.
      * @param xsd  the xsd file against which xml records will be validated
@@ -83,7 +83,7 @@ public class XmlRecordMapper<T> implements RecordMapper<XmlRecord, T> {
     }
 
     /**
-     * Creates a XmlRecordMapper with a pre-configured Unmarshaller (with custom adapter, custom listener, etc).
+     * Create a {@link }XmlRecordMapper} with a pre-configured Unmarshaller (with custom adapter, custom listener, etc).
      *
      * @param unmarshaller the unmarshaller to use
      */

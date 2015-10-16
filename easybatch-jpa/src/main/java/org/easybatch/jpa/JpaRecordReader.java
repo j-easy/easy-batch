@@ -40,10 +40,10 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Reader that reads data using the Java Persistence API.
- * <p/>
+ * <p>
  * This reader produces {@link GenericRecord} instances that can be mapped
  * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects.
- * <p/>
+ * <p>
  * Use the <code>fetchSize</code> parameter to specify the number of records to read from the database at a time.
  *
  * @param <T> the type of objects this reader will read.
@@ -73,10 +73,10 @@ public class JpaRecordReader<T> implements RecordReader {
 
     /**
      * Reader that reads data using the Java Persistence API.
-     * <p/>
+     * <p>
      * This reader produces {@link GenericRecord} instances that can be mapped
      * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects.
-     * <p/>
+     * <p>
      * Use the <code>fetchSize</code> parameter to specify the number of records to read from the database at a time.
      *
      * @param entityManagerFactory the entity manager factory

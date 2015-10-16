@@ -36,7 +36,7 @@ import java.util.concurrent.BlockingQueue;
 import static java.lang.String.format;
 
 /**
- * A record dispatcher that dispatches records to a list of queues based on their content.
+ * A record dispatcher that dispatches records to a list of {@link BlockingQueue} based on their content.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

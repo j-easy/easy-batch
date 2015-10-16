@@ -34,7 +34,7 @@ import java.util.Iterator;
 
 /**
  * Marshals a POJO to CSV format.
- * <p/>
+ * <p>
  * <strong>This marshaller does not support recursive marshalling.</strong>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

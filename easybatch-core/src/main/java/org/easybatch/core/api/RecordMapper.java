@@ -34,10 +34,11 @@ package org.easybatch.core.api;
 public interface RecordMapper<I, O> extends RecordProcessor<I, O> {
 
     /**
+     * Map the record th a domain object.
      *
-     * @param record the record to process.
-     * @return
-     * @throws RecordMappingException
+     * @param record the record to map.
+     * @return the mapped record (ie the domain object)
+     * @throws RecordMappingException if an error occurs during record mapping
      */
     @Override
     O processRecord(I record) throws RecordMappingException;

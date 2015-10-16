@@ -37,7 +37,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Reader that reads documents from a MongoDB collection.
- * <p/>
+ * <p>
  * This reader produces {@link MongoDBRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -60,11 +60,11 @@ public class MongoDBRecordReader implements RecordReader {
 
     /**
      * Reader that reads documents from a MongoDB collection.
-     * <p/>
+     * <p>
      * This reader produces {@link MongoDBRecord} instances.
      *
      * @param collection the collection to read documents from
-     * @param query the query to fetch data
+     * @param query      the query to fetch data
      */
     public MongoDBRecordReader(final DBCollection collection, final DBObject query) {
         this.collection = collection;

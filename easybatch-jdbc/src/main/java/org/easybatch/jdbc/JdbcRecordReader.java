@@ -41,8 +41,8 @@ import static org.easybatch.core.util.Utils.checkArgument;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * A {@link org.easybatch.core.api.RecordReader} that reads records from a database using jdbc API.
- * <p/>
+ * A {@link org.easybatch.core.api.RecordReader} that reads records from a database using JDBC API.
+ * <p>
  * This reader produces {@link JdbcRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

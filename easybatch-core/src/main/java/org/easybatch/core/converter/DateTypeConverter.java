@@ -34,7 +34,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
 
 /**
  * java.util.Date type converter.
- * Converts a String date (by default in the "yyyy-MM-dd" format) to a java.util.Date type.
+ * Converts a String date (by default in the "yyyy-MM-dd" format) to a {@link java.util.Date} type.
  * Does not accept null or empty strings.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

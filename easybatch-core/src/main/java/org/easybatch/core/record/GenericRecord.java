@@ -44,6 +44,12 @@ public class GenericRecord<P> implements Record<P> {
      */
     protected P payload;
 
+    /**
+     * Create a {@link GenericRecord}.
+     *
+     * @param header the record header
+     * @param payload the record payload
+     */
     public GenericRecord(final Header header, final P payload) {
         this.header = header;
         this.payload = payload;

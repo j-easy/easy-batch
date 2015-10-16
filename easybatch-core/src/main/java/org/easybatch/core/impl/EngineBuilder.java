@@ -35,6 +35,7 @@ import static org.easybatch.core.util.Utils.*;
 
 /**
  * Engine instance builder.
+ * This is the main entry point to configure a job.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -54,7 +55,7 @@ public final class EngineBuilder {
     }
 
     /**
-     * Static method to create a new {@link EngineBuilder}.
+     * Create a new {@link EngineBuilder}.
      *
      * @return a new engine builder.
      */
@@ -75,25 +76,25 @@ public final class EngineBuilder {
     }
 
     /**
-     * Set the number of records to skip by the engine.
+     * Set the number of records to skip.
      *
      * @param number the number of records to skip
      * @return the engine builder
      */
     public EngineBuilder skip(final long number) {
-        checkArgument(number >= 1, "The number of records to skip should be greater than or equal to 1");
+        checkArgument(number >= 1, "The number of records to skip should be >= 1");
         engine.setSkip(number);
         return this;
     }
 
     /**
-     * Set the limit number of records to process by the engine.
+     * Set the limit number of records to process.
      *
      * @param number the limit number of records to process
      * @return the engine builder
      */
     public EngineBuilder limit(final long number) {
-        checkArgument(number >= 1, "The limit number of records should be greater than or equal to 1");
+        checkArgument(number >= 1, "The limit number of records should be >= 1");
         engine.setLimit(number);
         return this;
     }
@@ -112,7 +113,7 @@ public final class EngineBuilder {
      * Register a record reader.
      *
      * @param recordReader the record reader to register
-     * @param keepAlive true if the reader should not be closed
+     * @param keepAlive    true if the reader should <strong>NOT</strong> be closed
      * @return the engine builder
      */
     public EngineBuilder reader(final RecordReader recordReader, final boolean keepAlive) {
@@ -195,7 +196,7 @@ public final class EngineBuilder {
     }
 
     /**
-     * Enable strict mode : if true, then the execution will be aborted on first mapping, validating or processing error.
+     * Enable strict mode : if true, then the execution will be aborted on first processing error.
      *
      * @param strictMode true if strict mode should be enabled
      * @return the engine builder

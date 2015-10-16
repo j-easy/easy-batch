@@ -34,7 +34,7 @@ import java.io.File;
 public class FileMultiRecordReader extends AbstractMultiRecordReader {
 
     /**
-     * Constructs a file multi-record reader.
+     * Create a file multi-record reader.
      *
      * @param dataSource the directory to read files from
      * @param chunkSize the number of records to read at a time

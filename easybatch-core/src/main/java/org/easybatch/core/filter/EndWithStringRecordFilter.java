@@ -30,7 +30,6 @@ import org.easybatch.core.record.StringRecord;
 
 /**
  * A {@link org.easybatch.core.api.RecordFilter} that filters string records ending with one of the given suffixes.
- * <p/>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -42,16 +41,14 @@ public class EndWithStringRecordFilter implements RecordFilter<StringRecord> {
     private String[] suffixes;
 
     /**
+     * Create a {@link EndWithStringRecordFilter} instance.
+     *
      * @param suffixes suffixes that cause the record to be filtered.
      */
     public EndWithStringRecordFilter(final String... suffixes) {
         this.suffixes = suffixes;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
+    
     public StringRecord processRecord(final StringRecord record) throws RecordFilteringException {
         String payload = record.getPayload();
         for (String prefix : suffixes) {

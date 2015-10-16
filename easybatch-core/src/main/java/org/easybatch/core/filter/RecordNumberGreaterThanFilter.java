@@ -42,15 +42,14 @@ public class RecordNumberGreaterThanFilter implements RecordFilter<Record> {
     private long number;
 
     /**
+     * Create a {@link RecordNumberGreaterThanFilter} instance.
+     *
      * @param number record number after which records will be filtered.
      */
     public RecordNumberGreaterThanFilter(final long number) {
         this.number = number;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Record processRecord(final Record record) throws RecordFilteringException {
         if (record.getHeader().getNumber() > number) {
             throw new RecordFilteringException();

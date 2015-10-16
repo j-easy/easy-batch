@@ -62,7 +62,7 @@ public class FixedLengthRecordMapper<T> extends AbstractRecordMapper<T> implemen
     private int recordExpectedLength;
 
     /**
-     * Constructs a FixedLengthRecordMapper instance.
+     * Create a {@link FixedLengthRecordMapper} instance.
      *
      * @param recordClass  the target domain object class
      * @param fieldsLength an array of fields length in the same order in the FLR flat file.

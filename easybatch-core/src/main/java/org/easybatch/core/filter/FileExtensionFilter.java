@@ -41,7 +41,7 @@ public class FileExtensionFilter implements RecordFilter<FileRecord> {
     private String[] extensions;
 
     /**
-     * Construct a file extension filter.
+     * Create a {@link FileExtensionFilter} instance.
      *
      * @param extensions a list of extensions. Example: .log
      */

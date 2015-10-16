@@ -41,7 +41,6 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
  * <li>The total records is the sum of total records</li>
  * <li>The total skipped records is the sum of total skipped records</li>
  * <li>The total filtered records is the sum of total filtered records</li>
- * <li>The total ignored records is the sum of total ignored records</li>
  * <li>The total rejected records is the sum of total rejected records</li>
  * <li>The total error records is the sum of total error records</li>
  * <li>The total success records is the sum of total success records</li>

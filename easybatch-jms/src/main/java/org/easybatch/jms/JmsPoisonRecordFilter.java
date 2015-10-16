@@ -33,7 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Filter jms poison records.
+ * Filter {@link JmsPoisonMessage}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -42,10 +42,10 @@ public class JmsPoisonRecordFilter implements RecordFilter<JmsRecord> {
     private static final Logger LOGGER = Logger.getLogger(JmsPoisonRecordFilter.class.getName());
 
     /**
-     * Return true if the record should be filtered (skipped).
+     * Return true if the record should be filtered.
      *
      * @param record the record to filter
-     * @return true if the record should be filtered (skipped)
+     * @return true if the record should be filtered
      */
     @Override
     public JmsRecord processRecord(JmsRecord record) throws RecordFilteringException{

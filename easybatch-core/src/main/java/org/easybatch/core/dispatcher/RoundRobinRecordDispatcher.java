@@ -34,7 +34,7 @@ import java.util.concurrent.BlockingQueue;
 import static java.lang.String.format;
 
 /**
- * A record dispatcher that dispatches records to a list of queues in round-robin fashion.
+ * A record dispatcher that dispatches records to a list of {@link BlockingQueue} in round-robin fashion.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

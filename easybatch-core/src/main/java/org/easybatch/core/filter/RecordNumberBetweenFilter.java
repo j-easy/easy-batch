@@ -47,6 +47,8 @@ public class RecordNumberBetweenFilter implements RecordFilter<Record> {
     protected long higherBound;
 
     /**
+     * Create a {@link RecordNumberBetweenFilter} instance.
+     *
      * @param lowerBound  Record number range lower bound.
      * @param higherBound Record number range higher bound.
      */
@@ -55,9 +57,6 @@ public class RecordNumberBetweenFilter implements RecordFilter<Record> {
         this.higherBound = higherBound;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Record processRecord(final Record record) throws RecordFilteringException {
         if (record.getHeader().getNumber() >= lowerBound && record.getHeader().getNumber() <= higherBound) {
             throw new RecordFilteringException();

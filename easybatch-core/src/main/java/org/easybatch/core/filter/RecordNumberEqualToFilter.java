@@ -30,7 +30,7 @@ import org.easybatch.core.api.RecordFilteringException;
 
 /**
  * A {@link org.easybatch.core.api.RecordFilter} that filters records based on their number.
- * <p/>
+ * <p>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -42,15 +42,14 @@ public class RecordNumberEqualToFilter implements RecordFilter<Record> {
     private long[] numbers;
 
     /**
+     * Create a {@link RecordNumberEqualToFilter} instance.
+     *
      * @param numbers record numbers that cause the record to be filtered.
      */
     public RecordNumberEqualToFilter(final long... numbers) {
         this.numbers = numbers;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Record processRecord(final Record record) throws RecordFilteringException {
         for (long number : numbers) {
             if (record.getHeader().getNumber() == number) {

@@ -67,7 +67,7 @@ public class FileRecordReader implements RecordReader {
     private long currentRecordNumber;
 
     /**
-     * Construct a {@link FileRecordReader} to read files (non recursively) from a given directory.
+     * Create a {@link FileRecordReader} to read files recursively from a given directory.
      *
      * @param directory the directory to read files from.
      */
