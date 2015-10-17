@@ -63,7 +63,7 @@ public class JobReport implements Serializable {
     }
 
     public Object getResult() {
-        return result.getResult();
+        return result.get();
     }
 
     public void setJobResult(final JobResult result) {
@@ -182,12 +182,17 @@ public class JobReport implements Serializable {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Job Report:");
-        sb.append(LINE_SEPARATOR).append("-----------");
+        sb.append(LINE_SEPARATOR).append("===========");
+
+        /*
+         * Job status
+         */
+        sb.append(LINE_SEPARATOR).append("Status: ").append(status);
 
         /*
          * Job parameters
          */
-        sb.append(LINE_SEPARATOR).append("Job parameters:");
+        sb.append(LINE_SEPARATOR).append("Parameters:");
         sb.append(LINE_SEPARATOR).append("\tName = ").append(parameters.getName());
         sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(parameters.getExecutionId());
         sb.append(LINE_SEPARATOR).append("\tData source = ").append(parameters.getDataSource());
@@ -197,18 +202,13 @@ public class JobReport implements Serializable {
         sb.append(LINE_SEPARATOR).append("\tSkip = ").append(parameters.getSkip());
         sb.append(LINE_SEPARATOR).append("\tStrict mode = ").append(parameters.isStrictMode());
         sb.append(LINE_SEPARATOR).append("\tSilent mode = ").append(parameters.isSilentMode());
-        sb.append(LINE_SEPARATOR).append("\tJmx mode = ").append(parameters.isJmxMode());
         sb.append(LINE_SEPARATOR).append("\tKeep alive = ").append(parameters.isKeepAlive());
-
-        /*
-         * Job status
-         */
-        sb.append(LINE_SEPARATOR).append("Job status:").append(status);
+        sb.append(LINE_SEPARATOR).append("\tJmx mode = ").append(parameters.isJmxMode());
 
         /*
          * Job metrics
          */
-        sb.append(LINE_SEPARATOR).append("Job metrics:");
+        sb.append(LINE_SEPARATOR).append("Metrics:");
         sb.append(LINE_SEPARATOR).append("\tStart time = ").append(getFormattedStartTime());
         sb.append(LINE_SEPARATOR).append("\tEnd time = ").append(getFormattedEndTime());
         sb.append(LINE_SEPARATOR).append("\tDuration = ").append(getFormattedDuration());
@@ -222,8 +222,8 @@ public class JobReport implements Serializable {
         /*
          * Job result (if any)
          */
-        if (result != null) {
-            sb.append(LINE_SEPARATOR).append("\tResult = ").append(result);
+        if (result.get() != null) {
+            sb.append(LINE_SEPARATOR).append("Result:").append(result.get());
         }
         return sb.toString();
     }

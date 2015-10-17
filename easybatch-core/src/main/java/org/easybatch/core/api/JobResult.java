@@ -37,7 +37,7 @@ public class JobResult {
         this.result = result;
     }
 
-    public Object getResult() {
+    public Object get() {
         return result;
     }
 
