@@ -24,7 +24,7 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Record;
+import org.easybatch.core.record.Record;
 
 /**
  * Predicates are used to check if a record matches a criteria so that it is dispatched to the correct queue.

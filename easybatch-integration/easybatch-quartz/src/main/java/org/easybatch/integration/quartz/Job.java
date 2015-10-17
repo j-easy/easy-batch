@@ -37,9 +37,9 @@ class Job implements org.quartz.Job {
     /**
      * The job instance.
      */
-    private org.easybatch.core.api.Job job;
+    private org.easybatch.core.job.Job job;
 
-    public Job(final org.easybatch.core.api.Job job) {
+    public Job(final org.easybatch.core.job.Job job) {
         this.job = job;
     }
 

@@ -24,9 +24,9 @@
 
 package org.easybatch.tools.reporting;
 
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.JobResult;
-import org.easybatch.core.api.JobStatus;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.job.JobResult;
+import org.easybatch.core.job.JobStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;

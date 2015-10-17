@@ -24,8 +24,8 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.RecordWritingException;
 import org.easybatch.core.writer.AbstractMultiRecordWriter;
+import org.easybatch.core.writer.RecordWritingException;
 import org.hibernate.Session;
 
 import java.util.List;

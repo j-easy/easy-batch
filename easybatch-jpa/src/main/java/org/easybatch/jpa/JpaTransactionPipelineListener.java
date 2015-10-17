@@ -24,7 +24,7 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.api.listener.PipelineListener;
+import org.easybatch.core.listener.PipelineListener;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;

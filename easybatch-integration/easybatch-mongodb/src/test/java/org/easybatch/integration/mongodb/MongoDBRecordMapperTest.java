@@ -26,7 +26,7 @@ package org.easybatch.integration.mongodb;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import org.easybatch.core.api.Header;
+import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

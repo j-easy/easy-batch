@@ -90,7 +90,7 @@ public class JobScheduler {
      * @param job the job to schedule
      * @param startTime the start time
      */
-    public void scheduleAt(final org.easybatch.core.api.Job job, final Date startTime) throws JobSchedulerException {
+    public void scheduleAt(final org.easybatch.core.job.Job job, final Date startTime) throws JobSchedulerException {
         checkNotNull(job, "job");
         checkNotNull(startTime, "startTime");
 
@@ -121,7 +121,7 @@ public class JobScheduler {
      * @param startTime the start time
      * @param interval  the repeat interval in seconds
      */
-    public void scheduleAtWithInterval(final org.easybatch.core.api.Job job, final Date startTime, final int interval) throws JobSchedulerException {
+    public void scheduleAtWithInterval(final org.easybatch.core.job.Job job, final Date startTime, final int interval) throws JobSchedulerException {
         checkNotNull(job, "job");
         checkNotNull(startTime, "startTime");
 
@@ -158,7 +158,7 @@ public class JobScheduler {
      *                       For a complete tutorial about cron expressions, please refer to
      *                       <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/crontrigger">quartz reference documentation</a>.
      */
-    public void scheduleCron(final org.easybatch.core.api.Job job, final String cronExpression) throws JobSchedulerException {
+    public void scheduleCron(final org.easybatch.core.job.Job job, final String cronExpression) throws JobSchedulerException {
         checkNotNull(job, "job");
         checkNotNull(cronExpression, "cronExpression");
 
@@ -188,7 +188,7 @@ public class JobScheduler {
      * @param job the job to unschedule
      * @throws JobSchedulerException thrown if an exception occurs during job unscheduling
      */
-    public void unschedule(final org.easybatch.core.api.Job job) throws JobSchedulerException {
+    public void unschedule(final org.easybatch.core.job.Job job) throws JobSchedulerException {
         LOGGER.log(Level.INFO, "Unscheduling job {0} ", job);
         try {
             scheduler.unscheduleJob(TriggerKey.triggerKey(TRIGGER_NAME_PREFIX + job.getExecutionId()));
@@ -204,7 +204,7 @@ public class JobScheduler {
      * @return true if the job is scheduled, false else
      * @throws JobSchedulerException thrown if an exception occurs while checking if the job is scheduled
      */
-    public boolean isScheduled(final org.easybatch.core.api.Job job) throws JobSchedulerException {
+    public boolean isScheduled(final org.easybatch.core.job.Job job) throws JobSchedulerException {
         try {
             return scheduler.checkExists(TriggerKey.triggerKey(TRIGGER_NAME_PREFIX + job.getExecutionId()));
         } catch (SchedulerException e) {
@@ -267,7 +267,7 @@ public class JobScheduler {
         }
     }
 
-    private JobDetail getJobDetail(org.easybatch.core.api.Job job, String jobName) {
+    private JobDetail getJobDetail(org.easybatch.core.job.Job job, String jobName) {
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("job", job);
         return newJob(Job.class).withIdentity(jobName).usingJobData(jobDataMap).build();

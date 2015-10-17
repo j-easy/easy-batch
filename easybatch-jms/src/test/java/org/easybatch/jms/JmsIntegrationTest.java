@@ -26,11 +26,11 @@ package org.easybatch.jms;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.io.FileUtils;
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Job;
-import org.easybatch.core.api.JobReport;
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.StringRecordReader;
+import org.easybatch.core.record.Header;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.JobBuilder.aNewJob;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 @SuppressWarnings("unchecked")

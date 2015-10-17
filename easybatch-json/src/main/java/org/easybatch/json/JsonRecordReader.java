@@ -24,8 +24,8 @@
 
 package org.easybatch.json;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.record.Header;
 
 import javax.json.Json;
 import javax.json.JsonValue;

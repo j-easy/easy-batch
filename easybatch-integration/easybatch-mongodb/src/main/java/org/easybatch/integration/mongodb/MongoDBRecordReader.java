@@ -27,8 +27,8 @@ package org.easybatch.integration.mongodb;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.record.Header;
 
 import java.util.Date;
 

@@ -24,7 +24,7 @@
 
 package org.easybatch.core.reader;
 
-import org.easybatch.core.api.Record;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 import org.junit.After;
 import org.junit.Before;

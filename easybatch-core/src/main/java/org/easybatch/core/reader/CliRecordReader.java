@@ -24,10 +24,9 @@
 
 package org.easybatch.core.reader;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.record.Header;
 import org.easybatch.core.record.PoisonRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 
 import java.util.Date;

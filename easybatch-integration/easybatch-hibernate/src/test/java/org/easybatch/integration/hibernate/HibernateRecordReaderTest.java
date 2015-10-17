@@ -24,8 +24,8 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.Job;
-import org.easybatch.core.api.JobReport;
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.GenericRecord;
 import org.hibernate.SessionFactory;
@@ -37,7 +37,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.JobBuilder.aNewJob;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
 
 public class HibernateRecordReaderTest {
 

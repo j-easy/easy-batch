@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.spring;
 
-import org.easybatch.core.api.Header;
+import org.easybatch.core.record.Header;
 import org.easybatch.jdbc.JdbcRecord;
 import org.junit.Before;
 import org.junit.Test;

@@ -24,8 +24,7 @@
 
 package org.easybatch.core.writer;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordWritingException;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
 
 import java.io.StringWriter;

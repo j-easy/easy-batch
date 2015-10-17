@@ -24,8 +24,8 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.RecordMapper;
-import org.easybatch.core.api.RecordMappingException;
+import org.easybatch.core.mapper.RecordMapper;
+import org.easybatch.core.mapper.RecordMappingException;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;

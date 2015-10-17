@@ -26,8 +26,8 @@ package org.easybatch.integration.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import org.easybatch.core.api.RecordMapper;
-import org.easybatch.core.api.RecordMappingException;
+import org.easybatch.core.mapper.RecordMapper;
+import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.json.JsonRecord;
 
 import static org.easybatch.core.util.Utils.checkNotNull;

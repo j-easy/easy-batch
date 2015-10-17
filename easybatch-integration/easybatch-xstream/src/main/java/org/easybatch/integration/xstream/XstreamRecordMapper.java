@@ -25,7 +25,7 @@
 package org.easybatch.integration.xstream;
 
 import com.thoughtworks.xstream.XStream;
-import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.xml.XmlRecord;
 
 import static org.easybatch.core.util.Utils.checkNotNull;

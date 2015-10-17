@@ -25,8 +25,8 @@
 package org.easybatch.integration.jackson;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.easybatch.core.api.RecordMarshaller;
-import org.easybatch.core.api.RecordMarshallingException;
+import org.easybatch.core.marshaller.RecordMarshaller;
+import org.easybatch.core.marshaller.RecordMarshallingException;
 
 import java.io.IOException;
 

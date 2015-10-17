@@ -24,8 +24,7 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.record.Record;
 
 /**
  * Filter a record if its number is lower than a given number.

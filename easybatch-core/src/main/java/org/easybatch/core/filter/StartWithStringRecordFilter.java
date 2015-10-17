@@ -24,11 +24,10 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.RecordFilter;
 import org.easybatch.core.record.StringRecord;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters string records starting with one of the given prefixes.
+ * A {@link RecordFilter} that filters string records starting with one of the given prefixes.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

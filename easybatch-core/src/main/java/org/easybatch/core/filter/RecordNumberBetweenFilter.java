@@ -24,11 +24,10 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.record.Record;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters records
+ * A {@link RecordFilter} that filters records
  * if their number is inside (inclusive) a given range.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

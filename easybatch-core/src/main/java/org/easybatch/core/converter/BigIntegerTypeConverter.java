@@ -24,8 +24,6 @@
 
 package org.easybatch.core.converter;
 
-import org.easybatch.core.api.TypeConverter;
-
 import java.math.BigInteger;
 
 import static org.easybatch.core.util.Utils.checkArgument;

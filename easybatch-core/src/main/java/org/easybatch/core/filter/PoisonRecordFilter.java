@@ -24,9 +24,8 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
 import org.easybatch.core.record.PoisonRecord;
+import org.easybatch.core.record.Record;
 
 /**
  * {@link PoisonRecord}s are used as End-Of-Stream signals, usually they have no added value and should be filtered.

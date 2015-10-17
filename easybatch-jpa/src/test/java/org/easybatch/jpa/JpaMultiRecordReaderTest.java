@@ -24,8 +24,8 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.api.Job;
-import org.easybatch.core.api.JobReport;
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.MultiRecord;
 import org.junit.AfterClass;
@@ -43,7 +43,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.JobBuilder.aNewJob;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
 
 @SuppressWarnings("unchecked")
 public class JpaMultiRecordReaderTest {

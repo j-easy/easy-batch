@@ -24,11 +24,11 @@
 
 package org.easybatch.core.mapper;
 
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.Record;
+import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.IterableMultiRecordReader;
 import org.easybatch.core.record.MultiRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.JobBuilder.aNewJob;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)

@@ -24,7 +24,7 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.api.Record;
+import org.easybatch.core.record.Record;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

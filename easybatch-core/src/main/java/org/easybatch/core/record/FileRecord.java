@@ -24,8 +24,6 @@
 
 package org.easybatch.core.record;
 
-import org.easybatch.core.api.Header;
-
 import java.io.File;
 
 /**

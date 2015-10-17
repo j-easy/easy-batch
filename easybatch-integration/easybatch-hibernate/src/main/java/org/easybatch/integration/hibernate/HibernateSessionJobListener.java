@@ -24,9 +24,9 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.JobParameters;
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.listener.JobListener;
+import org.easybatch.core.job.JobParameters;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.listener.JobListener;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 

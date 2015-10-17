@@ -24,7 +24,6 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.RecordFilter;
 import org.easybatch.core.record.FileRecord;
 
 /**

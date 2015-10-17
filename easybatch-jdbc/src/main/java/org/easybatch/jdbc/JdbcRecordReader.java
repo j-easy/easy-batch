@@ -24,10 +24,10 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.api.RecordReaderClosingException;
-import org.easybatch.core.api.RecordReaderOpeningException;
+import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.reader.RecordReaderClosingException;
+import org.easybatch.core.reader.RecordReaderOpeningException;
+import org.easybatch.core.record.Header;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -41,7 +41,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * A {@link org.easybatch.core.api.RecordReader} that reads records from a database using JDBC API.
+ * A {@link RecordReader} that reads records from a database using JDBC API.
  * <p>
  * This reader produces {@link JdbcRecord} instances.
  *

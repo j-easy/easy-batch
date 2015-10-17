@@ -26,7 +26,7 @@ package org.easybatch.integration.mongodb;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import org.easybatch.core.api.RecordProcessingException;
+import org.easybatch.core.processor.RecordProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

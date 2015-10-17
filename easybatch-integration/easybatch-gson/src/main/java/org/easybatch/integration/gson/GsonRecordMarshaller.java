@@ -25,8 +25,8 @@
 package org.easybatch.integration.gson;
 
 import com.google.gson.Gson;
-import org.easybatch.core.api.RecordMarshaller;
-import org.easybatch.core.api.RecordMarshallingException;
+import org.easybatch.core.marshaller.RecordMarshaller;
+import org.easybatch.core.marshaller.RecordMarshallingException;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 

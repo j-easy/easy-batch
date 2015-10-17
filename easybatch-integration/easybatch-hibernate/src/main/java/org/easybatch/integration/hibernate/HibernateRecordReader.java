@@ -24,9 +24,9 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
 import org.hibernate.*;
 
 import java.util.Date;

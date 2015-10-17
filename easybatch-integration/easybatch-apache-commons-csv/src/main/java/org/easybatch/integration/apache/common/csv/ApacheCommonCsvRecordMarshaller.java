@@ -27,10 +27,10 @@ package org.easybatch.integration.apache.common.csv;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;
-import org.easybatch.core.api.RecordFieldExtractor;
-import org.easybatch.core.api.RecordMarshaller;
-import org.easybatch.core.api.RecordMarshallingException;
 import org.easybatch.core.field.BeanRecordFieldExtractor;
+import org.easybatch.core.field.RecordFieldExtractor;
+import org.easybatch.core.marshaller.RecordMarshaller;
+import org.easybatch.core.marshaller.RecordMarshallingException;
 
 import java.beans.IntrospectionException;
 import java.io.StringWriter;

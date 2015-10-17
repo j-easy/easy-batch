@@ -24,7 +24,7 @@
 
 package org.easybatch.validation;
 
-import org.easybatch.core.api.RecordValidationException;
+import org.easybatch.core.validator.RecordValidationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

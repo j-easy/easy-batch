@@ -25,9 +25,9 @@
 package org.easybatch.integration.apache.common.csv;
 
 import org.apache.commons.csv.CSVRecord;
-import org.easybatch.core.api.RecordMapper;
-import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.core.mapper.AbstractRecordMapper;
+import org.easybatch.core.mapper.RecordMapper;
+import org.easybatch.core.mapper.RecordMappingException;
 
 /**
  * Mapper that maps {@link ApacheCommonCsvRecord} instances to domain objects.

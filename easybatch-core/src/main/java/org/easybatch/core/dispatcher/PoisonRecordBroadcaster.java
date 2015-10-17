@@ -24,12 +24,11 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.JobParameters;
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordDispatcher;
-import org.easybatch.core.api.listener.JobListener;
+import org.easybatch.core.job.JobParameters;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.record.PoisonRecord;
+import org.easybatch.core.record.Record;
 
 /**
  * A utility job listener that broadcasts a {@link PoisonRecord} record at the end of the job

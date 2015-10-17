@@ -24,10 +24,8 @@
 
 package org.easybatch.core.mapper;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordMapper;
-import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.core.record.MultiRecord;
+import org.easybatch.core.record.Record;
 
 import java.util.ArrayList;
 import java.util.List;

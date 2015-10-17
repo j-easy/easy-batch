@@ -24,8 +24,8 @@
 
 package org.easybatch.core.writer;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.record.MultiRecord;
+import org.easybatch.core.record.Record;
 
 import java.util.ArrayList;
 import java.util.Collection;

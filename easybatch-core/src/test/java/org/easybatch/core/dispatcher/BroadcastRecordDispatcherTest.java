@@ -24,7 +24,7 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Record;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

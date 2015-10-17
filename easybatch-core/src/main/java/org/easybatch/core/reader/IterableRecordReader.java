@@ -24,11 +24,8 @@
 
 package org.easybatch.core.reader;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.api.RecordReaderOpeningException;
-import org.easybatch.core.api.RecordReadingException;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
 
 import java.util.Date;
 import java.util.Iterator;

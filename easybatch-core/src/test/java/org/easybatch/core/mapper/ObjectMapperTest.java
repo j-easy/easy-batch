@@ -24,10 +24,10 @@
 
 package org.easybatch.core.mapper;
 
-import org.easybatch.core.api.TypeConverter;
 import org.easybatch.core.beans.ExtendedPerson;
 import org.easybatch.core.beans.Gender;
 import org.easybatch.core.beans.Person;
+import org.easybatch.core.converter.TypeConverter;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;

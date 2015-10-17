@@ -24,9 +24,9 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.RecordMapper;
-import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.core.mapper.AbstractRecordMapper;
+import org.easybatch.core.mapper.RecordMapper;
+import org.easybatch.core.mapper.RecordMappingException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A {@link org.easybatch.core.api.RecordMapper} that maps database rows to domain objects.
+ * A {@link RecordMapper} that maps database rows to domain objects.
  *
  * @param <T> the target domain object type.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

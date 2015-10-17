@@ -24,7 +24,7 @@
 
 package org.easybatch.json;
 
-import org.easybatch.core.api.RecordProcessingException;
+import org.easybatch.core.processor.RecordProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 

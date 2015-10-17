@@ -24,8 +24,6 @@
 
 package org.easybatch.core.converter;
 
-import org.easybatch.core.api.TypeConverter;
-
 /**
  * String type converter.
  *

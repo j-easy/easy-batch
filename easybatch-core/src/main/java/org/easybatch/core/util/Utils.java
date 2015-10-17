@@ -24,11 +24,11 @@
 
 package org.easybatch.core.util;
 
-import org.easybatch.core.api.Job;
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.Record;
-import org.easybatch.core.jmx.JobMonitor;
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.monitor.JobMonitor;
 import org.easybatch.core.record.MultiRecord;
+import org.easybatch.core.record.Record;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;

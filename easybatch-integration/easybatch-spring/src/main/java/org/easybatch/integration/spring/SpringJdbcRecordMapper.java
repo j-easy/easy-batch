@@ -24,8 +24,8 @@
 
 package org.easybatch.integration.spring;
 
-import org.easybatch.core.api.RecordMapper;
-import org.easybatch.core.api.RecordMappingException;
+import org.easybatch.core.mapper.RecordMapper;
+import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.jdbc.JdbcRecord;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 

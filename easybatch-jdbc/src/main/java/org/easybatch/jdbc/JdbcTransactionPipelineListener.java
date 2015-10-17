@@ -24,7 +24,7 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.listener.PipelineListener;
+import org.easybatch.core.listener.PipelineListener;
 
 import java.sql.Connection;
 import java.sql.SQLException;

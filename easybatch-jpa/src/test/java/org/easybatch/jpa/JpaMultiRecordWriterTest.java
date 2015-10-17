@@ -24,7 +24,7 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.api.JobReport;
+import org.easybatch.core.job.JobReport;
 import org.easybatch.core.mapper.GenericMultiRecordMapper;
 import org.easybatch.core.reader.IterableMultiRecordReader;
 import org.junit.AfterClass;
@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.JobBuilder.aNewJob;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
 
 public class JpaMultiRecordWriterTest {
 

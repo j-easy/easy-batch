@@ -24,9 +24,9 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.api.RecordReaderOpeningException;
+import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.reader.RecordReaderOpeningException;
+import org.easybatch.core.record.Header;
 import org.easybatch.core.record.StringRecord;
 
 import java.io.File;

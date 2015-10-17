@@ -25,8 +25,6 @@
 package org.easybatch.core.field;
 
 
-import org.easybatch.core.api.RecordFieldExtractionException;
-import org.easybatch.core.api.RecordFieldExtractor;
 import org.easybatch.core.util.Utils;
 
 import java.beans.IntrospectionException;

@@ -24,11 +24,10 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.record.Record;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters records based on their number.
+ * A {@link RecordFilter} that filters records based on their number.
  * <p>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

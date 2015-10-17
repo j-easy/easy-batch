@@ -24,9 +24,6 @@
 
 package org.easybatch.core.record;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
-
 /**
  * General purpose record implementation.
  *

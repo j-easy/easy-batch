@@ -25,7 +25,7 @@
 package org.easybatch.integration.jackson;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.easybatch.core.api.Header;
+import org.easybatch.core.record.Header;
 import org.easybatch.json.JsonRecord;
 import org.junit.Before;
 import org.junit.Test;

@@ -24,8 +24,6 @@
 
 package org.easybatch.core.converter;
 
-import org.easybatch.core.api.TypeConverter;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

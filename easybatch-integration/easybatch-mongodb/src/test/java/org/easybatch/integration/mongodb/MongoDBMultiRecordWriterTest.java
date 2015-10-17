@@ -26,9 +26,9 @@ package org.easybatch.integration.mongodb;
 
 import com.mongodb.*;
 import org.assertj.core.api.Assertions;
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.RecordProcessingException;
+import org.easybatch.core.job.JobReport;
 import org.easybatch.core.mapper.GenericMultiRecordMapper;
+import org.easybatch.core.processor.RecordProcessingException;
 import org.easybatch.core.reader.IterableMultiRecordReader;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -44,7 +44,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.JobBuilder.aNewJob;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)

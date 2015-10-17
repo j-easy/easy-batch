@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains built-in implementations of the {@link org.easybatch.core.api.RecordWriter} interface.
+ * This package contains built-in implementations of the {@link org.easybatch.core.writer.RecordWriter} interface.
  */
 package org.easybatch.core.writer;

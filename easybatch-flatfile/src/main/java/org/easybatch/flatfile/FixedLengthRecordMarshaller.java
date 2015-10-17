@@ -24,9 +24,9 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.core.api.RecordFieldExtractor;
-import org.easybatch.core.api.RecordMarshaller;
-import org.easybatch.core.api.RecordMarshallingException;
+import org.easybatch.core.field.RecordFieldExtractor;
+import org.easybatch.core.marshaller.RecordMarshaller;
+import org.easybatch.core.marshaller.RecordMarshallingException;
 
 import java.beans.IntrospectionException;
 

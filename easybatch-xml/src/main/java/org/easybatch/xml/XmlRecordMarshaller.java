@@ -24,8 +24,8 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.RecordMarshaller;
-import org.easybatch.core.api.RecordMarshallingException;
+import org.easybatch.core.marshaller.RecordMarshaller;
+import org.easybatch.core.marshaller.RecordMarshallingException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

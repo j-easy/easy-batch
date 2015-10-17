@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.opencsv.test;
 
-import org.easybatch.core.api.Header;
+import org.easybatch.core.record.Header;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.integration.opencsv.OpenCsvRecordMapper;
 import org.junit.Before;

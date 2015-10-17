@@ -24,9 +24,9 @@
 
 package org.easybatch.validation;
 
-import org.easybatch.core.api.RecordValidationException;
-import org.easybatch.core.api.RecordValidator;
 import org.easybatch.core.util.Utils;
+import org.easybatch.core.validator.RecordValidationException;
+import org.easybatch.core.validator.RecordValidator;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

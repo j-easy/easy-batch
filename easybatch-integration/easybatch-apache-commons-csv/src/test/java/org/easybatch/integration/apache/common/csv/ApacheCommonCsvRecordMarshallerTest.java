@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.apache.common.csv;
 
-import org.easybatch.core.api.RecordMarshallingException;
+import org.easybatch.core.marshaller.RecordMarshallingException;
 import org.junit.Before;
 import org.junit.Test;
 

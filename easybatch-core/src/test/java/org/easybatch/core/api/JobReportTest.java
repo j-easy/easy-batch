@@ -24,6 +24,7 @@
 
 package org.easybatch.core.api;
 
+import org.easybatch.core.job.JobReport;
 import org.junit.Before;
 import org.junit.Test;
 

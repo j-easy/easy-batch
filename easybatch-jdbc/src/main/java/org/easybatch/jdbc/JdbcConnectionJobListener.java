@@ -24,9 +24,9 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.JobParameters;
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.listener.JobListener;
+import org.easybatch.core.job.JobParameters;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.listener.JobListener;
 
 import java.sql.Connection;
 import java.sql.SQLException;

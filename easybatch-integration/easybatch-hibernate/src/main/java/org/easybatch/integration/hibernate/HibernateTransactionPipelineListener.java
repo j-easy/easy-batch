@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.listener.PipelineListener;
+import org.easybatch.core.listener.PipelineListener;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

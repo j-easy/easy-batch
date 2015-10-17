@@ -24,7 +24,7 @@
 
 package org.easybatch.core.mapper;
 
-import org.easybatch.core.api.TypeConverter;
+import org.easybatch.core.converter.TypeConverter;
 
 /**
  * Abstract record mapper.

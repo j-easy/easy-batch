@@ -24,11 +24,11 @@
 
 package org.easybatch.json;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordReadingException;
 import org.easybatch.core.reader.AbstractMultiRecordReader;
+import org.easybatch.core.reader.RecordReadingException;
+import org.easybatch.core.record.Header;
 import org.easybatch.core.record.MultiRecord;
+import org.easybatch.core.record.Record;
 
 import java.io.InputStream;
 import java.util.ArrayList;

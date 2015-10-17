@@ -28,11 +28,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import org.easybatch.core.api.Job;
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.Record;
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.MultiRecord;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -40,7 +40,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.JobBuilder.aNewJob;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
 
 @Ignore("Ignored since it's impossible to embed a MongoDB instance ..")
 @SuppressWarnings("unchecked")

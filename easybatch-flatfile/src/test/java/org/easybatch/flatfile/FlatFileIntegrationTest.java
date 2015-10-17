@@ -1,12 +1,12 @@
 package org.easybatch.flatfile;
 
-import org.easybatch.core.api.Job;
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.JobStatus;
-import org.easybatch.core.api.TypeConverter;
 import org.easybatch.core.converter.DateTypeConverter;
+import org.easybatch.core.converter.TypeConverter;
 import org.easybatch.core.filter.HeaderRecordFilter;
-import org.easybatch.core.impl.JobBuilder;
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobBuilder;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.job.JobStatus;
 import org.easybatch.core.processor.RecordCollector;
 import org.junit.Test;
 

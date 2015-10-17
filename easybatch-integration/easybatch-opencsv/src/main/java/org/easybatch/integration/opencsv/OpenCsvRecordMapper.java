@@ -27,7 +27,7 @@ package org.easybatch.integration.opencsv;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
-import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.record.StringRecord;
 
 import java.io.StringReader;

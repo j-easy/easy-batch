@@ -25,8 +25,8 @@
 package org.easybatch.integration.mongodb;
 
 import com.mongodb.DBObject;
-import org.easybatch.core.api.Header;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
 
 /**
  * Record having a Mongo {@link DBObject} as payload .

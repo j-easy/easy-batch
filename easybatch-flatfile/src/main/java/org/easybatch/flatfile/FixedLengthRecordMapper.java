@@ -24,10 +24,10 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.core.api.RecordMapper;
-import org.easybatch.core.api.RecordMappingException;
 import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.ObjectMapper;
+import org.easybatch.core.mapper.RecordMapper;
+import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.StringRecord;
 
 import java.util.HashMap;

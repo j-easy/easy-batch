@@ -24,9 +24,6 @@
 
 package org.easybatch.core.writer;
 
-import org.easybatch.core.api.RecordWriter;
-import org.easybatch.core.api.RecordWritingException;
-
 /**
  * Abstract class for record writers.
  *

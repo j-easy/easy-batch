@@ -24,7 +24,6 @@
 
 package org.easybatch.core.converter;
 
-import org.easybatch.core.api.TypeConverter;
 import org.junit.Test;
 
 public abstract class BaseConverterTest<T> {

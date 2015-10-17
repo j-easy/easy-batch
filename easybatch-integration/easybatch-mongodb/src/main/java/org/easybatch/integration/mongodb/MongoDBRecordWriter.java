@@ -26,8 +26,8 @@ package org.easybatch.integration.mongodb;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import org.easybatch.core.api.RecordWritingException;
 import org.easybatch.core.writer.AbstractRecordWriter;
+import org.easybatch.core.writer.RecordWritingException;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 

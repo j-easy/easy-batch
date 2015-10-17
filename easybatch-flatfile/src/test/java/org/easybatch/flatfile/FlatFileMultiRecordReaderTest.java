@@ -24,10 +24,10 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.Record;
+import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.MultiRecord;
+import org.easybatch.core.record.Record;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +38,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.JobBuilder.aNewJob;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
 
 @SuppressWarnings("unchecked")
 public class FlatFileMultiRecordReaderTest {

@@ -24,8 +24,8 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.api.Header;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
 
 import javax.jms.Message;
 

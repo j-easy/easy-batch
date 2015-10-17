@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains built-in implementations of the {@link org.easybatch.core.api.RecordProcessor} interface.
+ * This package contains built-in implementations of the {@link org.easybatch.core.processor.RecordProcessor} interface.
  */
 package org.easybatch.core.processor;

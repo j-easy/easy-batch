@@ -24,8 +24,8 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.RecordWritingException;
 import org.easybatch.core.writer.AbstractMultiRecordWriter;
+import org.easybatch.core.writer.RecordWritingException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

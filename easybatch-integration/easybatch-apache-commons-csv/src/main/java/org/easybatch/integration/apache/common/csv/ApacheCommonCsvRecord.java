@@ -25,8 +25,8 @@
 package org.easybatch.integration.apache.common.csv;
 
 import org.apache.commons.csv.CSVRecord;
-import org.easybatch.core.api.Header;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
 
 /**
  * Record having a {@link CSVRecord} as payload.

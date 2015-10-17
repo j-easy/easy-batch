@@ -24,8 +24,6 @@
 
 package org.easybatch.core.processor;
 
-import org.easybatch.core.api.ComputationalRecordProcessor;
-
 import java.util.ArrayList;
 import java.util.List;
 

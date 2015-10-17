@@ -24,8 +24,8 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.JobParameters;
-import org.easybatch.core.api.JobReport;
+import org.easybatch.core.job.JobParameters;
+import org.easybatch.core.job.JobReport;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

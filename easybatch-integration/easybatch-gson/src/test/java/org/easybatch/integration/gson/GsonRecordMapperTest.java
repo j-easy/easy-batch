@@ -25,7 +25,7 @@
 package org.easybatch.integration.gson;
 
 import com.google.gson.Gson;
-import org.easybatch.core.api.Header;
+import org.easybatch.core.record.Header;
 import org.easybatch.json.JsonRecord;
 import org.junit.Before;
 import org.junit.Test;

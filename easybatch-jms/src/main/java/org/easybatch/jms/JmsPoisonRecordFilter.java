@@ -24,7 +24,7 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.filter.RecordFilter;
 
 import javax.jms.JMSException;
 import javax.jms.Message;

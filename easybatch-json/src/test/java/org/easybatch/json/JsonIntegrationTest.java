@@ -24,10 +24,10 @@
 
 package org.easybatch.json;
 
-import org.easybatch.core.api.Job;
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.JobStatus;
-import org.easybatch.core.impl.JobBuilder;
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobBuilder;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.job.JobStatus;
 import org.easybatch.core.processor.RecordCollector;
 import org.junit.Test;
 

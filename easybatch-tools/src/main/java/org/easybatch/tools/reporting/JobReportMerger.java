@@ -24,7 +24,7 @@
 
 package org.easybatch.tools.reporting;
 
-import org.easybatch.core.api.JobReport;
+import org.easybatch.core.job.JobReport;
 
 /**
  * A service that merges multiple reports into a global report.

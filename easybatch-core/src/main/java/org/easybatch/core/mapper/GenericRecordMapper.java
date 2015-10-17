@@ -24,8 +24,7 @@
 
 package org.easybatch.core.mapper;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.record.Record;
 
 /**
  * Convenient no-op record mapper that returns the record's <strong>payload</strong> as is.

@@ -24,10 +24,6 @@
 
 package org.easybatch.core.reader;
 
-import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.api.RecordReaderClosingException;
-import org.easybatch.core.api.RecordReaderOpeningException;
-import org.easybatch.core.api.RecordReadingException;
 import org.easybatch.core.record.MultiRecord;
 
 import static org.easybatch.core.util.Utils.checkArgument;

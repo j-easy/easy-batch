@@ -24,9 +24,6 @@
 
 package org.easybatch.core.record;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
-
 /**
  * A {@link Record} implementation that has textual data as raw content.
  *

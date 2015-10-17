@@ -24,8 +24,6 @@
 
 package org.easybatch.core.converter;
 
-import org.easybatch.core.api.TypeConverter;
-
 /**
  * Boolean type converter : converts "true" , "1", "yes" and "on" (ignoring case) to the boolean true value.
  * Any other value will be converted to false.

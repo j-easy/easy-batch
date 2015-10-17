@@ -24,9 +24,9 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.JobParameters;
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.listener.JobListener;
+import org.easybatch.core.job.JobParameters;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.listener.JobListener;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;

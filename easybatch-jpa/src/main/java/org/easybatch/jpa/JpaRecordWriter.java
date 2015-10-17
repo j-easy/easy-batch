@@ -24,8 +24,8 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.api.RecordWritingException;
 import org.easybatch.core.writer.AbstractRecordWriter;
+import org.easybatch.core.writer.RecordWritingException;
 
 import javax.persistence.EntityManager;
 

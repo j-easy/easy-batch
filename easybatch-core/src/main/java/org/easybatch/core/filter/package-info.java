@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains built-in implementations of the {@link org.easybatch.core.api.RecordFilter} interface.
+ * This package contains built-in implementations of the {@link org.easybatch.core.filter.RecordFilter} interface.
  */
 package org.easybatch.core.filter;

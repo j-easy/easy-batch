@@ -24,8 +24,7 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.job.JobReport;
 import org.easybatch.core.mapper.GenericRecordMapper;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.StringRecordReader;
@@ -39,7 +38,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.JobBuilder.aNewJob;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.mockito.Mockito.when;
 

@@ -27,8 +27,8 @@ package org.easybatch.integration.apache.common.csv;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.easybatch.core.api.Job;
-import org.easybatch.core.api.JobReport;
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.MultiRecord;
 import org.junit.Before;
@@ -38,7 +38,7 @@ import java.io.FileReader;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.JobBuilder.aNewJob;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
 
 public class ApacheCommonCsvMultiRecordReaderTest {
 

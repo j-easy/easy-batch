@@ -25,7 +25,7 @@
 package org.easybatch.integration.xstream;
 
 import com.thoughtworks.xstream.XStream;
-import org.easybatch.core.api.RecordMarshaller;
+import org.easybatch.core.marshaller.RecordMarshaller;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 

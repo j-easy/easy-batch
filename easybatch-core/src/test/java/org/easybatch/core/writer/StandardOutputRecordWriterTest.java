@@ -24,7 +24,7 @@
 
 package org.easybatch.core.writer;
 
-import org.easybatch.core.api.Record;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

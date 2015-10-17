@@ -27,7 +27,7 @@ package org.easybatch.integration.apache.common.csv;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.easybatch.core.api.Record;
+import org.easybatch.core.record.Record;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

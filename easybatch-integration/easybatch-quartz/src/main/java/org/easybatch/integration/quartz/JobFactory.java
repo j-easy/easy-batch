@@ -36,7 +36,7 @@ class JobFactory implements org.quartz.spi.JobFactory {
 
     @Override
     public org.quartz.Job newJob(final TriggerFiredBundle bundle, final Scheduler scheduler) {
-        return new Job((org.easybatch.core.api.Job) bundle.getJobDetail().getJobDataMap().get("job"));
+        return new Job((org.easybatch.core.job.Job) bundle.getJobDetail().getJobDataMap().get("job"));
     }
 
 }

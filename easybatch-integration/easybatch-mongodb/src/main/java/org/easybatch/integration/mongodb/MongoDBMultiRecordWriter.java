@@ -27,8 +27,8 @@ package org.easybatch.integration.mongodb;
 import com.mongodb.BulkWriteOperation;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import org.easybatch.core.api.RecordWritingException;
 import org.easybatch.core.writer.AbstractMultiRecordWriter;
+import org.easybatch.core.writer.RecordWritingException;
 
 import java.util.ArrayList;
 import java.util.Collection;

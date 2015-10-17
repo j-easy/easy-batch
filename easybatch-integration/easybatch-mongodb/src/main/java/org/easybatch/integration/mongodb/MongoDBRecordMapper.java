@@ -25,7 +25,7 @@
 package org.easybatch.integration.mongodb;
 
 import com.mongodb.DBObject;
-import org.easybatch.core.api.RecordMapper;
+import org.easybatch.core.mapper.RecordMapper;
 import org.mongodb.morphia.Morphia;
 
 /**

@@ -24,7 +24,7 @@
 
 package org.easybatch.json;
 
-import org.easybatch.core.api.Header;
+import org.easybatch.core.record.Header;
 import org.easybatch.core.record.StringRecord;
 
 /**

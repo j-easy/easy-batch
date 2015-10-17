@@ -24,9 +24,6 @@
 
 package org.easybatch.core.processor;
 
-import org.easybatch.core.api.RecordProcessingException;
-import org.easybatch.core.api.RecordProcessor;
-
 /**
  * Convenient processor to compact hierarchical data (Json, Xml, etc).
  *

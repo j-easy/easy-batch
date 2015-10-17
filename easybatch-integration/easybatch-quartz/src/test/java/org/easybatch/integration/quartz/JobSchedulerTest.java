@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.quartz;
 
-import org.easybatch.core.api.Job;
+import org.easybatch.core.job.Job;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

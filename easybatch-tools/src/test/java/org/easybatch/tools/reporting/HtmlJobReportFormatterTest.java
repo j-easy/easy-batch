@@ -24,8 +24,8 @@
 
 package org.easybatch.tools.reporting;
 
-import org.easybatch.core.api.JobReport;
-import org.easybatch.core.api.JobStatus;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.job.JobStatus;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

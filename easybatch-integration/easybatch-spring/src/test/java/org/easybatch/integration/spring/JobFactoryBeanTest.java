@@ -24,12 +24,12 @@
 
 package org.easybatch.integration.spring;
 
-import org.easybatch.core.api.Job;
-import org.easybatch.core.api.RecordProcessor;
-import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.api.listener.JobListener;
-import org.easybatch.core.api.listener.PipelineListener;
-import org.easybatch.core.api.listener.RecordReaderListener;
+import org.easybatch.core.job.Job;
+import org.easybatch.core.listener.JobListener;
+import org.easybatch.core.listener.PipelineListener;
+import org.easybatch.core.listener.RecordReaderListener;
+import org.easybatch.core.processor.RecordProcessor;
+import org.easybatch.core.reader.RecordReader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
