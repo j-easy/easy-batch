@@ -24,6 +24,7 @@
 
 package org.easybatch.core.dispatcher;
 
+import org.easybatch.core.api.JobParameters;
 import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordDispatcher;
@@ -50,7 +51,7 @@ public class PoisonRecordBroadcaster implements JobListener {
     }
 
     @Override
-    public void beforeJobStart() {
+    public void beforeJobStart(final JobParameters jobParameters) {
         // no op
     }
 

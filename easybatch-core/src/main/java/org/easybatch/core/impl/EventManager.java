@@ -24,6 +24,7 @@
 
 package org.easybatch.core.impl;
 
+import org.easybatch.core.api.JobParameters;
 import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.listener.JobListener;
@@ -56,9 +57,9 @@ class EventManager {
         pipelineListeners.add(pipelineListener);
     }
 
-    public void fireBeforeJobStart() {
+    public void fireBeforeJobStart(JobParameters jobParameters) {
         for (JobListener eventListener : jobListeners) {
-            eventListener.beforeJobStart();
+            eventListener.beforeJobStart(jobParameters);
         }
     }
 

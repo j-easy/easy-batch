@@ -56,6 +56,8 @@ public class EventManagerTest {
     private Record record, processedRecord, record1, record2;
     @Mock
     private JobReport jobReport;
+    @Mock
+    private JobParameters jobParameters;
 
     private EventManager eventManager;
 
@@ -75,12 +77,12 @@ public class EventManagerTest {
 
     @Test
     public void fireBeforeJobStart() {
-        eventManager.fireBeforeJobStart();
+        eventManager.fireBeforeJobStart(jobParameters);
 
         InOrder inOrder = inOrder(jobListener1, jobListener2);
 
-        inOrder.verify(jobListener1).beforeJobStart();
-        inOrder.verify(jobListener2).beforeJobStart();
+        inOrder.verify(jobListener1).beforeJobStart(jobParameters);
+        inOrder.verify(jobListener2).beforeJobStart(jobParameters);
     }
 
     @Test

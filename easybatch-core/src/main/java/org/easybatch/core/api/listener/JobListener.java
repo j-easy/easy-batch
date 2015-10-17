@@ -24,6 +24,7 @@
 
 package org.easybatch.core.api.listener;
 
+import org.easybatch.core.api.JobParameters;
 import org.easybatch.core.api.JobReport;
 
 /**
@@ -34,12 +35,14 @@ import org.easybatch.core.api.JobReport;
 public interface JobListener {
 
     /**
-     * Called before the {@link org.easybatch.core.api.RecordReader#open()} call.
+     * Called after initializing the record reader and before starting the job.
+     *
+     * @param jobParameters the job parameters
      */
-    void beforeJobStart();
+    void beforeJobStart(final JobParameters jobParameters);
 
     /**
-     * Called after the {@link org.easybatch.core.api.RecordReader#close()} call.
+     * Called after closing the record reader.
      *
      * @param jobReport The job execution report
      */

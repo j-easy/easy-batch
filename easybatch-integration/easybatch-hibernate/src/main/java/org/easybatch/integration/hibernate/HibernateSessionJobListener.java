@@ -24,6 +24,7 @@
 
 package org.easybatch.integration.hibernate;
 
+import org.easybatch.core.api.JobParameters;
 import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.listener.JobListener;
 import org.hibernate.HibernateException;
@@ -56,7 +57,7 @@ public class HibernateSessionJobListener implements JobListener {
     }
 
     @Override
-    public void beforeJobStart() {
+    public void beforeJobStart(final JobParameters jobParameters) {
         // No op
     }
 

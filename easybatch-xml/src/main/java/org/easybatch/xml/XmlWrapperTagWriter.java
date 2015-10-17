@@ -24,6 +24,7 @@
 
 package org.easybatch.xml;
 
+import org.easybatch.core.api.JobParameters;
 import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.listener.JobListener;
 
@@ -109,7 +110,7 @@ public class XmlWrapperTagWriter implements JobListener {
     }
 
     @Override
-    public void beforeJobStart() {
+    public void beforeJobStart(final JobParameters jobParameters) {
         try {
             outputStreamWriter.write(format("<?xml version=\"%s\" encoding=\"%s\" standalone=\"%s\"?>", version, encoding, standalone ? "yes" : "no"));
             outputStreamWriter.write(LINE_SEPARATOR);

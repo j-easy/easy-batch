@@ -24,6 +24,7 @@
 
 package org.easybatch.xml;
 
+import org.easybatch.core.api.JobParameters;
 import org.easybatch.core.api.JobReport;
 import org.junit.Before;
 import org.junit.Rule;
@@ -45,6 +46,8 @@ public class XmlWrapperTagWriterTest {
 
     @Mock
     private JobReport jobReport;
+    @Mock
+    private JobParameters jobParameters;
 
     @Rule
     public final SystemOutRule systemOut = new SystemOutRule().enableLog();
@@ -62,7 +65,7 @@ public class XmlWrapperTagWriterTest {
 
     @Test
     public void testBeforeJobStart() throws Exception {
-        xmlWrapperTagWriter.beforeJobStart();
+        xmlWrapperTagWriter.beforeJobStart(jobParameters);
         assertThat(systemOut.getLog()).isEqualTo(DECLARATION + LINE_SEPARATOR + "<" + wrapperTag + ">" + LINE_SEPARATOR);
     }
 

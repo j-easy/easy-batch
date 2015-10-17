@@ -98,6 +98,7 @@ public abstract class Utils {
     }
 
     public static void registerJmxMBean(JobReport jobReport, Job job) {
+        LOGGER.log(Level.INFO, "Registering JMX MBean for job {0}", job.getName());
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
         try {

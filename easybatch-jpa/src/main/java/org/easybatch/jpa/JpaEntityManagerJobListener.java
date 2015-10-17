@@ -24,6 +24,7 @@
 
 package org.easybatch.jpa;
 
+import org.easybatch.core.api.JobParameters;
 import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.listener.JobListener;
 
@@ -54,7 +55,7 @@ public class JpaEntityManagerJobListener implements JobListener {
     }
 
     @Override
-    public void beforeJobStart() {
+    public void beforeJobStart(final JobParameters jobParameters) {
         // No op
     }
 
