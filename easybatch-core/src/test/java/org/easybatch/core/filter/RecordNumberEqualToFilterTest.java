@@ -25,7 +25,6 @@
 package org.easybatch.core.filter;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilteringException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
@@ -43,24 +42,24 @@ public class RecordNumberEqualToFilterTest {
 
     private RecordNumberEqualToFilter recordNumberEqualToFilter;
 
-    @Test(expected = RecordFilteringException.class)
-    public void whenTheRecordNumberIsEqualToExpectedNumber_ThenItShouldBeFiltered() throws RecordFilteringException {
+    @Test
+    public void whenTheRecordNumberIsEqualToExpectedNumber_ThenItShouldBeFiltered() {
         recordNumberEqualToFilter = new RecordNumberEqualToFilter(1);
 
         when(record.getHeader().getNumber()).thenReturn(1l);
-        recordNumberEqualToFilter.processRecord(record);
-    }
-
-    @Test(expected = RecordFilteringException.class)
-    public void whenTheRecordNumberIsEqualToOneOfTheExpectedNumbers_ThenItShouldBeFiltered() throws RecordFilteringException {
-        recordNumberEqualToFilter = new RecordNumberEqualToFilter(1, 2);
-
-        when(record.getHeader().getNumber()).thenReturn(2l);
-        recordNumberEqualToFilter.processRecord(record);
+        assertThat(recordNumberEqualToFilter.processRecord(record)).isNull();
     }
 
     @Test
-    public void whenTheRecordNumberIsNotEqualToOneOfTheExpectedNumbers_ThenItShouldNotBeFiltered() throws RecordFilteringException {
+    public void whenTheRecordNumberIsEqualToOneOfTheExpectedNumbers_ThenItShouldBeFiltered() {
+        recordNumberEqualToFilter = new RecordNumberEqualToFilter(1, 2);
+
+        when(record.getHeader().getNumber()).thenReturn(2l);
+        assertThat(recordNumberEqualToFilter.processRecord(record)).isNull();
+    }
+
+    @Test
+    public void whenTheRecordNumberIsNotEqualToOneOfTheExpectedNumbers_ThenItShouldNotBeFiltered() {
         recordNumberEqualToFilter = new RecordNumberEqualToFilter(1, 2);
 
         when(record.getHeader().getNumber()).thenReturn(3l);

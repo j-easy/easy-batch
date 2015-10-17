@@ -25,7 +25,6 @@
 package org.easybatch.core.filter;
 
 import org.easybatch.core.api.RecordFilter;
-import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.record.StringRecord;
 
 /**
@@ -35,10 +34,10 @@ import org.easybatch.core.record.StringRecord;
  */
 public class EmptyRecordFilter implements RecordFilter<StringRecord> {
 
-    public StringRecord processRecord(final StringRecord record) throws RecordFilteringException {
+    public StringRecord processRecord(final StringRecord record) {
         String payload = record.getPayload();
         if (payload.isEmpty()) {
-            throw new RecordFilteringException();
+            return null;
         }
         return record;
     }

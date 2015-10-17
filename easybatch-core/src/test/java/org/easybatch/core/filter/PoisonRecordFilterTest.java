@@ -24,7 +24,6 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
@@ -48,18 +47,18 @@ public class PoisonRecordFilterTest {
         poisonRecordFilter = new PoisonRecordFilter();
     }
 
-    @Test(expected = RecordFilteringException.class)
-    public void whenTheRecordIsOfTypePoisonRecord_ThenItShouldBeFiltered() throws RecordFilteringException {
-        poisonRecordFilter.processRecord(new PoisonRecord());
-    }
-
-    @Test(expected = RecordFilteringException.class)
-    public void whenTheRecordIsOfCustomTypePoisonRecord_ThenItShouldBeFiltered() throws RecordFilteringException {
-        poisonRecordFilter.processRecord(new CustomPoisonRecord());
+    @Test
+    public void whenTheRecordIsOfTypePoisonRecord_ThenItShouldBeFiltered() {
+        assertThat(poisonRecordFilter.processRecord(new PoisonRecord())).isNull();
     }
 
     @Test
-    public void whenTheRecordIsNotOfTypePoisonRecord_ThenItNotShouldBeFiltered() throws RecordFilteringException {
+    public void whenTheRecordIsOfCustomTypePoisonRecord_ThenItShouldBeFiltered() {
+        assertThat(poisonRecordFilter.processRecord(new CustomPoisonRecord())).isNull();
+    }
+
+    @Test
+    public void whenTheRecordIsNotOfTypePoisonRecord_ThenItNotShouldBeFiltered() {
         assertThat(poisonRecordFilter.processRecord(record)).isEqualTo(record);
     }
 

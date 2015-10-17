@@ -25,7 +25,6 @@
 package org.easybatch.core.filter;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilteringException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
@@ -43,16 +42,16 @@ public class RecordNumberLowerThanFilterTest {
 
     private RecordNumberLowerThanFilter recordNumberLowerThanFilter;
 
-    @Test(expected = RecordFilteringException.class)
-    public void whenTheRecordNumberIsLowerThanExpectedNumber_ThenItShouldBeFiltered() throws RecordFilteringException {
+    @Test
+    public void whenTheRecordNumberIsLowerThanExpectedNumber_ThenItShouldBeFiltered() {
         recordNumberLowerThanFilter = new RecordNumberLowerThanFilter(2);
 
         when(record.getHeader().getNumber()).thenReturn(1l);
-        recordNumberLowerThanFilter.processRecord(record);
+        assertThat(recordNumberLowerThanFilter.processRecord(record)).isNull();
     }
 
     @Test
-    public void whenTheRecordNumberIsGreaterThanOrEqualToExpectedNumber_ThenItShouldNotBeFiltered() throws RecordFilteringException {
+    public void whenTheRecordNumberIsGreaterThanOrEqualToExpectedNumber_ThenItShouldNotBeFiltered() {
         recordNumberLowerThanFilter = new RecordNumberLowerThanFilter(1);
 
         when(record.getHeader().getNumber()).thenReturn(1l);

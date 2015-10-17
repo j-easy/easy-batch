@@ -155,7 +155,6 @@ public class JsonIntegrationTest {
         assertThat(report.getTotalRecords()).isEqualTo(0);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
         assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
         assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
@@ -174,7 +173,6 @@ public class JsonIntegrationTest {
         assertThat(report.getTotalRecords()).isEqualTo(3);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(3);
         assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
         assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);

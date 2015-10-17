@@ -24,6 +24,7 @@
 
 package org.easybatch.jpa;
 
+import org.easybatch.core.api.Report;
 import org.easybatch.core.api.listener.JobListener;
 
 import javax.persistence.EntityManager;
@@ -58,7 +59,7 @@ public class JpaEntityManagerJobListener implements JobListener {
     }
 
     @Override
-    public void afterJobEnd() {
+    public void afterJobEnd(final Report report) {
         if (entityManager != null) {
             LOGGER.info("Closing entity manager after job end");
             entityManager.close();

@@ -26,7 +26,6 @@ package org.easybatch.core.filter;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
-import org.easybatch.core.api.RecordFilteringException;
 
 /**
  * A {@link org.easybatch.core.api.RecordFilter} that filters records
@@ -57,9 +56,9 @@ public class RecordNumberBetweenFilter implements RecordFilter<Record> {
         this.higherBound = higherBound;
     }
 
-    public Record processRecord(final Record record) throws RecordFilteringException {
+    public Record processRecord(final Record record) {
         if (record.getHeader().getNumber() >= lowerBound && record.getHeader().getNumber() <= higherBound) {
-            throw new RecordFilteringException();
+            return null;
         }
         return record;
     }

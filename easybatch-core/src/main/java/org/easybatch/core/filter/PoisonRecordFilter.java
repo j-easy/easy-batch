@@ -26,7 +26,6 @@ package org.easybatch.core.filter;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
-import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.record.PoisonRecord;
 
 /**
@@ -38,9 +37,9 @@ import org.easybatch.core.record.PoisonRecord;
  */
 public class PoisonRecordFilter implements RecordFilter<Record> {
 
-    public Record processRecord(final Record record) throws RecordFilteringException {
+    public Record processRecord(final Record record) {
         if (record instanceof PoisonRecord) {
-            throw new RecordFilteringException();
+            return null;
         }
         return record;
     }

@@ -42,17 +42,17 @@ public interface PipelineListener {
     /**
      * Called after the record has been processed.
      *
-     * @param record           The processed record.
-     * @param processingResult The processing result if any, called from {@link org.easybatch.core.api.ComputationalRecordProcessor#getComputationResult()}
+     * @param inputRecord  The record to process.
+     * @param outputRecord The processed record. <strong>May be null if the record has been filtered</strong>
      */
-    void afterRecordProcessing(final Object record, final Object processingResult);
+    void afterRecordProcessing(final Object inputRecord, final Object outputRecord);
 
     /**
      * Called when an exception occurs during record processing
      *
-     * @param record    the currently processed record
+     * @param record    the record attempted to be processed
      * @param throwable the exception occurred during record processing
      */
     void onRecordProcessingException(final Object record, final Throwable throwable);
-    
+
 }

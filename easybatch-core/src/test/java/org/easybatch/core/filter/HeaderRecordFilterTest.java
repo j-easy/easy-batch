@@ -25,7 +25,6 @@
 package org.easybatch.core.filter;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilteringException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,14 +48,14 @@ public class HeaderRecordFilterTest {
         headerRecordFilter = new HeaderRecordFilter();
     }
 
-    @Test(expected = RecordFilteringException.class)
-    public void whenTheRecordNumberIsEqualToOne_ThenItShouldBeFiltered() throws RecordFilteringException {
+    @Test
+    public void whenTheRecordNumberIsEqualToOne_ThenItShouldBeFiltered() {
         when(record.getHeader().getNumber()).thenReturn(1l);
-        headerRecordFilter.processRecord(record);
+        assertThat(headerRecordFilter.processRecord(record)).isNull();
     }
 
     @Test
-    public void whenTheRecordNumberIsDifferentFromOne_ThenItShouldNotBeFiltered() throws RecordFilteringException {
+    public void whenTheRecordNumberIsDifferentFromOne_ThenItShouldNotBeFiltered() {
         when(record.getHeader().getNumber()).thenReturn(2l);
         assertThat(headerRecordFilter.processRecord(record)).isEqualTo(record);
     }

@@ -53,9 +53,9 @@ public class EventManagerTest {
     @Mock
     private Throwable throwable;
     @Mock
-    private Record record, record1, record2;
+    private Record record, processedRecord, record1, record2;
     @Mock
-    private Object processingResult;
+    private Report report;
 
     private EventManager eventManager;
 
@@ -85,12 +85,12 @@ public class EventManagerTest {
 
     @Test
     public void fireAfterJobEnd() {
-        eventManager.fireAfterJobEnd();
+        eventManager.fireAfterJobEnd(report);
 
         InOrder inOrder = inOrder(jobListener1, jobListener2);
 
-        inOrder.verify(jobListener1).afterJobEnd();
-        inOrder.verify(jobListener2).afterJobEnd();
+        inOrder.verify(jobListener1).afterJobEnd(report);
+        inOrder.verify(jobListener2).afterJobEnd(report);
     }
 
     @Test
@@ -139,12 +139,12 @@ public class EventManagerTest {
 
     @Test
     public void fireAfterRecordProcessing() {
-        eventManager.fireAfterRecordProcessing(record, processingResult);
+        eventManager.fireAfterRecordProcessing(record, processedRecord);
 
         InOrder inOrder = inOrder(pipelineListener1, pipelineListener2);
 
-        inOrder.verify(pipelineListener1).afterRecordProcessing(record, processingResult);
-        inOrder.verify(pipelineListener2).afterRecordProcessing(record, processingResult);
+        inOrder.verify(pipelineListener1).afterRecordProcessing(record, processedRecord);
+        inOrder.verify(pipelineListener2).afterRecordProcessing(record, processedRecord);
     }
 
     @Test
@@ -196,6 +196,6 @@ public class EventManagerTest {
 
         Report report = engine.call();
 
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(2);
+        assertThat(report.getErrorRecordsCount()).isEqualTo(2);
     }
 }

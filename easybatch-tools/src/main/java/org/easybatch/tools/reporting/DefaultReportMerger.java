@@ -41,7 +41,6 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
  * <li>The total records is the sum of total records</li>
  * <li>The total skipped records is the sum of total skipped records</li>
  * <li>The total filtered records is the sum of total filtered records</li>
- * <li>The total rejected records is the sum of total rejected records</li>
  * <li>The total error records is the sum of total error records</li>
  * <li>The total success records is the sum of total success records</li>
  * <li>The final processing times map is the merge of processing times maps</li>
@@ -79,7 +78,6 @@ public class DefaultReportMerger implements ReportMerger {
             totalRecords += report.getTotalRecords();
             calculateSkippedRecords(finalReport, report);
             calculateFilteredRecords(finalReport, report);
-            calculateRejectedRecords(finalReport, report);
             calculateErrorRecords(finalReport, report);
             calculateSuccessRecords(finalReport, report);
             addBatchResult(results, report);
@@ -135,12 +133,6 @@ public class DefaultReportMerger implements ReportMerger {
     private void calculateErrorRecords(Report finalReport, Report report) {
         for (int i = 0; i < report.getErrorRecordsCount(); i++) {
             finalReport.incrementTotalErrorRecord();
-        }
-    }
-
-    private void calculateRejectedRecords(Report finalReport, Report report) {
-        for (int i = 0; i < report.getRejectedRecordsCount(); i++) {
-            finalReport.incrementTotalRejectedRecord();
         }
     }
 

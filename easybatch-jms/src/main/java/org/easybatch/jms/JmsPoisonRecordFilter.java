@@ -25,7 +25,6 @@
 package org.easybatch.jms;
 
 import org.easybatch.core.api.RecordFilter;
-import org.easybatch.core.api.RecordFilteringException;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -48,7 +47,7 @@ public class JmsPoisonRecordFilter implements RecordFilter<JmsRecord> {
      * @return true if the record should be filtered
      */
     @Override
-    public JmsRecord processRecord(JmsRecord record) throws RecordFilteringException{
+    public JmsRecord processRecord(JmsRecord record) {
         boolean isPoison = false;
         Message payload = record.getPayload();
         try {
@@ -58,10 +57,10 @@ public class JmsPoisonRecordFilter implements RecordFilter<JmsRecord> {
             }
         } catch (JMSException e) {
             LOGGER.log(Level.WARNING, "Unable to get type of JMS message " + payload, e);
-            throw new RecordFilteringException(e);
+            return null;
         }
         if (isPoison || payload instanceof JmsPoisonMessage) {
-            throw new RecordFilteringException();
+            return null;
         }
         return record;
     }

@@ -28,17 +28,17 @@ package org.easybatch.core.api;
  * Interface for record filter.
  * This will be used by the engine to filter records.
  *
+ * @param <T> the type of records the filter can handle
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface RecordFilter<I> extends RecordProcessor<I, I> {
+public interface RecordFilter<T> extends RecordProcessor<T, T> {
 
     /**
      * Filter a record.
      *
      * @param record the record to filter.
-     * @return the original record if it should continue in the pipeline
-     * @throws RecordFilteringException thrown if the record should be filtered
+     * @return the original record if it should continue in the pipeline or null if the record should be filtered
      */
     @Override
-    I processRecord(I record) throws RecordFilteringException;
+    T processRecord(T record);
 }

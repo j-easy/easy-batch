@@ -25,11 +25,10 @@
 package org.easybatch.core.filter;
 
 import org.easybatch.core.api.RecordFilter;
-import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.record.FileRecord;
 
 /**
- * A filter that filters {@link FileRecord} having a payload file name ending with a given extension.
+ * Filter {@link FileRecord} having a payload file name ending with a given extension.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -49,10 +48,10 @@ public class FileExtensionFilter implements RecordFilter<FileRecord> {
         this.extensions = extensions;
     }
 
-    public FileRecord processRecord(final FileRecord record) throws RecordFilteringException {
+    public FileRecord processRecord(final FileRecord record) {
         for (String extension : extensions) {
             if (record.getPayload().getName().endsWith(extension)) {
-                throw new RecordFilteringException();
+                return null;
             }
         }
         return record;

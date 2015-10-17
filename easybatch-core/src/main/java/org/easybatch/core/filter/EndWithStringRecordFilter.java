@@ -25,11 +25,10 @@
 package org.easybatch.core.filter;
 
 import org.easybatch.core.api.RecordFilter;
-import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.record.StringRecord;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters string records ending with one of the given suffixes.
+ * Filter string records ending with one of the given suffixes.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -49,11 +48,11 @@ public class EndWithStringRecordFilter implements RecordFilter<StringRecord> {
         this.suffixes = suffixes;
     }
     
-    public StringRecord processRecord(final StringRecord record) throws RecordFilteringException {
+    public StringRecord processRecord(final StringRecord record) {
         String payload = record.getPayload();
         for (String prefix : suffixes) {
             if (payload.endsWith(prefix)) {
-                throw new RecordFilteringException();
+                return null;
             }
         }
         return record;

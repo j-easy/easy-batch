@@ -24,6 +24,8 @@
 
 package org.easybatch.core.api.listener;
 
+import org.easybatch.core.api.Report;
+
 /**
  * Enables the implementing class to get notified before/after the batch job.
  *
@@ -38,6 +40,8 @@ public interface JobListener {
 
     /**
      * Called after the {@link org.easybatch.core.api.RecordReader#close()} call.
+     *
+     * @param report The job execution report
      */
-    void afterJobEnd();
+    void afterJobEnd(final Report report);
 }

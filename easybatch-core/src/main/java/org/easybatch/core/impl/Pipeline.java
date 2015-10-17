@@ -24,7 +24,9 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.api.*;
+import org.easybatch.core.api.Record;
+import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.api.Report;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -55,29 +57,26 @@ final class Pipeline {
     public boolean process(Record currentRecord) {
 
         boolean processingError = false;
-        Object processingResult = null;
+        boolean filteredRecord = false;
         try {
             Object recordToProcess = eventManager.fireBeforeRecordProcessing(currentRecord);
             for (RecordProcessor processor : processors) {
                 recordToProcess = processor.processRecord(recordToProcess);
+                if (recordToProcess == null) {
+                    LOGGER.log(Level.INFO, "Record {0} has been filtered", currentRecord);
+                    filteredRecord = true;
+                    break;
+                }
             }
-            RecordProcessor lastRecordProcessor = getLastProcessor();
-            if (lastRecordProcessor != null && lastRecordProcessor instanceof ComputationalRecordProcessor) {
-                processingResult = ((ComputationalRecordProcessor) lastRecordProcessor).getComputationResult();
+            if (filteredRecord) {
+                report.incrementTotalFilteredRecords();
+            } else {
+                report.incrementTotalSuccessRecord();
             }
-            report.incrementTotalSuccessRecord();
-            eventManager.fireAfterRecordProcessing(recordToProcess, processingResult);
-        } catch (RecordFilteringException e) {
-            LOGGER.log(Level.INFO, "Record {0} has been filtered", currentRecord);
-            report.incrementTotalFilteredRecords();
-            eventManager.fireOnRecordProcessingException(currentRecord, e);
-        } catch (RecordValidationException e) {
-            LOGGER.log(Level.SEVERE, "Record " + currentRecord + " has been rejected", e);
-            report.incrementTotalRejectedRecord();
-            eventManager.fireOnRecordProcessingException(currentRecord, e);
+            eventManager.fireAfterRecordProcessing(currentRecord, recordToProcess);
         } catch (Exception e) {
             processingError = true;
-            LOGGER.log(Level.SEVERE, "An exception occurred while attempting to process record " + currentRecord, e);
+            LOGGER.log(Level.SEVERE, "An exception occurred while processing record " + currentRecord, e);
             report.incrementTotalErrorRecord();
             eventManager.fireOnRecordProcessingException(currentRecord, e);
         }
@@ -94,5 +93,5 @@ final class Pipeline {
     public void addProcessor(RecordProcessor recordProcessor) {
         processors.add(recordProcessor);
     }
-    
+
 }

@@ -24,7 +24,6 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.record.FileRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,14 +53,14 @@ public class FileExtensionFilterTest {
         when(fileRecord.getPayload()).thenReturn(file);
     }
 
-    @Test(expected = RecordFilteringException.class)
-    public void whenTheFileNameEndsWithOneOfTheGivenExtensions_ThenItShouldBeFiltered() throws RecordFilteringException {
+    @Test
+    public void whenTheFileNameEndsWithOneOfTheGivenExtensions_ThenItShouldBeFiltered() {
         when(file.getName()).thenReturn("test.txt");
-        filter.processRecord(fileRecord);
+        assertThat(filter.processRecord(fileRecord)).isNull();
     }
 
     @Test
-    public void whenTheFileNameDoesNotEndWithOneOfTheGivenExtensions_ThenItShouldBeFiltered() throws RecordFilteringException {
+    public void whenTheFileNameDoesNotEndWithOneOfTheGivenExtensions_ThenItShouldBeFiltered() {
         when(file.getName()).thenReturn("test.jpeg");
         assertThat(filter.processRecord(fileRecord)).isEqualTo(fileRecord);
     }

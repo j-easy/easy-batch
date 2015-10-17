@@ -67,8 +67,6 @@ public class HtmlReportFormatterTest {
         report.incrementTotalSkippedRecords();
         report.incrementTotalFilteredRecords();
         report.incrementTotalFilteredRecords();
-        report.incrementTotalRejectedRecord();
-        report.incrementTotalRejectedRecord();
         report.incrementTotalErrorRecord();
         report.incrementTotalErrorRecord();
         report.incrementTotalSuccessRecord();

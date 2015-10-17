@@ -117,14 +117,6 @@ public class Monitor implements MonitorMBean {
      * {@inheritDoc}
      */
     @Override
-    public String getRejectedRecords() {
-        return report.getFormattedRejectedRecords();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getErrorRecords() {
         return report.getFormattedErrorRecords();
     }

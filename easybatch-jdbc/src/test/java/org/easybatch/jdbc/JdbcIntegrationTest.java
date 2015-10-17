@@ -82,7 +82,6 @@ public class JdbcIntegrationTest {
         assertThat(report.getTotalRecords()).isEqualTo(2);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
         assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
         assertThat(report.getDataSource()).isEqualTo(DATA_SOURCE_NAME);

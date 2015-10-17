@@ -24,7 +24,10 @@
 
 package org.easybatch.core.impl;
 
-import org.easybatch.core.api.*;
+import org.easybatch.core.api.Record;
+import org.easybatch.core.api.RecordProcessingException;
+import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.api.Report;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,60 +61,55 @@ public class ProcessingPipelineTest {
     private EventManager eventManager;
 
     @Mock
-    private RecordProcessor recordProcessor;
-
-    @Mock
-    private ComputationalRecordProcessor computationalRecordProcessor;
+    private RecordProcessor recordProcessor1, recordProcessor2;
 
     private Pipeline processingPipeline;
 
     @Before
     public void setUp() throws Exception {
         when(eventManager.fireBeforeRecordProcessing(record)).thenReturn(preProcessedRecord);
-        processingPipeline = new Pipeline(asList(recordProcessor, computationalRecordProcessor), report, eventManager);
+        processingPipeline = new Pipeline(asList(recordProcessor1, recordProcessor2), report, eventManager);
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void testProcessWithoutException() throws Exception {
-        when(recordProcessor.processRecord(preProcessedRecord)).thenReturn(processedRecord);
-        when(computationalRecordProcessor.processRecord(processedRecord)).thenReturn(secondlyProcessedRecord);
-        when(computationalRecordProcessor.getComputationResult()).thenReturn(processingResult);
+        when(recordProcessor1.processRecord(preProcessedRecord)).thenReturn(processedRecord);
+        when(recordProcessor2.processRecord(processedRecord)).thenReturn(secondlyProcessedRecord);
 
         boolean processingError = processingPipeline.process(record);
 
         assertThat(processingError).isFalse();
 
-        InOrder inOrder = inOrder(eventManager, recordProcessor, computationalRecordProcessor);
+        InOrder inOrder = inOrder(eventManager, recordProcessor1, recordProcessor2);
 
         inOrder.verify(eventManager).fireBeforeRecordProcessing(record);
-        inOrder.verify(recordProcessor).processRecord(preProcessedRecord);
-        inOrder.verify(computationalRecordProcessor).processRecord(processedRecord);
-        inOrder.verify(computationalRecordProcessor).getComputationResult();
-        inOrder.verify(eventManager).fireAfterRecordProcessing(secondlyProcessedRecord, processingResult);
+        inOrder.verify(recordProcessor1).processRecord(preProcessedRecord);
+        inOrder.verify(recordProcessor2).processRecord(processedRecord);
+        inOrder.verify(eventManager).fireAfterRecordProcessing(record, secondlyProcessedRecord);
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void testProcessWithException() throws Exception {
-        when(recordProcessor.processRecord(preProcessedRecord)).thenThrow(exception);
+        when(recordProcessor1.processRecord(preProcessedRecord)).thenThrow(exception);
 
         boolean processingError = processingPipeline.process(record);
 
         assertThat(processingError).isTrue();
 
-        InOrder inOrder = inOrder(eventManager, report, recordProcessor, computationalRecordProcessor);
+        InOrder inOrder = inOrder(eventManager, report, recordProcessor1, recordProcessor2);
 
         inOrder.verify(eventManager).fireBeforeRecordProcessing(record);
-        inOrder.verify(recordProcessor).processRecord(preProcessedRecord);
+        inOrder.verify(recordProcessor1).processRecord(preProcessedRecord);
         inOrder.verify(report).incrementTotalErrorRecord();
         inOrder.verify(eventManager).fireOnRecordProcessingException(record, exception);
 
-        verifyZeroInteractions(computationalRecordProcessor);
+        verifyZeroInteractions(recordProcessor2);
     }
 
     @Test
     public void testGetLastProcessor() throws Exception {
-        assertThat(processingPipeline.getLastProcessor()).isEqualTo(computationalRecordProcessor);
+        assertThat(processingPipeline.getLastProcessor()).isEqualTo(recordProcessor2);
     }
 }

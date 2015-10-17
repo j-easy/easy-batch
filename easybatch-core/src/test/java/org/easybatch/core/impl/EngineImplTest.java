@@ -74,6 +74,8 @@ public class EngineImplTest {
     @Mock
     private Object jobResult;
     @Mock
+    private Report report;
+    @Mock
     private JobListener jobListener;
     @Mock
     private RecordReaderListener recordReaderListener;
@@ -85,8 +87,6 @@ public class EngineImplTest {
     private RecordReaderOpeningException recordReaderOpeningException;
     @Mock
     private RecordProcessingException recordProcessingException;
-    @Mock
-    private RecordFilteringException recordFilteringException;
     @Mock
     private RecordValidationException recordValidationException;
     @Mock
@@ -151,7 +151,7 @@ public class EngineImplTest {
 
         engine.call();
 
-        verify(reader, times(0)).close();
+        verify(reader, never()).close();
     }
 
     @Test
@@ -165,7 +165,6 @@ public class EngineImplTest {
 
         assertThat(report).isNotNull();
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
         assertThat(report.getTotalRecords()).isNull();
@@ -184,7 +183,6 @@ public class EngineImplTest {
         Report report = engine.call();
 
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
         assertThat(report.getTotalRecords()).isNull();
@@ -208,7 +206,6 @@ public class EngineImplTest {
     public void reportShouldBeCorrect() throws Exception {
         Report report = engine.call();
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
         assertThat(report.getTotalRecords()).isEqualTo(2);
@@ -227,7 +224,6 @@ public class EngineImplTest {
                 .build();
         Report report = engine.call();
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
         assertThat(report.getErrorRecordsCount()).isEqualTo(1);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
         assertThat(report.getTotalRecords()).isEqualTo(1);
@@ -239,23 +235,24 @@ public class EngineImplTest {
     }
 
     @Test
-    public void whenStrictModeIsEnabled_ThenTheEngineShouldAbortOnFirstRecordProcessingExceptionIfAny() throws Exception {
-        when(firstProcessor.processRecord(record1)).thenThrow(recordProcessingException);
+    public void whenARecordProcessorReturnsNull_thenTheEngineShouldFilterTheRecord() throws Exception {
+        when(reader.hasNextRecord()).thenReturn(true, false);
+        when(reader.readNextRecord()).thenReturn(record1);
+        when(firstProcessor.processRecord(record1)).thenReturn(null);
 
         Report report = new EngineBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
-                .strictMode(true)
                 .call();
 
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(1);
+        assertThat(report.getFilteredRecordsCount()).isEqualTo(1);
+        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
         assertThat(report.getTotalRecords()).isEqualTo(1);
-        assertThat(report.getStatus()).isEqualTo(Status.ABORTED);
-        Mockito.verifyZeroInteractions(secondProcessor);
+        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
+        verify(firstProcessor).processRecord(record1);
+        verify(secondProcessor, never()).processRecord(record1);
     }
 
     /*
@@ -360,9 +357,9 @@ public class EngineImplTest {
         engine.call();
 
         verify(pipelineListener).beforeRecordProcessing(record1);
-        verify(pipelineListener).afterRecordProcessing(record1, null);
+        verify(pipelineListener).afterRecordProcessing(record1, record1);
         verify(pipelineListener).beforeRecordProcessing(record2);
-        verify(pipelineListener).afterRecordProcessing(record2, null);
+        verify(pipelineListener).afterRecordProcessing(record2, record2);
     }
 
 }

@@ -24,7 +24,6 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,29 +41,29 @@ public class StartWithStringRecordFilterTest {
 
     private StartWithStringRecordFilter startWithStringRecordFilter;
 
-    @Test(expected = RecordFilteringException.class)
-    public void whenTheRecordStartsWithExpectedPrefix_ThenItShouldBeFiltered() throws RecordFilteringException {
+    @Test
+    public void whenTheRecordStartsWithExpectedPrefix_ThenItShouldBeFiltered() {
         when(stringRecord.getPayload()).thenReturn("prefix_content");
         startWithStringRecordFilter = new StartWithStringRecordFilter("prefix");
-        startWithStringRecordFilter.processRecord(stringRecord);
+        assertThat(startWithStringRecordFilter.processRecord(stringRecord)).isNull();
     }
 
     @Test
-    public void whenTheRecordDoesNotStartWithExpectedPrefix_ThenItShouldNotBeFiltered() throws RecordFilteringException {
+    public void whenTheRecordDoesNotStartWithExpectedPrefix_ThenItShouldNotBeFiltered() {
         when(stringRecord.getPayload()).thenReturn("content");
         startWithStringRecordFilter = new StartWithStringRecordFilter("prefix");
         assertThat(startWithStringRecordFilter.processRecord(stringRecord)).isEqualTo(stringRecord);
     }
 
-    @Test(expected = RecordFilteringException.class)
-    public void whenTheRecordStartsWithOneOfTheExpectedPrefixes_ThenItShouldBeFiltered() throws RecordFilteringException {
+    @Test
+    public void whenTheRecordStartsWithOneOfTheExpectedPrefixes_ThenItShouldBeFiltered() {
         when(stringRecord.getPayload()).thenReturn("prefix1_content");
         startWithStringRecordFilter = new StartWithStringRecordFilter("prefix1", "prefix2");
-        startWithStringRecordFilter.processRecord(stringRecord);
+        assertThat(startWithStringRecordFilter.processRecord(stringRecord)).isNull();
     }
 
     @Test
-    public void whenTheRecordDoesNotStartWithOneOfTheExpectedPrefixes_ThenItShouldNotBeFiltered() throws RecordFilteringException {
+    public void whenTheRecordDoesNotStartWithOneOfTheExpectedPrefixes_ThenItShouldNotBeFiltered() {
         when(stringRecord.getPayload()).thenReturn("content");
         startWithStringRecordFilter = new StartWithStringRecordFilter("prefix1", "prefix2");
         assertThat(startWithStringRecordFilter.processRecord(stringRecord)).isEqualTo(stringRecord);

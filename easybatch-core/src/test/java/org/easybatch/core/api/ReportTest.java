@@ -52,16 +52,12 @@ public class ReportTest {
         report.setEndTime(END_TIME);
         report.setStatus(Status.FINISHED);
         report.setDataSource("In-Memory");
-        report.setTotalRecords(10L);
+        report.setTotalRecords(4L);
         report.setCurrentRecordNumber(2);
         report.setJobResult(50);
         report.incrementTotalSkippedRecords();
         report.incrementTotalFilteredRecords();
-        report.incrementTotalRejectedRecord();
-        report.incrementTotalRejectedRecord();
         report.incrementTotalErrorRecord();
-        report.incrementTotalErrorRecord();
-        report.incrementTotalSuccessRecord();
         report.incrementTotalSuccessRecord();
     }
 
@@ -69,9 +65,8 @@ public class ReportTest {
     public void reportStatisticsShouldBeValid() {
         assertThat(report.getSkippedRecordsCount()).isEqualTo(1);
         assertThat(report.getFilteredRecordsCount()).isEqualTo(1);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(2);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(2);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
+        assertThat(report.getErrorRecordsCount()).isEqualTo(1);
+        assertThat(report.getSuccessRecordsCount()).isEqualTo(1);
     }
 
     @Test
@@ -92,14 +87,13 @@ public class ReportTest {
     public void reportStatisticsShouldBeCorrectlyFormatted() {
         assertThat(report.getFormattedStartTime()).isEqualTo("2015-01-01 01:00:00");
         assertThat(report.getFormattedEndTime()).isEqualTo("2015-01-01 01:00:10");
-        assertThat(report.getFormattedBatchDuration()).isEqualTo("10000ms");
-        assertThat(report.getFormattedSkippedRecords()).isEqualTo("1 (10.0%)");
-        assertThat(report.getFormattedFilteredRecords()).isEqualTo("1 (10.0%)");
-        assertThat(report.getFormattedRejectedRecords()).isEqualTo("2 (20.0%)");
-        assertThat(report.getFormattedErrorRecords()).isEqualTo("2 (20.0%)");
-        assertThat(report.getFormattedSuccessRecords()).isEqualTo("2 (20.0%)");
-        assertThat(report.getFormattedAverageRecordProcessingTime()).isEqualTo("1000.0ms");
-        assertThat(report.getFormattedProgress()).isEqualTo("2/10 (20.0%)");
+        assertThat(report.getFormattedJobDuration()).isEqualTo("10000ms");
+        assertThat(report.getFormattedSkippedRecords()).isEqualTo("1 (25.0%)");
+        assertThat(report.getFormattedFilteredRecords()).isEqualTo("1 (25.0%)");
+        assertThat(report.getFormattedErrorRecords()).isEqualTo("1 (25.0%)");
+        assertThat(report.getFormattedSuccessRecords()).isEqualTo("1 (25.0%)");
+        assertThat(report.getFormattedAverageRecordProcessingTime()).isEqualTo("2500.0ms");
+        assertThat(report.getFormattedProgress()).isEqualTo("2/4 (50.0%)");
     }
 
     @Test
@@ -119,7 +113,6 @@ public class ReportTest {
         report.setTotalRecords(0L);
         assertThat(report.getFormattedSkippedRecords()).doesNotContain("%");
         assertThat(report.getFormattedFilteredRecords()).doesNotContain("%");
-        assertThat(report.getFormattedRejectedRecords()).doesNotContain("%");
         assertThat(report.getFormattedErrorRecords()).doesNotContain("%");
         assertThat(report.getFormattedSuccessRecords()).doesNotContain("%");
     }

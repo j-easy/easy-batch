@@ -24,7 +24,6 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,26 +43,26 @@ public class GrepFilterTest {
     private StringRecord record;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         grepFilter = new GrepFilter("java");
     }
 
     @Test
-    public void whenRecordContainsPattern_ThenItShouldNotBeFiltered() throws Exception {
+    public void whenRecordContainsPattern_ThenItShouldNotBeFiltered() {
         when(record.getPayload()).thenReturn("java rocks!");
         assertThat(grepFilter.processRecord(record)).isEqualTo(record);
     }
 
-    @Test(expected = RecordFilteringException.class)
-    public void whenRecordDoesNotContainPattern_ThenItShouldBeFiltered() throws Exception {
+    @Test
+    public void whenRecordDoesNotContainPattern_ThenItShouldBeFiltered() {
         when(record.getPayload()).thenReturn("c++ ..");
-        grepFilter.processRecord(record);
+        assertThat(grepFilter.processRecord(record)).isNull();
     }
 
-    @Test(expected = RecordFilteringException.class)
-    public void patternLookupShouldBeCaseSensitive() throws Exception {
+    @Test
+    public void patternLookupShouldBeCaseSensitive() {
         when(record.getPayload()).thenReturn("JAVA rocks!");
-        grepFilter.processRecord(record);
+        assertThat(grepFilter.processRecord(record)).isNull();
     }
 
 }

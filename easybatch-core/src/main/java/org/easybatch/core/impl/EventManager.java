@@ -25,6 +25,7 @@
 package org.easybatch.core.impl;
 
 import org.easybatch.core.api.Record;
+import org.easybatch.core.api.Report;
 import org.easybatch.core.api.listener.JobListener;
 import org.easybatch.core.api.listener.PipelineListener;
 import org.easybatch.core.api.listener.RecordReaderListener;
@@ -61,9 +62,9 @@ class EventManager {
         }
     }
 
-    public void fireAfterJobEnd() {
+    public void fireAfterJobEnd(Report report) {
         for (JobListener eventListener : jobListeners) {
-            eventListener.afterJobEnd();
+            eventListener.afterJobEnd(report);
         }
     }
 
@@ -93,9 +94,9 @@ class EventManager {
         return recordToProcess;
     }
 
-    public void fireAfterRecordProcessing(Object record, Object processingResult) {
+    public void fireAfterRecordProcessing(Object inputRecord, Object outputRecord) {
         for (PipelineListener eventListener : pipelineListeners) {
-            eventListener.afterRecordProcessing(record, processingResult);
+            eventListener.afterRecordProcessing(inputRecord, outputRecord);
         }
     }
 

@@ -24,7 +24,6 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.api.RecordFilteringException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,16 +55,16 @@ public class JmsPoisonRecordFilterTest {
         when(jmsRecord.getPayload()).thenReturn(payload);
     }
 
-    @Test(expected = RecordFilteringException.class)
+    @Test
     public void testFilterPoisonRecordByType() throws Exception {
         when(payload.getJMSType()).thenReturn(JmsPoisonMessage.TYPE);
-        jmsPoisonRecordFilter.processRecord(jmsRecord);
+        assertThat(jmsPoisonRecordFilter.processRecord(jmsRecord)).isNull();
     }
 
-    @Test(expected = RecordFilteringException.class)
+    @Test
     public void testFilterPoisonRecordByPayload() throws Exception {
         when(jmsRecord.getPayload()).thenReturn(jmsPoisonMessage);
-        jmsPoisonRecordFilter.processRecord(jmsRecord);
+        assertThat(jmsPoisonRecordFilter.processRecord(jmsRecord)).isNull();
     }
 
     @Test

@@ -25,7 +25,6 @@
 package org.easybatch.core.filter;
 
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilteringException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
@@ -43,16 +42,16 @@ public class RecordNumberBetweenFilterTest {
     
     private RecordNumberBetweenFilter recordNumberBetweenFilter;
 
-    @Test(expected = RecordFilteringException.class)
-    public void whenTheRecordNumberIsInsideRange_ThenItShouldBeFiltered() throws RecordFilteringException {
+    @Test
+    public void whenTheRecordNumberIsInsideRange_ThenItShouldBeFiltered() {
         recordNumberBetweenFilter = new RecordNumberBetweenFilter(1, 2);
 
         when(record.getHeader().getNumber()).thenReturn(1l);
-        recordNumberBetweenFilter.processRecord(record);
+        assertThat(recordNumberBetweenFilter.processRecord(record)).isNull();
     }
 
     @Test
-    public void whenTheRecordNumberIsOutsideRange_ThenItShouldNotBeFiltered() throws RecordFilteringException {
+    public void whenTheRecordNumberIsOutsideRange_ThenItShouldNotBeFiltered() {
         recordNumberBetweenFilter = new RecordNumberBetweenFilter(3, 4);
 
         when(record.getHeader().getNumber()).thenReturn(2l);

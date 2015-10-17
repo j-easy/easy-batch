@@ -56,8 +56,6 @@ public class Report implements Serializable {
 
     private long filteredRecords;
 
-    private long rejectedRecords;
-
     private long errorRecords;
 
     private long successRecords;
@@ -86,10 +84,6 @@ public class Report implements Serializable {
 
     public void incrementTotalSkippedRecords() {
         skippedRecords++;
-    }
-
-    public void incrementTotalRejectedRecord() {
-        rejectedRecords++;
     }
 
     public void incrementTotalErrorRecord() {
@@ -204,10 +198,6 @@ public class Report implements Serializable {
         return skippedRecords;
     }
 
-    public long getRejectedRecordsCount() {
-        return rejectedRecords;
-    }
-
     public long getErrorRecordsCount() {
         return errorRecords;
     }
@@ -236,10 +226,6 @@ public class Report implements Serializable {
         return percent(getSkippedRecordsCount(), totalRecords);
     }
 
-    private float getRejectedRecordsPercent() {
-        return percent(getRejectedRecordsCount(), totalRecords);
-    }
-
     private float getErrorRecordsPercent() {
         return percent(getErrorRecordsCount(), totalRecords);
     }
@@ -248,7 +234,7 @@ public class Report implements Serializable {
         return percent(getSuccessRecordsCount(), totalRecords);
     }
 
-    private long getBatchDuration() {
+    private long getJobDuration() {
         return endTime - startTime;
     }
 
@@ -256,9 +242,9 @@ public class Report implements Serializable {
      * Public utility methods to format report statistics
      */
 
-    public String getFormattedBatchDuration() {
+    public String getFormattedJobDuration() {
         final StringBuilder sb = new StringBuilder();
-        sb.append(getBatchDuration()).append("ms");
+        sb.append(getJobDuration()).append("ms");
         return sb.toString();
     }
 
@@ -288,15 +274,6 @@ public class Report implements Serializable {
         return sb.toString();
     }
 
-    public String getFormattedRejectedRecords() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(getRejectedRecordsCount());
-        if (totalRecords != null && totalRecords != 0) {
-            appendPercent(sb, getRejectedRecordsPercent());
-        }
-        return sb.toString();
-    }
-
     public String getFormattedErrorRecords() {
         final StringBuilder sb = new StringBuilder();
         sb.append(getErrorRecordsCount());
@@ -320,7 +297,7 @@ public class Report implements Serializable {
             return "N/A";
         }
         final StringBuilder sb = new StringBuilder();
-        sb.append((float) getBatchDuration() / (float) totalRecords).append("ms");
+        sb.append((float) getJobDuration() / (float) totalRecords).append("ms");
         return sb.toString();
     }
 
@@ -342,7 +319,7 @@ public class Report implements Serializable {
         sb.append(LINE_SEPARATOR).append("\tData source = ").append(dataSource);
         sb.append(LINE_SEPARATOR).append("\tStart time = ").append(getFormattedStartTime());
         sb.append(LINE_SEPARATOR).append("\tEnd time = ").append(getFormattedEndTime());
-        sb.append(LINE_SEPARATOR).append("\tBatch duration = ").append(getFormattedBatchDuration());
+        sb.append(LINE_SEPARATOR).append("\tJob duration = ").append(getFormattedJobDuration());
         sb.append(LINE_SEPARATOR).append("\tStatus = ").append(status);
         if (limit != DEFAULT_LIMIT) {
             sb.append(LINE_SEPARATOR).append("\tRecords limit = ").append(limit);
@@ -350,7 +327,6 @@ public class Report implements Serializable {
         sb.append(LINE_SEPARATOR).append("\tTotal records = ").append(totalRecords == null ? "N/A" : totalRecords);
         sb.append(LINE_SEPARATOR).append("\tSkipped records = ").append(getFormattedSkippedRecords());
         sb.append(LINE_SEPARATOR).append("\tFiltered records = ").append(getFormattedFilteredRecords());
-        sb.append(LINE_SEPARATOR).append("\tRejected records = ").append(getFormattedRejectedRecords());
         sb.append(LINE_SEPARATOR).append("\tError records = ").append(getFormattedErrorRecords());
         sb.append(LINE_SEPARATOR).append("\tSuccess records = ").append(getFormattedSuccessRecords());
         sb.append(LINE_SEPARATOR).append("\tRecord processing time average = ").append(getFormattedAverageRecordProcessingTime());

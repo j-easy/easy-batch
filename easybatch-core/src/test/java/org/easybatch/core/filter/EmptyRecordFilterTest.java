@@ -25,7 +25,6 @@
 package org.easybatch.core.filter;
 
 import org.easybatch.core.api.RecordFilter;
-import org.easybatch.core.api.RecordFilteringException;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.mapper.GenericRecordMapper;
@@ -57,14 +56,14 @@ public class EmptyRecordFilterTest {
         recordFilter = new EmptyRecordFilter();
     }
 
-    @Test(expected = RecordFilteringException.class)
-    public void testFilterEmptyRecord() throws RecordFilteringException {
+    @Test
+    public void testFilterEmptyRecord() {
         when(stringRecord.getPayload()).thenReturn("");
-        recordFilter.processRecord(stringRecord);
+        assertThat(recordFilter.processRecord(stringRecord)).isNull();
     }
 
     @Test
-    public void testFilterNonEmptyRecord() throws RecordFilteringException {
+    public void testFilterNonEmptyRecord() {
         when(stringRecord.getPayload()).thenReturn("foo");
         assertThat(recordFilter.processRecord(stringRecord)).isEqualTo(stringRecord);
     }

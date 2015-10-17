@@ -88,13 +88,6 @@ public interface MonitorMBean {
     String getFilteredRecords();
 
     /**
-     * Get rejected records count.
-     *
-     * @return rejected records count
-     */
-    String getRejectedRecords();
-
-    /**
      * Get error records count.
      *
      * @return error records count

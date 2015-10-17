@@ -26,11 +26,9 @@ package org.easybatch.core.filter;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordFilter;
-import org.easybatch.core.api.RecordFilteringException;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters records
- * if their number is lower than a given number.
+ * Filter a record if its number is lower than a given number.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -50,9 +48,9 @@ public class RecordNumberLowerThanFilter implements RecordFilter<Record> {
         this.number = number;
     }
 
-    public Record processRecord(final Record record) throws RecordFilteringException {
+    public Record processRecord(final Record record) {
         if (record.getHeader().getNumber() < number) {
-            throw new RecordFilteringException();
+            return null;
         }
         return record;
     }

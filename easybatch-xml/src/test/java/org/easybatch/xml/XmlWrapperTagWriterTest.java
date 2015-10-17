@@ -24,19 +24,27 @@
 
 package org.easybatch.xml;
 
+import org.easybatch.core.api.Report;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.OutputStreamWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
+@RunWith(MockitoJUnitRunner.class)
 public class XmlWrapperTagWriterTest {
 
     private static final String DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
+
+    @Mock
+    private Report report;
 
     @Rule
     public final SystemOutRule systemOut = new SystemOutRule().enableLog();
@@ -60,7 +68,7 @@ public class XmlWrapperTagWriterTest {
 
     @Test
     public void testAfterJobEnd() throws Exception {
-        xmlWrapperTagWriter.afterJobEnd();
+        xmlWrapperTagWriter.afterJobEnd(report);
         assertThat(systemOut.getLog()).isEqualTo("</" + wrapperTag + ">");
     }
 }

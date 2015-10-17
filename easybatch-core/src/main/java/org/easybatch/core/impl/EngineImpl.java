@@ -157,7 +157,7 @@ final class EngineImpl implements Engine {
 
         } finally {
             closeRecordReader();
-            eventManager.fireAfterJobEnd();
+            eventManager.fireAfterJobEnd(report);
         }
         return report;
 
@@ -187,17 +187,13 @@ final class EngineImpl implements Engine {
 
     private boolean initializeRecordReader() {
         try {
-            openRecordReader();
+            recordReader.open();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An exception occurred while opening the record reader", e);
             reportAbortedStatus();
             return false;
         }
         return true;
-    }
-
-    private void openRecordReader() throws RecordReaderOpeningException {
-        recordReader.open();
     }
 
     private void initializeDatasource() {
