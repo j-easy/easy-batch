@@ -29,9 +29,8 @@ import org.easybatch.core.api.listener.JobListener;
 import org.easybatch.core.api.listener.PipelineListener;
 import org.easybatch.core.api.listener.RecordReaderListener;
 
-import java.util.ArrayList;
-
-import static org.easybatch.core.util.Utils.*;
+import static org.easybatch.core.util.Utils.checkArgument;
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Engine instance builder.
@@ -47,11 +46,7 @@ public final class EngineBuilder {
     private EngineImpl engine;
 
     public EngineBuilder() {
-        engine = new EngineImpl(
-                DEFAULT_ENGINE_NAME,
-                new NoOpRecordReader(),
-                new ArrayList<RecordProcessor>(),
-                new EventManager());
+        engine = new EngineImpl();
     }
 
     /**

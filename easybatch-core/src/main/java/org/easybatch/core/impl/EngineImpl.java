@@ -30,13 +30,12 @@ import org.easybatch.core.api.listener.PipelineListener;
 import org.easybatch.core.api.listener.RecordReaderListener;
 import org.easybatch.core.util.Utils;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
-import static org.easybatch.core.util.Utils.DEFAULT_SKIP;
+import static org.easybatch.core.util.Utils.*;
 
 /**
  * Core Easy Batch engine implementation.
@@ -73,18 +72,17 @@ final class EngineImpl implements Engine {
     
     private long skip;
 
-    EngineImpl(final String name,
-               final RecordReader recordReader,
-               final List<RecordProcessor> processors,
-               final EventManager eventManager) {
+    EngineImpl() {
         this.executionId = UUID.randomUUID().toString();
-        this.name = name;
+        this.name = DEFAULT_ENGINE_NAME;
         this.limit = DEFAULT_LIMIT;
         this.skip = DEFAULT_SKIP;
-        this.recordReader = recordReader;
+        this.recordReader = new NoOpRecordReader();
         this.report = new Report();
-        this.eventManager = eventManager;
-        this.pipeline = new Pipeline(processors, report, eventManager);
+        this.eventManager = new EventManager();
+        this.eventManager.addPipelineListener(new DefaultPipelineListener(report));
+        this.eventManager.addRecordReaderListener(new DefaultRecordReaderListener(report));
+        this.pipeline = new Pipeline(new ArrayList<RecordProcessor>(), eventManager);
     }
 
     @Override
@@ -120,18 +118,14 @@ final class EngineImpl implements Engine {
                  */
                 Record currentRecord;
                 try {
-                    currentRecord = readRecord();
+                    currentRecord = readNextRecord();
                     if (currentRecord == null) {
-                        LOGGER.log(Level.SEVERE, "The record reader returned null for next record, aborting execution");
-                        reportAbortedStatus();
                         return report;
                     }
                     processedRecordsNumber++;
                     report.setCurrentRecordNumber(currentRecord.getHeader().getNumber());
                 } catch (Exception e) {
                     eventManager.fireOnRecordReadingException(e);
-                    LOGGER.log(Level.SEVERE, "An exception occurred while reading next record, aborting execution", e);
-                    reportAbortedStatus();
                     return report;
                 }
 
@@ -148,7 +142,8 @@ final class EngineImpl implements Engine {
                  */
                 boolean processingError = pipeline.process(currentRecord);
                 if (processingError && strictMode) {
-                    reportAbortedStatusDueToStrictMode();
+                    LOGGER.info(STRICT_MODE_MESSAGE);
+                    report.setStatus(Status.ABORTED);
                     break;
                 }
             }
@@ -190,7 +185,8 @@ final class EngineImpl implements Engine {
             recordReader.open();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An exception occurred while opening the record reader", e);
-            reportAbortedStatus();
+            report.setStatus(Status.ABORTED);
+            report.setEndTime(System.currentTimeMillis());
             return false;
         }
         return true;
@@ -218,17 +214,7 @@ final class EngineImpl implements Engine {
         LOGGER.info("The engine is running");
     }
 
-    private void reportAbortedStatus() {
-        report.setStatus(Status.ABORTED);
-        report.setEndTime(System.currentTimeMillis());
-    }
-
-    private void reportAbortedStatusDueToStrictMode() {
-        LOGGER.info(STRICT_MODE_MESSAGE);
-        report.setStatus(Status.ABORTED);
-    }
-
-    private Record readRecord() throws RecordReadingException {
+    private Record readNextRecord() throws RecordReadingException {
         eventManager.fireBeforeRecordReading();
         Record currentRecord = recordReader.readNextRecord();
         eventManager.fireAfterRecordReading(currentRecord);

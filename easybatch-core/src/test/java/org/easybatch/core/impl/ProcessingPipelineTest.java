@@ -27,7 +27,6 @@ package org.easybatch.core.impl;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordProcessingException;
 import org.easybatch.core.api.RecordProcessor;
-import org.easybatch.core.api.Report;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,13 +48,7 @@ public class ProcessingPipelineTest {
     private Object preProcessedRecord, processedRecord, secondlyProcessedRecord;
 
     @Mock
-    private Object processingResult;
-
-    @Mock
     private RecordProcessingException exception;
-
-    @Mock
-    private Report report;
 
     @Mock
     private EventManager eventManager;
@@ -68,7 +61,7 @@ public class ProcessingPipelineTest {
     @Before
     public void setUp() throws Exception {
         when(eventManager.fireBeforeRecordProcessing(record)).thenReturn(preProcessedRecord);
-        processingPipeline = new Pipeline(asList(recordProcessor1, recordProcessor2), report, eventManager);
+        processingPipeline = new Pipeline(asList(recordProcessor1, recordProcessor2), eventManager);
     }
 
     @Test
@@ -98,11 +91,10 @@ public class ProcessingPipelineTest {
 
         assertThat(processingError).isTrue();
 
-        InOrder inOrder = inOrder(eventManager, report, recordProcessor1, recordProcessor2);
+        InOrder inOrder = inOrder(eventManager, recordProcessor1, recordProcessor2);
 
         inOrder.verify(eventManager).fireBeforeRecordProcessing(record);
         inOrder.verify(recordProcessor1).processRecord(preProcessedRecord);
-        inOrder.verify(report).incrementTotalErrorRecord();
         inOrder.verify(eventManager).fireOnRecordProcessingException(record, exception);
 
         verifyZeroInteractions(recordProcessor2);

@@ -26,11 +26,8 @@ package org.easybatch.core.impl;
 
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordProcessor;
-import org.easybatch.core.api.Report;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The processing pipeline is the list of stages to process a record.
@@ -39,45 +36,29 @@ import java.util.logging.Logger;
  */
 final class Pipeline {
 
-    private static final Logger LOGGER = Logger.getLogger(Pipeline.class.getName());
-
     private List<RecordProcessor> processors;
-
-    private Report report;
 
     private EventManager eventManager;
 
-    Pipeline(List<RecordProcessor> processors, Report report, EventManager eventManager) {
+    Pipeline(List<RecordProcessor> processors, EventManager eventManager) {
         this.processors = processors;
-        this.report = report;
         this.eventManager = eventManager;
     }
 
     @SuppressWarnings({"unchecked"})
-    public boolean process(Record currentRecord) {
-
+    public boolean process(final Record currentRecord) {
         boolean processingError = false;
-        boolean filteredRecord = false;
         try {
             Object recordToProcess = eventManager.fireBeforeRecordProcessing(currentRecord);
             for (RecordProcessor processor : processors) {
                 recordToProcess = processor.processRecord(recordToProcess);
                 if (recordToProcess == null) {
-                    LOGGER.log(Level.INFO, "Record {0} has been filtered", currentRecord);
-                    filteredRecord = true;
                     break;
                 }
-            }
-            if (filteredRecord) {
-                report.incrementTotalFilteredRecords();
-            } else {
-                report.incrementTotalSuccessRecord();
             }
             eventManager.fireAfterRecordProcessing(currentRecord, recordToProcess);
         } catch (Exception e) {
             processingError = true;
-            LOGGER.log(Level.SEVERE, "An exception occurred while processing record " + currentRecord, e);
-            report.incrementTotalErrorRecord();
             eventManager.fireOnRecordProcessingException(currentRecord, e);
         }
         return processingError;
