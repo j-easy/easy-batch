@@ -24,37 +24,15 @@
 
 package org.easybatch.integration.quartz;
 
-import org.easybatch.core.api.Engine;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-
 /**
- * Quartz Job implementation to launch batch job instances.
+ * Batch scheduler exception used to signal any scheduler setup or startup failure.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-class BatchJob implements Job {
+public class JobSchedulerException extends Exception {
 
-    /**
-     * The engine instance.
-     */
-    private Engine engine;
-
-    public BatchJob(final Engine engine) {
-        this.engine = engine;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void execute(final JobExecutionContext context) throws JobExecutionException {
-        try {
-            engine.call();
-        } catch (Exception e) {
-            throw new JobExecutionException("An exception occurred during the execution of engine " + engine, e);
-        }
+    public JobSchedulerException(final String message, final Exception exception) {
+        super(message, exception);
     }
 
 }

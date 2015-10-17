@@ -28,7 +28,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Job;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.processor.RecordCollector;
@@ -40,7 +40,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 
 @Ignore("Ignored since it's impossible to embed a MongoDB instance ..")
 @SuppressWarnings("unchecked")
@@ -65,12 +65,12 @@ public class MongoDBMultiRecordReaderTest {
     @Test
     public void testChunkProcessing() throws Exception {
 
-        Engine engine = aNewEngine()
+        Job job = aNewJob()
                 .reader(mongoDBMultiRecordReader)
                 .processor(new RecordCollector<MultiRecord>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
 

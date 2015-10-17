@@ -37,7 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.mockito.Mockito.when;
 
@@ -76,10 +76,10 @@ public class StringRecordWriterTest {
     public void integrationTest() throws Exception {
         List<String> dataSource = Arrays.asList("foo", "bar");
 
-        aNewEngine()
+        aNewJob()
                 .reader(new IterableRecordReader<String>(dataSource))
                 .writer(stringRecordWriter)
-                .build().call();
+                .call();
 
         assertThat(stringWriter.toString()).isEqualTo("foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR);
     }

@@ -39,7 +39,7 @@ import java.util.List;
 
 import static java.lang.Long.valueOf;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 
 public class JdbcRecordWriterTest {
 
@@ -80,7 +80,7 @@ public class JdbcRecordWriterTest {
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        Report report = aNewEngine()
+        Report report = aNewJob()
                 .reader(new IterableRecordReader<Tweet>(tweets))
                 .mapper(new GenericRecordMapper<Tweet>())
                 .writer(jdbcRecordWriter) // No need for JdbcTransactionPipelineListener, the connection is in auto-commit mode

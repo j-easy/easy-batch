@@ -38,13 +38,13 @@ import java.util.logging.Logger;
 import static org.easybatch.core.util.Utils.*;
 
 /**
- * Core Easy Batch engine implementation.
+ * Core Easy Batch job implementation.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-final class EngineImpl implements Engine {
+final class JobImpl implements Job {
 
-    private static final Logger LOGGER = Logger.getLogger(Engine.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Job.class.getName());
 
     private static final String STRICT_MODE_MESSAGE = "Strict mode enabled: aborting execution";
 
@@ -72,9 +72,9 @@ final class EngineImpl implements Engine {
     
     private long skip;
 
-    EngineImpl() {
+    JobImpl() {
         this.executionId = UUID.randomUUID().toString();
-        this.name = DEFAULT_ENGINE_NAME;
+        this.name = DEFAULT_JOB_NAME;
         this.limit = DEFAULT_LIMIT;
         this.skip = DEFAULT_SKIP;
         this.recordReader = new NoOpRecordReader();
@@ -98,7 +98,7 @@ final class EngineImpl implements Engine {
     @Override
     public Report call() {
 
-        initializeEngine();
+        initializeJob();
 
         if (!initializeRecordReader()) {
             return report;
@@ -148,7 +148,7 @@ final class EngineImpl implements Engine {
                 }
             }
 
-            tearDownEngine(processedRecordsNumber);
+            tearDownJob(processedRecordsNumber);
 
         } finally {
             closeRecordReader();
@@ -158,13 +158,13 @@ final class EngineImpl implements Engine {
 
     }
 
-    private void initializeEngine() {
+    private void initializeJob() {
         if (silentMode) {
             Utils.muteLoggers();
         }
         eventManager.fireBeforeJobStart();
-        LOGGER.info("Initializing the engine");
-        LOGGER.log(Level.INFO, "Engine name: {0}", getName());
+        LOGGER.info("Initializing the job");
+        LOGGER.log(Level.INFO, "Job name: {0}", getName());
         LOGGER.log(Level.INFO, "Execution id: {0}", getExecutionId());
         LOGGER.log(Level.INFO, "Strict mode: {0}", strictMode);
         if (skip != DEFAULT_SKIP) {
@@ -176,7 +176,7 @@ final class EngineImpl implements Engine {
         report.setLimit(limit);
         report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
         report.setSystemProperties(System.getProperties());
-        report.setEngineName(name);
+        report.setName(name);
         report.setExecutionId(executionId);
     }
 
@@ -211,7 +211,7 @@ final class EngineImpl implements Engine {
 
     private void setRunningStatus() {
         report.setStatus(Status.RUNNING);
-        LOGGER.info("The engine is running");
+        LOGGER.info("The job is running");
     }
 
     private Record readNextRecord() throws RecordReadingException {
@@ -221,7 +221,7 @@ final class EngineImpl implements Engine {
         return currentRecord;
     }
 
-    private void tearDownEngine(long processedRecordsNumber) {
+    private void tearDownJob(long processedRecordsNumber) {
         report.setTotalRecords(processedRecordsNumber);
         report.setEndTime(System.currentTimeMillis());
         if (!report.getStatus().equals(Status.ABORTED)) {
@@ -238,7 +238,7 @@ final class EngineImpl implements Engine {
     }
 
     private void closeRecordReader() {
-        LOGGER.info("Shutting down the engine");
+        LOGGER.info("Shutting down the job");
         try {
             if (!keepAlive) {
                 recordReader.close();
@@ -249,7 +249,7 @@ final class EngineImpl implements Engine {
     }
 
     /*
-     * Setters for engine parameters
+     * Setters for job parameters
      */
 
     void setRecordReader(final RecordReader recordReader) {

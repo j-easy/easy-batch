@@ -27,7 +27,7 @@ package org.easybatch.integration.apache.common.csv;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Job;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.MultiRecord;
@@ -38,7 +38,7 @@ import java.io.FileReader;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 
 public class ApacheCommonCsvMultiRecordReaderTest {
 
@@ -57,12 +57,12 @@ public class ApacheCommonCsvMultiRecordReaderTest {
     @Test
     public void testChunkProcessing() throws Exception {
 
-        Engine engine = aNewEngine()
+        Job job = aNewJob()
                 .reader(apacheCommonCsvMultiRecordReader)
                 .processor(new RecordCollector<MultiRecord>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
         assertThat(report.getTotalRecords()).isEqualTo(2);
 
         List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();

@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.spring;
 
-import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Job;
 import org.easybatch.core.api.RecordProcessor;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.api.listener.JobListener;
@@ -40,9 +40,9 @@ import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class EngineFactoryBeanTest {
+public class JobFactoryBeanTest {
 
-    private EngineFactoryBean engineFactoryBean;
+    private JobFactoryBean jobFactoryBean;
 
     @Mock
     private RecordReader recordReader;
@@ -57,30 +57,30 @@ public class EngineFactoryBeanTest {
 
     @Before
     public void setUp() throws Exception {
-        engineFactoryBean = new EngineFactoryBean();
+        jobFactoryBean = new JobFactoryBean();
 
-        engineFactoryBean.setRecordReader(recordReader);
-        engineFactoryBean.setProcessingPipeline(singletonList(recordProcessor));
+        jobFactoryBean.setRecordReader(recordReader);
+        jobFactoryBean.setProcessingPipeline(singletonList(recordProcessor));
 
-        engineFactoryBean.setJobListeners(singletonList(jobListener));
-        engineFactoryBean.setRecordReaderListeners(singletonList(recordReaderListener));
-        engineFactoryBean.setPipelineListeners(singletonList(pipelineListener));
+        jobFactoryBean.setJobListeners(singletonList(jobListener));
+        jobFactoryBean.setRecordReaderListeners(singletonList(recordReaderListener));
+        jobFactoryBean.setPipelineListeners(singletonList(pipelineListener));
     }
 
     @Test
     public void testGetObject() throws Exception {
-        Engine engine = engineFactoryBean.getObject();
-        assertThat(engine).isNotNull();
+        Job job = jobFactoryBean.getObject();
+        assertThat(job).isNotNull();
         // TODO assert that fields are correctly set through reflection
     }
 
     @Test
     public void testGetObjectType() throws Exception {
-        assertThat(engineFactoryBean.getObjectType()).isEqualTo(Engine.class);
+        assertThat(jobFactoryBean.getObjectType()).isEqualTo(Job.class);
     }
 
     @Test
     public void testIsSingleton() throws Exception {
-        assertThat(engineFactoryBean.isSingleton()).isTrue();
+        assertThat(jobFactoryBean.isSingleton()).isTrue();
     }
 }

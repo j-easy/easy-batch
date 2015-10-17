@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.FILE_SEPARATOR;
 import static org.easybatch.core.util.Utils.JAVA_IO_TMPDIR;
 
@@ -63,10 +63,10 @@ public class FileMultiRecordReaderTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testMultiFileReading() throws Exception {
-        Report report = aNewEngine()
+        Report report = aNewJob()
                 .reader(fileMultiRecordReader)
                 .processor(new RecordCollector<MultiRecord>())
-                .build().call();
+                .call();
 
         List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
 

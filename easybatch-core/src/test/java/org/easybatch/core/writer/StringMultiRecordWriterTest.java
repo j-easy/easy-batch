@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
@@ -66,10 +66,10 @@ public class StringMultiRecordWriterTest {
     @Test
     public void testWriteMultiRecord() throws Exception {
 
-        aNewEngine()
+        aNewJob()
                 .reader(new IterableMultiRecordReader<String>(items, 2))
                 .writer(stringMultiRecordWriter)
-                .build().call();
+                .call();
 
         assertThat(stringWriter.toString()).isEqualTo("foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR);
     }

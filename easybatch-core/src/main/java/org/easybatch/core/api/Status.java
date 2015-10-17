@@ -25,29 +25,29 @@
 package org.easybatch.core.api;
 
 /**
- * Enumeration of engine status.
+ * Enumeration of job status.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public enum Status {
 
     /**
-     * The engine is initializing the data source.
+     * The job is initializing the data source.
      */
     INITIALIZING,
 
     /**
-     * The engine is running.
+     * The job is running.
      */
     RUNNING,
 
     /**
-     * The execution has been aborted (problem with reading data source).
+     * The job has been aborted (problem with reading data source).
      */
     ABORTED,
 
     /**
-     * The engine has finished the job.
+     * The jos is finished.
      */
     FINISHED
 }

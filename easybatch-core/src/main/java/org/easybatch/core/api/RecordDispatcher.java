@@ -25,7 +25,7 @@
 package org.easybatch.core.api;
 
 /**
- * Dispatch records to worker engines.
+ * Dispatch records to workers.
  *
  * @param <I> The type of record to dispatch
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -33,7 +33,7 @@ package org.easybatch.core.api;
 public interface RecordDispatcher<I> extends RecordProcessor<I, I> {
 
     /**
-     * Dispatch record to a worker engine
+     * Dispatch record to a worker.
      * @param record the record to dispatch.
      * @return the dispatched record
      * @throws RecordDispatchingException if an error occurs when dispatching the record

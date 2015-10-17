@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Job;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.GenericRecord;
@@ -37,7 +37,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 
 public class HibernateRecordReaderTest {
 
@@ -59,12 +59,12 @@ public class HibernateRecordReaderTest {
     @Test
     public void testRecordReading() throws Exception {
 
-        Engine engine = aNewEngine()
+        Job job = aNewJob()
                 .reader(hibernateRecordReader)
                 .processor(new RecordCollector<Tweet>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
         assertThat(report.getTotalRecords()).isEqualTo(3);
 
         List<GenericRecord<Tweet>> tweets = (List<GenericRecord<Tweet>>) report.getJobResult();

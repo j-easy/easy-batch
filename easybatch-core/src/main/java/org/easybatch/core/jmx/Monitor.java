@@ -49,8 +49,8 @@ public class Monitor implements MonitorMBean {
      * {@inheritDoc}
      */
     @Override
-    public String getEngineName() {
-        return report.getEngineName();
+    public String getJobName() {
+        return report.getName();
     }
 
     /**

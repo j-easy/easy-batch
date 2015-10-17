@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.*;
 
 /**
@@ -60,10 +60,10 @@ public class FileMultiRecordWriterTest {
     public void testWriteMultiRecord() throws Exception {
         List<String> persons = Arrays.asList("foo", "bar");
 
-        aNewEngine()
+        aNewJob()
                 .reader(new IterableMultiRecordReader<String>(persons, 2))
                 .writer(fileMultiRecordWriter)
-                .build().call();
+                .call();
 
         assertThat(file).hasContent("foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR);
     }

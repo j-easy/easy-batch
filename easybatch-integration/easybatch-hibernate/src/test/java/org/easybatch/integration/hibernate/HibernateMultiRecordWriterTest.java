@@ -42,7 +42,7 @@ import java.util.List;
 
 import static java.lang.Long.valueOf;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 
 public class HibernateMultiRecordWriterTest {
 
@@ -67,7 +67,7 @@ public class HibernateMultiRecordWriterTest {
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        Report report = aNewEngine()
+        Report report = aNewJob()
                 .reader(new IterableMultiRecordReader<Tweet>(tweets, chunkSize))
                 .mapper(new GenericMultiRecordMapper<Tweet>())
                 .writer(new HibernateMultiRecordWriter<Tweet>(session))

@@ -32,11 +32,11 @@ package org.easybatch.core.jmx;
 public interface MonitorMBean {
 
     /**
-     * Get the engine name.
+     * Get the job name.
      * 
-     * @return the engine name
+     * @return the job name
      */
-    String getEngineName();
+    String getJobName();
 
     /**
      * Get the job execution id.
@@ -53,7 +53,7 @@ public interface MonitorMBean {
     String getDataSource();
 
     /**
-     * Get the current record number being processed by the engine.
+     * Get the current record number being processed.
      *
      * @return the current record number
      */
@@ -123,9 +123,9 @@ public interface MonitorMBean {
     String getProgress();
 
     /**
-     * Get engine {@link org.easybatch.core.api.Status}.
+     * Get the job {@link org.easybatch.core.api.Status}.
      *
-     * @return engine status
+     * @return the job status
      */
     String getStatus();
 

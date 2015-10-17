@@ -26,7 +26,7 @@ package org.easybatch.core.api;
 
 /**
  * Interface for record validator.
- * This is used by the engine to apply validation logic on input records.
+ * This is used to apply validation logic on input records.
  *
  * @param <I> The record type this validator can validate.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

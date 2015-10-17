@@ -24,7 +24,7 @@
 
 package org.easybatch.core.util;
 
-import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Job;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.jmx.Monitor;
@@ -64,7 +64,7 @@ public abstract class Utils {
 
     public static final String JAVA_IO_TMPDIR = System.getProperty("java.io.tmpdir");
 
-    public static final String DEFAULT_ENGINE_NAME = "engine";
+    public static final String DEFAULT_JOB_NAME = "job";
 
     public static final String JMX_MBEAN_NAME = "org.easybatch.core.jmx:";
 
@@ -97,18 +97,18 @@ public abstract class Utils {
         }
     }
 
-    public static void registerJmxMBean(Report report, Engine engine) {
+    public static void registerJmxMBean(Report report, Job job) {
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
         try {
-            name = new ObjectName(JMX_MBEAN_NAME + "name=" + engine.getName() + ",id=" + engine.getExecutionId());
+            name = new ObjectName(JMX_MBEAN_NAME + "name=" + job.getName() + ",id=" + job.getExecutionId());
             if (!mbs.isRegistered(name)) {
                 Monitor monitor = new Monitor(report);
                 mbs.registerMBean(monitor, name);
                 LOGGER.log(Level.INFO, "JMX MBean registered successfully as: {0}", name.getCanonicalName());
             } else {
-                LOGGER.log(Level.WARNING, "JMX MBean {0} already registered for another engine." +
-                                " If you use multiple engines in parallel and you would like to monitor each of them, make sure they have different names",
+                LOGGER.log(Level.WARNING, "JMX MBean {0} already registered for another job." +
+                                " If you run multiple jobs in parallel and you would like to monitor each of them, make sure they have different names",
                         name.getCanonicalName());
             }
         } catch (Exception e) {

@@ -1,12 +1,12 @@
 package org.easybatch.flatfile;
 
-import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Job;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
 import org.easybatch.core.api.TypeConverter;
 import org.easybatch.core.converter.DateTypeConverter;
 import org.easybatch.core.filter.HeaderRecordFilter;
-import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.impl.JobBuilder;
 import org.easybatch.core.processor.RecordCollector;
 import org.junit.Test;
 
@@ -27,13 +27,13 @@ public class FlatFileIntegrationTest {
 
         File dataSource = new File(getFileUri("/persons.csv"));
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class, new String[]{"firstName", "lastName", "age", "birthDate", "married"}))
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report).isNotNull();
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
@@ -53,13 +53,13 @@ public class FlatFileIntegrationTest {
 
         File dataSource = new File(getFileUri("/persons.csv"));
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class, new Integer[]{2, 4}, new String[]{"age", "married"}))
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report).isNotNull();
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
@@ -83,13 +83,13 @@ public class FlatFileIntegrationTest {
 
         File dataSource = new File(getFileUri("/persons_with_header.csv"));
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class))
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report).isNotNull();
         assertThat(report.getErrorRecordsCount()).isEqualTo(1);
@@ -109,13 +109,13 @@ public class FlatFileIntegrationTest {
 
         File dataSource = new File(getFileUri("/persons_with_header.csv"));
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class, new Integer[]{2, 4}))
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report).isNotNull();
         assertThat(report.getErrorRecordsCount()).isEqualTo(1);
@@ -147,14 +147,14 @@ public class FlatFileIntegrationTest {
         });
         recordMapper.registerTypeConverter(new DateTypeConverter("MM/dd/yyyy"));
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .filter(new HeaderRecordFilter())
                 .mapper(recordMapper)
                 .processor(new RecordCollector<Complaint>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report).isNotNull();
 
@@ -187,14 +187,14 @@ public class FlatFileIntegrationTest {
 
         File dataSource = new File(getFileUri("/persons.flr"));
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new FixedLengthRecordMapper(Person.class, new int[]{4, 4, 2, 10, 1},
                         new String[]{"firstName", "lastName", "age", "birthDate", "married"}))
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report).isNotNull();
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);

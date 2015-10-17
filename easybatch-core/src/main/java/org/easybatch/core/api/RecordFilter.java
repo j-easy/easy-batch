@@ -26,7 +26,6 @@ package org.easybatch.core.api;
 
 /**
  * Interface for record filter.
- * This will be used by the engine to filter records.
  *
  * @param <T> the type of records the filter can handle
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

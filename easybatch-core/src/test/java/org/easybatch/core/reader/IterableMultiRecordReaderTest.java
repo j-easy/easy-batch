@@ -37,7 +37,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IterableMultiRecordReaderTest {
@@ -53,10 +53,10 @@ public class IterableMultiRecordReaderTest {
 
         List<Object> dataSource = asList(record1, record2, record3, record4, record5);
 
-        Report report = aNewEngine()
+        Report report = aNewJob()
                 .reader(new IterableMultiRecordReader<Object>(dataSource, CHUNK_SIZE))
                 .processor(new RecordCollector<Object>())
-                .build().call();
+                .call();
 
         List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
 

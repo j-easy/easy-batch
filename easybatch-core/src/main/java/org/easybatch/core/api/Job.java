@@ -27,21 +27,21 @@ package org.easybatch.core.api;
 import java.util.concurrent.Callable;
 
 /**
- * Interface for the execution engine.
+ * Interface that represent an Easy Batch job.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface Engine extends Callable<Report> {
+public interface Job extends Callable<Report> {
 
     /**
-     * Get the engine name.
-     * @return the engine name
+     * Get the job name.
+     * @return the job name
      */
     String getName();
 
     /**
-     * Get the engine execution id.
-     * @return the engine execution id
+     * Get the job execution id.
+     * @return the job execution id
      */
     String getExecutionId();
     

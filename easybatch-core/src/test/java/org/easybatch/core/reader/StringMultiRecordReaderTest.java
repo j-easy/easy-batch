@@ -33,7 +33,7 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 public class StringMultiRecordReaderTest {
@@ -51,10 +51,10 @@ public class StringMultiRecordReaderTest {
                 "titi" + LINE_SEPARATOR +
                 "baz";
 
-        aNewEngine()
+        aNewJob()
                 .reader(new StringMultiRecordReader(dataSource, CHUNK_SIZE))
                 .processor(new MultiRecordProcessor())
-                .build().call();
+                .call();
 
         assertThat(systemOut.getLog()).isEqualTo("Chunk 1:" + LINE_SEPARATOR +
                         "foo" + LINE_SEPARATOR +

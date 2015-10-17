@@ -24,10 +24,10 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Job;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
-import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.impl.JobBuilder;
 import org.easybatch.core.processor.RecordCollector;
 import org.junit.Test;
 
@@ -44,13 +44,13 @@ public class XmlIntegrationTest {
     @Test
     public void testWebsitesProcessing() throws Exception {
         final InputStream xmlDataSource = getDataSource("/websites.xml");
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("website", xmlDataSource))
                 .mapper(new XmlRecordMapper(Website.class))
                 .processor(new RecordCollector<Website>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         List<Website> websites = (List<Website>) report.getJobResult();
 
@@ -74,13 +74,13 @@ public class XmlIntegrationTest {
 
         final InputStream xmlDataSource = getDataSource("/persons.xml");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("person", xmlDataSource))
                 .mapper(new XmlRecordMapper<Person>(Person.class))
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThatReportIsCorrect(report);
 
@@ -107,13 +107,13 @@ public class XmlIntegrationTest {
 
         final InputStream xmlDataSource = getDataSource("/dependencies.xml");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("dependency", xmlDataSource))
                 .mapper(new XmlRecordMapper<Dependency>(Dependency.class))
                 .processor(new RecordCollector<Dependency>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThatReportIsCorrect(report);
 
@@ -161,13 +161,13 @@ public class XmlIntegrationTest {
 
         final InputStream xmlDataSource = getDataSource("/beans.xml");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("bean", xmlDataSource))
                 .mapper(new XmlRecordMapper(Bean.class))
                 .processor(new RecordCollector<Bean>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report).isNotNull();
         assertThat(report.getTotalRecords()).isEqualTo(2);

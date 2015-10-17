@@ -48,14 +48,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
-public class EngineImplTest {
+public class JobImplTest {
 
-    private Engine engine;
+    private Job job;
 
     @Mock
     private Header header1, header2;
@@ -102,7 +102,7 @@ public class EngineImplTest {
         when(firstProcessor.processRecord(record2)).thenReturn(record2);
         when(secondProcessor.processRecord(record1)).thenReturn(record1);
         when(secondProcessor.processRecord(record2)).thenReturn(record2);
-        engine = new EngineBuilder()
+        job = new JobBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
@@ -110,13 +110,13 @@ public class EngineImplTest {
     }
 
     /*
-     * Core engine implementation tests
+     * Core job implementation tests
      */
 
     @Test
     public void allComponentsShouldBeInvokedForEachRecordInOrder() throws Exception {
 
-        engine.call();
+        job.call();
 
         InOrder inOrder = Mockito.inOrder(reader, record1, record2, firstProcessor, secondProcessor);
 
@@ -134,9 +134,9 @@ public class EngineImplTest {
     public void recordReaderShouldBeClosedAtTheEndOfExecution() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true, false);
         when(reader.readNextRecord()).thenReturn(record1);
-        engine = new EngineBuilder().reader(reader).build();
+        job = new JobBuilder().reader(reader).build();
 
-        engine.call();
+        job.call();
 
         verify(reader, times(2)).hasNextRecord();
         verify(reader).readNextRecord();
@@ -147,21 +147,21 @@ public class EngineImplTest {
     public void whenKeepAliveIsActivated_thenTheRecordReaderShouldNotBeClosedAtTheEndOfExecution() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true, false);
         when(reader.readNextRecord()).thenReturn(record1);
-        engine = new EngineBuilder().reader(reader, true).build();
+        job = new JobBuilder().reader(reader, true).build();
 
-        engine.call();
+        job.call();
 
         verify(reader, never()).close();
     }
 
     @Test
-    public void whenNotAbleToOpenReader_ThenTheEngineShouldAbortExecution() throws Exception {
+    public void whenNotAbleToOpenReader_ThenTheJobShouldBeAborted() throws Exception {
         doThrow(recordReaderOpeningException).when(reader).open();
-        engine = new EngineBuilder()
+        job = new JobBuilder()
                 .reader(reader)
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report).isNotNull();
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
@@ -172,15 +172,15 @@ public class EngineImplTest {
     }
 
     @Test
-    public void whenNotAbleToReadNextRecord_ThenTheEngineShouldAbortExecution() throws Exception {
+    public void whenNotAbleToReadNextRecord_ThenTheJobShouldBeAborted() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true);
         when(reader.readNextRecord()).thenThrow(recordReadingException);
 
-        engine = new EngineBuilder()
+        job = new JobBuilder()
                 .reader(reader)
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
@@ -193,18 +193,18 @@ public class EngineImplTest {
     public void jobResultShouldBeReturnedFromTheLastProcessorInThePipeline() throws Exception {
         when(computationalRecordProcessor.getComputationResult()).thenReturn(jobResult);
 
-        engine = new EngineBuilder()
+        job = new JobBuilder()
                 .reader(reader)
                 .processor(computationalRecordProcessor)
                 .build();
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report.getJobResult()).isEqualTo(jobResult);
     }
 
     @Test
     public void reportShouldBeCorrect() throws Exception {
-        Report report = engine.call();
+        Report report = job.call();
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
         assertThat(report.getErrorRecordsCount()).isEqualTo(0);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
@@ -213,16 +213,16 @@ public class EngineImplTest {
     }
 
     @Test
-    public void whenStrictModeIsEnabled_ThenTheEngineShouldAbortOnFirstProcessingExceptionIfAny() throws Exception {
+    public void whenStrictModeIsEnabled_ThenTheJobShouldBeAbortedOnFirstProcessingExceptionIfAny() throws Exception {
         when(firstProcessor.processRecord(record1)).thenReturn(record1);
         when(secondProcessor.processRecord(record1)).thenThrow(recordProcessingException);
-        engine = new EngineBuilder()
+        job = new JobBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
                 .strictMode(true)
                 .build();
-        Report report = engine.call();
+        Report report = job.call();
         assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
         assertThat(report.getErrorRecordsCount()).isEqualTo(1);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
@@ -235,12 +235,12 @@ public class EngineImplTest {
     }
 
     @Test
-    public void whenARecordProcessorReturnsNull_thenTheEngineShouldFilterTheRecord() throws Exception {
+    public void whenARecordProcessorReturnsNull_thenTheRecordShouldBeFiltered() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true, false);
         when(reader.readNextRecord()).thenReturn(record1);
         when(firstProcessor.processRecord(record1)).thenReturn(null);
 
-        Report report = new EngineBuilder()
+        Report report = new JobBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
@@ -260,20 +260,20 @@ public class EngineImplTest {
      */
 
     @Test
-    public void whenEngineNameIsNotSpecified_thenTheJmxMBeanShouldBeRegisteredWithDefaultEngineName() throws Exception {
-        engine = new EngineBuilder().enableJMX(true).build();
-        engine.call();
+    public void whenJobNameIsNotSpecified_thenTheJmxMBeanShouldBeRegisteredWithDefaultJobName() throws Exception {
+        job = new JobBuilder().enableJMX(true).build();
+        job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + Utils.DEFAULT_ENGINE_NAME + ",id=" + engine.getExecutionId()))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + Utils.DEFAULT_JOB_NAME + ",id=" + job.getExecutionId()))).isTrue();
     }
 
     @Test
-    public void whenEngineNameIsSpecified_thenTheJmxMBeanShouldBeRegisteredWithEngineName() throws Exception {
-        String name = "master-engine";
-        engine = new EngineBuilder().enableJMX(true).named(name).build();
-        engine.call();
+    public void whenJobNameIsSpecified_thenTheJmxMBeanShouldBeRegisteredWithTheGivenJobName() throws Exception {
+        String name = "master";
+        job = new JobBuilder().enableJMX(true).named(name).build();
+        job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + name + ",id=" + engine.getExecutionId()))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + name + ",id=" + job.getExecutionId()))).isTrue();
     }
 
     /*
@@ -284,13 +284,11 @@ public class EngineImplTest {
     public void testRecordSkipping() throws Exception {
         List<String> dataSource = Arrays.asList("foo", "bar");
 
-        Engine engine = aNewEngine()
+        Report report = aNewJob()
                 .reader(new IterableRecordReader(dataSource))
                 .skip(1)
                 .processor(new RecordCollector<StringRecord>())
-                .build();
-
-        Report report = engine.call();
+                .call();
 
         assertThat(report.getTotalRecords()).isEqualTo(2);
         assertThat(report.getSkippedRecordsCount()).isEqualTo(1);
@@ -307,13 +305,11 @@ public class EngineImplTest {
     public void testRecordLimit() throws Exception {
         List<String> dataSource = Arrays.asList("foo", "bar", "baz");
 
-        Engine engine = aNewEngine()
+        Report report = aNewJob()
                 .reader(new IterableRecordReader(dataSource))
                 .limit(2)
                 .processor(new RecordCollector<StringRecord>())
-                .build();
-
-        Report report = engine.call();
+                .call();
 
         assertThat(report.getTotalRecords()).isEqualTo(2);
         assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
@@ -334,11 +330,11 @@ public class EngineImplTest {
     public void recordReaderListenerShouldBeInvokedForEachEvent() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true, false);
         when(reader.readNextRecord()).thenReturn(record1);
-        engine = new EngineBuilder()
+        job = new JobBuilder()
                 .reader(reader)
                 .readerEventListener(recordReaderListener)
                 .build();
-        engine.call();
+        job.call();
 
         verify(recordReaderListener).beforeRecordReading();
         verify(recordReaderListener).afterRecordReading(record1);
@@ -350,11 +346,11 @@ public class EngineImplTest {
         when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
         when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(record2);
 
-        engine = new EngineBuilder()
+        job = new JobBuilder()
                 .reader(reader)
                 .pipelineEventListener(pipelineListener)
                 .build();
-        engine.call();
+        job.call();
 
         verify(pipelineListener).beforeRecordProcessing(record1);
         verify(pipelineListener).afterRecordProcessing(record1, record1);

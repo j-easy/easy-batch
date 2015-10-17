@@ -24,10 +24,8 @@
 
 package org.easybatch.integration.quartz;
 
-import org.easybatch.core.api.Engine;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.spi.JobFactory;
 
 import java.util.Date;
 import java.util.logging.Level;
@@ -44,9 +42,9 @@ import static org.quartz.TriggerBuilder.newTrigger;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BatchJobScheduler {
+public class JobScheduler {
 
-    private static final Logger LOGGER = Logger.getLogger(BatchJobScheduler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(JobScheduler.class.getName());
 
     private static final String JOB_NAME_PREFIX = "job-";
 
@@ -60,43 +58,43 @@ public class BatchJobScheduler {
     /**
      * The scheduler singleton instance.
      */
-    private static BatchJobScheduler instance;
+    private static JobScheduler instance;
 
     /**
      * Get the scheduler instance.
      *
      * @return The scheduler instance
-     * @throws BatchJobSchedulerException thrown if an exception occurs while creating the scheduler
+     * @throws JobSchedulerException thrown if an exception occurs while creating the scheduler
      */
-    public static BatchJobScheduler getInstance() throws BatchJobSchedulerException {
+    public static JobScheduler getInstance() throws JobSchedulerException {
         if (instance == null) {
-            instance = new BatchJobScheduler();
+            instance = new JobScheduler();
         }
         return instance;
     }
 
-    BatchJobScheduler() throws BatchJobSchedulerException {
-        JobFactory jobFactory = new BatchJobFactory();
+    JobScheduler() throws JobSchedulerException {
+        org.quartz.spi.JobFactory jobFactory = new JobFactory();
         SchedulerFactory schedulerFactory = new StdSchedulerFactory();
         try {
             scheduler = schedulerFactory.getScheduler();
             scheduler.setJobFactory(jobFactory);
         } catch (SchedulerException e) {
-            throw new BatchJobSchedulerException("An exception occurred during scheduler setup", e);
+            throw new JobSchedulerException("An exception occurred during scheduler setup", e);
         }
     }
 
     /**
-     * Schedule an engine to start at a fixed point of time.
+     * Schedule a job to start at a fixed point of time.
      *
-     * @param engine the engine to schedule
+     * @param job the job to schedule
      * @param startTime the start time
      */
-    public void scheduleAt(final Engine engine, final Date startTime) throws BatchJobSchedulerException {
-        checkNotNull(engine, "engine");
+    public void scheduleAt(final org.easybatch.core.api.Job job, final Date startTime) throws JobSchedulerException {
+        checkNotNull(job, "job");
         checkNotNull(startTime, "startTime");
 
-        String executionId = engine.getExecutionId();
+        String executionId = job.getExecutionId();
         String jobName = JOB_NAME_PREFIX + executionId;
         String triggerName = TRIGGER_NAME_PREFIX + executionId;
 
@@ -106,28 +104,28 @@ public class BatchJobScheduler {
                 .forJob(jobName)
                 .build();
 
-        JobDetail job = getJobDetail(engine, jobName);
+        JobDetail jobDetail = getJobDetail(job, jobName);
 
         try {
-            LOGGER.log(Level.INFO, "Scheduling engine {0} to start at {1}", new Object[]{engine, startTime});
-            scheduler.scheduleJob(job, trigger);
+            LOGGER.log(Level.INFO, "Scheduling job {0} to start at {1}", new Object[]{job, startTime});
+            scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new BatchJobSchedulerException("Unable to schedule engine " + engine, e);
+            throw new JobSchedulerException("Unable to schedule job " + job, e);
         }
     }
 
     /**
-     * Schedule an engine to start at a fixed point of time and repeat with interval period.
+     * Schedule a job to start at a fixed point of time and repeat with interval period.
      *
-     * @param engine the engine to schedule
+     * @param job the job to schedule
      * @param startTime the start time
      * @param interval  the repeat interval in seconds
      */
-    public void scheduleAtWithInterval(final Engine engine, final Date startTime, final int interval) throws BatchJobSchedulerException {
-        checkNotNull(engine, "engine");
+    public void scheduleAtWithInterval(final org.easybatch.core.api.Job job, final Date startTime, final int interval) throws JobSchedulerException {
+        checkNotNull(job, "job");
         checkNotNull(startTime, "startTime");
 
-        String executionId = engine.getExecutionId();
+        String executionId = job.getExecutionId();
         String jobName = JOB_NAME_PREFIX + executionId;
         String triggerName = TRIGGER_NAME_PREFIX + executionId;
 
@@ -142,29 +140,29 @@ public class BatchJobScheduler {
                 .forJob(jobName)
                 .build();
 
-        JobDetail job = getJobDetail(engine, jobName);
+        JobDetail jobDetail = getJobDetail(job, jobName);
 
         try {
-            LOGGER.log(Level.INFO, "Scheduling engine {0} to start at {1} and every {2} second(s)", new Object[]{engine, startTime, interval});
-            scheduler.scheduleJob(job, trigger);
+            LOGGER.log(Level.INFO, "Scheduling job {0} to start at {1} and every {2} second(s)", new Object[]{job, startTime, interval});
+            scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new BatchJobSchedulerException("Unable to schedule engine " + engine, e);
+            throw new JobSchedulerException("Unable to schedule job " + job, e);
         }
     }
 
     /**
-     * Schedule an engine with a unix-like cron expression.
+     * Schedule a job with a unix-like cron expression.
      *
-     * @param engine the engine to schedule
+     * @param job the job to schedule
      * @param cronExpression the cron expression to use.
      *                       For a complete tutorial about cron expressions, please refer to
      *                       <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/crontrigger">quartz reference documentation</a>.
      */
-    public void scheduleCron(final Engine engine, final String cronExpression) throws BatchJobSchedulerException {
-        checkNotNull(engine, "engine");
+    public void scheduleCron(final org.easybatch.core.api.Job job, final String cronExpression) throws JobSchedulerException {
+        checkNotNull(job, "job");
         checkNotNull(cronExpression, "cronExpression");
 
-        String executionId = engine.getExecutionId();
+        String executionId = job.getExecutionId();
         String jobName = JOB_NAME_PREFIX + executionId;
         String triggerName = TRIGGER_NAME_PREFIX + executionId;
 
@@ -174,56 +172,56 @@ public class BatchJobScheduler {
                 .forJob(jobName)
                 .build();
 
-        JobDetail job = getJobDetail(engine, jobName);
+        JobDetail jobDetail = getJobDetail(job, jobName);
 
         try {
-            LOGGER.log(Level.INFO, "Scheduling engine {0} with cron expression {1}", new Object[]{engine, cronExpression});
-            scheduler.scheduleJob(job, trigger);
+            LOGGER.log(Level.INFO, "Scheduling job {0} with cron expression {1}", new Object[]{job, cronExpression});
+            scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            throw new BatchJobSchedulerException("Unable to schedule engine " + engine, e);
+            throw new JobSchedulerException("Unable to schedule job " + job, e);
         }
     }
 
     /**
-     * Unschedule the given engine.
+     * Unschedule the given job.
      *
-     * @param engine the engine to unschedule
-     * @throws BatchJobSchedulerException thrown if an exception occurs during engine unscheduling
+     * @param job the job to unschedule
+     * @throws JobSchedulerException thrown if an exception occurs during job unscheduling
      */
-    public void unschedule(final Engine engine) throws BatchJobSchedulerException {
-        LOGGER.log(Level.INFO, "Unscheduling engine {0} ", engine);
+    public void unschedule(final org.easybatch.core.api.Job job) throws JobSchedulerException {
+        LOGGER.log(Level.INFO, "Unscheduling job {0} ", job);
         try {
-            scheduler.unscheduleJob(TriggerKey.triggerKey(TRIGGER_NAME_PREFIX + engine.getExecutionId()));
+            scheduler.unscheduleJob(TriggerKey.triggerKey(TRIGGER_NAME_PREFIX + job.getExecutionId()));
         } catch (SchedulerException e) {
-            throw new BatchJobSchedulerException("Unable to unschedule engine " + engine, e);
+            throw new JobSchedulerException("Unable to unschedule job " + job, e);
         }
     }
 
     /**
-     * Check if the given engine is scheduled.
+     * Check if the given job is scheduled.
      *
-     * @param engine the engine to check
-     * @return true if the engine is scheduled, false else
-     * @throws BatchJobSchedulerException thrown if an exception occurs while checking if the engine is scheduled
+     * @param job the job to check
+     * @return true if the job is scheduled, false else
+     * @throws JobSchedulerException thrown if an exception occurs while checking if the job is scheduled
      */
-    public boolean isScheduled(final Engine engine) throws BatchJobSchedulerException {
+    public boolean isScheduled(final org.easybatch.core.api.Job job) throws JobSchedulerException {
         try {
-            return scheduler.checkExists(TriggerKey.triggerKey(TRIGGER_NAME_PREFIX + engine.getExecutionId()));
+            return scheduler.checkExists(TriggerKey.triggerKey(TRIGGER_NAME_PREFIX + job.getExecutionId()));
         } catch (SchedulerException e) {
-            throw new BatchJobSchedulerException("Unable to check if the engine " + engine + " is scheduled", e);
+            throw new JobSchedulerException("Unable to check if the job " + job + " is scheduled", e);
         }
     }
 
     /**
      * Start the scheduler.
      *
-     * @throws BatchJobSchedulerException thrown if the scheduler cannot be started
+     * @throws JobSchedulerException thrown if the scheduler cannot be started
      */
-    public void start() throws BatchJobSchedulerException {
+    public void start() throws JobSchedulerException {
         try {
             scheduler.start();
         } catch (SchedulerException e) {
-            throw new BatchJobSchedulerException("An exception occurred during scheduler startup", e);
+            throw new JobSchedulerException("An exception occurred during scheduler startup", e);
         }
     }
 
@@ -231,48 +229,48 @@ public class BatchJobScheduler {
     /**
      * Stop the scheduler.
      * <p/>
-     * <strong>Note: The scheduler cannot be re-started and no more engines can be scheduled.</strong>
+     * <strong>Note: The scheduler cannot be re-started and no more jobs can be scheduled.</strong>
      *
-     * @throws BatchJobSchedulerException thrown if the scheduler cannot be stopped
+     * @throws JobSchedulerException thrown if the scheduler cannot be stopped
      */
-    public void stop() throws BatchJobSchedulerException {
+    public void stop() throws JobSchedulerException {
         try {
             scheduler.shutdown();
         } catch (SchedulerException e) {
-            throw new BatchJobSchedulerException("An exception occurred during scheduler shutdown", e);
+            throw new JobSchedulerException("An exception occurred during scheduler shutdown", e);
         }
     }
 
     /**
      * Check if the scheduler is started.
      *
-     * @throws BatchJobSchedulerException thrown if the scheduler status cannot be checked
+     * @throws JobSchedulerException thrown if the scheduler status cannot be checked
      */
-    public boolean isStarted() throws BatchJobSchedulerException {
+    public boolean isStarted() throws JobSchedulerException {
         try {
             return scheduler.isStarted();
         } catch (SchedulerException e) {
-            throw new BatchJobSchedulerException("An exception occurred during checking if the scheduler is started", e);
+            throw new JobSchedulerException("An exception occurred during checking if the scheduler is started", e);
         }
     }
 
     /**
      * Check if the scheduler is stopped.
      *
-     * @throws BatchJobSchedulerException thrown if the scheduler status cannot be checked
+     * @throws JobSchedulerException thrown if the scheduler status cannot be checked
      */
-    public boolean isStopped() throws BatchJobSchedulerException {
+    public boolean isStopped() throws JobSchedulerException {
         try {
             return scheduler.isShutdown();
         } catch (SchedulerException e) {
-            throw new BatchJobSchedulerException("An exception occurred during checking if the scheduler is stopped", e);
+            throw new JobSchedulerException("An exception occurred during checking if the scheduler is stopped", e);
         }
     }
 
-    private JobDetail getJobDetail(Engine engine, String jobName) {
+    private JobDetail getJobDetail(org.easybatch.core.api.Job job, String jobName) {
         JobDataMap jobDataMap = new JobDataMap();
-        jobDataMap.put("engine", engine);
-        return newJob(BatchJob.class).withIdentity(jobName).usingJobData(jobDataMap).build();
+        jobDataMap.put("job", job);
+        return newJob(Job.class).withIdentity(jobName).usingJobData(jobDataMap).build();
     }
 
 }

@@ -66,7 +66,7 @@ public class Report implements Serializable {
     
     private long skip;
 
-    private String engineName;
+    private String name;
 
     private String executionId;
 
@@ -174,16 +174,16 @@ public class Report implements Serializable {
         this.status = status;
     }
 
-    public void setEngineName(String engineName) {
-        this.engineName = engineName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setExecutionId(String executionId) {
         this.executionId = executionId;
     }
 
-    public String getEngineName() {
-        return engineName;
+    public String getName() {
+        return name;
     }
 
     public String getExecutionId() {
@@ -313,13 +313,13 @@ public class Report implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Batch Report:");
-        sb.append(LINE_SEPARATOR).append("\tEngine name = ").append(getEngineName());
+        final StringBuilder sb = new StringBuilder("Job Report:");
+        sb.append(LINE_SEPARATOR).append("\tName = ").append(getName());
         sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(getExecutionId());
         sb.append(LINE_SEPARATOR).append("\tData source = ").append(dataSource);
         sb.append(LINE_SEPARATOR).append("\tStart time = ").append(getFormattedStartTime());
         sb.append(LINE_SEPARATOR).append("\tEnd time = ").append(getFormattedEndTime());
-        sb.append(LINE_SEPARATOR).append("\tJob duration = ").append(getFormattedJobDuration());
+        sb.append(LINE_SEPARATOR).append("\tDuration = ").append(getFormattedJobDuration());
         sb.append(LINE_SEPARATOR).append("\tStatus = ").append(status);
         if (limit != DEFAULT_LIMIT) {
             sb.append(LINE_SEPARATOR).append("\tRecords limit = ").append(limit);

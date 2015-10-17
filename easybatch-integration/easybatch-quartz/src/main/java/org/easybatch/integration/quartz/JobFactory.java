@@ -24,22 +24,19 @@
 
 package org.easybatch.integration.quartz;
 
-import org.easybatch.core.api.Engine;
-import org.quartz.Job;
 import org.quartz.Scheduler;
-import org.quartz.spi.JobFactory;
 import org.quartz.spi.TriggerFiredBundle;
 
 /**
- * Quartz Job factory implementation used to create batch job instances.
+ * Quartz Job factory implementation used to create job instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-class BatchJobFactory implements JobFactory {
+class JobFactory implements org.quartz.spi.JobFactory {
 
     @Override
-    public Job newJob(final TriggerFiredBundle bundle, final Scheduler scheduler) {
-        return new BatchJob((Engine) bundle.getJobDetail().getJobDataMap().get("engine"));
+    public org.quartz.Job newJob(final TriggerFiredBundle bundle, final Scheduler scheduler) {
+        return new Job((org.easybatch.core.api.Job) bundle.getJobDetail().getJobDataMap().get("job"));
     }
 
 }

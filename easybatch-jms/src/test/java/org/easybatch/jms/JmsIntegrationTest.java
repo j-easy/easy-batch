@@ -26,8 +26,8 @@ package org.easybatch.jms;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.io.FileUtils;
-import org.easybatch.core.api.Engine;
 import org.easybatch.core.api.Header;
+import org.easybatch.core.api.Job;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.StringRecordReader;
@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 @SuppressWarnings("unchecked")
@@ -83,13 +83,13 @@ public class JmsIntegrationTest {
         //send a poison record to the queue
         queueSender.send(new JmsPoisonMessage());
 
-        Engine engine = aNewEngine()
+        Job job = aNewJob()
                 .reader(new JmsRecordReader(queueConnectionFactory, queue))
                 .filter(new JmsPoisonRecordFilter())
                 .processor(new RecordCollector<JmsRecord>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report).isNotNull();
         assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
@@ -127,11 +127,11 @@ public class JmsIntegrationTest {
 
         String dataSource = "foo" + LINE_SEPARATOR + "bar";
 
-        aNewEngine()
+        aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .processor(new JmsMessageTransformer(queueSession))
                 .processor(new JmsRecordWriter(queueConnectionFactory, queue))
-                .build().call();
+                .call();
 
         // Assert that queue contains 2 messages: "foo" and "bar"
         QueueBrowser queueBrowser = queueSession.createBrowser(queue);

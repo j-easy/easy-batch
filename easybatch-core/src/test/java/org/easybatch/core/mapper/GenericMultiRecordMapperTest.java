@@ -40,7 +40,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -73,7 +73,7 @@ public class GenericMultiRecordMapperTest {
 
         List<String> dataSource = Arrays.asList("foo", "bar", "toto", "titi", "baz");
 
-        Report report = aNewEngine()
+        Report report = aNewJob()
                 .reader(new IterableMultiRecordReader<String>(dataSource, 2))
                 .mapper(new GenericMultiRecordMapper())
                 .processor(new RecordCollector())

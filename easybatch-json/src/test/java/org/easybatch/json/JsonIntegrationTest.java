@@ -24,10 +24,10 @@
 
 package org.easybatch.json;
 
-import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Job;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
-import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.impl.JobBuilder;
 import org.easybatch.core.processor.RecordCollector;
 import org.junit.Test;
 
@@ -46,12 +46,12 @@ public class JsonIntegrationTest {
 
         final InputStream jsonDataSource = getDataSource("/tweets.json");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
                 .processor(new RecordCollector<JsonRecord>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThatReportIsValid(report);
 
@@ -82,12 +82,12 @@ public class JsonIntegrationTest {
         //data source : http://opendata.paris.fr/explore/dataset/arbresalignementparis2010/download/?format=csv
         final InputStream jsonDataSource = getDataSource("/trees.json");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
                 .processor(new RecordCollector<JsonRecord>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThatReportIsValid(report);
 
@@ -114,12 +114,12 @@ public class JsonIntegrationTest {
         // data source: http://catalog.data.gov/dataset/consumer-complaint-database
         final InputStream jsonDataSource = getDataSource("/complaints.json");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
                 .processor(new RecordCollector<JsonRecord>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThatReportIsValid(report);
 
@@ -144,12 +144,12 @@ public class JsonIntegrationTest {
     public void testEmptyDataSourceProcessing() throws Exception {
         final InputStream jsonDataSource = getDataSource("/empty.json");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
                 .processor(new RecordCollector<JsonRecord>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report).isNotNull();
         assertThat(report.getTotalRecords()).isEqualTo(0);

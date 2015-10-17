@@ -35,7 +35,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 
 @SuppressWarnings("unchecked")
 public class XmlMultiRecordReaderTest {
@@ -52,7 +52,7 @@ public class XmlMultiRecordReaderTest {
     @Test
     public void testXmlChunkProcessing() throws Exception {
         
-        Report report = aNewEngine()
+        Report report = aNewJob()
                 .reader(xmlMultiRecordReader)
                 .processor(new RecordCollector<MultiRecord>())
                 .build().call();
@@ -87,7 +87,7 @@ public class XmlMultiRecordReaderTest {
     @Test
     public void testEmptyDataSource() throws Exception {
         xmlMultiRecordReader = new XmlMultiRecordReader(getDataSource("/empty-file.xml"), "data", CHUNK_SIZE);
-        Report report = aNewEngine()
+        Report report = aNewJob()
                 .reader(xmlMultiRecordReader)
                 .processor(new RecordCollector<MultiRecord>())
                 .build().call();

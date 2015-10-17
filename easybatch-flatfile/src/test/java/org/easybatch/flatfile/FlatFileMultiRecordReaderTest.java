@@ -38,7 +38,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 
 @SuppressWarnings("unchecked")
 public class FlatFileMultiRecordReaderTest {
@@ -90,10 +90,10 @@ public class FlatFileMultiRecordReaderTest {
     @Test
     public void chunkProcessingIntegrationTest() throws Exception {
 
-        Report report = aNewEngine()
+        Report report = aNewJob()
                 .reader(new FlatFileMultiRecordReader(new File(getFileUri("/complaints.csv")), CHUNK_SIZE))
                 .processor(new RecordCollector<MultiRecord>())
-                .build().call();
+                .call();
 
         List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
 

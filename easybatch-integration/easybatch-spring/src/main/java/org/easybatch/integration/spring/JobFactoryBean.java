@@ -24,23 +24,23 @@
 
 package org.easybatch.integration.spring;
 
-import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Job;
 import org.easybatch.core.api.RecordProcessor;
 import org.easybatch.core.api.RecordReader;
 import org.easybatch.core.api.listener.JobListener;
 import org.easybatch.core.api.listener.PipelineListener;
 import org.easybatch.core.api.listener.RecordReaderListener;
-import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.impl.JobBuilder;
 import org.springframework.beans.factory.FactoryBean;
 
 import java.util.List;
 
 /**
- * Spring Factory Bean that creates engine instances.
+ * Spring Factory Bean that creates job instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class EngineFactoryBean implements FactoryBean {
+public class JobFactoryBean implements FactoryBean {
 
     private RecordReader recordReader;
 
@@ -53,51 +53,51 @@ public class EngineFactoryBean implements FactoryBean {
     private List<PipelineListener> pipelineListeners;
 
     @Override
-    public Engine getObject() throws Exception {
-        EngineBuilder engineBuilder = new EngineBuilder();
+    public Job getObject() throws Exception {
+        JobBuilder jobBuilder = new JobBuilder();
 
-        registerMainComponents(engineBuilder);
+        registerMainComponents(jobBuilder);
 
-        registerCustomEventListeners(engineBuilder);
+        registerCustomEventListeners(jobBuilder);
 
-        return engineBuilder.build();
+        return jobBuilder.build();
     }
 
-    private void registerMainComponents(EngineBuilder engineBuilder) {
+    private void registerMainComponents(JobBuilder jobBuilder) {
         if (recordReader != null) {
-            engineBuilder.reader(recordReader);
+            jobBuilder.reader(recordReader);
         }
         if (processingPipeline != null) {
             for (RecordProcessor recordProcessor : processingPipeline) {
-                engineBuilder.processor(recordProcessor);
+                jobBuilder.processor(recordProcessor);
             }
         }
     }
 
-    private void registerCustomEventListeners(EngineBuilder engineBuilder) {
+    private void registerCustomEventListeners(JobBuilder jobBuilder) {
         if (jobListeners != null) {
             for (JobListener jobListener : jobListeners) {
-                engineBuilder.jobEventListener(jobListener);
+                jobBuilder.jobEventListener(jobListener);
             }
         }
 
         if (recordReaderListeners != null) {
             for (RecordReaderListener recordReaderListener : recordReaderListeners) {
-                engineBuilder.readerEventListener(recordReaderListener);
+                jobBuilder.readerEventListener(recordReaderListener);
             }
         }
 
         if (pipelineListeners != null) {
             for (PipelineListener pipelineListener : pipelineListeners) {
-                engineBuilder.pipelineEventListener(pipelineListener);
+                jobBuilder.pipelineEventListener(pipelineListener);
             }
         }
         
     }
 
     @Override
-    public Class<Engine> getObjectType() {
-        return Engine.class;
+    public Class<Job> getObjectType() {
+        return Job.class;
     }
 
     @Override

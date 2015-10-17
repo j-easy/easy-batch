@@ -35,7 +35,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 
 @SuppressWarnings("unchecked")
 public class JsonMultiRecordReaderTest {
@@ -52,10 +52,10 @@ public class JsonMultiRecordReaderTest {
     @Test
     public void testJsonChunkProcessing() throws Exception {
         
-        Report report = aNewEngine()
+        Report report = aNewJob()
                 .reader(jsonMultiRecordReader)
                 .processor(new RecordCollector<MultiRecord>())
-                .build().call();
+                .call();
 
         List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
 
@@ -79,10 +79,10 @@ public class JsonMultiRecordReaderTest {
     @Test
     public void testEmptyDataSource() throws Exception {
         jsonMultiRecordReader = new JsonMultiRecordReader(getDataSource("/empty.json"), CHUNK_SIZE);
-        Report report = aNewEngine()
+        Report report = aNewJob()
                 .reader(jsonMultiRecordReader)
                 .processor(new RecordCollector<MultiRecord>())
-                .build().call();
+                .call();
 
         List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
 

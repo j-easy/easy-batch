@@ -26,7 +26,6 @@ package org.easybatch.core.filter;
 
 import org.easybatch.core.api.RecordFilter;
 import org.easybatch.core.api.Report;
-import org.easybatch.core.impl.EngineBuilder;
 import org.easybatch.core.mapper.GenericRecordMapper;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.StringRecordReader;
@@ -40,6 +39,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.mockito.Mockito.when;
 
@@ -73,12 +73,12 @@ public class EmptyRecordFilterTest {
     public void integrationTest() throws Exception {
         String dataSource = "foo" + LINE_SEPARATOR + "" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR + "" + LINE_SEPARATOR;
 
-        Report report = EngineBuilder.aNewEngine()
+        Report report = aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .filter(new EmptyRecordFilter())
                 .mapper(new GenericRecordMapper())
                 .processor(new RecordCollector())
-                .build().call();
+                .call();
 
         assertThat(report).isNotNull();
         assertThat(report.getTotalRecords()).isEqualTo(4);

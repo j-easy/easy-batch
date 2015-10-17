@@ -24,10 +24,10 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Job;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.api.Status;
-import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.impl.JobBuilder;
 import org.easybatch.core.processor.RecordCollector;
 import org.junit.After;
 import org.junit.Before;
@@ -70,13 +70,13 @@ public class JdbcIntegrationTest {
     @Test
     public void testDatabaseProcessing() throws Exception {
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new JdbcRecordReader(connection, query))
                 .mapper(new JdbcRecordMapper<Person>(Person.class, new String[]{"id", "name"}))
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report).isNotNull();
         assertThat(report.getTotalRecords()).isEqualTo(2);

@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 
 /**
  * Test class for {@link CollectionRecordWriter}.
@@ -68,11 +68,11 @@ public class CollectionRecordWriterTest {
         List<String> input = Arrays.asList(FOO, BAR);
         List<String> output = new ArrayList<String>();
 
-        aNewEngine()
+        aNewJob()
                 .reader(new IterableRecordReader<String>(input))
                 .mapper(new GenericRecordMapper())
                 .writer(new CollectionRecordWriter<String>(output))
-                .build().call();
+                .call();
 
         assertThat(output).isNotEmpty().hasSize(2).containsExactly(FOO, BAR);
     }

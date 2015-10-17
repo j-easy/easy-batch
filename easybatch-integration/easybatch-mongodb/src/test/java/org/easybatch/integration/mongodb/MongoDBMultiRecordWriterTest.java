@@ -44,7 +44,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -111,11 +111,11 @@ public class MongoDBMultiRecordWriterTest {
 
         int chunkSize = 2;
 
-        Report report = aNewEngine()
+        Report report = aNewJob()
                 .reader(new IterableMultiRecordReader<DBObject>(tweets, chunkSize))
                 .mapper(new GenericMultiRecordMapper<DBObject>())
                 .writer(new MongoDBMultiRecordWriter(collection))
-                .build().call();
+                .call();
 
         assertThat(report).isNotNull();
         assertThat(report.getTotalRecords()).isEqualTo(2);

@@ -24,7 +24,7 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Job;
 import org.easybatch.core.api.Report;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.MultiRecord;
@@ -43,7 +43,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 
 @SuppressWarnings("unchecked")
 public class JpaMultiRecordReaderTest {
@@ -76,12 +76,12 @@ public class JpaMultiRecordReaderTest {
     @Test
     public void testJpaChunkProcessing() throws Exception {
         
-        Engine engine = aNewEngine()
+        Job job = aNewJob()
                 .reader(jpaMultiRecordReader)
                 .processor(new RecordCollector<Tweet>())
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
         assertThat(report.getTotalRecords()).isEqualTo(2);
 
         List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();

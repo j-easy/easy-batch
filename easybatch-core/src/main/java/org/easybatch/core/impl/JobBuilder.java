@@ -33,40 +33,40 @@ import static org.easybatch.core.util.Utils.checkArgument;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Engine instance builder.
+ * Job instance builder.
  * This is the main entry point to configure a job.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public final class EngineBuilder {
+public final class JobBuilder {
 
     /**
-     * The engine to build.
+     * The job to build.
      */
-    private EngineImpl engine;
+    private JobImpl job;
 
-    public EngineBuilder() {
-        engine = new EngineImpl();
+    public JobBuilder() {
+        job = new JobImpl();
     }
 
     /**
-     * Create a new {@link EngineBuilder}.
+     * Create a new {@link JobBuilder}.
      *
-     * @return a new engine builder.
+     * @return a new job builder.
      */
-    public static EngineBuilder aNewEngine() {
-        return new EngineBuilder();
+    public static JobBuilder aNewJob() {
+        return new JobBuilder();
     }
 
     /**
-     * Set the engine name.
+     * Set the job name.
      *
-     * @param name the engine name
-     * @return the engine builder
+     * @param name the job name
+     * @return the job builder
      */
-    public EngineBuilder named(final String name) {
-        checkNotNull(name, "engine name");
-        engine.setName(name);
+    public JobBuilder named(final String name) {
+        checkNotNull(name, "job name");
+        job.setName(name);
         return this;
     }
 
@@ -74,11 +74,11 @@ public final class EngineBuilder {
      * Set the number of records to skip.
      *
      * @param number the number of records to skip
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder skip(final long number) {
+    public JobBuilder skip(final long number) {
         checkArgument(number >= 1, "The number of records to skip should be >= 1");
-        engine.setSkip(number);
+        job.setSkip(number);
         return this;
     }
 
@@ -86,11 +86,11 @@ public final class EngineBuilder {
      * Set the limit number of records to process.
      *
      * @param number the limit number of records to process
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder limit(final long number) {
+    public JobBuilder limit(final long number) {
         checkArgument(number >= 1, "The limit number of records should be >= 1");
-        engine.setLimit(number);
+        job.setLimit(number);
         return this;
     }
 
@@ -98,9 +98,9 @@ public final class EngineBuilder {
      * Register a record reader.
      *
      * @param recordReader the record reader to register
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder reader(final RecordReader recordReader) {
+    public JobBuilder reader(final RecordReader recordReader) {
         return reader(recordReader, false);
     }
 
@@ -109,12 +109,12 @@ public final class EngineBuilder {
      *
      * @param recordReader the record reader to register
      * @param keepAlive    true if the reader should <strong>NOT</strong> be closed
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder reader(final RecordReader recordReader, final boolean keepAlive) {
+    public JobBuilder reader(final RecordReader recordReader, final boolean keepAlive) {
         checkNotNull(recordReader, "record reader");
-        engine.setRecordReader(recordReader);
-        engine.setKeepAlive(keepAlive);
+        job.setRecordReader(recordReader);
+        job.setKeepAlive(keepAlive);
         return this;
     }
 
@@ -122,11 +122,11 @@ public final class EngineBuilder {
      * Register a record filter.
      *
      * @param recordFilter the record filter to register
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder filter(final RecordFilter recordFilter) {
+    public JobBuilder filter(final RecordFilter recordFilter) {
         checkNotNull(recordFilter, "record filter");
-        engine.addRecordProcessor(recordFilter);
+        job.addRecordProcessor(recordFilter);
         return this;
     }
 
@@ -134,11 +134,11 @@ public final class EngineBuilder {
      * Register a record mapper.
      *
      * @param recordMapper the record mapper to register
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder mapper(final RecordMapper recordMapper) {
+    public JobBuilder mapper(final RecordMapper recordMapper) {
         checkNotNull(recordMapper, "record mapper");
-        engine.addRecordProcessor(recordMapper);
+        job.addRecordProcessor(recordMapper);
         return this;
     }
 
@@ -146,11 +146,11 @@ public final class EngineBuilder {
      * Register a record validator.
      *
      * @param recordValidator the record validator to register
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder validator(final RecordValidator recordValidator) {
+    public JobBuilder validator(final RecordValidator recordValidator) {
         checkNotNull(recordValidator, "record validator");
-        engine.addRecordProcessor(recordValidator);
+        job.addRecordProcessor(recordValidator);
         return this;
     }
 
@@ -158,11 +158,11 @@ public final class EngineBuilder {
      * Register a record processor.
      *
      * @param recordProcessor the record processor to register
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder processor(final RecordProcessor recordProcessor) {
+    public JobBuilder processor(final RecordProcessor recordProcessor) {
         checkNotNull(recordProcessor, "record processor");
-        engine.addRecordProcessor(recordProcessor);
+        job.addRecordProcessor(recordProcessor);
         return this;
     }
 
@@ -170,11 +170,11 @@ public final class EngineBuilder {
      * Register a record marshaller.
      *
      * @param recordMarshaller the record marshaller to register
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder marshaller(final RecordMarshaller recordMarshaller) {
+    public JobBuilder marshaller(final RecordMarshaller recordMarshaller) {
         checkNotNull(recordMarshaller, "record marshaller");
-        engine.addRecordProcessor(recordMarshaller);
+        job.addRecordProcessor(recordMarshaller);
         return this;
     }
 
@@ -182,11 +182,11 @@ public final class EngineBuilder {
      * Register a record writer.
      *
      * @param recordWriter the record writer to register
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder writer(final RecordWriter recordWriter) {
+    public JobBuilder writer(final RecordWriter recordWriter) {
         checkNotNull(recordWriter, "record writer");
-        engine.addRecordProcessor(recordWriter);
+        job.addRecordProcessor(recordWriter);
         return this;
     }
 
@@ -194,10 +194,10 @@ public final class EngineBuilder {
      * Enable strict mode : if true, then the execution will be aborted on first processing error.
      *
      * @param strictMode true if strict mode should be enabled
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder strictMode(final boolean strictMode) {
-        engine.setStrictMode(strictMode);
+    public JobBuilder strictMode(final boolean strictMode) {
+        job.setStrictMode(strictMode);
         return this;
     }
 
@@ -205,10 +205,10 @@ public final class EngineBuilder {
      * Parameter to mute all loggers.
      *
      * @param silentMode true to enable silent mode
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder silentMode(final boolean silentMode) {
-        engine.setSilentMode(silentMode);
+    public JobBuilder silentMode(final boolean silentMode) {
+        job.setSilentMode(silentMode);
         return this;
     }
 
@@ -216,10 +216,10 @@ public final class EngineBuilder {
      * Activate JMX monitoring.
      *
      * @param jmx true to enable jmx monitoring
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder enableJMX(final boolean jmx) {
-        engine.enableJMX(jmx);
+    public JobBuilder enableJMX(final boolean jmx) {
+        job.enableJMX(jmx);
         return this;
     }
 
@@ -228,11 +228,11 @@ public final class EngineBuilder {
      * See {@link JobListener} for available callback methods.
      *
      * @param jobListener The job listener to add.
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder jobEventListener(final JobListener jobListener) {
+    public JobBuilder jobEventListener(final JobListener jobListener) {
         checkNotNull(jobListener, "job listener");
-        engine.addJobListener(jobListener);
+        job.addJobListener(jobListener);
         return this;
     }
 
@@ -241,11 +241,11 @@ public final class EngineBuilder {
      * See {@link RecordReaderListener} for available callback methods.
      *
      * @param recordReaderListener The record reader listener to add.
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder readerEventListener(final RecordReaderListener recordReaderListener) {
+    public JobBuilder readerEventListener(final RecordReaderListener recordReaderListener) {
         checkNotNull(recordReaderListener, "record reader listener");
-        engine.addRecordReaderListener(recordReaderListener);
+        job.addRecordReaderListener(recordReaderListener);
         return this;
     }
 
@@ -254,30 +254,30 @@ public final class EngineBuilder {
      * See {@link PipelineListener} for available callback methods.
      *
      * @param pipelineListener The pipeline listener to add.
-     * @return the engine builder
+     * @return the job builder
      */
-    public EngineBuilder pipelineEventListener(final PipelineListener pipelineListener) {
+    public JobBuilder pipelineEventListener(final PipelineListener pipelineListener) {
         checkNotNull(pipelineListener, "pipeline listener");
-        engine.addPipelineListener(pipelineListener);
+        job.addPipelineListener(pipelineListener);
         return this;
     }
 
     /**
-     * Build an Easy Batch engine instance.
+     * Build an Easy Batch job instance.
      *
-     * @return an Easy Batch instance
+     * @return an Easy Batch job instance
      */
-    public Engine build() {
-        return engine;
+    public Job build() {
+        return job;
     }
 
     /**
-     * Build and call the engine.
+     * Build and call the job.
      *
-     * @return execution report
+     * @return job execution report
      */
     public Report call() {
-        return engine.call();
+        return job.call();
     }
 
 }

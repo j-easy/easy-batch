@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 
 public class JdbcMultiRecordWriterTest {
 
@@ -80,7 +80,7 @@ public class JdbcMultiRecordWriterTest {
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        Report report = aNewEngine()
+        Report report = aNewJob()
                 .reader(new IterableMultiRecordReader<Tweet>(tweets, chunkSize))
                 .writer(jdbcMultiRecordWriter)
                 .pipelineEventListener(new JdbcTransactionPipelineListener(connection)) // needed since autocommit = false

@@ -34,7 +34,7 @@ import org.junit.contrib.java.lang.system.SystemOutRule;
 import java.io.FileReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.impl.EngineBuilder.aNewEngine;
+import static org.easybatch.core.impl.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 public class ApacheCommonCsvSupportIntegrationTest {
@@ -48,7 +48,7 @@ public class ApacheCommonCsvSupportIntegrationTest {
         CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader("id", "user", "message");
         CSVParser parser = new CSVParser(new FileReader("src/test/resources/tweets.csv"), csvFormat);
 
-        aNewEngine()
+        aNewJob()
                 .reader(new ApacheCommonCsvRecordReader(parser))
                 .mapper(new ApacheCommonCsvRecordMapper<Tweet>(Tweet.class))
                 .marshaller(new ApacheCommonCsvRecordMarshaller(Tweet.class, new String[]{"id", "user", "message"}, ';', '\''))

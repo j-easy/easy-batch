@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.quartz;
 
-import org.easybatch.core.api.Engine;
+import org.easybatch.core.api.Job;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,53 +37,53 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BatchJobSchedulerTest {
+public class JobSchedulerTest {
 
     private static final Date now = new Date();
 
-    private BatchJobScheduler batchJobScheduler;
+    private JobScheduler jobScheduler;
 
     @Mock
-    private Engine engine1, engine2;
+    private Job job1, job2;
 
     @Before
     public void setUp() throws Exception {
-        batchJobScheduler = BatchJobScheduler.getInstance();
+        jobScheduler = JobScheduler.getInstance();
 
-        when(engine1.getExecutionId()).thenReturn("engine1");
-        when(engine1.getExecutionId()).thenReturn("123");
+        when(job1.getExecutionId()).thenReturn("job1");
+        when(job1.getExecutionId()).thenReturn("123");
 
-        when(engine2.getExecutionId()).thenReturn("engine2");
-        when(engine2.getExecutionId()).thenReturn("456");
+        when(job2.getExecutionId()).thenReturn("job2");
+        when(job2.getExecutionId()).thenReturn("456");
     }
 
     @Test
     public void testJobScheduling() throws Exception {
-        batchJobScheduler.scheduleAt(engine1, now);
-        batchJobScheduler.scheduleAt(engine2, now);
+        jobScheduler.scheduleAt(job1, now);
+        jobScheduler.scheduleAt(job2, now);
 
-        assertThat(batchJobScheduler.isScheduled(engine1)).isTrue();
-        assertThat(batchJobScheduler.isScheduled(engine2)).isTrue();
+        assertThat(jobScheduler.isScheduled(job1)).isTrue();
+        assertThat(jobScheduler.isScheduled(job2)).isTrue();
 
-        batchJobScheduler.start();
-        assertThat(batchJobScheduler.isStarted()).isTrue();
+        jobScheduler.start();
+        assertThat(jobScheduler.isStarted()).isTrue();
 
-        Thread.sleep(500); // sleep to ensure the next verify is called after calling the engine
+        Thread.sleep(500); // sleep to ensure the next verify is called after calling the job
 
-        verify(engine1).call();
-        verify(engine2).call();
+        verify(job1).call();
+        verify(job2).call();
 
-        batchJobScheduler.unschedule(engine1);
-        assertThat(batchJobScheduler.isScheduled(engine1)).isFalse();
+        jobScheduler.unschedule(job1);
+        assertThat(jobScheduler.isScheduled(job1)).isFalse();
 
-        batchJobScheduler.unschedule(engine2);
-        assertThat(batchJobScheduler.isScheduled(engine2)).isFalse();
+        jobScheduler.unschedule(job2);
+        assertThat(jobScheduler.isScheduled(job2)).isFalse();
 
-        verify(engine1, times(4)).getExecutionId();
-        verify(engine2, times(4)).getExecutionId();
+        verify(job1, times(4)).getExecutionId();
+        verify(job2, times(4)).getExecutionId();
 
-        batchJobScheduler.stop();
-        assertThat(batchJobScheduler.isStopped()).isTrue();
+        jobScheduler.stop();
+        assertThat(jobScheduler.isStopped()).isTrue();
     }
 
 }

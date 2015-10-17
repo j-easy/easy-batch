@@ -28,7 +28,7 @@ import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordReader;
 
 /**
- * A No Operation {@link RecordReader} implementation used by default by easy batch engine.
+ * A No Operation {@link RecordReader} implementation used by default.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

@@ -163,7 +163,7 @@ public class EventManagerTest {
 
     @Test
     public void testRecordModificationThroughCustomPipelineEventListener() throws Exception {
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new StringRecordReader("foo" + LINE_SEPARATOR + "bar"))
 
                 .pipelineEventListener(new PipelineListener() {
@@ -194,7 +194,7 @@ public class EventManagerTest {
                 })
                 .build();
 
-        Report report = engine.call();
+        Report report = job.call();
 
         assertThat(report.getErrorRecordsCount()).isEqualTo(2);
     }

@@ -130,7 +130,7 @@ public class ReportTest {
     }
 
     @Test
-    public void whenBatchResultIsNull_ThenITShouldNotBePrintedOut() {
+    public void whenJobResultIsNull_ThenItShouldNotBePrintedOut() {
         report.setJobResult(null);
         assertThat(report.toString()).doesNotContain("Result");
     }
