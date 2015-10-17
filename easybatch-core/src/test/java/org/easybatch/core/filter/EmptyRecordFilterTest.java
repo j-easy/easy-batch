@@ -24,8 +24,8 @@
 
 package org.easybatch.core.filter;
 
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.RecordFilter;
-import org.easybatch.core.api.Report;
 import org.easybatch.core.mapper.GenericRecordMapper;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.StringRecordReader;
@@ -73,19 +73,19 @@ public class EmptyRecordFilterTest {
     public void integrationTest() throws Exception {
         String dataSource = "foo" + LINE_SEPARATOR + "" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR + "" + LINE_SEPARATOR;
 
-        Report report = aNewJob()
+        JobReport jobReport = aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .filter(new EmptyRecordFilter())
                 .mapper(new GenericRecordMapper())
                 .processor(new RecordCollector())
                 .call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(4);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(2);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(4);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
 
-        List<String> records = (List<String>) report.getJobResult();
+        List<String> records = (List<String>) jobReport.getResult();
         assertThat(records).hasSize(2).containsExactly("foo", "bar");
     }
 }

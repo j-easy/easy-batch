@@ -22,32 +22,23 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.api;
+package org.easybatch.tools.reporting;
+
+import org.easybatch.core.api.JobReport;
 
 /**
- * Enumeration of job status.
+ * A service that merges multiple reports into a global report.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public enum Status {
+public interface JobReportMerger {
 
     /**
-     * The job is initializing the data source.
+     * Merge multiple reports into a consolidated one.
+     *
+     * @param jobReports reports to merge
+     * @return a merged report
      */
-    INITIALIZING,
+    JobReport mergerReports(JobReport... jobReports);
 
-    /**
-     * The job is running.
-     */
-    RUNNING,
-
-    /**
-     * The job has been aborted (problem with reading data source).
-     */
-    ABORTED,
-
-    /**
-     * The jos is finished.
-     */
-    FINISHED
 }

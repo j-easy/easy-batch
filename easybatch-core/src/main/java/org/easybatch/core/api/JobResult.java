@@ -24,25 +24,21 @@
 
 package org.easybatch.core.api;
 
-import java.util.concurrent.Callable;
-
 /**
- * Interface that represent an Easy Batch job.
+ * Job result holder.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface Job extends Callable<JobReport> {
+public class JobResult {
 
-    /**
-     * Get the job name.
-     * @return the job name
-     */
-    String getName();
+    private Object result;
 
-    /**
-     * Get the job execution id.
-     * @return the job execution id
-     */
-    String getExecutionId();
-    
+    public JobResult(Object result) {
+        this.result = result;
+    }
+
+    public Object getResult() {
+        return result;
+    }
+
 }

@@ -72,9 +72,9 @@ public class JobImplTest {
     @Mock
     private ComputationalRecordProcessor computationalRecordProcessor;
     @Mock
-    private Object jobResult;
+    private JobResult jobResult;
     @Mock
-    private Report report;
+    private JobReport jobReport;
     @Mock
     private JobListener jobListener;
     @Mock
@@ -161,14 +161,14 @@ public class JobImplTest {
                 .reader(reader)
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
-        assertThat(report.getTotalRecords()).isNull();
-        assertThat(report.getStatus()).isEqualTo(Status.ABORTED);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getTotalCount()).isNull();
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.ABORTED);
     }
 
     @Test
@@ -180,13 +180,13 @@ public class JobImplTest {
                 .reader(reader)
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
-        assertThat(report.getTotalRecords()).isNull();
-        assertThat(report.getStatus()).isEqualTo(Status.ABORTED);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getTotalCount()).isNull();
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.ABORTED);
     }
 
     @Test
@@ -197,19 +197,19 @@ public class JobImplTest {
                 .reader(reader)
                 .processor(computationalRecordProcessor)
                 .build();
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report.getJobResult()).isEqualTo(jobResult);
+        assertThat(jobReport.getResult()).isEqualTo(jobResult);
     }
 
     @Test
     public void reportShouldBeCorrect() throws Exception {
-        Report report = job.call();
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
-        assertThat(report.getTotalRecords()).isEqualTo(2);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
+        JobReport jobReport = job.call();
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
     }
 
     @Test
@@ -222,12 +222,12 @@ public class JobImplTest {
                 .processor(secondProcessor)
                 .strictMode(true)
                 .build();
-        Report report = job.call();
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(1);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
-        assertThat(report.getTotalRecords()).isEqualTo(1);
-        assertThat(report.getStatus()).isEqualTo(Status.ABORTED);
+        JobReport jobReport = job.call();
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(1);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(1);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.ABORTED);
         verify(firstProcessor).processRecord(record1);
         verify(secondProcessor).processRecord(record1);
         verifyNoMoreInteractions(firstProcessor);
@@ -240,17 +240,17 @@ public class JobImplTest {
         when(reader.readNextRecord()).thenReturn(record1);
         when(firstProcessor.processRecord(record1)).thenReturn(null);
 
-        Report report = new JobBuilder()
+        JobReport jobReport = new JobBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
                 .call();
 
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(1);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
-        assertThat(report.getTotalRecords()).isEqualTo(1);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(1);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(1);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
         verify(firstProcessor).processRecord(record1);
         verify(secondProcessor, never()).processRecord(record1);
     }
@@ -261,7 +261,7 @@ public class JobImplTest {
 
     @Test
     public void whenJobNameIsNotSpecified_thenTheJmxMBeanShouldBeRegisteredWithDefaultJobName() throws Exception {
-        job = new JobBuilder().enableJMX(true).build();
+        job = new JobBuilder().jmxMode(true).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + Utils.DEFAULT_JOB_NAME + ",id=" + job.getExecutionId()))).isTrue();
@@ -270,7 +270,7 @@ public class JobImplTest {
     @Test
     public void whenJobNameIsSpecified_thenTheJmxMBeanShouldBeRegisteredWithTheGivenJobName() throws Exception {
         String name = "master";
-        job = new JobBuilder().enableJMX(true).named(name).build();
+        job = new JobBuilder().jmxMode(true).named(name).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + name + ",id=" + job.getExecutionId()))).isTrue();
@@ -284,17 +284,17 @@ public class JobImplTest {
     public void testRecordSkipping() throws Exception {
         List<String> dataSource = Arrays.asList("foo", "bar");
 
-        Report report = aNewJob()
+        JobReport jobReport = aNewJob()
                 .reader(new IterableRecordReader(dataSource))
                 .skip(1)
                 .processor(new RecordCollector<StringRecord>())
                 .call();
 
-        assertThat(report.getTotalRecords()).isEqualTo(2);
-        assertThat(report.getSkippedRecordsCount()).isEqualTo(1);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(1);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getSkippedCount()).isEqualTo(1);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(1);
 
-        List<GenericRecord> records = (List<GenericRecord>) report.getJobResult();
+        List<GenericRecord> records = (List<GenericRecord>) jobReport.getResult();
 
         assertThat(records).isNotNull().hasSize(1);
         assertThat(records.get(0).getPayload()).isNotNull().isEqualTo("bar");
@@ -305,16 +305,16 @@ public class JobImplTest {
     public void testRecordLimit() throws Exception {
         List<String> dataSource = Arrays.asList("foo", "bar", "baz");
 
-        Report report = aNewJob()
+        JobReport jobReport = aNewJob()
                 .reader(new IterableRecordReader(dataSource))
                 .limit(2)
                 .processor(new RecordCollector<StringRecord>())
                 .call();
 
-        assertThat(report.getTotalRecords()).isEqualTo(2);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
 
-        List<GenericRecord> records = (List<GenericRecord>) report.getJobResult();
+        List<GenericRecord> records = (List<GenericRecord>) jobReport.getResult();
 
         assertThat(records).isNotNull().hasSize(2);
         assertThat(records.get(0).getPayload()).isNotNull().isEqualTo("foo");

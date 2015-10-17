@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.Report;
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.mapper.GenericRecordMapper;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.hibernate.Session;
@@ -69,7 +69,7 @@ public class HibernateRecordWriterTest {
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        Report report = aNewJob()
+        JobReport jobReport = aNewJob()
                 .reader(new IterableRecordReader<Tweet>(tweets))
                 .mapper(new GenericRecordMapper())
                 .writer(hibernateRecordWriter)
@@ -77,9 +77,9 @@ public class HibernateRecordWriterTest {
                 .jobEventListener(new HibernateSessionJobListener(session))
                 .call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(valueOf(nbTweetsToInsert));
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(valueOf(nbTweetsToInsert));
 
         int nbTweetsInDatabase = countTweetsInDatabase();
 

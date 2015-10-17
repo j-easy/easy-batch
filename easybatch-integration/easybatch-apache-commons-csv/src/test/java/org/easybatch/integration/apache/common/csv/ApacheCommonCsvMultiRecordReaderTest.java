@@ -28,7 +28,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.api.Job;
-import org.easybatch.core.api.Report;
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.MultiRecord;
 import org.junit.Before;
@@ -62,10 +62,10 @@ public class ApacheCommonCsvMultiRecordReaderTest {
                 .processor(new RecordCollector<MultiRecord>())
                 .build();
 
-        Report report = job.call();
-        assertThat(report.getTotalRecords()).isEqualTo(2);
+        JobReport jobReport = job.call();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
-        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
+        List<MultiRecord> multiRecords = (List<MultiRecord>) jobReport.getResult();
         assertThat(multiRecords).isNotNull().hasSize(2);
 
         MultiRecord chunk1 = multiRecords.get(0);

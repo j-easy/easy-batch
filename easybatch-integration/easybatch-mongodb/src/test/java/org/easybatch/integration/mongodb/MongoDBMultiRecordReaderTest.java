@@ -29,8 +29,8 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import org.easybatch.core.api.Job;
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.Report;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.MultiRecord;
 import org.junit.Before;
@@ -70,9 +70,9 @@ public class MongoDBMultiRecordReaderTest {
                 .processor(new RecordCollector<MultiRecord>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
+        List<MultiRecord> multiRecords = (List<MultiRecord>) jobReport.getResult();
 
         assertThat(multiRecords).isNotNull().hasSize(2);
 

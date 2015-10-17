@@ -24,7 +24,7 @@
 
 package org.easybatch.core;
 
-import org.easybatch.core.api.ReportTest;
+import org.easybatch.core.api.JobReportTest;
 import org.easybatch.core.converter.*;
 import org.easybatch.core.dispatcher.*;
 import org.easybatch.core.filter.*;
@@ -100,7 +100,7 @@ import org.junit.runners.Suite;
         // processor
         RecordCollectorTest.class,
         // api
-        ReportTest.class,
+        JobReportTest.class,
         // impl
         JobImplTest.class,
         ProcessingPipelineTest.class,

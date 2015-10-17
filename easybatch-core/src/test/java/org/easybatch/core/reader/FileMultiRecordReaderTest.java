@@ -24,8 +24,8 @@
 
 package org.easybatch.core.reader;
 
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.Report;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.MultiRecord;
 import org.junit.After;
@@ -63,12 +63,12 @@ public class FileMultiRecordReaderTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testMultiFileReading() throws Exception {
-        Report report = aNewJob()
+        JobReport jobReport = aNewJob()
                 .reader(fileMultiRecordReader)
                 .processor(new RecordCollector<MultiRecord>())
                 .call();
 
-        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
+        List<MultiRecord> multiRecords = (List<MultiRecord>) jobReport.getResult();
 
         assertThat(multiRecords).isNotNull().hasSize(2);
 

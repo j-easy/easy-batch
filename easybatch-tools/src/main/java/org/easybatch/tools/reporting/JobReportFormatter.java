@@ -24,22 +24,22 @@
 
 package org.easybatch.tools.reporting;
 
-import org.easybatch.core.api.Report;
+import org.easybatch.core.api.JobReport;
 
 /**
- * Report formatter interface.
+ * Job report formatter interface.
  *
  * @param <T> the report format type (HTML, PDF, etc)
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface ReportFormatter<T> {
+public interface JobReportFormatter<T> {
 
     /**
-     * Format easy batch report.
+     * Format a job report.
      *
-     * @param report the report to format
+     * @param jobReport the report to format
      * @return the formatted report
      */
-    T formatReport(Report report);
+    T formatReport(JobReport jobReport);
 
 }

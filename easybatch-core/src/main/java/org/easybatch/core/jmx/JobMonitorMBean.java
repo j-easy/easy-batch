@@ -24,12 +24,14 @@
 
 package org.easybatch.core.jmx;
 
+import org.easybatch.core.api.JobStatus;
+
 /**
  * JMX MBean interface to expose monitoring attributes.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface MonitorMBean {
+public interface JobMonitorMBean {
 
     /**
      * Get the job name.
@@ -43,7 +45,7 @@ public interface MonitorMBean {
      * 
      * @return the job execution id
      */
-    String getExecutionId();
+    String getJobExecutionId();
     
     /**
      * Get the data source name.
@@ -53,18 +55,11 @@ public interface MonitorMBean {
     String getDataSource();
 
     /**
-     * Get the current record number being processed.
-     *
-     * @return the current record number
-     */
-    long getCurrentRecordNumber();
-
-    /**
      * Get total input records count.
      *
      * @return total input records count
      */
-    String getTotalRecords();
+    String getTotalCount();
 
     /**
      * Get records limit.
@@ -78,28 +73,28 @@ public interface MonitorMBean {
      *
      * @return skipped records count
      */
-    String getSkippedRecords();
+    String getSkippedCount();
 
     /**
      * Get filtered records count.
      *
      * @return filtered records count
      */
-    String getFilteredRecords();
+    String getFilteredCount();
 
     /**
      * Get error records count.
      *
      * @return error records count
      */
-    String getErrorRecords();
+    String getErrorCount();
 
     /**
      * Get success records count.
      *
      * @return success records count
      */
-    String getSuccessRecords();
+    String getSuccessCount();
 
     /**
      * Get batch execution start time.
@@ -123,10 +118,10 @@ public interface MonitorMBean {
     String getProgress();
 
     /**
-     * Get the job {@link org.easybatch.core.api.Status}.
+     * Get the job {@link JobStatus}.
      *
      * @return the job status
      */
-    String getStatus();
+    String getJobStatus();
 
 }

@@ -25,9 +25,9 @@
 package org.easybatch.core.util;
 
 import org.easybatch.core.api.Job;
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.Report;
-import org.easybatch.core.jmx.Monitor;
+import org.easybatch.core.jmx.JobMonitor;
 import org.easybatch.core.record.MultiRecord;
 
 import javax.management.MBeanServer;
@@ -97,13 +97,13 @@ public abstract class Utils {
         }
     }
 
-    public static void registerJmxMBean(Report report, Job job) {
+    public static void registerJmxMBean(JobReport jobReport, Job job) {
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
         try {
             name = new ObjectName(JMX_MBEAN_NAME + "name=" + job.getName() + ",id=" + job.getExecutionId());
             if (!mbs.isRegistered(name)) {
-                Monitor monitor = new Monitor(report);
+                JobMonitor monitor = new JobMonitor(jobReport);
                 mbs.registerMBean(monitor, name);
                 LOGGER.log(Level.INFO, "JMX MBean registered successfully as: {0}", name.getCanonicalName());
             } else {

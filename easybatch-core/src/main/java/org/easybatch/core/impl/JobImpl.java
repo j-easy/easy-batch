@@ -31,11 +31,11 @@ import org.easybatch.core.api.listener.RecordReaderListener;
 import org.easybatch.core.util.Utils;
 
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.easybatch.core.util.Utils.*;
+import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
+import static org.easybatch.core.util.Utils.DEFAULT_SKIP;
 
 /**
  * Core Easy Batch job implementation.
@@ -48,60 +48,40 @@ final class JobImpl implements Job {
 
     private static final String STRICT_MODE_MESSAGE = "Strict mode enabled: aborting execution";
 
-    private String name;
-
-    private String executionId;
-
     private RecordReader recordReader;
 
     private Pipeline pipeline;
 
     private EventManager eventManager;
 
-    private Report report;
-
-    private boolean strictMode;
-
-    private boolean silentMode;
-
-    private boolean jmxEnabled;
-
-    private boolean keepAlive;
-
-    private long limit;
-    
-    private long skip;
+    private JobReport jobReport;
 
     JobImpl() {
-        this.executionId = UUID.randomUUID().toString();
-        this.name = DEFAULT_JOB_NAME;
-        this.limit = DEFAULT_LIMIT;
-        this.skip = DEFAULT_SKIP;
         this.recordReader = new NoOpRecordReader();
-        this.report = new Report();
         this.eventManager = new EventManager();
-        this.eventManager.addPipelineListener(new DefaultPipelineListener(report));
-        this.eventManager.addRecordReaderListener(new DefaultRecordReaderListener(report));
+        this.jobReport = new JobReport();
+        this.eventManager.addPipelineListener(new DefaultPipelineListener(jobReport));
+        this.eventManager.addRecordReaderListener(new DefaultRecordReaderListener(jobReport));
         this.pipeline = new Pipeline(new ArrayList<RecordProcessor>(), eventManager);
     }
 
     @Override
     public String getName() {
-        return name;
+        return jobReport.getParameters().getName();
     }
 
     @Override
     public String getExecutionId() {
-        return executionId;
+        return jobReport.getParameters().getExecutionId();
     }
 
     @Override
-    public Report call() {
+    public JobReport call() {
 
         initializeJob();
 
         if (!initializeRecordReader()) {
-            return report;
+            return jobReport;
         }
 
         initializeDatasource();
@@ -112,7 +92,7 @@ final class JobImpl implements Job {
 
         try {
             long processedRecordsNumber = 0;
-            while (recordReader.hasNextRecord() && processedRecordsNumber < limit) {
+            while (recordReader.hasNextRecord() && processedRecordsNumber < jobReport.getParameters().getLimit()) {
                 /*
                  * read next record
                  */
@@ -120,20 +100,19 @@ final class JobImpl implements Job {
                 try {
                     currentRecord = readNextRecord();
                     if (currentRecord == null) {
-                        return report;
+                        return jobReport;
                     }
                     processedRecordsNumber++;
-                    report.setCurrentRecordNumber(currentRecord.getHeader().getNumber());
                 } catch (Exception e) {
                     eventManager.fireOnRecordReadingException(e);
-                    return report;
+                    return jobReport;
                 }
 
                 /*
                  * Skip records if any
                  */
-                if (processedRecordsNumber <= skip) {
-                    report.incrementTotalSkippedRecords();
+                if (processedRecordsNumber <= jobReport.getParameters().getSkip()) {
+                    jobReport.getMetrics().incrementSkippedCount();
                     continue;
                 }
                 
@@ -141,9 +120,9 @@ final class JobImpl implements Job {
                  * Process record
                  */
                 boolean processingError = pipeline.process(currentRecord);
-                if (processingError && strictMode) {
+                if (processingError && jobReport.getParameters().isStrictMode()) {
                     LOGGER.info(STRICT_MODE_MESSAGE);
-                    report.setStatus(Status.ABORTED);
+                    jobReport.setStatus(JobStatus.ABORTED);
                     break;
                 }
             }
@@ -152,32 +131,28 @@ final class JobImpl implements Job {
 
         } finally {
             closeRecordReader();
-            eventManager.fireAfterJobEnd(report);
+            eventManager.fireAfterJobEnd(jobReport);
         }
-        return report;
+        return jobReport;
 
     }
 
     private void initializeJob() {
-        if (silentMode) {
+        if (jobReport.getParameters().isSilentMode()) {
             Utils.muteLoggers();
         }
         eventManager.fireBeforeJobStart();
         LOGGER.info("Initializing the job");
-        LOGGER.log(Level.INFO, "Job name: {0}", getName());
+        LOGGER.log(Level.INFO, "Job name: {0}", jobReport.getParameters().getName());
         LOGGER.log(Level.INFO, "Execution id: {0}", getExecutionId());
-        LOGGER.log(Level.INFO, "Strict mode: {0}", strictMode);
-        if (skip != DEFAULT_SKIP) {
-            LOGGER.log(Level.INFO, "Skip records: {0}", skip);
+        LOGGER.log(Level.INFO, "Strict mode: {0}", jobReport.getParameters().isStrictMode());
+        if (jobReport.getParameters().getSkip() != DEFAULT_SKIP) {
+            LOGGER.log(Level.INFO, "Skip records: {0}", jobReport.getParameters().getSkip());
         }
-        if (limit != DEFAULT_LIMIT ) {
-            LOGGER.log(Level.INFO, "Records limit: {0}", limit);
+        if (jobReport.getParameters().getLimit() != DEFAULT_LIMIT ) {
+            LOGGER.log(Level.INFO, "Records limit: {0}", jobReport.getParameters().getLimit());
         }
-        report.setLimit(limit);
-        report.setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
-        report.setSystemProperties(System.getProperties());
-        report.setName(name);
-        report.setExecutionId(executionId);
+        jobReport.getMetrics().setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
     }
 
     private boolean initializeRecordReader() {
@@ -185,8 +160,8 @@ final class JobImpl implements Job {
             recordReader.open();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "An exception occurred while opening the record reader", e);
-            report.setStatus(Status.ABORTED);
-            report.setEndTime(System.currentTimeMillis());
+            jobReport.setStatus(JobStatus.ABORTED);
+            jobReport.getMetrics().setEndTime(System.currentTimeMillis());
             return false;
         }
         return true;
@@ -195,22 +170,22 @@ final class JobImpl implements Job {
     private void initializeDatasource() {
         String dataSourceName = recordReader.getDataSourceName();
         LOGGER.log(Level.INFO, "Data source: {0}", dataSourceName == null ? "N/A" : dataSourceName);
-        report.setDataSource(dataSourceName);
+        jobReport.getParameters().setDataSource(dataSourceName);
     }
 
     private void setupMonitoring() {
-        if (jmxEnabled) {
+        if (jobReport.getParameters().isJmxMode()) {
             LOGGER.log(Level.INFO, "Registering JMX MBean");
-            Utils.registerJmxMBean(report, this);
+            Utils.registerJmxMBean(jobReport, this);
             LOGGER.log(Level.INFO, "Calculating the total number of records");
             Long totalRecords = recordReader.getTotalRecords();
-            report.setTotalRecords(totalRecords);
-            LOGGER.log(Level.INFO, "Total records = {0}", totalRecords == null ? "N/A" : totalRecords);
+            jobReport.getMetrics().setTotalCount(totalRecords);
+            LOGGER.log(Level.INFO, "Total records count = {0}", totalRecords == null ? "N/A" : totalRecords);
         }
     }
 
     private void setRunningStatus() {
-        report.setStatus(Status.RUNNING);
+        jobReport.setStatus(JobStatus.RUNNING);
         LOGGER.info("The job is running");
     }
 
@@ -222,10 +197,10 @@ final class JobImpl implements Job {
     }
 
     private void tearDownJob(long processedRecordsNumber) {
-        report.setTotalRecords(processedRecordsNumber);
-        report.setEndTime(System.currentTimeMillis());
-        if (!report.getStatus().equals(Status.ABORTED)) {
-            report.setStatus(Status.FINISHED);
+        jobReport.getMetrics().setTotalCount(processedRecordsNumber);
+        jobReport.getMetrics().setEndTime(System.currentTimeMillis());
+        if (!jobReport.getStatus().equals(JobStatus.ABORTED)) {
+            jobReport.setStatus(JobStatus.FINISHED);
         }
 
         // The job result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
@@ -233,14 +208,14 @@ final class JobImpl implements Job {
         if (lastRecordProcessor instanceof ComputationalRecordProcessor) {
             ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor) lastRecordProcessor;
             Object jobResult = computationalRecordProcessor.getComputationResult();
-            report.setJobResult(jobResult);
+            jobReport.setJobResult(new JobResult(jobResult));
         }
     }
 
     private void closeRecordReader() {
-        LOGGER.info("Shutting down the job");
+        LOGGER.info("Finalizing the job");
         try {
-            if (!keepAlive) {
+            if (!jobReport.getParameters().isKeepAlive()) {
                 recordReader.close();
             }
         } catch (Exception e) {
@@ -272,39 +247,15 @@ final class JobImpl implements Job {
         eventManager.addPipelineListener(pipelineListener);
     }
 
-    void setStrictMode(final boolean strictMode) {
-        this.strictMode = strictMode;
-    }
-
-    void setSilentMode(boolean silentMode) {
-        this.silentMode = silentMode;
-    }
-
-    void setLimit(final long limit) {
-        this.limit = limit;
-    }
-
-    void setSkip(long skip) {
-        this.skip = skip;
-    }
-
-    void setName(String name) {
-        this.name = name;
-    }
-
-    void setKeepAlive(final boolean keepAlive) {
-        this.keepAlive = keepAlive;
-    }
-
-    void enableJMX(boolean jmx) {
-        jmxEnabled = jmx;
+    public JobReport getJobReport() {
+        return jobReport;
     }
 
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("{name='").append(name).append('\'');
-        stringBuilder.append(", executionId='").append(executionId).append('\'');
+        stringBuilder.append("{name='").append(jobReport.getParameters().getName()).append('\'');
+        stringBuilder.append(", executionId='").append(jobReport.getParameters().getExecutionId()).append('\'');
         stringBuilder.append('}');
         return stringBuilder.toString();
     }

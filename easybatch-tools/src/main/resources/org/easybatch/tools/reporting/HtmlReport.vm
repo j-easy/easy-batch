@@ -9,7 +9,6 @@
             padding-top: 20px;
             padding-bottom: 20px;
         }
-        .label-skipped{background-color:#E0E1AA}
     </style>
 </head>
 <body>
@@ -23,7 +22,6 @@
             <h3>Records limit: $report.limit</h3>
         #end
         <h3>Execution id: $report.executionId</h3>
-        <h3>Status: <span class="label label-status">$report.status</span></h3>
         <br/>
     </div>
 
@@ -45,8 +43,8 @@
                     <td>$report.formattedJobDuration</td>
                 </tr>
                 <tr>
-                    <td>Total records</td>
-                    <td>$report.totalRecords</td>
+                    <td>Status</td>
+                    <td><span class="label label-status">$report.status</span></td>
                 </tr>
                 <tr>
                     <td>Record processing time average</td>
@@ -60,15 +58,11 @@
                 <tbody>
                 <tr>
                     <td>Skipped records</td>
-                    <td><span class="label label-skipped skipped-records" data-total="$report.skippedRecordsCount">$report.formattedSkippedRecords</span></td>
+                    <td><span class="label label-default skipped-records" data-total="$report.skippedRecordsCount">$report.formattedSkippedRecords</span></td>
                 </tr>
                 <tr>
                     <td>Filtered records</td>
-                    <td><span class="label label-default filtered-records" data-total="$report.filteredRecordsCount">$report.formattedFilteredRecords</span></td>
-                </tr>
-                <tr>
-                    <td>Rejected records</td>
-                    <td><span class="label label-warning rejected-records" data-total="$report.rejectedRecordsCount">$report.formattedRejectedRecords</span></td>
+                    <td><span class="label label-warning filtered-records" data-total="$report.filteredRecordsCount">$report.formattedFilteredRecords</span></td>
                 </tr>
                 <tr>
                     <td>Error records</td>
@@ -77,6 +71,10 @@
                 <tr>
                     <td>Success records</td>
                     <td><span class="label label-success success-records" data-total="$report.successRecordsCount">$report.formattedSuccessRecords</span></td>
+                </tr>
+                <tr>
+                    <td>Total records</td>
+                    <td><span class="label label-primary total-records" data-total="$report.totalRecords">$report.totalRecords</span></td>
                 </tr>
                 </tbody>
             </table>
@@ -149,27 +147,22 @@
                 data: [
                     {
                         name: 'Skipped',
-                        color: '#E0E1AA',
+                        color: '#777',
                         y: jQuery(".skipped-records").data("total")
                     },
                     {
                         name: 'Filtered',
-                        color: '#999999',
+                        color: '#f0ad4e',
                         y: jQuery(".filtered-records").data("total")
                     },
                     {
-                        name: 'Rejected',
-                        color: '#F0AD4E',
-                        y: jQuery(".rejected-records").data("total")
-                    },
-                    {
                         name: 'Errors',
-                        color: '#D9534F',
+                        color: '#d9534f',
                         y: jQuery(".error-records").data("total")
                     },
                     {
                         name: 'Success',
-                        color: '#5CB85C',
+                        color: '#5cb85c',
                         y: jQuery(".success-records").data("total")
                     }
                 ]

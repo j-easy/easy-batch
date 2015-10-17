@@ -24,7 +24,7 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.api.Report;
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.mapper.GenericMultiRecordMapper;
 import org.easybatch.core.reader.IterableMultiRecordReader;
 import org.junit.AfterClass;
@@ -74,7 +74,7 @@ public class JpaMultiRecordWriterTest {
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        Report report = aNewJob()
+        JobReport jobReport = aNewJob()
                 .reader(new IterableMultiRecordReader<Tweet>(tweets, chunkSize))
                 .mapper(new GenericMultiRecordMapper<Tweet>())
                 .writer(new JpaMultiRecordWriter<Tweet>(entityManager))
@@ -82,9 +82,9 @@ public class JpaMultiRecordWriterTest {
                 .jobEventListener(new JpaEntityManagerJobListener(entityManager))
                 .call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(3); // 3 multi-records
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(3); // 3 multi-records
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3); // 3 multi-records
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(3); // 3 multi-records
 
         int nbTweetsInDatabase = countTweetsInDatabase();
 

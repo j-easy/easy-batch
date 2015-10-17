@@ -25,7 +25,7 @@
 package org.easybatch.integration.hibernate;
 
 import org.easybatch.core.api.Job;
-import org.easybatch.core.api.Report;
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.GenericRecord;
 import org.hibernate.SessionFactory;
@@ -64,10 +64,10 @@ public class HibernateRecordReaderTest {
                 .processor(new RecordCollector<Tweet>())
                 .build();
 
-        Report report = job.call();
-        assertThat(report.getTotalRecords()).isEqualTo(3);
+        JobReport jobReport = job.call();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
 
-        List<GenericRecord<Tweet>> tweets = (List<GenericRecord<Tweet>>) report.getJobResult();
+        List<GenericRecord<Tweet>> tweets = (List<GenericRecord<Tweet>>) jobReport.getResult();
 
         assertThat(tweets).isNotEmpty().hasSize(3);
 

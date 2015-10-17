@@ -25,8 +25,8 @@
 package org.easybatch.json;
 
 import org.easybatch.core.api.Job;
-import org.easybatch.core.api.Report;
-import org.easybatch.core.api.Status;
+import org.easybatch.core.api.JobReport;
+import org.easybatch.core.api.JobStatus;
 import org.easybatch.core.impl.JobBuilder;
 import org.easybatch.core.processor.RecordCollector;
 import org.junit.Test;
@@ -51,11 +51,11 @@ public class JsonIntegrationTest {
                 .processor(new RecordCollector<JsonRecord>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThatReportIsValid(report);
+        assertThatReportIsValid(jobReport);
 
-        List<JsonRecord> tweets = (List<JsonRecord>) report.getJobResult();
+        List<JsonRecord> tweets = (List<JsonRecord>) jobReport.getResult();
 
         assertThat(tweets).isNotEmpty().hasSize(3);
 
@@ -87,11 +87,11 @@ public class JsonIntegrationTest {
                 .processor(new RecordCollector<JsonRecord>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThatReportIsValid(report);
+        assertThatReportIsValid(jobReport);
 
-        List<JsonRecord> trees = (List<JsonRecord>) report.getJobResult();
+        List<JsonRecord> trees = (List<JsonRecord>) jobReport.getResult();
         assertThat(trees).isNotEmpty().hasSize(3);
 
         JsonRecord record = trees.get(0);
@@ -119,11 +119,11 @@ public class JsonIntegrationTest {
                 .processor(new RecordCollector<JsonRecord>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThatReportIsValid(report);
+        assertThatReportIsValid(jobReport);
 
-        List<JsonRecord> complaints = (List<JsonRecord>) report.getJobResult();
+        List<JsonRecord> complaints = (List<JsonRecord>) jobReport.getResult();
         assertThat(complaints).isNotEmpty().hasSize(3);
 
         JsonRecord record = complaints.get(0);
@@ -149,17 +149,17 @@ public class JsonIntegrationTest {
                 .processor(new RecordCollector<JsonRecord>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(0);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
-        assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
 
-        List<JsonRecord> records = (List<JsonRecord>) report.getJobResult();
+        List<JsonRecord> records = (List<JsonRecord>) jobReport.getResult();
         assertThat(records).isNotNull().isEmpty();
 
     }
@@ -168,14 +168,14 @@ public class JsonIntegrationTest {
         return this.getClass().getResourceAsStream(name);
     }
 
-    private void assertThatReportIsValid(Report report) {
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(3);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(3);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
-        assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
+    private void assertThatReportIsValid(JobReport jobReport) {
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(3);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
     }
 
 }

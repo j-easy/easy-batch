@@ -9,7 +9,6 @@
             padding-top: 20px;
             padding-bottom: 20px;
         }
-        .label-skipped{background-color:#E0E1AA}
     </style>
 </head>
 <body>
@@ -19,9 +18,8 @@
         <h1 class="text-center">Job Report</h1>
         <h3>Name: job</h3>
         <h3>Data source: In-Memory String</h3>
-        <h3>Records limit: 10</h3>
+        <h3>Records limit: 8</h3>
         <h3>Execution id: c8d6a5fc-b2b4-4ee0-9dda-f9ec042d5864</h3>
-        <h3>Status: <span class="label label-status">FINISHED</span></h3>
         <br/>
     </div>
 
@@ -43,12 +41,12 @@
                     <td>10000ms</td>
                 </tr>
                 <tr>
-                    <td>Total records</td>
-                    <td>10</td>
+                    <td>Status</td>
+                    <td><span class="label label-status">FINISHED</span></td>
                 </tr>
                 <tr>
                     <td>Record processing time average</td>
-                    <td>1000.0ms</td>
+                    <td>1250.0ms</td>
                 </tr>
                 </tbody>
             </table>
@@ -58,23 +56,23 @@
                 <tbody>
                 <tr>
                     <td>Skipped records</td>
-                    <td><span class="label label-skipped skipped-records" data-total="1">2 (20.0%)</span></td>
+                    <td><span class="label label-default skipped-records" data-total="2">2 (25.0%)</span></td>
                 </tr>
                 <tr>
                     <td>Filtered records</td>
-                    <td><span class="label label-default filtered-records" data-total="1">2 (20.0%)</span></td>
-                </tr>
-                <tr>
-                    <td>Rejected records</td>
-                    <td><span class="label label-warning rejected-records" data-total="2">2 (20.0%)</span></td>
+                    <td><span class="label label-warning filtered-records" data-total="2">2 (25.0%)</span></td>
                 </tr>
                 <tr>
                     <td>Error records</td>
-                    <td><span class="label label-danger error-records" data-total="2">2 (20.0%)</span></td>
+                    <td><span class="label label-danger error-records" data-total="2">2 (25.0%)</span></td>
                 </tr>
                 <tr>
                     <td>Success records</td>
-                    <td><span class="label label-success success-records" data-total="2">2 (20.0%)</span></td>
+                    <td><span class="label label-success success-records" data-total="2">2 (25.0%)</span></td>
+                </tr>
+                <tr>
+                    <td>Total records</td>
+                    <td><span class="label label-primary total-records" data-total="8">8</span></td>
                 </tr>
                 </tbody>
             </table>
@@ -252,7 +250,7 @@
             </tr>
             <tr>
                 <td>sun.java.command</td>
-                <td>com.intellij.rt.execution.application.AppMain com.intellij.rt.execution.junit.JUnitStarter -ideVersion5 org.easybatch.tools.reporting.HtmlReportFormatterTest,testReportFormatting</td>
+                <td>com.intellij.rt.execution.application.AppMain com.intellij.rt.execution.junit.JUnitStarter -ideVersion5 org.easybatch.tools.reporting.HtmlJobReportFormatterTest,testReportFormatting</td>
             </tr>
             <tr>
                 <td>java.home</td>
@@ -374,27 +372,22 @@
                 data: [
                     {
                         name: 'Skipped',
-                        color: '#E0E1AA',
+                        color: '#777',
                         y: jQuery(".skipped-records").data("total")
                     },
                     {
                         name: 'Filtered',
-                        color: '#999999',
+                        color: '#f0ad4e',
                         y: jQuery(".filtered-records").data("total")
                     },
                     {
-                        name: 'Rejected',
-                        color: '#F0AD4E',
-                        y: jQuery(".rejected-records").data("total")
-                    },
-                    {
                         name: 'Errors',
-                        color: '#D9534F',
+                        color: '#d9534f',
                         y: jQuery(".error-records").data("total")
                     },
                     {
                         name: 'Success',
-                        color: '#5CB85C',
+                        color: '#5cb85c',
                         y: jQuery(".success-records").data("total")
                     }
                 ]

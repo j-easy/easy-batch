@@ -24,25 +24,25 @@
 
 package org.easybatch.core.jmx;
 
-import org.easybatch.core.api.Report;
+import org.easybatch.core.api.JobReport;
 
 import static java.lang.String.valueOf;
 import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
 
 /**
- * JMX MBean implementation of {@link MonitorMBean}.
+ * JMX MBean implementation of {@link JobMonitorMBean}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class Monitor implements MonitorMBean {
+public class JobMonitor implements JobMonitorMBean {
 
     /**
      * The batch report holding data exposed as JMX attributes.
      */
-    private Report report;
+    private JobReport jobReport;
 
-    public Monitor(final Report report) {
-        this.report = report;
+    public JobMonitor(final JobReport jobReport) {
+        this.jobReport = jobReport;
     }
 
     /**
@@ -50,15 +50,15 @@ public class Monitor implements MonitorMBean {
      */
     @Override
     public String getJobName() {
-        return report.getName();
+        return jobReport.getParameters().getName();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getExecutionId() {
-        return report.getExecutionId();
+    public String getJobExecutionId() {
+        return jobReport.getParameters().getExecutionId();
     }
 
     /**
@@ -66,24 +66,15 @@ public class Monitor implements MonitorMBean {
      */
     @Override
     public String getDataSource() {
-        return report.getDataSource();
+        return jobReport.getParameters().getDataSource();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public long getCurrentRecordNumber() {
-        return report.getCurrentRecordNumber();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getTotalRecords() {
-        Long totalRecords = report.getTotalRecords();
-        return totalRecords == null ? "N/A" : totalRecords.toString();
+    public String getTotalCount() {
+        return jobReport.getFormattedTotalCount();
     }
 
     /**
@@ -93,7 +84,7 @@ public class Monitor implements MonitorMBean {
      */
     @Override
     public String getRecordsLimit() {
-        long limit = report.getLimit();
+        long limit = jobReport.getParameters().getLimit();
         return limit != DEFAULT_LIMIT ? valueOf(limit) : "No limit";
     }
 
@@ -101,32 +92,32 @@ public class Monitor implements MonitorMBean {
      * {@inheritDoc}
      */
     @Override
-    public String getSkippedRecords() {
-        return report.getFormattedSkippedRecords();
+    public String getSkippedCount() {
+        return jobReport.getFormattedSkippedCount();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getFilteredRecords() {
-        return report.getFormattedFilteredRecords();
+    public String getFilteredCount() {
+        return jobReport.getFormattedFilteredCount();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getErrorRecords() {
-        return report.getFormattedErrorRecords();
+    public String getErrorCount() {
+        return jobReport.getFormattedErrorCount();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getSuccessRecords() {
-        return report.getFormattedSuccessRecords();
+    public String getSuccessCount() {
+        return jobReport.getFormattedSuccessCount();
     }
 
     /**
@@ -134,7 +125,7 @@ public class Monitor implements MonitorMBean {
      */
     @Override
     public String getStartTime() {
-        return report.getFormattedStartTime();
+        return jobReport.getFormattedStartTime();
     }
 
     /**
@@ -142,7 +133,7 @@ public class Monitor implements MonitorMBean {
      */
     @Override
     public String getEndTime() {
-        return (report.getEndTime() == 0) ? "" : report.getFormattedEndTime();
+        return (jobReport.getMetrics().getEndTime() == 0) ? "" : jobReport.getFormattedEndTime();
     }
 
     /**
@@ -150,12 +141,12 @@ public class Monitor implements MonitorMBean {
      */
     @Override
     public String getProgress() {
-        return report.getFormattedProgress();
+        return jobReport.getFormattedProgress();
     }
 
     @Override
-    public String getStatus() {
-        return report.getStatus().toString();
+    public String getJobStatus() {
+        return jobReport.getStatus().toString();
     }
 
 }

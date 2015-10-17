@@ -25,8 +25,8 @@
 package org.easybatch.xml;
 
 import org.easybatch.core.api.Job;
-import org.easybatch.core.api.Report;
-import org.easybatch.core.api.Status;
+import org.easybatch.core.api.JobReport;
+import org.easybatch.core.api.JobStatus;
 import org.easybatch.core.impl.JobBuilder;
 import org.easybatch.core.processor.RecordCollector;
 import org.junit.Test;
@@ -50,9 +50,9 @@ public class XmlIntegrationTest {
                 .processor(new RecordCollector<Website>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        List<Website> websites = (List<Website>) report.getJobResult();
+        List<Website> websites = (List<Website>) jobReport.getResult();
 
         assertThat(websites).isNotEmpty().hasSize(3);
 
@@ -80,11 +80,11 @@ public class XmlIntegrationTest {
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThatReportIsCorrect(report);
+        assertThatReportIsCorrect(jobReport);
 
-        List<Person> persons = (List<Person>) report.getJobResult();
+        List<Person> persons = (List<Person>) jobReport.getResult();
 
         assertThat(persons).isNotEmpty().hasSize(2);
 
@@ -113,11 +113,11 @@ public class XmlIntegrationTest {
                 .processor(new RecordCollector<Dependency>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThatReportIsCorrect(report);
+        assertThatReportIsCorrect(jobReport);
 
-        List<Dependency> dependencies = (List<Dependency>) report.getJobResult();
+        List<Dependency> dependencies = (List<Dependency>) jobReport.getResult();
 
         assertThat(dependencies).isNotEmpty().hasSize(2);
 
@@ -167,12 +167,12 @@ public class XmlIntegrationTest {
                 .processor(new RecordCollector<Bean>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(2);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
-        List<Bean> beans = (List<Bean>) report.getJobResult();
+        List<Bean> beans = (List<Bean>) jobReport.getResult();
 
         assertThat(beans).isNotEmpty().hasSize(2);
 
@@ -188,14 +188,14 @@ public class XmlIntegrationTest {
 
     }
 
-    private void assertThatReportIsCorrect(Report report) {
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(2);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
-        assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
+    private void assertThatReportIsCorrect(JobReport jobReport) {
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
     }
 
     private InputStream getDataSource(String name) {

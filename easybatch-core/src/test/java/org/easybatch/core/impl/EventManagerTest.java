@@ -55,7 +55,7 @@ public class EventManagerTest {
     @Mock
     private Record record, processedRecord, record1, record2;
     @Mock
-    private Report report;
+    private JobReport jobReport;
 
     private EventManager eventManager;
 
@@ -85,12 +85,12 @@ public class EventManagerTest {
 
     @Test
     public void fireAfterJobEnd() {
-        eventManager.fireAfterJobEnd(report);
+        eventManager.fireAfterJobEnd(jobReport);
 
         InOrder inOrder = inOrder(jobListener1, jobListener2);
 
-        inOrder.verify(jobListener1).afterJobEnd(report);
-        inOrder.verify(jobListener2).afterJobEnd(report);
+        inOrder.verify(jobListener1).afterJobEnd(jobReport);
+        inOrder.verify(jobListener2).afterJobEnd(jobReport);
     }
 
     @Test
@@ -194,8 +194,8 @@ public class EventManagerTest {
                 })
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report.getErrorRecordsCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(2);
     }
 }

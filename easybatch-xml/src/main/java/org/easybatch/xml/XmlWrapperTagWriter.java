@@ -24,7 +24,7 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.Report;
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.listener.JobListener;
 
 import java.io.IOException;
@@ -122,7 +122,7 @@ public class XmlWrapperTagWriter implements JobListener {
     }
 
     @Override
-    public void afterJobEnd(final Report report) {
+    public void afterJobEnd(final JobReport jobReport) {
         try {
             outputStreamWriter.write("</" + wrapperTag + ">");
             outputStreamWriter.flush();

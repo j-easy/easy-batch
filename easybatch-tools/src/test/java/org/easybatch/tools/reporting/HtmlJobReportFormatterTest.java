@@ -24,8 +24,8 @@
 
 package org.easybatch.tools.reporting;
 
-import org.easybatch.core.api.Report;
-import org.easybatch.core.api.Status;
+import org.easybatch.core.api.JobReport;
+import org.easybatch.core.api.JobStatus;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -35,11 +35,11 @@ import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HtmlReportFormatterTest {
+public class HtmlJobReportFormatterTest {
 
-    private ReportFormatter<String> reportFormatter;
+    private JobReportFormatter<String> jobReportFormatter;
 
-    private Report report;
+    private JobReport jobReport;
 
     private static long START_TIME;
     private static long END_TIME;
@@ -53,33 +53,35 @@ public class HtmlReportFormatterTest {
 
     @Before
     public void setUp() throws Exception {
-        reportFormatter = new HtmlReportFormatter();
-        report = new Report();
-        report.setStartTime(START_TIME);
-        report.setEndTime(END_TIME);
-        report.setStatus(Status.FINISHED);
-        report.setDataSource("In-Memory String");
-        report.setTotalRecords(10L);
-        report.setLimit(10L);
-        report.setName("job");
-        report.setExecutionId("c8d6a5fc-b2b4-4ee0-9dda-f9ec042d5864");
-        report.incrementTotalSkippedRecords();
-        report.incrementTotalSkippedRecords();
-        report.incrementTotalFilteredRecords();
-        report.incrementTotalFilteredRecords();
-        report.incrementTotalErrorRecord();
-        report.incrementTotalErrorRecord();
-        report.incrementTotalSuccessRecord();
-        report.incrementTotalSuccessRecord();
-        report.setSystemProperties(System.getProperties());
+        jobReportFormatter = new HtmlJobReportFormatter();
+        jobReport = new JobReport();
+
+        jobReport.setStatus(JobStatus.FINISHED);
+
+        jobReport.getParameters().setDataSource("In-Memory String");
+        jobReport.getParameters().setLimit(8L);
+        jobReport.getParameters().setName("job");
+        jobReport.getParameters().setExecutionId("c8d6a5fc-b2b4-4ee0-9dda-f9ec042d5864");
+        jobReport.getParameters().setSystemProperties(System.getProperties());
+
+        jobReport.getMetrics().setStartTime(START_TIME);
+        jobReport.getMetrics().setEndTime(END_TIME);
+        jobReport.getMetrics().setTotalCount(8L);
+        jobReport.getMetrics().incrementSkippedCount();
+        jobReport.getMetrics().incrementSkippedCount();
+        jobReport.getMetrics().incrementFilteredCount();
+        jobReport.getMetrics().incrementFilteredCount();
+        jobReport.getMetrics().incrementErrorCount();
+        jobReport.getMetrics().incrementErrorCount();
+        jobReport.getMetrics().incrementSuccessCount();
+        jobReport.getMetrics().incrementSuccessCount();
     }
 
     @Ignore("TODO: Contents are identical but assertion fails due to different whitespaces")
     @Test
     public void testReportFormatting() {
-        String result = reportFormatter.formatReport(report);
-        System.out.println(result);
-        Scanner scanner = new Scanner(HtmlReportFormatterTest.class.getResourceAsStream("expectedReport.html"));
+        String result = jobReportFormatter.formatReport(jobReport);
+        Scanner scanner = new Scanner(HtmlJobReportFormatterTest.class.getResourceAsStream("expectedReport.html"));
         StringBuilder stringBuilder = new StringBuilder();
         while (scanner.hasNextLine()) {
             stringBuilder.append(scanner.nextLine());

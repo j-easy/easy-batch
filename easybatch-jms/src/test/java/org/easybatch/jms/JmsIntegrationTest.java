@@ -28,7 +28,7 @@ import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.io.FileUtils;
 import org.easybatch.core.api.Header;
 import org.easybatch.core.api.Job;
-import org.easybatch.core.api.Report;
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.StringRecordReader;
 import org.junit.After;
@@ -89,14 +89,14 @@ public class JmsIntegrationTest {
                 .processor(new RecordCollector<JmsRecord>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
-        assertThat(report.getTotalRecords()).isEqualTo(2);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(1);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(1);
 
-        List<JmsRecord> records = (List<JmsRecord>) report.getJobResult();
+        List<JmsRecord> records = (List<JmsRecord>) jobReport.getResult();
 
         assertThat(records).isNotNull().isNotEmpty().hasSize(1);
 

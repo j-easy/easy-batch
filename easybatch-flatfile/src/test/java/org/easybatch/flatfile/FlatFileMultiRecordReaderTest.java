@@ -24,8 +24,8 @@
 
 package org.easybatch.flatfile;
 
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.Report;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.MultiRecord;
 import org.junit.After;
@@ -90,12 +90,12 @@ public class FlatFileMultiRecordReaderTest {
     @Test
     public void chunkProcessingIntegrationTest() throws Exception {
 
-        Report report = aNewJob()
+        JobReport jobReport = aNewJob()
                 .reader(new FlatFileMultiRecordReader(new File(getFileUri("/complaints.csv")), CHUNK_SIZE))
                 .processor(new RecordCollector<MultiRecord>())
                 .call();
 
-        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
+        List<MultiRecord> multiRecords = (List<MultiRecord>) jobReport.getResult();
 
         assertThat(multiRecords).isNotNull().isNotEmpty().hasSize(3);
 

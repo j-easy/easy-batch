@@ -24,7 +24,7 @@
 
 package org.easybatch.integration.hibernate;
 
-import org.easybatch.core.api.Report;
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.listener.JobListener;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -61,7 +61,7 @@ public class HibernateSessionJobListener implements JobListener {
     }
 
     @Override
-    public void afterJobEnd(final Report report) {
+    public void afterJobEnd(final JobReport jobReport) {
         try {
             if (session != null) {
                 LOGGER.info("Closing session after job end");

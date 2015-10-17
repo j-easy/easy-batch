@@ -24,7 +24,7 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.Report;
+import org.easybatch.core.api.JobReport;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class XmlWrapperTagWriterTest {
     private static final String DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
 
     @Mock
-    private Report report;
+    private JobReport jobReport;
 
     @Rule
     public final SystemOutRule systemOut = new SystemOutRule().enableLog();
@@ -68,7 +68,7 @@ public class XmlWrapperTagWriterTest {
 
     @Test
     public void testAfterJobEnd() throws Exception {
-        xmlWrapperTagWriter.afterJobEnd(report);
+        xmlWrapperTagWriter.afterJobEnd(jobReport);
         assertThat(systemOut.getLog()).isEqualTo("</" + wrapperTag + ">");
     }
 }

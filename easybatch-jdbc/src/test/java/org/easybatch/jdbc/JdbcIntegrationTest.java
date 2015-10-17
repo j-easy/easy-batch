@@ -25,8 +25,8 @@
 package org.easybatch.jdbc;
 
 import org.easybatch.core.api.Job;
-import org.easybatch.core.api.Report;
-import org.easybatch.core.api.Status;
+import org.easybatch.core.api.JobReport;
+import org.easybatch.core.api.JobStatus;
 import org.easybatch.core.impl.JobBuilder;
 import org.easybatch.core.processor.RecordCollector;
 import org.junit.After;
@@ -76,17 +76,17 @@ public class JdbcIntegrationTest {
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(2);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
-        assertThat(report.getDataSource()).isEqualTo(DATA_SOURCE_NAME);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(DATA_SOURCE_NAME);
 
-        List<Person> persons = (List<Person>) report.getJobResult();
+        List<Person> persons = (List<Person>) jobReport.getResult();
 
         assertThat(persons).isNotEmpty().hasSize(2);
 

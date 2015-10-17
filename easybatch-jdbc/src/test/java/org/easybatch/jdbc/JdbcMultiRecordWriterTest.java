@@ -24,7 +24,7 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.Report;
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.reader.IterableMultiRecordReader;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -80,16 +80,16 @@ public class JdbcMultiRecordWriterTest {
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        Report report = aNewJob()
+        JobReport jobReport = aNewJob()
                 .reader(new IterableMultiRecordReader<Tweet>(tweets, chunkSize))
                 .writer(jdbcMultiRecordWriter)
                 .pipelineEventListener(new JdbcTransactionPipelineListener(connection)) // needed since autocommit = false
                 .jobEventListener(new JdbcConnectionJobListener(connection))
                 .call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(3);// 3 multi-records
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(3);// 3 multi-records
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);// 3 multi-records
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(3);// 3 multi-records
 
         int nbTweetsInDatabase = countTweetsInDatabase();
 

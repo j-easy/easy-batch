@@ -66,7 +66,7 @@ public final class JobBuilder {
      */
     public JobBuilder named(final String name) {
         checkNotNull(name, "job name");
-        job.setName(name);
+        job.getJobReport().getParameters().setName(name);
         return this;
     }
 
@@ -78,7 +78,7 @@ public final class JobBuilder {
      */
     public JobBuilder skip(final long number) {
         checkArgument(number >= 1, "The number of records to skip should be >= 1");
-        job.setSkip(number);
+        job.getJobReport().getParameters().setSkip(number);
         return this;
     }
 
@@ -90,7 +90,7 @@ public final class JobBuilder {
      */
     public JobBuilder limit(final long number) {
         checkArgument(number >= 1, "The limit number of records should be >= 1");
-        job.setLimit(number);
+        job.getJobReport().getParameters().setLimit(number);
         return this;
     }
 
@@ -114,7 +114,7 @@ public final class JobBuilder {
     public JobBuilder reader(final RecordReader recordReader, final boolean keepAlive) {
         checkNotNull(recordReader, "record reader");
         job.setRecordReader(recordReader);
-        job.setKeepAlive(keepAlive);
+        job.getJobReport().getParameters().setKeepAlive(keepAlive);
         return this;
     }
 
@@ -197,7 +197,7 @@ public final class JobBuilder {
      * @return the job builder
      */
     public JobBuilder strictMode(final boolean strictMode) {
-        job.setStrictMode(strictMode);
+        job.getJobReport().getParameters().setStrictMode(strictMode);
         return this;
     }
 
@@ -208,7 +208,7 @@ public final class JobBuilder {
      * @return the job builder
      */
     public JobBuilder silentMode(final boolean silentMode) {
-        job.setSilentMode(silentMode);
+        job.getJobReport().getParameters().setSilentMode(silentMode);
         return this;
     }
 
@@ -218,8 +218,8 @@ public final class JobBuilder {
      * @param jmx true to enable jmx monitoring
      * @return the job builder
      */
-    public JobBuilder enableJMX(final boolean jmx) {
-        job.enableJMX(jmx);
+    public JobBuilder jmxMode(final boolean jmx) {
+        job.getJobReport().getParameters().setJmxMode(jmx);
         return this;
     }
 
@@ -276,7 +276,7 @@ public final class JobBuilder {
      *
      * @return job execution report
      */
-    public Report call() {
+    public JobReport call() {
         return job.call();
     }
 

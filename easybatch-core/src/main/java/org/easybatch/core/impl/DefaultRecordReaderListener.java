@@ -24,9 +24,9 @@
 
 package org.easybatch.core.impl;
 
+import org.easybatch.core.api.JobReport;
+import org.easybatch.core.api.JobStatus;
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.Report;
-import org.easybatch.core.api.Status;
 import org.easybatch.core.api.listener.RecordReaderListener;
 
 import java.util.logging.Level;
@@ -41,10 +41,10 @@ class DefaultRecordReaderListener implements RecordReaderListener {
 
     private static final Logger LOGGER = Logger.getLogger(DefaultRecordReaderListener.class.getName());
 
-    private Report report;
+    private JobReport jobReport;
 
-    DefaultRecordReaderListener(Report report) {
-        this.report = report;
+    DefaultRecordReaderListener(JobReport jobReport) {
+        this.jobReport = jobReport;
     }
 
     /**
@@ -64,8 +64,8 @@ class DefaultRecordReaderListener implements RecordReaderListener {
     public void afterRecordReading(Record record) {
         if (record == null) {
             LOGGER.log(Level.SEVERE, "The record reader returned null for next record, aborting execution");
-            report.setStatus(Status.ABORTED);
-            report.setEndTime(System.currentTimeMillis());
+            jobReport.setStatus(JobStatus.ABORTED);
+            jobReport.getMetrics().setEndTime(System.currentTimeMillis());
         }
     }
 
@@ -77,7 +77,7 @@ class DefaultRecordReaderListener implements RecordReaderListener {
     @Override
     public void onRecordReadingException(Throwable throwable) {
         LOGGER.log(Level.SEVERE, "An exception occurred while reading next record, aborting execution", throwable);
-        report.setStatus(Status.ABORTED);
-        report.setEndTime(System.currentTimeMillis());
+        jobReport.setStatus(JobStatus.ABORTED);
+        jobReport.getMetrics().setEndTime(System.currentTimeMillis());
     }
 }

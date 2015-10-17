@@ -24,8 +24,8 @@
 
 package org.easybatch.core.mapper;
 
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.Report;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.IterableMultiRecordReader;
 import org.easybatch.core.record.MultiRecord;
@@ -73,13 +73,13 @@ public class GenericMultiRecordMapperTest {
 
         List<String> dataSource = Arrays.asList("foo", "bar", "toto", "titi", "baz");
 
-        Report report = aNewJob()
+        JobReport jobReport = aNewJob()
                 .reader(new IterableMultiRecordReader<String>(dataSource, 2))
                 .mapper(new GenericMultiRecordMapper())
                 .processor(new RecordCollector())
                 .build().call();
 
-        List<List<String>> result = (List<List<String>>) report.getJobResult();
+        List<List<String>> result = (List<List<String>>) jobReport.getResult();
         assertThat(result).hasSize(3);
 
         assertThat(result.get(0)).containsExactly("foo", "bar");

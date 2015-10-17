@@ -24,7 +24,7 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.Report;
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.listener.JobListener;
 
 import java.sql.Connection;
@@ -61,7 +61,7 @@ public class JdbcConnectionJobListener implements JobListener {
     }
 
     @Override
-    public void afterJobEnd(final Report report) {
+    public void afterJobEnd(final JobReport jobReport) {
         try {
             if (connection != null && !connection.isClosed()) {
                 LOGGER.info("Closing connection after job end");

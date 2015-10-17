@@ -24,9 +24,9 @@
 
 package org.easybatch.core.dispatcher;
 
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.Record;
 import org.easybatch.core.api.RecordDispatcher;
-import org.easybatch.core.api.Report;
 import org.easybatch.core.api.listener.JobListener;
 import org.easybatch.core.record.PoisonRecord;
 
@@ -55,7 +55,7 @@ public class PoisonRecordBroadcaster implements JobListener {
     }
 
     @Override
-    public void afterJobEnd(final Report report) {
+    public void afterJobEnd(final JobReport jobReport) {
         try {
             recordDispatcher.processRecord(new PoisonRecord());
         } catch (Exception e) {

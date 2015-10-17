@@ -24,8 +24,8 @@
 
 package org.easybatch.xml;
 
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.Record;
-import org.easybatch.core.api.Report;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.MultiRecord;
 import org.junit.Before;
@@ -52,12 +52,12 @@ public class XmlMultiRecordReaderTest {
     @Test
     public void testXmlChunkProcessing() throws Exception {
         
-        Report report = aNewJob()
+        JobReport jobReport = aNewJob()
                 .reader(xmlMultiRecordReader)
                 .processor(new RecordCollector<MultiRecord>())
                 .build().call();
 
-        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
+        List<MultiRecord> multiRecords = (List<MultiRecord>) jobReport.getResult();
 
         assertThat(multiRecords).isNotNull().hasSize(3);
 
@@ -87,12 +87,12 @@ public class XmlMultiRecordReaderTest {
     @Test
     public void testEmptyDataSource() throws Exception {
         xmlMultiRecordReader = new XmlMultiRecordReader(getDataSource("/empty-file.xml"), "data", CHUNK_SIZE);
-        Report report = aNewJob()
+        JobReport jobReport = aNewJob()
                 .reader(xmlMultiRecordReader)
                 .processor(new RecordCollector<MultiRecord>())
                 .build().call();
 
-        List<MultiRecord> multiRecords = (List<MultiRecord>) report.getJobResult();
+        List<MultiRecord> multiRecords = (List<MultiRecord>) jobReport.getResult();
 
         assertThat(multiRecords).isNotNull().isEmpty();
     }

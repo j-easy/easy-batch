@@ -1,8 +1,8 @@
 package org.easybatch.flatfile;
 
 import org.easybatch.core.api.Job;
-import org.easybatch.core.api.Report;
-import org.easybatch.core.api.Status;
+import org.easybatch.core.api.JobReport;
+import org.easybatch.core.api.JobStatus;
 import org.easybatch.core.api.TypeConverter;
 import org.easybatch.core.converter.DateTypeConverter;
 import org.easybatch.core.filter.HeaderRecordFilter;
@@ -33,16 +33,16 @@ public class FlatFileIntegrationTest {
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
-        assertThat(report.getTotalRecords()).isEqualTo(2);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
-        List<Person> persons = (List<Person>) report.getJobResult();
+        List<Person> persons = (List<Person>) jobReport.getResult();
 
         assertPersons(persons);
 
@@ -59,16 +59,16 @@ public class FlatFileIntegrationTest {
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
-        assertThat(report.getTotalRecords()).isEqualTo(2);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
-        List<Person> persons = (List<Person>) report.getJobResult();
+        List<Person> persons = (List<Person>) jobReport.getResult();
 
         assertPersonsFieldSubsetMapping(persons);
 
@@ -89,16 +89,16 @@ public class FlatFileIntegrationTest {
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getErrorRecordsCount()).isEqualTo(1);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
-        assertThat(report.getTotalRecords()).isEqualTo(3);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(1);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
 
-        List<Person> persons = (List<Person>) report.getJobResult();
+        List<Person> persons = (List<Person>) jobReport.getResult();
 
         assertPersons(persons);
 
@@ -115,16 +115,16 @@ public class FlatFileIntegrationTest {
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getErrorRecordsCount()).isEqualTo(1);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
-        assertThat(report.getTotalRecords()).isEqualTo(3);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(1);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
 
-        List<Person> persons = (List<Person>) report.getJobResult();
+        List<Person> persons = (List<Person>) jobReport.getResult();
 
         assertPersonsFieldSubsetMapping(persons);
 
@@ -154,11 +154,11 @@ public class FlatFileIntegrationTest {
                 .processor(new RecordCollector<Complaint>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report).isNotNull();
+        assertThat(jobReport).isNotNull();
 
-        List<Complaint> complaints = (List<Complaint>) report.getJobResult();
+        List<Complaint> complaints = (List<Complaint>) jobReport.getResult();
 
         assertThat(complaints).isNotEmpty().hasSize(10);
 
@@ -194,16 +194,16 @@ public class FlatFileIntegrationTest {
                 .processor(new RecordCollector<Person>())
                 .build();
 
-        Report report = job.call();
+        JobReport jobReport = job.call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
-        assertThat(report.getTotalRecords()).isEqualTo(2);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
-        List<Person> persons = (List<Person>) report.getJobResult();
+        List<Person> persons = (List<Person>) jobReport.getResult();
 
         assertThat(persons).isNotEmpty().hasSize(2);
 

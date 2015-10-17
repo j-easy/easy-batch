@@ -26,8 +26,8 @@ package org.easybatch.integration.mongodb;
 
 import com.mongodb.*;
 import org.assertj.core.api.Assertions;
+import org.easybatch.core.api.JobReport;
 import org.easybatch.core.api.RecordProcessingException;
-import org.easybatch.core.api.Report;
 import org.easybatch.core.mapper.GenericMultiRecordMapper;
 import org.easybatch.core.reader.IterableMultiRecordReader;
 import org.junit.Before;
@@ -111,15 +111,15 @@ public class MongoDBMultiRecordWriterTest {
 
         int chunkSize = 2;
 
-        Report report = aNewJob()
+        JobReport jobReport = aNewJob()
                 .reader(new IterableMultiRecordReader<DBObject>(tweets, chunkSize))
                 .mapper(new GenericMultiRecordMapper<DBObject>())
                 .writer(new MongoDBMultiRecordWriter(collection))
                 .call();
 
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(2);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
 
         assertThat(collection.count()).isEqualTo(3);
 
