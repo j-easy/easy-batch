@@ -39,6 +39,7 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 public class JobReport implements Serializable {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+    public static final String NOT_APPLICABLE = "N/A";
 
     private JobParameters parameters;
 
@@ -154,13 +155,13 @@ public class JobReport implements Serializable {
 
     public String getFormattedTotalCount() {
         Long totalCount = metrics.getTotalCount();
-        return String.valueOf(totalCount == null ? "N/A" : totalCount);
+        return String.valueOf(totalCount == null ? NOT_APPLICABLE : totalCount);
     }
 
     public String getFormattedRecordProcessingTimeAverage() {
         Long totalCount = metrics.getTotalCount();
         if (totalCount == null || totalCount == 0) {
-            return "N/A";
+            return NOT_APPLICABLE;
         }
         final StringBuilder sb = new StringBuilder();
         sb.append((float) metrics.getDuration() / (float) totalCount).append("ms");
@@ -171,7 +172,7 @@ public class JobReport implements Serializable {
     public String getFormattedProgress() {
         Long totalCount = metrics.getTotalCount();
         if (totalCount == null || totalCount == 0) {
-            return "N/A";
+            return NOT_APPLICABLE;
         }
         long processedCount = metrics.getSkippedCount() + metrics.getFilteredCount() + metrics.getErrorCount() + metrics.getSuccessCount();
         String ratio = processedCount + "/" + totalCount;
@@ -196,10 +197,8 @@ public class JobReport implements Serializable {
         sb.append(LINE_SEPARATOR).append("\tName = ").append(parameters.getName());
         sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(parameters.getExecutionId());
         sb.append(LINE_SEPARATOR).append("\tData source = ").append(parameters.getDataSource());
-        if (parameters.getLimit() != DEFAULT_LIMIT) {
-            sb.append(LINE_SEPARATOR).append("\tLimit = ").append(parameters.getLimit());
-        }
         sb.append(LINE_SEPARATOR).append("\tSkip = ").append(parameters.getSkip());
+        sb.append(LINE_SEPARATOR).append("\tLimit = ").append(parameters.getLimit() != DEFAULT_LIMIT ? parameters.getLimit() : NOT_APPLICABLE);
         sb.append(LINE_SEPARATOR).append("\tStrict mode = ").append(parameters.isStrictMode());
         sb.append(LINE_SEPARATOR).append("\tSilent mode = ").append(parameters.isSilentMode());
         sb.append(LINE_SEPARATOR).append("\tKeep alive = ").append(parameters.isKeepAlive());
@@ -222,9 +221,8 @@ public class JobReport implements Serializable {
         /*
          * Job result (if any)
          */
-        if (result != null && result.get() != null) {
-            sb.append(LINE_SEPARATOR).append("Result:").append(result.get());
-        }
+        sb.append(LINE_SEPARATOR).append("Result:").append(result != null && result.get() != null ? result.get() : NOT_APPLICABLE);
+
         return sb.toString();
     }
 
