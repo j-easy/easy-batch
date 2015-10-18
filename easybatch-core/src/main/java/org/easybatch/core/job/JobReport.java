@@ -28,8 +28,8 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
-import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import static java.lang.String.valueOf;
+import static org.easybatch.core.util.Utils.*;
 
 /**
  * Class holding job reporting data.
@@ -155,7 +155,7 @@ public class JobReport implements Serializable {
 
     public String getFormattedTotalCount() {
         Long totalCount = metrics.getTotalCount();
-        return String.valueOf(totalCount == null ? NOT_APPLICABLE : totalCount);
+        return valueOf(totalCount == null ? NOT_APPLICABLE : totalCount);
     }
 
     public String getFormattedRecordProcessingTimeAverage() {
@@ -180,6 +180,10 @@ public class JobReport implements Serializable {
         return ratio + percent;
     }
 
+    public String getFormattedTimeout() {
+        return valueOf(toMinutes(parameters.getTimeout()));
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Job Report:");
@@ -199,6 +203,7 @@ public class JobReport implements Serializable {
         sb.append(LINE_SEPARATOR).append("\tData source = ").append(parameters.getDataSource());
         sb.append(LINE_SEPARATOR).append("\tSkip = ").append(parameters.getSkip());
         sb.append(LINE_SEPARATOR).append("\tLimit = ").append(parameters.getLimit() != DEFAULT_LIMIT ? parameters.getLimit() : NOT_APPLICABLE);
+        sb.append(LINE_SEPARATOR).append("\tTimeout = ").append(parameters.getTimeout() != DEFAULT_TIMEOUT ? getFormattedTimeout() + "m" : NOT_APPLICABLE);
         sb.append(LINE_SEPARATOR).append("\tStrict mode = ").append(parameters.isStrictMode());
         sb.append(LINE_SEPARATOR).append("\tSilent mode = ").append(parameters.isSilentMode());
         sb.append(LINE_SEPARATOR).append("\tKeep alive = ").append(parameters.isKeepAlive());

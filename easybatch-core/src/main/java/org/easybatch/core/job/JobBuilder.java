@@ -35,6 +35,8 @@ import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.validator.RecordValidator;
 import org.easybatch.core.writer.RecordWriter;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.easybatch.core.util.Utils.checkArgument;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -97,6 +99,20 @@ public final class JobBuilder {
     public JobBuilder limit(final long number) {
         checkArgument(number >= 1, "The limit number of records should be >= 1");
         job.getJobReport().getParameters().setLimit(number);
+        return this;
+    }
+
+    /**
+     * Set the timeout after which the job should be aborted.
+     *
+     * @param timeout the timeout
+     * @param unit    the time unit
+     * @return the job builder
+     */
+    public JobBuilder timeout(final long timeout, final TimeUnit unit) {
+        checkArgument(timeout >= 1, "The timeout should be >= 1");
+        checkNotNull(unit, "time unit");
+        job.getJobReport().getParameters().setTimeout(TimeUnit.MILLISECONDS.convert(timeout, unit));
         return this;
     }
 

@@ -42,6 +42,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -66,11 +67,13 @@ public abstract class Utils {
 
     public static final String DEFAULT_JOB_NAME = "job";
 
-    public static final String JMX_MBEAN_NAME = "org.easybatch.core.jmx:";
+    public static final String JMX_MBEAN_NAME = "org.easybatch.core.monitor:";
 
     public static final Long DEFAULT_LIMIT = Long.MAX_VALUE;
     
     public static final Long DEFAULT_SKIP = 0L;
+
+    public static final long DEFAULT_TIMEOUT = TimeUnit.DAYS.convert(31, TimeUnit.MILLISECONDS);
 
     private Utils() {
 
@@ -115,6 +118,10 @@ public abstract class Utils {
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Unable to register Easy Batch JMX MBean.", e);
         }
+    }
+
+    public static long toMinutes(long milliseconds) {
+        return TimeUnit.MILLISECONDS.toMinutes(milliseconds);
     }
 
     public static void checkNotNull(Object argument, String argumentName) {

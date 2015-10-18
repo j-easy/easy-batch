@@ -56,6 +56,7 @@ import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
@@ -330,6 +331,31 @@ public class JobImplTest {
         assertThat(records.get(0).getPayload()).isNotNull().isEqualTo("foo");
         assertThat(records.get(1).getPayload()).isNotNull().isEqualTo("bar");
 
+    }
+
+    @Test
+    public void testTimeout() throws Exception {
+        List<String> dataSource = Arrays.asList("foo", "bar", "baz");
+
+        JobReport jobReport = aNewJob()
+                .reader(new IterableRecordReader(dataSource))
+                .timeout(1, TimeUnit.SECONDS)
+                .processor(new RecordProcessor() {
+                    @Override
+                    public Object processRecord(Object record) throws RecordProcessingException {
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            throw new RecordProcessingException(e);
+                        }
+                        return record;
+                    }
+                })
+                .call();
+
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.ABORTED);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(1);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(1);
     }
 
     /*

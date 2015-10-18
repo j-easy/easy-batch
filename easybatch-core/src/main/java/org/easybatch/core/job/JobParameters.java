@@ -46,6 +46,8 @@ public class JobParameters {
 
     private long limit;
 
+    private long timeout;
+
     private boolean strictMode;
 
     private boolean silentMode;
@@ -61,6 +63,7 @@ public class JobParameters {
         this.executionId = UUID.randomUUID().toString();
         this.skip = DEFAULT_SKIP;
         this.limit = DEFAULT_LIMIT;
+        this.timeout = DEFAULT_TIMEOUT;
         this.systemProperties = System.getProperties();
     }
 
@@ -94,6 +97,14 @@ public class JobParameters {
 
     public void setLimit(long limit) {
         this.limit = limit;
+    }
+
+    public long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(long timeout) {
+        this.timeout = timeout;
     }
 
     public boolean isStrictMode() {

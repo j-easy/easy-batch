@@ -28,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -130,4 +131,18 @@ public class JobReportTest {
         assertThat(jobReport.toString()).doesNotContain("Result");
     }
 
+    @Test
+    public void jobTimeoutShouldBeCorrectlyFormatted() throws Exception {
+        long oneMinute = TimeUnit.MILLISECONDS.convert(1, TimeUnit.MINUTES);
+        jobReport.getParameters().setTimeout(oneMinute);
+        assertThat(jobReport.toString()).contains("Timeout = 1m");
+
+        long twoHours = TimeUnit.MILLISECONDS.convert(2, TimeUnit.HOURS);
+        jobReport.getParameters().setTimeout(twoHours);
+        assertThat(jobReport.toString()).contains("Timeout = 120m");
+
+        long threeDays = TimeUnit.MILLISECONDS.convert(3, TimeUnit.DAYS);
+        jobReport.getParameters().setTimeout(threeDays);
+        assertThat(jobReport.toString()).contains("Timeout = 4320m");
+    }
 }

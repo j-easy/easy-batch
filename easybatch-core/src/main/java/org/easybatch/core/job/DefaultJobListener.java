@@ -30,8 +30,7 @@ import org.easybatch.core.util.Utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
-import static org.easybatch.core.util.Utils.DEFAULT_SKIP;
+import static org.easybatch.core.util.Utils.*;
 
 /**
  * Job listener that logs and reports job parameters and metrics.
@@ -53,25 +52,25 @@ class DefaultJobListener implements JobListener {
         if (jobParameters.isSilentMode()) {
             Utils.muteLoggers();
         }
+        String dataSource = jobParameters.getDataSource();
+        long limit = jobParameters.getLimit();
+        long timeout = jobParameters.getTimeout();
+
         LOGGER.info("Initializing the job");
         LOGGER.log(Level.INFO, "Job name: {0}", jobParameters.getName());
         LOGGER.log(Level.INFO, "Execution id: {0}", jobParameters.getExecutionId());
-        String dataSource = jobParameters.getDataSource();
-        LOGGER.log(Level.INFO, "Data source: {0}", dataSource == null ? "N/A" : dataSource);
-        if (jobParameters.getSkip() != DEFAULT_SKIP) {
-            LOGGER.log(Level.INFO, "Skip: {0}", jobParameters.getSkip());
-        }
-        if (jobParameters.getLimit() != DEFAULT_LIMIT ) {
-            LOGGER.log(Level.INFO, "Limit: {0}", jobParameters.getLimit());
-        }
-
+        LOGGER.log(Level.INFO, "Data source: {0}", dataSource != null ? dataSource : "N/A");
+        LOGGER.log(Level.INFO, "Skip: {0}", jobParameters.getSkip());
+        LOGGER.log(Level.INFO, "Limit: {0}", limit != DEFAULT_LIMIT ? limit : "N/A");
+        LOGGER.log(Level.INFO, "Timeout: {0}", timeout != DEFAULT_TIMEOUT ? toMinutes(timeout) + "m" : "N/A");
         LOGGER.log(Level.INFO, "Strict mode: {0}", jobParameters.isStrictMode());
         LOGGER.log(Level.INFO, "Silent mode: {0}", jobParameters.isSilentMode());
-        LOGGER.log(Level.INFO, "Jmx mode: {0}", jobParameters.isJmxMode());
         LOGGER.log(Level.INFO, "Keep alive: {0}", jobParameters.isKeepAlive());
+        LOGGER.log(Level.INFO, "Jmx mode: {0}", jobParameters.isJmxMode());
+        LOGGER.info("The job is running");
+
         jobReport.getMetrics().setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
         jobReport.setStatus(JobStatus.RUNNING);
-        LOGGER.info("The job is running");
 
     }
 

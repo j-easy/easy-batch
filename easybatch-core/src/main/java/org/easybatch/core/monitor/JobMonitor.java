@@ -78,14 +78,20 @@ public class JobMonitor implements JobMonitorMBean {
     }
 
     /**
-     * Get records limit.
-     *
-     * @return records limit
+     * {@inheritDoc}
      */
     @Override
     public String getRecordsLimit() {
         long limit = jobReport.getParameters().getLimit();
-        return limit != DEFAULT_LIMIT ? valueOf(limit) : "No limit";
+        return limit != DEFAULT_LIMIT ? valueOf(limit) : "N/A";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getTimeout() {
+        return jobReport.getFormattedTimeout();
     }
 
     /**

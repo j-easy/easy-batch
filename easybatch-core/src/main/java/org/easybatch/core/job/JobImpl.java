@@ -95,6 +95,16 @@ final class JobImpl implements Job {
         try {
             long processedRecordsNumber = 0;
             while (recordReader.hasNextRecord() && processedRecordsNumber < parameters.getLimit()) {
+
+                /*
+                 * Abort job if timeout is exceeded
+                 */
+                if (elapsedTime() >= parameters.getTimeout()) {
+                    LOGGER.info("Timeout exceeded: aborting execution");
+                    report.setStatus(JobStatus.ABORTED);
+                    break;
+                }
+
                 /*
                  * read next record
                  */
@@ -137,6 +147,10 @@ final class JobImpl implements Job {
         }
         return report;
 
+    }
+
+    private long elapsedTime() {
+        return System.currentTimeMillis() - metrics.getStartTime();
     }
 
     private void setupMonitoring() {
@@ -215,7 +229,7 @@ final class JobImpl implements Job {
     void addRecordReaderListener(final RecordReaderListener recordReaderListener) {
         eventManager.addRecordReaderListener(recordReaderListener);
     }
-    
+
     void addPipelineListener(final PipelineListener pipelineListener) {
         eventManager.addPipelineListener(pipelineListener);
     }

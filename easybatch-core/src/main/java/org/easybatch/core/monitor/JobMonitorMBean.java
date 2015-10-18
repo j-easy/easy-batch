@@ -69,6 +69,12 @@ public interface JobMonitorMBean {
     String getRecordsLimit();
 
     /**
+     * Get timeout.
+     * @return timeout
+     */
+    String getTimeout();
+
+    /**
      * Get skipped records count.
      *
      * @return skipped records count
