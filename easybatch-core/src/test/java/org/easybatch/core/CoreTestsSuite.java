@@ -24,13 +24,10 @@
 
 package org.easybatch.core;
 
-import org.easybatch.core.api.JobReportTest;
 import org.easybatch.core.converter.*;
 import org.easybatch.core.dispatcher.*;
 import org.easybatch.core.filter.*;
-import org.easybatch.core.job.EventManagerTest;
-import org.easybatch.core.job.JobImplTest;
-import org.easybatch.core.job.ProcessingPipelineTest;
+import org.easybatch.core.job.*;
 import org.easybatch.core.mapper.GenericRecordMapperTest;
 import org.easybatch.core.mapper.ObjectMapperTest;
 import org.easybatch.core.processor.RecordCollectorTest;
@@ -99,10 +96,10 @@ import org.junit.runners.Suite;
         FileRecordWriterTest.class,
         // processor
         RecordCollectorTest.class,
-        // api
+        // job
         JobReportTest.class,
-        // impl
         JobImplTest.class,
+        JobExecutorTest.class,
         ProcessingPipelineTest.class,
         EventManagerTest.class
 })

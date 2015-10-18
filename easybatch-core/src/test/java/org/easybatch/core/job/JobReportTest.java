@@ -22,9 +22,8 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.api;
+package org.easybatch.core.job;
 
-import org.easybatch.core.job.JobReport;
 import org.junit.Before;
 import org.junit.Test;
 
