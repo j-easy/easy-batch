@@ -226,7 +226,7 @@ public class JobReport implements Serializable {
         /*
          * Job result (if any)
          */
-        sb.append(LINE_SEPARATOR).append("Result:").append(result != null && result.get() != null ? result.get() : NOT_APPLICABLE);
+        sb.append(LINE_SEPARATOR).append("Result: ").append(result != null && result.get() != null ? result.get() : NOT_APPLICABLE);
 
         return sb.toString();
     }

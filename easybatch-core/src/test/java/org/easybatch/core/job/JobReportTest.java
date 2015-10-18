@@ -126,9 +126,9 @@ public class JobReportTest {
     }
 
     @Test
-    public void whenJobResultIsNull_ThenItShouldNotBePrintedOut() {
+    public void whenJobResultIsNull_ThenItShouldBeNA() {
         jobReport.setJobResult(null);
-        assertThat(jobReport.toString()).doesNotContain("Result");
+        assertThat(jobReport.toString()).contains("Result: N/A");
     }
 
     @Test
