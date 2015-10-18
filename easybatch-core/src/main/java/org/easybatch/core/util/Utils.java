@@ -73,7 +73,7 @@ public abstract class Utils {
     
     public static final Long DEFAULT_SKIP = 0L;
 
-    public static final long DEFAULT_TIMEOUT = TimeUnit.DAYS.convert(31, TimeUnit.MILLISECONDS);
+    public static final long DEFAULT_TIMEOUT = TimeUnit.MILLISECONDS.convert(31, TimeUnit.DAYS);
 
     private Utils() {
 
