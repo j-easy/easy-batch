@@ -35,6 +35,10 @@ public class RecordReadingException extends Exception {
         super(message);
     }
 
+    public RecordReadingException(Throwable cause) {
+        super(cause);
+    }
+
     public RecordReadingException(String message, Throwable cause) {
         super(message, cause);
     }

@@ -25,6 +25,7 @@
 package org.easybatch.json;
 
 import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.reader.RecordReadingException;
 import org.easybatch.core.record.Header;
 
 import javax.json.Json;
@@ -154,19 +155,23 @@ public class JsonRecordReader implements RecordReader {
     }
 
     @Override
-    public JsonRecord readNextRecord() {
+    public JsonRecord readNextRecord() throws RecordReadingException {
         StringWriter stringWriter = new StringWriter();
         JsonGenerator jsonGenerator = jsonGeneratorFactory.createGenerator(stringWriter);
-        writeRecordStart(jsonGenerator);
-        do {
-            moveToNextElement(jsonGenerator);
-        } while (!isEndRootObject());
-        if (arrayDepth != 2) {
-            jsonGenerator.writeEnd();
+        try {
+            writeRecordStart(jsonGenerator);
+            do {
+                moveToNextElement(jsonGenerator);
+            } while (!isEndRootObject());
+            if (arrayDepth != 2) {
+                jsonGenerator.writeEnd();
+            }
+            jsonGenerator.close();
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            return new JsonRecord(header, stringWriter.toString());
+        } catch (javax.json.stream.JsonParsingException e) {
+            throw new RecordReadingException(e);
         }
-        jsonGenerator.close();
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new JsonRecord(header, stringWriter.toString());
     }
 
     @Override
