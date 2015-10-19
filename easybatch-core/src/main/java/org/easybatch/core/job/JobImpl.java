@@ -27,7 +27,6 @@ package org.easybatch.core.job;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.listener.PipelineListener;
 import org.easybatch.core.listener.RecordReaderListener;
-import org.easybatch.core.monitor.JobMonitor;
 import org.easybatch.core.processor.ComputationalRecordProcessor;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
@@ -68,6 +67,7 @@ final class JobImpl implements Job {
         this.eventManager.addPipelineListener(new DefaultPipelineListener(report));
         this.eventManager.addRecordReaderListener(new DefaultRecordReaderListener(report));
         this.eventManager.addJobListener(new DefaultJobListener(report));
+        this.eventManager.addJobListener(new MonitoringSetupListener(this, report, recordReader));
         this.pipeline = new Pipeline(new ArrayList<RecordProcessor>(), eventManager);
     }
 
@@ -89,8 +89,6 @@ final class JobImpl implements Job {
         }
 
         eventManager.fireBeforeJobStart(parameters);
-
-        setupMonitoring();
 
         try {
             long processedRecordsNumber = 0;
@@ -151,16 +149,6 @@ final class JobImpl implements Job {
 
     private long elapsedTime() {
         return System.currentTimeMillis() - metrics.getStartTime();
-    }
-
-    private void setupMonitoring() {
-        if (parameters.isJmxMode()) {
-            JobMonitor.registerJmxMBean(report, this);
-            LOGGER.log(Level.INFO, "Calculating the total number of records");
-            Long totalRecords = recordReader.getTotalRecords();
-            metrics.setTotalCount(totalRecords);
-            LOGGER.log(Level.INFO, "Total records count = {0}", totalRecords == null ? "N/A" : totalRecords);
-        }
     }
 
     private boolean openRecordReader() {
