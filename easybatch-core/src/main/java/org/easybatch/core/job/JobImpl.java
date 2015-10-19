@@ -57,6 +57,8 @@ final class JobImpl implements Job {
 
     private JobMetrics metrics;
 
+    private boolean timedOut;
+
     JobImpl() {
         this.recordReader = new NoOpRecordReader();
         this.eventManager = new EventManager();
@@ -64,8 +66,9 @@ final class JobImpl implements Job {
         this.parameters = report.getParameters();
         this.metrics = report.getMetrics();
         this.pipeline = new Pipeline(new ArrayList<RecordProcessor>(), eventManager);
-        this.eventManager.addPipelineListener(new DefaultPipelineListener(report));
         this.eventManager.addRecordReaderListener(new DefaultRecordReaderListener(report));
+        this.eventManager.addPipelineListener(new DefaultPipelineListener(report));
+        this.eventManager.addPipelineListener(new JobTimeoutListener(report, this));
         this.eventManager.addJobListener(new DefaultJobListener(report, pipeline));
         this.eventManager.addJobListener(new MonitoringSetupListener(this, report, recordReader));
     }
@@ -93,18 +96,13 @@ final class JobImpl implements Job {
             long processedRecordsNumber = 0;
             while (recordReader.hasNextRecord() && processedRecordsNumber < parameters.getLimit()) {
 
-                /*
-                 * Abort job if timeout is exceeded
-                 */
-                if (elapsedTime() >= parameters.getTimeout()) {
+                //Abort job if timeout is exceeded
+                if (timedOut) {
                     LOGGER.info("Timeout exceeded: aborting execution");
-                    report.setStatus(JobStatus.ABORTED);
                     break;
                 }
 
-                /*
-                 * read next record
-                 */
+                //read next record
                 Record currentRecord;
                 try {
                     currentRecord = readNextRecord();
@@ -117,17 +115,13 @@ final class JobImpl implements Job {
                     return report;
                 }
 
-                /*
-                 * Skip records if any
-                 */
+                //Skip records if any
                 if (processedRecordsNumber <= parameters.getSkip()) {
                     metrics.incrementSkippedCount();
                     continue;
                 }
                 
-                /*
-                 * Process record
-                 */
+                //Process record
                 boolean processingError = pipeline.process(currentRecord);
                 if (processingError && parameters.isStrictMode()) {
                     LOGGER.info("Strict mode enabled: aborting execution");
@@ -135,7 +129,6 @@ final class JobImpl implements Job {
                     break;
                 }
             }
-
             metrics.setTotalCount(processedRecordsNumber);
 
         } finally {
@@ -144,10 +137,6 @@ final class JobImpl implements Job {
         }
         return report;
 
-    }
-
-    private long elapsedTime() {
-        return System.currentTimeMillis() - metrics.getStartTime();
     }
 
     private boolean openRecordReader() {
@@ -212,6 +201,10 @@ final class JobImpl implements Job {
 
     public JobReport getJobReport() {
         return report;
+    }
+
+    public void setTimedOut(boolean timedOut) {
+        this.timedOut = timedOut;
     }
 
     @Override
