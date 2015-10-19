@@ -24,10 +24,14 @@
 
 package org.easybatch.core.monitor;
 
+import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobReport;
 
-import static java.lang.String.valueOf;
-import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import java.lang.management.ManagementFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * JMX MBean implementation of {@link JobMonitorMBean}.
@@ -35,6 +39,10 @@ import static org.easybatch.core.util.Utils.DEFAULT_LIMIT;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JobMonitor implements JobMonitorMBean {
+
+    public static final String JMX_MBEAN_NAME = "org.easybatch.core.monitor:";
+    
+    private static final Logger LOGGER = Logger.getLogger(JobMonitor.class.getName());
 
     /**
      * The batch report holding data exposed as JMX attributes.
@@ -82,8 +90,7 @@ public class JobMonitor implements JobMonitorMBean {
      */
     @Override
     public String getRecordsLimit() {
-        long limit = jobReport.getParameters().getLimit();
-        return limit != DEFAULT_LIMIT ? valueOf(limit) : "N/A";
+        return jobReport.getFormattedLimit();
     }
 
     /**
@@ -153,6 +160,26 @@ public class JobMonitor implements JobMonitorMBean {
     @Override
     public String getJobStatus() {
         return jobReport.getStatus().toString();
+    }
+
+    public static void registerJmxMBean(JobReport jobReport, Job job) {
+        LOGGER.log(Level.INFO, "Registering JMX MBean for job {0}", job.getName());
+        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+        ObjectName name;
+        try {
+            name = new ObjectName(JMX_MBEAN_NAME + "name=" + job.getName() + ",id=" + job.getExecutionId());
+            if (!mbs.isRegistered(name)) {
+                JobMonitor monitor = new JobMonitor(jobReport);
+                mbs.registerMBean(monitor, name);
+                LOGGER.log(Level.INFO, "JMX MBean registered successfully as: {0}", name.getCanonicalName());
+            } else {
+                LOGGER.log(Level.WARNING, "JMX MBean {0} already registered for another job." +
+                                " If you run multiple jobs in parallel and you would like to monitor each of them, make sure they have different names",
+                        name.getCanonicalName());
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Unable to register Easy Batch JMX MBean.", e);
+        }
     }
 
 }

@@ -26,8 +26,7 @@ package org.easybatch.core.job;
 
 import java.util.Properties;
 import java.util.UUID;
-
-import static org.easybatch.core.util.Utils.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Parameters of a job.
@@ -35,6 +34,14 @@ import static org.easybatch.core.util.Utils.*;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JobParameters {
+
+    public static final String DEFAULT_JOB_NAME = "job";
+    
+    public static final Long DEFAULT_LIMIT = Long.MAX_VALUE;
+
+    public static final Long DEFAULT_SKIP = 0L;
+
+    public static final long DEFAULT_TIMEOUT = TimeUnit.MILLISECONDS.convert(31, TimeUnit.DAYS);
 
     private String name;
 

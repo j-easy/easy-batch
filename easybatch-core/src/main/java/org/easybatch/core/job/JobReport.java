@@ -29,7 +29,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static java.lang.String.valueOf;
-import static org.easybatch.core.util.Utils.*;
+import static org.easybatch.core.job.JobParameters.DEFAULT_TIMEOUT;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import static org.easybatch.core.util.Utils.toMinutes;
 
 /**
  * Class holding job reporting data.
@@ -181,7 +183,15 @@ public class JobReport implements Serializable {
     }
 
     public String getFormattedTimeout() {
-        return valueOf(toMinutes(parameters.getTimeout()));
+        return parameters.getTimeout() != DEFAULT_TIMEOUT ? valueOf(toMinutes(parameters.getTimeout())) + "m" : NOT_APPLICABLE;
+    }
+    
+    public String getFormattedLimit() {
+        return parameters.getLimit() != JobParameters.DEFAULT_LIMIT ? valueOf(parameters.getLimit()) : NOT_APPLICABLE;
+    }
+    
+    public String getFormattedResult() {
+        return result != null && result.get() != null ? result.get().toString() : NOT_APPLICABLE;
     }
 
     @Override
@@ -202,8 +212,8 @@ public class JobReport implements Serializable {
         sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(parameters.getExecutionId());
         sb.append(LINE_SEPARATOR).append("\tData source = ").append(parameters.getDataSource());
         sb.append(LINE_SEPARATOR).append("\tSkip = ").append(parameters.getSkip());
-        sb.append(LINE_SEPARATOR).append("\tLimit = ").append(parameters.getLimit() != DEFAULT_LIMIT ? parameters.getLimit() : NOT_APPLICABLE);
-        sb.append(LINE_SEPARATOR).append("\tTimeout = ").append(parameters.getTimeout() != DEFAULT_TIMEOUT ? getFormattedTimeout() + "m" : NOT_APPLICABLE);
+        sb.append(LINE_SEPARATOR).append("\tLimit = ").append(getFormattedLimit());
+        sb.append(LINE_SEPARATOR).append("\tTimeout = ").append(getFormattedTimeout());
         sb.append(LINE_SEPARATOR).append("\tStrict mode = ").append(parameters.isStrictMode());
         sb.append(LINE_SEPARATOR).append("\tSilent mode = ").append(parameters.isSilentMode());
         sb.append(LINE_SEPARATOR).append("\tKeep alive = ").append(parameters.isKeepAlive());
@@ -226,7 +236,7 @@ public class JobReport implements Serializable {
         /*
          * Job result (if any)
          */
-        sb.append(LINE_SEPARATOR).append("Result: ").append(result != null && result.get() != null ? result.get() : NOT_APPLICABLE);
+        sb.append(LINE_SEPARATOR).append("Result: ").append(getFormattedResult());
 
         return sb.toString();
     }

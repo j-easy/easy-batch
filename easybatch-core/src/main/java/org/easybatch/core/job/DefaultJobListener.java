@@ -30,7 +30,9 @@ import org.easybatch.core.util.Utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.easybatch.core.util.Utils.*;
+import static org.easybatch.core.job.JobParameters.DEFAULT_LIMIT;
+import static org.easybatch.core.job.JobParameters.DEFAULT_TIMEOUT;
+import static org.easybatch.core.util.Utils.toMinutes;
 
 /**
  * Job listener that logs and reports job parameters and metrics.

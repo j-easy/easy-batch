@@ -27,12 +27,12 @@ package org.easybatch.core.job;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.listener.PipelineListener;
 import org.easybatch.core.listener.RecordReaderListener;
+import org.easybatch.core.monitor.JobMonitor;
 import org.easybatch.core.processor.ComputationalRecordProcessor;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.reader.RecordReadingException;
 import org.easybatch.core.record.Record;
-import org.easybatch.core.util.Utils;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -155,7 +155,7 @@ final class JobImpl implements Job {
 
     private void setupMonitoring() {
         if (parameters.isJmxMode()) {
-            Utils.registerJmxMBean(report, this);
+            JobMonitor.registerJmxMBean(report, this);
             LOGGER.log(Level.INFO, "Calculating the total number of records");
             Long totalRecords = recordReader.getTotalRecords();
             metrics.setTotalCount(totalRecords);

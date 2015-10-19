@@ -28,6 +28,7 @@ import org.easybatch.core.filter.RecordFilter;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.listener.PipelineListener;
 import org.easybatch.core.listener.RecordReaderListener;
+import org.easybatch.core.monitor.JobMonitor;
 import org.easybatch.core.processor.ComputationalRecordProcessor;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.processor.RecordProcessingException;
@@ -40,7 +41,6 @@ import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
-import org.easybatch.core.util.Utils;
 import org.easybatch.core.validator.RecordValidationException;
 import org.easybatch.core.validator.RecordValidator;
 import org.junit.Before;
@@ -275,7 +275,7 @@ public class JobImplTest {
         job = new JobBuilder().jmxMode(true).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + Utils.DEFAULT_JOB_NAME + ",id=" + job.getExecutionId()))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(JobMonitor.JMX_MBEAN_NAME + "name=" + JobParameters.DEFAULT_JOB_NAME + ",id=" + job.getExecutionId()))).isTrue();
     }
 
     @Test
@@ -284,7 +284,7 @@ public class JobImplTest {
         job = new JobBuilder().jmxMode(true).named(name).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + name + ",id=" + job.getExecutionId()))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(JobMonitor.JMX_MBEAN_NAME + "name=" + name + ",id=" + job.getExecutionId()))).isTrue();
     }
 
     /*
