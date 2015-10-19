@@ -72,7 +72,7 @@ public class JdbcIntegrationTest {
 
         Job job = JobBuilder.aNewJob()
                 .reader(new JdbcRecordReader(connection, query))
-                .mapper(new JdbcRecordMapper<Person>(Person.class, new String[]{"id", "name"}))
+                .mapper(new JdbcRecordMapper(Person.class, new String[]{"id", "name"}))
                 .processor(new RecordCollector<Person>())
                 .build();
 

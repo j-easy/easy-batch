@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class JdbcRecordMapperTest {
 
-    private JdbcRecordMapper<Tweet> tweetMapper;
+    private JdbcRecordMapper tweetMapper;
 
     private JdbcRecord jdbcRecord;
 
@@ -53,7 +53,7 @@ public class JdbcRecordMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        tweetMapper = new JdbcRecordMapper<Tweet>(Tweet.class);
+        tweetMapper = new JdbcRecordMapper(Tweet.class);
         jdbcRecord = new JdbcRecord(header, payload);
     }
 
@@ -68,7 +68,7 @@ public class JdbcRecordMapperTest {
         when(payload.getString(2)).thenReturn("foo");
         when(payload.getString(3)).thenReturn("Hello!");
 
-        Tweet tweet = tweetMapper.processRecord(jdbcRecord);
+        Tweet tweet = (Tweet) tweetMapper.processRecord(jdbcRecord);
 
         assertThat(tweet).isNotNull();
         assertThat(tweet.getId()).isEqualTo(1);
@@ -79,7 +79,7 @@ public class JdbcRecordMapperTest {
     @Test
     public void testMapRecordWithCustomMapping() throws Exception {
 
-        tweetMapper = new JdbcRecordMapper<Tweet>(Tweet.class, new String[] {"id", "user", "message"});
+        tweetMapper = new JdbcRecordMapper(Tweet.class, new String[] {"id", "user", "message"});
 
         when(payload.getMetaData()).thenReturn(metadata);
         when(metadata.getColumnCount()).thenReturn(3);
@@ -90,7 +90,7 @@ public class JdbcRecordMapperTest {
         when(payload.getString(2)).thenReturn("foo");
         when(payload.getString(3)).thenReturn("Hello!");
 
-        Tweet tweet = tweetMapper.processRecord(jdbcRecord);
+        Tweet tweet = (Tweet) tweetMapper.processRecord(jdbcRecord);
 
         assertThat(tweet).isNotNull();
         assertThat(tweet.getId()).isEqualTo(1);

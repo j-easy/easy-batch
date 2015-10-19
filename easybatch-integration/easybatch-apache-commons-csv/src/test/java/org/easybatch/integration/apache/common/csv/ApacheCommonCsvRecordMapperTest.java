@@ -43,14 +43,14 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 @RunWith(MockitoJUnitRunner.class)
 public class ApacheCommonCsvRecordMapperTest {
 
-    private ApacheCommonCsvRecordMapper<Foo> mapper;
+    private ApacheCommonCsvRecordMapper mapper;
 
     @Mock
     private Header header;
 
     @Before
     public void setUp() throws Exception {
-        mapper = new ApacheCommonCsvRecordMapper<Foo>(Foo.class);
+        mapper = new ApacheCommonCsvRecordMapper(Foo.class);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class ApacheCommonCsvRecordMapperTest {
         CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        Foo foo = mapper.processRecord(record);
+        Foo foo = (Foo) mapper.processRecord(record);
 
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo");
@@ -76,7 +76,7 @@ public class ApacheCommonCsvRecordMapperTest {
                 .withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        Foo foo = mapper.processRecord(record);
+        Foo foo = (Foo) mapper.processRecord(record);
 
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo");
@@ -93,7 +93,7 @@ public class ApacheCommonCsvRecordMapperTest {
                 .withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        Foo foo = mapper.processRecord(record);
+        Foo foo = (Foo) mapper.processRecord(record);
 
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo,s");
@@ -110,7 +110,7 @@ public class ApacheCommonCsvRecordMapperTest {
                 .withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        Foo foo = mapper.processRecord(record);
+        Foo foo = (Foo) mapper.processRecord(record);
 
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo" + LINE_SEPARATOR);

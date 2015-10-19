@@ -34,19 +34,19 @@ import org.easybatch.core.mapper.RecordMappingException;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ApacheCommonCsvRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<ApacheCommonCsvRecord, T> {
+public class ApacheCommonCsvRecordMapper extends AbstractRecordMapper implements RecordMapper<ApacheCommonCsvRecord, Object> {
 
     /**
      * Create a {@link ApacheCommonCsvRecordMapper}.
      *
      * @param recordClass the target type class
      */
-    public ApacheCommonCsvRecordMapper(Class<? extends T> recordClass) {
+    public ApacheCommonCsvRecordMapper(Class recordClass) {
         super(recordClass);
     }
 
     @Override
-    public T processRecord(final ApacheCommonCsvRecord record) throws RecordMappingException {
+    public Object processRecord(final ApacheCommonCsvRecord record) throws RecordMappingException {
         CSVRecord csvRecord = record.getPayload();
         return objectMapper.mapObject(csvRecord.toMap());
     }

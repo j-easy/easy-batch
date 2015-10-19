@@ -35,10 +35,9 @@ import java.util.*;
 /**
  * DSV to Object mapper implementation.
  *
- * @param <T> the target domain object type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<StringRecord, T> {
+public class DelimitedRecordMapper extends AbstractRecordMapper implements RecordMapper<StringRecord, Object> {
 
     /**
      * The default delimiter.
@@ -97,9 +96,9 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
      *
      * @param recordClass the target domain object class
      */
-    public DelimitedRecordMapper(final Class<? extends T> recordClass) {
+    public DelimitedRecordMapper(final Class recordClass) {
         super(recordClass);
-        objectMapper = new ObjectMapper<T>(recordClass);
+        objectMapper = new ObjectMapper(recordClass);
     }
 
     /**
@@ -109,7 +108,7 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
      * @param recordClass the target domain object class
      * @param fieldNames  a String array containing target type field names in the same order as in the delimited flat file.
      */
-    public DelimitedRecordMapper(final Class<? extends T> recordClass, final String[] fieldNames) {
+    public DelimitedRecordMapper(final Class recordClass, final String[] fieldNames) {
         this(recordClass);
         this.fieldNames = fieldNames;
         this.recordExpectedLength = fieldNames.length;
@@ -122,7 +121,7 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
      * @param fieldNames           a String array containing target type field names in the same order as in the delimited flat file.
      * @param recordExpectedLength record expected length
      */
-    public DelimitedRecordMapper(final Class<? extends T> recordClass, final String[] fieldNames, final int recordExpectedLength) {
+    public DelimitedRecordMapper(final Class recordClass, final String[] fieldNames, final int recordExpectedLength) {
         this(recordClass, fieldNames);
         this.recordExpectedLength = recordExpectedLength;
     }
@@ -134,7 +133,7 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
      * @param recordClass     the target domain object class
      * @param fieldsPositions array of indexes of fields to retain
      */
-    public DelimitedRecordMapper(final Class<? extends T> recordClass, final Integer[] fieldsPositions) {
+    public DelimitedRecordMapper(final Class recordClass, final Integer[] fieldsPositions) {
         this(recordClass);
         this.fieldsPositions = Arrays.asList(fieldsPositions);
     }
@@ -147,7 +146,7 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
      * @param fieldsPositions array of indexes of fields to retain
      * @param fieldNames      a String array representing fields name in the same order in the DSV flat file.
      */
-    public DelimitedRecordMapper(final Class<? extends T> recordClass, final Integer[] fieldsPositions, final String[] fieldNames) {
+    public DelimitedRecordMapper(final Class recordClass, final Integer[] fieldsPositions, final String[] fieldNames) {
         this(recordClass);
         this.fieldNames = fieldNames;
         this.fieldsPositions = Arrays.asList(fieldsPositions);
@@ -161,14 +160,13 @@ public class DelimitedRecordMapper<T> extends AbstractRecordMapper<T> implements
      * @param fieldNames           a String array representing fields name in the same order in the DSV flat file.
      * @param recordExpectedLength record expected length
      */
-    public DelimitedRecordMapper(final Class<? extends T> recordClass, final Integer[] fieldsPositions, final String[] fieldNames, final int recordExpectedLength) {
+    public DelimitedRecordMapper(final Class recordClass, final Integer[] fieldsPositions, final String[] fieldNames, final int recordExpectedLength) {
         this(recordClass, fieldsPositions, fieldNames);
         this.recordExpectedLength = recordExpectedLength;
     }
 
     @Override
-    public T processRecord(final StringRecord record) throws RecordMappingException {
-
+    public Object processRecord(final StringRecord record) throws RecordMappingException {
         FlatFileRecord flatFileRecord = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<String, String>();
         int index = 0;

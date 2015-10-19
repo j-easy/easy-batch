@@ -36,10 +36,9 @@ import java.util.Map;
 /**
  * Fixed Length Record to Object mapper implementation.
  *
- * @param <T> the target domain object type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class FixedLengthRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<StringRecord, T> {
+public class FixedLengthRecordMapper extends AbstractRecordMapper implements RecordMapper<StringRecord, Object> {
 
     /**
      * Fields length array.
@@ -68,11 +67,11 @@ public class FixedLengthRecordMapper<T> extends AbstractRecordMapper<T> implemen
      * @param fieldsLength an array of fields length in the same order in the FLR flat file.
      * @param fieldNames   a String array representing fields name in the same order in the FLR flat file.
      */
-    public FixedLengthRecordMapper(Class<? extends T> recordClass, int[] fieldsLength, String[] fieldNames) {
+    public FixedLengthRecordMapper(Class recordClass, int[] fieldsLength, String[] fieldNames) {
         super(recordClass);
         this.fieldsLength = fieldsLength.clone();
         this.fieldNames = fieldNames.clone();
-        objectMapper = new ObjectMapper<T>(recordClass);
+        objectMapper = new ObjectMapper(recordClass);
         for (int fieldLength : fieldsLength) {
             recordExpectedLength += fieldLength;
         }
@@ -80,7 +79,7 @@ public class FixedLengthRecordMapper<T> extends AbstractRecordMapper<T> implemen
     }
 
     @Override
-    public T processRecord(final StringRecord record) throws RecordMappingException {
+    public Object processRecord(final StringRecord record) throws RecordMappingException {
 
         FlatFileRecord flatFileRecord = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<String, String>();

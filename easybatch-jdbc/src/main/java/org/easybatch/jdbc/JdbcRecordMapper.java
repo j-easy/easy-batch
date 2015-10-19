@@ -36,10 +36,9 @@ import java.util.Map;
 /**
  * A {@link RecordMapper} that maps database rows to domain objects.
  *
- * @param <T> the target domain object type.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JdbcRecordMapper<T> extends AbstractRecordMapper<T> implements RecordMapper<JdbcRecord, T> {
+public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapper<JdbcRecord, Object> {
 
     /**
      * Field names used for custom column mapping.
@@ -52,7 +51,7 @@ public class JdbcRecordMapper<T> extends AbstractRecordMapper<T> implements Reco
      *
      * @param recordClass the target domain object class
      */
-    public JdbcRecordMapper(final Class<? extends T> recordClass) {
+    public JdbcRecordMapper(final Class recordClass) {
         super(recordClass);
     }
 
@@ -62,13 +61,13 @@ public class JdbcRecordMapper<T> extends AbstractRecordMapper<T> implements Reco
      * @param recordClass the target domain object class
      * @param fields      the list of fields names
      */
-    public JdbcRecordMapper(final Class<? extends T> recordClass, String[] fields) {
+    public JdbcRecordMapper(final Class recordClass, String[] fields) {
         this(recordClass);
         this.fields = fields;
     }
 
     @Override
-    public T processRecord(final JdbcRecord record) throws RecordMappingException {
+    public Object processRecord(final JdbcRecord record) throws RecordMappingException {
 
         ResultSet resultSet = record.getPayload();
 

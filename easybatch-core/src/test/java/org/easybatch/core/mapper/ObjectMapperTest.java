@@ -42,7 +42,7 @@ public class ObjectMapperTest {
     @Test
     public void whenValuesAreValid_ThenTheMappedObjectShouldBeCorrectlyPopulated() throws Exception {
 
-        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class);
+        ObjectMapper mapper = new ObjectMapper(Person.class);
 
         // input values
         Map<String, String> values = new HashMap<String, String>();
@@ -52,7 +52,7 @@ public class ObjectMapperTest {
         values.put("birthDate", "1990-12-12");
         values.put("married", "true");
 
-        Person person = mapper.mapObject(values);
+        Person person = (Person) mapper.mapObject(values);
 
         // person bean must be not null
         assertThat(person).isNotNull();
@@ -68,7 +68,7 @@ public class ObjectMapperTest {
     @Test
     public void whenValuesAreValid_ThenInheritedFieldsOfTheMappedObjectShouldBeCorrectlyPopulated() throws Exception {
 
-        ObjectMapper<ExtendedPerson> mapper = new ObjectMapper<ExtendedPerson>(ExtendedPerson.class);
+        ObjectMapper mapper = new ObjectMapper(ExtendedPerson.class);
 
         // input values
         Map<String, String> values = new HashMap<String, String>();
@@ -80,7 +80,7 @@ public class ObjectMapperTest {
         values.put("nickName", "FB");
 
         // map record to extended person bean
-        ExtendedPerson extendedPerson = mapper.mapObject(values);
+        ExtendedPerson extendedPerson = (ExtendedPerson) mapper.mapObject(values);
 
         // extended person bean must be not null
         assertThat(extendedPerson).isNotNull();
@@ -97,7 +97,7 @@ public class ObjectMapperTest {
     @Test
     public void whenACustomTypeConverterIsRegistered_ThenItShouldBeUsedToConvertTheCustomType() throws Exception {
 
-        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class);
+        ObjectMapper mapper = new ObjectMapper(Person.class);
         mapper.registerTypeConverter(new TypeConverter<String, Gender>() {
             @Override
             public Gender convert(String value) {
@@ -108,7 +108,7 @@ public class ObjectMapperTest {
         Map<String, String> values = new HashMap<String, String>();
         values.put("gender", "MALE");
 
-        Person person = mapper.mapObject(values);
+        Person person = (Person) mapper.mapObject(values);
 
         assertThat(person.getGender()).isNotNull().isEqualTo(Gender.MALE);
     }
@@ -116,13 +116,13 @@ public class ObjectMapperTest {
     @Test
     public void whenASetterDoesNotExist_ThenShouldLogAWarning() throws Exception {
 
-        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class);
+        ObjectMapper mapper = new ObjectMapper(Person.class);
 
         Map<String, String> values = new HashMap<String, String>();
         values.put("nickName", "foo");
 
         try {
-            Person person = mapper.mapObject(values);
+            Person person = (Person) mapper.mapObject(values);
             assertThat(person).isNotNull();
         } catch (Exception e) {
             fail("Should not throw an exception even if the setter does not exist");
@@ -132,12 +132,12 @@ public class ObjectMapperTest {
     @Test
     public void whenAttemptingToSetANullValue_ThenShouldNotCallTheSetter() throws Exception {
 
-        ObjectMapper<Person> mapper = new ObjectMapper<Person>(Person.class);
+        ObjectMapper mapper = new ObjectMapper(Person.class);
 
         Map<String, String> values = new HashMap<String, String>();
         values.put("age", null);
 
-        Person person = mapper.mapObject(values);
+        Person person = (Person) mapper.mapObject(values);
         assertThat(person).isNotNull();
         assertThat(person.getAge()).isEqualTo(0);
     }

@@ -46,7 +46,7 @@ public class DelimitedRecordMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class,
+        delimitedRecordMapper = new DelimitedRecordMapper(Person.class,
                 new String[]{"firstName", "lastName", "age", "birthDate", "married"});
 
         when(record.getPayload()).thenReturn("foo,bar,30,1990-12-12,true");
@@ -134,7 +134,7 @@ public class DelimitedRecordMapperTest {
 
     @Test
     public void testFieldSubsetMapping() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class,
+        delimitedRecordMapper = new DelimitedRecordMapper(Person.class,
                 new Integer[]{0, 4},
                 new String[]{"firstName", "married"}
         );
@@ -163,7 +163,7 @@ public class DelimitedRecordMapperTest {
 
     @Test
     public void testFieldNamesConventionOverConfiguration() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class);
+        delimitedRecordMapper = new DelimitedRecordMapper(Person.class);
 
         delimitedRecordMapper.parseRecord(headerRecord);
         Person person = (Person) delimitedRecordMapper.processRecord(record);
@@ -177,7 +177,7 @@ public class DelimitedRecordMapperTest {
 
     @Test
     public void testFieldSubsetMappingWithConventionOverConfiguration() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class, new Integer[]{0, 4});
+        delimitedRecordMapper = new DelimitedRecordMapper(Person.class, new Integer[]{0, 4});
         delimitedRecordMapper.parseRecord(headerRecord);
         Person person = (Person) delimitedRecordMapper.processRecord(record);
 

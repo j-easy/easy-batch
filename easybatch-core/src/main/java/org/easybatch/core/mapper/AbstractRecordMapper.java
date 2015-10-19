@@ -31,15 +31,15 @@ import org.easybatch.core.converter.TypeConverter;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public abstract class AbstractRecordMapper<T> {
+public abstract class AbstractRecordMapper {
     
     /**
      * The object mapper.
      */
-    protected ObjectMapper<T> objectMapper;
+    protected ObjectMapper objectMapper;
 
-    public AbstractRecordMapper(Class<? extends T> recordClass) {
-        this.objectMapper = new ObjectMapper<T>(recordClass);
+    public AbstractRecordMapper(Class recordClass) {
+        this.objectMapper = new ObjectMapper(recordClass);
     }
 
     /**
