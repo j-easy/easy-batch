@@ -25,6 +25,8 @@
 package org.easybatch.core.job;
 
 import org.easybatch.core.listener.JobListener;
+import org.easybatch.core.processor.ComputationalRecordProcessor;
+import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.util.Utils;
 
 import java.util.logging.Level;
@@ -45,8 +47,11 @@ class DefaultJobListener implements JobListener {
 
     private JobReport jobReport;
 
-    DefaultJobListener(JobReport jobReport) {
+    private Pipeline pipeline;
+
+    DefaultJobListener(JobReport jobReport, Pipeline pipeline) {
         this.jobReport = jobReport;
+        this.pipeline = pipeline;
     }
 
     @Override
@@ -81,6 +86,13 @@ class DefaultJobListener implements JobListener {
         jobReport.getMetrics().setEndTime(System.currentTimeMillis());
         if (!jobReport.getStatus().equals(JobStatus.ABORTED)) {
             jobReport.setStatus(JobStatus.FINISHED);
+        }
+        // The job result is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
+        RecordProcessor lastRecordProcessor = pipeline.getLastProcessor();
+        if (lastRecordProcessor instanceof ComputationalRecordProcessor) {
+            ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor) lastRecordProcessor;
+            Object jobResult = computationalRecordProcessor.getComputationResult();
+            jobReport.setJobResult(new JobResult(jobResult));
         }
     }
 }

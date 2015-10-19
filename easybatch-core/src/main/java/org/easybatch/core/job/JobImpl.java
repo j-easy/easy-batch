@@ -27,7 +27,6 @@ package org.easybatch.core.job;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.listener.PipelineListener;
 import org.easybatch.core.listener.RecordReaderListener;
-import org.easybatch.core.processor.ComputationalRecordProcessor;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.reader.RecordReadingException;
@@ -64,11 +63,11 @@ final class JobImpl implements Job {
         this.report = new JobReport();
         this.parameters = report.getParameters();
         this.metrics = report.getMetrics();
+        this.pipeline = new Pipeline(new ArrayList<RecordProcessor>(), eventManager);
         this.eventManager.addPipelineListener(new DefaultPipelineListener(report));
         this.eventManager.addRecordReaderListener(new DefaultRecordReaderListener(report));
-        this.eventManager.addJobListener(new DefaultJobListener(report));
+        this.eventManager.addJobListener(new DefaultJobListener(report, pipeline));
         this.eventManager.addJobListener(new MonitoringSetupListener(this, report, recordReader));
-        this.pipeline = new Pipeline(new ArrayList<RecordProcessor>(), eventManager);
     }
 
     @Override
@@ -137,7 +136,7 @@ final class JobImpl implements Job {
                 }
             }
 
-            tearDownJob(processedRecordsNumber);
+            metrics.setTotalCount(processedRecordsNumber);
 
         } finally {
             closeRecordReader();
@@ -184,17 +183,6 @@ final class JobImpl implements Job {
             }
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Unable to close the record reader", e);
-        }
-    }
-
-    private void tearDownJob(long processedRecordsNumber) {
-        metrics.setTotalCount(processedRecordsNumber);
-        // The job result (if any) is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
-        RecordProcessor lastRecordProcessor = pipeline.getLastProcessor();
-        if (lastRecordProcessor instanceof ComputationalRecordProcessor) {
-            ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor) lastRecordProcessor;
-            Object jobResult = computationalRecordProcessor.getComputationResult();
-            report.setJobResult(new JobResult(jobResult));
         }
     }
 
