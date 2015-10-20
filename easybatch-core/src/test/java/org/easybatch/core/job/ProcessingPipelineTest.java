@@ -36,6 +36,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -70,9 +71,11 @@ public class ProcessingPipelineTest {
         when(recordProcessor1.processRecord(preProcessedRecord)).thenReturn(processedRecord);
         when(recordProcessor2.processRecord(processedRecord)).thenReturn(secondlyProcessedRecord);
 
-        boolean processingError = processingPipeline.process(record);
-
-        assertThat(processingError).isFalse();
+        try {
+            processingPipeline.process(record);
+        } catch (RecordProcessingException e) {
+            fail("Should not throw an exception");
+        }
 
         InOrder inOrder = inOrder(eventManager, recordProcessor1, recordProcessor2);
 
@@ -82,14 +85,12 @@ public class ProcessingPipelineTest {
         inOrder.verify(eventManager).fireAfterRecordProcessing(record, secondlyProcessedRecord);
     }
 
-    @Test
+    @Test(expected = RecordProcessingException.class)
     @SuppressWarnings("unchecked")
     public void testProcessWithException() throws Exception {
         when(recordProcessor1.processRecord(preProcessedRecord)).thenThrow(exception);
 
-        boolean processingError = processingPipeline.process(record);
-
-        assertThat(processingError).isTrue();
+        processingPipeline.process(record);
 
         InOrder inOrder = inOrder(eventManager, recordProcessor1, recordProcessor2);
 

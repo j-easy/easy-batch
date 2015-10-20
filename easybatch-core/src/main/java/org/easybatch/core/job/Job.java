@@ -44,5 +44,11 @@ public interface Job extends Callable<JobReport> {
      * @return the job execution id
      */
     String getExecutionId();
-    
+
+    /**
+     * Execute the job.
+     * @return execution report
+     */
+    @Override
+    JobReport call();
 }

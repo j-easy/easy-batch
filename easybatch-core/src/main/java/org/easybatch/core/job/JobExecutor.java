@@ -36,13 +36,8 @@ public class JobExecutor {
      *
      * @param job the job to execute
      * @return the job execution report
-     * @throws JobException thrown if an error occurs during job execution
      */
-    public static JobReport execute(Job job) throws JobException {
-        try {
-            return job.call();
-        } catch (Exception e) {
-            throw new JobException("An exception occurred during the execution of job " + job, e);
-        }
+    public static JobReport execute(Job job) {
+        return job.call();
     }
 }

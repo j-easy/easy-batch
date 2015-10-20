@@ -46,8 +46,8 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
  * <li>The total success records is the sum of total success records</li>
  * <li>The final job result is a list of all job results</li>
  * <li>The final data source name is the concatenation (one per line) of data sources names</li>
- * <li>The final status is {@link JobStatus#FINISHED} (if all partials are finished)
- * or {@link JobStatus#ABORTED} (if one of partials is aborted).</li>
+ * <li>The final status is {@link JobStatus#COMPLETED} (if all partials are completed)
+ * or {@link JobStatus#ABORTED} (if one of partials has been aborted) or {@link JobStatus#FAILED} (if one of partials has failed).</li>
  * </ul>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -70,7 +70,7 @@ public class DefaultJobReportMerger implements JobReportMerger {
         long totalRecords = 0;
 
         JobReport finalJobReport = new JobReport();
-        finalJobReport.setStatus(JobStatus.FINISHED);
+        finalJobReport.setStatus(JobStatus.COMPLETED);
 
         for (JobReport jobReport : jobReports) {
             startTimes.add(jobReport.getMetrics().getStartTime());
@@ -115,6 +115,9 @@ public class DefaultJobReportMerger implements JobReportMerger {
     private void setStatus(JobReport finalJobReport, JobReport jobReport) {
         if (JobStatus.ABORTED.equals(jobReport.getStatus())) {
             finalJobReport.setStatus(JobStatus.ABORTED);
+        }
+        if (JobStatus.FAILED.equals(jobReport.getStatus())) {
+            finalJobReport.setStatus(JobStatus.FAILED);
         }
     }
 

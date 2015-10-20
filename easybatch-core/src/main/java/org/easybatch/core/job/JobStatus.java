@@ -25,29 +25,34 @@
 package org.easybatch.core.job;
 
 /**
- * Enumeration of job status.
+ * Enumeration of job status values.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public enum JobStatus {
 
     /**
-     * The job is initializing the data source.
+     * The job is starting (opening the data source reader).
      */
-    INITIALIZING,
+    STARTING,
 
     /**
-     * The job is running.
+     * The job is started.
      */
-    RUNNING,
-
+    STARTED,
+    
     /**
-     * The job has been aborted (problem with reading data source).
+     * The job has ended due to an unresolved exception.
+     */
+    FAILED,
+    
+    /**
+     * The job has been aborted (due to timeout or strict mode).
      */
     ABORTED,
 
     /**
-     * The jos is finished.
+     * The job has ended normally.
      */
-    FINISHED
+    COMPLETED
 }

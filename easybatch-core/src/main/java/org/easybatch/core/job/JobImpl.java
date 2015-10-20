@@ -27,6 +27,7 @@ package org.easybatch.core.job;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.listener.PipelineListener;
 import org.easybatch.core.listener.RecordReaderListener;
+import org.easybatch.core.processor.RecordProcessingException;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.reader.RecordReadingException;
@@ -93,8 +94,8 @@ final class JobImpl implements Job {
         eventManager.fireBeforeJobStart(parameters);
 
         try {
-            long processedRecordsNumber = 0;
-            while (recordReader.hasNextRecord() && processedRecordsNumber < parameters.getLimit()) {
+            long recordCount = 0;
+            while (recordReader.hasNextRecord() && recordCount < parameters.getLimit()) {
 
                 //Abort job if timeout is exceeded
                 if (timedOut) {
@@ -106,37 +107,47 @@ final class JobImpl implements Job {
                 Record currentRecord;
                 try {
                     currentRecord = readNextRecord();
-                    if (currentRecord == null) {
-                        return report;
-                    }
-                    processedRecordsNumber++;
+                    recordCount++;
                 } catch (RecordReadingException e) {
                     eventManager.fireOnRecordReadingException(e);
                     return report;
                 }
 
                 //Skip records if any
-                if (processedRecordsNumber <= parameters.getSkip()) {
-                    metrics.incrementSkippedCount();
+                if (shouldSkipRecord(recordCount)) {
                     continue;
                 }
-                
+
                 //Process record
-                boolean processingError = pipeline.process(currentRecord);
-                if (processingError && parameters.isStrictMode()) {
-                    LOGGER.info("Strict mode enabled: aborting execution");
-                    report.setStatus(JobStatus.ABORTED);
-                    break;
+                try {
+                    pipeline.process(currentRecord);
+                } catch (RecordProcessingException e) {
+                    if (parameters.isStrictMode()) {
+                        LOGGER.info("Strict mode enabled: aborting execution");
+                        report.setStatus(JobStatus.ABORTED);
+                        break;
+                    }
                 }
             }
-            metrics.setTotalCount(processedRecordsNumber);
+            metrics.setTotalCount(recordCount);
 
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "A unexpected error occurred", e);
+            report.setStatus(JobStatus.FAILED);
         } finally {
             closeRecordReader();
             eventManager.fireAfterJobEnd(report);
         }
         return report;
 
+    }
+
+    private boolean shouldSkipRecord(long recordCount) {
+        if (recordCount <= parameters.getSkip()) {
+            metrics.incrementSkippedCount();
+            return true;
+        }
+        return false;
     }
 
     private boolean openRecordReader() {
@@ -146,7 +157,7 @@ final class JobImpl implements Job {
             parameters.setDataSource(dataSourceName);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unable to open the record reader", e);
-            report.setStatus(JobStatus.ABORTED);
+            report.setStatus(JobStatus.FAILED);
             metrics.setEndTime(System.currentTimeMillis());
             return false;
         }
@@ -154,18 +165,14 @@ final class JobImpl implements Job {
     }
 
     private Record readNextRecord() throws RecordReadingException {
-        try {
-            eventManager.fireBeforeRecordReading();
-            Record nextRecord = recordReader.readNextRecord();
-            eventManager.fireAfterRecordReading(nextRecord);
-            return nextRecord;
-        } catch (Exception e) {
-            throw new RecordReadingException("Unable to read next record", e);
-        }
+        eventManager.fireBeforeRecordReading();
+        Record nextRecord = recordReader.readNextRecord();
+        eventManager.fireAfterRecordReading(nextRecord);
+        return nextRecord;
     }
 
     private void closeRecordReader() {
-        LOGGER.info("Finalizing the job");
+        LOGGER.log(Level.INFO, "Stopping job ''{0}''", parameters.getName());
         try {
             if (!parameters.isKeepAlive()) {
                 recordReader.close();
@@ -199,11 +206,11 @@ final class JobImpl implements Job {
         eventManager.addPipelineListener(pipelineListener);
     }
 
-    public JobReport getJobReport() {
+    JobReport getJobReport() {
         return report;
     }
 
-    public void setTimedOut(boolean timedOut) {
+    void setTimedOut(boolean timedOut) {
         this.timedOut = timedOut;
     }
 

@@ -194,7 +194,7 @@ public class XmlIntegrationTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
     }
 

@@ -156,7 +156,7 @@ public class JsonIntegrationTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
 
         List<JsonRecord> records = (List<JsonRecord>) jobReport.getResult();
@@ -174,7 +174,7 @@ public class JsonIntegrationTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(3);
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
     }
 

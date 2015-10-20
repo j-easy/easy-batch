@@ -56,7 +56,7 @@ public class HtmlJobReportFormatterTest {
         jobReportFormatter = new HtmlJobReportFormatter();
         jobReport = new JobReport();
 
-        jobReport.setStatus(JobStatus.FINISHED);
+        jobReport.setStatus(JobStatus.COMPLETED);
 
         jobReport.getParameters().setDataSource("In-Memory String");
         jobReport.getParameters().setLimit(8L);

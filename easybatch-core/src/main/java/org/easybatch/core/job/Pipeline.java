@@ -24,6 +24,7 @@
 
 package org.easybatch.core.job;
 
+import org.easybatch.core.processor.RecordProcessingException;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.record.Record;
 
@@ -46,22 +47,20 @@ final class Pipeline {
     }
 
     @SuppressWarnings({"unchecked"})
-    public boolean process(final Record currentRecord) {
-        boolean processingError = false;
+    public void process(final Record currentRecord) throws RecordProcessingException {
         try {
             Object recordToProcess = eventManager.fireBeforeRecordProcessing(currentRecord);
             for (RecordProcessor processor : processors) {
                 recordToProcess = processor.processRecord(recordToProcess);
                 if (recordToProcess == null) {
-                    break;
+                    break; // filter record
                 }
             }
             eventManager.fireAfterRecordProcessing(currentRecord, recordToProcess);
         } catch (Exception e) {
-            processingError = true;
             eventManager.fireOnRecordProcessingException(currentRecord, e);
+            throw new RecordProcessingException(e);
         }
-        return processingError;
     }
 
     public RecordProcessor getLastProcessor() {

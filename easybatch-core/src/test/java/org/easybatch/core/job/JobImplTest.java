@@ -145,8 +145,7 @@ public class JobImplTest {
     public void recordReaderShouldBeClosedAtTheEndOfExecution() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true, false);
         when(reader.readNextRecord()).thenReturn(record1);
-        job = new JobBuilder().reader(reader).build();
-
+        
         job.call();
 
         verify(reader, times(2)).hasNextRecord();
@@ -166,11 +165,8 @@ public class JobImplTest {
     }
 
     @Test
-    public void whenNotAbleToOpenReader_ThenTheJobShouldBeAborted() throws Exception {
+    public void whenNotAbleToOpenReader_ThenTheJobShouldBeFailed() throws Exception {
         doThrow(recordReaderOpeningException).when(reader).open();
-        job = new JobBuilder()
-                .reader(reader)
-                .build();
 
         JobReport jobReport = job.call();
 
@@ -179,17 +175,13 @@ public class JobImplTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getTotalCount()).isNull();
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.ABORTED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
     }
 
     @Test
-    public void whenNotAbleToReadNextRecord_ThenTheJobShouldBeAborted() throws Exception {
+    public void whenNotAbleToReadNextRecord_ThenTheJobShouldBeFailed() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true);
         when(reader.readNextRecord()).thenThrow(recordReadingException);
-
-        job = new JobBuilder()
-                .reader(reader)
-                .build();
 
         JobReport jobReport = job.call();
 
@@ -197,7 +189,7 @@ public class JobImplTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getTotalCount()).isNull();
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.ABORTED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
     }
 
     @Test
@@ -220,7 +212,7 @@ public class JobImplTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
     }
 
     @Test
@@ -251,21 +243,24 @@ public class JobImplTest {
         when(reader.readNextRecord()).thenReturn(record1);
         when(firstProcessor.processRecord(record1)).thenReturn(null);
 
-        JobReport jobReport = new JobBuilder()
-                .reader(reader)
-                .processor(firstProcessor)
-                .processor(secondProcessor)
-                .call();
+        JobReport jobReport = job.call();
 
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(1);
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         verify(firstProcessor).processRecord(record1);
         verify(secondProcessor, never()).processRecord(record1);
     }
 
+    @Test
+    public void whenARuntimeExceptionIsThrown_thenTheJobShouldFail() {
+        when(reader.hasNextRecord()).thenThrow(new RuntimeException());
+        JobReport jobReport = job.call();
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+    }
+    
     /*
      * JMX tests
      */

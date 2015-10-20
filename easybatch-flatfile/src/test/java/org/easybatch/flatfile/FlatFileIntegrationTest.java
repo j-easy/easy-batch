@@ -39,7 +39,7 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
         List<Person> persons = (List<Person>) jobReport.getResult();
@@ -65,7 +65,7 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
         List<Person> persons = (List<Person>) jobReport.getResult();
@@ -95,7 +95,7 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
 
         List<Person> persons = (List<Person>) jobReport.getResult();
@@ -121,7 +121,7 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
 
         List<Person> persons = (List<Person>) jobReport.getResult();
@@ -200,7 +200,7 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
         List<Person> persons = (List<Person>) jobReport.getResult();

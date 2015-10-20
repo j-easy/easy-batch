@@ -44,38 +44,21 @@ class DefaultRecordReaderListener implements RecordReaderListener {
     DefaultRecordReaderListener(JobReport jobReport) {
         this.jobReport = jobReport;
     }
-
-    /**
-     * Called before each record read operation.
-     */
+    
     @Override
     public void beforeRecordReading() {
-
+        //no-op
     }
-
-    /**
-     * Called after each record read operation.
-     *
-     * @param record The record that has been read.
-     */
+    
     @Override
     public void afterRecordReading(Record record) {
-        if (record == null) {
-            LOGGER.log(Level.SEVERE, "The record reader returned null for next record, aborting execution");
-            jobReport.setStatus(JobStatus.ABORTED);
-            jobReport.getMetrics().setEndTime(System.currentTimeMillis());
-        }
+        //no-op
     }
 
-    /**
-     * Called when an exception occurs during record reading.
-     *
-     * @param throwable the throwable thrown during record reading
-     */
     @Override
     public void onRecordReadingException(Throwable throwable) {
-        LOGGER.log(Level.SEVERE, "An exception occurred while reading next record, aborting execution", throwable);
-        jobReport.setStatus(JobStatus.ABORTED);
+        LOGGER.log(Level.SEVERE, "Unable to read next record", throwable);
+        jobReport.setStatus(JobStatus.FAILED);
         jobReport.getMetrics().setEndTime(System.currentTimeMillis());
     }
 }

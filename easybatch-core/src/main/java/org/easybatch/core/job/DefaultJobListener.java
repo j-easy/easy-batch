@@ -62,9 +62,9 @@ class DefaultJobListener implements JobListener {
         String dataSource = jobParameters.getDataSource();
         long limit = jobParameters.getLimit();
         long timeout = jobParameters.getTimeout();
+        String jobName = jobParameters.getName();
 
-        LOGGER.info("Initializing the job");
-        LOGGER.log(Level.INFO, "Job name: {0}", jobParameters.getName());
+        LOGGER.log(Level.INFO, "Starting job ''{0}''", jobName);
         LOGGER.log(Level.INFO, "Execution id: {0}", jobParameters.getExecutionId());
         LOGGER.log(Level.INFO, "Data source: {0}", dataSource != null ? dataSource : "N/A");
         LOGGER.log(Level.INFO, "Skip: {0}", jobParameters.getSkip());
@@ -74,18 +74,18 @@ class DefaultJobListener implements JobListener {
         LOGGER.log(Level.INFO, "Silent mode: {0}", jobParameters.isSilentMode());
         LOGGER.log(Level.INFO, "Keep alive: {0}", jobParameters.isKeepAlive());
         LOGGER.log(Level.INFO, "Jmx mode: {0}", jobParameters.isJmxMode());
-        LOGGER.info("The job is running");
+        LOGGER.log(Level.INFO, "Job ''{0}'' started", jobName);
 
         jobReport.getMetrics().setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
-        jobReport.setStatus(JobStatus.RUNNING);
+        jobReport.setStatus(JobStatus.STARTED);
 
     }
 
     @Override
     public void afterJobEnd(JobReport jobReport) {
         jobReport.getMetrics().setEndTime(System.currentTimeMillis());
-        if (!jobReport.getStatus().equals(JobStatus.ABORTED)) {
-            jobReport.setStatus(JobStatus.FINISHED);
+        if (!jobReport.getStatus().equals(JobStatus.ABORTED) && !jobReport.getStatus().equals(JobStatus.FAILED)) {
+            jobReport.setStatus(JobStatus.COMPLETED);
         }
         // The job result is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
         RecordProcessor lastRecordProcessor = pipeline.getLastProcessor();
@@ -94,5 +94,6 @@ class DefaultJobListener implements JobListener {
             Object jobResult = computationalRecordProcessor.getComputationResult();
             jobReport.setJobResult(new JobResult(jobResult));
         }
+        LOGGER.log(Level.SEVERE, "Job ''{0}'' finished with exit status: {1}", new Object[]{jobReport.getParameters().getName(), jobReport.getStatus()});
     }
 }

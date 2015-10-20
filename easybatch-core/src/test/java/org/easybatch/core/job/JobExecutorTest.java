@@ -30,25 +30,15 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JobExecutorTest {
 
     @Mock
     private Job job;
-    @Mock
-    private Exception exception;
 
     @Test
-    public void execute_whenNoException() throws Exception {
-        JobExecutor.execute(job);
-        verify(job).call();
-    }
-
-    @Test(expected = JobException.class)
-    public void execute_whenException() throws Exception {
-        when(job.call()).thenThrow(exception);
+    public void execute() {
         JobExecutor.execute(job);
         verify(job).call();
     }

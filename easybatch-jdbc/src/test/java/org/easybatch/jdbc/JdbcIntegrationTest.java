@@ -83,7 +83,7 @@ public class JdbcIntegrationTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FINISHED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getParameters().getDataSource()).isEqualTo(DATA_SOURCE_NAME);
 
         List<Person> persons = (List<Person>) jobReport.getResult();

@@ -54,7 +54,7 @@ public class JobReport implements Serializable {
     public JobReport() {
         this.parameters = new JobParameters();
         this.metrics = new JobMetrics();
-        this.status = JobStatus.INITIALIZING;
+        this.status = JobStatus.STARTING;
     }
 
     public JobParameters getParameters() {
