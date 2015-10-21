@@ -58,7 +58,7 @@ public class JobFactoryBean implements FactoryBean {
 
         registerMainComponents(jobBuilder);
 
-        registerCustomEventListeners(jobBuilder);
+        registerCustomListeners(jobBuilder);
 
         return jobBuilder.build();
     }
@@ -74,22 +74,22 @@ public class JobFactoryBean implements FactoryBean {
         }
     }
 
-    private void registerCustomEventListeners(JobBuilder jobBuilder) {
+    private void registerCustomListeners(JobBuilder jobBuilder) {
         if (jobListeners != null) {
             for (JobListener jobListener : jobListeners) {
-                jobBuilder.jobEventListener(jobListener);
+                jobBuilder.jobListener(jobListener);
             }
         }
 
         if (recordReaderListeners != null) {
             for (RecordReaderListener recordReaderListener : recordReaderListeners) {
-                jobBuilder.readerEventListener(recordReaderListener);
+                jobBuilder.readerListener(recordReaderListener);
             }
         }
 
         if (pipelineListeners != null) {
             for (PipelineListener pipelineListener : pipelineListeners) {
-                jobBuilder.pipelineEventListener(pipelineListener);
+                jobBuilder.pipelineListener(pipelineListener);
             }
         }
         

@@ -34,7 +34,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * Writes entities to a database using Hibernate.
  *
  * This writer does not commit a transaction after writing entities.
- * You can use a {@link HibernateTransactionPipelineListener} for this purpose.
+ * You can use a {@link HibernateTransactionListener} for this purpose.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

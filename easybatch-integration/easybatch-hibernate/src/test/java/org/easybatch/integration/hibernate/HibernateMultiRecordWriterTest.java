@@ -71,8 +71,8 @@ public class HibernateMultiRecordWriterTest {
                 .reader(new IterableMultiRecordReader<Tweet>(tweets, chunkSize))
                 .mapper(new GenericMultiRecordMapper<Tweet>())
                 .writer(new HibernateMultiRecordWriter<Tweet>(session))
-                .pipelineEventListener(new HibernateTransactionPipelineListener(session))
-                .jobEventListener(new HibernateSessionJobListener(session))
+                .pipelineListener(new HibernateTransactionListener(session))
+                .jobListener(new HibernateSessionListener(session))
                 .call();
 
         assertThat(jobReport).isNotNull();

@@ -56,52 +56,52 @@ class EventManager {
     }
 
     public void fireBeforeJobStart(JobParameters jobParameters) {
-        for (JobListener eventListener : jobListeners) {
-            eventListener.beforeJobStart(jobParameters);
+        for (JobListener jobListener : jobListeners) {
+            jobListener.beforeJobStart(jobParameters);
         }
     }
 
     public void fireAfterJobEnd(JobReport jobReport) {
-        for (JobListener eventListener : jobListeners) {
-            eventListener.afterJobEnd(jobReport);
+        for (JobListener jobListener : jobListeners) {
+            jobListener.afterJobEnd(jobReport);
         }
     }
 
     public void fireBeforeRecordReading() {
-        for (RecordReaderListener eventListener : recordReaderListeners) {
-            eventListener.beforeRecordReading();
+        for (RecordReaderListener recordReaderListener : recordReaderListeners) {
+            recordReaderListener.beforeRecordReading();
         }
     }
 
     public void fireAfterRecordReading(Record record) {
-        for (RecordReaderListener eventListener : recordReaderListeners) {
-            eventListener.afterRecordReading(record);
+        for (RecordReaderListener recordReaderListener : recordReaderListeners) {
+            recordReaderListener.afterRecordReading(record);
         }
     }
 
     public void fireOnRecordReadingException(Throwable throwable) {
-        for (RecordReaderListener eventListener : recordReaderListeners) {
-            eventListener.onRecordReadingException(throwable);
+        for (RecordReaderListener recordReaderListener : recordReaderListeners) {
+            recordReaderListener.onRecordReadingException(throwable);
         }
     }
 
     public Object fireBeforeRecordProcessing(Record record) {
         Object recordToProcess = record;
-        for (PipelineListener eventListener : pipelineListeners) {
-            recordToProcess = eventListener.beforeRecordProcessing(recordToProcess);
+        for (PipelineListener pipelineListener : pipelineListeners) {
+            recordToProcess = pipelineListener.beforeRecordProcessing(recordToProcess);
         }
         return recordToProcess;
     }
 
     public void fireAfterRecordProcessing(Object inputRecord, Object outputRecord) {
-        for (PipelineListener eventListener : pipelineListeners) {
-            eventListener.afterRecordProcessing(inputRecord, outputRecord);
+        for (PipelineListener pipelineListener : pipelineListeners) {
+            pipelineListener.afterRecordProcessing(inputRecord, outputRecord);
         }
     }
 
     public void fireOnRecordProcessingException(final Object record, final Throwable throwable) {
-        for (PipelineListener eventListener : pipelineListeners) {
-            eventListener.onRecordProcessingException(record, throwable);
+        for (PipelineListener pipelineListener : pipelineListeners) {
+            pipelineListener.onRecordProcessingException(record, throwable);
         }
     }
 }

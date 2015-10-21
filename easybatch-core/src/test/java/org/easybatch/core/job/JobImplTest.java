@@ -363,7 +363,7 @@ public class JobImplTest {
         when(reader.readNextRecord()).thenReturn(record1);
         job = new JobBuilder()
                 .reader(reader)
-                .readerEventListener(recordReaderListener)
+                .readerListener(recordReaderListener)
                 .build();
         job.call();
 
@@ -379,7 +379,7 @@ public class JobImplTest {
 
         job = new JobBuilder()
                 .reader(reader)
-                .pipelineEventListener(pipelineListener)
+                .pipelineListener(pipelineListener)
                 .build();
         job.call();
 

@@ -40,9 +40,9 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class HibernateSessionJobListener implements JobListener {
+public class HibernateSessionListener implements JobListener {
 
-    private static final Logger LOGGER = Logger.getLogger(HibernateSessionJobListener.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(HibernateSessionListener.class.getSimpleName());
 
     private Session session;
 
@@ -51,7 +51,7 @@ public class HibernateSessionJobListener implements JobListener {
      *
      * @param session the Hibernate session
      */
-    public HibernateSessionJobListener(final Session session) {
+    public HibernateSessionListener(final Session session) {
         checkNotNull(session, "session");
         this.session = session;
     }

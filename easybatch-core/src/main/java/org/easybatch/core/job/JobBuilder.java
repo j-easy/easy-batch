@@ -252,7 +252,7 @@ public final class JobBuilder {
      * @param jobListener The job listener to add.
      * @return the job builder
      */
-    public JobBuilder jobEventListener(final JobListener jobListener) {
+    public JobBuilder jobListener(final JobListener jobListener) {
         checkNotNull(jobListener, "job listener");
         job.addJobListener(jobListener);
         return this;
@@ -265,7 +265,7 @@ public final class JobBuilder {
      * @param recordReaderListener The record reader listener to add.
      * @return the job builder
      */
-    public JobBuilder readerEventListener(final RecordReaderListener recordReaderListener) {
+    public JobBuilder readerListener(final RecordReaderListener recordReaderListener) {
         checkNotNull(recordReaderListener, "record reader listener");
         job.addRecordReaderListener(recordReaderListener);
         return this;
@@ -278,7 +278,7 @@ public final class JobBuilder {
      * @param pipelineListener The pipeline listener to add.
      * @return the job builder
      */
-    public JobBuilder pipelineEventListener(final PipelineListener pipelineListener) {
+    public JobBuilder pipelineListener(final PipelineListener pipelineListener) {
         checkNotNull(pipelineListener, "pipeline listener");
         job.addPipelineListener(pipelineListener);
         return this;

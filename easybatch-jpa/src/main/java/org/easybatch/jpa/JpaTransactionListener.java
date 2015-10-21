@@ -38,9 +38,9 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JpaTransactionPipelineListener implements PipelineListener {
+public class JpaTransactionListener implements PipelineListener {
 
-    private static final Logger LOGGER = Logger.getLogger(JpaTransactionPipelineListener.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(JpaTransactionListener.class.getSimpleName());
 
     private EntityManager entityManager;
 
@@ -55,7 +55,7 @@ public class JpaTransactionPipelineListener implements PipelineListener {
      *
      * @param entityManager the JPA entity manager
      */
-    public JpaTransactionPipelineListener(final EntityManager entityManager) {
+    public JpaTransactionListener(final EntityManager entityManager) {
         checkNotNull(entityManager, "entity manager");
         this.entityManager = entityManager;
     }

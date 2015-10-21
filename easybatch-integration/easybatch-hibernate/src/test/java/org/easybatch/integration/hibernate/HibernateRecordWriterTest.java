@@ -73,8 +73,8 @@ public class HibernateRecordWriterTest {
                 .reader(new IterableRecordReader<Tweet>(tweets))
                 .mapper(new GenericRecordMapper())
                 .writer(hibernateRecordWriter)
-                .pipelineEventListener(new HibernateTransactionPipelineListener(session))
-                .jobEventListener(new HibernateSessionJobListener(session))
+                .pipelineListener(new HibernateTransactionListener(session))
+                .jobListener(new HibernateSessionListener(session))
                 .call();
 
         assertThat(jobReport).isNotNull();

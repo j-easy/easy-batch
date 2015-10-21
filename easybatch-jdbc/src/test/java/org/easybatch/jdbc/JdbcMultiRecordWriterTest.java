@@ -83,8 +83,8 @@ public class JdbcMultiRecordWriterTest {
         JobReport jobReport = aNewJob()
                 .reader(new IterableMultiRecordReader<Tweet>(tweets, chunkSize))
                 .writer(jdbcMultiRecordWriter)
-                .pipelineEventListener(new JdbcTransactionPipelineListener(connection)) // needed since autocommit = false
-                .jobEventListener(new JdbcConnectionJobListener(connection))
+                .pipelineListener(new JdbcTransactionListener(connection)) // needed since autocommit = false
+                .jobListener(new JdbcConnectionListener(connection))
                 .call();
 
         assertThat(jobReport).isNotNull();

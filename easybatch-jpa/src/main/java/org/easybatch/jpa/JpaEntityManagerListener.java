@@ -22,38 +22,36 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.jdbc;
+package org.easybatch.jpa;
 
 import org.easybatch.core.job.JobParameters;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.listener.JobListener;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.logging.Level;
+import javax.persistence.EntityManager;
 import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Listener that closes a JDBC connection at the end of the job.
+ * Job listener that closes the entity manager at the end of the job.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JdbcConnectionJobListener implements JobListener {
+public class JpaEntityManagerListener implements JobListener {
 
-    private static final Logger LOGGER = Logger.getLogger(JdbcConnectionJobListener.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(JpaEntityManagerListener.class.getSimpleName());
 
-    private Connection connection;
+    private EntityManager entityManager;
 
     /**
-     * Create a JDBC connection listener.
+     * Create a JPA entity manager job listener.
      *
-     * @param connection      the JDBC connection.
+     * @param entityManager the JPA entity manager
      */
-    public JdbcConnectionJobListener(final Connection connection) {
-        checkNotNull(connection, "connection");
-        this.connection = connection;
+    public JpaEntityManagerListener(final EntityManager entityManager) {
+        checkNotNull(entityManager, "entity manager");
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -63,14 +61,9 @@ public class JdbcConnectionJobListener implements JobListener {
 
     @Override
     public void afterJobEnd(final JobReport jobReport) {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                LOGGER.info("Closing connection after job end");
-                connection.close();
-            }
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Unable to close connection after job end", e);
+        if (entityManager != null) {
+            LOGGER.info("Closing entity manager after job end");
+            entityManager.close();
         }
     }
-
 }

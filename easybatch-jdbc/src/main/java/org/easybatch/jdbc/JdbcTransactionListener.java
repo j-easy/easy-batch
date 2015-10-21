@@ -22,46 +22,42 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.integration.hibernate;
+package org.easybatch.jdbc;
 
 import org.easybatch.core.listener.PipelineListener;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Listener that commits a Hibernate transaction after inserting a record.
+ * Listener that commits a transaction after writing a record.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class HibernateTransactionPipelineListener implements PipelineListener {
+public class JdbcTransactionListener implements PipelineListener {
 
-    private static final Logger LOGGER = Logger.getLogger(HibernateTransactionPipelineListener.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(JdbcTransactionListener.class.getSimpleName());
 
-    private Session session;
-
-    private Transaction transaction;
+    private Connection connection;
 
     private long recordNumber;
 
     /**
-     * Create a Hibernate transaction listener.
+     * Create a JDBC transaction listener.
      *
-     * @param session the Hibernate session
+     * @param connection the JDBC connection (should be in auto-commit = false)
      */
-    public HibernateTransactionPipelineListener(final Session session) {
-        checkNotNull(session, "session");
-        this.session = session;
+    public JdbcTransactionListener(final Connection connection) {
+        checkNotNull(connection, "connection");
+        this.connection = connection;
     }
 
     @Override
     public Object beforeRecordProcessing(final Object record) {
-        transaction = session.getTransaction();
-        transaction.begin();
         recordNumber++;
         return record;
     }
@@ -69,11 +65,9 @@ public class HibernateTransactionPipelineListener implements PipelineListener {
     @Override
     public void afterRecordProcessing(final Object record, final Object processingResult) {
         try {
-            session.flush();
-            session.clear();
-            transaction.commit();
-            LOGGER.info("Transaction committed after record " + recordNumber);
-        } catch (Exception e) {
+            connection.commit();
+            LOGGER.info("Committing transaction after record " + recordNumber);
+        } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Unable to commit transaction after record " + recordNumber, e);
         }
     }
@@ -81,11 +75,9 @@ public class HibernateTransactionPipelineListener implements PipelineListener {
     @Override
     public void onRecordProcessingException(final Object record, final Throwable throwable) {
         try {
-            transaction.rollback();
-            LOGGER.info("Transaction rolled back after record " + recordNumber);
-        } catch (Exception e) {
+            connection.rollback();
+        } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Unable to rollback transaction after record " + recordNumber, e);
         }
     }
-
 }

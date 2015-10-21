@@ -166,11 +166,11 @@ public class EventManagerTest {
      */
 
     @Test
-    public void testRecordModificationThroughCustomPipelineEventListener() throws Exception {
+    public void testRecordModificationThroughCustomPipelineListener() throws Exception {
         Job job = JobBuilder.aNewJob()
                 .reader(new StringRecordReader("foo" + LINE_SEPARATOR + "bar"))
 
-                .pipelineEventListener(new PipelineListener() {
+                .pipelineListener(new PipelineListener() {
                     @Override
                     public Object beforeRecordProcessing(Object record) {
                         StringRecord stringRecord = (StringRecord) record;

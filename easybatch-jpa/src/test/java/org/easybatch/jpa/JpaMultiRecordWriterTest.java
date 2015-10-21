@@ -78,8 +78,8 @@ public class JpaMultiRecordWriterTest {
                 .reader(new IterableMultiRecordReader<Tweet>(tweets, chunkSize))
                 .mapper(new GenericMultiRecordMapper<Tweet>())
                 .writer(new JpaMultiRecordWriter<Tweet>(entityManager))
-                .pipelineEventListener(new JpaTransactionPipelineListener(entityManager))
-                .jobEventListener(new JpaEntityManagerJobListener(entityManager))
+                .pipelineListener(new JpaTransactionListener(entityManager))
+                .jobListener(new JpaEntityManagerListener(entityManager))
                 .call();
 
         assertThat(jobReport).isNotNull();

@@ -84,7 +84,7 @@ public class JdbcRecordWriterTest {
                 .reader(new IterableRecordReader<Tweet>(tweets))
                 .mapper(new GenericRecordMapper<Tweet>())
                 .writer(jdbcRecordWriter) // No need for JdbcTransactionPipelineListener, the connection is in auto-commit mode
-                .jobEventListener(new JdbcConnectionJobListener(connection))
+                .jobListener(new JdbcConnectionListener(connection))
                 .call();
 
         assertThat(jobReport).isNotNull();
