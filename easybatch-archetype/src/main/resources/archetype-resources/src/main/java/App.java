@@ -1,6 +1,5 @@
 package ${packageName};
 
-import org.easybatch.core.job.JobException;
 import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.job.Job;
@@ -11,7 +10,7 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 public class App {
 
-    public static void main(String[] args) throws JobException {
+    public static void main(String[] args) {
 
         // Create tweets data source (tweet: id,user,content)
         String dataSource =
