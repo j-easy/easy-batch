@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>easybatch-integration</artifactId>
+        <artifactId>easybatch-extensions</artifactId>
         <groupId>org.easybatch</groupId>
         <version>3.2.0-SNAPSHOT</version>
     </parent>
@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
 
     <name>easybatch-jackson</name>
-    <description>Easy Batch - Jackson integration module</description>
+    <description>Extension to support Jackson</description>
     <url>http://www.easybatch.org</url>
 
     <developers>

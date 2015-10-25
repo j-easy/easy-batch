@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>easybatch-integration</artifactId>
+        <artifactId>easybatch-extensions</artifactId>
         <groupId>org.easybatch</groupId>
         <version>3.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>easybatch-gson</artifactId>
+    <artifactId>easybatch-spring</artifactId>
     <packaging>jar</packaging>
-
-    <name>easybatch-gson</name>
-    <description>Easy Batch - Google Gson integration module</description>
+    <name>easybatch-spring</name>
+    <description>Extension to support Spring</description>
     <url>http://www.easybatch.org</url>
+
+    <properties>
+        <spring.version>3.2.13.RELEASE</spring.version>
+    </properties>
 
     <developers>
         <developer>
@@ -53,13 +56,18 @@
     <dependencies>
         <dependency>
             <groupId>org.easybatch</groupId>
-            <artifactId>easybatch-json</artifactId>
+            <artifactId>easybatch-jdbc</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.3.1</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
@@ -160,6 +168,5 @@
             </plugin>
         </plugins>
     </reporting>
-
 
 </project>

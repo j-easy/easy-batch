@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>easybatch-integration</artifactId>
+        <artifactId>easybatch-extensions</artifactId>
         <groupId>org.easybatch</groupId>
         <version>3.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>easybatch-xstream</artifactId>
+    <artifactId>easybatch-mongodb</artifactId>
     <packaging>jar</packaging>
 
-    <name>easybatch-xstream</name>
-    <description>Easy Batch - XStream integration module</description>
+    <name>easybatch-mongodb</name>
+    <description>Extension to support MongoDB</description>
     <url>http://www.easybatch.org</url>
+
+    <properties>
+        <mongo-java-driver.version>2.13.1</mongo-java-driver.version>
+        <morphia.version>0.111</morphia.version>
+    </properties>
 
     <developers>
         <developer>
@@ -53,13 +58,19 @@
     <dependencies>
         <dependency>
             <groupId>org.easybatch</groupId>
-            <artifactId>easybatch-xml</artifactId>
+            <artifactId>easybatch-core</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
-            <version>1.4.8</version>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>${mongo-java-driver.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mongodb.morphia</groupId>
+            <artifactId>morphia</artifactId>
+            <version>${morphia.version}</version>
         </dependency>
 
         <dependency>
@@ -77,6 +88,7 @@
             <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <reporting>

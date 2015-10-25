@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>easybatch-integration</artifactId>
+        <artifactId>easybatch-extensions</artifactId>
         <groupId>org.easybatch</groupId>
         <version>3.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>easybatch-mongodb</artifactId>
+    <artifactId>easybatch-opencsv</artifactId>
     <packaging>jar</packaging>
 
-    <name>easybatch-mongodb</name>
-    <description>Easy Batch - MongoDB integration module</description>
+    <name>easybatch-opencsv</name>
+    <description>Extension to support OpenCSV</description>
     <url>http://www.easybatch.org</url>
-
-    <properties>
-        <mongo-java-driver.version>2.13.1</mongo-java-driver.version>
-        <morphia.version>0.111</morphia.version>
-    </properties>
 
     <developers>
         <developer>
@@ -62,15 +57,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>${mongo-java-driver.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mongodb.morphia</groupId>
-            <artifactId>morphia</artifactId>
-            <version>${morphia.version}</version>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>3.4</version>
         </dependency>
 
         <dependency>
@@ -88,7 +77,6 @@
             <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <reporting>

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>easybatch-integration</artifactId>
+        <artifactId>easybatch-extensions</artifactId>
         <groupId>org.easybatch</groupId>
         <version>3.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>easybatch-opencsv</artifactId>
+    <artifactId>easybatch-xstream</artifactId>
     <packaging>jar</packaging>
 
-    <name>easybatch-opencsv</name>
-    <description>Easy Batch - OpenCSV integration module</description>
+    <name>easybatch-xstream</name>
+    <description>Extension to support XStream</description>
     <url>http://www.easybatch.org</url>
 
     <developers>
@@ -53,13 +53,13 @@
     <dependencies>
         <dependency>
             <groupId>org.easybatch</groupId>
-            <artifactId>easybatch-core</artifactId>
+            <artifactId>easybatch-xml</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>3.4</version>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.8</version>
         </dependency>
 
         <dependency>
