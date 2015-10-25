@@ -35,11 +35,8 @@ class JobTimeoutListener implements PipelineListener {
 
     private JobImpl job;
 
-    private JobReport jobReport;
-
-    public JobTimeoutListener(JobReport jobReport, JobImpl job) {
+    public JobTimeoutListener(JobImpl job) {
         this.job = job;
-        this.jobReport = jobReport;
     }
 
     @Override
@@ -58,14 +55,14 @@ class JobTimeoutListener implements PipelineListener {
     }
 
     private void checkTimeout() {
-        if (elapsedTime() > jobReport.getParameters().getTimeout()) {
+        if (elapsedTime() > job.getJobReport().getParameters().getTimeout()) {
             job.setTimedOut(true);
-            jobReport.setStatus(JobStatus.ABORTED);
+            job.getJobReport().setStatus(JobStatus.ABORTED);
         }
     }
 
     private long elapsedTime() {
-        return System.currentTimeMillis() - jobReport.getMetrics().getStartTime();
+        return System.currentTimeMillis() - job.getJobReport().getMetrics().getStartTime();
     }
 
 }

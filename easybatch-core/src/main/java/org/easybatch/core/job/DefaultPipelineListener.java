@@ -38,10 +38,10 @@ class DefaultPipelineListener implements PipelineListener {
 
     private static final Logger LOGGER = Logger.getLogger(DefaultPipelineListener.class.getName());
 
-    private JobReport jobReport;
+    private JobImpl job;
 
-    DefaultPipelineListener(JobReport jobReport) {
-        this.jobReport = jobReport;
+    DefaultPipelineListener(JobImpl job) {
+        this.job = job;
     }
 
     /**
@@ -65,9 +65,9 @@ class DefaultPipelineListener implements PipelineListener {
     public void afterRecordProcessing(Object inputRecord, Object outputRecord) {
         if (outputRecord == null) {
             LOGGER.log(Level.INFO, "Record {0} has been filtered", inputRecord);
-            jobReport.getMetrics().incrementFilteredCount();
+            job.getJobReport().getMetrics().incrementFilteredCount();
         } else {
-            jobReport.getMetrics().incrementSuccessCount();
+            job.getJobReport().getMetrics().incrementSuccessCount();
         }
     }
 
@@ -80,6 +80,6 @@ class DefaultPipelineListener implements PipelineListener {
     @Override
     public void onRecordProcessingException(Object record, Throwable throwable) {
         LOGGER.log(Level.SEVERE, "An exception occurred while processing record " + record, throwable);
-        jobReport.getMetrics().incrementErrorCount();
+        job.getJobReport().getMetrics().incrementErrorCount();
     }
 }

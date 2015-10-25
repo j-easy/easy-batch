@@ -26,7 +26,6 @@ package org.easybatch.core.job;
 
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.monitor.JobMonitor;
-import org.easybatch.core.reader.RecordReader;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -43,25 +42,19 @@ class MonitoringSetupListener implements JobListener {
 
     private static final Logger LOGGER = Logger.getLogger(MonitoringSetupListener.class.getName());
 
-    private JobReport jobReport;
+    private JobImpl job;
 
-    private Job job;
-
-    private RecordReader recordReader;
-
-    MonitoringSetupListener(Job job, JobReport jobReport, RecordReader recordReader) {
-        this.jobReport = jobReport;
+    MonitoringSetupListener(JobImpl job) {
         this.job = job;
-        this.recordReader = recordReader;
     }
 
     @Override
     public void beforeJobStart(JobParameters jobParameters) {
         if (jobParameters.isJmxMode()) {
-            registerJmxMBean(jobReport, job);
+            registerJmxMBean(job);
             LOGGER.log(Level.INFO, "Calculating the total number of records");
-            Long totalRecords = recordReader.getTotalRecords();
-            jobReport.getMetrics().setTotalCount(totalRecords);
+            Long totalRecords = job.getRecordReader().getTotalRecords();
+            job.getJobReport().getMetrics().setTotalCount(totalRecords);
             LOGGER.log(Level.INFO, "Total records count = {0}", totalRecords == null ? "N/A" : totalRecords);
         }
     }
@@ -71,14 +64,14 @@ class MonitoringSetupListener implements JobListener {
         // no-op
     }
 
-    private void registerJmxMBean(JobReport jobReport, Job job) {
+    private void registerJmxMBean(JobImpl job) {
         LOGGER.log(Level.INFO, "Registering JMX MBean for job {0}", job.getName());
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
         try {
             name = new ObjectName(JobMonitor.JMX_MBEAN_NAME + "name=" + job.getName() + ",id=" + job.getExecutionId());
             if (!mbs.isRegistered(name)) {
-                JobMonitor monitor = new JobMonitor(jobReport);
+                JobMonitor monitor = new JobMonitor(job.getJobReport());
                 mbs.registerMBean(monitor, name);
                 LOGGER.log(Level.INFO, "JMX MBean registered successfully as: {0}", name.getCanonicalName());
             } else {

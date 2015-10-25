@@ -67,11 +67,11 @@ final class JobImpl implements Job {
         this.parameters = report.getParameters();
         this.metrics = report.getMetrics();
         this.pipeline = new Pipeline(new ArrayList<RecordProcessor>(), eventManager);
-        this.eventManager.addRecordReaderListener(new DefaultRecordReaderListener(report));
-        this.eventManager.addPipelineListener(new DefaultPipelineListener(report));
-        this.eventManager.addPipelineListener(new JobTimeoutListener(report, this));
-        this.eventManager.addJobListener(new DefaultJobListener(report, pipeline));
-        this.eventManager.addJobListener(new MonitoringSetupListener(this, report, recordReader));
+        this.eventManager.addRecordReaderListener(new DefaultRecordReaderListener(this));
+        this.eventManager.addPipelineListener(new DefaultPipelineListener(this));
+        this.eventManager.addPipelineListener(new JobTimeoutListener(this));
+        this.eventManager.addJobListener(new DefaultJobListener(this));
+        this.eventManager.addJobListener(new MonitoringSetupListener(this));
     }
 
     @Override
@@ -206,12 +206,24 @@ final class JobImpl implements Job {
         eventManager.addPipelineListener(pipelineListener);
     }
 
+    void setTimedOut(boolean timedOut) {
+        this.timedOut = timedOut;
+    }
+
+    /*
+     * Getters for job components (needed by package private artifacts)
+     */
+
     JobReport getJobReport() {
         return report;
     }
 
-    void setTimedOut(boolean timedOut) {
-        this.timedOut = timedOut;
+    RecordReader getRecordReader() {
+        return recordReader;
+    }
+
+    Pipeline getPipeline() {
+        return pipeline;
     }
 
     @Override

@@ -39,10 +39,10 @@ class DefaultRecordReaderListener implements RecordReaderListener {
 
     private static final Logger LOGGER = Logger.getLogger(DefaultRecordReaderListener.class.getName());
 
-    private JobReport jobReport;
+    private JobImpl job;
 
-    DefaultRecordReaderListener(JobReport jobReport) {
-        this.jobReport = jobReport;
+    DefaultRecordReaderListener(JobImpl job) {
+        this.job = job;
     }
     
     @Override
@@ -58,7 +58,7 @@ class DefaultRecordReaderListener implements RecordReaderListener {
     @Override
     public void onRecordReadingException(Throwable throwable) {
         LOGGER.log(Level.SEVERE, "Unable to read next record", throwable);
-        jobReport.setStatus(JobStatus.FAILED);
-        jobReport.getMetrics().setEndTime(System.currentTimeMillis());
+        job.getJobReport().setStatus(JobStatus.FAILED);
+        job.getJobReport().getMetrics().setEndTime(System.currentTimeMillis());
     }
 }

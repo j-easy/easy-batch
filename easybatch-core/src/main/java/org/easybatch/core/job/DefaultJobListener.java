@@ -45,13 +45,10 @@ class DefaultJobListener implements JobListener {
 
     private static final Logger LOGGER = Logger.getLogger(DefaultJobListener.class.getName());
 
-    private JobReport jobReport;
+    private JobImpl job;
 
-    private Pipeline pipeline;
-
-    DefaultJobListener(JobReport jobReport, Pipeline pipeline) {
-        this.jobReport = jobReport;
-        this.pipeline = pipeline;
+    DefaultJobListener(JobImpl job) {
+        this.job = job;
     }
 
     @Override
@@ -76,8 +73,8 @@ class DefaultJobListener implements JobListener {
         LOGGER.log(Level.INFO, "Jmx mode: {0}", jobParameters.isJmxMode());
         LOGGER.log(Level.INFO, "Job ''{0}'' started", jobName);
 
-        jobReport.getMetrics().setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
-        jobReport.setStatus(JobStatus.STARTED);
+        job.getJobReport().getMetrics().setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
+        job.getJobReport().setStatus(JobStatus.STARTED);
 
     }
 
@@ -88,7 +85,7 @@ class DefaultJobListener implements JobListener {
             jobReport.setStatus(JobStatus.COMPLETED);
         }
         // The job result is held by the last processor in the pipeline (which should be of type ComputationalRecordProcessor)
-        RecordProcessor lastRecordProcessor = pipeline.getLastProcessor();
+        RecordProcessor lastRecordProcessor = job.getPipeline().getLastProcessor();
         if (lastRecordProcessor instanceof ComputationalRecordProcessor) {
             ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor) lastRecordProcessor;
             Object jobResult = computationalRecordProcessor.getComputationResult();
