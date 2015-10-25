@@ -9,6 +9,10 @@
             padding-top: 20px;
             padding-bottom: 20px;
         }
+        .table-fixed {
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
     </style>
 </head>
 <body>
@@ -16,15 +20,15 @@
 <div class="container col-md-8 col-md-offset-2">
     <div class="row">
         <h1 class="text-center">Job Report</h1>
-        <h3>Name: job</h3>
-        <h3>Data source: In-Memory String</h3>
-        <h3>Records limit: 8</h3>
-        <h3>Execution id: c8d6a5fc-b2b4-4ee0-9dda-f9ec042d5864</h3>
+        <br/>
+        <h4><span class="label label-info">Name:</span> job</h4>
+        <h4><span class="label label-info">Execution id:</span> c8d6a5fc-b2b4-4ee0-9dda-f9ec042d5864</h4>
+        <h4><span class="label label-info">Data source:</span> In-Memory String</h4>
         <br/>
     </div>
 
     <div class="row">
-
+        <h3>Job metrics</h3>
         <div class="col-md-6">
             <table class="table table-bordered table-hover table-condensed">
                 <tbody>
@@ -42,18 +46,12 @@
                 </tr>
                 <tr>
                     <td>Status</td>
-                    <td><span class="label label-status">FINISHED</span></td>
+                    <td><span class="label label-status">COMPLETED</span></td>
                 </tr>
                 <tr>
                     <td>Record processing time average</td>
                     <td>1250.0ms</td>
                 </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-6">
-            <table class="table table table-bordered table-hover table-condensed">
-                <tbody>
                 <tr>
                     <td>Skipped records</td>
                     <td><span class="label label-default skipped-records" data-total="2">2 (25.0%)</span></td>
@@ -72,20 +70,34 @@
                 </tr>
                 <tr>
                     <td>Total records</td>
-                    <td><span class="label label-primary total-records" data-total="8">8</span></td>
+                    <td><span class="label label-primary total-records" data-total="8">8 (100%)</span></td>
                 </tr>
                 </tbody>
             </table>
         </div>
+        <div class="col-md-6">
+            <div id="chart" style="min-width: 300px; height: 320px; margin: 0 auto"></div>
+        </div>
     </div>
 
     <div class="row">
-        <div id="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <h3>Job properties</h3>
+        <table class="table table-bordered table-striped table-hover table-condensed">
+            <tbody>
+            <tr> <td>Limit</td> <td>8</td> </tr>
+            <tr> <td>Skip</td> <td>0</td> </tr>
+            <tr> <td>Timeout</td> <td>N/A</td> </tr>
+            <tr> <td>Strict mode</td> <td>false</td> </tr>
+            <tr> <td>Silent mode</td> <td>false</td> </tr>
+            <tr> <td>JMX mode</td> <td>false</td> </tr>
+            <tr> <td>Keep alive</td> <td>false</td> </tr>
+            </tbody>
+        </table>
     </div>
 
     <div class="row">
         <h3>System properties</h3>
-        <table class="table table-bordered table-striped table-hover table-condensed">
+        <table class="table table-bordered table-striped table-hover table-condensed table-fixed">
             <tbody>
             <tr>
                 <td>java.runtime.name</td>
@@ -332,7 +344,7 @@
     jQuery(document).ready(function () {
 
         var status = jQuery(".label-status");
-        if (status.html() == "FINISHED") {
+        if (status.html() == "COMPLETED") {
             status.addClass("label-success");
         } else {
             status.addClass("label-danger");
@@ -344,15 +356,10 @@
                 plotBorderWidth: null,
                 plotShadow: true
             },title: {
-                text: 'Records statistics'
+                text: ''
             },
             tooltip: {
                 pointFormat: '<b>{point.y}</b>'
-            },
-            legend: {
-                labelFormatter: function() {
-                    return this.name + ' (' + this.y + ')';
-                }
             },
             credits: {
                 enabled: false

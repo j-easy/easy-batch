@@ -9,6 +9,10 @@
             padding-top: 20px;
             padding-bottom: 20px;
         }
+        .table-fixed {
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
     </style>
 </head>
 <body>
@@ -16,17 +20,15 @@
 <div class="container col-md-8 col-md-offset-2">
     <div class="row">
         <h1 class="text-center">Job Report</h1>
-        <h3>Name: $report.name</h3>
-        <h3>Data source: $report.dataSource</h3>
-        #if( $report.limit != 9223372036854775807 )
-            <h3>Records limit: $report.limit</h3>
-        #end
-        <h3>Execution id: $report.executionId</h3>
+        <br/>
+        <h4><span class="label label-info">Name:</span> $report.parameters.name</h4>
+        <h4><span class="label label-info">Execution id:</span> $report.parameters.executionId</h4>
+        <h4><span class="label label-info">Data source:</span> $report.parameters.dataSource</h4>
         <br/>
     </div>
 
     <div class="row">
-
+        <h3>Job metrics</h3>
         <div class="col-md-6">
             <table class="table table-bordered table-hover table-condensed">
                 <tbody>
@@ -40,7 +42,7 @@
                 </tr>
                 <tr>
                     <td>Duration</td>
-                    <td>$report.formattedJobDuration</td>
+                    <td>$report.formattedDuration</td>
                 </tr>
                 <tr>
                     <td>Status</td>
@@ -48,46 +50,54 @@
                 </tr>
                 <tr>
                     <td>Record processing time average</td>
-                    <td>$report.formattedAverageRecordProcessingTime</td>
+                    <td>$report.formattedRecordProcessingTimeAverage</td>
+                </tr>
+                <tr>
+                    <td>Skipped records</td>
+                    <td><span class="label label-default skipped-records" data-total="$report.metrics.skippedCount">$report.formattedSkippedCount</span></td>
+                </tr>
+                <tr>
+                    <td>Filtered records</td>
+                    <td><span class="label label-warning filtered-records" data-total="$report.metrics.filteredCount">$report.formattedFilteredCount</span></td>
+                </tr>
+                <tr>
+                    <td>Error records</td>
+                    <td><span class="label label-danger error-records" data-total="$report.metrics.errorCount">$report.formattedErrorCount</span></td>
+                </tr>
+                <tr>
+                    <td>Success records</td>
+                    <td><span class="label label-success success-records" data-total="$report.metrics.successCount">$report.formattedSuccessCount</span></td>
+                </tr>
+                <tr>
+                    <td>Total records</td>
+                    <td><span class="label label-primary total-records" data-total="$report.metrics.totalCount">$report.formattedTotalCount (100%)</span></td>
                 </tr>
                 </tbody>
             </table>
         </div>
         <div class="col-md-6">
-            <table class="table table table-bordered table-hover table-condensed">
-                <tbody>
-                <tr>
-                    <td>Skipped records</td>
-                    <td><span class="label label-default skipped-records" data-total="$report.skippedRecordsCount">$report.formattedSkippedRecords</span></td>
-                </tr>
-                <tr>
-                    <td>Filtered records</td>
-                    <td><span class="label label-warning filtered-records" data-total="$report.filteredRecordsCount">$report.formattedFilteredRecords</span></td>
-                </tr>
-                <tr>
-                    <td>Error records</td>
-                    <td><span class="label label-danger error-records" data-total="$report.errorRecordsCount">$report.formattedErrorRecords</span></td>
-                </tr>
-                <tr>
-                    <td>Success records</td>
-                    <td><span class="label label-success success-records" data-total="$report.successRecordsCount">$report.formattedSuccessRecords</span></td>
-                </tr>
-                <tr>
-                    <td>Total records</td>
-                    <td><span class="label label-primary total-records" data-total="$report.totalRecords">$report.totalRecords</span></td>
-                </tr>
-                </tbody>
-            </table>
+            <div id="chart" style="min-width: 300px; height: 320px; margin: 0 auto"></div>
         </div>
     </div>
 
     <div class="row">
-        <div id="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <h3>Job properties</h3>
+        <table class="table table-bordered table-striped table-hover table-condensed">
+            <tbody>
+            <tr> <td>Limit</td> <td>$report.formattedLimit</td> </tr>
+            <tr> <td>Skip</td> <td>$report.parameters.skip</td> </tr>
+            <tr> <td>Timeout</td> <td>$report.formattedTimeout</td> </tr>
+            <tr> <td>Strict mode</td> <td>$report.parameters.strictMode</td> </tr>
+            <tr> <td>Silent mode</td> <td>$report.parameters.silentMode</td> </tr>
+            <tr> <td>JMX mode</td> <td>$report.parameters.jmxMode</td> </tr>
+            <tr> <td>Keep alive</td> <td>$report.parameters.keepAlive</td> </tr>
+            </tbody>
+        </table>
     </div>
 
     <div class="row">
         <h3>System properties</h3>
-        <table class="table table-bordered table-striped table-hover table-condensed">
+        <table class="table table-bordered table-striped table-hover table-condensed table-fixed">
             <tbody>
             #foreach( $entry in $properties )
             <tr>
@@ -107,7 +117,7 @@
     jQuery(document).ready(function () {
 
         var status = jQuery(".label-status");
-        if (status.html() == "FINISHED") {
+        if (status.html() == "COMPLETED") {
             status.addClass("label-success");
         } else {
             status.addClass("label-danger");
@@ -119,15 +129,10 @@
                 plotBorderWidth: null,
                 plotShadow: true
             },title: {
-                text: 'Records statistics'
+                text: ''
             },
             tooltip: {
                 pointFormat: '<b>{point.y}</b>'
-            },
-            legend: {
-                labelFormatter: function() {
-                    return this.name + ' (' + this.y + ')';
-                }
             },
             credits: {
                 enabled: false
