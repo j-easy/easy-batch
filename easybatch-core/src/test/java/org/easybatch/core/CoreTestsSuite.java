@@ -47,7 +47,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         // reader
         FileRecordReaderTest.class,
-        QueueRecordReaderTest.class,
+        BlockingQueueRecordReaderTest.class,
         StringRecordReaderTest.class,
         CliRecordReaderTest.class,
         IterableRecordReaderTest.class,

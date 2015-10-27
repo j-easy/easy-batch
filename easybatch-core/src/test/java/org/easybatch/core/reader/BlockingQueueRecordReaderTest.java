@@ -33,15 +33,15 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class QueueRecordReaderTest {
+public class BlockingQueueRecordReaderTest {
 
-    private QueueRecordReader queueRecordReader;
+    private BlockingQueueRecordReader<Record> blockingQueueRecordReader;
 
     private BlockingQueue<Record> queue;
 
@@ -53,35 +53,36 @@ public class QueueRecordReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        queue = new ArrayBlockingQueue<Record>(10);
+        queue = new LinkedBlockingQueue<Record>();
         queue.put(record);
         queue.put(poisonRecord);
 
-        queueRecordReader = new QueueRecordReader(queue);
-        queueRecordReader.open();
+        blockingQueueRecordReader = new BlockingQueueRecordReader<Record>(queue);
+        blockingQueueRecordReader.open();
     }
 
     @Test
     public void testTotalRecordsIsNull() throws Exception {
-        assertThat(queueRecordReader.getTotalRecords()).isNull();
+        assertThat(blockingQueueRecordReader.getTotalRecords()).isNull();
     }
 
     @Test
     public void testHasNextRecord() throws Exception {
-        assertThat(queueRecordReader.hasNextRecord()).isTrue();
+        assertThat(blockingQueueRecordReader.hasNextRecord()).isTrue();
     }
 
     @Test
     public void testReadNextRecord() throws Exception {
-        assertThat(queueRecordReader.readNextRecord()).isEqualTo(record);
-        assertThat(queueRecordReader.hasNextRecord()).isTrue();
-        assertThat(queueRecordReader.readNextRecord()).isEqualTo(poisonRecord);
-        assertThat(queueRecordReader.hasNextRecord()).isFalse();
+        assertThat(blockingQueueRecordReader.hasNextRecord()).isTrue();
+        assertThat(blockingQueueRecordReader.readNextRecord().getPayload()).isEqualTo(record);
+        assertThat(blockingQueueRecordReader.hasNextRecord()).isTrue();
+        assertThat(blockingQueueRecordReader.readNextRecord().getPayload()).isEqualTo(poisonRecord);
+        assertThat(blockingQueueRecordReader.hasNextRecord()).isFalse();
         assertThat(queue).isEmpty();
     }
 
     @After
     public void tearDown() throws Exception {
-        queueRecordReader.close();
+        blockingQueueRecordReader.close();
     }
 }

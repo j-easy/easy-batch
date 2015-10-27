@@ -24,17 +24,20 @@
 
 package org.easybatch.core.reader;
 
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
 import org.easybatch.core.record.PoisonRecord;
-import org.easybatch.core.record.Record;
 
+import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 
 /**
  * A convenient {@link RecordReader} that reads record from a {@link BlockingQueue}.
  *
+ * @param <T> the type of elements in the queue
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class QueueRecordReader implements RecordReader {
+public class BlockingQueueRecordReader<T> implements RecordReader {
 
     /**
      * The stop reading flag.
@@ -44,20 +47,25 @@ public class QueueRecordReader implements RecordReader {
     /**
      * The source queue.
      */
-    private BlockingQueue<Record> queue;
+    private BlockingQueue<T> queue;
 
     /**
-     * Create a {@link QueueRecordReader}.
+     * The current record number.
+     */
+    private long currentRecordNumber;
+
+    /**
+     * Create a {@link BlockingQueueRecordReader}.
      *
      * @param queue the queue to read records from
      */
-    public QueueRecordReader(final BlockingQueue<Record> queue) {
+    public BlockingQueueRecordReader(final BlockingQueue<T> queue) {
         this.queue = queue;
     }
 
     @Override
     public void open() {
-        // no op
+        currentRecordNumber = 0;
     }
 
     @Override
@@ -66,13 +74,14 @@ public class QueueRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readNextRecord() throws RecordReadingException {
+    public GenericRecord<T> readNextRecord() throws RecordReadingException {
         try {
-            Record record = queue.take();
+            T record = queue.take();
             stop = record instanceof PoisonRecord;
-            return record;
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            return new GenericRecord<T>(header, record);
         } catch (InterruptedException e) {
-            throw new RecordReadingException("Unable to read next record", e);
+            throw new RecordReadingException("Unable to read next record from the queue", e);
         }
     }
 
