@@ -87,6 +87,8 @@ public class JmsIntegrationTest {
                 .reader(new JmsRecordReader(queueConnectionFactory, queue))
                 .filter(new JmsPoisonRecordFilter())
                 .processor(new RecordCollector<JmsRecord>())
+                .jobListener(new JmsQueueSessionListener(queueSession))
+                .jobListener(new JmsQueueConnectionListener(queueConnection))
                 .build();
 
         JobReport jobReport = job.call();
@@ -112,8 +114,6 @@ public class JmsIntegrationTest {
         TextMessage textMessage = (TextMessage) payload;
         assertThat(textMessage.getText()).isNotNull().isEqualTo(MESSAGE_TEXT);
 
-        queueSession.close();
-        queueConnection.close();
     }
 
     @Test
@@ -130,7 +130,7 @@ public class JmsIntegrationTest {
         aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .processor(new JmsMessageTransformer(queueSession))
-                .processor(new JmsRecordWriter(queueConnectionFactory, queue))
+                .writer(new JmsRecordWriter(queueConnectionFactory, queue))
                 .call();
 
         // Assert that queue contains 2 messages: "foo" and "bar"
