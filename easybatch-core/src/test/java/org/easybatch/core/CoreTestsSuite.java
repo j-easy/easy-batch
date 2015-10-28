@@ -49,7 +49,7 @@ import org.junit.runners.Suite;
         FileRecordReaderTest.class,
         BlockingQueueRecordReaderTest.class,
         StringRecordReaderTest.class,
-        CliRecordReaderTest.class,
+        StandardInputRecordReaderTest.class,
         IterableRecordReaderTest.class,
         IterableMultiRecordReaderTest.class,
         StringMultiRecordReaderTest.class,

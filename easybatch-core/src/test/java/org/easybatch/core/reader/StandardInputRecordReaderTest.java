@@ -30,31 +30,31 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CliRecordReaderTest {
+public class StandardInputRecordReaderTest {
 
     private static final String EXPECTED_DATA_SOURCE_NAME = "Standard Input";
 
-    private CliRecordReader cliRecordReader;
+    private StandardInputRecordReader standardInputRecordReader;
 
     @Before
     public void setUp() throws Exception {
-        cliRecordReader = new CliRecordReader();
-        cliRecordReader.open();
+        standardInputRecordReader = new StandardInputRecordReader();
+        standardInputRecordReader.open();
     }
 
     @Test
     public void testGetTotalRecords() throws Exception {
-        assertThat(cliRecordReader.getTotalRecords()).isNull();
+        assertThat(standardInputRecordReader.getTotalRecords()).isNull();
     }
 
     @Test
     public void testGetDataSourceName() throws Exception {
-        assertThat(cliRecordReader.getDataSourceName()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
+        assertThat(standardInputRecordReader.getDataSourceName()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
     }
 
     @After
     public void tearDown() throws Exception {
-        cliRecordReader.close();
+        standardInputRecordReader.close();
     }
 
 }

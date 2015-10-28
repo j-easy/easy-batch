@@ -42,7 +42,7 @@ import java.util.Scanner;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class CliRecordReader implements RecordReader {
+public class StandardInputRecordReader implements RecordReader {
 
     private static final String DEFAULT_TERMINATION_WORD = "quit";
 
@@ -67,18 +67,18 @@ public class CliRecordReader implements RecordReader {
     private boolean stop;
 
     /**
-     * Create a {@link CliRecordReader} with default termination input equal to 'quit'.
+     * Create a {@link StandardInputRecordReader} with default termination input equal to 'quit'.
      */
-    public CliRecordReader() {
+    public StandardInputRecordReader() {
         this(DEFAULT_TERMINATION_WORD);
     }
 
     /**
-     * Create a {@link CliRecordReader} instance with a termination word.
+     * Create a {@link StandardInputRecordReader} instance with a termination word.
      *
      * @param terminationInput the word to type to stop reading from the standard input.
      */
-    public CliRecordReader(final String terminationInput) {
+    public StandardInputRecordReader(final String terminationInput) {
         this.terminationInput = terminationInput;
     }
 
