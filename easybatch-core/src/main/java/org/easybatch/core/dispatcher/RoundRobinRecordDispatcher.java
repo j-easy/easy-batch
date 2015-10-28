@@ -25,7 +25,6 @@
 package org.easybatch.core.dispatcher;
 
 import org.easybatch.core.record.PoisonRecord;
-import org.easybatch.core.record.Record;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -33,11 +32,12 @@ import java.util.concurrent.BlockingQueue;
 import static java.lang.String.format;
 
 /**
- * A record dispatcher that dispatches records to a list of {@link BlockingQueue} in round-robin fashion.
+ * Dispatch records to a list of {@link BlockingQueue} in round-robin fashion.
  *
+ * @param <T> type of record to dispatch
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RoundRobinRecordDispatcher extends AbstractRecordDispatcher {
+public class RoundRobinRecordDispatcher<T> extends AbstractRecordDispatcher<T> {
 
     /**
      * The total number of queues this dispatcher operates on.
@@ -52,33 +52,33 @@ public class RoundRobinRecordDispatcher extends AbstractRecordDispatcher {
     /**
      * List of queues to which records should be dispatched.
      */
-    private List<BlockingQueue<Record>> queues;
+    private List<BlockingQueue<T>> queues;
 
     /**
      * A delegate dispatcher used to broadcast poison records to all queues.
      */
-    private BroadcastRecordDispatcher broadcastRecordDispatcher;
+    private BroadcastRecordDispatcher<T> broadcastRecordDispatcher;
 
     /**
      * Create a {@link RoundRobinRecordDispatcher} dispatcher.
      *
      * @param queues the list of queues to which records should be dispatched
      */
-    public RoundRobinRecordDispatcher(List<BlockingQueue<Record>> queues) {
+    public RoundRobinRecordDispatcher(List<BlockingQueue<T>> queues) {
         this.queues = queues;
         this.queuesNumber = queues.size();
-        this.broadcastRecordDispatcher = new BroadcastRecordDispatcher(queues);
+        this.broadcastRecordDispatcher = new BroadcastRecordDispatcher<T>(queues);
     }
 
     @Override
-    public void dispatchRecord(Record record) throws RecordDispatchingException {
+    public void dispatchRecord(T record) throws RecordDispatchingException {
         // when receiving a poising record, broadcast it to all queues
         if (record instanceof PoisonRecord) {
             broadcastRecordDispatcher.dispatchRecord(record);
             return;
         }
         //dispatch records to queues in round-robin fashion
-        BlockingQueue<Record> queue = null;
+        BlockingQueue<T> queue = null;
         try {
             queue = queues.get(next++ % queuesNumber);
             queue.put(record);

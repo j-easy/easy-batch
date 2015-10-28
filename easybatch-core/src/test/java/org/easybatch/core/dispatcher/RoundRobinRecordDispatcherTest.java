@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class RoundRobinRecordDispatcherTest {
 
-    private RoundRobinRecordDispatcher roundRobinRecordDispatcher;
+    private RoundRobinRecordDispatcher<Record> roundRobinRecordDispatcher;
 
     private BlockingQueue<Record> queue1, queue2;
 
@@ -55,7 +55,7 @@ public class RoundRobinRecordDispatcherTest {
     public void setUp() throws Exception {
         queue1 = new LinkedBlockingQueue<Record>();
         queue2 = new LinkedBlockingQueue<Record>();
-        roundRobinRecordDispatcher = new RoundRobinRecordDispatcher(Arrays.asList(queue1, queue2));
+        roundRobinRecordDispatcher = new RoundRobinRecordDispatcher<Record>(Arrays.asList(queue1, queue2));
     }
 
     @Test

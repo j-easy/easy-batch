@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class RandomRecordDispatcherTest {
 
-    private RandomRecordDispatcher randomRecordDispatcher;
+    private RandomRecordDispatcher<Record> randomRecordDispatcher;
 
     private BlockingQueue<Record> queue1, queue2;
 
@@ -55,7 +55,7 @@ public class RandomRecordDispatcherTest {
     public void setUp() throws Exception {
         queue1 = new LinkedBlockingQueue<Record>();
         queue2 = new LinkedBlockingQueue<Record>();
-        randomRecordDispatcher = new RandomRecordDispatcher(Arrays.asList(queue1, queue2));
+        randomRecordDispatcher = new RandomRecordDispatcher<Record>(Arrays.asList(queue1, queue2));
     }
 
     @Test

@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class BroadcastRecordDispatcherTest {
 
-    private BroadcastRecordDispatcher broadcastRecordDispatcher;
+    private BroadcastRecordDispatcher<Record> broadcastRecordDispatcher;
 
     private BlockingQueue<Record> queue1, queue2;
 
@@ -51,7 +51,7 @@ public class BroadcastRecordDispatcherTest {
     public void setUp() throws Exception {
         queue1 = new LinkedBlockingQueue<Record>();
         queue2 = new LinkedBlockingQueue<Record>();
-        broadcastRecordDispatcher = new BroadcastRecordDispatcher(Arrays.asList(queue1, queue2));
+        broadcastRecordDispatcher = new BroadcastRecordDispatcher<Record>(Arrays.asList(queue1, queue2));
     }
 
     @Test

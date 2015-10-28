@@ -24,19 +24,18 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.record.Record;
-
 /**
  * Base class for record dispatchers.
  *
+ * @param <T> the type of record to dispatch
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public abstract class AbstractRecordDispatcher implements RecordDispatcher<Record> {
+public abstract class AbstractRecordDispatcher<T> implements RecordDispatcher<T> {
 
-    protected abstract void dispatchRecord(final Record record) throws RecordDispatchingException;
+    protected abstract void dispatchRecord(final T record) throws RecordDispatchingException;
 
     @Override
-    public Record processRecord(final Record record) throws RecordDispatchingException {
+    public T processRecord(final T record) throws RecordDispatchingException {
         dispatchRecord(record);
         return record;
     }

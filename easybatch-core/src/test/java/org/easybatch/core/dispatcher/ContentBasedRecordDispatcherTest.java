@@ -41,7 +41,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ContentBasedRecordDispatcherTest {
 
-    private ContentBasedRecordDispatcher recordDispatcher;
+    private ContentBasedRecordDispatcher<Record> recordDispatcher;
 
     private BlockingQueue<Record> orangeQueue;
 
@@ -54,13 +54,13 @@ public class ContentBasedRecordDispatcherTest {
     private PoisonRecord poisonRecord;
 
     @Mock
-    private Predicate orangePredicate;
+    private Predicate<Record> orangePredicate;
 
     @Before
     public void setUp() throws Exception {
         orangeQueue = new LinkedBlockingQueue<Record>();
         defaultQueue = new LinkedBlockingQueue<Record>();
-        recordDispatcher = new ContentBasedRecordDispatcherBuilder()
+        recordDispatcher = new ContentBasedRecordDispatcherBuilder<Record>()
                 .when(orangePredicate).dispatchTo(orangeQueue)
                 .otherwise(defaultQueue)
                 .build();

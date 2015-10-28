@@ -24,8 +24,6 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.record.Record;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -33,24 +31,25 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Builder for {@link ContentBasedRecordDispatcher}.
  *
+ * @param <T> type of record
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ContentBasedRecordDispatcherBuilder {
+public class ContentBasedRecordDispatcherBuilder<T> {
 
-    private Predicate predicate;
+    private Predicate<T> predicate;
 
-    private Map<Predicate, BlockingQueue<Record>> queueMap;
+    private Map<Predicate<T>, BlockingQueue<T>> queueMap;
 
     public ContentBasedRecordDispatcherBuilder() {
-        queueMap = new HashMap<Predicate, BlockingQueue<Record>>();
+        queueMap = new HashMap<Predicate<T>, BlockingQueue<T>>();
     }
 
-    public ContentBasedRecordDispatcherBuilder when(Predicate predicate) {
+    public ContentBasedRecordDispatcherBuilder<T> when(Predicate<T> predicate) {
         this.predicate = predicate;
         return this;
     }
 
-    public ContentBasedRecordDispatcherBuilder dispatchTo(BlockingQueue<Record> queue) {
+    public ContentBasedRecordDispatcherBuilder<T> dispatchTo(BlockingQueue<T> queue) {
         if (predicate == null) {
             throw new IllegalStateException("You should specify a predicate before mapping a queue." +
                     " Please ensure that you call when() -> dispatchTo() -> otherwise()  methods in that order");
@@ -60,17 +59,17 @@ public class ContentBasedRecordDispatcherBuilder {
         return this;
     }
 
-    public ContentBasedRecordDispatcherBuilder otherwise(BlockingQueue<Record> queue) {
-        queueMap.put(new DefaultPredicate(), queue);
+    public ContentBasedRecordDispatcherBuilder<T> otherwise(BlockingQueue<T> queue) {
+        queueMap.put(new DefaultPredicate<T>(), queue);
         predicate = null;
         return this;
     }
 
-    public ContentBasedRecordDispatcher build() {
+    public ContentBasedRecordDispatcher<T> build() {
         if (queueMap.isEmpty()) {
             throw new IllegalStateException("You can not build a ContentBasedRecordDispatcher with an empty <Predicate, Queue> mapping.");
         }
-        return new ContentBasedRecordDispatcher(queueMap);
+        return new ContentBasedRecordDispatcher<T>(queueMap);
     }
 
 }
