@@ -18,18 +18,19 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.7</java.version>
         <junit.version>4.12</junit.version>
-        <assertj.version>2.1.0</assertj.version>
+        <assertj.version>2.2.0</assertj.version>
         <mockito.version>1.10.19</mockito.version>
-        <system-rules.version>1.12.1</system-rules.version>
-        <maven-dependency-plugin.version>2.9</maven-dependency-plugin.version>
-        <maven-checkstyle-plugin.version>2.13</maven-checkstyle-plugin.version>
-        <maven-pmd-plugin.version>3.3</maven-pmd-plugin.version>
-        <findbugs-maven-plugin.version>3.0.0</findbugs-maven-plugin.version>
-        <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
-        <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
-        <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
+        <system-rules.version>1.13.0</system-rules.version>
+
+        <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
+        <maven-site-plugin.version>3.4</maven-site-plugin.version>
+        <maven-surefire-plugin.version>2.19</maven-surefire-plugin.version>
+        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
         <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
+        <coveralls-maven-plugin.version>4.0.0</coveralls-maven-plugin.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     </properties>
 
     <modules>
@@ -194,17 +195,17 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5.1</version>
+                    <version>${maven-release-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.eluder.coveralls</groupId>
                     <artifactId>coveralls-maven-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>${coveralls-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>cobertura-maven-plugin</artifactId>
-                    <version>2.7</version>
+                    <version>${cobertura-maven-plugin.version}</version>
                     <configuration>
                         <format>xml</format>
                         <maxmem>256m</maxmem>
@@ -214,18 +215,18 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.3</version>
+                    <version>${maven-compiler-plugin.version}</version>
                     <configuration>
                         <verbose>true</verbose>
-                        <source>1.7</source>
-                        <target>1.7</target>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
                         <showWarnings>true</showWarnings>
                     </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.18.1</version>
+                    <version>${maven-surefire-plugin.version}</version>
                     <configuration>
                         <includes>
                             <include>**/*Test*.java</include>
@@ -236,12 +237,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.4</version>
+                    <version>${maven-site-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.10.3</version>
+                    <version>${maven-javadoc-plugin.version}</version>
                     <configuration>
                         <stylesheet>maven</stylesheet>
                     </configuration>

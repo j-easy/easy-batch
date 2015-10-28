@@ -26,6 +26,7 @@ package org.easybatch.extensions.mongodb;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import org.bson.types.ObjectId;
 import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class MongoDBRecordMapperTest {
 
-    public static final String ID = "507f1f77bcf86cd799439011";
+    public static final ObjectId ID = ObjectId.get();
     public static final String FIRST_NAME = "foo";
     public static final String LAST_NAME = "bar";
     public static final Date DATE = new Date();
@@ -53,7 +54,7 @@ public class MongoDBRecordMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        mapper = new MongoDBRecordMapper<Person>(Person.class);
+        mapper = new MongoDBRecordMapper<>(Person.class);
     }
 
     @Test

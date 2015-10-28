@@ -15,8 +15,8 @@
     <url>http://www.easybatch.org</url>
 
     <properties>
-        <mongo-java-driver.version>2.13.1</mongo-java-driver.version>
-        <morphia.version>0.111</morphia.version>
+        <mongodb-driver.version>3.1.0</mongodb-driver.version>
+        <morphia.version>1.0.1</morphia.version>
     </properties>
 
     <developers>
@@ -63,8 +63,8 @@
 
         <dependency>
             <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>${mongo-java-driver.version}</version>
+            <artifactId>mongodb-driver</artifactId>
+            <version>${mongodb-driver.version}</version>
         </dependency>
 
         <dependency>

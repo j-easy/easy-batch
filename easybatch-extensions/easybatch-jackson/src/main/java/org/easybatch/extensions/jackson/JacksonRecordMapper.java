@@ -24,7 +24,7 @@
 
 package org.easybatch.extensions.jackson;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.json.JsonRecord;
