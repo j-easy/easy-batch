@@ -33,7 +33,7 @@ import org.junit.runners.Suite;
         FixedLengthRecordMapperTest.class,
         FlatFileRecordReaderTest.class,
         FlatFileIntegrationTest.class,
-        FlatFileMultiRecordReaderTest.class
+        FlatFileBatchReaderTest.class
 })
 public class FlatFileTestsSuite {
 }

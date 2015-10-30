@@ -51,9 +51,9 @@ import org.junit.runners.Suite;
         StringRecordReaderTest.class,
         StandardInputRecordReaderTest.class,
         IterableRecordReaderTest.class,
-        IterableMultiRecordReaderTest.class,
-        StringMultiRecordReaderTest.class,
-        FileMultiRecordReaderTest.class,
+        IterableBatchReaderTest.class,
+        StringBatchReaderTest.class,
+        FileBatchReaderTest.class,
         // mapper
         ObjectMapperTest.class,
         GenericRecordMapperTest.class,

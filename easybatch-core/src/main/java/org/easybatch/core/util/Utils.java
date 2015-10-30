@@ -24,7 +24,7 @@
 
 package org.easybatch.core.util;
 
-import org.easybatch.core.record.MultiRecord;
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 
 import java.beans.BeanInfo;
@@ -112,8 +112,8 @@ public abstract class Utils {
         return Record.class.isAssignableFrom(record.getClass());
     }
 
-    public static boolean isMultiRecord(final Object record) {
-        return MultiRecord.class.isAssignableFrom(record.getClass());
+    public static boolean isBatch(final Object record) {
+        return Batch.class.isAssignableFrom(record.getClass());
     }
 
     public static boolean isCollection(final Object record) {
