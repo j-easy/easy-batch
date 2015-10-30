@@ -84,7 +84,7 @@ public class JmsIntegrationTest {
         queueSender.send(new JmsPoisonMessage());
 
         Job job = aNewJob()
-                .reader(new JmsRecordReader(queueConnectionFactory, queue))
+                .reader(new JmsQueueRecordReader(queueConnectionFactory, queue))
                 .filter(new JmsPoisonRecordFilter())
                 .processor(new RecordCollector<JmsRecord>())
                 .jobListener(new JmsQueueSessionListener(queueSession))

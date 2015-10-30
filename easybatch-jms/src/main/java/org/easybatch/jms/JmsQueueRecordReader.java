@@ -44,7 +44,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JmsRecordReader implements RecordReader {
+public class JmsQueueRecordReader implements RecordReader {
 
     private long currentRecordNumber;
 
@@ -66,7 +66,7 @@ public class JmsRecordReader implements RecordReader {
      * @param queueConnectionFactory the queue connection factory
      * @param queue                  the jms queue to read records from
      */
-    public JmsRecordReader(final QueueConnectionFactory queueConnectionFactory, final Queue queue) {
+    public JmsQueueRecordReader(final QueueConnectionFactory queueConnectionFactory, final Queue queue) {
         checkNotNull(queueConnectionFactory, "queue connection factory");
         checkNotNull(queue, "queue");
         this.queueConnectionFactory = queueConnectionFactory;

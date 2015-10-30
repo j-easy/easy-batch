@@ -39,11 +39,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class JmsRecordReaderTest {
+public class JmsQueueRecordReaderTest {
 
     public static final String EXPECTED_DATA_SOURCE_NAME = "JMS queue: queue";
 
-    private JmsRecordReader jmsRecordReader;
+    private JmsQueueRecordReader jmsQueueRecordReader;
 
     @Mock
     private QueueConnectionFactory queueConnectionFactory;
@@ -60,7 +60,7 @@ public class JmsRecordReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        jmsRecordReader = new JmsRecordReader(queueConnectionFactory, queue);
+        jmsQueueRecordReader = new JmsQueueRecordReader(queueConnectionFactory, queue);
 
         when(queue.getQueueName()).thenReturn("queue");
         when(queueConnectionFactory.createQueueConnection()).thenReturn(queueConnection);
@@ -71,7 +71,7 @@ public class JmsRecordReaderTest {
 
     @Test
     public void testOpen() throws Exception {
-        jmsRecordReader.open();
+        jmsQueueRecordReader.open();
 
         verify(queueConnectionFactory).createQueueConnection();
         verify(queueConnection).createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -81,9 +81,9 @@ public class JmsRecordReaderTest {
 
     @Test
     public void testReadNextRecord() throws Exception {
-        jmsRecordReader.open();
+        jmsQueueRecordReader.open();
 
-        Record record = jmsRecordReader.readNextRecord();
+        Record record = jmsQueueRecordReader.readNextRecord();
 
         verify(queueReceiver).receive();
         assertThat(record).isNotNull().isInstanceOf(JmsRecord.class);
@@ -92,16 +92,16 @@ public class JmsRecordReaderTest {
 
     @Test
     public void testGetTotalRecords() throws Exception {
-        assertThat(jmsRecordReader.getTotalRecords()).isNull();
+        assertThat(jmsQueueRecordReader.getTotalRecords()).isNull();
     }
 
     @Test
     public void testGetDataSourceName() throws Exception {
-        assertThat(jmsRecordReader.getDataSourceName()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
+        assertThat(jmsQueueRecordReader.getDataSourceName()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
     }
 
     @After
     public void tearDown() throws Exception {
-        jmsRecordReader.close();
+        jmsQueueRecordReader.close();
     }
 }
