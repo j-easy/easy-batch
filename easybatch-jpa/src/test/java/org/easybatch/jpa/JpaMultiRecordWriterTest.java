@@ -25,7 +25,8 @@
 package org.easybatch.jpa;
 
 import org.easybatch.core.job.JobReport;
-import org.easybatch.core.mapper.GenericMultiRecordMapper;
+import org.easybatch.core.mapper.GenericRecordMapper;
+import org.easybatch.core.mapper.MultiRecordMapper;
 import org.easybatch.core.reader.IterableMultiRecordReader;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -76,7 +77,7 @@ public class JpaMultiRecordWriterTest {
 
         JobReport jobReport = aNewJob()
                 .reader(new IterableMultiRecordReader<Tweet>(tweets, chunkSize))
-                .mapper(new GenericMultiRecordMapper<Tweet>())
+                .mapper(new MultiRecordMapper(new GenericRecordMapper<Tweet>()))
                 .writer(new JpaMultiRecordWriter<Tweet>(entityManager))
                 .pipelineListener(new JpaTransactionListener(entityManager))
                 .jobListener(new JpaEntityManagerListener(entityManager))

@@ -25,7 +25,8 @@
 package org.easybatch.extensions.hibernate;
 
 import org.easybatch.core.job.JobReport;
-import org.easybatch.core.mapper.GenericMultiRecordMapper;
+import org.easybatch.core.mapper.GenericRecordMapper;
+import org.easybatch.core.mapper.MultiRecordMapper;
 import org.easybatch.core.reader.IterableMultiRecordReader;
 import org.hibernate.Session;
 import org.junit.AfterClass;
@@ -69,7 +70,7 @@ public class HibernateMultiRecordWriterTest {
 
         JobReport jobReport = aNewJob()
                 .reader(new IterableMultiRecordReader<Tweet>(tweets, chunkSize))
-                .mapper(new GenericMultiRecordMapper<Tweet>())
+                .mapper(new MultiRecordMapper(new GenericRecordMapper<Tweet>()))
                 .writer(new HibernateMultiRecordWriter<Tweet>(session))
                 .pipelineListener(new HibernateTransactionListener(session))
                 .jobListener(new HibernateSessionListener(session))

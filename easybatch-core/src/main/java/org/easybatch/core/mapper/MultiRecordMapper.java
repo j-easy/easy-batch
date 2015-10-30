@@ -24,37 +24,38 @@
 
 package org.easybatch.core.mapper;
 
-import org.easybatch.core.record.MultiRecord;
-import org.easybatch.core.record.Record;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.easybatch.core.record.MultiRecord;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.util.Utils;
 
 /**
- * This mapper extracts the list of objects contained in a MultiRecord.
- * <p>
- * Example: Let MR = MultiRecord {
- * <p>
- * record1: StringRecord with payload "foo",
- * <p>
- * record2: StringRecord with payload "bar"
- * <p>
- * }
- * <p>
- * GenericMultiRecordMapper.mapRecord(MR) yields in ["foo", "bar"]
+ * Map a {@link MultiRecord} to a list of domain objects using a delegate {@link RecordMapper}.
  *
+ * @param <T> The target domain object type.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class GenericMultiRecordMapper<P> implements RecordMapper<MultiRecord, List<P>> {
+public class MultiRecordMapper<T> implements RecordMapper<MultiRecord, List<T>> {
+
+    private RecordMapper delegate;
+
+    /**
+     * Create a {@link MultiRecordMapper}.
+     *
+     * @param delegate the delegate {@link RecordMapper}
+     */
+    public MultiRecordMapper(final RecordMapper delegate) {
+        Utils.checkNotNull(delegate, "record mapper");
+        this.delegate = delegate;
+    }
 
     @Override
-    public List<P> processRecord(final MultiRecord multiRecord) throws RecordMappingException {
-        List<Record> records = multiRecord.getPayload();
-        List<P> payloads = new ArrayList<P>();
-        for (Record r : records) {
-            payloads.add((P) r.getPayload());
-
+    public List<T> processRecord(final MultiRecord multiRecord) throws RecordMappingException {
+        List<T> records = new ArrayList<>();
+        for (Record record : multiRecord.getPayload()) {
+            records.add((T) delegate.processRecord(record));
         }
-        return payloads;
+        return records;
     }
 }
