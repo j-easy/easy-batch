@@ -22,46 +22,38 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.extensions.jackson;
+package org.easybatch.core.marshaller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.marshaller.RecordMarshallingException;
-
-import java.io.IOException;
-
-import static org.easybatch.core.util.Utils.checkNotNull;
+import java.util.ArrayList;
+import java.util.List;
+import org.easybatch.core.processor.RecordProcessor;
+import org.easybatch.core.util.Utils;
 
 /**
- * Marshals a POJO to Json using <a href="http://jackson.codehaus.org/">Jackson</a>.
- *
+ * Marshal a list of objects using a delegate {@link RecordMarshaller}.
+ * 
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JacksonRecordMarshaller implements RecordMarshaller<Object, String> {
-
-    private ObjectMapper mapper;
-
-    public JacksonRecordMarshaller() {
-        mapper = new ObjectMapper();
-    }
+public class MultiRecordMarshaller implements RecordMarshaller<List<Object>, List<Object>> {
+    
+    private RecordMarshaller delegate;
 
     /**
-     * Create a Json record marshaller.
+     * Create a {@link MultiRecordMarshaller}.
      *
-     * @param mapper a pre-configured {@link ObjectMapper} instance
+     * @param delegate the delegate {@link RecordMarshaller}
      */
-    public JacksonRecordMarshaller(final ObjectMapper mapper) {
-        checkNotNull(mapper, "object mapper");
-        this.mapper = mapper;
+    public MultiRecordMarshaller(final RecordMarshaller delegate) {
+        Utils.checkNotNull(delegate, "record marshaller");
+        this.delegate = delegate;
     }
 
     @Override
-    public String processRecord(final Object record) throws RecordMarshallingException {
-        try {
-            return mapper.writeValueAsString(record);
-        } catch (IOException e) {
-            throw new RecordMarshallingException(e);
+    public List<Object> processRecord(final List<Object> records) throws RecordMarshallingException {
+        List<Object> marshalledRecords = new ArrayList<>();
+        for (Object record : records) {
+            marshalledRecords.add(delegate.processRecord(record));
         }
+        return marshalledRecords;
     }
-
 }

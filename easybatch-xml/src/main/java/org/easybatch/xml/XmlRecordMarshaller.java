@@ -40,7 +40,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class XmlRecordMarshaller implements RecordMarshaller {
+public class XmlRecordMarshaller implements RecordMarshaller<Object, String> {
 
     private Marshaller marshaller;
 

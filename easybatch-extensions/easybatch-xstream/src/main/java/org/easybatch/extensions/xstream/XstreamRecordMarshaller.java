@@ -34,7 +34,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * 
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class XstreamRecordMarshaller implements RecordMarshaller {
+public class XstreamRecordMarshaller implements RecordMarshaller<Object, String> {
 
     private XStream xStream;
 

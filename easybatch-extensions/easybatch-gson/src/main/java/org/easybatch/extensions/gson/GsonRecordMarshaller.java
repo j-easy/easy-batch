@@ -35,7 +35,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class GsonRecordMarshaller implements RecordMarshaller {
+public class GsonRecordMarshaller implements RecordMarshaller<Object, String> {
 
     private Gson gson;
 

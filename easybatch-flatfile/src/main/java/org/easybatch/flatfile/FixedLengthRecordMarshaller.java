@@ -35,7 +35,7 @@ import java.beans.IntrospectionException;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class FixedLengthRecordMarshaller implements RecordMarshaller {
+public class FixedLengthRecordMarshaller implements RecordMarshaller<Object, String> {
 
     private DelimitedRecordMarshaller delimitedRecordMarshaller;
 

@@ -29,18 +29,19 @@ import org.easybatch.core.processor.RecordProcessor;
 /**
  * Marker interface for all record marshallers.
  *
- * @param <T> the type of object to marshall
+ * @param <I> the type of object to marshall
+ * @param <O> the type of marshalled object
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface RecordMarshaller<T> extends RecordProcessor<T, String> {
+public interface RecordMarshaller<I, O> extends RecordProcessor<I, O> {
 
     /**
-     * Marshal a record to a specific format as a String.
+     * Marshal a record to a specific format.
      *
      * @param record the record to marshal.
      * @return the marshalled record
      * @throws RecordMarshallingException if an error occurs during record marshalling
      */
     @Override
-    String processRecord(T record) throws RecordMarshallingException;
+    O processRecord(I record) throws RecordMarshallingException;
 }

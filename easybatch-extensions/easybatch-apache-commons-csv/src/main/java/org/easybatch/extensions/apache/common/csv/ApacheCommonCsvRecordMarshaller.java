@@ -40,7 +40,7 @@ import java.io.StringWriter;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller {
+public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller<Object, String> {
     
     public static final char DEFAULT_DELIMITER = ',';
 
