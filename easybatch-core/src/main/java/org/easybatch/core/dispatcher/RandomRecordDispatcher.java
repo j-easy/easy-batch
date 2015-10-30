@@ -69,7 +69,7 @@ public class RandomRecordDispatcher<T> extends AbstractRecordDispatcher<T> {
         this.queues = queues;
         this.queuesNumber = queues.size();
         this.random = new Random();
-        this.broadcastRecordDispatcher = new BroadcastRecordDispatcher<T>(queues);
+        this.broadcastRecordDispatcher = new BroadcastRecordDispatcher<>(queues);
     }
 
     @Override

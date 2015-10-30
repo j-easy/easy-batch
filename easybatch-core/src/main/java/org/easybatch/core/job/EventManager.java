@@ -39,9 +39,9 @@ import java.util.Set;
  */
 class EventManager {
 
-    private Set<JobListener> jobListeners = new LinkedHashSet<JobListener>();
-    private Set<RecordReaderListener> recordReaderListeners = new LinkedHashSet<RecordReaderListener>();
-    private Set<PipelineListener> pipelineListeners = new LinkedHashSet<PipelineListener>();
+    private Set<JobListener> jobListeners = new LinkedHashSet<>();
+    private Set<RecordReaderListener> recordReaderListeners = new LinkedHashSet<>();
+    private Set<PipelineListener> pipelineListeners = new LinkedHashSet<>();
 
     public void addJobListener(JobListener jobListener) {
         jobListeners.add(jobListener);

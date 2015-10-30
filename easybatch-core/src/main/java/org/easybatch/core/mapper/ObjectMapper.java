@@ -132,7 +132,7 @@ public class ObjectMapper {
     }
 
     private void initializeSetters() {
-        setters = new HashMap<String, Method>();
+        setters = new HashMap<>();
         try {
             BeanInfo beanInfo = Introspector.getBeanInfo(recordClass);
             PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
@@ -168,7 +168,7 @@ public class ObjectMapper {
     }
 
     private void initializeTypeConverters() {
-        typeConverters = new HashMap<Class, TypeConverter>();
+        typeConverters = new HashMap<>();
         typeConverters.put(AtomicInteger.class, new AtomicIntegerTypeConverter());
         typeConverters.put(AtomicLong.class, new AtomicLongTypeConverter());
         typeConverters.put(BigDecimal.class, new BigDecimalTypeConverter());

@@ -39,7 +39,7 @@ public class IterableBatchReader<T> extends AbstractBatchReader {
      * @param batchSize the batch size
      */
     public IterableBatchReader(final Iterable<T> dataSource, final int batchSize) {
-        super(batchSize, new IterableRecordReader<T>(dataSource));
+        super(batchSize, new IterableRecordReader<>(dataSource));
     }
 
 }

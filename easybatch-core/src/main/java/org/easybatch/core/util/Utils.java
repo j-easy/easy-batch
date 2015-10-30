@@ -98,7 +98,7 @@ public abstract class Utils {
     }
 
     public static Map<String, Method> getGetters(final Class type) throws IntrospectionException {
-        Map<String, Method> getters = new HashMap<String, Method>();
+        Map<String, Method> getters = new HashMap<>();
         BeanInfo beanInfo = Introspector.getBeanInfo(type);
         PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
         for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {

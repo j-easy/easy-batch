@@ -54,7 +54,7 @@ public abstract class AbstractBatchReader extends BatchReader {
 
     @Override
     public Batch readNextRecord() throws RecordReadingException {
-        List<Record> records = new ArrayList<Record>();
+        List<Record> records = new ArrayList<>();
         int items = 0;
         while (hasNextRecord() && items++ < batchSize) {
             records.add(delegate.readNextRecord());

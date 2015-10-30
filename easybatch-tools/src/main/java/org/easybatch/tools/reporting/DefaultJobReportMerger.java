@@ -63,10 +63,10 @@ public class DefaultJobReportMerger implements JobReportMerger {
     @Override
     public JobReport mergerReports(JobReport... jobReports) {
 
-        List<Long> startTimes = new ArrayList<Long>();
-        List<Long> endTimes = new ArrayList<Long>();
-        List<Object> results = new ArrayList<Object>();
-        List<String> dataSources = new ArrayList<String>();
+        List<Long> startTimes = new ArrayList<>();
+        List<Long> endTimes = new ArrayList<>();
+        List<Object> results = new ArrayList<>();
+        List<String> dataSources = new ArrayList<>();
         long totalRecords = 0;
 
         JobReport finalJobReport = new JobReport();

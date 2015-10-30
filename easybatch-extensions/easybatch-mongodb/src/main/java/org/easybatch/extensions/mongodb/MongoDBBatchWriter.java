@@ -74,7 +74,7 @@ public class MongoDBBatchWriter extends AbstractBatchWriter {
     }
 
     private List<DBObject> asDocuments(final List records) {
-        List<DBObject> documents = new ArrayList<DBObject>();
+        List<DBObject> documents = new ArrayList<>();
         for (Object record : records) {
             if (DBObject.class.isAssignableFrom(record.getClass())) {
                 documents.add((DBObject) record);

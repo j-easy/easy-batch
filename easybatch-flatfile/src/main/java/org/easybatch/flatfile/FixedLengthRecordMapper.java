@@ -82,7 +82,7 @@ public class FixedLengthRecordMapper extends AbstractRecordMapper implements Rec
     public Object processRecord(final StringRecord record) throws RecordMappingException {
 
         FlatFileRecord flatFileRecord = parseRecord(record);
-        Map<String, String> fieldsContents = new HashMap<String, String>();
+        Map<String, String> fieldsContents = new HashMap<>();
         for (FlatFileField flatFileField : flatFileRecord.getFlatFileFields()) {
             String fieldName = fieldNames[flatFileField.getIndex()];
             String fieldValue = flatFileField.getRawContent();

@@ -54,11 +54,11 @@ public class ContentBasedRecordDispatcher<T> extends AbstractRecordDispatcher<T>
 
     ContentBasedRecordDispatcher(Map<Predicate<T>, BlockingQueue<T>> queueMap) {
         this.queueMap = queueMap;
-        List<BlockingQueue<T>> queues = new ArrayList<BlockingQueue<T>>();
+        List<BlockingQueue<T>> queues = new ArrayList<>();
         for (BlockingQueue<T> queue : queueMap.values()) {
             queues.add(queue);
         }
-        broadcastRecordDispatcher = new BroadcastRecordDispatcher<T>(queues);
+        broadcastRecordDispatcher = new BroadcastRecordDispatcher<>(queues);
     }
 
     @Override

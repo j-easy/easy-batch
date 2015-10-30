@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class RecordCollector<T> implements ComputationalRecordProcessor<T, T, List<T>> {
 
-    private List<T> items = new ArrayList<T>();
+    private List<T> items = new ArrayList<>();
 
     @Override
     public T processRecord(final T item) {

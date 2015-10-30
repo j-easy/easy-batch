@@ -44,7 +44,7 @@ class FlatFileRecord extends StringRecord {
 
     public FlatFileRecord(final Header header, final String payload) {
         super(header, payload);
-        flatFileFields = new ArrayList<FlatFileField>();
+        flatFileFields = new ArrayList<>();
     }
 
     public List<FlatFileField> getFlatFileFields() {

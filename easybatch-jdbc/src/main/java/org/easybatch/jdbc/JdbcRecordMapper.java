@@ -74,7 +74,7 @@ public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapp
         try {
             initFieldNames(resultSet);
 
-            Map<String, String> values = new HashMap<String, String>();
+            Map<String, String> values = new HashMap<>();
             for (int i = 0; i < fields.length; i++) {
                 values.put(fields[i], resultSet.getString(i + 1));
             }

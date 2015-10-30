@@ -54,7 +54,7 @@ public class JsonBatchReader extends AbstractBatchReader {
 
     @Override
     public Batch readNextRecord() throws RecordReadingException {
-        List<Record> records = new ArrayList<Record>();
+        List<Record> records = new ArrayList<>();
         int items = 1;
         do {
             records.add(delegate.readNextRecord());

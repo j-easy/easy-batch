@@ -86,7 +86,7 @@ public class FileRecordReader implements RecordReader {
     }
     
     private List<File> getFiles(final File directory) {
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         File[] filesList = directory.listFiles();
         if (filesList != null) {
             for (File file : filesList) {

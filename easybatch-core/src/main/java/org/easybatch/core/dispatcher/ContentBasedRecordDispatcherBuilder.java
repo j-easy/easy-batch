@@ -41,7 +41,7 @@ public class ContentBasedRecordDispatcherBuilder<T> {
     private Map<Predicate<T>, BlockingQueue<T>> queueMap;
 
     public ContentBasedRecordDispatcherBuilder() {
-        queueMap = new HashMap<Predicate<T>, BlockingQueue<T>>();
+        queueMap = new HashMap<>();
     }
 
     public ContentBasedRecordDispatcherBuilder<T> when(Predicate<T> predicate) {
@@ -69,7 +69,7 @@ public class ContentBasedRecordDispatcherBuilder<T> {
         if (queueMap.isEmpty()) {
             throw new IllegalStateException("You can not build a ContentBasedRecordDispatcher with an empty <Predicate, Queue> mapping.");
         }
-        return new ContentBasedRecordDispatcher<T>(queueMap);
+        return new ContentBasedRecordDispatcher<>(queueMap);
     }
 
 }

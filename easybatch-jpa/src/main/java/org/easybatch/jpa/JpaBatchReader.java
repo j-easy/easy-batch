@@ -45,7 +45,7 @@ public class JpaBatchReader<T> extends AbstractBatchReader {
      * @param type                 the target type
      */
     public JpaBatchReader(final int batchSize, final EntityManagerFactory entityManagerFactory, final String query, final Class<T> type) {
-        super(batchSize, new JpaRecordReader<T>(entityManagerFactory, query, type));
+        super(batchSize, new JpaRecordReader<>(entityManagerFactory, query, type));
     }
 
 }

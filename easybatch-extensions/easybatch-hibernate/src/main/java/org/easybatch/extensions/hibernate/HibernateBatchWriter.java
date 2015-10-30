@@ -45,7 +45,7 @@ public class HibernateBatchWriter<T> extends AbstractBatchWriter {
      * @param session the session to use to write objects
      */
     public HibernateBatchWriter(final Session session) {
-        this.hibernateRecordWriter = new HibernateRecordWriter<T>(session);
+        this.hibernateRecordWriter = new HibernateRecordWriter<>(session);
     }
 
     @Override

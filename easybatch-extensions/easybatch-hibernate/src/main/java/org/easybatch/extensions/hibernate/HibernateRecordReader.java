@@ -94,7 +94,7 @@ public class HibernateRecordReader<T> implements RecordReader {
     @Override
     public GenericRecord<T> readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new GenericRecord<T>(header, (T) scrollableResults.get()[0]);
+        return new GenericRecord<>(header, (T) scrollableResults.get()[0]);
     }
 
     @Override

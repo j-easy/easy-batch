@@ -40,7 +40,7 @@ public class JpaBatchWriter<T> extends AbstractBatchWriter {
     private JpaRecordWriter<T> jpaRecordWriter;
 
     public JpaBatchWriter(EntityManager entityManager) {
-        this.jpaRecordWriter = new JpaRecordWriter<T>(entityManager);
+        this.jpaRecordWriter = new JpaRecordWriter<>(entityManager);
     }
 
     @Override

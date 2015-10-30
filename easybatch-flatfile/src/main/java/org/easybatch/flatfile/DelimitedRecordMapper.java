@@ -168,7 +168,7 @@ public class DelimitedRecordMapper extends AbstractRecordMapper implements Recor
     @Override
     public Object processRecord(final StringRecord record) throws RecordMappingException {
         FlatFileRecord flatFileRecord = parseRecord(record);
-        Map<String, String> fieldsContents = new HashMap<String, String>();
+        Map<String, String> fieldsContents = new HashMap<>();
         int index = 0;
         for (FlatFileField flatFileField : flatFileRecord.getFlatFileFields()) {
             String fieldName;
@@ -196,7 +196,7 @@ public class DelimitedRecordMapper extends AbstractRecordMapper implements Recor
 
         checkQualifier(tokens);
 
-        List<FlatFileField> fields = new ArrayList<FlatFileField>();
+        List<FlatFileField> fields = new ArrayList<>();
         int index = 0;
         for (String token : tokens) {
             token = trimWhitespaces(token);

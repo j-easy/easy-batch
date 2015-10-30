@@ -79,7 +79,7 @@ public class BlockingQueueRecordReader<T> implements RecordReader {
             T record = queue.take();
             stop = record instanceof PoisonRecord;
             Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-            return new GenericRecord<T>(header, record);
+            return new GenericRecord<>(header, record);
         } catch (InterruptedException e) {
             throw new RecordReadingException("Unable to read next record from the queue", e);
         }

@@ -67,7 +67,7 @@ public class RoundRobinRecordDispatcher<T> extends AbstractRecordDispatcher<T> {
     public RoundRobinRecordDispatcher(List<BlockingQueue<T>> queues) {
         this.queues = queues;
         this.queuesNumber = queues.size();
-        this.broadcastRecordDispatcher = new BroadcastRecordDispatcher<T>(queues);
+        this.broadcastRecordDispatcher = new BroadcastRecordDispatcher<>(queues);
     }
 
     @Override
