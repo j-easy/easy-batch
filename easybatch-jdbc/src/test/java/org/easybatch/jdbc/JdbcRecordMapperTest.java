@@ -79,7 +79,7 @@ public class JdbcRecordMapperTest {
     @Test
     public void testMapRecordWithCustomMapping() throws Exception {
 
-        tweetMapper = new JdbcRecordMapper(Tweet.class, new String[] {"id", "user", "message"});
+        tweetMapper = new JdbcRecordMapper(Tweet.class, "id", "user", "message");
 
         when(payload.getMetaData()).thenReturn(metadata);
         when(metadata.getColumnCount()).thenReturn(3);

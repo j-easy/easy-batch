@@ -57,7 +57,7 @@ public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller {
      * @param fields the list of fields to marshal in order
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(final Class type, final String[] fields) throws IntrospectionException {
+    public ApacheCommonCsvRecordMarshaller(final Class type, final String... fields) throws IntrospectionException {
         this(type, fields, DEFAULT_DELIMITER, DEFAULT_QUALIFIER);
     }
 

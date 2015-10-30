@@ -35,7 +35,7 @@ public class FixedLengthRecordMarshallerTest {
     
     @Before
     public void setUp() throws Exception {
-        marshaller = new FixedLengthRecordMarshaller(Bean.class, new String[] {"field1", "field2", "field3"});
+        marshaller = new FixedLengthRecordMarshaller(Bean.class, "field1", "field2", "field3");
     }
 
     @Test

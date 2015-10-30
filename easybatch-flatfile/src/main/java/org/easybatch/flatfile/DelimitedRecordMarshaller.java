@@ -58,7 +58,7 @@ public class DelimitedRecordMarshaller implements RecordMarshaller {
      * @param fields the list of fields to marshal in order
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public DelimitedRecordMarshaller(final Class type, final String[] fields) throws IntrospectionException {
+    public DelimitedRecordMarshaller(final Class type, final String... fields) throws IntrospectionException {
         this(type, fields, DEFAULT_DELIMITER, DEFAULT_QUALIFIER);
     }
 

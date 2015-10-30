@@ -46,7 +46,7 @@ public class FixedLengthRecordMarshaller implements RecordMarshaller {
      * @param fields the list of fields to marshal in order
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public FixedLengthRecordMarshaller(final Class type, final String[] fields) throws IntrospectionException {
+    public FixedLengthRecordMarshaller(final Class type, final String... fields) throws IntrospectionException {
         delimitedRecordMarshaller = new DelimitedRecordMarshaller(type, fields, "", "");
     }
 

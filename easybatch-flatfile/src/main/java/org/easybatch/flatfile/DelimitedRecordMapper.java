@@ -108,7 +108,7 @@ public class DelimitedRecordMapper extends AbstractRecordMapper implements Recor
      * @param recordClass the target domain object class
      * @param fieldNames  a String array containing target type field names in the same order as in the delimited flat file.
      */
-    public DelimitedRecordMapper(final Class recordClass, final String[] fieldNames) {
+    public DelimitedRecordMapper(final Class recordClass, String... fieldNames) {
         this(recordClass);
         this.fieldNames = fieldNames;
         this.recordExpectedLength = fieldNames.length;
@@ -133,7 +133,7 @@ public class DelimitedRecordMapper extends AbstractRecordMapper implements Recor
      * @param recordClass     the target domain object class
      * @param fieldsPositions array of indexes of fields to retain
      */
-    public DelimitedRecordMapper(final Class recordClass, final Integer[] fieldsPositions) {
+    public DelimitedRecordMapper(final Class recordClass, final Integer... fieldsPositions) {
         this(recordClass);
         this.fieldsPositions = Arrays.asList(fieldsPositions);
     }

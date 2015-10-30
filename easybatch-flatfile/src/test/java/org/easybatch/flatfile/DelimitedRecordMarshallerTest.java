@@ -35,7 +35,7 @@ public class DelimitedRecordMarshallerTest {
 
     @Before
     public void setUp() throws Exception {
-        marshaller = new DelimitedRecordMarshaller(Person.class, new String[]{"firstName", "lastName", "married"});
+        marshaller = new DelimitedRecordMarshaller(Person.class, "firstName", "lastName", "married");
     }
 
     @Test

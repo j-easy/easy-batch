@@ -61,7 +61,7 @@ public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapp
      * @param recordClass the target domain object class
      * @param fields      the list of fields names
      */
-    public JdbcRecordMapper(final Class recordClass, String[] fields) {
+    public JdbcRecordMapper(final Class recordClass, final String... fields) {
         this(recordClass);
         this.fields = fields;
     }
