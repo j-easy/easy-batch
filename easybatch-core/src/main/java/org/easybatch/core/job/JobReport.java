@@ -66,7 +66,7 @@ public class JobReport implements Serializable {
     }
 
     public Object getResult() {
-        return result.get();
+        return result == null ? null : result.get();
     }
 
     public void setJobResult(final JobResult result) {
