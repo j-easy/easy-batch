@@ -28,13 +28,15 @@ import org.easybatch.core.converter.*;
 import org.easybatch.core.dispatcher.*;
 import org.easybatch.core.filter.*;
 import org.easybatch.core.job.*;
+import org.easybatch.core.mapper.BatchMapperTest;
 import org.easybatch.core.mapper.GenericRecordMapperTest;
 import org.easybatch.core.mapper.ObjectMapperTest;
+import org.easybatch.core.marshaller.BatchMarshallerTest;
+import org.easybatch.core.processor.BatchProcessorTest;
 import org.easybatch.core.processor.RecordCollectorTest;
 import org.easybatch.core.reader.*;
-import org.easybatch.core.writer.FileRecordWriterTest;
-import org.easybatch.core.writer.OutputStreamRecordWriterTest;
-import org.easybatch.core.writer.StandardOutputRecordWriterTest;
+import org.easybatch.core.validator.BatchValidatorTest;
+import org.easybatch.core.writer.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -47,16 +49,22 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         // reader
         FileRecordReaderTest.class,
+        FileBatchReaderTest.class,
         BlockingQueueRecordReaderTest.class,
-        StringRecordReaderTest.class,
         StandardInputRecordReaderTest.class,
         IterableRecordReaderTest.class,
         IterableBatchReaderTest.class,
+        StringRecordReaderTest.class,
         StringBatchReaderTest.class,
-        FileBatchReaderTest.class,
+
         // mapper
+        BatchMapperTest.class,
         ObjectMapperTest.class,
         GenericRecordMapperTest.class,
+
+        // marshaller
+        BatchMarshallerTest.class,
+
         // converter
         AtomicIntegerTypeConverterTest.class,
         AtomicLongTypeConverterTest.class,
@@ -72,6 +80,7 @@ import org.junit.runners.Suite;
         IntegerTypeConverterTest.class,
         LongTypeConverterTest.class,
         ShortTypeConverterTest.class,
+
         // filter
         StartWithStringRecordFilterTest.class,
         EndWithStringRecordFilterTest.class,
@@ -84,18 +93,35 @@ import org.junit.runners.Suite;
         RecordNumberGreaterThanFilterTest.class,
         RecordNumberLowerThanFilterTest.class,
         EmptyRecordFilterTest.class,
+        BatchFilterTest.class,
+
         // dispatcher
         BroadcastRecordDispatcherTest.class,
         ContentBasedRecordDispatcherTest.class,
         ContentBasedRecordDispatcherBuilderTest.class,
         RandomRecordDispatcherTest.class,
         RoundRobinRecordDispatcherTest.class,
+
         //writer
-        OutputStreamRecordWriterTest.class,
-        StandardOutputRecordWriterTest.class,
+        BlockingQueueRecordWriterTest.class,
+        CollectionBatchWriterTest.class,
+        CollectionRecordWriterTest.class,
         FileRecordWriterTest.class,
+        FileBatchWriterTest.class,
+        OutputStreamRecordWriterTest.class,
+        OutputStreamBatchWriterTest.class,
+        StandardOutputRecordWriterTest.class,
+        StandardOutputBatchWriterTest.class,
+        StringRecordWriterTest.class,
+        StringBatchWriterTest.class,
+
         // processor
+        BatchProcessorTest.class,
         RecordCollectorTest.class,
+
+        // validator
+        BatchValidatorTest.class,
+
         // job
         JobReportTest.class,
         JobImplTest.class,
