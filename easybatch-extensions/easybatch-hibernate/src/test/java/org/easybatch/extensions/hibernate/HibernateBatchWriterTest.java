@@ -69,9 +69,9 @@ public class HibernateBatchWriterTest {
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
         JobReport jobReport = aNewJob()
-                .reader(new IterableBatchReader<Tweet>(tweets, batchSize))
+                .reader(new IterableBatchReader<>(tweets, batchSize))
                 .mapper(new BatchMapper(new GenericRecordMapper<Tweet>()))
-                .writer(new HibernateBatchWriter<Tweet>(session))
+                .writer(new HibernateBatchWriter(session))
                 .pipelineListener(new HibernateTransactionListener(session))
                 .jobListener(new HibernateSessionListener(session))
                 .call();
@@ -86,7 +86,7 @@ public class HibernateBatchWriterTest {
     }
 
     private List<Tweet> createTweets(Integer nbTweetsToInsert) {
-        List<Tweet> tweets = new ArrayList<Tweet>();
+        List<Tweet> tweets = new ArrayList<>();
         for (int i = 1; i <= nbTweetsToInsert; i++) {
             tweets.add(new Tweet(i, "user " + i, "hello " + i));
         }

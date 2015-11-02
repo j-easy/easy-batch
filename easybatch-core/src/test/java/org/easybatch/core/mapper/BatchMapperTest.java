@@ -49,11 +49,11 @@ public class BatchMapperTest {
     @Mock
     private RecordMapper<Object, Object> recordMapper;
     
-    private BatchMapper<Object> batchMapper;
+    private BatchMapper batchMapper;
 
     @Before
     public void setUp() throws Exception {
-        batchMapper = new BatchMapper<>(recordMapper);
+        batchMapper = new BatchMapper(recordMapper);
         when(recordMapper.processRecord(record1)).thenReturn(mappedRecord1);
         when(recordMapper.processRecord(record2)).thenReturn(mappedRecord2);
         when(batch.getPayload()).thenReturn(Arrays.asList(record1, record2));

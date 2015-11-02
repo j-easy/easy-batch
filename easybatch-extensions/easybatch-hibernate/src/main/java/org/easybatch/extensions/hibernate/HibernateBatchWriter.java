@@ -35,9 +35,9 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class HibernateBatchWriter<T> extends AbstractBatchWriter {
+public class HibernateBatchWriter extends AbstractBatchWriter {
 
-    private HibernateRecordWriter<T> hibernateRecordWriter;
+    private HibernateRecordWriter hibernateRecordWriter;
 
     /**
      * Create a {@link HibernateBatchWriter}.
@@ -45,14 +45,14 @@ public class HibernateBatchWriter<T> extends AbstractBatchWriter {
      * @param session the session to use to write objects
      */
     public HibernateBatchWriter(final Session session) {
-        this.hibernateRecordWriter = new HibernateRecordWriter<>(session);
+        this.hibernateRecordWriter = new HibernateRecordWriter(session);
     }
 
     @Override
     protected void writeRecord(Object batch) throws RecordWritingException {
         List records = getRecords(batch);
         for (Object record : records) {
-            hibernateRecordWriter.writeRecord((T) record);
+            hibernateRecordWriter.writeRecord(record);
         }
     }
 }

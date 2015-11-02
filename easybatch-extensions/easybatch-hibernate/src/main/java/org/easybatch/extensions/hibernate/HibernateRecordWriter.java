@@ -38,7 +38,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class HibernateRecordWriter<T> extends AbstractRecordWriter<T> {
+public class HibernateRecordWriter extends AbstractRecordWriter {
 
     private Session session;
 
@@ -53,7 +53,7 @@ public class HibernateRecordWriter<T> extends AbstractRecordWriter<T> {
     }
 
     @Override
-    public void writeRecord(final T record) throws RecordWritingException {
+    public void writeRecord(final Object record) throws RecordWritingException {
         session.saveOrUpdate(record);
     }
 }

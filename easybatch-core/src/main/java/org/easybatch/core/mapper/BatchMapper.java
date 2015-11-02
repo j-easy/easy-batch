@@ -33,10 +33,9 @@ import org.easybatch.core.util.Utils;
 /**
  * Map a {@link Batch} of records to a list of domain objects using a delegate {@link RecordMapper}.
  *
- * @param <T> The target domain object type.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BatchMapper<T> implements RecordMapper<Batch, List<T>> {
+public class BatchMapper implements RecordMapper<Batch, List<Object>> {
 
     private RecordMapper delegate;
 
@@ -51,10 +50,10 @@ public class BatchMapper<T> implements RecordMapper<Batch, List<T>> {
     }
 
     @Override
-    public List<T> processRecord(final Batch batch) throws RecordMappingException {
-        List<T> records = new ArrayList<>();
+    public List<Object> processRecord(final Batch batch) throws RecordMappingException {
+        List<Object> records = new ArrayList<>();
         for (Record record : batch.getPayload()) {
-            records.add((T) delegate.processRecord(record));
+            records.add(delegate.processRecord(record));
         }
         return records;
     }

@@ -48,7 +48,7 @@ public class HibernateRecordWriterTest {
 
     private Session session;
 
-    private HibernateRecordWriter<Tweet> hibernateRecordWriter;
+    private HibernateRecordWriter hibernateRecordWriter;
 
     @BeforeClass
     public static void initDatabase() throws Exception {
@@ -59,7 +59,7 @@ public class HibernateRecordWriterTest {
     @Before
     public void setUp() throws Exception {
         session = DatabaseUtil.getSessionFactory().openSession();
-        hibernateRecordWriter = new HibernateRecordWriter<Tweet>(session);
+        hibernateRecordWriter = new HibernateRecordWriter(session);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class HibernateRecordWriterTest {
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
         JobReport jobReport = aNewJob()
-                .reader(new IterableRecordReader<Tweet>(tweets))
+                .reader(new IterableRecordReader<>(tweets))
                 .mapper(new GenericRecordMapper())
                 .writer(hibernateRecordWriter)
                 .pipelineListener(new HibernateTransactionListener(session))
@@ -87,7 +87,7 @@ public class HibernateRecordWriterTest {
     }
 
     private List<Tweet> createTweets(Integer nbTweetsToInsert) {
-        List<Tweet> tweets = new ArrayList<Tweet>();
+        List<Tweet> tweets = new ArrayList<>();
         for (int i = 1; i <= nbTweetsToInsert; i++) {
             tweets.add(new Tweet(i, "user " + i, "hello " + i));
         }
