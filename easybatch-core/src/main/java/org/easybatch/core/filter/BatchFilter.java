@@ -24,19 +24,25 @@
 
 package org.easybatch.core.filter;
 
-import java.util.Iterator;
-import java.util.List;
 import org.easybatch.core.record.Batch;
-import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.logging.Logger;
+
+import static org.easybatch.core.util.Utils.isBatch;
+import static org.easybatch.core.util.Utils.isCollection;
 
 /**
  * Filter records from a {@link Batch} using a delegate {@link RecordFilter}.
  * 
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BatchFilter implements RecordFilter<Batch> {
-    
+public class BatchFilter implements RecordFilter<Object> {
+
+    private static final Logger LOGGER = Logger.getLogger(BatchFilter.class.getName());
+
     private RecordFilter delegate;
 
     /**
@@ -50,15 +56,33 @@ public class BatchFilter implements RecordFilter<Batch> {
     }
 
     @Override
-    public Batch processRecord(Batch batch) {
-        List<Record> payload = batch.getPayload();
-        Iterator<Record> iterator = payload.iterator();
-        while (iterator.hasNext()) {
-            Record record = iterator.next();
-            if (delegate.processRecord(record) == null) {
-                iterator.remove();
+    @SuppressWarnings("unchecked")
+    public Object processRecord(Object batch) {
+        Iterator iterator = getIterator(batch);
+        filterRecord(iterator);
+        return batch;
+    }
+
+    private void filterRecord(final Iterator iterator) {
+        if (iterator != null) {
+            while (iterator.hasNext()) {
+                Object record = iterator.next();
+                if (delegate.processRecord(record) == null) {
+                    iterator.remove();
+                }
             }
         }
-        return batch;
+    }
+
+    private Iterator getIterator(final Object batch) {
+        Iterator iterator = null;
+        if (isBatch(batch)) {
+            iterator = ((Batch) batch).getPayload().iterator();
+        } else if (isCollection(batch)) {
+            iterator = ((Collection) batch).iterator();
+        } else {
+            LOGGER.warning("BatchFilter accepts only " + Batch.class.getName() + " or " + Collection.class.getName() + " types");
+        }
+        return iterator;
     }
 }

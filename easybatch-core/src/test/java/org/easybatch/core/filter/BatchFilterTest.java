@@ -28,6 +28,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
@@ -44,6 +46,8 @@ public class BatchFilterTest {
     @Mock
     private Record record1, record2;
     @Mock
+    List<Record> records;
+    @Mock
     private RecordFilter recordFilter;
     
     private BatchFilter batchFilter;
@@ -51,7 +55,7 @@ public class BatchFilterTest {
     @Before
     public void setUp() {
         batchFilter = new BatchFilter(recordFilter);
-        ArrayList<Record> records = new ArrayList<>();
+        records = new ArrayList<>();
         records.add(record1);
         records.add(record2);
         when(batch.getPayload()).thenReturn(records);
@@ -61,11 +65,18 @@ public class BatchFilterTest {
     }
 
     @Test
-    public void testBatchFiltering() {
+         public void testBatchFiltering() {
         batchFilter.processRecord(batch);
-        
+
         assertThat(batch).isNotNull();
         assertThat(batch.getPayload()).isNotNull().isNotEmpty().hasSize(1).containsOnly(record1);
+    }
+
+    @Test
+    public void testCollectionFiltering() {
+        batchFilter.processRecord(records);
+
+        assertThat(records).isNotNull().isNotEmpty().hasSize(1).containsOnly(record1);
     }
     
 }
