@@ -36,18 +36,18 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JmsRecordWriter extends AbstractRecordWriter<Message> {
+public class JmsQueueRecordWriter extends AbstractRecordWriter<Message> {
 
     private QueueSender queueSender;
 
     /**
-     * Create a Jms record writer.
+     * Create a Jms queue record writer.
      *
      * @param queueConnectionFactory the factory to use to create connections.
      * @param queue                  the target queue
      * @throws JMSException if an exception occurs while sending the Jms message
      */
-    public JmsRecordWriter(final QueueConnectionFactory queueConnectionFactory, final Queue queue) throws JMSException {
+    public JmsQueueRecordWriter(final QueueConnectionFactory queueConnectionFactory, final Queue queue) throws JMSException {
         checkNotNull(queueConnectionFactory, "queue connection factory");
         checkNotNull(queue, "queue");
         QueueConnection queueConnection = queueConnectionFactory.createQueueConnection();

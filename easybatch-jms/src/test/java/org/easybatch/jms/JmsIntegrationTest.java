@@ -130,7 +130,7 @@ public class JmsIntegrationTest {
         aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .processor(new JmsMessageTransformer(queueSession))
-                .writer(new JmsRecordWriter(queueConnectionFactory, queue))
+                .writer(new JmsQueueRecordWriter(queueConnectionFactory, queue))
                 .call();
 
         // Assert that queue contains 2 messages: "foo" and "bar"

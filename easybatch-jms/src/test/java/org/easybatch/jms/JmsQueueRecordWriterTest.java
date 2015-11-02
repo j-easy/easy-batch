@@ -36,7 +36,7 @@ import javax.jms.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class JmsRecordWriterTest {
+public class JmsQueueRecordWriterTest {
 
     @Mock
     private QueueConnectionFactory queueConnectionFactory;
@@ -59,19 +59,19 @@ public class JmsRecordWriterTest {
     @Mock
     private JMSException jmsException;
 
-    private JmsRecordWriter jmsRecordWriter;
+    private JmsQueueRecordWriter jmsQueueRecordWriter;
 
     @Before
     public void setUp() throws Exception {
         when(queueConnectionFactory.createQueueConnection()).thenReturn(queueConnection);
         when(queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)).thenReturn(queueSession);
         when(queueSession.createSender(queue)).thenReturn(queueSender);
-        jmsRecordWriter = new JmsRecordWriter(queueConnectionFactory, queue);
+        jmsQueueRecordWriter = new JmsQueueRecordWriter(queueConnectionFactory, queue);
     }
 
     @Test
     public void testProcessRecord() throws Exception {
-        jmsRecordWriter.processRecord(message);
+        jmsQueueRecordWriter.processRecord(message);
 
         verify(queueSender).send(message);
     }
@@ -80,6 +80,6 @@ public class JmsRecordWriterTest {
     public void testRecordProcessingWithError() throws Exception {
         doThrow(jmsException).when(queueSender).send(message);
 
-        jmsRecordWriter.processRecord(message);
+        jmsQueueRecordWriter.processRecord(message);
     }
 }
