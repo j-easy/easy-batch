@@ -34,6 +34,7 @@ import org.easybatch.core.reader.RecordReader;
 import org.springframework.beans.factory.FactoryBean;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Spring Factory Bean that creates job instances.
@@ -52,9 +53,29 @@ public class JobFactoryBean implements FactoryBean {
 
     private List<PipelineListener> pipelineListeners;
 
+    private String name;
+
+    private Long skip;
+
+    private Long limit;
+
+    private boolean strictMode;
+
+    private boolean silentMode;
+
+    private boolean jmxMode;
+
+    private boolean keepAlive;
+
+    private Long timeoutValue;
+
+    private TimeUnit timeoutUnit;
+
     @Override
     public Job getObject() throws Exception {
         JobBuilder jobBuilder = new JobBuilder();
+        
+        registerJobParameters(jobBuilder);
 
         registerMainComponents(jobBuilder);
 
@@ -63,9 +84,31 @@ public class JobFactoryBean implements FactoryBean {
         return jobBuilder.build();
     }
 
+    private void registerJobParameters(JobBuilder jobBuilder) {
+        if(name != null) {
+            jobBuilder.named(name);
+        }
+        if(skip != null) {
+            jobBuilder.skip(skip);
+        }
+        if(limit != null) {
+            jobBuilder.limit(limit);
+        } 
+        if(timeoutValue != null) {
+            if(timeoutUnit != null) {
+                jobBuilder.timeout(timeoutValue, timeoutUnit);
+            } else {
+                jobBuilder.timeout(timeoutValue);
+            }
+        }
+        jobBuilder.silentMode(silentMode);
+        jobBuilder.strictMode(strictMode);
+        jobBuilder.jmxMode(jmxMode);
+    }
+
     private void registerMainComponents(JobBuilder jobBuilder) {
         if (recordReader != null) {
-            jobBuilder.reader(recordReader);
+            jobBuilder.reader(recordReader, keepAlive);
         }
         if (processingPipeline != null) {
             for (RecordProcessor recordProcessor : processingPipeline) {
@@ -126,5 +169,40 @@ public class JobFactoryBean implements FactoryBean {
     public void setPipelineListeners(List<PipelineListener> pipelineListeners) {
         this.pipelineListeners = pipelineListeners;
     }
-    
+
+    public void setJmxMode(boolean jmxMode) {
+        this.jmxMode = jmxMode;
+    }
+
+    public void setKeepAlive(boolean keepAlive) {
+        this.keepAlive = keepAlive;
+    }
+
+    public void setLimit(long limit) {
+        this.limit = limit;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSilentMode(boolean silentMode) {
+        this.silentMode = silentMode;
+    }
+
+    public void setSkip(long skip) {
+        this.skip = skip;
+    }
+
+    public void setStrictMode(boolean strictMode) {
+        this.strictMode = strictMode;
+    }
+
+    public void setTimeoutUnit(TimeUnit timeoutUnit) {
+        this.timeoutUnit = timeoutUnit;
+    }
+
+    public void setTimeoutValue(long timeoutValue) {
+        this.timeoutValue = timeoutValue;
+    }
 }

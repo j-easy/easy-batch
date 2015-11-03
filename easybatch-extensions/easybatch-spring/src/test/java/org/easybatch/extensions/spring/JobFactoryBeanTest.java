@@ -25,16 +25,24 @@
 package org.easybatch.extensions.spring;
 
 import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.job.JobStatus;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.listener.PipelineListener;
 import org.easybatch.core.listener.RecordReaderListener;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.util.Utils;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,6 +62,9 @@ public class JobFactoryBeanTest {
     private RecordReaderListener recordReaderListener;
     @Mock
     private PipelineListener pipelineListener;
+
+    @Rule
+    public final SystemOutRule systemOut = new SystemOutRule().enableLog();
 
     @Before
     public void setUp() throws Exception {
@@ -82,5 +93,20 @@ public class JobFactoryBeanTest {
     @Test
     public void testIsSingleton() throws Exception {
         assertThat(jobFactoryBean.isSingleton()).isTrue();
+    }
+
+    @Test
+    public void integrationTest() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
+        Job job = context.getBean("job", Job.class);
+        JobReport report = JobExecutor.execute(job);
+        
+        assertThat(report).isNotNull();
+        assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);
+        assertThat(report.getMetrics()).isNotNull();
+        assertThat(report.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(report.getMetrics().getSkippedCount()).isEqualTo(1);
+        assertThat(report.getMetrics().getSuccessCount()).isEqualTo(1);
+        assertThat(systemOut.getLog()).isEqualTo("world" + Utils.LINE_SEPARATOR);
     }
 }
