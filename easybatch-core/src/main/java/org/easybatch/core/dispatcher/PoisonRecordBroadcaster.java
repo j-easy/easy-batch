@@ -28,25 +28,27 @@ import org.easybatch.core.job.JobParameters;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.record.PoisonRecord;
-import org.easybatch.core.record.Record;
+
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 /**
- * A utility job listener that broadcasts a {@link PoisonRecord} record at the end of the job
- * using a delegate record dispatcher.
+ * A utility job listener that broadcasts a {@link PoisonRecord} record at the end of the job.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@SuppressWarnings("unchecked")
 public class PoisonRecordBroadcaster implements JobListener {
 
-    private RecordDispatcher<Record> recordDispatcher;
+    private BroadcastRecordDispatcher recordDispatcher;
 
     /**
      * Create a new {@link PoisonRecordBroadcaster}.
      *
-     * @param recordDispatcher the delegate record dispatcher used to dispatch the poison record
+     * @param queues the list of queues to which poison records should be dispatched
      */
-    public PoisonRecordBroadcaster(RecordDispatcher<Record> recordDispatcher) {
-        this.recordDispatcher = recordDispatcher;
+    public PoisonRecordBroadcaster(List<BlockingQueue> queues) {
+        this.recordDispatcher = new BroadcastRecordDispatcher(queues);
     }
 
     @Override
