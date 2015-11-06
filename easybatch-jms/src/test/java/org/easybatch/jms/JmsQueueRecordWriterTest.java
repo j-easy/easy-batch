@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.jms.*;
@@ -40,22 +41,18 @@ public class JmsQueueRecordWriterTest {
 
     @Mock
     private QueueConnectionFactory queueConnectionFactory;
-
     @Mock
     private QueueConnection queueConnection;
-
     @Mock
     private QueueSession queueSession;
-
     @Mock
     private Queue queue;
-
     @Mock
     private QueueSender queueSender;
-
     @Mock
     private Message message;
-
+    @Mock
+    private JmsRecord record;
     @Mock
     private JMSException jmsException;
 
@@ -66,20 +63,22 @@ public class JmsQueueRecordWriterTest {
         when(queueConnectionFactory.createQueueConnection()).thenReturn(queueConnection);
         when(queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)).thenReturn(queueSession);
         when(queueSession.createSender(queue)).thenReturn(queueSender);
+        
         jmsQueueRecordWriter = new JmsQueueRecordWriter(queueConnectionFactory, queue);
     }
 
     @Test
     public void testProcessRecord() throws Exception {
-        jmsQueueRecordWriter.processRecord(message);
+        jmsQueueRecordWriter.writePayload(message);
 
         verify(queueSender).send(message);
     }
 
     @Test(expected = RecordProcessingException.class)
     public void testRecordProcessingWithError() throws Exception {
+        Mockito.when(record.getPayload()).thenReturn(message);
         doThrow(jmsException).when(queueSender).send(message);
 
-        jmsQueueRecordWriter.processRecord(message);
+        jmsQueueRecordWriter.processRecord(record);
     }
 }

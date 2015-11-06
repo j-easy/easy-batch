@@ -24,19 +24,24 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.writer.AbstractRecordWriter;
-import org.easybatch.core.writer.RecordWritingException;
-
-import javax.jms.*;
-
 import static org.easybatch.core.util.Utils.checkNotNull;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Queue;
+import javax.jms.QueueConnection;
+import javax.jms.QueueConnectionFactory;
+import javax.jms.QueueSender;
+import javax.jms.QueueSession;
+import javax.jms.Session;
+import org.easybatch.core.writer.AbstractRecordWriter;
 
 /**
  * Sends a Jms message to a given queue.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JmsQueueRecordWriter extends AbstractRecordWriter<Message> {
+public class JmsQueueRecordWriter extends AbstractRecordWriter<Message, JmsRecord> {
 
     private QueueSender queueSender;
 
@@ -56,12 +61,8 @@ public class JmsQueueRecordWriter extends AbstractRecordWriter<Message> {
     }
 
     @Override
-    public void writeRecord(final Message message) throws RecordWritingException {
-        try {
-            queueSender.send(message);
-        } catch (JMSException e) {
-            throw new RecordWritingException("Unable to send message " + message + " to queue", e);
-        }
+    public void writePayload(final Message message) throws Exception {
+        queueSender.send(message);
     }
 
 }

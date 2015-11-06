@@ -53,7 +53,7 @@ public class HibernateRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    public void writeRecord(final Object record) throws RecordWritingException {
-        session.saveOrUpdate(record);
+    public void writePayload(final Object payload) throws Exception {
+        session.saveOrUpdate(payload);
     }
 }

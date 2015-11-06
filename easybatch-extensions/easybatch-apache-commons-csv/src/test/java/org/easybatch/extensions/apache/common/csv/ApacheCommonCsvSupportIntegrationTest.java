@@ -46,7 +46,7 @@ public class ApacheCommonCsvSupportIntegrationTest {
     public void testAllComponentsTogether() throws Exception {
 
         CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader("id", "user", "message");
-        CSVParser parser = new CSVParser(new FileReader("src/test/resources/tweets.csv"), csvFormat);
+        CSVParser parser = new CSVParser(new FileReader(this.getClass().getResource("/tweets.csv").getFile()), csvFormat);
 
         aNewJob()
                 .reader(new ApacheCommonCsvRecordReader(parser))

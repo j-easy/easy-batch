@@ -25,6 +25,7 @@
 package org.easybatch.core.dispatcher;
 
 import org.easybatch.core.processor.RecordProcessor;
+import org.easybatch.core.record.Record;
 
 /**
  * Dispatch records to workers.
@@ -32,10 +33,11 @@ import org.easybatch.core.processor.RecordProcessor;
  * @param <I> The type of record to dispatch
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface RecordDispatcher<I> extends RecordProcessor<I, I> {
+public interface RecordDispatcher<I extends Record> extends RecordProcessor<I, I> {
 
     /**
      * Dispatch record to a worker.
+     *
      * @param record the record to dispatch.
      * @return the dispatched record
      * @throws RecordDispatchingException if an error occurs when dispatching the record

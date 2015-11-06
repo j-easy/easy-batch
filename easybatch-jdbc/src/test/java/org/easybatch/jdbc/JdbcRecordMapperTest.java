@@ -24,6 +24,7 @@
 
 package org.easybatch.jdbc;
 
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +69,8 @@ public class JdbcRecordMapperTest {
         when(payload.getString(2)).thenReturn("foo");
         when(payload.getString(3)).thenReturn("Hello!");
 
-        Tweet tweet = (Tweet) tweetMapper.processRecord(jdbcRecord);
+        GenericRecord<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
+        Tweet tweet = actual.getPayload();
 
         assertThat(tweet).isNotNull();
         assertThat(tweet.getId()).isEqualTo(1);
@@ -90,7 +92,8 @@ public class JdbcRecordMapperTest {
         when(payload.getString(2)).thenReturn("foo");
         when(payload.getString(3)).thenReturn("Hello!");
 
-        Tweet tweet = (Tweet) tweetMapper.processRecord(jdbcRecord);
+        GenericRecord<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
+        Tweet tweet = actual.getPayload();
 
         assertThat(tweet).isNotNull();
         assertThat(tweet.getId()).isEqualTo(1);

@@ -24,36 +24,35 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.dispatcher.*;
+import org.easybatch.core.dispatcher.AbstractRecordDispatcher;
+import org.easybatch.core.dispatcher.DefaultPredicate;
+import org.easybatch.core.dispatcher.Predicate;
 
-import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.QueueSender;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.String.format;
-
 /**
  * Dispatch records to a list of Jms Queues based on their content.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ContentBasedJmsRecordDispatcher extends AbstractRecordDispatcher<Message> {
+public class ContentBasedJmsRecordDispatcher extends AbstractRecordDispatcher<JmsRecord> {
 
     /**
      * Map a predicate to a queue: when the record content matches the predicate,
      * then it is dispatched to the mapped queue.
      */
-    private Map<Predicate<Message>, QueueSender> queueMap;
+    private Map<Predicate<JmsRecord>, QueueSender> queueMap;
 
     /**
      * A delegate dispatcher used to broadcast poison records to all queues.
      */
     private BroadcastJmsRecordDispatcher broadcastJmsRecordDispatcher;
 
-    ContentBasedJmsRecordDispatcher(Map<Predicate<Message>, QueueSender> queueMap) {
+    ContentBasedJmsRecordDispatcher(Map<Predicate<JmsRecord>, QueueSender> queueMap) {
         this.queueMap = queueMap;
         List<QueueSender> queues = new ArrayList<>();
         for (QueueSender queue : queueMap.values()) {
@@ -63,30 +62,26 @@ public class ContentBasedJmsRecordDispatcher extends AbstractRecordDispatcher<Me
     }
 
     @Override
-    public void dispatchRecord(final Message record) throws RecordDispatchingException {
+    protected void dispatchRecord(final JmsRecord record) throws Exception {
         // when receiving a poising record, broadcast it to all queues
-        if (record instanceof JmsPoisonMessage) {
+        if (record instanceof JmsPoisonRecord) {
             broadcastJmsRecordDispatcher.dispatchRecord(record);
             return;
         }
 
-        try {
-            for (Predicate<Message> predicate : queueMap.keySet()) {
-                //check if the record meets a given predicate
-                if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
-                    //if so, put it in the mapped queue
-                    queueMap.get(predicate).send(record);
-                    return;
-                }
+        Message payload = record.getPayload();
+        for (Predicate<JmsRecord> predicate : queueMap.keySet()) {
+            //check if the record meets a given predicate
+            if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
+                //put it in the mapped queue
+                queueMap.get(predicate).send(payload);
+                return;
             }
-            //if the record does not match any predicate, then put it in the default queue
-            QueueSender defaultQueue = queueMap.get(new DefaultPredicate());
-            if (defaultQueue != null) {
-                defaultQueue.send(record);
-            }
-        } catch (JMSException e) {
-            String message = format("Unable to dispatch record %s to queue", record);
-            throw new RecordDispatchingException(message, e);
+        }
+        //if the record does not match any predicate, then put it in the default queue
+        QueueSender defaultQueue = queueMap.get(new DefaultPredicate());
+        if (defaultQueue != null) {
+            defaultQueue.send(payload);
         }
 
     }

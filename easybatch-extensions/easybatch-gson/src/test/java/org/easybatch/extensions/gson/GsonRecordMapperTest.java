@@ -25,6 +25,7 @@
 package org.easybatch.extensions.gson;
 
 import com.google.gson.Gson;
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.easybatch.json.JsonRecord;
 import org.junit.Before;
@@ -49,7 +50,7 @@ public class GsonRecordMapperTest {
     @Before
     public void setUp() throws Exception {
         Gson gson = new Gson();
-        mapper = new GsonRecordMapper<Tweet>(gson, Tweet.class);
+        mapper = new GsonRecordMapper<>(gson, Tweet.class);
         when(record.getHeader()).thenReturn(header);
     }
 
@@ -57,8 +58,10 @@ public class GsonRecordMapperTest {
     public void testMapRecord() throws Exception {
         String jsonTweet = "{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}";
         when(record.getPayload()).thenReturn(jsonTweet);
-        Tweet tweet = mapper.processRecord(record);
+        GenericRecord<Tweet> actual = mapper.processRecord(record);
+        Tweet tweet = actual.getPayload();
 
+        assertThat(actual.getHeader()).isEqualTo(header);
         assertThat(tweet.getId()).isEqualTo(1);
         assertThat(tweet.getUser()).isEqualTo("foo");
         assertThat(tweet.getMessage()).isEqualTo("Hello");
@@ -68,8 +71,10 @@ public class GsonRecordMapperTest {
     public void testMapIncompleteRecord() throws Exception {
         String jsonTweet = "{\"id\":1,\"user\":\"foo\"}";
         when(record.getPayload()).thenReturn(jsonTweet);
-        Tweet tweet = mapper.processRecord(record);
+        GenericRecord<Tweet> actual = mapper.processRecord(record);
+        Tweet tweet = actual.getPayload();
 
+        assertThat(actual.getHeader()).isEqualTo(header);
         assertThat(tweet.getId()).isEqualTo(1);
         assertThat(tweet.getUser()).isEqualTo("foo");
         assertThat(tweet.getMessage()).isNull();
@@ -79,8 +84,10 @@ public class GsonRecordMapperTest {
     public void testMapEmptyRecord() throws Exception {
         String jsonTweet = "{}";
         when(record.getPayload()).thenReturn(jsonTweet);
-        Tweet tweet = mapper.processRecord(record);
+        GenericRecord<Tweet> actual = mapper.processRecord(record);
+        Tweet tweet = actual.getPayload();
 
+        assertThat(actual.getHeader()).isEqualTo(header);
         assertThat(tweet.getId()).isEqualTo(0);
         assertThat(tweet.getUser()).isNull();
         assertThat(tweet.getMessage()).isNull();

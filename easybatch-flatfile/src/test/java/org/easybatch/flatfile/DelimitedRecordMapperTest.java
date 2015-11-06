@@ -24,6 +24,7 @@
 
 package org.easybatch.flatfile;
 
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -165,7 +166,9 @@ public class DelimitedRecordMapperTest {
         delimitedRecordMapper = new DelimitedRecordMapper(Person.class);
 
         delimitedRecordMapper.parseRecord(headerRecord);
-        Person person = (Person) delimitedRecordMapper.processRecord(record);
+        GenericRecord<Person> actual = delimitedRecordMapper.processRecord(record);
+        Person person = actual.getPayload();
+        
         assertThat(person).isNotNull();
         assertThat(person.getFirstName()).isEqualTo("foo");
         assertThat(person.getLastName()).isEqualTo("bar");
@@ -178,7 +181,8 @@ public class DelimitedRecordMapperTest {
     public void testFieldSubsetMappingWithConventionOverConfiguration() throws Exception {
         delimitedRecordMapper = new DelimitedRecordMapper(Person.class, 0, 4);
         delimitedRecordMapper.parseRecord(headerRecord);
-        Person person = (Person) delimitedRecordMapper.processRecord(record);
+        GenericRecord<Person> actual = delimitedRecordMapper.processRecord(record);
+        Person person = actual.getPayload();
 
         assertThat(person).isNotNull();
         assertThat(person.getFirstName()).isEqualTo("foo");

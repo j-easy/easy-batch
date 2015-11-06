@@ -25,6 +25,7 @@
 package org.easybatch.extensions.hibernate;
 
 import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.GenericRecord;
@@ -53,7 +54,7 @@ public class HibernateRecordReaderTest {
     @Before
     public void setUp() {
         SessionFactory sessionFactory = DatabaseUtil.getSessionFactory();
-        hibernateRecordReader = new HibernateRecordReader<Tweet>(sessionFactory, "from Tweet");
+        hibernateRecordReader = new HibernateRecordReader<>(sessionFactory, "from Tweet");
     }
 
     @Test
@@ -61,10 +62,10 @@ public class HibernateRecordReaderTest {
 
         Job job = aNewJob()
                 .reader(hibernateRecordReader)
-                .processor(new RecordCollector<Tweet>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
 
         List<GenericRecord<Tweet>> tweets = (List<GenericRecord<Tweet>>) jobReport.getResult();

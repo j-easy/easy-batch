@@ -46,7 +46,7 @@ public class ProcessingPipelineTest {
     private Record record;
 
     @Mock
-    private Object preProcessedRecord, processedRecord, secondlyProcessedRecord;
+    private Record preProcessedRecord, processedRecord, secondlyProcessedRecord;
 
     @Mock
     private RecordProcessingException exception;

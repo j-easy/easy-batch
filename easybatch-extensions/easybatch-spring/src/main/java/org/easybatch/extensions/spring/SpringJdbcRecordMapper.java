@@ -26,6 +26,7 @@ package org.easybatch.extensions.spring;
 
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.mapper.RecordMappingException;
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.jdbc.JdbcRecord;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
@@ -37,29 +38,28 @@ import java.sql.SQLException;
  * <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/jdbc.html">Spring JDBC</a>
  * to map result set to domain object.
  *
- * @param <T> Target domain object type
+ * @param <P> Target domain object type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class SpringJdbcRecordMapper<T> implements RecordMapper<JdbcRecord, T> {
+public class SpringJdbcRecordMapper<P> implements RecordMapper<JdbcRecord, GenericRecord<P>> {
 
-    private final Class<T> type;
+    private final Class<P> type;
 
     /**
      * Create a {@link SpringJdbcRecordMapper}.
      *
      * @param type the type of target object
      */
-    public SpringJdbcRecordMapper(Class<T> type) {
+    public SpringJdbcRecordMapper(Class<P> type) {
         this.type = type;
     }
 
     @Override
-    @SuppressWarnings(value = "unchecked")
-    public T processRecord(JdbcRecord record) throws RecordMappingException {
+    public GenericRecord<P> processRecord(JdbcRecord record) throws RecordMappingException {
         ResultSet resultSet = record.getPayload();
-        BeanPropertyRowMapper beanPropertyRowMapper = new BeanPropertyRowMapper(type);
+        BeanPropertyRowMapper<P> beanPropertyRowMapper = new BeanPropertyRowMapper<>(type);
         try {
-            return (T) beanPropertyRowMapper.mapRow(resultSet, record.getHeader().getNumber().intValue());
+            return new GenericRecord<>(record.getHeader(), beanPropertyRowMapper.mapRow(resultSet, record.getHeader().getNumber().intValue()));
         } catch (SQLException e) {
             throw new RecordMappingException("Unable to map record " + record + " to target type", e);
         }

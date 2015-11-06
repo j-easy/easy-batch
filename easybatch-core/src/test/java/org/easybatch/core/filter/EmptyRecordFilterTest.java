@@ -25,7 +25,6 @@
 package org.easybatch.core.filter;
 
 import org.easybatch.core.job.JobReport;
-import org.easybatch.core.mapper.GenericRecordMapper;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.StringRecordReader;
 import org.easybatch.core.record.StringRecord;
@@ -75,7 +74,6 @@ public class EmptyRecordFilterTest {
         JobReport jobReport = aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .filter(new EmptyRecordFilter())
-                .mapper(new GenericRecordMapper())
                 .processor(new RecordCollector())
                 .call();
 
@@ -84,7 +82,9 @@ public class EmptyRecordFilterTest {
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
 
-        List<String> records = (List<String>) jobReport.getResult();
-        assertThat(records).hasSize(2).containsExactly("foo", "bar");
+        List<StringRecord> records = (List<StringRecord>) jobReport.getResult();
+        assertThat(records).hasSize(2);
+        assertThat(records.get(0).getPayload()).isEqualTo("foo");
+        assertThat(records.get(1).getPayload()).isEqualTo("bar");
     }
 }

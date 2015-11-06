@@ -33,11 +33,11 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 public class XmlRecordCompactorTest {
 
-    private XmlRecordCompactor xmlRecordFlattener;
+    private XmlRecordCompactor xmlRecordCompactor;
 
     @Before
     public void setUp() {
-        xmlRecordFlattener = new XmlRecordCompactor();
+        xmlRecordCompactor = new XmlRecordCompactor();
     }
 
     @Test
@@ -49,7 +49,7 @@ public class XmlRecordCompactorTest {
                 "</bar>" + LINE_SEPARATOR +
                 "</foo>";
 
-        String compactRecord = xmlRecordFlattener.processRecord(payload);
+        String compactRecord = xmlRecordCompactor.compact(payload);
         assertThat(compactRecord).isNotNull().isEqualTo(expectedPayload);
     }
 

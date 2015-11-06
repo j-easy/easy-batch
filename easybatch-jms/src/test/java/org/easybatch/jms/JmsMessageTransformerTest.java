@@ -24,6 +24,7 @@
 
 package org.easybatch.jms;
 
+import org.easybatch.core.record.Header;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,10 +45,10 @@ public class JmsMessageTransformerTest {
 
     @Mock
     private QueueSession queueSession;
-
     @Mock
     private StringRecord record;
-
+    @Mock
+    private Header header;
     @Mock
     private TextMessage message;
 
@@ -57,15 +58,17 @@ public class JmsMessageTransformerTest {
     public void setUp() throws Exception {
         jmsMessageTransformer = new JmsMessageTransformer(queueSession);
         when(queueSession.createTextMessage()).thenReturn(message);
+        when(record.getHeader()).thenReturn(header);
         when(record.getPayload()).thenReturn(PAYLOAD);
     }
 
     @Test
     public void testProcessRecord() throws Exception {
-        TextMessage textMessage = jmsMessageTransformer.processRecord(record);
+        JmsRecord actual = jmsMessageTransformer.processRecord(record);
 
-        assertThat(textMessage).isNotNull();
-        assertThat(textMessage).isEqualTo(message);
+        assertThat(actual).isNotNull();
+        assertThat(actual.getHeader()).isEqualTo(header);
+        assertThat(actual.getPayload()).isEqualTo(message);
         //assertThat(message.getText()).isEqualTo(PAYLOAD); //? Holy mocks!
     }
 }

@@ -25,21 +25,22 @@
 package org.easybatch.core.filter;
 
 import org.easybatch.core.processor.RecordProcessor;
+import org.easybatch.core.record.Record;
 
 /**
  * Interface for record filter.
  *
- * @param <T> the type of records the filter can handle
+ * @param <R> the type of records the filter can handle
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface RecordFilter<T> extends RecordProcessor<T, T> {
+public interface RecordFilter<R extends Record> extends RecordProcessor<R, R> {
 
     /**
      * Filter a record.
      *
      * @param record the record to filter.
-     * @return the original record if it should continue in the pipeline or null if the record should be filtered
+     * @return the input record if it should continue in the pipeline or null if the record should be filtered
      */
     @Override
-    T processRecord(T record);
+    R processRecord(R record);
 }

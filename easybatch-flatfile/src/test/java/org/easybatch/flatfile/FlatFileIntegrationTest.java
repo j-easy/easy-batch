@@ -3,17 +3,16 @@ package org.easybatch.flatfile;
 import org.easybatch.core.converter.DateTypeConverter;
 import org.easybatch.core.converter.TypeConverter;
 import org.easybatch.core.filter.HeaderRecordFilter;
-import org.easybatch.core.job.Job;
-import org.easybatch.core.job.JobBuilder;
-import org.easybatch.core.job.JobReport;
-import org.easybatch.core.job.JobStatus;
+import org.easybatch.core.job.*;
 import org.easybatch.core.processor.RecordCollector;
+import org.easybatch.core.record.GenericRecord;
 import org.junit.Test;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,11 +28,11 @@ public class FlatFileIntegrationTest {
 
         Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
-                .mapper(new DelimitedRecordMapper(Person.class, new String[]{"firstName", "lastName", "age", "birthDate", "married"}))
-                .processor(new RecordCollector<Person>())
+                .mapper(new DelimitedRecordMapper(Person.class, "firstName", "lastName", "age", "birthDate", "married"))
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
@@ -42,9 +41,9 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
-        List<Person> persons = (List<Person>) jobReport.getResult();
+        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
 
-        assertPersons(persons);
+        assertPersons(extractPayloads(records));
 
     }
 
@@ -56,10 +55,10 @@ public class FlatFileIntegrationTest {
         Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class, new Integer[]{2, 4}, new String[]{"age", "married"}))
-                .processor(new RecordCollector<Person>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
@@ -68,9 +67,9 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
-        List<Person> persons = (List<Person>) jobReport.getResult();
+        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
 
-        assertPersonsFieldSubsetMapping(persons);
+        assertPersonsFieldSubsetMapping(extractPayloads(records));
 
     }
 
@@ -86,10 +85,10 @@ public class FlatFileIntegrationTest {
         Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class))
-                .processor(new RecordCollector<Person>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(1);
@@ -98,9 +97,9 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
 
-        List<Person> persons = (List<Person>) jobReport.getResult();
+        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
 
-        assertPersons(persons);
+        assertPersons(extractPayloads(records));
 
     }
 
@@ -111,11 +110,11 @@ public class FlatFileIntegrationTest {
 
         Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
-                .mapper(new DelimitedRecordMapper(Person.class, new Integer[]{2, 4}))
-                .processor(new RecordCollector<Person>())
+                .mapper(new DelimitedRecordMapper(Person.class, 2, 4))
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(1);
@@ -124,9 +123,9 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
 
-        List<Person> persons = (List<Person>) jobReport.getResult();
+        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
 
-        assertPersonsFieldSubsetMapping(persons);
+        assertPersonsFieldSubsetMapping(extractPayloads(records));
 
     }
 
@@ -137,8 +136,8 @@ public class FlatFileIntegrationTest {
         File dataSource = new File(getFileUri("/complaints.csv"));
 
         DelimitedRecordMapper recordMapper = new DelimitedRecordMapper(Complaint.class,
-                new String[]{"id", "product", "subProduct", "issue", "subIssue", "state", "zipCode", "channel",
-                        "receivedDate", "sentDate", "company", "companyResponse", "timelyResponse", "consumerDisputed"});
+                "id", "product", "subProduct", "issue", "subIssue", "state", "zipCode", "channel",
+                "receivedDate", "sentDate", "company", "companyResponse", "timelyResponse", "consumerDisputed");
         recordMapper.registerTypeConverter(new TypeConverter<String, Channel>() {
             @Override
             public Channel convert(String value) {
@@ -151,14 +150,15 @@ public class FlatFileIntegrationTest {
                 .reader(new FlatFileRecordReader(dataSource))
                 .filter(new HeaderRecordFilter())
                 .mapper(recordMapper)
-                .processor(new RecordCollector<Complaint>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
 
-        List<Complaint> complaints = (List<Complaint>) jobReport.getResult();
+        List<GenericRecord<Complaint>> records = (List<GenericRecord<Complaint>>) jobReport.getResult();
+        List<Complaint> complaints = extractPayloads(records);
 
         assertThat(complaints).isNotEmpty().hasSize(10);
 
@@ -191,10 +191,10 @@ public class FlatFileIntegrationTest {
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new FixedLengthRecordMapper(Person.class, new int[]{4, 4, 2, 10, 1},
                         new String[]{"firstName", "lastName", "age", "birthDate", "married"}))
-                .processor(new RecordCollector<Person>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
@@ -203,7 +203,8 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
-        List<Person> persons = (List<Person>) jobReport.getResult();
+        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
+        List<Person> persons = extractPayloads(records);
 
         assertThat(persons).isNotEmpty().hasSize(2);
 
@@ -266,6 +267,15 @@ public class FlatFileIntegrationTest {
 
     private URI getFileUri(String fileName) throws URISyntaxException {
         return this.getClass().getResource(fileName).toURI();
+    }
+
+    // TODO should be provided by EasyBatch as PayloadExtractor
+    private <P> List<P> extractPayloads(List<GenericRecord<P>> records) {
+        List<P> payloads = new ArrayList<>();
+        for (GenericRecord<P> record : records) {
+            payloads.add(record.getPayload());
+        }
+        return payloads;
     }
 
 }

@@ -24,26 +24,33 @@
 
 package org.easybatch.core.writer;
 
-import org.easybatch.core.reader.IterableBatchReader;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.StringWriter;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.job.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import static org.mockito.Mockito.when;
 
 /**
  * Test class for {@link StringBatchWriter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
+@RunWith(MockitoJUnitRunner.class)
 public class StringBatchWriterTest {
 
-    private List<String> items;
+    @Mock
+    private Batch batch;
+    @Mock
+    private Record record1, record2;
 
     private StringWriter stringWriter;
 
@@ -51,25 +58,19 @@ public class StringBatchWriterTest {
 
     @Before
     public void setUp() throws Exception {
-        items = Arrays.asList("foo", "bar");
+        when(record1.getPayload()).thenReturn("foo");
+        when(record2.getPayload()).thenReturn("bar");
+        when(batch.getPayload()).thenReturn(Arrays.asList(record1, record2));
         stringWriter = new StringWriter();
         stringBatchWriter = new StringBatchWriter(stringWriter);
     }
 
     @Test
-    public void testWriteCollection() throws Exception {
-        stringBatchWriter.writeRecord(items);
-
-        assertThat(stringWriter.toString()).isEqualTo("foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR);
-    }
-
-    @Test
     public void testWriteBatch() throws Exception {
 
-        aNewJob()
-                .reader(new IterableBatchReader<String>(items, 2))
-                .writer(stringBatchWriter)
-                .call();
+        Batch actual = stringBatchWriter.processRecord(this.batch);
+
+        assertThat(actual).isNotNull().isEqualTo(batch);
 
         assertThat(stringWriter.toString()).isEqualTo("foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR);
     }

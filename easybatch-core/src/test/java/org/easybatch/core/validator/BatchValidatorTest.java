@@ -24,13 +24,9 @@
 
 package org.easybatch.core.validator;
 
-import org.assertj.core.api.Assertions;
-import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobBuilder;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.job.JobStatus;
-import org.easybatch.core.mapper.BatchMapper;
-import org.easybatch.core.mapper.GenericRecordMapper;
 import org.easybatch.core.reader.IterableBatchReader;
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.GenericRecord;
@@ -77,7 +73,8 @@ public class BatchValidatorTest {
     public void processBatchWithoutException() throws Exception {
         when(recordValidator.processRecord(record)).thenReturn(record);
         try {
-            batchValidator.processRecord(batch);
+            Batch actual = batchValidator.processRecord(this.batch);
+            assertThat(actual).isNotNull().isEqualTo(batch);
             verify(recordValidator).processRecord(record);
         } catch (RecordValidationException e) {
             fail("If all records are valid, the batch should be valid");
@@ -92,38 +89,16 @@ public class BatchValidatorTest {
     }
 
     @Test
-         public void integrationTestWithoutBatchMapping() throws Exception {
+         public void integrationTest() throws Exception {
         List<String> strings = Arrays.asList("foo", "bar", "baz");
 
         JobReport report = JobBuilder.aNewJob()
-                .reader(new IterableBatchReader<>(strings, 2))
-                .validator(new BatchValidator(new RecordValidator<GenericRecord>() {
+                .reader(new IterableBatchReader(strings, 2))
+                .validator(new BatchValidator(new RecordValidator<GenericRecord<String>>() {
                     @Override
-                    public GenericRecord processRecord(GenericRecord record) throws RecordValidationException {
-                        String payload = (String) record.getPayload();
+                    public GenericRecord<String> processRecord(GenericRecord<String> record) throws RecordValidationException {
+                        String payload = record.getPayload();
                         if (payload.startsWith("b")) {
-                            throw new RecordValidationException("Record " + record + " is invalid");
-                        }
-                        return record;
-                    }
-                })).call();
-
-        assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);
-        assertThat(report.getMetrics().getTotalCount()).isEqualTo(2);// 2 batches: ["foo","bar"] and ["baz"]
-        assertThat(report.getMetrics().getErrorCount()).isEqualTo(2);// both batches are invalid
-    }
-
-    @Test
-    public void integrationTestWithBatchMapping() throws Exception {
-        List<String> strings = Arrays.asList("foo", "bar", "baz");
-
-        JobReport report = JobBuilder.aNewJob()
-                .reader(new IterableBatchReader<>(strings, 2))
-                .mapper(new BatchMapper(new GenericRecordMapper()))
-                .validator(new BatchValidator(new RecordValidator<String>() {
-                    @Override
-                    public String processRecord(String record) throws RecordValidationException {
-                        if (record.startsWith("b")) {
                             throw new RecordValidationException("Record " + record + " is invalid");
                         }
                         return record;

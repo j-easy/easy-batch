@@ -24,29 +24,45 @@
 
 package org.easybatch.flatfile;
 
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
+import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class DelimitedRecordMarshallerTest {
 
+    @Mock
+    private Header header;
+    @Mock
+    private Person payload;
+    @Mock
+    private GenericRecord<Person> record;
+    
     private DelimitedRecordMarshaller marshaller;
 
     @Before
     public void setUp() throws Exception {
+        when(record.getHeader()).thenReturn(header);
+        when(record.getPayload()).thenReturn(payload);
+        when(payload.getFirstName()).thenReturn("foo");
+        when(payload.getLastName()).thenReturn("bar");
         marshaller = new DelimitedRecordMarshaller(Person.class, "firstName", "lastName", "married");
     }
 
     @Test
     public void marshal() throws Exception {
-        Person person = new Person();
-        person.setFirstName("foo");
-        person.setLastName("bar");
+        String expectedPayload = "\"foo\",\"bar\",\"false\"";
+        StringRecord actual = marshaller.processRecord(record);
 
-        String expected = "\"foo\",\"bar\",\"false\"";
-        String actual = marshaller.processRecord(person);
-
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual.getHeader()).isEqualTo(header);
+        assertThat(actual.getPayload()).isEqualTo(expectedPayload);
     }
 }

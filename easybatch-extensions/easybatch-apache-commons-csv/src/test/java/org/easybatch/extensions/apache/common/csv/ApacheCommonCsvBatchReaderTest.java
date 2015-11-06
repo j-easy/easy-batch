@@ -28,12 +28,14 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.Batch;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.FileReader;
 import java.util.List;
 
@@ -49,7 +51,7 @@ public class ApacheCommonCsvBatchReaderTest {
     @Before
     public void setUp() throws Exception {
         CSVFormat csvFormat = CSVFormat.DEFAULT;
-        CSVParser parser = new CSVParser(new FileReader("src/test/resources/tweets.csv"), csvFormat);
+        CSVParser parser = new CSVParser(new FileReader(this.getClass().getResource("/tweets.csv").getFile()), csvFormat);
         apacheCommonCsvBatchReader = new ApacheCommonCsvBatchReader(parser, BATCH_SIZE);
     }
 
@@ -59,10 +61,10 @@ public class ApacheCommonCsvBatchReaderTest {
 
         Job job = aNewJob()
                 .reader(apacheCommonCsvBatchReader)
-                .processor(new RecordCollector<Batch>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();

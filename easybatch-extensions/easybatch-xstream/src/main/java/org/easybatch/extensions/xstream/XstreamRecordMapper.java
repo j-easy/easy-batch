@@ -26,6 +26,8 @@ package org.easybatch.extensions.xstream;
 
 import com.thoughtworks.xstream.XStream;
 import org.easybatch.core.mapper.RecordMapper;
+import org.easybatch.core.mapper.RecordMappingException;
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.xml.XmlRecord;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
@@ -34,10 +36,10 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * Mapper that uses <a href="http://xstream.codehaus.org/">XStream</a>
  * to map XML records to domain objects.
  *
- * @param <T> Target domain object class.
+ * @param <P> Target domain object class.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class XstreamRecordMapper<T> implements RecordMapper<XmlRecord, T> {
+public class XstreamRecordMapper<P> implements RecordMapper<XmlRecord, GenericRecord<P>> {
 
     private XStream xStream;
 
@@ -54,8 +56,13 @@ public class XstreamRecordMapper<T> implements RecordMapper<XmlRecord, T> {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public T processRecord(final XmlRecord record) {
-        return (T) xStream.fromXML(record.getPayload());
+    public GenericRecord<P> processRecord(final XmlRecord record) throws RecordMappingException {
+        try {
+            P unmarshalledObject = (P) xStream.fromXML(record.getPayload());
+            return new GenericRecord<>(record.getHeader(), unmarshalledObject);
+        } catch (Exception e) {
+            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
+        }
     }
 
 }

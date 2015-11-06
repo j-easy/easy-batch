@@ -24,25 +24,26 @@
 
 package org.easybatch.jpa;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
+
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import org.easybatch.core.job.JobReport;
-import org.easybatch.core.mapper.GenericRecordMapper;
-import org.easybatch.core.mapper.BatchMapper;
 import org.easybatch.core.reader.IterableBatchReader;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.io.File;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.job.JobBuilder.aNewJob;
 
 public class JpaBatchWriterTest {
 
@@ -76,9 +77,8 @@ public class JpaBatchWriterTest {
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
         JobReport jobReport = aNewJob()
-                .reader(new IterableBatchReader<Tweet>(tweets, batchSize))
-                .mapper(new BatchMapper(new GenericRecordMapper<Tweet>()))
-                .writer(new JpaBatchWriter<Tweet>(entityManager))
+                .reader(new IterableBatchReader(tweets, batchSize))
+                .writer(new JpaBatchWriter(entityManager))
                 .pipelineListener(new JpaTransactionListener(entityManager))
                 .jobListener(new JpaEntityManagerListener(entityManager))
                 .call();
@@ -93,7 +93,7 @@ public class JpaBatchWriterTest {
     }
 
     private List<Tweet> createTweets(Integer nbTweetsToInsert) {
-        List<Tweet> tweets = new ArrayList<Tweet>();
+        List<Tweet> tweets = new ArrayList<>();
         for (int i = 1; i <= nbTweetsToInsert; i++) {
             tweets.add(new Tweet(i, "user " + i, "hello " + i));
         }

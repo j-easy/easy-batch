@@ -51,9 +51,6 @@ public class StringRecordWriterTest {
 
     private static final String PAYLOAD = "Foo";
 
-    @Mock
-    private Record record;
-
     private StringWriter stringWriter;
 
     private StringRecordWriter stringRecordWriter;
@@ -62,12 +59,11 @@ public class StringRecordWriterTest {
     public void setUp() throws Exception {
         stringWriter = new StringWriter();
         stringRecordWriter = new StringRecordWriter(stringWriter);
-        when(record.getPayload()).thenReturn(PAYLOAD);
     }
 
     @Test
     public void testWriteRecord() throws Exception {
-        stringRecordWriter.writeRecord(record);
+        stringRecordWriter.writePayload(PAYLOAD);
 
         assertThat(stringWriter.toString()).isEqualTo(PAYLOAD + LINE_SEPARATOR);
     }
@@ -77,7 +73,7 @@ public class StringRecordWriterTest {
         List<String> dataSource = Arrays.asList("foo", "bar");
 
         aNewJob()
-                .reader(new IterableRecordReader<String>(dataSource))
+                .reader(new IterableRecordReader(dataSource))
                 .writer(stringRecordWriter)
                 .call();
 

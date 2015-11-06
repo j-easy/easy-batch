@@ -24,27 +24,43 @@
 
 package org.easybatch.extensions.xstream;
 
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
+import org.easybatch.xml.XmlRecord;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class XstreamRecordMarshallerTest {
 
+    @Mock
+    private GenericRecord record;
+    @Mock
+    private Header header;
+    
     private XstreamRecordMarshaller xstreamRecordMarshaller;
     
     @Before
     public void setUp() {
+        Person person = new Person(1, "foo", "bar", false);
+        when(record.getHeader()).thenReturn(header);
+        when(record.getPayload()).thenReturn(person);
         xstreamRecordMarshaller = new XstreamRecordMarshaller("person", Person.class);
     }
 
     @Test
     public void marshal() {
-        Person person = new Person(1, "foo", "bar", false);
 
         String expected = "<person><id>1</id><firstName>foo</firstName><lastName>bar</lastName><married>false</married></person>";
-        String actual = xstreamRecordMarshaller.processRecord(person);
+        XmlRecord actual = xstreamRecordMarshaller.processRecord(record);
 
-        assertThat(actual).isXmlEqualTo(expected);
+        assertThat(actual.getHeader()).isEqualTo(header);
+        assertThat(actual.getPayload()).isXmlEqualTo(expected);
     }
 }

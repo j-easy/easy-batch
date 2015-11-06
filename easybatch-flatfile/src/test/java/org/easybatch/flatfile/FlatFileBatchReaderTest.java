@@ -92,7 +92,7 @@ public class FlatFileBatchReaderTest {
 
         JobReport jobReport = aNewJob()
                 .reader(new FlatFileBatchReader(new File(getFileUri("/complaints.csv")), BATCH_SIZE))
-                .processor(new RecordCollector<Batch>())
+                .processor(new RecordCollector())
                 .call();
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();

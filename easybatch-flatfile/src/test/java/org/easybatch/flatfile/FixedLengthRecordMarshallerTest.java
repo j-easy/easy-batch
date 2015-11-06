@@ -24,30 +24,46 @@
 
 package org.easybatch.flatfile;
 
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
+import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class FixedLengthRecordMarshallerTest {
+
+    @Mock
+    private Header header;
+    @Mock
+    private Bean payload;
+    @Mock
+    private GenericRecord<Bean> record;
 
     private FixedLengthRecordMarshaller marshaller;
     
     @Before
     public void setUp() throws Exception {
+        when(record.getHeader()).thenReturn(header);
+        when(record.getPayload()).thenReturn(payload);
+        when(payload.getField1()).thenReturn("aaa");
+        when(payload.getField2()).thenReturn("bb");
+        when(payload.getField3()).thenReturn("cccc");
         marshaller = new FixedLengthRecordMarshaller(Bean.class, "field1", "field2", "field3");
     }
 
     @Test
     public void marshal() throws Exception {
-        Bean bean = new Bean();
-        bean.setField1("aaa");
-        bean.setField2("bb");
-        bean.setField3("cccc");
+        String expectedPayload = "aaabbcccc";
+        StringRecord actual = marshaller.processRecord(record);
 
-        String expected = "aaabbcccc";
-        String actual = marshaller.processRecord(bean);
-
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual.getHeader()).isEqualTo(header);
+        assertThat(actual.getPayload()).isEqualTo(expectedPayload);
     }
 }

@@ -24,27 +24,28 @@
 
 package org.easybatch.core.processor;
 
+import org.easybatch.core.record.Record;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Convenient processor that collects records.
  *
- * @param <T> the type of collected records
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordCollector<T> implements ComputationalRecordProcessor<T, T, List<T>> {
+public class RecordCollector implements ComputationalRecordProcessor<Record, Record, List<Record>> {
 
-    private List<T> items = new ArrayList<>();
+    private List<Record> items = new ArrayList<>();
 
     @Override
-    public T processRecord(final T item) {
+    public Record processRecord(final Record item) {
         items.add(item);
         return item;
     }
 
     @Override
-    public List<T> getComputationResult() {
+    public List<Record> getComputationResult() {
         return items;
     }
 

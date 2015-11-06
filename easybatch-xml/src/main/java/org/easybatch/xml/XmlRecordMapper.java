@@ -26,6 +26,7 @@ package org.easybatch.xml;
 
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.mapper.RecordMappingException;
+import org.easybatch.core.record.GenericRecord;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -40,10 +41,10 @@ import java.io.File;
 /**
  * A record mapper that maps xml records to domain objects annotated with JAXB annotations.
  *
- * @param <T> the target domain object type
+ * @param <P> the target domain object type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class XmlRecordMapper<T> implements RecordMapper<XmlRecord, T> {
+public class XmlRecordMapper<P> implements RecordMapper<XmlRecord, GenericRecord<P>> {
 
     /**
      * JAXB context.
@@ -61,7 +62,7 @@ public class XmlRecordMapper<T> implements RecordMapper<XmlRecord, T> {
      * @param type the target domain object type.
      * @throws JAXBException thrown if an error occurs during the creation of Jaxb context.
      */
-    public XmlRecordMapper(final Class<? extends T> type) throws JAXBException {
+    public XmlRecordMapper(final Class<? extends P> type) throws JAXBException {
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
     }
@@ -74,7 +75,7 @@ public class XmlRecordMapper<T> implements RecordMapper<XmlRecord, T> {
      * @throws JAXBException thrown if an error occurs during the creation of Jaxb context.
      * @throws SAXException  thrown if an error occurs during the schema parsing.
      */
-    public XmlRecordMapper(final Class<? extends T> type, final File xsd) throws JAXBException, SAXException {
+    public XmlRecordMapper(final Class<? extends P> type, final File xsd) throws JAXBException, SAXException {
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -92,14 +93,13 @@ public class XmlRecordMapper<T> implements RecordMapper<XmlRecord, T> {
     }
 
     @Override
-    public T processRecord(final XmlRecord record) throws RecordMappingException {
-
+    public GenericRecord<P> processRecord(final XmlRecord record) throws RecordMappingException {
         try {
-            return (T) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(record.getPayload().getBytes()));
+            P unmarshalledObject = (P) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(record.getPayload().getBytes()));
+            return new GenericRecord<>(record.getHeader(), unmarshalledObject);
         } catch (JAXBException e) {
             throw new RecordMappingException("Unable to map record " + record + " to target type", e);
         }
-
     }
 
 }

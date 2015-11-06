@@ -27,6 +27,7 @@ package org.easybatch.extensions.mongodb;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,8 +69,10 @@ public class MongoDBRecordMapperTest {
                 .append("married", MARRIED);
         MongoDBRecord mongoDBRecord = new MongoDBRecord(header, personDBObject);
 
-        Person person = mapper.processRecord(mongoDBRecord);
-
+        GenericRecord<Person> actual = mapper.processRecord(mongoDBRecord);
+        assertThat(actual.getHeader()).isEqualTo(header);
+        
+        Person person = actual.getPayload();
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(ID);
         assertThat(person.getFirstName()).isEqualTo(FIRST_NAME);

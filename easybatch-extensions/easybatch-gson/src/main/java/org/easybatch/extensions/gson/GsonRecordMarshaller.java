@@ -27,6 +27,8 @@ package org.easybatch.extensions.gson;
 import com.google.gson.Gson;
 import org.easybatch.core.marshaller.RecordMarshaller;
 import org.easybatch.core.marshaller.RecordMarshallingException;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.json.JsonRecord;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -35,7 +37,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class GsonRecordMarshaller implements RecordMarshaller<Object, String> {
+public class GsonRecordMarshaller implements RecordMarshaller<GenericRecord, JsonRecord> {
 
     private Gson gson;
 
@@ -57,8 +59,8 @@ public class GsonRecordMarshaller implements RecordMarshaller<Object, String> {
     }
 
     @Override
-    public String processRecord(final Object record) throws RecordMarshallingException {
-        return gson.toJson(record);
+    public JsonRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
+        return new JsonRecord(record.getHeader(), gson.toJson(record.getPayload()));
     }
 
 }

@@ -172,18 +172,18 @@ public class EventManagerTest {
 
                 .pipelineListener(new PipelineListener() {
                     @Override
-                    public Object beforeRecordProcessing(Object record) {
+                    public Record beforeRecordProcessing(Record record) {
                         StringRecord stringRecord = (StringRecord) record;
                         return new StringRecord(stringRecord.getHeader(), ";" + stringRecord.getPayload());
                     }
 
                     @Override
-                    public void afterRecordProcessing(Object record, Object processingResult) {
+                    public void afterRecordProcessing(Record record, Record processingResult) {
 
                     }
 
                     @Override
-                    public void onRecordProcessingException(Object record, Throwable throwable) {
+                    public void onRecordProcessingException(Record record, Throwable throwable) {
 
                     }
                 })
@@ -198,7 +198,7 @@ public class EventManagerTest {
                 })
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(2);
     }

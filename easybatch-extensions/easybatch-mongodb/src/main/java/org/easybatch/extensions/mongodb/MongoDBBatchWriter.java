@@ -24,25 +24,26 @@
 
 package org.easybatch.extensions.mongodb;
 
-import com.mongodb.BulkWriteOperation;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import org.easybatch.core.writer.AbstractBatchWriter;
-import org.easybatch.core.writer.RecordWritingException;
+import static java.lang.String.format;
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static java.lang.String.format;
-import static org.easybatch.core.util.Utils.checkNotNull;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
+import org.easybatch.core.writer.RecordWritingException;
+import com.mongodb.BulkWriteOperation;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 
 /**
- * Writes a batch of Mongo {@link DBObject} to a given collection in bulk mode.
+ * Writes a batch of {@link MongoDBRecord} to a given collection in bulk mode.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class MongoDBBatchWriter extends AbstractBatchWriter {
+public class MongoDBBatchWriter implements RecordWriter<Batch> {
 
     private DBCollection collection;
 
@@ -57,8 +58,8 @@ public class MongoDBBatchWriter extends AbstractBatchWriter {
     }
 
     @Override
-    protected void writeRecord(final Object batch) throws RecordWritingException {
-        List records = getRecords(batch);
+    public Batch processRecord(final Batch batch) throws RecordWritingException {
+        List<Record> records = batch.getPayload();
         Collection<DBObject> documents = asDocuments(records);
         BulkWriteOperation bulkWriteOperation = collection.initializeOrderedBulkOperation();
 
@@ -68,16 +69,18 @@ public class MongoDBBatchWriter extends AbstractBatchWriter {
 
         try {
             bulkWriteOperation.execute();
+            return batch;
         } catch (Exception e) {
             throw new RecordWritingException(format("Unable to write documents [%s] to Mongo DB server", documents), e);
         }
     }
 
-    private List<DBObject> asDocuments(final List records) {
+    private List<DBObject> asDocuments(final List<Record> records) {
         List<DBObject> documents = new ArrayList<>();
-        for (Object record : records) {
-            if (DBObject.class.isAssignableFrom(record.getClass())) {
-                documents.add((DBObject) record);
+        for (Record record : records) {
+            if (record instanceof MongoDBRecord) {
+                MongoDBRecord mongoDBRecord = (MongoDBRecord) record;
+                documents.add(mongoDBRecord.getPayload());
             }
         }
         return documents;

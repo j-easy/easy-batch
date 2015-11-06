@@ -24,6 +24,9 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -35,7 +38,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class FileBatchWriter extends AbstractBatchWriter {
+public class FileBatchWriter implements RecordWriter<Batch> {
 
     /**
      * The delegate {@link FileRecordWriter}.
@@ -54,11 +57,13 @@ public class FileBatchWriter extends AbstractBatchWriter {
     }
 
     @Override
-    protected void writeRecord(final Object batch) throws RecordWritingException {
-        List records = getRecords(batch);
-        for (Object record : records) {
-            fileRecordWriter.writeRecord(record);
+    @SuppressWarnings("unchecked")
+    public Batch processRecord(final Batch batch) throws RecordWritingException {
+        List<Record> records = batch.getPayload();
+        for (Record record : records) {
+            fileRecordWriter.processRecord(record);
         }
+        return batch;
     }
 
 }

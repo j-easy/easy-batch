@@ -24,18 +24,27 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Record;
+
+import static java.lang.String.format;
+
 /**
  * Abstract class for record writers.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public abstract class AbstractRecordWriter<T> implements RecordWriter<T> {
+public abstract class AbstractRecordWriter<P, R extends Record<P>> implements RecordWriter<R> {
 
     @Override
-    public T processRecord(final T record) throws RecordWritingException {
-        writeRecord(record);
+    public R processRecord(final R record) throws RecordWritingException {
+        try {
+            writePayload(record.getPayload());
+        } catch (Exception exception) {
+            String message = format("Unable to write record %s ", record);
+            throw new RecordWritingException(message, exception);
+        }
         return record;
     }
 
-    protected abstract void writeRecord(T record) throws RecordWritingException;
+    protected abstract void writePayload(P payload) throws Exception;
 }

@@ -25,21 +25,16 @@
 package org.easybatch.jms;
 
 import org.easybatch.core.dispatcher.AbstractRecordDispatcher;
-import org.easybatch.core.dispatcher.RecordDispatchingException;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
 import javax.jms.QueueSender;
 import java.util.List;
-
-import static java.lang.String.format;
 
 /**
  * Broadcast records to a list of Jms queues.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BroadcastJmsRecordDispatcher extends AbstractRecordDispatcher<Message> {
+public class BroadcastJmsRecordDispatcher extends AbstractRecordDispatcher<JmsRecord> {
 
     /**
      * List of queues to which records should be dispatched.
@@ -56,14 +51,9 @@ public class BroadcastJmsRecordDispatcher extends AbstractRecordDispatcher<Messa
     }
 
     @Override
-    public void dispatchRecord(final Message record) throws RecordDispatchingException {
+    public void dispatchRecord(final JmsRecord record) throws Exception {
         for (QueueSender queue : queues) {
-            try {
-                queue.send(record);
-            } catch (JMSException e) {
-                String message = format("Unable to dispatch Jms record %s to queue %s", record, queue);
-                throw new RecordDispatchingException(message, e);
-            }
+            queue.send(record.getPayload());
         }
     }
 

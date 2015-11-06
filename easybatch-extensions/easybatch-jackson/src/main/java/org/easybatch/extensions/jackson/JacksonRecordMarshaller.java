@@ -24,20 +24,21 @@
 
 package org.easybatch.extensions.jackson;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.marshaller.RecordMarshallingException;
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 import java.io.IOException;
-
-import static org.easybatch.core.util.Utils.checkNotNull;
+import org.easybatch.core.marshaller.RecordMarshaller;
+import org.easybatch.core.marshaller.RecordMarshallingException;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.json.JsonRecord;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Marshals a POJO to Json using <a href="http://jackson.codehaus.org/">Jackson</a>.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JacksonRecordMarshaller implements RecordMarshaller<Object, String> {
+public class JacksonRecordMarshaller implements RecordMarshaller<GenericRecord, JsonRecord> {
 
     private ObjectMapper mapper;
 
@@ -56,9 +57,9 @@ public class JacksonRecordMarshaller implements RecordMarshaller<Object, String>
     }
 
     @Override
-    public String processRecord(final Object record) throws RecordMarshallingException {
+    public JsonRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
         try {
-            return mapper.writeValueAsString(record);
+            return new JsonRecord(record.getHeader(), mapper.writeValueAsString(record.getPayload()));
         } catch (IOException e) {
             throw new RecordMarshallingException(e);
         }

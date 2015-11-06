@@ -24,22 +24,23 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.writer.AbstractBatchWriter;
-import org.easybatch.core.writer.RecordWritingException;
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-
-import static org.easybatch.core.util.Utils.checkNotNull;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
+import org.easybatch.core.writer.RecordWritingException;
 
 /**
  * Write a batch of records to a database using the JDBC API.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JdbcBatchWriter extends AbstractBatchWriter {
+public class JdbcBatchWriter implements RecordWriter<Batch> {
 
     private Connection connection;
 
@@ -64,15 +65,16 @@ public class JdbcBatchWriter extends AbstractBatchWriter {
     }
 
     @Override
-    public void writeRecord(final Object batch) throws RecordWritingException {
-        List records = getRecords(batch);
+    public Batch processRecord(final Batch batch) throws RecordWritingException {
+        List<Record> records = batch.getPayload();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            for (Object record : records) {
-                preparedStatementProvider.prepareStatement(preparedStatement, record);
+            for (Record record : records) {
+                preparedStatementProvider.prepareStatement(preparedStatement, record.getPayload());
                 preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();
+            return batch;
         } catch (SQLException e) {
             throw new RecordWritingException("Unable to write batch " + batch + " to database", e);
         }

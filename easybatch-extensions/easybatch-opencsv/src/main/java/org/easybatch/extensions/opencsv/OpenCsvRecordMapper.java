@@ -28,6 +28,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 import org.easybatch.core.mapper.RecordMapper;
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.StringRecord;
 
 import java.io.StringReader;
@@ -38,7 +39,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, T> {
+public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, GenericRecord<T>> {
 
     private CSVReader openCsvReader;
 
@@ -58,7 +59,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, T> {
      * @param recordClass The target type
      * @param columns Fields name in the same order as in the delimited record
      */
-    public OpenCsvRecordMapper(Class<? extends T> recordClass, String[] columns) {
+    public OpenCsvRecordMapper(Class<? extends T> recordClass, String... columns) {
         this.strategy = new ColumnPositionMappingStrategy<>();
         this.strategy.setType((Class<T>) recordClass);
         this.strategy.setColumnMapping(columns);
@@ -66,7 +67,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, T> {
     }
 
     @Override
-    public T processRecord(final StringRecord record) {
+    public GenericRecord<T> processRecord(final StringRecord record) {
         String payload = record.getPayload();
         openCsvReader = new CSVReader(
                 new StringReader(payload),
@@ -74,7 +75,8 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, T> {
                 qualifier,
                 strictQualifiers);
         List list = csvToBean.parse(strategy, openCsvReader);
-        return (T) list.get(0);
+        T mappedObject = (T) list.get(0);
+        return new GenericRecord<>(record.getHeader(), mappedObject);
     }
 
     public void setDelimiter(final char delimiter) {

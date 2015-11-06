@@ -47,10 +47,10 @@ public class RoundRobinJmsRecordDispatcherTest {
     private QueueSender queue1, queue2;
 
     @Mock
-    private Message record1, record2, record3;
+    private JmsRecord record1, record2, record3;
 
     @Mock
-    private JmsPoisonMessage poisonRecord;
+    private JmsPoisonRecord poisonRecord;
 
     @Before
     public void setUp() throws Exception {
@@ -65,9 +65,9 @@ public class RoundRobinJmsRecordDispatcherTest {
         roundRobinJmsRecordDispatcher.dispatchRecord(record3);
 
         InOrder inOrder = Mockito.inOrder(queue1, queue2, record1, record2, record3);
-        inOrder.verify(queue1).send(record1);
-        inOrder.verify(queue2).send(record2);
-        inOrder.verify(queue1).send(record3);
+        inOrder.verify(queue1).send(record1.getPayload());
+        inOrder.verify(queue2).send(record2.getPayload());
+        inOrder.verify(queue1).send(record3.getPayload());
     }
 
     @Test
@@ -75,8 +75,8 @@ public class RoundRobinJmsRecordDispatcherTest {
 
         roundRobinJmsRecordDispatcher.dispatchRecord(poisonRecord);
 
-        verify(queue1).send(poisonRecord);
-        verify(queue2).send(poisonRecord);
+        verify(queue1).send(poisonRecord.getPayload());
+        verify(queue2).send(poisonRecord.getPayload());
     }
 
 }

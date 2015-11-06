@@ -26,6 +26,7 @@ package org.easybatch.jms;
 
 import org.easybatch.core.processor.RecordProcessingException;
 import org.easybatch.core.processor.RecordProcessor;
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.StringRecord;
 
 import javax.jms.JMSException;
@@ -35,11 +36,11 @@ import javax.jms.TextMessage;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Convenient processor that creates a Jms {@link TextMessage} from the payload of a {@link StringRecord}.
+ * Convenient processor that creates a {@link JmsRecord} with {@link TextMessage} payload from a {@link StringRecord}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JmsMessageTransformer implements RecordProcessor<StringRecord, TextMessage> {
+public class JmsMessageTransformer implements RecordProcessor<StringRecord, JmsRecord> {
 
     private QueueSession queueSession;
 
@@ -54,12 +55,12 @@ public class JmsMessageTransformer implements RecordProcessor<StringRecord, Text
     }
 
     @Override
-    public TextMessage processRecord(final StringRecord record) throws RecordProcessingException {
+    public JmsRecord processRecord(final StringRecord record) throws RecordProcessingException {
         TextMessage message;
         try {
             message = queueSession.createTextMessage();
             message.setText(record.getPayload());
-            return message;
+            return new JmsRecord(record.getHeader(), message);
         } catch (JMSException e) {
             throw new RecordProcessingException("Unable to create text message from record " + record, e);
         }

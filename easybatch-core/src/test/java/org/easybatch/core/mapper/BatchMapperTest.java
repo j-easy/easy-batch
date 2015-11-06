@@ -24,12 +24,8 @@
 
 package org.easybatch.core.mapper;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
 import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,17 +33,22 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Arrays;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 public class BatchMapperTest {
 
     @Mock
-    private Record record1, record2;
-    @Mock
-    private Object mappedRecord1, mappedRecord2;
+    private Record record1, record2, mappedRecord1, mappedRecord2;
     @Mock
     private Batch batch;
     @Mock
-    private RecordMapper<Object, Object> recordMapper;
+    private Header header;
+    @Mock
+    private RecordMapper<Record, Record> recordMapper;
     
     private BatchMapper batchMapper;
 
@@ -56,15 +57,17 @@ public class BatchMapperTest {
         batchMapper = new BatchMapper(recordMapper);
         when(recordMapper.processRecord(record1)).thenReturn(mappedRecord1);
         when(recordMapper.processRecord(record2)).thenReturn(mappedRecord2);
+        when(batch.getHeader()).thenReturn(header);
         when(batch.getPayload()).thenReturn(Arrays.asList(record1, record2));
     }
 
     @Test
     public void processRecord() throws RecordMappingException {
-        List<Object> objects = batchMapper.processRecord(batch);
+        Batch actual = batchMapper.processRecord(batch);
 
-        assertThat(objects)
-                .isNotNull()
+        assertThat(actual).isNotNull();
+        assertThat(actual.getHeader()).isEqualTo(header);
+        assertThat(actual.getPayload())
                 .isNotEmpty()
                 .hasSize(2)
                 .containsExactly(mappedRecord1, mappedRecord2);

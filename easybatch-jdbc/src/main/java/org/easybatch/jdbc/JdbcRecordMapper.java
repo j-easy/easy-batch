@@ -27,6 +27,7 @@ package org.easybatch.jdbc;
 import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.mapper.RecordMappingException;
+import org.easybatch.core.record.GenericRecord;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,7 +39,7 @@ import java.util.Map;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapper<JdbcRecord, Object> {
+public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapper<JdbcRecord, GenericRecord> {
 
     /**
      * Field names used for custom column mapping.
@@ -67,7 +68,7 @@ public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapp
     }
 
     @Override
-    public Object processRecord(final JdbcRecord record) throws RecordMappingException {
+    public GenericRecord processRecord(final JdbcRecord record) throws RecordMappingException {
 
         ResultSet resultSet = record.getPayload();
 
@@ -78,7 +79,7 @@ public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapp
             for (int i = 0; i < fields.length; i++) {
                 values.put(fields[i], resultSet.getString(i + 1));
             }
-            return objectMapper.mapObject(values);
+            return new GenericRecord(record.getHeader(), objectMapper.mapObject(values));
         } catch (SQLException e) {
             throw new RecordMappingException("Unable to map record " + record + " to target type", e);
         }

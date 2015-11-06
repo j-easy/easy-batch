@@ -24,15 +24,11 @@
 
 package org.easybatch.core.util;
 
-import org.easybatch.core.record.Batch;
-import org.easybatch.core.record.Record;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -108,15 +104,4 @@ public abstract class Utils {
         return getters;
     }
 
-    public static boolean isRecord(final Object record) {
-        return Record.class.isAssignableFrom(record.getClass());
-    }
-
-    public static boolean isBatch(final Object record) {
-        return Batch.class.isAssignableFrom(record.getClass());
-    }
-
-    public static boolean isCollection(final Object record) {
-        return Collection.class.isAssignableFrom(record.getClass());
-    }
 }

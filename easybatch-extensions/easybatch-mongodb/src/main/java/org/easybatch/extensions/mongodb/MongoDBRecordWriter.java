@@ -24,19 +24,18 @@
 
 package org.easybatch.extensions.mongodb;
 
+import static org.easybatch.core.util.Utils.checkNotNull;
+
+import org.easybatch.core.writer.AbstractRecordWriter;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import org.easybatch.core.writer.AbstractRecordWriter;
-import org.easybatch.core.writer.RecordWritingException;
-
-import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Writes a Mongo {@link DBObject} in a given collection.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class MongoDBRecordWriter extends AbstractRecordWriter<DBObject> {
+public class MongoDBRecordWriter extends AbstractRecordWriter<DBObject, MongoDBRecord> {
 
     private DBCollection collection;
 
@@ -51,12 +50,8 @@ public class MongoDBRecordWriter extends AbstractRecordWriter<DBObject> {
     }
 
     @Override
-    public void writeRecord(final DBObject record) throws RecordWritingException {
-        try {
-            collection.save(record);
-        } catch (Exception e) {
-            throw new RecordWritingException("Unable to write document " + record + " to MongoDB server", e);
-        }
+    protected void writePayload(final DBObject record) throws Exception {
+        collection.save(record);
     }
 
 }

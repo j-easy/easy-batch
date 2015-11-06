@@ -24,6 +24,7 @@
 
 package org.easybatch.core.processor;
 
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,13 +37,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RecordCollectorTest {
 
     @Mock
-    private Object record1, record2;
+    private Record record1, record2;
 
-    private RecordCollector<Object> recordCollector;
+    private RecordCollector recordCollector;
 
     @Before
     public void setUp() {
-        recordCollector = new RecordCollector<Object>();
+        recordCollector = new RecordCollector();
     }
 
     @Test

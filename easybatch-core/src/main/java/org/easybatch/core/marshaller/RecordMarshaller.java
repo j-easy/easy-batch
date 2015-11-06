@@ -25,15 +25,16 @@
 package org.easybatch.core.marshaller;
 
 import org.easybatch.core.processor.RecordProcessor;
+import org.easybatch.core.record.Record;
 
 /**
  * Marker interface for all record marshallers.
  *
- * @param <I> the type of object to marshall
- * @param <O> the type of marshalled object
+ * @param <I> the type of record to marshall
+ * @param <O> the type of marshalled record
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface RecordMarshaller<I, O> extends RecordProcessor<I, O> {
+public interface RecordMarshaller<I extends Record, O extends Record> extends RecordProcessor<I, O> {
 
     /**
      * Marshal a record to a specific format.

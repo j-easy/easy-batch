@@ -24,23 +24,23 @@
 
 package org.easybatch.validation;
 
-import org.easybatch.core.util.Utils;
-import org.easybatch.core.validator.RecordValidationException;
-import org.easybatch.core.validator.RecordValidator;
-
+import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.Set;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.util.Utils;
+import org.easybatch.core.validator.RecordValidationException;
+import org.easybatch.core.validator.RecordValidator;
 
 /**
  * An implementation of {@link RecordValidator} using JSR 303 API.
  *
- * @param <T> the object type this validator can validate.
+ * @param <P> the object type this validator can validate.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BeanValidationRecordValidator<T> implements RecordValidator<T> {
+public class BeanValidationRecordValidator<P> implements RecordValidator<GenericRecord<P>> {
 
     /**
      * The validator instance to use to validate objects.
@@ -53,11 +53,11 @@ public class BeanValidationRecordValidator<T> implements RecordValidator<T> {
     }
 
     @Override
-    public T processRecord(T record) throws RecordValidationException {
-        Set<ConstraintViolation<T>> constraintViolationSet = validator.validate(record);
+    public GenericRecord<P> processRecord(GenericRecord<P> record) throws RecordValidationException {
+        Set<ConstraintViolation<P>> constraintViolationSet = validator.validate(record.getPayload());
         if (!constraintViolationSet.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
-            for (ConstraintViolation<T> constraintViolation : constraintViolationSet) {
+            for (ConstraintViolation<P> constraintViolation : constraintViolationSet) {
                 stringBuilder
                         .append("Invalid value '").append(constraintViolation.getInvalidValue()).append("' ")
                         .append("for property '").append(constraintViolation.getPropertyPath()).append("' : ")

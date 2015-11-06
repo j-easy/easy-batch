@@ -27,6 +27,7 @@ package org.easybatch.jms;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.io.FileUtils;
 import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.StringRecordReader;
@@ -86,17 +87,18 @@ public class JmsIntegrationTest {
         Job job = aNewJob()
                 .reader(new JmsQueueRecordReader(queueConnectionFactory, queue))
                 .filter(new JmsPoisonRecordFilter())
-                .processor(new RecordCollector<JmsRecord>())
+                .processor(new RecordCollector())
                 .jobListener(new JmsQueueSessionListener(queueSession))
                 .jobListener(new JmsQueueConnectionListener(queueConnection))
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(1);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(1);
 
         List<JmsRecord> records = (List<JmsRecord>) jobReport.getResult();
 

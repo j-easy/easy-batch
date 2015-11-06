@@ -25,6 +25,7 @@
 package org.easybatch.jdbc;
 
 import org.easybatch.core.listener.PipelineListener;
+import org.easybatch.core.record.Record;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -57,13 +58,13 @@ public class JdbcTransactionListener implements PipelineListener {
     }
 
     @Override
-    public Object beforeRecordProcessing(final Object record) {
+    public Record beforeRecordProcessing(final Record record) {
         recordNumber++;
         return record;
     }
 
     @Override
-    public void afterRecordProcessing(final Object record, final Object processingResult) {
+    public void afterRecordProcessing(final Record inputRecord, final Record outputRecord) {
         try {
             connection.commit();
             LOGGER.info("Committing transaction after record " + recordNumber);
@@ -73,7 +74,7 @@ public class JdbcTransactionListener implements PipelineListener {
     }
 
     @Override
-    public void onRecordProcessingException(final Object record, final Throwable throwable) {
+    public void onRecordProcessingException(final Record record, final Throwable throwable) {
         try {
             connection.rollback();
         } catch (SQLException e) {

@@ -24,6 +24,7 @@
 
 package org.easybatch.extensions.opencsv.test;
 
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.extensions.opencsv.OpenCsvRecordMapper;
@@ -40,20 +41,25 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 @RunWith(MockitoJUnitRunner.class)
 public class OpenCsvRecordMapperTest {
 
-    private OpenCsvRecordMapper<Foo> openCsvRecordMapper;
-
+    @Mock
+    private StringRecord record;
     @Mock
     private Header header;
 
+    private OpenCsvRecordMapper<Foo> openCsvRecordMapper;
+
     @Before
     public void setUp() throws Exception {
-        openCsvRecordMapper = new OpenCsvRecordMapper<Foo>(Foo.class, new String[]{"firstName", "lastName", "age", "married"});
+        openCsvRecordMapper = new OpenCsvRecordMapper<>(Foo.class, "firstName", "lastName", "age", "married");
     }
 
     @Test
     public void testOpenCsvMapping() throws Exception {
         StringRecord fooRecord = new StringRecord(header, "foo,bar,15,true");
-        Foo foo = openCsvRecordMapper.processRecord(fooRecord);
+        GenericRecord<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
+        assertThat(actual.getHeader()).isEqualTo(header);
+        
+        Foo foo = actual.getPayload();
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo");
         assertThat(foo.getLastName()).isEqualTo("bar");
@@ -65,7 +71,10 @@ public class OpenCsvRecordMapperTest {
     public void testOpenCsvDelimiter() throws Exception {
         openCsvRecordMapper.setDelimiter(';');
         StringRecord fooRecord = new StringRecord(header, "foo;bar");
-        Foo foo = openCsvRecordMapper.processRecord(fooRecord);
+        GenericRecord<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
+        assertThat(actual.getHeader()).isEqualTo(header);
+        
+        Foo foo = actual.getPayload();
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo");
         assertThat(foo.getLastName()).isEqualTo("bar");
@@ -75,7 +84,10 @@ public class OpenCsvRecordMapperTest {
     public void testOpenCsvQualifier() throws Exception {
         openCsvRecordMapper.setQualifier('\'');
         StringRecord fooRecord = new StringRecord(header, "'foo,s','bar'");
-        Foo foo = openCsvRecordMapper.processRecord(fooRecord);
+        GenericRecord<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
+        assertThat(actual.getHeader()).isEqualTo(header);
+        
+        Foo foo = actual.getPayload();
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo,s");
         assertThat(foo.getLastName()).isEqualTo("bar");
@@ -86,7 +98,10 @@ public class OpenCsvRecordMapperTest {
     public void testOpenCsvCarriageReturn() throws Exception {
         openCsvRecordMapper.setQualifier('\'');
         StringRecord fooRecord = new StringRecord(header, "'foo" + LINE_SEPARATOR + "','bar" + LINE_SEPARATOR + "'");
-        Foo foo = openCsvRecordMapper.processRecord(fooRecord);
+        GenericRecord<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
+        assertThat(actual.getHeader()).isEqualTo(header);
+        
+        Foo foo = actual.getPayload();
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo" + LINE_SEPARATOR);
         assertThat(foo.getLastName()).isEqualTo("bar" + LINE_SEPARATOR);

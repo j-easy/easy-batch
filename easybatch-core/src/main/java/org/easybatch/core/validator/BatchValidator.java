@@ -25,26 +25,18 @@
 package org.easybatch.core.validator;
 
 import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.logging.Logger;
-
-import static org.easybatch.core.util.Utils.isBatch;
-import static org.easybatch.core.util.Utils.isCollection;
-
 /**
- * Validate a batch of records.
+ * Validate a batch of records using a delegate {@link RecordValidator}.
+ *
  * <p>A batch of records is valid if all its records are valid.</p>
  * <p>A batch of records is invalid if one of its records is invalid.</p>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BatchValidator implements RecordValidator<Object> {
-
-    private static final Logger LOGGER = Logger.getLogger(BatchValidator.class.getName());
+public class BatchValidator implements RecordValidator<Batch> {
 
     private RecordValidator recordValidator;
 
@@ -67,16 +59,8 @@ public class BatchValidator implements RecordValidator<Object> {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public Object processRecord(Object batch) throws RecordValidationException {
-        List records = new ArrayList();
-        if (isBatch(batch)) {
-            records.addAll(((Batch) batch).getPayload());
-        } else if (isCollection(batch)) {
-            records.addAll((Collection) batch);
-        } else {
-            LOGGER.warning("BatchValidator accepts only " + Batch.class.getName() + " or " + Collection.class.getName() + " types");
-        }
-        for (Object record : records) {
+    public Batch processRecord(final Batch batch) throws RecordValidationException {
+        for (Record record : batch.getPayload()) {
             recordValidator.processRecord(record);
         }
         return batch;

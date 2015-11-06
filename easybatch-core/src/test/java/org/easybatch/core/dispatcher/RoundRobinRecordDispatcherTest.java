@@ -53,9 +53,9 @@ public class RoundRobinRecordDispatcherTest {
 
     @Before
     public void setUp() throws Exception {
-        queue1 = new LinkedBlockingQueue<Record>();
-        queue2 = new LinkedBlockingQueue<Record>();
-        roundRobinRecordDispatcher = new RoundRobinRecordDispatcher<Record>(Arrays.asList(queue1, queue2));
+        queue1 = new LinkedBlockingQueue<>();
+        queue2 = new LinkedBlockingQueue<>();
+        roundRobinRecordDispatcher = new RoundRobinRecordDispatcher<>(Arrays.asList(queue1, queue2));
     }
 
     @Test
@@ -76,7 +76,6 @@ public class RoundRobinRecordDispatcherTest {
 
         assertThat(queue1).isNotEmpty().containsOnly(poisonRecord);
         assertThat(queue2).isNotEmpty().containsOnly(poisonRecord);
-
     }
 
 }

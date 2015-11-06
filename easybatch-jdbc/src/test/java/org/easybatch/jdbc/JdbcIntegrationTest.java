@@ -24,11 +24,9 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.job.Job;
-import org.easybatch.core.job.JobBuilder;
-import org.easybatch.core.job.JobReport;
-import org.easybatch.core.job.JobStatus;
+import org.easybatch.core.job.*;
 import org.easybatch.core.processor.RecordCollector;
+import org.easybatch.core.record.GenericRecord;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -39,6 +37,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -72,11 +71,11 @@ public class JdbcIntegrationTest {
 
         Job job = JobBuilder.aNewJob()
                 .reader(new JdbcRecordReader(connection, query))
-                .mapper(new JdbcRecordMapper(Person.class, new String[]{"id", "name"}))
-                .processor(new RecordCollector<Person>())
+                .mapper(new JdbcRecordMapper(Person.class, "id", "name"))
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
@@ -86,7 +85,8 @@ public class JdbcIntegrationTest {
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(jobReport.getParameters().getDataSource()).isEqualTo(DATA_SOURCE_NAME);
 
-        List<Person> persons = (List<Person>) jobReport.getResult();
+        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
+        List<Person> persons = extractPayloads(records);
 
         assertThat(persons).isNotEmpty().hasSize(2);
 
@@ -132,6 +132,15 @@ public class JdbcIntegrationTest {
         Statement statement = connection.createStatement();
         statement.executeUpdate(query);
         statement.close();
+    }
+
+    // TODO should be provided by EasyBatch as PayloadExtractor
+    private <P> List<P> extractPayloads(List<GenericRecord<P>> records) {
+        List<P> payloads = new ArrayList<>();
+        for (GenericRecord<P> record : records) {
+            payloads.add(record.getPayload());
+        }
+        return payloads;
     }
 
 }

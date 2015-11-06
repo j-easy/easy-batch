@@ -24,6 +24,8 @@
 
 package org.easybatch.core.listener;
 
+import org.easybatch.core.record.Record;
+
 /**
  * Enables the implementing class to get notified before/after the processing pipeline.
  *
@@ -37,7 +39,7 @@ public interface PipelineListener {
      *
      * @param record The record that will be processed.
      */
-    Object beforeRecordProcessing(final Object record);
+    Record beforeRecordProcessing(final Record record);
 
     /**
      * Called after the record has been processed.
@@ -45,7 +47,7 @@ public interface PipelineListener {
      * @param inputRecord  The record to process.
      * @param outputRecord The processed record. <strong>May be null if the record has been filtered</strong>
      */
-    void afterRecordProcessing(final Object inputRecord, final Object outputRecord);
+    void afterRecordProcessing(final Record inputRecord, final Record outputRecord);
 
     /**
      * Called when an exception occurs during record processing
@@ -53,6 +55,6 @@ public interface PipelineListener {
      * @param record    the record attempted to be processed
      * @param throwable the exception occurred during record processing
      */
-    void onRecordProcessingException(final Object record, final Throwable throwable);
+    void onRecordProcessingException(final Record record, final Throwable throwable);
 
 }

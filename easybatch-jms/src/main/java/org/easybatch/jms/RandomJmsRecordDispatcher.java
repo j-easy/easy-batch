@@ -25,22 +25,17 @@
 package org.easybatch.jms;
 
 import org.easybatch.core.dispatcher.AbstractRecordDispatcher;
-import org.easybatch.core.dispatcher.RecordDispatchingException;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
 import javax.jms.QueueSender;
 import java.util.List;
 import java.util.Random;
-
-import static java.lang.String.format;
 
 /**
  * Dispatch records randomly to a list of Jms queues.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RandomJmsRecordDispatcher extends AbstractRecordDispatcher<Message> {
+public class RandomJmsRecordDispatcher extends AbstractRecordDispatcher<JmsRecord> {
 
     /**
      * The total number of queues this dispatcher operates on.
@@ -75,21 +70,15 @@ public class RandomJmsRecordDispatcher extends AbstractRecordDispatcher<Message>
     }
 
     @Override
-    public void dispatchRecord(Message record) throws RecordDispatchingException {
+    public void dispatchRecord(JmsRecord record) throws Exception {
         // when receiving a poising record, broadcast it to all queues
-        if (record instanceof JmsPoisonMessage) {
+        if (record instanceof JmsPoisonRecord) {
             broadcastJmsRecordDispatcher.dispatchRecord(record);
             return;
         }
         //dispatch record randomly to one of the queues
-        QueueSender queue = null;
-        try {
-            queue = queues.get(random.nextInt(queuesNumber));
-            queue.send(record);
-        } catch (JMSException e) {
-            String message = format("Unable to dispatch record %s to queue %s", record, queue);
-            throw new RecordDispatchingException(message, e);
-        }
+        QueueSender queue = queues.get(random.nextInt(queuesNumber));
+        queue.send(record.getPayload());
     }
 
 }

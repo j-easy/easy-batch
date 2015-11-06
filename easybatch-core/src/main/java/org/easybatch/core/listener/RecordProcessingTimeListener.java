@@ -43,20 +43,19 @@ public class RecordProcessingTimeListener implements PipelineListener {
     private long startTime;
 
     @Override
-    public Object beforeRecordProcessing(Object inputRecord) {
-        Record record = (Record) inputRecord;
-        recordNumber = record.getHeader().getNumber();
+    public Record beforeRecordProcessing(Record inputRecord) {
+        recordNumber = inputRecord.getHeader().getNumber();
         startTime = System.currentTimeMillis();
         return inputRecord;
     }
 
     @Override
-    public void afterRecordProcessing(Object inputRecord, Object outputRecord) {
+    public void afterRecordProcessing(Record inputRecord, Record outputRecord) {
         logProcessingTime();
     }
 
     @Override
-    public void onRecordProcessingException(Object record, Throwable throwable) {
+    public void onRecordProcessingException(Record record, Throwable throwable) {
         logProcessingTime();
     }
 

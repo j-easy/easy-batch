@@ -25,13 +25,22 @@
 package org.easybatch.extensions.gson;
 
 import org.easybatch.core.marshaller.RecordMarshallingException;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(MockitoJUnitRunner.class)
 public class GsonRecordMarshallerTest {
 
+    @Mock
+    private Header header;
+    
     private GsonRecordMarshaller marshaller;
 
     @Before
@@ -42,9 +51,10 @@ public class GsonRecordMarshallerTest {
     @Test
     public void marshal() throws RecordMarshallingException {
         Tweet tweet = new Tweet(1, "foo", "hi");
+        GenericRecord<Tweet> record = new GenericRecord<>(header, tweet);
 
         String expected = "{\"id\":1,\"user\":\"foo\",\"message\":\"hi\"}";
-        String actual = marshaller.processRecord(tweet);
+        String actual = marshaller.processRecord(record).getPayload();
 
         assertThat(actual).isEqualTo(expected);
     }

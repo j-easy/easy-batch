@@ -32,7 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Filter {@link JmsPoisonMessage}.
+ * Filter {@link JmsPoisonRecord}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -44,22 +44,24 @@ public class JmsPoisonRecordFilter implements RecordFilter<JmsRecord> {
      * Return true if the record should be filtered.
      *
      * @param record the record to filter
-     * @return true if the record should be filtered
+     * @return true if the record should be filtered, false else
      */
     @Override
     public JmsRecord processRecord(JmsRecord record) {
         boolean isPoison = false;
         Message payload = record.getPayload();
         try {
-            String type = payload.getJMSType();
-            if (type != null && !type.isEmpty()) {
-                isPoison = JmsPoisonMessage.TYPE.equals(type);
+            if (payload != null) {
+                String type = payload.getJMSType();
+                if (type != null && !type.isEmpty()) {
+                    isPoison = JmsPoisonMessage.TYPE.equals(type);
+                }
             }
         } catch (JMSException e) {
             LOGGER.log(Level.WARNING, "Unable to get type of JMS message " + payload, e);
             return null;
         }
-        if (isPoison || payload instanceof JmsPoisonMessage) {
+        if (record instanceof JmsPoisonRecord || isPoison || payload instanceof JmsPoisonMessage) {
             return null;
         }
         return record;

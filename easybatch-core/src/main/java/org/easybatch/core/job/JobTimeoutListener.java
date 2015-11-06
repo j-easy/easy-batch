@@ -25,6 +25,7 @@
 package org.easybatch.core.job;
 
 import org.easybatch.core.listener.PipelineListener;
+import org.easybatch.core.record.Record;
 
 /**
  * Pipeline listener that checks if the defined timeout is exceeded.
@@ -40,17 +41,17 @@ class JobTimeoutListener implements PipelineListener {
     }
 
     @Override
-    public Object beforeRecordProcessing(Object record) {
+    public Record beforeRecordProcessing(Record record) {
         return record;
     }
 
     @Override
-    public void afterRecordProcessing(Object inputRecord, Object outputRecord) {
+    public void afterRecordProcessing(Record inputRecord, Record outputRecord) {
         checkTimeout();
     }
 
     @Override
-    public void onRecordProcessingException(Object record, Throwable throwable) {
+    public void onRecordProcessingException(Record record, Throwable throwable) {
         checkTimeout();
     }
 

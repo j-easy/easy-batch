@@ -24,25 +24,31 @@
 
 package org.easybatch.core.marshaller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Arrays;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 public class BatchMarshallerTest {
 
     @Mock
-    private Object record1, record2, marshalledRecord1, marshalledRecord2;
-    
+    private Header header;
     @Mock
-    private RecordMarshaller<Object, Object> recordMarshaller;
+    private Record record1, record2, marshalledRecord1, marshalledRecord2;
+    @Mock
+    private Batch batch;
+    @Mock
+    private RecordMarshaller<Record, Record> recordMarshaller;
     
     private BatchMarshaller batchMarshaller;
     
@@ -50,16 +56,18 @@ public class BatchMarshallerTest {
     public void setUp() throws Exception {
         when(recordMarshaller.processRecord(record1)).thenReturn(marshalledRecord1);
         when(recordMarshaller.processRecord(record2)).thenReturn(marshalledRecord2);
+        when(batch.getHeader()).thenReturn(header);
+        when(batch.getPayload()).thenReturn(Arrays.asList(record1, record2));
         batchMarshaller = new BatchMarshaller(recordMarshaller);
     }
 
     @Test
     public void processRecord() throws RecordMarshallingException {
-        List<Object> strings = batchMarshaller.processRecord(Arrays.asList(record1, record2));
+        Batch actual = batchMarshaller.processRecord(batch);
         
-        assertThat(strings)
-                .isNotNull()
-                .isNotEmpty()
+        assertThat(actual).isNotNull();
+        assertThat(actual.getHeader()).isEqualTo(header);
+        assertThat(actual.getPayload()).isNotEmpty()
                 .hasSize(2)
                 .containsExactly(marshalledRecord1, marshalledRecord2);
     }

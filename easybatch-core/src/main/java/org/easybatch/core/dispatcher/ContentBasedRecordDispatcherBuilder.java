@@ -24,6 +24,8 @@
 
 package org.easybatch.core.dispatcher;
 
+import org.easybatch.core.record.Record;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -34,7 +36,7 @@ import java.util.concurrent.BlockingQueue;
  * @param <T> type of record
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ContentBasedRecordDispatcherBuilder<T> {
+public class ContentBasedRecordDispatcherBuilder<T extends Record> {
 
     private Predicate<T> predicate;
 

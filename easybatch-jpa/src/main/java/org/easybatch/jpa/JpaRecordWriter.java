@@ -24,8 +24,8 @@
 
 package org.easybatch.jpa;
 
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.writer.AbstractRecordWriter;
-import org.easybatch.core.writer.RecordWritingException;
 
 import javax.persistence.EntityManager;
 
@@ -37,10 +37,10 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * This writer does not commit a transaction after writing records.
  * You can use a {@link JpaTransactionListener} for this purpose.
  *
- * @param <T> the entity type.
+ * @param <P> the entity type.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JpaRecordWriter<T> extends AbstractRecordWriter<T> {
+public class JpaRecordWriter<P> extends AbstractRecordWriter<P, GenericRecord<P>> {
 
     private EntityManager entityManager;
 
@@ -55,7 +55,7 @@ public class JpaRecordWriter<T> extends AbstractRecordWriter<T> {
     }
 
     @Override
-    public void writeRecord(final T record) throws RecordWritingException {
-        entityManager.persist(record);
+    protected void writePayload(P payload) throws Exception {
+        entityManager.persist(payload);
     }
 }

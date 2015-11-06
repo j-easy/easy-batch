@@ -24,30 +24,33 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.writer.AbstractBatchWriter;
-import org.easybatch.core.writer.RecordWritingException;
-
-import javax.persistence.EntityManager;
 import java.util.List;
+import javax.persistence.EntityManager;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
+import org.easybatch.core.writer.RecordWritingException;
 
 /**
  * Writes a batch of records using a {@link JpaRecordWriter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JpaBatchWriter<T> extends AbstractBatchWriter {
+public class JpaBatchWriter implements RecordWriter<Batch> {
 
-    private JpaRecordWriter<T> jpaRecordWriter;
+    private JpaRecordWriter jpaRecordWriter;
 
     public JpaBatchWriter(EntityManager entityManager) {
-        this.jpaRecordWriter = new JpaRecordWriter<>(entityManager);
+        this.jpaRecordWriter = new JpaRecordWriter(entityManager);
     }
 
     @Override
-    protected void writeRecord(Object batch) throws RecordWritingException {
-        List records = getRecords(batch);
-        for (Object record : records) {
-            jpaRecordWriter.writeRecord((T) record);
+    @SuppressWarnings("unchecked")
+    public Batch processRecord(Batch batch) throws RecordWritingException {
+        List<Record> records = batch.getPayload();
+        for (Record record : records) {
+            jpaRecordWriter.processRecord(record);
         }
+        return batch;
     }
 }

@@ -53,9 +53,9 @@ public class RandomRecordDispatcherTest {
 
     @Before
     public void setUp() throws Exception {
-        queue1 = new LinkedBlockingQueue<Record>();
-        queue2 = new LinkedBlockingQueue<Record>();
-        randomRecordDispatcher = new RandomRecordDispatcher<Record>(Arrays.asList(queue1, queue2));
+        queue1 = new LinkedBlockingQueue<>();
+        queue2 = new LinkedBlockingQueue<>();
+        randomRecordDispatcher = new RandomRecordDispatcher<>(Arrays.asList(queue1, queue2));
     }
 
     @Test
@@ -69,7 +69,6 @@ public class RandomRecordDispatcherTest {
             assertThat(queue2).isEmpty();
             assertThat(queue1).containsOnly(record);
         }
-
     }
 
     @Test
@@ -79,7 +78,6 @@ public class RandomRecordDispatcherTest {
 
         assertThat(queue1).isNotEmpty().containsOnly(poisonRecord);
         assertThat(queue2).isNotEmpty().containsOnly(poisonRecord);
-
     }
 
 }

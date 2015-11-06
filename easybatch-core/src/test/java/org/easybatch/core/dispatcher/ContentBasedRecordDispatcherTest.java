@@ -58,9 +58,9 @@ public class ContentBasedRecordDispatcherTest {
 
     @Before
     public void setUp() throws Exception {
-        orangeQueue = new LinkedBlockingQueue<Record>();
-        defaultQueue = new LinkedBlockingQueue<Record>();
-        recordDispatcher = new ContentBasedRecordDispatcherBuilder<Record>()
+        orangeQueue = new LinkedBlockingQueue<>();
+        defaultQueue = new LinkedBlockingQueue<>();
+        recordDispatcher = new ContentBasedRecordDispatcherBuilder<>()
                 .when(orangePredicate).dispatchTo(orangeQueue)
                 .otherwise(defaultQueue)
                 .build();

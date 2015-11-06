@@ -27,10 +27,9 @@ package org.easybatch.core.reader;
 /**
  * Reads records in batches from an iterable data source.
  *
- * @param <T> the type of records in the iterable data source.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class IterableBatchReader<T> extends AbstractBatchReader {
+public class IterableBatchReader extends AbstractBatchReader {
 
     /**
      * Create an iterable batch reader.
@@ -38,8 +37,8 @@ public class IterableBatchReader<T> extends AbstractBatchReader {
      * @param dataSource the data source to read records from
      * @param batchSize the batch size
      */
-    public IterableBatchReader(final Iterable<T> dataSource, final int batchSize) {
-        super(batchSize, new IterableRecordReader<>(dataSource));
+    public IterableBatchReader(final Iterable dataSource, final int batchSize) {
+        super(batchSize, new IterableRecordReader(dataSource));
     }
 
 }

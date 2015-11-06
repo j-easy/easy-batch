@@ -39,15 +39,15 @@ import java.util.Map;
  */
 public class ContentBasedJmsRecordDispatcherBuilder {
 
-    private Predicate<Message> predicate;
+    private Predicate<JmsRecord> predicate;
 
-    private Map<Predicate<Message>, QueueSender> queueMap;
+    private Map<Predicate<JmsRecord>, QueueSender> queueMap;
 
     public ContentBasedJmsRecordDispatcherBuilder() {
         queueMap = new HashMap<>();
     }
 
-    public ContentBasedJmsRecordDispatcherBuilder when(Predicate<Message> predicate) {
+    public ContentBasedJmsRecordDispatcherBuilder when(Predicate<JmsRecord> predicate) {
         this.predicate = predicate;
         return this;
     }
@@ -63,7 +63,7 @@ public class ContentBasedJmsRecordDispatcherBuilder {
     }
 
     public ContentBasedJmsRecordDispatcherBuilder otherwise(QueueSender queue) {
-        queueMap.put(new DefaultPredicate<Message>(), queue);
+        queueMap.put(new DefaultPredicate<JmsRecord>(), queue);
         predicate = null;
         return this;
     }

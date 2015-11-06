@@ -33,22 +33,23 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class CollectionRecordWriter<T> extends AbstractRecordWriter<T> {
+public class CollectionRecordWriter extends AbstractRecordWriter {
 
-    private Collection<T> collection;
+    private Collection collection;
 
     /**
      * Convenient processor that writes records to a {@link java.util.Collection}.
      *
      * @param collection the collection to write records to
      */
-    public CollectionRecordWriter(final Collection<T> collection) {
+    public CollectionRecordWriter(final Collection collection) {
         checkNotNull(collection, "collection");
         this.collection = collection;
     }
 
     @Override
-    protected void writeRecord(final T record) throws RecordWritingException {
-        collection.add(record);
+    @SuppressWarnings("unchecked")
+    protected void writePayload(final Object payload) throws RecordWritingException {
+        collection.add(payload);
     }
 }

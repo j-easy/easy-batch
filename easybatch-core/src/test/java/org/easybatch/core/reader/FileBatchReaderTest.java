@@ -65,7 +65,7 @@ public class FileBatchReaderTest {
     public void testFileReadingInBatches() throws Exception {
         JobReport jobReport = aNewJob()
                 .reader(fileBatchReader)
-                .processor(new RecordCollector<Batch>())
+                .processor(new RecordCollector())
                 .call();
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();

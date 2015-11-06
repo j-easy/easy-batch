@@ -24,27 +24,31 @@
 
 package org.easybatch.extensions.mongodb;
 
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.easybatch.core.processor.RecordProcessingException;
+import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MongoDBRecordWriterTest {
 
     @Mock
     private DBCollection collection;
-
     @Mock
     private DBObject dbObject;
-
+    @Mock
+    private Header header;
+    @Mock
+    private MongoDBRecord mongoDBRecord;
     @Mock
     private RuntimeException exception;
 
@@ -52,20 +56,23 @@ public class MongoDBRecordWriterTest {
 
     @Before
     public void setUp() throws Exception {
+        when(mongoDBRecord.getHeader()).thenReturn(header);
+        when(mongoDBRecord.getPayload()).thenReturn(dbObject);
         mongoDBRecordWriter = new MongoDBRecordWriter(collection);
     }
 
     @Test
     public void testProcessRecord() throws Exception {
-        mongoDBRecordWriter.processRecord(dbObject);
-
+        MongoDBRecord actual = mongoDBRecordWriter.processRecord(this.mongoDBRecord);
+        
         verify(collection).save(dbObject);
+        assertThat(actual).isEqualTo(mongoDBRecord);
     }
 
     @Test(expected = RecordProcessingException.class)
     public void testRecordProcessingWithError() throws Exception {
         when(collection.save(dbObject)).thenThrow(exception);
 
-        mongoDBRecordWriter.processRecord(dbObject);
+        mongoDBRecordWriter.processRecord(mongoDBRecord);
     }
 }

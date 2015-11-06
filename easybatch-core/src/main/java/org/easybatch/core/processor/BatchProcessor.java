@@ -25,24 +25,18 @@
 package org.easybatch.core.processor;
 
 import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.logging.Logger;
-
-import static org.easybatch.core.util.Utils.isBatch;
-import static org.easybatch.core.util.Utils.isCollection;
 
 /**
  * Process records in batches.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BatchProcessor implements RecordProcessor<Object, Object> {
-
-    private static final Logger LOGGER = Logger.getLogger(BatchProcessor.class.getName());
+public class BatchProcessor implements RecordProcessor<Batch, Batch> {
 
     private RecordProcessor recordProcessor;
 
@@ -65,18 +59,11 @@ public class BatchProcessor implements RecordProcessor<Object, Object> {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public Object processRecord(Object batch) throws RecordProcessingException {
-        List records = new ArrayList();
-        if (isBatch(batch)) {
-            records.addAll(((Batch) batch).getPayload());
-        } else if (isCollection(batch)) {
-            records.addAll((Collection) batch);
-        } else {
-            LOGGER.warning("BatchProcessor accepts only " + Batch.class.getName() + " or " + Collection.class.getName() + " types");
+    public Batch processRecord(Batch batch) throws RecordProcessingException {
+        List<Record> processedRecords = new ArrayList<>();
+        for (Record record : batch.getPayload()) {
+            processedRecords.add(recordProcessor.processRecord(record));
         }
-        for (Object record : records) {
-            recordProcessor.processRecord(record);
-        }
-        return batch;
+        return new Batch(batch.getHeader(), processedRecords);
     }
 }

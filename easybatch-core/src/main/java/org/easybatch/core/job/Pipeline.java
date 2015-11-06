@@ -49,7 +49,7 @@ final class Pipeline {
     @SuppressWarnings({"unchecked"})
     public void process(final Record currentRecord) throws RecordProcessingException {
         try {
-            Object recordToProcess = eventManager.fireBeforeRecordProcessing(currentRecord);
+            Record recordToProcess = eventManager.fireBeforeRecordProcessing(currentRecord);
             for (RecordProcessor processor : processors) {
                 recordToProcess = processor.processRecord(recordToProcess);
                 if (recordToProcess == null) {

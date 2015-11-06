@@ -54,8 +54,8 @@ public class IterableBatchReaderTest {
         List<Object> dataSource = asList(record1, record2, record3, record4, record5);
 
         JobReport jobReport = aNewJob()
-                .reader(new IterableBatchReader<Object>(dataSource, BATCH_SIZE))
-                .processor(new RecordCollector<Object>())
+                .reader(new IterableBatchReader(dataSource, BATCH_SIZE))
+                .processor(new RecordCollector())
                 .call();
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();

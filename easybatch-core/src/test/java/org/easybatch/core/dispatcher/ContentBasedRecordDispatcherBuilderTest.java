@@ -32,11 +32,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class ContentBasedRecordDispatcherBuilderTest {
 
-    private ContentBasedRecordDispatcherBuilder builder;
+    private ContentBasedRecordDispatcherBuilder<Record> builder;
 
     @Before
     public void setUp() throws Exception {
-        builder = new ContentBasedRecordDispatcherBuilder();
+        builder = new ContentBasedRecordDispatcherBuilder<>();
     }
 
     @Test(expected = IllegalStateException.class)

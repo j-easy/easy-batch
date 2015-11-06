@@ -25,6 +25,7 @@
 package org.easybatch.jpa;
 
 import org.easybatch.core.listener.PipelineListener;
+import org.easybatch.core.record.Record;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -61,7 +62,7 @@ public class JpaTransactionListener implements PipelineListener {
     }
 
     @Override
-    public Object beforeRecordProcessing(final Object record) {
+    public Record beforeRecordProcessing(final Record record) {
         this.transaction = entityManager.getTransaction();
         this.transaction.begin();
         recordNumber++;
@@ -69,7 +70,7 @@ public class JpaTransactionListener implements PipelineListener {
     }
 
     @Override
-    public void afterRecordProcessing(final Object record, final Object processingResult) {
+    public void afterRecordProcessing(final Record inputRecord, final Record outputRecord) {
         try {
             entityManager.flush();
             entityManager.clear();
@@ -81,7 +82,7 @@ public class JpaTransactionListener implements PipelineListener {
     }
 
     @Override
-    public void onRecordProcessingException(final Object record, final Throwable throwable) {
+    public void onRecordProcessingException(final Record record, final Throwable throwable) {
         try {
             transaction.rollback();
             LOGGER.info("Transaction rolled back after record " + recordNumber);

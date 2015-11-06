@@ -26,6 +26,9 @@ package org.easybatch.core.marshaller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
 
 /**
@@ -33,7 +36,7 @@ import org.easybatch.core.util.Utils;
  * 
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BatchMarshaller implements RecordMarshaller<List<Object>, List<Object>> {
+public class BatchMarshaller implements RecordMarshaller<Batch, Batch> {
     
     private RecordMarshaller delegate;
 
@@ -48,11 +51,12 @@ public class BatchMarshaller implements RecordMarshaller<List<Object>, List<Obje
     }
 
     @Override
-    public List<Object> processRecord(final List<Object> records) throws RecordMarshallingException {
-        List<Object> marshalledRecords = new ArrayList<>();
-        for (Object record : records) {
+    @SuppressWarnings("unchecked")
+    public Batch processRecord(final Batch batch) throws RecordMarshallingException {
+        List<Record> marshalledRecords = new ArrayList<>();
+        for (Record record : batch.getPayload()) {
             marshalledRecords.add(delegate.processRecord(record));
         }
-        return marshalledRecords;
+        return new Batch(batch.getHeader(), marshalledRecords);
     }
 }

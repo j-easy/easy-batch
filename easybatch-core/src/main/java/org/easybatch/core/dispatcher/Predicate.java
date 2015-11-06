@@ -24,6 +24,8 @@
 
 package org.easybatch.core.dispatcher;
 
+import org.easybatch.core.record.Record;
+
 /**
  * Predicates are used to check if a record matches a criteria so that it is dispatched to the correct queue.
  *
@@ -32,7 +34,7 @@ package org.easybatch.core.dispatcher;
  * @see org.easybatch.core.dispatcher.ContentBasedRecordDispatcher
  * @see org.easybatch.core.dispatcher.ContentBasedRecordDispatcherBuilder
  */
-public interface Predicate<T> {
+public interface Predicate<T extends Record> {
 
     boolean matches(T record);
 

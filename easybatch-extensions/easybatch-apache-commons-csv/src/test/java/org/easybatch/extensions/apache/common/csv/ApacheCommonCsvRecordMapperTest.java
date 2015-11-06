@@ -27,6 +27,7 @@ package org.easybatch.extensions.apache.common.csv;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +60,8 @@ public class ApacheCommonCsvRecordMapperTest {
         CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        Foo foo = (Foo) mapper.processRecord(record);
+        GenericRecord<Foo> actual = mapper.processRecord(record);
+        Foo foo = actual.getPayload();
 
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo");
@@ -76,7 +78,8 @@ public class ApacheCommonCsvRecordMapperTest {
                 .withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        Foo foo = (Foo) mapper.processRecord(record);
+        GenericRecord<Foo> actual = mapper.processRecord(record);
+        Foo foo = actual.getPayload();
 
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo");
@@ -93,7 +96,8 @@ public class ApacheCommonCsvRecordMapperTest {
                 .withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        Foo foo = (Foo) mapper.processRecord(record);
+        GenericRecord<Foo> actual = mapper.processRecord(record);
+        Foo foo = actual.getPayload();
 
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo,s");
@@ -110,7 +114,8 @@ public class ApacheCommonCsvRecordMapperTest {
                 .withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        Foo foo = (Foo) mapper.processRecord(record);
+        GenericRecord<Foo> actual = mapper.processRecord(record);
+        Foo foo = actual.getPayload();
 
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo" + LINE_SEPARATOR);

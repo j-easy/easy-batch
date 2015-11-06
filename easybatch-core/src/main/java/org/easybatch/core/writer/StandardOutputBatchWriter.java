@@ -24,6 +24,9 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+
 import java.util.List;
 
 /**
@@ -31,7 +34,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class StandardOutputBatchWriter extends AbstractBatchWriter {
+public class StandardOutputBatchWriter implements RecordWriter<Batch> {
 
     private StandardOutputRecordWriter standardOutputRecordWriter;
 
@@ -43,10 +46,12 @@ public class StandardOutputBatchWriter extends AbstractBatchWriter {
     }
 
     @Override
-    protected void writeRecord(final Object batch) throws RecordWritingException {
-        List records = getRecords(batch);
-        for (Object record : records) {
-            standardOutputRecordWriter.writeRecord(record);
+    @SuppressWarnings("unchecked")
+    public Batch processRecord(final Batch batch) throws RecordWritingException {
+        List<Record> records = batch.getPayload();
+        for (Record record : records) {
+            standardOutputRecordWriter.processRecord(record);
         }
+        return batch;
     }
 }

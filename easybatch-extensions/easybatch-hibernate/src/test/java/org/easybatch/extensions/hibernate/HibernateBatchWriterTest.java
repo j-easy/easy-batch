@@ -24,15 +24,9 @@
 
 package org.easybatch.extensions.hibernate;
 
-import org.easybatch.core.job.JobReport;
-import org.easybatch.core.mapper.GenericRecordMapper;
-import org.easybatch.core.mapper.BatchMapper;
-import org.easybatch.core.reader.IterableBatchReader;
-import org.hibernate.Session;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static java.lang.Long.valueOf;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -40,10 +34,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.Long.valueOf;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.job.JobBuilder.aNewJob;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.reader.IterableBatchReader;
+import org.hibernate.Session;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class HibernateBatchWriterTest {
 
@@ -69,8 +66,7 @@ public class HibernateBatchWriterTest {
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
         JobReport jobReport = aNewJob()
-                .reader(new IterableBatchReader<>(tweets, batchSize))
-                .mapper(new BatchMapper(new GenericRecordMapper<Tweet>()))
+                .reader(new IterableBatchReader(tweets, batchSize))
                 .writer(new HibernateBatchWriter(session))
                 .pipelineListener(new HibernateTransactionListener(session))
                 .jobListener(new HibernateSessionListener(session))

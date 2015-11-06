@@ -24,14 +24,13 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.job.Job;
-import org.easybatch.core.job.JobBuilder;
-import org.easybatch.core.job.JobReport;
-import org.easybatch.core.job.JobStatus;
+import org.easybatch.core.job.*;
 import org.easybatch.core.processor.RecordCollector;
+import org.easybatch.core.record.GenericRecord;
 import org.junit.Test;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,12 +46,13 @@ public class XmlIntegrationTest {
         Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("website", xmlDataSource))
                 .mapper(new XmlRecordMapper(Website.class))
-                .processor(new RecordCollector<Website>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
-        List<Website> websites = (List<Website>) jobReport.getResult();
+        List<GenericRecord<Website>> records = (List<GenericRecord<Website>>) jobReport.getResult();
+        List<Website> websites = extractPayloads(records);
 
         assertThat(websites).isNotEmpty().hasSize(3);
 
@@ -76,15 +76,16 @@ public class XmlIntegrationTest {
 
         Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("person", xmlDataSource))
-                .mapper(new XmlRecordMapper<Person>(Person.class))
-                .processor(new RecordCollector<Person>())
+                .mapper(new XmlRecordMapper(Person.class))
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThatReportIsCorrect(jobReport);
 
-        List<Person> persons = (List<Person>) jobReport.getResult();
+        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
+        List<Person> persons = extractPayloads(records);
 
         assertThat(persons).isNotEmpty().hasSize(2);
 
@@ -109,15 +110,16 @@ public class XmlIntegrationTest {
 
         Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("dependency", xmlDataSource))
-                .mapper(new XmlRecordMapper<Dependency>(Dependency.class))
-                .processor(new RecordCollector<Dependency>())
+                .mapper(new XmlRecordMapper(Dependency.class))
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThatReportIsCorrect(jobReport);
 
-        List<Dependency> dependencies = (List<Dependency>) jobReport.getResult();
+        List<GenericRecord<Dependency>> records = (List<GenericRecord<Dependency>>) jobReport.getResult();
+        List<Dependency> dependencies = extractPayloads(records);
 
         assertThat(dependencies).isNotEmpty().hasSize(2);
 
@@ -164,15 +166,16 @@ public class XmlIntegrationTest {
         Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("bean", xmlDataSource))
                 .mapper(new XmlRecordMapper(Bean.class))
-                .processor(new RecordCollector<Bean>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
-        List<Bean> beans = (List<Bean>) jobReport.getResult();
+        List<GenericRecord<Bean>> records = (List<GenericRecord<Bean>>) jobReport.getResult();
+        List<Bean> beans = extractPayloads(records);
 
         assertThat(beans).isNotEmpty().hasSize(2);
 
@@ -202,4 +205,12 @@ public class XmlIntegrationTest {
         return this.getClass().getResourceAsStream(name);
     }
 
+    // TODO should be provided by EasyBatch as PayloadExtractor
+    private <P> List<P> extractPayloads(List<GenericRecord<P>> records) {
+        List<P> payloads = new ArrayList<>();
+        for (GenericRecord<P> record : records) {
+            payloads.add(record.getPayload());
+        }
+        return payloads;
+    }
 }

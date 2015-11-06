@@ -24,7 +24,6 @@
 
 package org.easybatch.core.writer;
 
-import org.easybatch.core.mapper.GenericRecordMapper;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,30 +47,28 @@ public class CollectionRecordWriterTest {
 
     private List<String> items;
 
-    private CollectionRecordWriter<String> writer;
+    private CollectionRecordWriter writer;
 
     @Before
     public void setUp() throws Exception {
-        items = new ArrayList<String>();
-        writer = new CollectionRecordWriter<String>(items);
-
+        items = new ArrayList<>();
+        writer = new CollectionRecordWriter(items);
     }
 
     @Test
     public void testWriteRecord() throws Exception {
-        writer.writeRecord(FOO);
+        writer.writePayload(FOO);
         assertThat(items).isNotEmpty().hasSize(1).containsExactly(FOO);
     }
 
     @Test
     public void integrationTest() throws Exception {
         List<String> input = Arrays.asList(FOO, BAR);
-        List<String> output = new ArrayList<String>();
+        List<String> output = new ArrayList<>();
 
         aNewJob()
-                .reader(new IterableRecordReader<String>(input))
-                .mapper(new GenericRecordMapper())
-                .writer(new CollectionRecordWriter<String>(output))
+                .reader(new IterableRecordReader(input))
+                .writer(new CollectionRecordWriter(output))
                 .call();
 
         assertThat(output).isNotEmpty().hasSize(2).containsExactly(FOO, BAR);

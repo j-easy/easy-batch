@@ -28,6 +28,7 @@ import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.ObjectMapper;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.mapper.RecordMappingException;
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.StringRecord;
 
 import java.util.*;
@@ -37,7 +38,7 @@ import java.util.*;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class DelimitedRecordMapper extends AbstractRecordMapper implements RecordMapper<StringRecord, Object> {
+public class DelimitedRecordMapper extends AbstractRecordMapper implements RecordMapper<StringRecord, GenericRecord> {
 
     /**
      * The default delimiter.
@@ -166,7 +167,7 @@ public class DelimitedRecordMapper extends AbstractRecordMapper implements Recor
     }
 
     @Override
-    public Object processRecord(final StringRecord record) throws RecordMappingException {
+    public GenericRecord processRecord(final StringRecord record) throws RecordMappingException {
         FlatFileRecord flatFileRecord = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<>();
         int index = 0;
@@ -180,7 +181,7 @@ public class DelimitedRecordMapper extends AbstractRecordMapper implements Recor
             String fieldValue = flatFileField.getRawContent();
             fieldsContents.put(fieldName, fieldValue);
         }
-        return objectMapper.mapObject(fieldsContents);
+        return new GenericRecord(record.getHeader(), objectMapper.mapObject(fieldsContents));
     }
 
     FlatFileRecord parseRecord(final StringRecord record) throws RecordMappingException {

@@ -168,7 +168,7 @@ public class JobImplTest {
     public void whenNotAbleToOpenReader_ThenTheJobShouldBeFailed() throws Exception {
         doThrow(recordReaderOpeningException).when(reader).open();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
@@ -183,7 +183,7 @@ public class JobImplTest {
         when(reader.hasNextRecord()).thenReturn(true);
         when(reader.readNextRecord()).thenThrow(recordReadingException);
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
@@ -200,14 +200,14 @@ public class JobImplTest {
                 .reader(reader)
                 .processor(computationalRecordProcessor)
                 .build();
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport.getResult()).isEqualTo(jobResult);
     }
 
     @Test
     public void reportShouldBeCorrect() throws Exception {
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
@@ -225,7 +225,7 @@ public class JobImplTest {
                 .processor(secondProcessor)
                 .strictMode(true)
                 .build();
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
@@ -243,7 +243,7 @@ public class JobImplTest {
         when(reader.readNextRecord()).thenReturn(record1);
         when(firstProcessor.processRecord(record1)).thenReturn(null);
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
@@ -257,7 +257,7 @@ public class JobImplTest {
     @Test
     public void whenARuntimeExceptionIsThrown_thenTheJobShouldFail() {
         when(reader.hasNextRecord()).thenThrow(new RuntimeException());
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
     }
     
@@ -293,7 +293,7 @@ public class JobImplTest {
         JobReport jobReport = aNewJob()
                 .reader(new IterableRecordReader(dataSource))
                 .skip(1)
-                .processor(new RecordCollector<StringRecord>())
+                .processor(new RecordCollector())
                 .call();
 
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
@@ -314,7 +314,7 @@ public class JobImplTest {
         JobReport jobReport = aNewJob()
                 .reader(new IterableRecordReader(dataSource))
                 .limit(2)
-                .processor(new RecordCollector<StringRecord>())
+                .processor(new RecordCollector())
                 .call();
 
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
@@ -335,9 +335,9 @@ public class JobImplTest {
         JobReport jobReport = aNewJob()
                 .reader(new IterableRecordReader(dataSource))
                 .timeout(1, TimeUnit.SECONDS)
-                .processor(new RecordProcessor() {
+                .processor(new RecordProcessor<Record, Record>() {
                     @Override
-                    public Object processRecord(Object record) throws RecordProcessingException {
+                    public Record processRecord(Record record) throws RecordProcessingException {
                         try {
                             Thread.sleep(2000);
                         } catch (InterruptedException e) {

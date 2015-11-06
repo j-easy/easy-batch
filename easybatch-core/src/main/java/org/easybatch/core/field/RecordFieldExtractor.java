@@ -25,6 +25,7 @@
 package org.easybatch.core.field;
 
 import org.easybatch.core.marshaller.RecordMarshaller;
+import org.easybatch.core.record.Record;
 
 /**
  * Interface for field extractor.
@@ -32,7 +33,7 @@ import org.easybatch.core.marshaller.RecordMarshaller;
  *
  * @author Rémi Alvergnat (toilal.dev@gmail.com)
  */
-public interface RecordFieldExtractor<T> {
+public interface RecordFieldExtractor<T /* TODO extends Record ?? */ > {
     /**
      * Extract field from the record.
      *

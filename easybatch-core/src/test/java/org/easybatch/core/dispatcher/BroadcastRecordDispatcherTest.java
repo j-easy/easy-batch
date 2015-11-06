@@ -49,9 +49,9 @@ public class BroadcastRecordDispatcherTest {
 
     @Before
     public void setUp() throws Exception {
-        queue1 = new LinkedBlockingQueue<Record>();
-        queue2 = new LinkedBlockingQueue<Record>();
-        broadcastRecordDispatcher = new BroadcastRecordDispatcher<Record>(Arrays.asList(queue1, queue2));
+        queue1 = new LinkedBlockingQueue<>();
+        queue2 = new LinkedBlockingQueue<>();
+        broadcastRecordDispatcher = new BroadcastRecordDispatcher<>(Arrays.asList(queue1, queue2));
     }
 
     @Test

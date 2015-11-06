@@ -29,7 +29,6 @@ import org.easybatch.core.dispatcher.*;
 import org.easybatch.core.filter.*;
 import org.easybatch.core.job.*;
 import org.easybatch.core.mapper.BatchMapperTest;
-import org.easybatch.core.mapper.GenericRecordMapperTest;
 import org.easybatch.core.mapper.ObjectMapperTest;
 import org.easybatch.core.marshaller.BatchMarshallerTest;
 import org.easybatch.core.processor.BatchProcessorTest;
@@ -60,7 +59,6 @@ import org.junit.runners.Suite;
         // mapper
         BatchMapperTest.class,
         ObjectMapperTest.class,
-        GenericRecordMapperTest.class,
 
         // marshaller
         BatchMarshallerTest.class,

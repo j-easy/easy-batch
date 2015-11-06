@@ -24,30 +24,48 @@
 
 package org.easybatch.validation;
 
-import org.easybatch.core.validator.RecordValidationException;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
+import org.easybatch.core.validator.RecordValidationException;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
 public class BeanValidationRecordValidatorTest {
+
+    @Mock
+    private GenericRecord<Foo> record;
+    @Mock
+    private Header header;
 
     private BeanValidationRecordValidator<Foo> validator;
 
-    @org.junit.Before
+    @Before
     public void setUp() throws Exception {
-        validator = new BeanValidationRecordValidator<Foo>();
+        when(record.getHeader()).thenReturn(header);
+        validator = new BeanValidationRecordValidator<>();
     }
 
-    @org.junit.Test(expected = RecordValidationException.class)
+    @Test(expected = RecordValidationException.class)
     public void nonValidBeanShouldBeRejected() throws Exception {
         Foo foo = new Foo(-1, null);
-        validator.processRecord(foo);
+        when(record.getPayload()).thenReturn(foo);
+        validator.processRecord(record);
     }
 
-    @org.junit.Test
+    @Test
     public void validBeanShouldBeAccepted() throws Exception {
         Foo foo = new Foo(1, "bar");
-        Foo result = validator.processRecord(foo);
-        assertThat(result).isNotNull();
+        when(record.getPayload()).thenReturn(foo);
+        GenericRecord<Foo> actual = validator.processRecord(record);
+
+        assertThat(actual).isEqualTo(record);
     }
 
 }

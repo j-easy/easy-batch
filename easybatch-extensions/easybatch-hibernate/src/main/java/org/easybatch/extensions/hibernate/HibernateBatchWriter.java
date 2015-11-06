@@ -24,7 +24,9 @@
 
 package org.easybatch.extensions.hibernate;
 
-import org.easybatch.core.writer.AbstractBatchWriter;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
 import org.easybatch.core.writer.RecordWritingException;
 import org.hibernate.Session;
 
@@ -35,7 +37,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class HibernateBatchWriter extends AbstractBatchWriter {
+public class HibernateBatchWriter implements RecordWriter<Batch> {
 
     private HibernateRecordWriter hibernateRecordWriter;
 
@@ -49,10 +51,12 @@ public class HibernateBatchWriter extends AbstractBatchWriter {
     }
 
     @Override
-    protected void writeRecord(Object batch) throws RecordWritingException {
-        List records = getRecords(batch);
-        for (Object record : records) {
-            hibernateRecordWriter.writeRecord(record);
+    @SuppressWarnings("unchecked")
+    public Batch processRecord(Batch batch) throws RecordWritingException {
+        List<Record> records = batch.getPayload();
+        for (Record record : records) {
+            hibernateRecordWriter.processRecord(record);
         }
+        return batch;
     }
 }

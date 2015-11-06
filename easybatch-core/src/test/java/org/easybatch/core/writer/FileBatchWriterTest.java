@@ -56,7 +56,7 @@ public class FileBatchWriterTest {
         List<String> persons = Arrays.asList("foo", "bar");
 
         aNewJob()
-                .reader(new IterableBatchReader<String>(persons, 2))
+                .reader(new IterableBatchReader(persons, 2))
                 .writer(fileBatchWriter)
                 .call();
 

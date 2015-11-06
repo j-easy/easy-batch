@@ -25,14 +25,15 @@
 package org.easybatch.core.writer;
 
 import org.easybatch.core.processor.RecordProcessor;
+import org.easybatch.core.record.Record;
 
 /**
  * Marker interface for all record writers.
  *
- * @param <T> the type of record to write
+ * @param <R> the type of record to write
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface RecordWriter<T> extends RecordProcessor<T, T> {
+public interface RecordWriter<R extends Record> extends RecordProcessor<R, R> {
 
     /**
      * Write a record to a data sink.
@@ -42,5 +43,5 @@ public interface RecordWriter<T> extends RecordProcessor<T, T> {
      * @throws RecordWritingException if an error occurs during record writing
      */
     @Override
-    T processRecord(T record) throws RecordWritingException;
+    R processRecord(R record) throws RecordWritingException;
 }

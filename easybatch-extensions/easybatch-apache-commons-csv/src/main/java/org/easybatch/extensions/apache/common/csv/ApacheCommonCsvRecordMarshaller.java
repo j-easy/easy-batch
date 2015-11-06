@@ -31,6 +31,8 @@ import org.easybatch.core.field.BeanRecordFieldExtractor;
 import org.easybatch.core.field.RecordFieldExtractor;
 import org.easybatch.core.marshaller.RecordMarshaller;
 import org.easybatch.core.marshaller.RecordMarshallingException;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.StringRecord;
 
 import java.beans.IntrospectionException;
 import java.io.StringWriter;
@@ -40,7 +42,7 @@ import java.io.StringWriter;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller<Object, String> {
+public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller<GenericRecord, StringRecord> {
     
     public static final char DEFAULT_DELIMITER = ',';
 
@@ -103,14 +105,14 @@ public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller<Object,
     }
 
     @Override
-    public String processRecord(final Object record) throws RecordMarshallingException {
+    public StringRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
         try {
             StringWriter stringWriter = new StringWriter();
             CSVPrinter csvPrinter = new CSVPrinter(stringWriter, csvFormat);
-            Iterable<?> iterable = fieldExtractor.extractFields(record);
+            Iterable<?> iterable = fieldExtractor.extractFields(record.getPayload());
             csvPrinter.printRecord(iterable);
             csvPrinter.flush();
-            return stringWriter.toString();
+            return new StringRecord(record.getHeader(), stringWriter.toString());
         } catch (Exception e) {
             throw new RecordMarshallingException(e);
         }

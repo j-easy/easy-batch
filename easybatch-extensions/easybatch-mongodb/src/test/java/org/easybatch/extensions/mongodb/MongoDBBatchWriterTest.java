@@ -24,13 +24,24 @@
 
 package org.easybatch.extensions.mongodb;
 
-import com.mongodb.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.easybatch.core.job.JobReport;
-import org.easybatch.core.mapper.GenericRecordMapper;
 import org.easybatch.core.mapper.BatchMapper;
+import org.easybatch.core.mapper.RecordMapper;
+import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.processor.RecordProcessingException;
 import org.easybatch.core.reader.IterableBatchReader;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -38,23 +49,26 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.job.JobBuilder.aNewJob;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.when;
+import com.mongodb.BasicDBObject;
+import com.mongodb.BulkWriteOperation;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MongoDBBatchWriterTest {
 
     @Mock
+    private Batch batch;
+    @Mock
+    private Header header;
+    @Mock
     private DBCollection collection;
     @Mock
-    private DBObject dbObject, anotherDbObject;
+    private MongoDBRecord record1, record2;
+    @Mock
+    private DBObject dbObject1, dbObject2;
     @Mock
     private BulkWriteOperation bulkWriteOperation;
     @Mock
@@ -64,29 +78,37 @@ public class MongoDBBatchWriterTest {
 
     @Before
     public void setUp() throws Exception {
+        when(record1.getPayload()).thenReturn(dbObject1);
+        when(record2.getPayload()).thenReturn(dbObject2);
+        when(batch.getHeader()).thenReturn(header);
+        when(batch.getPayload()).thenReturn(Arrays.<Record>asList(record1, record2));
+        
         mongoDBBatchWriter = new MongoDBBatchWriter(collection);
         when(collection.initializeOrderedBulkOperation()).thenReturn(bulkWriteOperation);
     }
 
     @Test
     public void testBatchWriting() throws Exception {
-        mongoDBBatchWriter.processRecord(asList(dbObject, anotherDbObject));
+        Batch actual = mongoDBBatchWriter.processRecord(this.batch);
 
-        InOrder inOrder = inOrder(bulkWriteOperation, dbObject, anotherDbObject);
-        inOrder.verify(bulkWriteOperation).insert(dbObject);
-        inOrder.verify(bulkWriteOperation).insert(anotherDbObject);
+        InOrder inOrder = inOrder(bulkWriteOperation, dbObject1, dbObject2);
+        inOrder.verify(bulkWriteOperation).insert(dbObject1);
+        inOrder.verify(bulkWriteOperation).insert(dbObject2);
         inOrder.verify(bulkWriteOperation).execute();
+
+        assertThat(actual.getHeader()).isEqualTo(header);
     }
 
     @Test(expected = RecordProcessingException.class)
     public void testBatchWritingWithError() throws Exception {
         when(bulkWriteOperation.execute()).thenThrow(exception);
 
-        mongoDBBatchWriter.processRecord(asList(dbObject, anotherDbObject));
+        mongoDBBatchWriter.processRecord(batch);
     }
 
     @Test
     @Ignore("Ignored since it's impossible to embed a MongoDB instance ..")
+    //db.tweets.remove({})
     public void batchWritingIntegrationTest() throws Exception {
 
         MongoClient mongoClient = new MongoClient();
@@ -110,8 +132,13 @@ public class MongoDBBatchWriterTest {
         int batchSize = 2;
 
         JobReport jobReport = aNewJob()
-                .reader(new IterableBatchReader<DBObject>(tweets, batchSize))
-                .mapper(new BatchMapper(new GenericRecordMapper<DBObject>()))
+                .reader(new IterableBatchReader(tweets, batchSize))
+                .mapper(new BatchMapper(new RecordMapper<GenericRecord<DBObject>, MongoDBRecord>() {
+                    @Override
+                    public MongoDBRecord processRecord(GenericRecord<DBObject> record) throws RecordMappingException {
+                        return new MongoDBRecord(record.getHeader(), record.getPayload());
+                    }
+                }))
                 .writer(new MongoDBBatchWriter(collection))
                 .call();
 

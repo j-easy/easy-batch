@@ -54,7 +54,7 @@ public class XmlBatchReaderTest {
         
         JobReport jobReport = aNewJob()
                 .reader(xmlBatchReader)
-                .processor(new RecordCollector<Batch>())
+                .processor(new RecordCollector())
                 .call();
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();
@@ -89,7 +89,7 @@ public class XmlBatchReaderTest {
         xmlBatchReader = new XmlBatchReader(getDataSource("/empty-file.xml"), "data", BATCH_SIZE);
         JobReport jobReport = aNewJob()
                 .reader(xmlBatchReader)
-                .processor(new RecordCollector<Batch>())
+                .processor(new RecordCollector())
                 .build().call();
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();

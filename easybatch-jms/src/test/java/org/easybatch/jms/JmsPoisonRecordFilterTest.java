@@ -30,10 +30,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.jms.Message;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JmsPoisonRecordFilterTest {
@@ -41,38 +38,22 @@ public class JmsPoisonRecordFilterTest {
     private JmsPoisonRecordFilter jmsPoisonRecordFilter;
 
     @Mock
-    private Message payload;
-    @Mock
     private JmsRecord jmsRecord;
     @Mock
-    private JmsPoisonMessage jmsPoisonMessage;
-    @Mock
-    private Message nonJmsPoisonMessage;
+    private JmsPoisonRecord jmsPoisonRecord;
 
     @Before
     public void setUp() throws Exception {
         jmsPoisonRecordFilter = new JmsPoisonRecordFilter();
-        when(jmsRecord.getPayload()).thenReturn(payload);
     }
 
     @Test
-    public void testFilterPoisonRecordByType() throws Exception {
-        when(payload.getJMSType()).thenReturn(JmsPoisonMessage.TYPE);
-        assertThat(jmsPoisonRecordFilter.processRecord(jmsRecord)).isNull();
-    }
-
-    @Test
-    public void testFilterPoisonRecordByPayload() throws Exception {
-        when(jmsRecord.getPayload()).thenReturn(jmsPoisonMessage);
-        assertThat(jmsPoisonRecordFilter.processRecord(jmsRecord)).isNull();
+    public void testFilterPoisonRecord() throws Exception {
+        assertThat(jmsPoisonRecordFilter.processRecord(jmsPoisonRecord)).isNull();
     }
 
     @Test
     public void testFilterNonPoisonRecord() throws Exception {
-        when(payload.getJMSType()).thenReturn("foo");
-        assertThat(jmsPoisonRecordFilter.processRecord(jmsRecord)).isEqualTo(jmsRecord);
-
-        when(jmsRecord.getPayload()).thenReturn(nonJmsPoisonMessage);
         assertThat(jmsPoisonRecordFilter.processRecord(jmsRecord)).isEqualTo(jmsRecord);
     }
 }

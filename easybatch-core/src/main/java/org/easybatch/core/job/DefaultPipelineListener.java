@@ -25,6 +25,7 @@
 package org.easybatch.core.job;
 
 import org.easybatch.core.listener.PipelineListener;
+import org.easybatch.core.record.Record;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,7 +52,7 @@ class DefaultPipelineListener implements PipelineListener {
      * @param record The record that will be processed.
      */
     @Override
-    public Object beforeRecordProcessing(Object record) {
+    public Record beforeRecordProcessing(Record record) {
         return record;
     }
 
@@ -62,7 +63,7 @@ class DefaultPipelineListener implements PipelineListener {
      * @param outputRecord The processed record. <strong>May be null if the record has been filtered</strong>
      */
     @Override
-    public void afterRecordProcessing(Object inputRecord, Object outputRecord) {
+    public void afterRecordProcessing(Record inputRecord, Record outputRecord) {
         if (outputRecord == null) {
             LOGGER.log(Level.INFO, "Record {0} has been filtered", inputRecord);
             job.getJobReport().getMetrics().incrementFilteredCount();
@@ -78,7 +79,7 @@ class DefaultPipelineListener implements PipelineListener {
      * @param throwable the exception occurred during record processing
      */
     @Override
-    public void onRecordProcessingException(Object record, Throwable throwable) {
+    public void onRecordProcessingException(Record record, Throwable throwable) {
         LOGGER.log(Level.SEVERE, "An exception occurred while processing record " + record, throwable);
         job.getJobReport().getMetrics().incrementErrorCount();
     }

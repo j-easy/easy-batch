@@ -53,11 +53,11 @@ public class BlockingQueueRecordReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        queue = new LinkedBlockingQueue<Record>();
+        queue = new LinkedBlockingQueue<>();
         queue.put(record);
         queue.put(poisonRecord);
 
-        blockingQueueRecordReader = new BlockingQueueRecordReader<Record>(queue);
+        blockingQueueRecordReader = new BlockingQueueRecordReader<>(queue);
         blockingQueueRecordReader.open();
     }
 
@@ -74,9 +74,9 @@ public class BlockingQueueRecordReaderTest {
     @Test
     public void testReadNextRecord() throws Exception {
         assertThat(blockingQueueRecordReader.hasNextRecord()).isTrue();
-        assertThat(blockingQueueRecordReader.readNextRecord().getPayload()).isEqualTo(record);
+        assertThat(blockingQueueRecordReader.readNextRecord()).isEqualTo(record);
         assertThat(blockingQueueRecordReader.hasNextRecord()).isTrue();
-        assertThat(blockingQueueRecordReader.readNextRecord().getPayload()).isEqualTo(poisonRecord);
+        assertThat(blockingQueueRecordReader.readNextRecord()).isEqualTo(poisonRecord);
         assertThat(blockingQueueRecordReader.hasNextRecord()).isFalse();
         assertThat(queue).isEmpty();
     }

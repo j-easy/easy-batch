@@ -25,13 +25,22 @@
 package org.easybatch.extensions.apache.common.csv;
 
 import org.easybatch.core.marshaller.RecordMarshallingException;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ApacheCommonCsvRecordMarshallerTest {
 
+    @Mock
+    private Header header;
+    
     private ApacheCommonCsvRecordMarshaller marshaller;
 
     @Before
@@ -44,9 +53,10 @@ public class ApacheCommonCsvRecordMarshallerTest {
         Foo foo = new Foo();
         foo.setFirstName("foo");
         foo.setLastName("bar");
+        GenericRecord<Foo> record = new GenericRecord<>(header, foo);
 
         String expected = "'foo';'bar';'false'";
-        String actual = marshaller.processRecord(foo);
+        String actual = marshaller.processRecord(record).getPayload();
 
         assertThat(actual).isEqualTo(expected);
     }

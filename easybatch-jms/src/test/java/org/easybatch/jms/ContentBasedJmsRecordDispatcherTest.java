@@ -45,13 +45,13 @@ public class ContentBasedJmsRecordDispatcherTest {
     private QueueSender orangeQueue, defaultQueue;
 
     @Mock
-    private Message orangeRecord, appleRecord;
+    private JmsRecord orangeRecord, appleRecord;
 
     @Mock
-    private JmsPoisonMessage poisonRecord;
+    private JmsPoisonRecord poisonRecord;
 
     @Mock
-    private Predicate<Message> orangePredicate;
+    private Predicate<JmsRecord> orangePredicate;
 
     @Before
     public void setUp() throws Exception {
@@ -67,22 +67,22 @@ public class ContentBasedJmsRecordDispatcherTest {
     @Test
     public void orangeRecordShouldBeDispatchedToOrangeQueue() throws Exception {
         recordDispatcher.dispatchRecord(orangeRecord);
-        verify(orangeQueue).send(orangeRecord);
+        verify(orangeQueue).send(orangeRecord.getPayload());
         verifyZeroInteractions(defaultQueue);
     }
 
     @Test
     public void nonOrangeRecordShouldBeDispatchedToDefaultQueue() throws Exception {
         recordDispatcher.dispatchRecord(appleRecord);
-        verify(defaultQueue).send(appleRecord);
+        verify(defaultQueue).send(appleRecord.getPayload());
         verifyZeroInteractions(orangeQueue);
     }
 
     @Test
     public void poisonRecordShouldBeDispatchedToAllQueues() throws Exception {
         recordDispatcher.dispatchRecord(poisonRecord);
-        verify(defaultQueue).send(poisonRecord);
-        verify(orangeQueue).send(poisonRecord);
+        verify(defaultQueue).send(poisonRecord.getPayload());
+        verify(orangeQueue).send(poisonRecord.getPayload());
     }
 
 }

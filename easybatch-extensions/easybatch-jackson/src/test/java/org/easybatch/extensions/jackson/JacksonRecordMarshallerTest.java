@@ -25,13 +25,23 @@
 package org.easybatch.extensions.jackson;
 
 import org.easybatch.core.marshaller.RecordMarshallingException;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
+import org.easybatch.json.JsonRecord;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(MockitoJUnitRunner.class)
 public class JacksonRecordMarshallerTest {
 
+    @Mock
+    private Header header;
+    
     private JacksonRecordMarshaller marshaller;
 
     @Before
@@ -42,10 +52,12 @@ public class JacksonRecordMarshallerTest {
     @Test
     public void marshal() throws RecordMarshallingException {
         Tweet tweet = new Tweet(1, "foo", "hi");
+        GenericRecord<Tweet> record = new GenericRecord<>(header, tweet);
 
         String expected = "{\"id\":1,\"user\":\"foo\",\"message\":\"hi\"}";
-        String actual = marshaller.processRecord(tweet);
+        JsonRecord actual = marshaller.processRecord(record);
 
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual.getHeader()).isEqualTo(header);
+        assertThat(actual.getPayload()).isEqualTo(expected);
     }
 }

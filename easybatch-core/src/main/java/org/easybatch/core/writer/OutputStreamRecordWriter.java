@@ -76,16 +76,10 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    public void writeRecord(final Object record) throws RecordWritingException {
-        Object payload = isRecord(record) ? ((Record) record).getPayload() : record;
-        try {
-            outputStreamWriter.write(payload.toString());
-            outputStreamWriter.write(lineSeparator);
-            outputStreamWriter.flush();
-        } catch (IOException exception) {
-            String message = format("Unable to write record %s to the output stream writer", record);
-            throw new RecordWritingException(message, exception);
-        }
+    public void writePayload(final Object payload) throws Exception {
+        outputStreamWriter.write(payload.toString());
+        outputStreamWriter.write(lineSeparator);
+        outputStreamWriter.flush();
     }
 
 }

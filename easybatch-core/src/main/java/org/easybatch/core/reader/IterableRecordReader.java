@@ -36,13 +36,10 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * Reads record from an {@link Iterable} data source.
  * <p>
  * This reader produces {@link GenericRecord} instances containing original objects from the datasource.
- * You can use a {@link org.easybatch.core.mapper.GenericRecordMapper} to get the payload of a generic record
- * which is the original object from the datasource
  *
- * @param <T> the type of records in the iterable data source.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class IterableRecordReader<T> implements RecordReader {
+public class IterableRecordReader implements RecordReader {
 
     /**
      * The current record number.
@@ -52,18 +49,16 @@ public class IterableRecordReader<T> implements RecordReader {
     /**
      * The data source iterator.
      */
-    private Iterator<T> iterator;
+    private Iterator iterator;
 
     /**
      * Reads record from an {@link Iterable} data source.
      * <p>
      * This reader produces {@link GenericRecord} instances containing original objects from the datasource.
-     * You can use a {@link org.easybatch.core.mapper.GenericRecordMapper} to get the payload of a generic record
-     * which is the original object from the datasource
      *
      * @param dataSource the data source to read records from.
      */
-    public IterableRecordReader(final Iterable<T> dataSource) {
+    public IterableRecordReader(final Iterable dataSource) {
         checkNotNull(dataSource, "data source");
         this.iterator = dataSource.iterator();
     }
@@ -79,7 +74,7 @@ public class IterableRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public GenericRecord<T> readNextRecord() throws RecordReadingException {
+    public GenericRecord readNextRecord() throws RecordReadingException {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new GenericRecord<>(header, iterator.next());
     }

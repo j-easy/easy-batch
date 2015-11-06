@@ -25,15 +25,16 @@
 package org.easybatch.core.validator;
 
 import org.easybatch.core.processor.RecordProcessor;
+import org.easybatch.core.record.Record;
 
 /**
  * Interface for record validator.
  * This is used to apply validation logic on input records.
  *
- * @param <I> The record type this validator can validate.
+ * @param <R> The record type this validator can validate.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface RecordValidator<I> extends RecordProcessor<I, I> {
+public interface RecordValidator<R extends Record> extends RecordProcessor<R, R> {
 
     /**
      * Validate a record.
@@ -43,5 +44,5 @@ public interface RecordValidator<I> extends RecordProcessor<I, I> {
      * @throws RecordValidationException thrown if the record is not valid and should be rejected
      */
     @Override
-    I processRecord(I record) throws RecordValidationException;
+    R processRecord(R record) throws RecordValidationException;
 }

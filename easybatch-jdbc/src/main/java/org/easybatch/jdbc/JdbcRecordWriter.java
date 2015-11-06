@@ -63,7 +63,7 @@ public class JdbcRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    public void writeRecord(final Object record) throws RecordWritingException {
+    public void writePayload(final Object record) throws RecordWritingException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatementProvider.prepareStatement(preparedStatement, record);

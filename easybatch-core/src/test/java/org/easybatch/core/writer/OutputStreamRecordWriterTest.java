@@ -25,6 +25,7 @@
 package org.easybatch.core.writer;
 
 import org.easybatch.core.reader.StringRecordReader;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Rule;
@@ -73,8 +74,9 @@ public class OutputStreamRecordWriterTest {
 
     @Test
     public void testProcessRecord() throws Exception {
-        outputStreamRecordWriter.processRecord(stringRecord);
+        Record actual = outputStreamRecordWriter.processRecord(stringRecord);
 
+        assertThat(actual).isNotNull().isEqualTo(stringRecord);
         verify(outputStreamWriter).write(PAYLOAD);
         verify(outputStreamWriter).write(LINE_SEPARATOR);
         verify(outputStreamWriter).flush();

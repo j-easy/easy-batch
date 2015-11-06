@@ -28,6 +28,8 @@ import org.easybatch.core.field.BeanRecordFieldExtractor;
 import org.easybatch.core.field.RecordFieldExtractor;
 import org.easybatch.core.marshaller.RecordMarshaller;
 import org.easybatch.core.marshaller.RecordMarshallingException;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.StringRecord;
 
 import java.beans.IntrospectionException;
 import java.util.Iterator;
@@ -39,7 +41,7 @@ import java.util.Iterator;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class DelimitedRecordMarshaller implements RecordMarshaller<Object, String> {
+public class DelimitedRecordMarshaller implements RecordMarshaller<GenericRecord, StringRecord> {
 
     public static final String DEFAULT_DELIMITER = ",";
 
@@ -102,8 +104,8 @@ public class DelimitedRecordMarshaller implements RecordMarshaller<Object, Strin
     }
 
     @Override
-    public String processRecord(final Object record) throws RecordMarshallingException {
-        Iterable<?> values = fieldExtractor.extractFields(record);
+    public StringRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
+        Iterable<?> values = fieldExtractor.extractFields(record.getPayload());
         try {
             StringBuilder stringBuilder = new StringBuilder();
             Iterator<?> iterator = values.iterator();
@@ -116,7 +118,7 @@ public class DelimitedRecordMarshaller implements RecordMarshaller<Object, Strin
                     stringBuilder.append(delimiter);
                 }
             }
-            return stringBuilder.toString();
+            return new StringRecord(record.getHeader(), stringBuilder.toString());
         } catch (Exception e) {
             throw new RecordMarshallingException(e);
         }

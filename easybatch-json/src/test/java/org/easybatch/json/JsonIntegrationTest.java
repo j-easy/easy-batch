@@ -24,10 +24,7 @@
 
 package org.easybatch.json;
 
-import org.easybatch.core.job.Job;
-import org.easybatch.core.job.JobBuilder;
-import org.easybatch.core.job.JobReport;
-import org.easybatch.core.job.JobStatus;
+import org.easybatch.core.job.*;
 import org.easybatch.core.processor.RecordCollector;
 import org.junit.Test;
 
@@ -48,10 +45,10 @@ public class JsonIntegrationTest {
 
         Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new RecordCollector<JsonRecord>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThatReportIsValid(jobReport);
 
@@ -84,10 +81,10 @@ public class JsonIntegrationTest {
 
         Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new RecordCollector<JsonRecord>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThatReportIsValid(jobReport);
 
@@ -116,10 +113,10 @@ public class JsonIntegrationTest {
 
         Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new RecordCollector<JsonRecord>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThatReportIsValid(jobReport);
 
@@ -146,10 +143,10 @@ public class JsonIntegrationTest {
 
         Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new RecordCollector<JsonRecord>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(0);

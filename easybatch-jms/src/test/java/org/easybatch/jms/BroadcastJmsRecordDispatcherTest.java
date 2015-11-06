@@ -24,10 +24,12 @@
 
 package org.easybatch.jms;
 
+import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.jms.Message;
@@ -35,6 +37,7 @@ import javax.jms.QueueSender;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BroadcastJmsRecordDispatcherTest {
@@ -45,20 +48,27 @@ public class BroadcastJmsRecordDispatcherTest {
     private QueueSender queue1, queue2;
 
     @Mock
-    private Message record;
+    private JmsRecord jmsRecord;
+    @Mock
+    private Header header;
+    @Mock
+    private Message message;
 
     @Before
     public void setUp() throws Exception {
+        when(jmsRecord.getHeader()).thenReturn(header);
+        when(jmsRecord.getPayload()).thenReturn(message);
+        
         broadcastJmsRecordDispatcher = new BroadcastJmsRecordDispatcher(Arrays.asList(queue1, queue2));
     }
 
     @Test
     public void testBroadcastJmsRecord() throws Exception {
 
-        broadcastJmsRecordDispatcher.dispatchRecord(record);
+        broadcastJmsRecordDispatcher.dispatchRecord(jmsRecord);
 
-        verify(queue1).send(record);
-        verify(queue2).send(record);
+        verify(queue1).send(message);
+        verify(queue2).send(message);
     }
 
 }

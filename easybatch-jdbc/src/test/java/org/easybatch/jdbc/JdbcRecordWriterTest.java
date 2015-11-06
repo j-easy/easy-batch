@@ -25,7 +25,6 @@
 package org.easybatch.jdbc;
 
 import org.easybatch.core.job.JobReport;
-import org.easybatch.core.mapper.GenericRecordMapper;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -81,8 +80,7 @@ public class JdbcRecordWriterTest {
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
         JobReport jobReport = aNewJob()
-                .reader(new IterableRecordReader<Tweet>(tweets))
-                .mapper(new GenericRecordMapper<Tweet>())
+                .reader(new IterableRecordReader(tweets))
                 .writer(jdbcRecordWriter) // No need for JdbcTransactionPipelineListener, the connection is in auto-commit mode
                 .jobListener(new JdbcConnectionListener(connection))
                 .call();

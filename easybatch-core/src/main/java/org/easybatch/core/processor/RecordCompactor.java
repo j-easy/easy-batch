@@ -24,20 +24,22 @@
 
 package org.easybatch.core.processor;
 
+import org.easybatch.core.record.StringRecord;
+
 /**
  * Convenient processor to compact hierarchical data (Json, Xml, etc).
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public abstract class RecordCompactor implements RecordProcessor<String, String> {
+public abstract class RecordCompactor implements RecordProcessor<StringRecord, StringRecord> {
 
     protected static final String EMPTY_STRING = "";
 
     protected abstract String compact(final String payload);
     
     @Override
-    public String processRecord(final String record) throws RecordProcessingException {
-        return compact(record);
+    public StringRecord processRecord(final StringRecord record) throws RecordProcessingException {
+        return new StringRecord(record.getHeader(), compact(record.getPayload()));
     }
 
 }

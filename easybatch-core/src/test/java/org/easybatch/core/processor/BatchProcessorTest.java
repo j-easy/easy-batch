@@ -27,13 +27,11 @@ package org.easybatch.core.processor;
 import org.easybatch.core.job.JobBuilder;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.job.JobStatus;
-import org.easybatch.core.mapper.BatchMapper;
-import org.easybatch.core.mapper.GenericRecordMapper;
 import org.easybatch.core.reader.IterableBatchReader;
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
-import org.easybatch.core.validator.RecordValidationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,11 +51,13 @@ import static org.mockito.Mockito.when;
 public class BatchProcessorTest {
 
     @Mock
-    private Record record;
+    private Record record, processedRecord;
     @Mock
     private Batch batch;
     @Mock
-    private RecordProcessor recordProcessor;
+    private Header header;
+    @Mock
+    private RecordProcessor<Record, Record> recordProcessor;
     @Mock
     private RecordProcessingException recordProcessingException;
 
@@ -68,16 +68,19 @@ public class BatchProcessorTest {
         batchProcessor = new BatchProcessor(recordProcessor);
         List<Record> records = new ArrayList<>();
         records.add(record);
+        when(batch.getHeader()).thenReturn(header);
         when(batch.getPayload()).thenReturn(records);
     }
 
     @Test
     public void processBatchWithoutException() throws Exception {
-        when(recordProcessor.processRecord(record)).thenReturn(record);
+        when(recordProcessor.processRecord(record)).thenReturn(processedRecord);
         try {
-            batchProcessor.processRecord(batch);
-            verify(recordProcessor).processRecord(record);
-        } catch (RecordValidationException e) {
+            Batch actual = batchProcessor.processRecord(this.batch);
+            assertThat(actual).isNotNull();
+            assertThat(actual.getHeader()).isEqualTo(header);
+            assertThat(actual.getPayload()).isNotEmpty().hasSize(1).containsExactly(processedRecord);
+        } catch (RecordProcessingException e) {
             fail("No exception should be thrown for the batch when all its records are processed without errors");
         }
     }
@@ -90,33 +93,14 @@ public class BatchProcessorTest {
     }
 
     @Test
-    public void integrationTestWithoutBatchMapping() throws Exception {
+    public void integrationTest() throws Exception {
         List<String> strings = Arrays.asList("foo", "bar", "baz");
 
         JobReport report = JobBuilder.aNewJob()
-                .reader(new IterableBatchReader<>(strings, 2))
-                .processor(new BatchProcessor(new RecordProcessor<GenericRecord, GenericRecord>() {
+                .reader(new IterableBatchReader(strings, 2))
+                .processor(new BatchProcessor(new RecordProcessor<GenericRecord<String>, GenericRecord<String>>() {
                     @Override
-                    public GenericRecord processRecord(GenericRecord record) throws RecordProcessingException {
-                        return record;
-                    }
-                })).call();
-
-        assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);
-        assertThat(report.getMetrics().getTotalCount()).isEqualTo(2);// 2 batches: ["foo","bar"] and ["baz"]
-        assertThat(report.getMetrics().getSuccessCount()).isEqualTo(2);
-    }
-
-    @Test
-    public void integrationTestWithBatchMapping() throws Exception {
-        List<String> strings = Arrays.asList("foo", "bar", "baz");
-
-        JobReport report = JobBuilder.aNewJob()
-                .reader(new IterableBatchReader<>(strings, 2))
-                .mapper(new BatchMapper(new GenericRecordMapper()))
-                .processor(new BatchProcessor(new RecordProcessor<String, String>() {
-                    @Override
-                    public String processRecord(String record) throws RecordProcessingException {
+                    public GenericRecord<String> processRecord(GenericRecord<String> record) throws RecordProcessingException {
                         return record;
                     }
                 })).call();

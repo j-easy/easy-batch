@@ -85,21 +85,21 @@ class EventManager {
         }
     }
 
-    public Object fireBeforeRecordProcessing(Record record) {
-        Object recordToProcess = record;
+    public Record fireBeforeRecordProcessing(Record record) {
+        Record recordToProcess = record;
         for (PipelineListener pipelineListener : pipelineListeners) {
             recordToProcess = pipelineListener.beforeRecordProcessing(recordToProcess);
         }
         return recordToProcess;
     }
 
-    public void fireAfterRecordProcessing(Object inputRecord, Object outputRecord) {
+    public void fireAfterRecordProcessing(Record inputRecord, Record outputRecord) {
         for (PipelineListener pipelineListener : pipelineListeners) {
             pipelineListener.afterRecordProcessing(inputRecord, outputRecord);
         }
     }
 
-    public void fireOnRecordProcessingException(final Object record, final Throwable throwable) {
+    public void fireOnRecordProcessingException(final Record record, final Throwable throwable) {
         for (PipelineListener pipelineListener : pipelineListeners) {
             pipelineListener.onRecordProcessingException(record, throwable);
         }

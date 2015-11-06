@@ -43,12 +43,8 @@ public class RandomJmsRecordDispatcherTest {
 
     @Mock
     private QueueSender queue1, queue2;
-
     @Mock
-    private Message record;
-
-    @Mock
-    private JmsPoisonMessage poisonRecord;
+    private JmsPoisonRecord poisonRecord;
 
     @Before
     public void setUp() throws Exception {
@@ -60,8 +56,8 @@ public class RandomJmsRecordDispatcherTest {
 
         randomJmsRecordDispatcher.dispatchRecord(poisonRecord);
 
-        verify(queue1).send(poisonRecord);
-        verify(queue2).send(poisonRecord);
+        verify(queue1).send(poisonRecord.getPayload());
+        verify(queue2).send(poisonRecord.getPayload());
 
     }
 

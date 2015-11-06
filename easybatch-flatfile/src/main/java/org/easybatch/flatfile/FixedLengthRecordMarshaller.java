@@ -27,6 +27,8 @@ package org.easybatch.flatfile;
 import org.easybatch.core.field.RecordFieldExtractor;
 import org.easybatch.core.marshaller.RecordMarshaller;
 import org.easybatch.core.marshaller.RecordMarshallingException;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.StringRecord;
 
 import java.beans.IntrospectionException;
 
@@ -35,7 +37,7 @@ import java.beans.IntrospectionException;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class FixedLengthRecordMarshaller implements RecordMarshaller<Object, String> {
+public class FixedLengthRecordMarshaller implements RecordMarshaller<GenericRecord, StringRecord> {
 
     private DelimitedRecordMarshaller delimitedRecordMarshaller;
 
@@ -61,8 +63,8 @@ public class FixedLengthRecordMarshaller implements RecordMarshaller<Object, Str
     }
 
     @Override
-    public String processRecord(final Object record) throws RecordMarshallingException {
-        return delimitedRecordMarshaller.processRecord(record);
+    public StringRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
+        return new StringRecord(record.getHeader(), delimitedRecordMarshaller.processRecord(record).getPayload());
     }
 
 }

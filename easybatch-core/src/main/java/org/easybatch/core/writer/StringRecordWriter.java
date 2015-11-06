@@ -24,13 +24,11 @@
 
 package org.easybatch.core.writer;
 
-import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
 
 import java.io.StringWriter;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
-import static org.easybatch.core.util.Utils.isRecord;
 
 /**
  * Writes record to a {@link StringWriter}.
@@ -52,8 +50,7 @@ public class StringRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    protected void writeRecord(final Object record) throws RecordWritingException {
-        Object payload = isRecord(record) ? ((Record) record).getPayload() : record;
+    protected void writePayload(final Object payload) throws RecordWritingException {
         stringWriter.write(payload.toString());
         stringWriter.write(Utils.LINE_SEPARATOR);
     }

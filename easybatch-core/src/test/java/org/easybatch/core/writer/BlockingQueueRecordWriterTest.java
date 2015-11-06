@@ -35,33 +35,37 @@ import java.util.concurrent.BlockingQueue;
 
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BlockingQueueRecordWriterTest {
 
     @Mock
-    private Record record;
+    private Record<Object> record;
+    @Mock
+    private Object payload;
     @Mock
     private InterruptedException interruptedException;
     @Mock
-    private BlockingQueue<Record> blockingQueue;
+    private BlockingQueue<Object> blockingQueue;
 
-    private BlockingQueueRecordWriter<Record> writer;
+    private BlockingQueueRecordWriter writer;
 
     @Before
     public void setUp() {
-        writer = new BlockingQueueRecordWriter<Record>(blockingQueue);
+        when(record.getPayload()).thenReturn(payload);
+        writer = new BlockingQueueRecordWriter(blockingQueue);
     }
 
     @Test
     public void writeRecord_whenNoException() throws Exception {
-        writer.writeRecord(record);
-        verify(blockingQueue).put(record);
+        writer.processRecord(record);
+        verify(blockingQueue).put(payload);
     }
 
     @Test(expected = RecordWritingException.class)
     public void writeRecord_whenException() throws Exception {
-        doThrow(interruptedException).when(blockingQueue).put(record);
-        writer.writeRecord(record);
+        doThrow(interruptedException).when(blockingQueue).put(payload);
+        writer.processRecord(record);
     }
 }

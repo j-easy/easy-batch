@@ -24,11 +24,9 @@
 
 package org.easybatch.core.reader;
 
-import org.easybatch.core.record.GenericRecord;
-import org.easybatch.core.record.Header;
 import org.easybatch.core.record.PoisonRecord;
+import org.easybatch.core.record.Record;
 
-import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -37,7 +35,7 @@ import java.util.concurrent.BlockingQueue;
  * @param <T> the type of elements in the queue
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BlockingQueueRecordReader<T> implements RecordReader {
+public class BlockingQueueRecordReader<T extends Record> implements RecordReader {
 
     /**
      * The stop reading flag.
@@ -50,11 +48,6 @@ public class BlockingQueueRecordReader<T> implements RecordReader {
     private BlockingQueue<T> queue;
 
     /**
-     * The current record number.
-     */
-    private long currentRecordNumber;
-
-    /**
      * Create a {@link BlockingQueueRecordReader}.
      *
      * @param queue the queue to read records from
@@ -65,7 +58,7 @@ public class BlockingQueueRecordReader<T> implements RecordReader {
 
     @Override
     public void open() {
-        currentRecordNumber = 0;
+        // no op
     }
 
     @Override
@@ -74,12 +67,11 @@ public class BlockingQueueRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public GenericRecord<T> readNextRecord() throws RecordReadingException {
+    public T readNextRecord() throws RecordReadingException {
         try {
             T record = queue.take();
             stop = record instanceof PoisonRecord;
-            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-            return new GenericRecord<>(header, record);
+            return record;
         } catch (InterruptedException e) {
             throw new RecordReadingException("Unable to read next record from the queue", e);
         }

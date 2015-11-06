@@ -25,7 +25,6 @@
 package org.easybatch.jpa;
 
 import org.easybatch.core.job.JobReport;
-import org.easybatch.core.mapper.GenericRecordMapper;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -75,8 +74,7 @@ public class JpaRecordWriterTest {
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
         JobReport jobReport = aNewJob()
-                .reader(new IterableRecordReader<Tweet>(tweets))
-                .mapper(new GenericRecordMapper())
+                .reader(new IterableRecordReader(tweets))
                 .writer(new JpaRecordWriter<Tweet>(entityManager))
                 .pipelineListener(new JpaTransactionListener(entityManager))
                 .jobListener(new JpaEntityManagerListener(entityManager))
@@ -92,7 +90,7 @@ public class JpaRecordWriterTest {
     }
 
     private List<Tweet> createTweets(Integer nbTweetsToInsert) {
-        List<Tweet> tweets = new ArrayList<Tweet>();
+        List<Tweet> tweets = new ArrayList<>();
         for (int i = 1; i <= nbTweetsToInsert; i++) {
             tweets.add(new Tweet(i, "user " + i, "hello " + i));
         }

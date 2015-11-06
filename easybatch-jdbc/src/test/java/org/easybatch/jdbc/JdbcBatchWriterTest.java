@@ -81,7 +81,7 @@ public class JdbcBatchWriterTest {
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
         JobReport jobReport = aNewJob()
-                .reader(new IterableBatchReader<Tweet>(tweets, batchSize))
+                .reader(new IterableBatchReader(tweets, batchSize))
                 .writer(jdbcBatchWriter)
                 .pipelineListener(new JdbcTransactionListener(connection)) // needed since autocommit = false
                 .jobListener(new JdbcConnectionListener(connection))
@@ -111,7 +111,7 @@ public class JdbcBatchWriterTest {
     }
 
     private List<Tweet> createTweets(Integer nbTweetsToInsert) {
-        List<Tweet> tweets = new ArrayList<Tweet>();
+        List<Tweet> tweets = new ArrayList<>();
         for (int i = 1; i <= nbTweetsToInsert; i++) {
             tweets.add(new Tweet(i, "user " + i, "hello " + i));
         }

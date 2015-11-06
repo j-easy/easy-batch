@@ -25,21 +25,16 @@
 package org.easybatch.jms;
 
 import org.easybatch.core.dispatcher.AbstractRecordDispatcher;
-import org.easybatch.core.dispatcher.RecordDispatchingException;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
 import javax.jms.QueueSender;
 import java.util.List;
-
-import static java.lang.String.format;
 
 /**
  * Dispatch records to a list of Jms queues in round-robin fashion.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RoundRobinJmsRecordDispatcher extends AbstractRecordDispatcher<Message> {
+public class RoundRobinJmsRecordDispatcher extends AbstractRecordDispatcher<JmsRecord> {
 
     /**
      * The total number of queues this dispatcher operates on.
@@ -73,21 +68,15 @@ public class RoundRobinJmsRecordDispatcher extends AbstractRecordDispatcher<Mess
     }
 
     @Override
-    public void dispatchRecord(Message record) throws RecordDispatchingException {
+    public void dispatchRecord(JmsRecord record) throws Exception {
         // when receiving a poising record, broadcast it to all queues
-        if (record instanceof JmsPoisonMessage) {
+        if (record instanceof JmsPoisonRecord) {
             broadcastJmsRecordDispatcher.dispatchRecord(record);
             return;
         }
         //dispatch records to queues in round-robin fashion
-        QueueSender queue = null;
-        try {
-            queue = queues.get(next++ % queuesNumber);
-            queue.send(record);
-        } catch (JMSException e) {
-            String message = format("Unable to dispatch record %s to queue %s", record, queue);
-            throw new RecordDispatchingException(message, e);
-        }
+        QueueSender queue = queues.get(next++ % queuesNumber);
+        queue.send(record.getPayload());
     }
 
 }

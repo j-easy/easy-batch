@@ -25,6 +25,7 @@
 package org.easybatch.jpa;
 
 import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.Batch;
@@ -70,7 +71,7 @@ public class JpaBatchReaderTest {
     @Before
     public void setUp() throws Exception {
         String query = "from Tweet";
-        jpaBatchReader = new JpaBatchReader<Tweet>(BATCH_SIZE, entityManagerFactory, query, Tweet.class);
+        jpaBatchReader = new JpaBatchReader<>(BATCH_SIZE, entityManagerFactory, query, Tweet.class);
     }
 
     @Test
@@ -78,10 +79,10 @@ public class JpaBatchReaderTest {
         
         Job job = aNewJob()
                 .reader(jpaBatchReader)
-                .processor(new RecordCollector<Tweet>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();

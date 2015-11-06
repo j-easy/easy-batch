@@ -25,7 +25,6 @@
 package org.easybatch.extensions.hibernate;
 
 import org.easybatch.core.job.JobReport;
-import org.easybatch.core.mapper.GenericRecordMapper;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.hibernate.Session;
 import org.junit.AfterClass;
@@ -70,8 +69,7 @@ public class HibernateRecordWriterTest {
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
         JobReport jobReport = aNewJob()
-                .reader(new IterableRecordReader<>(tweets))
-                .mapper(new GenericRecordMapper())
+                .reader(new IterableRecordReader(tweets))
                 .writer(hibernateRecordWriter)
                 .pipelineListener(new HibernateTransactionListener(session))
                 .jobListener(new HibernateSessionListener(session))

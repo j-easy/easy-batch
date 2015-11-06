@@ -24,17 +24,19 @@
 
 package org.easybatch.core.processor;
 
+import org.easybatch.core.record.Record;
+
 /**
  * A computational record processor is a processor that performs some computation on input records.<br/>
  * The result of computation is returned at the end of job execution.
  * A computational record processor should be placed at the end of the pipeline.
  *
- * @param <I> The input object type.
- * @param <O> The output object type.
+ * @param <I> The input record type.
+ * @param <O> The output record type.
  * @param <R> The computed result type.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface ComputationalRecordProcessor<I, O, R> extends RecordProcessor<I, O> {
+public interface ComputationalRecordProcessor<I extends Record, O extends Record, R> extends RecordProcessor<I, O> {
 
     /**
      * Returns the computation result.

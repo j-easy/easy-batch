@@ -29,6 +29,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.Batch;
@@ -57,6 +58,7 @@ public class MongoDBBatchReaderTest {
         DBObject query = new BasicDBObject();
 
         mongoDBBatchReader = new MongoDBBatchReader(collection, query, BATCH_SIZE);
+        //db.tweets.remove({})
         //db.tweets.insert({name:'foo'})
         //db.tweets.insert({name:'bar'})
         //db.tweets.insert({name:'baz'})
@@ -67,10 +69,10 @@ public class MongoDBBatchReaderTest {
 
         Job job = aNewJob()
                 .reader(mongoDBBatchReader)
-                .processor(new RecordCollector<Batch>())
+                .processor(new RecordCollector())
                 .build();
 
-        JobReport jobReport = job.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();
 

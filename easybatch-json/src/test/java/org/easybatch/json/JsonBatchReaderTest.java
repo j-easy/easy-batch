@@ -27,11 +27,13 @@ package org.easybatch.json;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,7 +56,7 @@ public class JsonBatchReaderTest {
         
         JobReport jobReport = aNewJob()
                 .reader(jsonBatchReader)
-                .processor(new RecordCollector<Batch>())
+                .processor(new RecordCollector())
                 .call();
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();
@@ -81,7 +83,7 @@ public class JsonBatchReaderTest {
         jsonBatchReader = new JsonBatchReader(getDataSource("/empty.json"), BATCH_SIZE);
         JobReport jobReport = aNewJob()
                 .reader(jsonBatchReader)
-                .processor(new RecordCollector<Batch>())
+                .processor(new RecordCollector())
                 .call();
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();

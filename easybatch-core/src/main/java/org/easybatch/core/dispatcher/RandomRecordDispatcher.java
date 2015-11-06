@@ -25,20 +25,19 @@
 package org.easybatch.core.dispatcher;
 
 import org.easybatch.core.record.PoisonRecord;
+import org.easybatch.core.record.Record;
 
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
-import static java.lang.String.format;
-
 /**
  * Dispatch records randomly to a list of {@link BlockingQueue}.
  *
- *  @param <T> type of record to dispatch
+ * @param <T> type of record to dispatch
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RandomRecordDispatcher<T> extends AbstractRecordDispatcher<T> {
+public class RandomRecordDispatcher<T extends Record> extends AbstractRecordDispatcher<T> {
 
     /**
      * The total number of queues this dispatcher operates on.
@@ -73,7 +72,7 @@ public class RandomRecordDispatcher<T> extends AbstractRecordDispatcher<T> {
     }
 
     @Override
-    public void dispatchRecord(T record) throws RecordDispatchingException {
+    public void dispatchRecord(T record) throws Exception {
         // when receiving a poising record, broadcast it to all queues
         if (record instanceof PoisonRecord) {
             broadcastRecordDispatcher.dispatchRecord(record);
@@ -81,13 +80,8 @@ public class RandomRecordDispatcher<T> extends AbstractRecordDispatcher<T> {
         }
         //dispatch record randomly to one of the queues
         BlockingQueue<T> queue = null;
-        try {
-            queue = queues.get(random.nextInt(queuesNumber));
-            queue.put(record);
-        } catch (InterruptedException e) {
-            String message = format("Unable to put record %s in queue %s", record, queue);
-            throw new RecordDispatchingException(message, e);
-        }
+        queue = queues.get(random.nextInt(queuesNumber));
+        queue.put(record);
     }
 
 }

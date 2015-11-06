@@ -25,21 +25,23 @@
 package org.easybatch.core.mapper;
 
 import org.easybatch.core.processor.RecordProcessor;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 
 /**
- * Interface for record mapper.
- * This will be used to map input records to domain objects.
+ * A record mapper maps a {@link Record} to a {@link GenericRecord} having a domain object as payload.
  *
- * @param <I> The target domain object type.
+ * @param <I> The input record type.
+ * @param <O> The output record type.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public interface RecordMapper<I, O> extends RecordProcessor<I, O> {
+public interface RecordMapper<I extends Record, O extends Record> extends RecordProcessor<I, O> {
 
     /**
-     * Map the record th a domain object.
+     * Map the record to a {@link GenericRecord} having a domain object as payload.
      *
      * @param record the record to map.
-     * @return the mapped record (ie the domain object)
+     * @return a {@link GenericRecord} having a domain object as payload
      * @throws RecordMappingException if an error occurs during record mapping
      */
     @Override

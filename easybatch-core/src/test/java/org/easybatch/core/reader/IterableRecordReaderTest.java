@@ -47,21 +47,21 @@ public class IterableRecordReaderTest {
     private Iterable<String> dataSource;
 
     @Mock
-    Iterator<String> iterator;
+    private Iterator<String> iterator;
 
-    private IterableRecordReader<String> iterableRecordReader;
+    private IterableRecordReader iterableRecordReader;
 
     @Before
     public void setUp() throws Exception {
         when(dataSource.iterator()).thenReturn(iterator);
         when(iterator.hasNext()).thenReturn(true);
         when(iterator.next()).thenReturn(RECORD);
-        iterableRecordReader = new IterableRecordReader<String>(dataSource);
+        iterableRecordReader = new IterableRecordReader(dataSource);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void whenDataSourceIsNull_thenShouldThrowAnIllegalArgumentException() throws Exception {
-        iterableRecordReader = new IterableRecordReader<String>(null);
+        iterableRecordReader = new IterableRecordReader(null);
     }
 
     @Test

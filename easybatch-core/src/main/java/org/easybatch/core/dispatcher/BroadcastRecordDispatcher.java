@@ -24,17 +24,17 @@
 
 package org.easybatch.core.dispatcher;
 
+import org.easybatch.core.record.Record;
+
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
-
-import static java.lang.String.format;
 
 /**
  * Broadcast records to a list of {@link BlockingQueue}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BroadcastRecordDispatcher<T> extends AbstractRecordDispatcher<T> {
+public class BroadcastRecordDispatcher<T extends Record> extends AbstractRecordDispatcher<T> {
 
     /**
      * List of queues to which records should be dispatched.
@@ -51,14 +51,9 @@ public class BroadcastRecordDispatcher<T> extends AbstractRecordDispatcher<T> {
     }
 
     @Override
-    public void dispatchRecord(final T record) throws RecordDispatchingException {
+    protected void dispatchRecord(final T record) throws Exception {
         for (BlockingQueue<T> queue : queues) {
-            try {
-                queue.put(record);
-            } catch (InterruptedException e) {
-                String message = format("Unable to put record %s in queue %s", record, queue);
-                throw new RecordDispatchingException(message, e);
-            }
+            queue.put(record);
         }
     }
 

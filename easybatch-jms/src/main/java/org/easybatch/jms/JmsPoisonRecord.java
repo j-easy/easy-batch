@@ -22,42 +22,24 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.writer;
+package org.easybatch.jms;
 
-import org.easybatch.core.record.Batch;
-import org.easybatch.core.record.Record;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.logging.Logger;
-
-import static org.easybatch.core.util.Utils.isCollection;
-import static org.easybatch.core.util.Utils.isBatch;
+import javax.jms.Message;
+import org.easybatch.core.record.Header;
 
 /**
- * Abstract class for all BatchWriters.
- *
+ * End-Od-Stream Jms record.
+ * 
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public abstract class AbstractBatchWriter extends AbstractRecordWriter {
+public class JmsPoisonRecord extends JmsRecord {
 
-    protected static final Logger LOGGER = Logger.getLogger(AbstractBatchWriter.class.getName());
-
-    @SuppressWarnings("unchecked")
-    protected List getRecords(Object batch) {
-        List records = new ArrayList();
-        if (isBatch(batch)) {
-            List<Record> items = ((Batch) batch).getPayload();
-            for (Record item : items) {
-                records.add(item.getPayload());
-            }
-        } else if (isCollection(batch)) {
-            records.addAll((Collection) batch);
-        } else {
-            LOGGER.warning("BatchWriters accept only " + Batch.class.getName() + " or " + Collection.class.getName() + " types");
-        }
-        return records;
+    /**
+     * Create a jms poison record.
+     * @param header the record header
+     * @param payload the record payload
+     */
+    public JmsPoisonRecord(Header header, JmsPoisonMessage payload) {
+        super(header, payload);
     }
-
 }

@@ -24,23 +24,30 @@
 
 package org.easybatch.core.writer;
 
-import org.easybatch.core.reader.IterableBatchReader;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.job.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class OutputStreamBatchWriterTest {
 
-    private List<String> items;
+    @Mock
+    private Batch batch;
+    @Mock
+    private Record record1, record2;
 
     private OutputStreamBatchWriter writer;
 
@@ -49,25 +56,17 @@ public class OutputStreamBatchWriterTest {
 
     @Before
     public void setUp() throws Exception {
-        items = Arrays.asList("foo", "bar");
+        when(record1.getPayload()).thenReturn("foo");
+        when(record2.getPayload()).thenReturn("bar");
+        when(batch.getPayload()).thenReturn(Arrays.asList(record1, record2));
         writer = new OutputStreamBatchWriter(new OutputStreamWriter(System.out));
     }
 
     @Test
-    public void testWriteCollection() throws Exception {
-        writer.writeRecord(items);
-
-        assertThat(systemOut.getLog()).isEqualTo("foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR);
-    }
-
-    @Test
     public void testWriteBatch() throws Exception {
+        Batch actual = writer.processRecord(this.batch);
 
-        aNewJob()
-                .reader(new IterableBatchReader<String>(items, 2))
-                .writer(writer)
-                .call();
-
+        assertThat(actual).isNotNull().isEqualTo(batch);
         assertThat(systemOut.getLog()).isEqualTo("foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR);
     }
 }
