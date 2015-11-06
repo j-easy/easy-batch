@@ -22,9 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tools.reporting;
-
-import org.easybatch.core.job.JobReport;
+package org.easybatch.core.job;
 
 /**
  * Job report formatter interface.

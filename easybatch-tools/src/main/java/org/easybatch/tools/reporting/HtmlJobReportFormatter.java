@@ -29,6 +29,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.easybatch.core.job.JobReport;
+import org.easybatch.core.job.JobReportFormatter;
 
 import java.io.StringWriter;
 import java.util.Properties;
