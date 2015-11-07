@@ -24,12 +24,14 @@
 
 package org.easybatch.core.job;
 
+import java.io.Serializable;
+
 /**
  * Metrics of a job.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JobMetrics {
+public class JobMetrics implements Serializable {
 
     private long startTime;
 

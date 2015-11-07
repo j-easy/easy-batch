@@ -24,12 +24,14 @@
 
 package org.easybatch.core.job;
 
+import java.io.Serializable;
+
 /**
  * Job result holder.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JobResult {
+public class JobResult implements Serializable {
 
     private Object result;
 

@@ -24,6 +24,7 @@
 
 package org.easybatch.core.job;
 
+import java.io.Serializable;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -33,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JobParameters {
+public class JobParameters implements Serializable {
 
     public static final String DEFAULT_JOB_NAME = "job";
 
