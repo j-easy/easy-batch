@@ -2,8 +2,58 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
+Changes in version 4.0.0 (2015-11-07)
+-------------------------------------
+
+Features:
+
+* Add JmsPoisonMessageBroadcaster (issue #161)
+* Add JmsRecord dispatchers (issue #158)
+* Add BatchProcessor (issue #157)
+* Add BatchValidator (issue #156)
+* Add BatchFilter (issue #153)
+* Add BatchMapper (issue #152)
+* Add BatchMarshaller (issue #151)
+* Add JpaBatchWriter (issue #131)
+* Add HibernateBatchWriter (issue #130)
+* Add JMS queue/connection listeners (issue #147)
+* Add FAILED job status (issue #144)
+* Add JobExecutor (issue #143)
+* Add RecordProcessingTimeListener (issue #133)
+* Add "timeout" parameter (issue #132)
+* Add "keep alive" parameter (issue #129)
+* Add EmptyRecordFilter (issue #120)
+* Add method to register a record dispatcher in the job builder API (issue #159)
+* Add method to register a record marshaller in the job builder API (issue #138)
+* Add BlockingQueueRecordWriter (issue #135)
+
+Enhancements:
+
+* Rename JmsRecordWriter to JmsQueueRecordWriter (issue #155)
+* Rename MultiRecord to Batch (issue #154)
+* Rename JmsRecordReader to JmsQueueRecordReader (issue #149)
+* Rename CliRecordReader to StandardInputRecordReader (issue #146)
+* Rename QueueRecordReader to BlockingQueueRecordReader (issue #145)
+* Rename Engine to Job (issue #141)
+* Remove ListRecordReader, deprecated in V3.0 (issue #140)
+* Remove commit-interval from transaction listeners (issue #139)
+* Remove redundant generic type declaration in ObjectMapper (issue #134)
+* Migrate to Java 7 (issue #148)
+* Use varargs instead of arrays in mapper constructor (issue #150)
+* Introduce JobParameters and JobMetrics (issue #142)
+* Unify Handlers and Listeners (issue #137)
+* Redesign the workflow into a consistent pipeline (issue #136)
+* Improve workflow consistency (issue #160)
+
+Bug fixes:
+
+* Fixed issue #126: ApacheCommonsCsv prints a header for each line
+* Fixed issue #125: Skipped records are not calculated in the merged report
+
 Changes in version 3.1.0 (2015-08-09)
 -------------------------------------
+
+Features:
 
 * Added the "skip" parameter (issue #77)
 * Added the "limit" parameter (issue #78)
@@ -16,15 +66,26 @@ Changes in version 3.1.0 (2015-08-09)
 * Added multi-record readers to support chunk processing (issue #87): Flat files, Iterable, String, File, Xml, Json, JPA, Apache Common Csv, Hibernate, MongoDB
 * Added multi-record writers: Collection (issue #110), File (issue #111), OutputStream (issue #112), StandardOutput (issue #113), String (issue #115), JDBC (issue #116)
 * Added GenericMultiRecordMapper (issue #101)
+* Added RecordFieldExtractor (PR #117)
+* Added lineSeparator parameter to OutputStreamRecordWriter (PR #118)
+
+Enhancements:
+
 * Implemented improvement #91: Add system properties to the execution report
 * Implemented improvement #93: Make the JpaRecordReader stream records
 * Implemented improvement #103: Make the ObjectMapper properly handle empty values
 * Implemented improvement #119: Use CSVFormat null recordSeparator to skip new line creation
-* Merged PR #117: Add RecordFieldExtractor
-* Merged PR #118: Add lineSeparator parameter to OutputStreamRecordWriter
 
 Changes in version 3.0.3 (2015-07-01)
 -------------------------------------
+
+Enhancements:
+
+* Implemented improvement #69: Step event listeners should make it possible to modify the record's payload
+* Implemented improvement #72: Scheduling repeat interval should be in seconds
+* Implemented improvement #73: The FileRecordReader should be recursive
+
+Bug fixes:
 
 * Fixed issue #67: Problem with Xml special characters
 * Fixed issue #68: Invalid XML when reading XML content with custom namespace
@@ -33,12 +94,18 @@ Changes in version 3.0.3 (2015-07-01)
 * Fixed issue #74: Report statistics percents are not correctly rounded
 * Fixed issue #75: JMS poison records are ignored
 * Fixed issue #76: Runtime exceptions thrown by custom listeners are not handled properly
-* Implemented improvement #69: Step event listeners should make it possible to modify the record's payload
-* Implemented improvement #72: Scheduling repeat interval should be in seconds
-* Implemented improvement #73: The FileRecordReader should be recursive
 
 Changes in version 3.0.2 (2015-06-10)
 -------------------------------------
+
+Enhancements:
+
+* Implemented improvement #55: Do not calculate the total records number upfront by default
+* Implemented improvement #59: The fetch size of jdbc statement should be configurable in the JdbcRecordReader
+* Implemented improvement #60: Change the type of ResultSet to TYPE_FORWARD_ONLY in the JdbcRecordReader
+* Implemented improvement #63: Register multiple record validators
+
+Bug fixes:
 
 * Fixed issue #53: Incorrect record number with large data set
 * Fixed issue #54: Reporting can lead to an OutOfMemory error with large data sets
@@ -48,13 +115,15 @@ Changes in version 3.0.2 (2015-06-10)
 * Fixed issue #61: The XmlRecordReader does not support custom namespace declaration
 * Fixed issue #62: Unable to monitor parallel engines
 * Fixed issue #65: Error in Multiple Jobs Scheduling
-* Implemented improvement #55: Do not calculate the total records number upfront by default
-* Implemented improvement #59: The fetch size of jdbc statement should be configurable in the JdbcRecordReader
-* Implemented improvement #60: Change the type of ResultSet to TYPE_FORWARD_ONLY in the JdbcRecordReader
-* Implemented improvement #63: Register multiple record validators
 
 Changes in version 3.0.1 (2015-05-03)
 -------------------------------------
+
+Enhancements:
+
+* Implemented improvement #49: Provide custom mapping strategy for the JdbcRecordMapper
+
+Bug fixes:
 
 * Fixed issue #46: Unable to run multiple BatchSchedulers
 * Fixed issue #47: Error reading XML File
@@ -62,10 +131,11 @@ Changes in version 3.0.1 (2015-05-03)
 * Fixed issue #50: Error in mapping a delimited record
 * Fixed issue #51: Error while parsing embedded object/array in a Json stream
 * Fixed issue #52: Unable to register a custom type converter
-* Implemented improvement #49: Provide custom mapping strategy for the JdbcRecordMapper
 
 Changes in version 3.0.0 (2015-03-01)
 -------------------------------------
+
+Features:
 
 * Introduced the processing pipeline in the framework's core
 * Introduced the filter chain in the framework's core
@@ -87,13 +157,19 @@ Changes in version 3.0.0 (2015-03-01)
 * Added the GenericRecord API
 * Added convenient PoisonRecordFilter to filter poison records
 * Added a maven archetype to generate a pre-configured Easy Batch project
+
+Enhancements:
+
 * Refactored the Builder API with more meaningful method names
 * Renamed the ReportAggregator interface with ReportMerger
 * Removed 'EasyBatch' prefix from all public APIs
-* Fixed issue #32 : Missing placeHolder value when generating an EasyBatchReport
 * Improved test coverage
 * Improved tutorials
 * Updated documentation and Javadoc
+
+Bug fixes:
+
+* Fixed issue #32 : Missing placeHolder value when generating an EasyBatchReport
 
 Changes in version 2.2.0 (2014-06-08)
 -------------------------------------
