@@ -55,6 +55,7 @@ public class RecordNumberBetweenFilter implements RecordFilter<Record> {
         this.higherBound = higherBound;
     }
 
+    @Override
     public Record processRecord(final Record record) {
         if (record.getHeader().getNumber() >= lowerBound && record.getHeader().getNumber() <= higherBound) {
             return null;

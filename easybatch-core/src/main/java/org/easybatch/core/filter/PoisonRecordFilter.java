@@ -36,6 +36,7 @@ import org.easybatch.core.record.Record;
  */
 public class PoisonRecordFilter implements RecordFilter<Record> {
 
+    @Override
     public Record processRecord(final Record record) {
         if (record instanceof PoisonRecord) {
             return null;

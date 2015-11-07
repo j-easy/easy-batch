@@ -33,6 +33,7 @@ import org.easybatch.core.record.Record;
  */
 public class HeaderRecordFilter implements RecordFilter<Record> {
 
+    @Override
     public Record processRecord(final Record record) {
         if (record.getHeader().getNumber() == 1) {
             return null;

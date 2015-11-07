@@ -48,6 +48,7 @@ public class RecordNumberEqualToFilter implements RecordFilter<Record> {
         this.numbers = numbers;
     }
 
+    @Override
     public Record processRecord(final Record record) {
         for (long number : numbers) {
             if (record.getHeader().getNumber() == number) {

@@ -49,22 +49,28 @@ public abstract class BatchReader implements RecordReader {
         this.delegate = delegate;
     }
 
+    @Override
     public void open() throws RecordReaderOpeningException {
         delegate.open();
     }
 
+    @Override
     public abstract boolean hasNextRecord();
 
+    @Override
     public abstract Batch readNextRecord() throws RecordReadingException;
 
+    @Override
     public Long getTotalRecords() {
         return delegate.getTotalRecords();
     }
 
+    @Override
     public String getDataSourceName() {
         return delegate.getDataSourceName();
     }
 
+    @Override
     public void close() throws RecordReaderClosingException {
         delegate.close();
     }

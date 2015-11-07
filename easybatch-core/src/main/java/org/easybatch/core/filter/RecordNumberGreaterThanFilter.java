@@ -48,6 +48,7 @@ public class RecordNumberGreaterThanFilter implements RecordFilter<Record> {
         this.number = number;
     }
 
+    @Override
     public Record processRecord(final Record record) {
         if (record.getHeader().getNumber() > number) {
             return null;
