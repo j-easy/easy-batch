@@ -105,7 +105,7 @@ public class DelimitedRecordMarshaller implements RecordMarshaller<GenericRecord
 
     @Override
     public StringRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
-        Iterable<?> values = fieldExtractor.extractFields(record.getPayload());
+        Iterable<Object> values = fieldExtractor.extractFields(record.getPayload());
         try {
             StringBuilder stringBuilder = new StringBuilder();
             Iterator<?> iterator = values.iterator();

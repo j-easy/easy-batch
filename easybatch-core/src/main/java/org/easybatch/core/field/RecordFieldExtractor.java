@@ -33,11 +33,12 @@ import org.easybatch.core.marshaller.RecordMarshaller;
  * @author Rémi Alvergnat (toilal.dev@gmail.com)
  */
 public interface RecordFieldExtractor<T> {
+
     /**
-     * Extract field from the record.
+     * Extract fields from the record.
      *
      * @param record the record
-     * @return an array containing item's parts
+     * @return a iterable containing record's fields
      */
-    Iterable<?> extractFields(T record) throws RecordFieldExtractionException;
+    Iterable<Object> extractFields(T record) throws RecordFieldExtractionException;
 }

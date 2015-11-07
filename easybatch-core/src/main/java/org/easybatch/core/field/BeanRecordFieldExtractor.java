@@ -24,7 +24,6 @@
 
 package org.easybatch.core.field;
 
-
 import org.easybatch.core.util.Utils;
 
 import java.beans.IntrospectionException;
@@ -60,7 +59,7 @@ public class BeanRecordFieldExtractor implements RecordFieldExtractor {
             try {
                 values[i] = getValue(fields[i], record);
             } catch (Exception e) {
-                throw new RecordFieldExtractionException("Can't extract field from getter", e);
+                throw new RecordFieldExtractionException("Unable to extract fields from record " + record, e);
             }
         }
         return Arrays.asList(values);

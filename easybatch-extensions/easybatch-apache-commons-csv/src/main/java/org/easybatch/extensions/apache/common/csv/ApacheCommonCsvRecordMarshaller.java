@@ -109,7 +109,7 @@ public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller<Generic
         try {
             StringWriter stringWriter = new StringWriter();
             CSVPrinter csvPrinter = new CSVPrinter(stringWriter, csvFormat);
-            Iterable<?> iterable = fieldExtractor.extractFields(record.getPayload());
+            Iterable<Object> iterable = fieldExtractor.extractFields(record.getPayload());
             csvPrinter.printRecord(iterable);
             csvPrinter.flush();
             return new StringRecord(record.getHeader(), stringWriter.toString());

@@ -37,6 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BeanRecordFieldExtractorTest {
 
     private Person record;
+
     private BeanRecordFieldExtractor fieldExtractor;
 
     @Before
@@ -54,7 +55,7 @@ public class BeanRecordFieldExtractorTest {
     @Test
     public void whenFieldsIsEmpty_ThenItShouldExtractAllPropertiesValues() throws Exception {
         fieldExtractor = new BeanRecordFieldExtractor(Person.class);
-        Iterable<?> values = fieldExtractor.extractFields(record);
+        Iterable<Object> values = fieldExtractor.extractFields(record);
         assertThat(values).hasSize(6);
         assertThat(values).containsOnlyOnce(
                 record.getFirstName(), record.getLastName(), record.getBirthDate(),
@@ -64,9 +65,9 @@ public class BeanRecordFieldExtractorTest {
     @Test
     public void whenFieldsIsNotEmpty_ThenItShouldExtractAllPropertiesValuesInRightOrder() throws Exception {
         fieldExtractor = new BeanRecordFieldExtractor(Person.class, "lastName", "age", "married");
-        Iterable<?> values = fieldExtractor.extractFields(record);
+        Iterable<Object> values = fieldExtractor.extractFields(record);
         assertThat(values).hasSize(3);
-        Iterator<?> iterator = values.iterator();
+        Iterator<Object> iterator = values.iterator();
         assertThat(iterator.next()).isEqualTo(record.getLastName());
         assertThat(iterator.next()).isEqualTo(record.getAge());
         assertThat(iterator.next()).isEqualTo(record.isMarried());
