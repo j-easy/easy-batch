@@ -39,7 +39,7 @@ public class FlatFileBatchReader extends AbstractBatchReader {
     /**
      * Constructs a flat file batch reader.
      *
-     * @param file the flat file to read records from
+     * @param file      the flat file to read records from
      * @param batchSize the batch size
      */
     public FlatFileBatchReader(final File file, final int batchSize) throws FileNotFoundException {

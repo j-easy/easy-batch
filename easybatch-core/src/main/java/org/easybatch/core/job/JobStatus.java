@@ -40,12 +40,12 @@ public enum JobStatus {
      * The job is started.
      */
     STARTED,
-    
+
     /**
      * The job has ended due to an unresolved exception.
      */
     FAILED,
-    
+
     /**
      * The job has been aborted (due to timeout or strict mode).
      */

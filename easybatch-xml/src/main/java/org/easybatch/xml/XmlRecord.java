@@ -37,7 +37,7 @@ public class XmlRecord extends StringRecord {
     /**
      * Create a {@link XmlRecord}.
      *
-     * @param header the record header
+     * @param header  the record header
      * @param payload the record payload
      */
     public XmlRecord(final Header header, String payload) {

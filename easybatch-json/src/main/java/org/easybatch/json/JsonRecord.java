@@ -37,7 +37,7 @@ public class JsonRecord extends StringRecord {
     /**
      * Create a {@link JsonRecord}.
      *
-     * @param header the record header
+     * @param header  the record header
      * @param payload the record payload
      */
     public JsonRecord(final Header header, final String payload) {

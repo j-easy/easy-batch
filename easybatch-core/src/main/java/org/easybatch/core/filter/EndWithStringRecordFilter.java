@@ -46,7 +46,7 @@ public class EndWithStringRecordFilter implements RecordFilter<StringRecord> {
     public EndWithStringRecordFilter(final String... suffixes) {
         this.suffixes = suffixes;
     }
-    
+
     public StringRecord processRecord(final StringRecord record) {
         String payload = record.getPayload();
         for (String prefix : suffixes) {

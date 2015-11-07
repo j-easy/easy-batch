@@ -33,7 +33,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Write entities to a database using JPA.
- * <p>
+ * <p/>
  * This writer does not commit a transaction after writing records.
  * You can use a {@link JpaTransactionListener} for this purpose.
  *

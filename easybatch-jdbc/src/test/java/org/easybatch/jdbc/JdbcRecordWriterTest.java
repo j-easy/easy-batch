@@ -57,6 +57,37 @@ public class JdbcRecordWriterTest {
         createTweetTable(connection);
     }
 
+    @AfterClass
+    public static void shutdownDatabase() throws Exception {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+        }
+        //delete hsqldb tmp files
+        new File("mem.log").delete();
+        new File("mem.properties").delete();
+        new File("mem.script").delete();
+        new File("mem.tmp").delete();
+        new File("mem.lck").delete();
+    }
+
+    private static void createTweetTable(Connection connection) throws Exception {
+        Statement statement = connection.createStatement();
+        String query = "DROP TABLE IF EXISTS tweet";
+        statement.executeUpdate(query);
+        query = "CREATE TABLE tweet (\n" +
+                "  id integer NOT NULL PRIMARY KEY,\n" +
+                "  user varchar(32) NOT NULL,\n" +
+                "  message varchar(140) NOT NULL,\n" +
+                ");";
+        statement.executeUpdate(query);
+        statement.close();
+        connection.commit();
+    }
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
+    }
+
     @Before
     public void setUp() throws Exception {
         String query = "INSERT INTO tweet VALUES (?,?,?);";
@@ -114,37 +145,6 @@ public class JdbcRecordWriterTest {
             tweets.add(new Tweet(i, "user " + i, "hello " + i));
         }
         return tweets;
-    }
-
-    @AfterClass
-    public static void shutdownDatabase() throws Exception {
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
-        }
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
-        new File("mem.tmp").delete();
-        new File("mem.lck").delete();
-    }
-
-    private static void createTweetTable(Connection connection) throws Exception {
-        Statement statement = connection.createStatement();
-        String query = "DROP TABLE IF EXISTS tweet";
-        statement.executeUpdate(query);
-        query = "CREATE TABLE tweet (\n" +
-                "  id integer NOT NULL PRIMARY KEY,\n" +
-                "  user varchar(32) NOT NULL,\n" +
-                "  message varchar(140) NOT NULL,\n" +
-                ");";
-        statement.executeUpdate(query);
-        statement.close();
-        connection.commit();
-    }
-
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
     }
 
 }

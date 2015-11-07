@@ -74,7 +74,7 @@ public class JobFactoryBean implements FactoryBean {
     @Override
     public Job getObject() throws Exception {
         JobBuilder jobBuilder = new JobBuilder();
-        
+
         registerJobParameters(jobBuilder);
 
         registerMainComponents(jobBuilder);
@@ -85,17 +85,17 @@ public class JobFactoryBean implements FactoryBean {
     }
 
     private void registerJobParameters(JobBuilder jobBuilder) {
-        if(name != null) {
+        if (name != null) {
             jobBuilder.named(name);
         }
-        if(skip != null) {
+        if (skip != null) {
             jobBuilder.skip(skip);
         }
-        if(limit != null) {
+        if (limit != null) {
             jobBuilder.limit(limit);
-        } 
-        if(timeoutValue != null) {
-            if(timeoutUnit != null) {
+        }
+        if (timeoutValue != null) {
+            if (timeoutUnit != null) {
                 jobBuilder.timeout(timeoutValue, timeoutUnit);
             } else {
                 jobBuilder.timeout(timeoutValue);
@@ -135,7 +135,7 @@ public class JobFactoryBean implements FactoryBean {
                 jobBuilder.pipelineListener(pipelineListener);
             }
         }
-        
+
     }
 
     @Override

@@ -43,7 +43,7 @@ import static org.easybatch.core.job.JobBuilder.aNewJob;
 public class HibernateBatchReaderTest {
 
     private static final int BATCH_SIZE = 2;
-    
+
     private HibernateBatchReader<Tweet> hibernateBatchReader;
 
     @BeforeClass
@@ -51,6 +51,12 @@ public class HibernateBatchReaderTest {
         DatabaseUtil.startEmbeddedDatabase();
         DatabaseUtil.populateTweetTable();
         DatabaseUtil.initializeSessionFactory();
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        DatabaseUtil.closeSessionFactory();
+        DatabaseUtil.cleanUpWorkingDirectory();
     }
 
     @Before
@@ -61,7 +67,7 @@ public class HibernateBatchReaderTest {
 
     @Test
     public void testBatchProcessing() throws Exception {
-        
+
         Job job = aNewJob()
                 .reader(hibernateBatchReader)
                 .processor(new RecordCollector())
@@ -86,7 +92,7 @@ public class HibernateBatchReaderTest {
         assertThat(tweet.getId()).isEqualTo(2);
         assertThat(tweet.getUser()).isEqualTo("bar");
         assertThat(tweet.getMessage()).isEqualTo("@foo I do confirm :-)");
-        
+
         Batch batch2 = batches.get(1);
         assertThat(batch2.getPayload().size()).isEqualTo(1);
         tweet = (Tweet) batch2.getPayload().get(0).getPayload();
@@ -94,12 +100,5 @@ public class HibernateBatchReaderTest {
         assertThat(tweet.getId()).isEqualTo(3);
         assertThat(tweet.getUser()).isEqualTo("baz");
         assertThat(tweet.getMessage()).isEqualTo("yep");
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        DatabaseUtil.closeSessionFactory();
-        DatabaseUtil.cleanUpWorkingDirectory();
-
     }
 }

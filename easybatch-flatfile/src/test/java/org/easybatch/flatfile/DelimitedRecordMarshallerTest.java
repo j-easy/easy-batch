@@ -45,7 +45,7 @@ public class DelimitedRecordMarshallerTest {
     private Person payload;
     @Mock
     private GenericRecord<Person> record;
-    
+
     private DelimitedRecordMarshaller marshaller;
 
     @Before

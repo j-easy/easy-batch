@@ -53,11 +53,10 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class OutputStreamRecordWriterTest {
 
-    @Rule
-    public final SystemOutRule systemOut = new SystemOutRule().enableLog();
-
     public static final String PAYLOAD = "test";
 
+    @Rule
+    public final SystemOutRule systemOut = new SystemOutRule().enableLog();
     @Mock
     private OutputStreamWriter outputStreamWriter;
 

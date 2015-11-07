@@ -35,18 +35,18 @@ public interface JobMonitorMBean {
 
     /**
      * Get the job name.
-     * 
+     *
      * @return the job name
      */
     String getJobName();
 
     /**
      * Get the job execution id.
-     * 
+     *
      * @return the job execution id
      */
     String getJobExecutionId();
-    
+
     /**
      * Get the data source name.
      *
@@ -70,6 +70,7 @@ public interface JobMonitorMBean {
 
     /**
      * Get timeout.
+     *
      * @return timeout
      */
     String getTimeout();

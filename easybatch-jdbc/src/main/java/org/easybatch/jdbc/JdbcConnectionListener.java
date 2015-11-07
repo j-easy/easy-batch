@@ -49,7 +49,7 @@ public class JdbcConnectionListener implements JobListener {
     /**
      * Create a JDBC connection listener.
      *
-     * @param connection      the JDBC connection.
+     * @param connection the JDBC connection.
      */
     public JdbcConnectionListener(final Connection connection) {
         checkNotNull(connection, "connection");

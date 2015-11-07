@@ -40,7 +40,7 @@ public class GsonRecordMarshallerTest {
 
     @Mock
     private Header header;
-    
+
     private GsonRecordMarshaller marshaller;
 
     @Before

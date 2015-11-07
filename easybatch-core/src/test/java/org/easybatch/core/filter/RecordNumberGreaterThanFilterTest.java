@@ -39,7 +39,7 @@ public class RecordNumberGreaterThanFilterTest {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Record record;
-    
+
     private RecordNumberGreaterThanFilter recordNumberGreaterThanFilter;
 
     @Test

@@ -35,7 +35,7 @@ public class IterableBatchReader extends AbstractBatchReader {
      * Create an iterable batch reader.
      *
      * @param dataSource the data source to read records from
-     * @param batchSize the batch size
+     * @param batchSize  the batch size
      */
     public IterableBatchReader(final Iterable dataSource, final int batchSize) {
         super(batchSize, new IterableRecordReader(dataSource));

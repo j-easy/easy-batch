@@ -58,7 +58,7 @@ public class OpenCsvRecordMapperTest {
         StringRecord fooRecord = new StringRecord(header, "foo,bar,15,true");
         GenericRecord<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
-        
+
         Foo foo = actual.getPayload();
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo");
@@ -73,7 +73,7 @@ public class OpenCsvRecordMapperTest {
         StringRecord fooRecord = new StringRecord(header, "foo;bar");
         GenericRecord<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
-        
+
         Foo foo = actual.getPayload();
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo");
@@ -86,7 +86,7 @@ public class OpenCsvRecordMapperTest {
         StringRecord fooRecord = new StringRecord(header, "'foo,s','bar'");
         GenericRecord<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
-        
+
         Foo foo = actual.getPayload();
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo,s");
@@ -100,7 +100,7 @@ public class OpenCsvRecordMapperTest {
         StringRecord fooRecord = new StringRecord(header, "'foo" + LINE_SEPARATOR + "','bar" + LINE_SEPARATOR + "'");
         GenericRecord<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
-        
+
         Foo foo = actual.getPayload();
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo" + LINE_SEPARATOR);

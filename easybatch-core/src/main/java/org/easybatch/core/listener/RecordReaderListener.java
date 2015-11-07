@@ -51,5 +51,5 @@ public interface RecordReaderListener {
      * @param throwable the throwable thrown during record reading
      */
     void onRecordReadingException(final Throwable throwable);
-    
+
 }

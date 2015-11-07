@@ -57,6 +57,44 @@ public class JpaRecordReaderTest {
         entityManagerFactory = Persistence.createEntityManagerFactory("tweet");
     }
 
+    @AfterClass
+    public static void shutdownDatabase() throws Exception {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+        }
+        //delete hsqldb tmp files
+        new File("mem.log").delete();
+        new File("mem.properties").delete();
+        new File("mem.script").delete();
+        new File("mem.tmp").delete();
+    }
+
+    private static void createTweetTable(Connection connection) throws Exception {
+        Statement statement = connection.createStatement();
+        String query = "DROP TABLE IF EXISTS tweet";
+        statement.executeUpdate(query);
+        query = "CREATE TABLE tweet (\n" +
+                "  id integer NOT NULL PRIMARY KEY,\n" +
+                "  user varchar(32) NOT NULL,\n" +
+                "  message varchar(140) NOT NULL,\n" +
+                ");";
+        statement.executeUpdate(query);
+        statement.close();
+    }
+
+    private static void populateTweetTable(Connection connection) throws Exception {
+        executeQuery(connection, "INSERT INTO tweet VALUES (1,'foo','easy batch rocks! #EasyBatch');");
+        executeQuery(connection, "INSERT INTO tweet VALUES (2,'bar','@foo I do confirm :-)');");
+        executeQuery(connection, "INSERT INTO tweet VALUES (3,'baz','yep');");
+        executeQuery(connection, "INSERT INTO tweet VALUES (4,'toto','what?');");
+    }
+
+    private static void executeQuery(Connection connection, String query) throws SQLException {
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(query);
+        statement.close();
+    }
+
     @Before
     public void setUp() throws Exception {
         String query = "from Tweet";
@@ -106,44 +144,6 @@ public class JpaRecordReaderTest {
     @After
     public void tearDown() {
         jpaRecordReader.close();
-    }
-
-    @AfterClass
-    public static void shutdownDatabase() throws Exception {
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
-        }
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
-        new File("mem.tmp").delete();
-    }
-
-    private static void createTweetTable(Connection connection) throws Exception {
-        Statement statement = connection.createStatement();
-        String query = "DROP TABLE IF EXISTS tweet";
-        statement.executeUpdate(query);
-        query = "CREATE TABLE tweet (\n" +
-                "  id integer NOT NULL PRIMARY KEY,\n" +
-                "  user varchar(32) NOT NULL,\n" +
-                "  message varchar(140) NOT NULL,\n" +
-                ");";
-        statement.executeUpdate(query);
-        statement.close();
-    }
-
-    private static void populateTweetTable(Connection connection) throws Exception {
-        executeQuery(connection, "INSERT INTO tweet VALUES (1,'foo','easy batch rocks! #EasyBatch');");
-        executeQuery(connection, "INSERT INTO tweet VALUES (2,'bar','@foo I do confirm :-)');");
-        executeQuery(connection, "INSERT INTO tweet VALUES (3,'baz','yep');");
-        executeQuery(connection, "INSERT INTO tweet VALUES (4,'toto','what?');");
-    }
-
-    private static void executeQuery(Connection connection, String query) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(query);
-        statement.close();
     }
 
 }

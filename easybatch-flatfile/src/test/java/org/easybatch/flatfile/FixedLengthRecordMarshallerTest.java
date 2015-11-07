@@ -47,7 +47,7 @@ public class FixedLengthRecordMarshallerTest {
     private GenericRecord<Bean> record;
 
     private FixedLengthRecordMarshaller marshaller;
-    
+
     @Before
     public void setUp() throws Exception {
         when(record.getHeader()).thenReturn(header);

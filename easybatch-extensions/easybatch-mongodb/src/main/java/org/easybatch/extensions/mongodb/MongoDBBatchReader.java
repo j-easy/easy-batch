@@ -39,8 +39,8 @@ public class MongoDBBatchReader extends AbstractBatchReader {
      * Create a batch reader.
      *
      * @param collection the collection to read documents from
-     * @param query the query to fetch data
-     * @param batchSize the batch size
+     * @param query      the query to fetch data
+     * @param batchSize  the batch size
      */
     public MongoDBBatchReader(final DBCollection collection, final DBObject query, final int batchSize) {
         super(batchSize, new MongoDBRecordReader(collection, query));

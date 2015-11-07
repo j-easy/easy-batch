@@ -49,9 +49,9 @@ public class BatchMarshallerTest {
     private Batch batch;
     @Mock
     private RecordMarshaller<Record, Record> recordMarshaller;
-    
+
     private BatchMarshaller batchMarshaller;
-    
+
     @Before
     public void setUp() throws Exception {
         when(recordMarshaller.processRecord(record1)).thenReturn(marshalledRecord1);
@@ -64,7 +64,7 @@ public class BatchMarshallerTest {
     @Test
     public void processRecord() throws RecordMarshallingException {
         Batch actual = batchMarshaller.processRecord(batch);
-        
+
         assertThat(actual).isNotNull();
         assertThat(actual.getHeader()).isEqualTo(header);
         assertThat(actual.getPayload()).isNotEmpty()

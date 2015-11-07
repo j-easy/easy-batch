@@ -39,12 +39,9 @@ import static org.easybatch.core.util.Utils.checkArgument;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Reader that reads data using the Java Persistence API.
- * <p>
- * This reader produces {@link GenericRecord} instances that can be mapped
- * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects.
- * <p>
- * Use the <code>fetchSize</code> parameter to specify the number of records to read from the database at a time.
+ * Read records using the Java Persistence API.
+ * <p/>
+ * This reader produces {@link GenericRecord} instances with JPA entities as payload.
  *
  * @param <T> the type of objects this reader will read.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -73,11 +70,8 @@ public class JpaRecordReader<T> implements RecordReader {
 
     /**
      * Reader that reads data using the Java Persistence API.
-     * <p>
-     * This reader produces {@link GenericRecord} instances that can be mapped
-     * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects.
-     * <p>
-     * Use the <code>fetchSize</code> parameter to specify the number of records to read from the database at a time.
+     * <p/>
+     * This reader produces {@link GenericRecord} instances with JPA entities as payload.
      *
      * @param entityManagerFactory the entity manager factory
      * @param query                the JPQL query to fetch data
@@ -135,8 +129,12 @@ public class JpaRecordReader<T> implements RecordReader {
         entityManager.close();
     }
 
+    /**
+     * Set the fetch size.
+     * @param fetchSize the fetch size
+     */
     public void setFetchSize(final int fetchSize) {
-        checkArgument(fetchSize >= 1, "fetch size parameter must be greater than or equal to 1");
+        checkArgument(fetchSize >= 1, "fetch size parameter must be >= 1");
         this.fetchSize = fetchSize;
     }
 

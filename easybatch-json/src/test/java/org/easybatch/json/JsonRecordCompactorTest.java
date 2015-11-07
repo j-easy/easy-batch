@@ -35,7 +35,7 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JsonRecordCompactorTest {
-    
+
     private String payload, expectedPayload;
 
     private JsonRecordCompactor jsonRecordCompactor;

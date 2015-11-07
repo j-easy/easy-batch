@@ -78,7 +78,7 @@ public class MongoDBBatchWriterTest {
         when(record2.getPayload()).thenReturn(dbObject2);
         when(batch.getHeader()).thenReturn(header);
         when(batch.getPayload()).thenReturn(Arrays.<Record>asList(record1, record2));
-        
+
         mongoDBBatchWriter = new MongoDBBatchWriter(collection);
         when(collection.initializeOrderedBulkOperation()).thenReturn(bulkWriteOperation);
     }

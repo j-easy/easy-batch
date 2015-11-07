@@ -33,7 +33,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Marshals an object to XML using <a href="http://xstream.codehaus.org/">XStream</a>.
- * 
+ *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class XstreamRecordMarshaller implements RecordMarshaller<GenericRecord, XmlRecord> {
@@ -51,7 +51,7 @@ public class XstreamRecordMarshaller implements RecordMarshaller<GenericRecord, 
      * Create a record marshaller.
      *
      * @param elementName the alias of the object in the corresponding xml tag
-     * @param type the type of the object to marshal
+     * @param type        the type of the object to marshal
      */
     public XstreamRecordMarshaller(final String elementName, final Class type) {
         this();

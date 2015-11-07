@@ -50,7 +50,7 @@ public class JacksonRecordMapper<T> implements RecordMapper<JsonRecord, GenericR
      * to map json records to domain objects.
      *
      * @param mapper The Jackson mapper
-     * @param type The target type
+     * @param type   The target type
      */
     public JacksonRecordMapper(final ObjectMapper mapper, final Class<T> type) {
         checkNotNull(mapper, "object mapper");

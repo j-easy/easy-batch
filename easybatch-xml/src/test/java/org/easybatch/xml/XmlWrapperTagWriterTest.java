@@ -44,13 +44,13 @@ public class XmlWrapperTagWriterTest {
 
     private static final String DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
 
+    @Rule
+    public final SystemOutRule systemOut = new SystemOutRule().enableLog();
+
     @Mock
     private JobReport jobReport;
     @Mock
     private JobParameters jobParameters;
-
-    @Rule
-    public final SystemOutRule systemOut = new SystemOutRule().enableLog();
 
     private String wrapperTag;
 

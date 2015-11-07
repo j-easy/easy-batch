@@ -49,7 +49,7 @@ public class BatchMapperTest {
     private Header header;
     @Mock
     private RecordMapper<Record, Record> recordMapper;
-    
+
     private BatchMapper batchMapper;
 
     @Before
@@ -72,5 +72,5 @@ public class BatchMapperTest {
                 .hasSize(2)
                 .containsExactly(mappedRecord1, mappedRecord2);
     }
-    
+
 }

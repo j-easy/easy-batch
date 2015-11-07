@@ -57,7 +57,7 @@ public class BroadcastJmsRecordDispatcherTest {
     public void setUp() throws Exception {
         when(jmsRecord.getHeader()).thenReturn(header);
         when(jmsRecord.getPayload()).thenReturn(message);
-        
+
         broadcastJmsRecordDispatcher = new BroadcastJmsRecordDispatcher(Arrays.asList(queue1, queue2));
     }
 

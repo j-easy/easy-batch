@@ -50,7 +50,7 @@ import static org.easybatch.core.job.JobBuilder.aNewJob;
 public class JpaBatchReaderTest {
 
     private static final String DATABASE_URL = "jdbc:hsqldb:mem";
-    
+
     private static final int BATCH_SIZE = 2;
 
     private static Connection connection;
@@ -66,49 +66,6 @@ public class JpaBatchReaderTest {
         populateTweetTable(connection);
         entityManagerFactory = Persistence.createEntityManagerFactory("tweet");
 
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        String query = "from Tweet";
-        jpaBatchReader = new JpaBatchReader<>(BATCH_SIZE, entityManagerFactory, query, Tweet.class);
-    }
-
-    @Test
-    public void testJpaBatchProcessing() throws Exception {
-        
-        Job job = aNewJob()
-                .reader(jpaBatchReader)
-                .processor(new RecordCollector())
-                .build();
-
-        JobReport jobReport = JobExecutor.execute(job);
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
-
-        List<Batch> batches = (List<Batch>) jobReport.getResult();
-        assertThat(batches).isNotNull().hasSize(2);
-
-        Batch batch1 = batches.get(0);
-        assertThat(batch1.getPayload().size()).isEqualTo(2);
-        Tweet tweet = (Tweet) batch1.getPayload().get(0).getPayload();
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.getId()).isEqualTo(1);
-        assertThat(tweet.getUser()).isEqualTo("foo");
-        assertThat(tweet.getMessage()).isEqualTo("easy batch rocks! #EasyBatch");
-
-        tweet = (Tweet) batch1.getPayload().get(1).getPayload();
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.getId()).isEqualTo(2);
-        assertThat(tweet.getUser()).isEqualTo("bar");
-        assertThat(tweet.getMessage()).isEqualTo("@foo I do confirm :-)");
-
-        Batch batch2 = batches.get(1);
-        assertThat(batch2.getPayload().size()).isEqualTo(1);
-        tweet = (Tweet) batch2.getPayload().get(0).getPayload();
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.getId()).isEqualTo(3);
-        assertThat(tweet.getUser()).isEqualTo("baz");
-        assertThat(tweet.getMessage()).isEqualTo("yep");
     }
 
     @AfterClass
@@ -146,6 +103,49 @@ public class JpaBatchReaderTest {
         Statement statement = connection.createStatement();
         statement.executeUpdate(query);
         statement.close();
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        String query = "from Tweet";
+        jpaBatchReader = new JpaBatchReader<>(BATCH_SIZE, entityManagerFactory, query, Tweet.class);
+    }
+
+    @Test
+    public void testJpaBatchProcessing() throws Exception {
+
+        Job job = aNewJob()
+                .reader(jpaBatchReader)
+                .processor(new RecordCollector())
+                .build();
+
+        JobReport jobReport = JobExecutor.execute(job);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+
+        List<Batch> batches = (List<Batch>) jobReport.getResult();
+        assertThat(batches).isNotNull().hasSize(2);
+
+        Batch batch1 = batches.get(0);
+        assertThat(batch1.getPayload().size()).isEqualTo(2);
+        Tweet tweet = (Tweet) batch1.getPayload().get(0).getPayload();
+        assertThat(tweet).isNotNull();
+        assertThat(tweet.getId()).isEqualTo(1);
+        assertThat(tweet.getUser()).isEqualTo("foo");
+        assertThat(tweet.getMessage()).isEqualTo("easy batch rocks! #EasyBatch");
+
+        tweet = (Tweet) batch1.getPayload().get(1).getPayload();
+        assertThat(tweet).isNotNull();
+        assertThat(tweet.getId()).isEqualTo(2);
+        assertThat(tweet.getUser()).isEqualTo("bar");
+        assertThat(tweet.getMessage()).isEqualTo("@foo I do confirm :-)");
+
+        Batch batch2 = batches.get(1);
+        assertThat(batch2.getPayload().size()).isEqualTo(1);
+        tweet = (Tweet) batch2.getPayload().get(0).getPayload();
+        assertThat(tweet).isNotNull();
+        assertThat(tweet.getId()).isEqualTo(3);
+        assertThat(tweet.getUser()).isEqualTo("baz");
+        assertThat(tweet.getMessage()).isEqualTo("yep");
     }
 
 }

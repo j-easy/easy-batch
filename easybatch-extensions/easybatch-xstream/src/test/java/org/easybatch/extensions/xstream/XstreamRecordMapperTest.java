@@ -62,7 +62,7 @@ public class XstreamRecordMapperTest {
     public void testValidXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person.xml"));
 
-        GenericRecord<Person> actual =  xmlRecordMapper.processRecord(xmlRecord);
+        GenericRecord<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
         Person person = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);
@@ -77,7 +77,7 @@ public class XstreamRecordMapperTest {
     public void testEmptyXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn("<person/>");
 
-        GenericRecord<Person> actual =  xmlRecordMapper.processRecord(xmlRecord);
+        GenericRecord<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
         Person person = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);
@@ -91,7 +91,7 @@ public class XstreamRecordMapperTest {
     public void testPartialXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person-partial.xml"));
 
-        GenericRecord<Person> actual =  xmlRecordMapper.processRecord(xmlRecord);
+        GenericRecord<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
         Person person = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);

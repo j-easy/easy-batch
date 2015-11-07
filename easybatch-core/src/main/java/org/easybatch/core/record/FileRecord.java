@@ -35,8 +35,8 @@ public class FileRecord extends GenericRecord<File> {
 
     /**
      * Create a {@link FileRecord}.
-     * 
-     * @param header the record header
+     *
+     * @param header  the record header
      * @param payload the record payload
      */
     public FileRecord(final Header header, final File payload) {

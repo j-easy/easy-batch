@@ -38,7 +38,7 @@ public class ApacheCommonCsvRecord extends GenericRecord<CSVRecord> {
     /**
      * Create a {@link ApacheCommonCsvRecord}.
      *
-     * @param header the record header
+     * @param header  the record header
      * @param payload the record payload
      */
     public ApacheCommonCsvRecord(final Header header, final CSVRecord payload) {

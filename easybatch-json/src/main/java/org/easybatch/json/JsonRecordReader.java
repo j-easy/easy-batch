@@ -225,7 +225,7 @@ public class JsonRecordReader implements RecordReader {
             case START_ARRAY:
                 try {
                     jsonGenerator.writeStartArray();
-                } catch(JsonGenerationException e) {
+                } catch (JsonGenerationException e) {
                     jsonGenerator.writeStartArray(key);
                 }
                 break;

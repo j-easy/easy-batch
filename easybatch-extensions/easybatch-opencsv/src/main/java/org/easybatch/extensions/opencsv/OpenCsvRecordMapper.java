@@ -57,7 +57,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Generi
      * Create a {@link OpenCsvRecordMapper}.
      *
      * @param recordClass The target type
-     * @param columns Fields name in the same order as in the delimited record
+     * @param columns     Fields name in the same order as in the delimited record
      */
     public OpenCsvRecordMapper(Class<? extends T> recordClass, String... columns) {
         this.strategy = new ColumnPositionMappingStrategy<>();

@@ -44,12 +44,12 @@ class DefaultRecordReaderListener implements RecordReaderListener {
     DefaultRecordReaderListener(JobImpl job) {
         this.job = job;
     }
-    
+
     @Override
     public void beforeRecordReading() {
         //no-op
     }
-    
+
     @Override
     public void afterRecordReading(Record record) {
         //no-op

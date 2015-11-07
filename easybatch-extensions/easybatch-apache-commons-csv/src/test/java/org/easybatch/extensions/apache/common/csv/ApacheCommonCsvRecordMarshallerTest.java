@@ -40,7 +40,7 @@ public class ApacheCommonCsvRecordMarshallerTest {
 
     @Mock
     private Header header;
-    
+
     private ApacheCommonCsvRecordMarshaller marshaller;
 
     @Before

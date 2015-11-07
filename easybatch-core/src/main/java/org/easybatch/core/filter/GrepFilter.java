@@ -30,7 +30,7 @@ import org.easybatch.core.util.Utils;
 /**
  * Convenient filter that mimics the unix grep utility: it keeps records containing the given pattern
  * instead of filtering them.
- * <p>
+ * <p/>
  * Should be used with {@link org.easybatch.core.record.StringRecord} type. Search is case sensitive.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

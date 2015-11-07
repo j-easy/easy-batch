@@ -168,7 +168,7 @@ public class DelimitedRecordMapperTest {
         delimitedRecordMapper.parseRecord(headerRecord);
         GenericRecord<Person> actual = delimitedRecordMapper.processRecord(record);
         Person person = actual.getPayload();
-        
+
         assertThat(person).isNotNull();
         assertThat(person.getFirstName()).isEqualTo("foo");
         assertThat(person.getLastName()).isEqualTo("bar");

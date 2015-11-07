@@ -33,11 +33,11 @@ import java.util.List;
 
 /**
  * Marshal a list of objects using a delegate {@link RecordMarshaller}.
- * 
+ *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class BatchMarshaller implements RecordMarshaller<Batch, Batch> {
-    
+
     private RecordMarshaller delegate;
 
     /**

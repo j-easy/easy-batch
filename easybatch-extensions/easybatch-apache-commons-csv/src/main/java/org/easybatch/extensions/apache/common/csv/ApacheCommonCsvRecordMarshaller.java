@@ -43,13 +43,13 @@ import java.io.StringWriter;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller<GenericRecord, StringRecord> {
-    
+
     public static final char DEFAULT_DELIMITER = ',';
 
     public static final char DEFAULT_QUALIFIER = '\"';
-    
+
     private final RecordFieldExtractor fieldExtractor;
-    
+
     private CSVFormat csvFormat;
 
     /**

@@ -34,14 +34,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class JdbcRecordReaderTest {
 
     private static final String DATABASE_URL = "jdbc:hsqldb:mem";
-
     private static final String DATA_SOURCE_NAME = "Connection URL: jdbc:hsqldb:mem | Query string: select * from tweet";
-
-    private JdbcRecordReader jdbcRecordReader;
-
     private static Connection connection;
-
     private static String query;
+    private JdbcRecordReader jdbcRecordReader;
 
     @BeforeClass
     public static void initDatabase() throws Exception {
@@ -49,6 +45,42 @@ public class JdbcRecordReaderTest {
         createTweetTable(connection);
         populateTweetTable(connection);
         query = "select * from tweet";
+    }
+
+    @AfterClass
+    public static void shutdownDatabase() throws Exception {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+        }
+        //delete hsqldb tmp files
+        new File("mem.log").delete();
+        new File("mem.properties").delete();
+        new File("mem.script").delete();
+        new File("mem.tmp").delete();
+    }
+
+    private static void createTweetTable(Connection connection) throws Exception {
+        Statement statement = connection.createStatement();
+        String query = "DROP TABLE IF EXISTS tweet";
+        statement.executeUpdate(query);
+        query = "CREATE TABLE tweet (\n" +
+                "  id integer NOT NULL PRIMARY KEY,\n" +
+                "  user varchar(32) NOT NULL,\n" +
+                "  message varchar(140) NOT NULL,\n" +
+                ");";
+        statement.executeUpdate(query);
+        statement.close();
+    }
+
+    private static void populateTweetTable(Connection connection) throws Exception {
+        executeQuery(connection, "INSERT INTO tweet VALUES (1,'foo','easy batch rocks! #EasyBatch');");
+        executeQuery(connection, "INSERT INTO tweet VALUES (2,'bar','@foo I do confirm :-)');");
+    }
+
+    private static void executeQuery(Connection connection, String query) throws SQLException {
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(query);
+        statement.close();
     }
 
     @Before
@@ -104,42 +136,6 @@ public class JdbcRecordReaderTest {
          * If done here, subsequent tests do not find the connection
          */
         //jdbcRecordReader.close();
-    }
-
-    @AfterClass
-    public static void shutdownDatabase() throws Exception {
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
-        }
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
-        new File("mem.tmp").delete();
-    }
-
-    private static void createTweetTable(Connection connection) throws Exception {
-        Statement statement = connection.createStatement();
-        String query = "DROP TABLE IF EXISTS tweet";
-        statement.executeUpdate(query);
-        query = "CREATE TABLE tweet (\n" +
-                "  id integer NOT NULL PRIMARY KEY,\n" +
-                "  user varchar(32) NOT NULL,\n" +
-                "  message varchar(140) NOT NULL,\n" +
-                ");";
-        statement.executeUpdate(query);
-        statement.close();
-    }
-
-    private static void populateTweetTable(Connection connection) throws Exception {
-        executeQuery(connection, "INSERT INTO tweet VALUES (1,'foo','easy batch rocks! #EasyBatch');");
-        executeQuery(connection, "INSERT INTO tweet VALUES (2,'bar','@foo I do confirm :-)');");
-    }
-
-    private static void executeQuery(Connection connection, String query) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(query);
-        statement.close();
     }
 
 }

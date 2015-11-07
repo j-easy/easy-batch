@@ -84,7 +84,7 @@ public class FileRecordReader implements RecordReader {
         iterator = files.listIterator();
         currentRecordNumber = 0;
     }
-    
+
     private List<File> getFiles(final File directory) {
         List<File> files = new ArrayList<>();
         File[] filesList = directory.listFiles();

@@ -184,11 +184,11 @@ public class JobReport implements Serializable {
     public String getFormattedTimeout() {
         return parameters.getTimeout() != DEFAULT_TIMEOUT ? valueOf(toMinutes(parameters.getTimeout())) + "m" : NOT_APPLICABLE;
     }
-    
+
     public String getFormattedLimit() {
         return parameters.getLimit() != JobParameters.DEFAULT_LIMIT ? valueOf(parameters.getLimit()) : NOT_APPLICABLE;
     }
-    
+
     public String getFormattedResult() {
         return result != null && result.get() != null ? result.get().toString() : NOT_APPLICABLE;
     }

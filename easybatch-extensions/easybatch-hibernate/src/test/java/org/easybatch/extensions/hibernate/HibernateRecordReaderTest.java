@@ -51,6 +51,12 @@ public class HibernateRecordReaderTest {
         DatabaseUtil.initializeSessionFactory();
     }
 
+    @AfterClass
+    public static void tearDown() {
+        DatabaseUtil.closeSessionFactory();
+        DatabaseUtil.cleanUpWorkingDirectory();
+    }
+
     @Before
     public void setUp() {
         SessionFactory sessionFactory = DatabaseUtil.getSessionFactory();
@@ -89,11 +95,5 @@ public class HibernateRecordReaderTest {
         assertThat(tweet.getId()).isEqualTo(3);
         assertThat(tweet.getUser()).isEqualTo("baz");
         assertThat(tweet.getMessage()).isEqualTo("yep");
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        DatabaseUtil.closeSessionFactory();
-        DatabaseUtil.cleanUpWorkingDirectory();
     }
 }

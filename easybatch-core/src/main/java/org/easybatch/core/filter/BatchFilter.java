@@ -32,7 +32,7 @@ import java.util.Iterator;
 
 /**
  * Filter records from a {@link Batch} using a delegate {@link RecordFilter}.
- * 
+ *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class BatchFilter implements RecordFilter<Batch> {

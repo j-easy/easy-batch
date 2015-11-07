@@ -111,8 +111,8 @@ public final class JobBuilder {
      */
     public JobBuilder timeout(final long timeout) {
         return timeout(timeout, TimeUnit.MILLISECONDS);
-    }    
-    
+    }
+
     /**
      * Set the timeout after which the job should be aborted.
      *

@@ -44,7 +44,7 @@ public class XmlRecordMarshallerTest {
     private Header header;
 
     private XmlRecordMarshaller xmlRecordMarshaller;
-    
+
     @Before
     public void setUp() throws Exception {
         Person person = new Person(1, "foo", "bar", null, false);

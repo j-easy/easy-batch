@@ -44,15 +44,15 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class OutputStreamBatchWriterTest {
 
+    @Rule
+    public final SystemOutRule systemOut = new SystemOutRule().enableLog();
+
     @Mock
     private Batch batch;
     @Mock
     private Record record1, record2;
 
     private OutputStreamBatchWriter writer;
-
-    @Rule
-    public final SystemOutRule systemOut = new SystemOutRule().enableLog();
 
     @Before
     public void setUp() throws Exception {

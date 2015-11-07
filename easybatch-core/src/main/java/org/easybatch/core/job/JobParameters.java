@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 public class JobParameters {
 
     public static final String DEFAULT_JOB_NAME = "job";
-    
+
     public static final Long DEFAULT_LIMIT = Long.MAX_VALUE;
 
     public static final Long DEFAULT_SKIP = 0L;

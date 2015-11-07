@@ -33,10 +33,9 @@ import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JobReportTest {
-    
-    private JobReport jobReport;
 
     private static long START_TIME;
+
     private static long END_TIME;
 
     static {
@@ -45,6 +44,8 @@ public class JobReportTest {
         START_TIME = calendar.getTime().getTime();
         END_TIME = START_TIME + 10 * 1000;
     }
+
+    private JobReport jobReport;
 
     @Before
     public void setUp() throws Exception {

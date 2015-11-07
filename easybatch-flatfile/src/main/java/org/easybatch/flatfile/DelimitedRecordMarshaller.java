@@ -36,7 +36,7 @@ import java.util.Iterator;
 
 /**
  * Marshals a POJO to CSV format.
- * <p>
+ * <p/>
  * <strong>This marshaller does not support recursive marshalling.</strong>
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -51,7 +51,7 @@ public class DelimitedRecordMarshaller implements RecordMarshaller<GenericRecord
 
     private String qualifier;
 
-    private final RecordFieldExtractor fieldExtractor;
+    private RecordFieldExtractor fieldExtractor;
 
     /**
      * Create a delimited record marshaller.

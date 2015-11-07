@@ -51,7 +51,7 @@ public class JpaTransactionListener implements PipelineListener {
 
     /**
      * Create a JPA transaction listener.
-     * <p>
+     * <p/>
      * A JPA transaction will be committed after each record.
      *
      * @param entityManager the JPA entity manager

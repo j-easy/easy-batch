@@ -39,7 +39,7 @@ public class RecordNumberBetweenFilterTest {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Record record;
-    
+
     private RecordNumberBetweenFilter recordNumberBetweenFilter;
 
     @Test

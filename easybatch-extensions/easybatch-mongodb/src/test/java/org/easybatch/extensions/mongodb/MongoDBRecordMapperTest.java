@@ -71,7 +71,7 @@ public class MongoDBRecordMapperTest {
 
         GenericRecord<Person> actual = mapper.processRecord(mongoDBRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
-        
+
         Person person = actual.getPayload();
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(ID);

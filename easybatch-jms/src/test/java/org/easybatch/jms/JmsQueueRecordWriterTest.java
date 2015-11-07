@@ -63,7 +63,7 @@ public class JmsQueueRecordWriterTest {
         when(queueConnectionFactory.createQueueConnection()).thenReturn(queueConnection);
         when(queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)).thenReturn(queueSession);
         when(queueSession.createSender(queue)).thenReturn(queueSender);
-        
+
         jmsQueueRecordWriter = new JmsQueueRecordWriter(queueConnectionFactory, queue);
     }
 

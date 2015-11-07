@@ -126,6 +126,7 @@ public class EventManagerTest {
         inOrder.verify(recordReaderListener1).onRecordReadingException(throwable);
         inOrder.verify(recordReaderListener2).onRecordReadingException(throwable);
     }
+
     @Test
     public void fireBeforeRecordProcessing() {
         when(pipelineListener1.beforeRecordProcessing(record)).thenReturn(record1);

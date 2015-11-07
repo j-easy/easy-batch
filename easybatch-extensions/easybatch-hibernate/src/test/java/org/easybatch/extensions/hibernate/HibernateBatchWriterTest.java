@@ -53,6 +53,12 @@ public class HibernateBatchWriterTest {
         DatabaseUtil.initializeSessionFactory();
     }
 
+    @AfterClass
+    public static void shutdownDatabase() throws Exception {
+        DatabaseUtil.closeSessionFactory();
+        DatabaseUtil.cleanUpWorkingDirectory();
+    }
+
     @Before
     public void setUp() throws Exception {
         session = DatabaseUtil.getSessionFactory().openSession();
@@ -102,12 +108,6 @@ public class HibernateBatchWriterTest {
         statement.close();
         connection.close();
         return nbTweets;
-    }
-
-    @AfterClass
-    public static void shutdownDatabase() throws Exception {
-        DatabaseUtil.closeSessionFactory();
-        DatabaseUtil.cleanUpWorkingDirectory();
     }
 
 }

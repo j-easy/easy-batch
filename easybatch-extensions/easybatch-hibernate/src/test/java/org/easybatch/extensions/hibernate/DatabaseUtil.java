@@ -37,10 +37,9 @@ import java.sql.Statement;
 
 public class DatabaseUtil {
 
-    private static final String DATABASE_URL = "jdbc:hsqldb:mem";
     public static final String USER = "sa";
     public static final String PASSWORD = "pwd";
-
+    private static final String DATABASE_URL = "jdbc:hsqldb:mem";
     /*
      * Hibernate related utilities
      */
@@ -77,7 +76,7 @@ public class DatabaseUtil {
         createTweetTable();
     }
 
-    public static void createTweetTable() throws Exception{
+    public static void createTweetTable() throws Exception {
         Connection connection = getConnection();
         Statement statement = connection.createStatement();
 

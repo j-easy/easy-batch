@@ -50,7 +50,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class JobFactoryBeanTest {
 
-    private JobFactoryBean jobFactoryBean;
+    @Rule
+    public final SystemOutRule systemOut = new SystemOutRule().enableLog();
 
     @Mock
     private RecordReader recordReader;
@@ -63,8 +64,7 @@ public class JobFactoryBeanTest {
     @Mock
     private PipelineListener pipelineListener;
 
-    @Rule
-    public final SystemOutRule systemOut = new SystemOutRule().enableLog();
+    private JobFactoryBean jobFactoryBean;
 
     @Before
     public void setUp() throws Exception {
@@ -100,7 +100,7 @@ public class JobFactoryBeanTest {
         ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
         Job job = context.getBean("job", Job.class);
         JobReport report = JobExecutor.execute(job);
-        
+
         assertThat(report).isNotNull();
         assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(report.getMetrics()).isNotNull();

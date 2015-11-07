@@ -35,11 +35,11 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public abstract class BatchReader implements RecordReader {
-    
+
     protected RecordReader delegate;
-    
+
     protected int batchSize;
-    
+
     protected long currentRecordNumber;
 
     public BatchReader(final int batchSize, final RecordReader delegate) {

@@ -43,7 +43,7 @@ public class HibernateBatchWriter implements RecordWriter<Batch> {
 
     /**
      * Create a {@link HibernateBatchWriter}.
-     * 
+     *
      * @param session the session to use to write objects
      */
     public HibernateBatchWriter(final Session session) {

@@ -29,7 +29,7 @@ import org.easybatch.core.record.Record;
 
 /**
  * {@link PoisonRecord}s are used as End-Of-Stream signals, usually they have no added value and should be filtered.
- * <p>
+ * <p/>
  * This filter is used to filter such records.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

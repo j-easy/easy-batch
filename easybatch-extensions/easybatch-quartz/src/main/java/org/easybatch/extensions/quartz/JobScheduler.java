@@ -50,15 +50,20 @@ public class JobScheduler {
 
     private static final String TRIGGER_NAME_PREFIX = "trigger-for-job-";
 
-    /**
-     * Quartz scheduler.
-     */
+    private static JobScheduler instance;
+
     private Scheduler scheduler;
 
-    /**
-     * The scheduler singleton instance.
-     */
-    private static JobScheduler instance;
+    JobScheduler() throws JobSchedulerException {
+        org.quartz.spi.JobFactory jobFactory = new JobFactory();
+        SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+        try {
+            scheduler = schedulerFactory.getScheduler();
+            scheduler.setJobFactory(jobFactory);
+        } catch (SchedulerException e) {
+            throw new JobSchedulerException("An exception occurred during scheduler setup", e);
+        }
+    }
 
     /**
      * Get the scheduler instance.
@@ -73,21 +78,10 @@ public class JobScheduler {
         return instance;
     }
 
-    JobScheduler() throws JobSchedulerException {
-        org.quartz.spi.JobFactory jobFactory = new JobFactory();
-        SchedulerFactory schedulerFactory = new StdSchedulerFactory();
-        try {
-            scheduler = schedulerFactory.getScheduler();
-            scheduler.setJobFactory(jobFactory);
-        } catch (SchedulerException e) {
-            throw new JobSchedulerException("An exception occurred during scheduler setup", e);
-        }
-    }
-
     /**
      * Schedule a job to start at a fixed point of time.
      *
-     * @param job the job to schedule
+     * @param job       the job to schedule
      * @param startTime the start time
      */
     public void scheduleAt(final org.easybatch.core.job.Job job, final Date startTime) throws JobSchedulerException {
@@ -117,7 +111,7 @@ public class JobScheduler {
     /**
      * Schedule a job to start at a fixed point of time and repeat with interval period.
      *
-     * @param job the job to schedule
+     * @param job       the job to schedule
      * @param startTime the start time
      * @param interval  the repeat interval in seconds
      */
@@ -153,7 +147,7 @@ public class JobScheduler {
     /**
      * Schedule a job with a unix-like cron expression.
      *
-     * @param job the job to schedule
+     * @param job            the job to schedule
      * @param cronExpression the cron expression to use.
      *                       For a complete tutorial about cron expressions, please refer to
      *                       <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/crontrigger">quartz reference documentation</a>.

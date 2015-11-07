@@ -34,7 +34,7 @@ public class StringRecord extends GenericRecord<String> {
     /**
      * Create a {@link StringRecord}.
      *
-     * @param header the record header
+     * @param header  the record header
      * @param payload the record payload
      */
     public StringRecord(final Header header, final String payload) {

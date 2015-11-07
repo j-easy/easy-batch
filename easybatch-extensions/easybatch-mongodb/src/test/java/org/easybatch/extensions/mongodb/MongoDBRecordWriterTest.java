@@ -64,7 +64,7 @@ public class MongoDBRecordWriterTest {
     @Test
     public void testProcessRecord() throws Exception {
         MongoDBRecord actual = mongoDBRecordWriter.processRecord(this.mongoDBRecord);
-        
+
         verify(collection).save(dbObject);
         assertThat(actual).isEqualTo(mongoDBRecord);
     }

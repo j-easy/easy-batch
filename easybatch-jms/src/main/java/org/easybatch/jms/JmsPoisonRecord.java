@@ -28,14 +28,15 @@ import org.easybatch.core.record.Header;
 
 /**
  * End-Od-Stream Jms record.
- * 
+ *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JmsPoisonRecord extends JmsRecord {
 
     /**
      * Create a jms poison record.
-     * @param header the record header
+     *
+     * @param header  the record header
      * @param payload the record payload
      */
     public JmsPoisonRecord(Header header, JmsPoisonMessage payload) {

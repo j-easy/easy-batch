@@ -38,7 +38,7 @@ public class EndWithStringRecordFilterTest {
 
     @Mock
     private StringRecord stringRecord;
-    
+
     private EndWithStringRecordFilter endWithStringRecordFilter;
 
     @Test

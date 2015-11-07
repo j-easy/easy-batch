@@ -45,18 +45,6 @@ public class JobMetrics {
 
     private long successCount;
 
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
-    }
-
-    public void setEndTime(long endTime) {
-        this.endTime = endTime;
-    }
-
-    public void setTotalCount(Long totalCount) {
-        this.totalCount = totalCount;
-    }
-
     public void incrementSkippedCount() {
         skippedCount++;
     }
@@ -77,8 +65,16 @@ public class JobMetrics {
         return startTime;
     }
 
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
     public long getEndTime() {
         return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
     }
 
     public long getDuration() {
@@ -87,6 +83,10 @@ public class JobMetrics {
 
     public Long getTotalCount() {
         return totalCount;
+    }
+
+    public void setTotalCount(Long totalCount) {
+        this.totalCount = totalCount;
     }
 
     public long getSkippedCount() {

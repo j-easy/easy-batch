@@ -42,7 +42,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * A {@link RecordReader} that reads records from a database using JDBC API.
- * <p>
+ * <p/>
  * This reader produces {@link JdbcRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

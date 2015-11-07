@@ -41,7 +41,7 @@ import static org.easybatch.core.job.JobBuilder.aNewJob;
 public class XmlBatchReaderTest {
 
     private static final int BATCH_SIZE = 2;
-    
+
     private XmlBatchReader xmlBatchReader;
 
     @Before
@@ -51,7 +51,7 @@ public class XmlBatchReaderTest {
 
     @Test
     public void testXmlBatchProcessing() throws Exception {
-        
+
         JobReport jobReport = aNewJob()
                 .reader(xmlBatchReader)
                 .processor(new RecordCollector())

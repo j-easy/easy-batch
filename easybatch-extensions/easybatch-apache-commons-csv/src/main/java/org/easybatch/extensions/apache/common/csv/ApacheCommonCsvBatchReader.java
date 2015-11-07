@@ -29,7 +29,7 @@ import org.easybatch.core.reader.AbstractBatchReader;
 
 /**
  * Read flat records in batches using Apache commons CSV.
- * 
+ *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class ApacheCommonCsvBatchReader extends AbstractBatchReader {
@@ -37,7 +37,7 @@ public class ApacheCommonCsvBatchReader extends AbstractBatchReader {
     /**
      * Create a batch reader.
      *
-     * @param parser the pre-configured Apache common CSV parser
+     * @param parser    the pre-configured Apache common CSV parser
      * @param batchSize the batch size
      */
     public ApacheCommonCsvBatchReader(final CSVParser parser, final int batchSize) {

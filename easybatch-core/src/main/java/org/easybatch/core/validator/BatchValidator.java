@@ -30,7 +30,7 @@ import org.easybatch.core.util.Utils;
 
 /**
  * Validate a batch of records using a delegate {@link RecordValidator}.
- *
+ * <p/>
  * <p>A batch of records is valid if all its records are valid.</p>
  * <p>A batch of records is invalid if one of its records is invalid.</p>
  *

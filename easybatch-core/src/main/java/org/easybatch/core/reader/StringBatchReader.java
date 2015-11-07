@@ -35,7 +35,7 @@ public class StringBatchReader extends AbstractBatchReader {
      * Create a string batch reader.
      *
      * @param dataSource the data source to read records from
-     * @param batchSize the batch size
+     * @param batchSize  the batch size
      */
     public StringBatchReader(final String dataSource, final int batchSize) {
         super(batchSize, new StringRecordReader(dataSource));

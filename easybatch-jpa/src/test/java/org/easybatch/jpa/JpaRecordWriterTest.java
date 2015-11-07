@@ -61,13 +61,41 @@ public class JpaRecordWriterTest {
         entityManagerFactory = Persistence.createEntityManagerFactory("tweet");
     }
 
+    @AfterClass
+    public static void shutdownDatabase() throws Exception {
+        if (connection != null) {
+            connection.close();
+        }
+        if (entityManagerFactory != null) {
+            entityManagerFactory.close();
+        }
+        //delete hsqldb tmp files
+        new File("mem.log").delete();
+        new File("mem.properties").delete();
+        new File("mem.script").delete();
+        new File("mem.tmp").delete();
+    }
+
+    private static void createTweetTable(Connection connection) throws Exception {
+        Statement statement = connection.createStatement();
+        String query = "DROP TABLE IF EXISTS tweet";
+        statement.executeUpdate(query);
+        query = "CREATE TABLE tweet (\n" +
+                "  id integer NOT NULL PRIMARY KEY,\n" +
+                "  user varchar(32) NOT NULL,\n" +
+                "  message varchar(140) NOT NULL,\n" +
+                ");";
+        statement.executeUpdate(query);
+        statement.close();
+    }
+
     @Before
     public void setUp() throws Exception {
         entityManager = entityManagerFactory.createEntityManager();
     }
 
     @Test
-         public void testSingleRecordWriting() throws Exception {
+    public void testSingleRecordWriting() throws Exception {
 
         Integer nbTweetsToInsert = 5;
 
@@ -107,34 +135,6 @@ public class JpaRecordWriterTest {
         resultSet.close();
         statement.close();
         return nbTweets;
-    }
-
-    @AfterClass
-    public static void shutdownDatabase() throws Exception {
-        if (connection != null) {
-            connection.close();
-        }
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
-        new File("mem.tmp").delete();
-    }
-
-    private static void createTweetTable(Connection connection) throws Exception {
-        Statement statement = connection.createStatement();
-        String query = "DROP TABLE IF EXISTS tweet";
-        statement.executeUpdate(query);
-        query = "CREATE TABLE tweet (\n" +
-                "  id integer NOT NULL PRIMARY KEY,\n" +
-                "  user varchar(32) NOT NULL,\n" +
-                "  message varchar(140) NOT NULL,\n" +
-                ");";
-        statement.executeUpdate(query);
-        statement.close();
     }
 
 }

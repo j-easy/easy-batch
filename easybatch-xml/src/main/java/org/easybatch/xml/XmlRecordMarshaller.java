@@ -73,7 +73,7 @@ public class XmlRecordMarshaller implements RecordMarshaller<GenericRecord, XmlR
     private void disableXmlDeclaration() throws PropertyException {
         marshaller.setProperty("com.sun.xml.bind.xmlDeclaration", Boolean.FALSE);
     }
-    
+
     @Override
     public XmlRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
         StringWriter stringWriter = new StringWriter();

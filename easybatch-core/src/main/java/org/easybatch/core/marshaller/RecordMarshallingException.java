@@ -28,7 +28,7 @@ import org.easybatch.core.processor.RecordProcessingException;
 
 /**
  * Exception thrown by {@link RecordMarshaller} implementations.
- * 
+ *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class RecordMarshallingException extends RecordProcessingException {

@@ -37,9 +37,9 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * A record reader that reads records from a JMS queue.
- * <p>
+ * <p/>
  * This reader produces {@link JmsRecord} instances of type {@link javax.jms.Message}.
- * <p>
+ * <p/>
  * It will stop reading records when a {@link JmsPoisonMessage} is sent to the queue.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)

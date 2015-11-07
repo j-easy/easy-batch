@@ -51,7 +51,7 @@ public class GsonRecordMapper<T> implements RecordMapper<JsonRecord, GenericReco
      * to map json records to domain objects.
      *
      * @param mapper The Gson mapper
-     * @param type The target type
+     * @param type   The target type
      */
     public GsonRecordMapper(final Gson mapper, final Class<T> type) {
         checkNotNull(mapper, "Gson mapper");

@@ -38,11 +38,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class HtmlJobReportFormatterTest {
 
-    private JobReportFormatter<String> jobReportFormatter;
-
-    private JobReport jobReport;
-
     private static long START_TIME;
+
     private static long END_TIME;
 
     static {
@@ -51,6 +48,10 @@ public class HtmlJobReportFormatterTest {
         START_TIME = calendar.getTime().getTime();
         END_TIME = START_TIME + 10 * 1000;
     }
+
+    private JobReport jobReport;
+
+    private JobReportFormatter<String> jobReportFormatter;
 
     @Before
     public void setUp() throws Exception {

@@ -41,7 +41,7 @@ public class JacksonRecordMarshallerTest {
 
     @Mock
     private Header header;
-    
+
     private JacksonRecordMarshaller marshaller;
 
     @Before

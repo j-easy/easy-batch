@@ -144,7 +144,7 @@ public class JobImplTest {
     public void recordReaderShouldBeClosedAtTheEndOfExecution() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true, false);
         when(reader.readNextRecord()).thenReturn(record1);
-        
+
         job.call();
 
         verify(reader, times(2)).hasNextRecord();

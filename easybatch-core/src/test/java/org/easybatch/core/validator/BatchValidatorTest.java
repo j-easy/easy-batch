@@ -89,7 +89,7 @@ public class BatchValidatorTest {
     }
 
     @Test
-         public void integrationTest() throws Exception {
+    public void integrationTest() throws Exception {
         List<String> strings = Arrays.asList("foo", "bar", "baz");
 
         JobReport report = JobBuilder.aNewJob()

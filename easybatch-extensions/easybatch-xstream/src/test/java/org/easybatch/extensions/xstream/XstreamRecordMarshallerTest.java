@@ -43,9 +43,9 @@ public class XstreamRecordMarshallerTest {
     private GenericRecord record;
     @Mock
     private Header header;
-    
+
     private XstreamRecordMarshaller xstreamRecordMarshaller;
-    
+
     @Before
     public void setUp() {
         Person person = new Person(1, "foo", "bar", false);

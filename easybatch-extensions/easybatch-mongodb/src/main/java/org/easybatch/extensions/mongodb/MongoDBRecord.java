@@ -38,7 +38,7 @@ public class MongoDBRecord extends GenericRecord<DBObject> {
     /**
      * Create a {@link MongoDBRecord}.
      *
-     * @param header the record header
+     * @param header  the record header
      * @param payload the record payload
      */
     public MongoDBRecord(final Header header, DBObject payload) {

@@ -41,7 +41,7 @@ import static org.easybatch.core.job.JobBuilder.aNewJob;
 public class JsonBatchReaderTest {
 
     private static final int BATCH_SIZE = 2;
-    
+
     private JsonBatchReader jsonBatchReader;
 
     @Before
@@ -51,7 +51,7 @@ public class JsonBatchReaderTest {
 
     @Test
     public void testJsonBatchProcessing() throws Exception {
-        
+
         JobReport jobReport = aNewJob()
                 .reader(jsonBatchReader)
                 .processor(new RecordCollector())

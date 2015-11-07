@@ -37,7 +37,7 @@ public class FileBatchReader extends AbstractBatchReader {
      * Create a file batch reader.
      *
      * @param dataSource the directory to read files from
-     * @param batchSize the batch size
+     * @param batchSize  the batch size
      */
     public FileBatchReader(final File dataSource, final int batchSize) {
         super(batchSize, new FileRecordReader(dataSource));

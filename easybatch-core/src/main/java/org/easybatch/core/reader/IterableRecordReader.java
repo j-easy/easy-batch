@@ -34,7 +34,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Reads record from an {@link Iterable} data source.
- * <p>
+ * <p/>
  * This reader produces {@link GenericRecord} instances containing original objects from the datasource.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -53,7 +53,7 @@ public class IterableRecordReader implements RecordReader {
 
     /**
      * Reads record from an {@link Iterable} data source.
-     * <p>
+     * <p/>
      * This reader produces {@link GenericRecord} instances containing original objects from the datasource.
      *
      * @param dataSource the data source to read records from.
