@@ -12,11 +12,11 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.record.PayloadExtractor.extractPayloads;
 
 @SuppressWarnings("unchecked")
 public class FlatFileIntegrationTest {
@@ -267,15 +267,6 @@ public class FlatFileIntegrationTest {
 
     private URI getFileUri(String fileName) throws URISyntaxException {
         return this.getClass().getResource(fileName).toURI();
-    }
-
-    // TODO should be provided by EasyBatch as PayloadExtractor
-    private <P> List<P> extractPayloads(List<GenericRecord<P>> records) {
-        List<P> payloads = new ArrayList<>();
-        for (GenericRecord<P> record : records) {
-            payloads.add(record.getPayload());
-        }
-        return payloads;
     }
 
 }

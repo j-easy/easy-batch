@@ -30,10 +30,10 @@ import org.easybatch.core.record.GenericRecord;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.record.PayloadExtractor.extractPayloads;
 
 @SuppressWarnings("unchecked")
 public class XmlIntegrationTest {
@@ -205,12 +205,4 @@ public class XmlIntegrationTest {
         return this.getClass().getResourceAsStream(name);
     }
 
-    // TODO should be provided by EasyBatch as PayloadExtractor
-    private <P> List<P> extractPayloads(List<GenericRecord<P>> records) {
-        List<P> payloads = new ArrayList<>();
-        for (GenericRecord<P> record : records) {
-            payloads.add(record.getPayload());
-        }
-        return payloads;
-    }
 }
