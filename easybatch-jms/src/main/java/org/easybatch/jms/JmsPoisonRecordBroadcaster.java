@@ -24,6 +24,7 @@
 
 package org.easybatch.jms;
 
+import org.easybatch.core.dispatcher.RecordDispatchingException;
 import org.easybatch.core.job.JobParameters;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.listener.JobListener;
@@ -60,7 +61,7 @@ public class JmsPoisonRecordBroadcaster implements JobListener {
     public void afterJobEnd(final JobReport jobReport) {
         try {
             recordDispatcher.processRecord(new JmsPoisonRecord(new Header(0L, "Poison record", new Date()), new JmsPoisonMessage()));
-        } catch (Exception e) {
+        } catch (RecordDispatchingException e) {
             throw new RuntimeException("Unable to broadcast poison record.", e);
         }
     }
