@@ -7,6 +7,7 @@ Changes in version 4.0.0 (2015-11-07)
 
 Features:
 
+* Add PayloadExtractor (issue #162)
 * Add JmsPoisonMessageBroadcaster (issue #161)
 * Add JmsRecord dispatchers (issue #158)
 * Add BatchProcessor (issue #157)
@@ -29,21 +30,23 @@ Features:
 
 Enhancements:
 
+* Redesign the workflow into a consistent pipeline (issue #136)
+* Improve workflow consistency (issue #160)
+* Migrate to Java 7 (issue #148)
+* Use varargs instead of arrays in mapper constructor (issue #150)
+* Introduce JobParameters and JobMetrics (issue #142)
+* Unify Handlers and Listeners (issue #137)
+
 * Rename JmsRecordWriter to JmsQueueRecordWriter (issue #155)
 * Rename MultiRecord to Batch (issue #154)
 * Rename JmsRecordReader to JmsQueueRecordReader (issue #149)
 * Rename CliRecordReader to StandardInputRecordReader (issue #146)
 * Rename QueueRecordReader to BlockingQueueRecordReader (issue #145)
 * Rename Engine to Job (issue #141)
+
 * Remove ListRecordReader, deprecated in V3.0 (issue #140)
 * Remove commit-interval from transaction listeners (issue #139)
 * Remove redundant generic type declaration in ObjectMapper (issue #134)
-* Migrate to Java 7 (issue #148)
-* Use varargs instead of arrays in mapper constructor (issue #150)
-* Introduce JobParameters and JobMetrics (issue #142)
-* Unify Handlers and Listeners (issue #137)
-* Redesign the workflow into a consistent pipeline (issue #136)
-* Improve workflow consistency (issue #160)
 
 Bug fixes:
 
