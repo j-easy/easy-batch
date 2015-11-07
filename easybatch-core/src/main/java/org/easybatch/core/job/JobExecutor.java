@@ -31,6 +31,10 @@ package org.easybatch.core.job;
  */
 public class JobExecutor {
 
+    JobExecutor() {
+        // private constructor
+    }
+
     /**
      * Execute a job.
      *
