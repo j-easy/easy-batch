@@ -29,11 +29,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link org.easybatch.core.converter.LongTypeConverter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class LongTypeConverterTest extends BaseConverterTest<Long> {
 
     @Before

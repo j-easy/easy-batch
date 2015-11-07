@@ -24,8 +24,8 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.record.PoisonRecord;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,15 +38,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link org.easybatch.core.dispatcher.RoundRobinRecordDispatcher}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class RoundRobinRecordDispatcherTest {
 
-    private RoundRobinRecordDispatcher roundRobinRecordDispatcher;
+    private RoundRobinRecordDispatcher<Record> roundRobinRecordDispatcher;
 
     private BlockingQueue<Record> queue1, queue2;
 
@@ -58,9 +53,9 @@ public class RoundRobinRecordDispatcherTest {
 
     @Before
     public void setUp() throws Exception {
-        queue1 = new LinkedBlockingQueue<Record>();
-        queue2 = new LinkedBlockingQueue<Record>();
-        roundRobinRecordDispatcher = new RoundRobinRecordDispatcher(Arrays.asList(queue1, queue2));
+        queue1 = new LinkedBlockingQueue<>();
+        queue2 = new LinkedBlockingQueue<>();
+        roundRobinRecordDispatcher = new RoundRobinRecordDispatcher<>(Arrays.asList(queue1, queue2));
     }
 
     @Test
@@ -81,7 +76,6 @@ public class RoundRobinRecordDispatcherTest {
 
         assertThat(queue1).isNotEmpty().containsOnly(poisonRecord);
         assertThat(queue2).isNotEmpty().containsOnly(poisonRecord);
-
     }
 
 }

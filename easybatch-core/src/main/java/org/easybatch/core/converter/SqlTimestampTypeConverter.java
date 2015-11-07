@@ -24,17 +24,15 @@
 
 package org.easybatch.core.converter;
 
-import org.easybatch.core.api.TypeConverter;
-
 import java.sql.Timestamp;
 
 /**
  * java.sql.Timestamp type converter.
- * Converts a String Timestamp in the "yyyy-mm-dd hh:mm:ss[.f...]" format to a java.sql.Timestamp type.
+ * Converts a String Timestamp in the "yyyy-mm-dd hh:mm:ss[.f...]" format to a {@link java.sql.Timestamp} type.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class SqlTimestampTypeConverter implements TypeConverter<Timestamp> {
+public class SqlTimestampTypeConverter implements TypeConverter<String, Timestamp> {
 
     /**
      * {@inheritDoc}

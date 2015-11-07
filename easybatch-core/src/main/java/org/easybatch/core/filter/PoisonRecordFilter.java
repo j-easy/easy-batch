@@ -24,9 +24,8 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
 import org.easybatch.core.record.PoisonRecord;
+import org.easybatch.core.record.Record;
 
 /**
  * {@link PoisonRecord}s are used as End-Of-Stream signals, usually they have no added value and should be filtered.
@@ -35,11 +34,14 @@ import org.easybatch.core.record.PoisonRecord;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class PoisonRecordFilter implements RecordFilter {
+public class PoisonRecordFilter implements RecordFilter<Record> {
 
     @Override
-    public boolean filterRecord(Record record) {
-        return record instanceof PoisonRecord;
+    public Record processRecord(final Record record) {
+        if (record instanceof PoisonRecord) {
+            return null;
+        }
+        return record;
     }
 
 }

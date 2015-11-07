@@ -24,23 +24,24 @@
 
 package org.easybatch.validation;
 
-import org.easybatch.core.api.RecordValidator;
-import org.easybatch.core.api.ValidationError;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.util.Utils;
+import org.easybatch.core.validator.RecordValidationException;
+import org.easybatch.core.validator.RecordValidator;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  * An implementation of {@link RecordValidator} using JSR 303 API.
  *
- * @param <T> the object type this validator can validate.
+ * @param <P> the object type this validator can validate.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BeanValidationRecordValidator<T> implements RecordValidator<T> {
+public class BeanValidationRecordValidator<P> implements RecordValidator<GenericRecord<P>> {
 
     /**
      * The validator instance to use to validate objects.
@@ -52,23 +53,20 @@ public class BeanValidationRecordValidator<T> implements RecordValidator<T> {
         validator = factory.getValidator();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Set<ValidationError> validateRecord(final T record) {
-
-        Set<ValidationError> validationErrors = new HashSet<ValidationError>();
-        Set<ConstraintViolation<T>> constraintViolationSet = validator.validate(record);
-        for (ConstraintViolation<T> constraintViolation : constraintViolationSet) {
-            String validationErrorMessage = new StringBuilder()
-                    .append("Invalid value '").append(constraintViolation.getInvalidValue()).append("' ")
-                    .append("for property '").append(constraintViolation.getPropertyPath()).append("' : ")
-                    .append(constraintViolation.getMessage()).toString();
-            validationErrors.add(new ValidationError(validationErrorMessage));
-
+    @Override
+    public GenericRecord<P> processRecord(GenericRecord<P> record) throws RecordValidationException {
+        Set<ConstraintViolation<P>> constraintViolationSet = validator.validate(record.getPayload());
+        if (!constraintViolationSet.isEmpty()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (ConstraintViolation<P> constraintViolation : constraintViolationSet) {
+                stringBuilder
+                        .append("Invalid value '").append(constraintViolation.getInvalidValue()).append("' ")
+                        .append("for property '").append(constraintViolation.getPropertyPath()).append("' : ")
+                        .append(constraintViolation.getMessage())
+                        .append(Utils.LINE_SEPARATOR);
+            }
+            throw new RecordValidationException(stringBuilder.toString());
         }
-
-        return validationErrors;
+        return record;
     }
-
 }

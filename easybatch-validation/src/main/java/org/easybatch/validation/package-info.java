@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains the JSR 303 implementation of easy batch {@link org.easybatch.core.api.RecordValidator} interface.
+ * This package contains the JSR 303 implementation of the {@link org.easybatch.core.validator.RecordValidator} interface.
  */
 package org.easybatch.validation;

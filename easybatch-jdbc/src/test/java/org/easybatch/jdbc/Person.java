@@ -24,11 +24,6 @@
 
 package org.easybatch.jdbc;
 
-/**
- * Person class used for tests.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class Person {
 
     private int id;

@@ -24,7 +24,8 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.Header;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,15 +38,10 @@ import java.sql.ResultSetMetaData;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-/**
- * Test class for {@link JdbcRecordMapper}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class JdbcRecordMapperTest {
 
-    private JdbcRecordMapper<Tweet> tweetMapper;
+    private JdbcRecordMapper tweetMapper;
 
     private JdbcRecord jdbcRecord;
 
@@ -58,7 +54,7 @@ public class JdbcRecordMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        tweetMapper = new JdbcRecordMapper<Tweet>(Tweet.class);
+        tweetMapper = new JdbcRecordMapper(Tweet.class);
         jdbcRecord = new JdbcRecord(header, payload);
     }
 
@@ -73,7 +69,8 @@ public class JdbcRecordMapperTest {
         when(payload.getString(2)).thenReturn("foo");
         when(payload.getString(3)).thenReturn("Hello!");
 
-        Tweet tweet = tweetMapper.mapRecord(jdbcRecord);
+        GenericRecord<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
+        Tweet tweet = actual.getPayload();
 
         assertThat(tweet).isNotNull();
         assertThat(tweet.getId()).isEqualTo(1);
@@ -84,7 +81,7 @@ public class JdbcRecordMapperTest {
     @Test
     public void testMapRecordWithCustomMapping() throws Exception {
 
-        tweetMapper = new JdbcRecordMapper<Tweet>(Tweet.class, new String[] {"id", "user", "message"});
+        tweetMapper = new JdbcRecordMapper(Tweet.class, "id", "user", "message");
 
         when(payload.getMetaData()).thenReturn(metadata);
         when(metadata.getColumnCount()).thenReturn(3);
@@ -95,7 +92,8 @@ public class JdbcRecordMapperTest {
         when(payload.getString(2)).thenReturn("foo");
         when(payload.getString(3)).thenReturn("Hello!");
 
-        Tweet tweet = tweetMapper.mapRecord(jdbcRecord);
+        GenericRecord<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
+        Tweet tweet = actual.getPayload();
 
         assertThat(tweet).isNotNull();
         assertThat(tweet.getId()).isEqualTo(1);

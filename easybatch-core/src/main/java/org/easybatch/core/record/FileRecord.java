@@ -24,8 +24,6 @@
 
 package org.easybatch.core.record;
 
-import org.easybatch.core.api.Header;
-
 import java.io.File;
 
 /**
@@ -35,6 +33,12 @@ import java.io.File;
  */
 public class FileRecord extends GenericRecord<File> {
 
+    /**
+     * Create a {@link FileRecord}.
+     *
+     * @param header  the record header
+     * @param payload the record payload
+     */
     public FileRecord(final Header header, final File payload) {
         super(header, payload);
     }

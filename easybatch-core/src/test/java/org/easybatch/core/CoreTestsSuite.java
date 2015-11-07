@@ -24,14 +24,18 @@
 
 package org.easybatch.core;
 
-import org.easybatch.core.api.ReportTest;
 import org.easybatch.core.converter.*;
 import org.easybatch.core.dispatcher.*;
 import org.easybatch.core.filter.*;
-import org.easybatch.core.impl.*;
-import org.easybatch.core.mapper.GenericRecordMapperTest;
+import org.easybatch.core.job.*;
+import org.easybatch.core.mapper.BatchMapperTest;
 import org.easybatch.core.mapper.ObjectMapperTest;
+import org.easybatch.core.marshaller.BatchMarshallerTest;
+import org.easybatch.core.processor.BatchProcessorTest;
+import org.easybatch.core.processor.RecordCollectorTest;
 import org.easybatch.core.reader.*;
+import org.easybatch.core.validator.BatchValidatorTest;
+import org.easybatch.core.writer.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -44,13 +48,22 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         // reader
         FileRecordReaderTest.class,
-        ListRecordReaderTest.class,
-        QueueRecordReaderTest.class,
+        FileBatchReaderTest.class,
+        BlockingQueueRecordReaderTest.class,
+        StandardInputRecordReaderTest.class,
+        IterableRecordReaderTest.class,
+        IterableBatchReaderTest.class,
         StringRecordReaderTest.class,
-        CliRecordReaderTest.class,
+        StringBatchReaderTest.class,
+
         // mapper
+        BatchMapperTest.class,
         ObjectMapperTest.class,
-        GenericRecordMapperTest.class,
+
+        // marshaller
+        BatchMarshallerTest.class,
+
+        // converter
         AtomicIntegerTypeConverterTest.class,
         AtomicLongTypeConverterTest.class,
         BigDecimalTypeConverterTest.class,
@@ -65,6 +78,7 @@ import org.junit.runners.Suite;
         IntegerTypeConverterTest.class,
         LongTypeConverterTest.class,
         ShortTypeConverterTest.class,
+
         // filter
         StartWithStringRecordFilterTest.class,
         EndWithStringRecordFilterTest.class,
@@ -73,24 +87,45 @@ import org.junit.runners.Suite;
         HeaderRecordFilterTest.class,
         PoisonRecordFilterTest.class,
         RecordNumberBetweenFilterTest.class,
-        RecordNumberEqualsToFilterTest.class,
+        RecordNumberEqualToFilterTest.class,
         RecordNumberGreaterThanFilterTest.class,
         RecordNumberLowerThanFilterTest.class,
+        EmptyRecordFilterTest.class,
+        BatchFilterTest.class,
+
         // dispatcher
         BroadcastRecordDispatcherTest.class,
         ContentBasedRecordDispatcherTest.class,
         ContentBasedRecordDispatcherBuilderTest.class,
         RandomRecordDispatcherTest.class,
         RoundRobinRecordDispatcherTest.class,
-        // api
-        ReportTest.class,
-        // impl
-        EngineImplTest.class,
-        FilterChainTest.class,
-        ValidationPipelineTest.class,
-        ProcessingPipelineTest.class,
-        LocalEventManagerTest.class
 
+        //writer
+        BlockingQueueRecordWriterTest.class,
+        CollectionBatchWriterTest.class,
+        CollectionRecordWriterTest.class,
+        FileRecordWriterTest.class,
+        FileBatchWriterTest.class,
+        OutputStreamRecordWriterTest.class,
+        OutputStreamBatchWriterTest.class,
+        StandardOutputRecordWriterTest.class,
+        StandardOutputBatchWriterTest.class,
+        StringRecordWriterTest.class,
+        StringBatchWriterTest.class,
+
+        // processor
+        BatchProcessorTest.class,
+        RecordCollectorTest.class,
+
+        // validator
+        BatchValidatorTest.class,
+
+        // job
+        JobReportTest.class,
+        JobImplTest.class,
+        JobExecutorTest.class,
+        ProcessingPipelineTest.class,
+        EventManagerTest.class
 })
 public class CoreTestsSuite {
 }

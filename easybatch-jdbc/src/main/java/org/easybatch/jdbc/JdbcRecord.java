@@ -24,14 +24,14 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 
 import java.sql.ResultSet;
 
 /**
- * A {@link Record} implementation that has database row as raw content.
+ * A {@link Record} implementation that has {@link java.sql.ResultSet} as payload.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */

@@ -77,13 +77,13 @@ public class JmsPoisonMessage implements Message, Serializable {
     }
 
     @Override
-    public void setJMSCorrelationID(String s) throws JMSException {
-        // no op
+    public String getJMSCorrelationID() throws JMSException {
+        return "";
     }
 
     @Override
-    public String getJMSCorrelationID() throws JMSException {
-        return "";
+    public void setJMSCorrelationID(String s) throws JMSException {
+        // no op
     }
 
     @Override

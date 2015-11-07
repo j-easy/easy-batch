@@ -24,8 +24,9 @@
 
 package org.easybatch.json;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.reader.RecordReadingException;
+import org.easybatch.core.record.Header;
 
 import javax.json.Json;
 import javax.json.JsonValue;
@@ -37,6 +38,8 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashMap;
+
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Record reader that reads Json records from an array of Json objects:
@@ -88,7 +91,24 @@ public class JsonRecordReader implements RecordReader {
 
     private String key;
 
-    public JsonRecordReader(InputStream inputStream) {
+    /**
+     * Record reader that reads Json records from an array of Json objects:
+     *
+     *<p>
+     * [
+     *  {
+     *      // JSON object
+     *  },
+     *  {
+     *      // JSON object
+     *  }
+     * ]
+     * </p>
+     *
+     * <p>This reader produces {@link JsonRecord} instances.</p>
+     */
+    public JsonRecordReader(final InputStream inputStream) {
+        checkNotNull(inputStream, "input stream");
         this.inputStream = inputStream;
         this.jsonGeneratorFactory = Json.createGeneratorFactory(new HashMap<String, Object>());
     }
@@ -135,19 +155,23 @@ public class JsonRecordReader implements RecordReader {
     }
 
     @Override
-    public JsonRecord readNextRecord() {
+    public JsonRecord readNextRecord() throws RecordReadingException {
         StringWriter stringWriter = new StringWriter();
         JsonGenerator jsonGenerator = jsonGeneratorFactory.createGenerator(stringWriter);
-        writeRecordStart(jsonGenerator);
-        do {
-            moveToNextElement(jsonGenerator);
-        } while (!isEndRootObject());
-        if (arrayDepth != 2) {
-            jsonGenerator.writeEnd();
+        try {
+            writeRecordStart(jsonGenerator);
+            do {
+                moveToNextElement(jsonGenerator);
+            } while (!isEndRootObject());
+            if (arrayDepth != 2) {
+                jsonGenerator.writeEnd();
+            }
+            jsonGenerator.close();
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            return new JsonRecord(header, stringWriter.toString());
+        } catch (javax.json.stream.JsonParsingException e) {
+            throw new RecordReadingException(e);
         }
-        jsonGenerator.close();
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new JsonRecord(header, stringWriter.toString());
     }
 
     @Override
@@ -201,7 +225,7 @@ public class JsonRecordReader implements RecordReader {
             case START_ARRAY:
                 try {
                     jsonGenerator.writeStartArray();
-                } catch(JsonGenerationException e) {
+                } catch (JsonGenerationException e) {
                     jsonGenerator.writeStartArray(key);
                 }
                 break;

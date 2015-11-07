@@ -24,11 +24,9 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.ComputationalRecordProcessor;
-import org.easybatch.core.api.Engine;
-import org.easybatch.core.api.Report;
-import org.easybatch.core.api.Status;
-import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.job.*;
+import org.easybatch.core.processor.RecordCollector;
+import org.easybatch.core.record.GenericRecord;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -39,16 +37,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.record.PayloadExtractor.extractPayloads;
 
-/**
- * Integration test for database processing.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
+@SuppressWarnings("unchecked")
 public class JdbcIntegrationTest {
 
     private static final String DATABASE_URL = "jdbc:hsqldb:mem";
@@ -72,31 +66,27 @@ public class JdbcIntegrationTest {
         query = "select id, name from person";
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testDatabaseProcessing() throws Exception {
 
-        ComputationalRecordProcessor personProcessor = new PersonProcessor();
-
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new JdbcRecordReader(connection, query))
-                .mapper(new JdbcRecordMapper<Person>(Person.class, new String[]{"id", "name"}))
-                .processor(personProcessor)
+                .mapper(new JdbcRecordMapper(Person.class, "id", "name"))
+                .processor(new RecordCollector())
                 .build();
 
-        Report report = engine.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(2);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
-        assertThat(report.getDataSource()).isEqualTo(DATA_SOURCE_NAME);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
+        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(DATA_SOURCE_NAME);
 
-        List<Person> persons = (List<Person>) personProcessor.getComputationResult();
+        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
+        List<Person> persons = extractPayloads(records);
 
         assertThat(persons).isNotEmpty().hasSize(2);
 
@@ -123,7 +113,9 @@ public class JdbcIntegrationTest {
 
     private void createPersonTable(Connection connection) throws Exception {
         Statement statement = connection.createStatement();
-        String query = "CREATE TABLE if not exists person (\n" +
+        String query = "DROP TABLE IF EXISTS person";
+        statement.executeUpdate(query);
+        query = "CREATE TABLE person (\n" +
                 "  id integer NOT NULL PRIMARY KEY,\n" +
                 "  name varchar(32) NOT NULL,\n" +
                 ");";
@@ -140,23 +132,6 @@ public class JdbcIntegrationTest {
         Statement statement = connection.createStatement();
         statement.executeUpdate(query);
         statement.close();
-    }
-
-    private class PersonProcessor implements ComputationalRecordProcessor<Person, Person, List<Person>> {
-
-        private List<Person> persons = new ArrayList<Person>();
-
-        @Override
-        public Person processRecord(Person person) {
-            persons.add(person);
-            return person;
-        }
-
-        @Override
-        public List<Person> getComputationResult() {
-            return persons;
-        }
-
     }
 
 }

@@ -24,14 +24,12 @@
 
 package org.easybatch.core.converter;
 
-import org.easybatch.core.api.TypeConverter;
-
 /**
  * String type converter.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class StringTypeConverter implements TypeConverter<String> {
+public class StringTypeConverter implements TypeConverter<String, String> {
 
     /**
      * {@inheritDoc}

@@ -24,24 +24,17 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.ComputationalRecordProcessor;
-import org.easybatch.core.api.Engine;
-import org.easybatch.core.api.Report;
-import org.easybatch.core.api.Status;
-import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.job.*;
+import org.easybatch.core.processor.RecordCollector;
+import org.easybatch.core.record.GenericRecord;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.record.PayloadExtractor.extractPayloads;
 
-/**
- * Integration test for xml processing.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @SuppressWarnings("unchecked")
 public class XmlIntegrationTest {
 
@@ -50,15 +43,16 @@ public class XmlIntegrationTest {
     @Test
     public void testWebsitesProcessing() throws Exception {
         final InputStream xmlDataSource = getDataSource("/websites.xml");
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("website", xmlDataSource))
                 .mapper(new XmlRecordMapper(Website.class))
-                .processor(new Processor<Website>())
+                .processor(new RecordCollector())
                 .build();
 
-        Report report = engine.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
-        List<Website> websites = (List<Website>) report.getBatchResult();
+        List<GenericRecord<Website>> records = (List<GenericRecord<Website>>) jobReport.getResult();
+        List<Website> websites = extractPayloads(records);
 
         assertThat(websites).isNotEmpty().hasSize(3);
 
@@ -67,7 +61,7 @@ public class XmlIntegrationTest {
         assertThat(website.getUrl()).isEqualTo("http://www.google.com?query=test&sort=asc");
 
         website = websites.get(1);
-        assertThat(website.getName()).isEqualTo("l'équipe");
+        assertThat(website.getName()).isEqualTo("l'equipe");
         assertThat(website.getUrl()).isEqualTo("http://www.lequipe.fr");
 
         website = websites.get(2);
@@ -80,17 +74,18 @@ public class XmlIntegrationTest {
 
         final InputStream xmlDataSource = getDataSource("/persons.xml");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("person", xmlDataSource))
-                .mapper(new XmlRecordMapper<Person>(Person.class))
-                .processor(new Processor<Person>())
+                .mapper(new XmlRecordMapper(Person.class))
+                .processor(new RecordCollector())
                 .build();
 
-        Report report = engine.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
-        assertThatReportIsCorrect(report);
+        assertThatReportIsCorrect(jobReport);
 
-        List<Person> persons = (List<Person>) report.getBatchResult();
+        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
+        List<Person> persons = extractPayloads(records);
 
         assertThat(persons).isNotEmpty().hasSize(2);
 
@@ -113,17 +108,18 @@ public class XmlIntegrationTest {
 
         final InputStream xmlDataSource = getDataSource("/dependencies.xml");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("dependency", xmlDataSource))
-                .mapper(new XmlRecordMapper<Dependency>(Dependency.class))
-                .processor(new Processor<Dependency>())
+                .mapper(new XmlRecordMapper(Dependency.class))
+                .processor(new RecordCollector())
                 .build();
 
-        Report report = engine.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
-        assertThatReportIsCorrect(report);
+        assertThatReportIsCorrect(jobReport);
 
-        List<Dependency> dependencies = (List<Dependency>) report.getBatchResult();
+        List<GenericRecord<Dependency>> records = (List<GenericRecord<Dependency>>) jobReport.getResult();
+        List<Dependency> dependencies = extractPayloads(records);
 
         assertThat(dependencies).isNotEmpty().hasSize(2);
 
@@ -167,18 +163,19 @@ public class XmlIntegrationTest {
 
         final InputStream xmlDataSource = getDataSource("/beans.xml");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("bean", xmlDataSource))
                 .mapper(new XmlRecordMapper(Bean.class))
-                .processor(new Processor<Bean>())
+                .processor(new RecordCollector())
                 .build();
 
-        Report report = engine.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(2);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
-        List<Bean> beans = (List<Bean>) report.getBatchResult();
+        List<GenericRecord<Bean>> records = (List<GenericRecord<Bean>>) jobReport.getResult();
+        List<Bean> beans = extractPayloads(records);
 
         assertThat(beans).isNotEmpty().hasSize(2);
 
@@ -194,37 +191,18 @@ public class XmlIntegrationTest {
 
     }
 
-    private void assertThatReportIsCorrect(Report report) {
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(2);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(2);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
-        assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
+    private void assertThatReportIsCorrect(JobReport jobReport) {
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
+        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
     }
 
     private InputStream getDataSource(String name) {
         return this.getClass().getResourceAsStream(name);
-    }
-
-    private class Processor<T> implements ComputationalRecordProcessor<T, T, List<T>> {
-
-        private List<T> items = new ArrayList<T>();
-
-        @Override
-        public T processRecord(T item) {
-            items.add(item);
-            return item;
-        }
-
-        @Override
-        public List<T> getComputationResult() {
-            return items;
-        }
-
     }
 
 }

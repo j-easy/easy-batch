@@ -24,29 +24,25 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordProcessingException;
-import org.easybatch.core.api.RecordProcessor;
-
-import static java.lang.String.format;
+import org.easybatch.core.record.Record;
 
 /**
  * Base class for record dispatchers.
  *
+ * @param <T> the type of record to dispatch
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public abstract class AbstractRecordDispatcher implements RecordProcessor<Record, Record> {
+public abstract class AbstractRecordDispatcher<T extends Record> implements RecordDispatcher<T> {
 
-    protected abstract void dispatchRecord(final Record record) throws RecordDispatchingException;
+    protected abstract void dispatchRecord(final T record) throws Exception;
 
     @Override
-    public Record processRecord(final Record record) throws RecordProcessingException {
+    public T processRecord(final T record) throws RecordDispatchingException {
         try {
             dispatchRecord(record);
             return record;
-        } catch (RecordDispatchingException e) {
-            String message = format("Unable to dispatch record %s", record);
-            throw new RecordProcessingException(message, e);
+        } catch (Exception e) {
+            throw new RecordDispatchingException("Unable to dispatch record " + record, e);
         }
     }
 

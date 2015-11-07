@@ -24,30 +24,26 @@
 
 package org.easybatch.core.reader;
 
-import org.easybatch.core.api.Record;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
-/**
- * Test class for {@link StringRecordReader}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class StringRecordReaderTest {
 
     public static final String EXPECTED_DATA_SOURCE_NAME = "In-Memory String";
 
     private StringRecordReader stringRecordReader;
 
-    String dataSource;
+    private String dataSource;
 
     @Before
     public void setUp() throws Exception {
-        dataSource = "foo\nbar";
+        dataSource = "foo" + LINE_SEPARATOR + "bar";
         stringRecordReader = new StringRecordReader(dataSource);
         stringRecordReader.open();
     }

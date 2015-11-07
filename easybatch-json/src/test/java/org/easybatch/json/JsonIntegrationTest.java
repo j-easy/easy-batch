@@ -24,24 +24,15 @@
 
 package org.easybatch.json;
 
-import org.easybatch.core.api.ComputationalRecordProcessor;
-import org.easybatch.core.api.Engine;
-import org.easybatch.core.api.Report;
-import org.easybatch.core.api.Status;
-import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.job.*;
+import org.easybatch.core.processor.RecordCollector;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Integration test for json processing.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @SuppressWarnings("unchecked")
 public class JsonIntegrationTest {
 
@@ -52,16 +43,16 @@ public class JsonIntegrationTest {
 
         final InputStream jsonDataSource = getDataSource("/tweets.json");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new JsonRecordProcessor())
+                .processor(new RecordCollector())
                 .build();
 
-        Report report = engine.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
-        assertThatReportIsValid(report);
+        assertThatReportIsValid(jobReport);
 
-        List<JsonRecord> tweets = (List<JsonRecord>) report.getBatchResult();
+        List<JsonRecord> tweets = (List<JsonRecord>) jobReport.getResult();
 
         assertThat(tweets).isNotEmpty().hasSize(3);
 
@@ -88,16 +79,16 @@ public class JsonIntegrationTest {
         //data source : http://opendata.paris.fr/explore/dataset/arbresalignementparis2010/download/?format=csv
         final InputStream jsonDataSource = getDataSource("/trees.json");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new JsonRecordProcessor())
+                .processor(new RecordCollector())
                 .build();
 
-        Report report = engine.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
-        assertThatReportIsValid(report);
+        assertThatReportIsValid(jobReport);
 
-        List<JsonRecord> trees = (List<JsonRecord>) report.getBatchResult();
+        List<JsonRecord> trees = (List<JsonRecord>) jobReport.getResult();
         assertThat(trees).isNotEmpty().hasSize(3);
 
         JsonRecord record = trees.get(0);
@@ -120,16 +111,16 @@ public class JsonIntegrationTest {
         // data source: http://catalog.data.gov/dataset/consumer-complaint-database
         final InputStream jsonDataSource = getDataSource("/complaints.json");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new JsonRecordProcessor())
+                .processor(new RecordCollector())
                 .build();
 
-        Report report = engine.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
-        assertThatReportIsValid(report);
+        assertThatReportIsValid(jobReport);
 
-        List<JsonRecord> complaints = (List<JsonRecord>) report.getBatchResult();
+        List<JsonRecord> complaints = (List<JsonRecord>) jobReport.getResult();
         assertThat(complaints).isNotEmpty().hasSize(3);
 
         JsonRecord record = complaints.get(0);
@@ -150,24 +141,22 @@ public class JsonIntegrationTest {
     public void testEmptyDataSourceProcessing() throws Exception {
         final InputStream jsonDataSource = getDataSource("/empty.json");
 
-        Engine engine = EngineBuilder.aNewEngine()
+        Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new JsonRecordProcessor())
+                .processor(new RecordCollector())
                 .build();
 
-        Report report = engine.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(0);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(0);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
-        assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
+        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
 
-        List<JsonRecord> records = (List<JsonRecord>) report.getBatchResult();
+        List<JsonRecord> records = (List<JsonRecord>) jobReport.getResult();
         assertThat(records).isNotNull().isEmpty();
 
     }
@@ -176,33 +165,14 @@ public class JsonIntegrationTest {
         return this.getClass().getResourceAsStream(name);
     }
 
-    private void assertThatReportIsValid(Report report) {
-        assertThat(report).isNotNull();
-        assertThat(report.getTotalRecords()).isEqualTo(3);
-        assertThat(report.getErrorRecordsCount()).isEqualTo(0);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(0);
-        assertThat(report.getIgnoredRecordsCount()).isEqualTo(0);
-        assertThat(report.getRejectedRecordsCount()).isEqualTo(0);
-        assertThat(report.getSuccessRecordsCount()).isEqualTo(3);
-        assertThat(report.getStatus()).isEqualTo(Status.FINISHED);
-        assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
-    }
-
-    private class JsonRecordProcessor implements ComputationalRecordProcessor<JsonRecord, JsonRecord, List<JsonRecord>> {
-
-        private List<JsonRecord> jsonRecords = new ArrayList<JsonRecord>();
-
-        @Override
-        public JsonRecord processRecord(JsonRecord jsonRecord) {
-            jsonRecords.add(jsonRecord);
-            return jsonRecord;
-        }
-
-        @Override
-        public List<JsonRecord> getComputationResult() {
-            return jsonRecords;
-        }
-
+    private void assertThatReportIsValid(JobReport jobReport) {
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(3);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
+        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
     }
 
 }

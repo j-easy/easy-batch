@@ -27,11 +27,6 @@ package org.easybatch.xml;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
-/**
- * A person java bean used for tests.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @XmlRootElement
 public class Person {
 
@@ -44,6 +39,17 @@ public class Person {
     private Date birthDate;
 
     private boolean isMarried;
+
+    public Person() {
+    }
+
+    public Person(int id, String firstName, String lastName, Date birthDate, boolean isMarried) {
+        this.birthDate = birthDate;
+        this.firstName = firstName;
+        this.id = id;
+        this.isMarried = isMarried;
+        this.lastName = lastName;
+    }
 
     public int getId() {
         return id;

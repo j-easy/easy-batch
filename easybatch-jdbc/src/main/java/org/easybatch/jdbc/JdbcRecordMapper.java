@@ -24,11 +24,10 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordMapper;
-import org.easybatch.core.api.RecordMappingException;
-import org.easybatch.core.api.TypeConverter;
-import org.easybatch.core.mapper.ObjectMapper;
+import org.easybatch.core.mapper.AbstractRecordMapper;
+import org.easybatch.core.mapper.RecordMapper;
+import org.easybatch.core.mapper.RecordMappingException;
+import org.easybatch.core.record.GenericRecord;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,17 +35,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A {@link org.easybatch.core.api.RecordMapper} that maps database rows to domain objects.
+ * A {@link RecordMapper} that maps database rows to domain objects.
  *
- * @param <T> the target domain object type.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JdbcRecordMapper<T> implements RecordMapper<T> {
-
-    /**
-     * The object mapper.
-     */
-    private ObjectMapper<T> objectMapper;
+public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapper<JdbcRecord, GenericRecord> {
 
     /**
      * Field names used for custom column mapping.
@@ -59,8 +52,8 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
      *
      * @param recordClass the target domain object class
      */
-    public JdbcRecordMapper(final Class<? extends T> recordClass) {
-        objectMapper = new ObjectMapper<T>(recordClass);
+    public JdbcRecordMapper(final Class recordClass) {
+        super(recordClass);
     }
 
     /**
@@ -69,25 +62,24 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
      * @param recordClass the target domain object class
      * @param fields      the list of fields names
      */
-    public JdbcRecordMapper(final Class<? extends T> recordClass, String[] fields) {
+    public JdbcRecordMapper(final Class recordClass, final String... fields) {
         this(recordClass);
         this.fields = fields;
     }
 
     @Override
-    public T mapRecord(final Record record) throws RecordMappingException {
+    public GenericRecord processRecord(final JdbcRecord record) throws RecordMappingException {
 
-        JdbcRecord jdbcRecord = (JdbcRecord) record;
-        ResultSet resultSet = jdbcRecord.getPayload();
+        ResultSet resultSet = record.getPayload();
 
         try {
             initFieldNames(resultSet);
 
-            Map<String, String> values = new HashMap<String, String>();
+            Map<String, String> values = new HashMap<>();
             for (int i = 0; i < fields.length; i++) {
                 values.put(fields[i], resultSet.getString(i + 1));
             }
-            return objectMapper.mapObject(values);
+            return new GenericRecord(record.getHeader(), objectMapper.mapObject(values));
         } catch (SQLException e) {
             throw new RecordMappingException("Unable to map record " + record + " to target type", e);
         }
@@ -100,7 +92,7 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
      * @param resultSet the result set to fetch column names.
      * @throws SQLException thrown if not able to get ResultSet meta data
      */
-    private void initFieldNames(ResultSet resultSet) throws SQLException {
+    private void initFieldNames(final ResultSet resultSet) throws SQLException {
         int columnCount = resultSet.getMetaData().getColumnCount();
         if (fields == null) {
             fields = new String[columnCount];
@@ -109,14 +101,4 @@ public class JdbcRecordMapper<T> implements RecordMapper<T> {
             }
         }
     }
-
-    /**
-     * Register a custom type converter.
-     *
-     * @param typeConverter the type converter to user
-     */
-    public void registerTypeConverter(final TypeConverter typeConverter) {
-        objectMapper.registerTypeConverter(typeConverter);
-    }
-
 }

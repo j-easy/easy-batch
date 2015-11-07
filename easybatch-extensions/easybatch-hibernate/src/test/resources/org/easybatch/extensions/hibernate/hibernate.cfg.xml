@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory>
+
+        <!-- properties -->
+        <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
+        <property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
+        <property name="hibernate.connection.url">jdbc:hsqldb:mem</property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="hibernate.connection.password">pwd</property>
+        <property name="current_session_context_class">thread</property>
+
+        <!-- mapping files -->
+        <mapping resource="org/easybatch/extensions/hibernate/Tweet.hbm.xml"/>
+
+    </session-factory>
+
+</hibernate-configuration>

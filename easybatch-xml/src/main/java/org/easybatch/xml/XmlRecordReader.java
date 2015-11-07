@@ -24,7 +24,11 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.*;
+import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.reader.RecordReaderClosingException;
+import org.easybatch.core.reader.RecordReaderOpeningException;
+import org.easybatch.core.reader.RecordReadingException;
+import org.easybatch.core.record.Header;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -33,8 +37,6 @@ import javax.xml.stream.events.*;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A record reader that reads xml records from an xml stream.
@@ -44,8 +46,6 @@ import java.util.logging.Logger;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class XmlRecordReader implements RecordReader {
-
-    private static final Logger LOGGER = Logger.getLogger(XmlRecordReader.class.getSimpleName());
 
     /**
      * The root element name.
@@ -93,7 +93,6 @@ public class XmlRecordReader implements RecordReader {
             }
             return true;
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "An exception occurred during checking the existence of next xml record", e);
             return false;
         }
     }

@@ -31,11 +31,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link org.easybatch.core.converter.AtomicLongTypeConverter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class AtomicLongTypeConverterTest extends BaseConverterTest<AtomicLong> {
 
     @Before

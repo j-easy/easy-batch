@@ -24,49 +24,45 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Header;
 import org.easybatch.core.record.FileRecord;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-/**
- * Test class for {@link FileExtensionFilter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
+@RunWith(MockitoJUnitRunner.class)
 public class FileExtensionFilterTest {
 
-    private static String FILE_SEPARATOR = System.getProperty("file.separator");
+    @Mock
+    private File file;
+
+    @Mock
+    private FileRecord fileRecord;
 
     private FileExtensionFilter filter;
 
-    private FileRecord txtRecord, xmlRecord, mdRecord;
-
     @Before
     public void setUp() throws Exception {
-        filter = new FileExtensionFilter(Arrays.asList(".txt", ".xml"));
-        File currentDirectory = new File("");
-        Header header = new Header(1l, "Dummy Directory", new Date());
-        txtRecord = new FileRecord(header, new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "CHANGELOG.txt"));
-        xmlRecord = new FileRecord(header, new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "pom.xml"));
-        mdRecord = new FileRecord(header, new File(currentDirectory.getAbsoluteFile() + FILE_SEPARATOR + "README.md"));
+        filter = new FileExtensionFilter(".txt", ".xml");
+        when(fileRecord.getPayload()).thenReturn(file);
     }
 
     @Test
     public void whenTheFileNameEndsWithOneOfTheGivenExtensions_ThenItShouldBeFiltered() {
-        assertThat(filter.filterRecord(txtRecord)).isTrue();
-        assertThat(filter.filterRecord(xmlRecord)).isTrue();
+        when(file.getName()).thenReturn("test.txt");
+        assertThat(filter.processRecord(fileRecord)).isNull();
     }
 
     @Test
     public void whenTheFileNameDoesNotEndWithOneOfTheGivenExtensions_ThenItShouldBeFiltered() {
-        assertThat(filter.filterRecord(mdRecord)).isFalse();
+        when(file.getName()).thenReturn("test.jpeg");
+        assertThat(filter.processRecord(fileRecord)).isEqualTo(fileRecord);
     }
 
 }

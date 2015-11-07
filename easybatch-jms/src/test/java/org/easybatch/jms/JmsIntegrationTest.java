@@ -26,11 +26,12 @@ package org.easybatch.jms;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.io.FileUtils;
-import org.easybatch.core.api.ComputationalRecordProcessor;
-import org.easybatch.core.api.Engine;
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Report;
-import org.easybatch.core.impl.EngineBuilder;
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.processor.RecordCollector;
+import org.easybatch.core.reader.StringRecordReader;
+import org.easybatch.core.record.Header;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,17 +42,15 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
-/**
- * Integration test for JMS support.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
+@SuppressWarnings("unchecked")
 public class JmsIntegrationTest {
 
     public static final String EXPECTED_DATA_SOURCE_NAME = "JMS queue: q";
@@ -85,20 +84,23 @@ public class JmsIntegrationTest {
         //send a poison record to the queue
         queueSender.send(new JmsPoisonMessage());
 
-        Engine engine = EngineBuilder.aNewEngine()
-                .reader(new JmsRecordReader(queueConnectionFactory, queue))
+        Job job = aNewJob()
+                .reader(new JmsQueueRecordReader(queueConnectionFactory, queue))
                 .filter(new JmsPoisonRecordFilter())
-                .processor(new JmsRecordProcessor())
+                .processor(new RecordCollector())
+                .jobListener(new JmsQueueSessionListener(queueSession))
+                .jobListener(new JmsQueueConnectionListener(queueConnection))
                 .build();
 
-        Report report = engine.call();
+        JobReport jobReport = JobExecutor.execute(job);
 
-        assertThat(report).isNotNull();
-        assertThat(report.getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
-        assertThat(report.getTotalRecords()).isEqualTo(2);
-        assertThat(report.getFilteredRecordsCount()).isEqualTo(1);
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(1);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(1);
 
-        List<JmsRecord> records = (List<JmsRecord>) report.getBatchResult();
+        List<JmsRecord> records = (List<JmsRecord>) jobReport.getResult();
 
         assertThat(records).isNotNull().isNotEmpty().hasSize(1);
 
@@ -113,6 +115,42 @@ public class JmsIntegrationTest {
 
         TextMessage textMessage = (TextMessage) payload;
         assertThat(textMessage.getText()).isNotNull().isEqualTo(MESSAGE_TEXT);
+
+    }
+
+    @Test
+    public void testJmsRecordWriter() throws Exception {
+        Context jndiContext = getJndiContext();
+        Queue queue = (Queue) jndiContext.lookup("q");
+        QueueConnectionFactory queueConnectionFactory = (QueueConnectionFactory) jndiContext.lookup("QueueConnectionFactory");
+        QueueConnection queueConnection = queueConnectionFactory.createQueueConnection();
+        QueueSession queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+        queueConnection.start();
+
+        String dataSource = "foo" + LINE_SEPARATOR + "bar";
+
+        aNewJob()
+                .reader(new StringRecordReader(dataSource))
+                .processor(new JmsMessageTransformer(queueSession))
+                .writer(new JmsQueueRecordWriter(queueConnectionFactory, queue))
+                .call();
+
+        // Assert that queue contains 2 messages: "foo" and "bar"
+        QueueBrowser queueBrowser = queueSession.createBrowser(queue);
+        Enumeration enumeration = queueBrowser.getEnumeration();
+
+        assertThat(enumeration.hasMoreElements()).isTrue();
+        TextMessage message1 = (TextMessage) enumeration.nextElement();
+        assertThat(message1.getText()).isEqualTo("foo");
+
+        assertThat(enumeration.hasMoreElements()).isTrue();
+        TextMessage message2 = (TextMessage) enumeration.nextElement();
+        assertThat(message2.getText()).isEqualTo("bar");
+
+        assertThat(enumeration.hasMoreElements()).isFalse();
+
+        queueSession.close();
+        queueConnection.close();
     }
 
     @After
@@ -126,22 +164,5 @@ public class JmsIntegrationTest {
         Properties properties = new Properties();
         properties.load(JmsIntegrationTest.class.getResourceAsStream(("/jndi.properties")));
         return new InitialContext(properties);
-    }
-
-    private class JmsRecordProcessor implements ComputationalRecordProcessor<JmsRecord, JmsRecord, List<JmsRecord>> {
-
-        private List<JmsRecord> jsonRecords = new ArrayList<JmsRecord>();
-
-        @Override
-        public JmsRecord processRecord(JmsRecord jsonRecord) {
-            jsonRecords.add(jsonRecord);
-            return jsonRecord;
-        }
-
-        @Override
-        public List<JmsRecord> getComputationResult() {
-            return jsonRecords;
-        }
-
     }
 }

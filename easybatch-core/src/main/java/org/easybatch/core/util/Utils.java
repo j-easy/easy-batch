@@ -24,16 +24,16 @@
 
 package org.easybatch.core.util;
 
-import org.easybatch.core.api.Engine;
-import org.easybatch.core.api.Report;
-import org.easybatch.core.jmx.Monitor;
-
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-import java.lang.management.ManagementFactory;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -46,11 +46,11 @@ import static java.lang.String.format;
  */
 public abstract class Utils {
 
-    private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
+    public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-    public static final String DEFAULT_ENGINE_NAME = "engine";
+    public static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
-    public static final String JMX_MBEAN_NAME = "org.easybatch.core.jmx:";
+    public static final String JAVA_IO_TMPDIR = System.getProperty("java.io.tmpdir");
 
     private Utils() {
 
@@ -77,23 +77,8 @@ public abstract class Utils {
         }
     }
 
-    public static void registerJmxMBean(Report report, Engine engine) {
-        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        ObjectName name;
-        try {
-            name = new ObjectName(JMX_MBEAN_NAME + "name=" + engine.getName() + ",id=" + engine.getExecutionId());
-            if (!mbs.isRegistered(name)) {
-                Monitor monitor = new Monitor(report);
-                mbs.registerMBean(monitor, name);
-                LOGGER.log(Level.INFO, "JMX MBean registered successfully as: {0}", name.getCanonicalName());
-            } else {
-                LOGGER.log(Level.WARNING, "JMX MBean {0} already registered for another engine." +
-                                " If you use multiple engines in parallel and you would like to monitor each of them, make sure they have different names",
-                        name.getCanonicalName());
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Unable to register Easy Batch JMX MBean.", e);
-        }
+    public static long toMinutes(long milliseconds) {
+        return TimeUnit.MILLISECONDS.toMinutes(milliseconds);
     }
 
     public static void checkNotNull(Object argument, String argumentName) {
@@ -101,4 +86,22 @@ public abstract class Utils {
             throw new IllegalArgumentException(format("The %s must not be null", argumentName));
         }
     }
+
+    public static void checkArgument(boolean assertion, String message) {
+        if (!assertion) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static Map<String, Method> getGetters(final Class type) throws IntrospectionException {
+        Map<String, Method> getters = new HashMap<>();
+        BeanInfo beanInfo = Introspector.getBeanInfo(type);
+        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+            getters.put(propertyDescriptor.getName(), propertyDescriptor.getReadMethod());
+        }
+        getters.remove("class"); //exclude property "class"
+        return getters;
+    }
+
 }

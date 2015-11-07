@@ -24,24 +24,19 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Record;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * Test class for {@link org.easybatch.core.dispatcher.ContentBasedRecordDispatcherBuilder}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class ContentBasedRecordDispatcherBuilderTest {
 
-    private ContentBasedRecordDispatcherBuilder builder;
+    private ContentBasedRecordDispatcherBuilder<Record> builder;
 
     @Before
     public void setUp() throws Exception {
-        builder = new ContentBasedRecordDispatcherBuilder();
+        builder = new ContentBasedRecordDispatcherBuilder<>();
     }
 
     @Test(expected = IllegalStateException.class)

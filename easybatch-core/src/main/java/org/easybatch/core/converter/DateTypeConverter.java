@@ -24,20 +24,20 @@
 
 package org.easybatch.core.converter;
 
-import org.easybatch.core.api.TypeConverter;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static org.easybatch.core.util.Utils.checkArgument;
+
 /**
  * java.util.Date type converter.
- * Converts a String date (by default in the "yyyy-MM-dd" format) to a java.util.Date type.
+ * Converts a String date (by default in the "yyyy-MM-dd" format) to a {@link java.util.Date} type.
  * Does not accept null or empty strings.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class DateTypeConverter implements TypeConverter<Date> {
+public class DateTypeConverter implements TypeConverter<String, Date> {
 
     /**
      * The default date format.
@@ -70,12 +70,8 @@ public class DateTypeConverter implements TypeConverter<Date> {
      */
     @Override
     public Date convert(final String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value to convert must not be null");
-        }
-        if (value.isEmpty()) {
-            throw new IllegalArgumentException("Value to convert must not be empty");
-        }
+        checkArgument(value != null, "Value to convert must not be null");
+        checkArgument(!value.isEmpty(), "Value to convert must not be empty");
         try {
             return new SimpleDateFormat(dateFormat).parse(value);
         } catch (ParseException e) {

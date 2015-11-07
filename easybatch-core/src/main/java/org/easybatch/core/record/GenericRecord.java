@@ -24,9 +24,6 @@
 
 package org.easybatch.core.record;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
-
 /**
  * General purpose record implementation.
  *
@@ -44,6 +41,12 @@ public class GenericRecord<P> implements Record<P> {
      */
     protected P payload;
 
+    /**
+     * Create a {@link GenericRecord}.
+     *
+     * @param header  the record header
+     * @param payload the record payload
+     */
     public GenericRecord(final Header header, final P payload) {
         this.header = header;
         this.payload = payload;

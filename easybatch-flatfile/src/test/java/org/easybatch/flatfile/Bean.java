@@ -24,11 +24,6 @@
 
 package org.easybatch.flatfile;
 
-/**
- * Bean used for tests.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class Bean {
 
     private String field1;

@@ -24,9 +24,9 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.RecordReader;
-import org.easybatch.core.api.RecordReaderOpeningException;
+import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.reader.RecordReaderOpeningException;
+import org.easybatch.core.record.Header;
 import org.easybatch.core.record.StringRecord;
 
 import java.io.File;
@@ -75,6 +75,16 @@ public class FlatFileRecordReader implements RecordReader {
      * beginning of the file ( {@link java.util.Scanner#reset()} does not rewind the scanner), another scanner instance is needed.
      */
     private Scanner recordCounterScanner;
+
+    /**
+     * Constructs a flat file record reader.
+     *
+     * @param fileName the input file
+     * @throws FileNotFoundException thrown if the file does not exist
+     */
+    public FlatFileRecordReader(final String fileName) throws FileNotFoundException {
+        this(new File(fileName), Charset.defaultCharset().name());
+    }
 
     /**
      * Constructs a flat file record reader.

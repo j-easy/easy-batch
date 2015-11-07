@@ -31,12 +31,9 @@ import org.junit.Test;
 import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.util.Utils.FILE_SEPARATOR;
+import static org.easybatch.core.util.Utils.JAVA_IO_TMPDIR;
 
-/**
- * Test class for {@link FileRecordReaderTest}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class FileRecordReaderTest {
 
     private FileRecordReader fileRecordReader;
@@ -49,13 +46,11 @@ public class FileRecordReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        dataSource = new File(System.getProperty("java.io.tmpdir"));
+        dataSource = new File(JAVA_IO_TMPDIR);
         fileRecordReader = new FileRecordReader(dataSource);
         fileRecordReader.open();
 
-        nonExistingDataSource = new File(System.getProperty("java.io.tmpdir") +
-                System.getProperty("file.separator") +
-                "ImSureThisDirectoryDoesNotExist");
+        nonExistingDataSource = new File(JAVA_IO_TMPDIR + FILE_SEPARATOR + "ImSureThisDirectoryDoesNotExist");
 
         //create empty directory
         emptyDataSource = new File("easyBatchTestEmptyDirectory");

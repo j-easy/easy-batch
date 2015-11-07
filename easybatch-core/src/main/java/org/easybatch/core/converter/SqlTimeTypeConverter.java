@@ -24,17 +24,15 @@
 
 package org.easybatch.core.converter;
 
-import org.easybatch.core.api.TypeConverter;
-
 import java.sql.Time;
 
 /**
  * java.sql.Time type converter.
- * Converts a String Time in the "hh:mm:ss" format to a java.sql.Time type.
+ * Converts a String Time in the "hh:mm:ss" format to a {@link java.sql.Time} type.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class SqlTimeTypeConverter implements TypeConverter<Time> {
+public class SqlTimeTypeConverter implements TypeConverter<String, Time> {
 
     /**
      * {@inheritDoc}

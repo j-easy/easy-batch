@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains several convenient implementations of the {@link org.easybatch.core.api.Record} interface.
+ * This package contains several convenient implementations of the {@link org.easybatch.core.record.Record} interface.
  */
 package org.easybatch.core.record;

@@ -24,9 +24,6 @@
 
 package org.easybatch.core.record;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
-
 /**
  * A {@link Record} implementation that has textual data as raw content.
  *
@@ -34,6 +31,12 @@ import org.easybatch.core.api.Record;
  */
 public class StringRecord extends GenericRecord<String> {
 
+    /**
+     * Create a {@link StringRecord}.
+     *
+     * @param header  the record header
+     * @param payload the record payload
+     */
     public StringRecord(final Header header, final String payload) {
         super(header, payload);
     }

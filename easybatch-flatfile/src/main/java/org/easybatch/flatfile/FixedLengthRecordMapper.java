@@ -24,11 +24,12 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordMapper;
-import org.easybatch.core.api.RecordMappingException;
-import org.easybatch.core.api.TypeConverter;
+import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.ObjectMapper;
+import org.easybatch.core.mapper.RecordMapper;
+import org.easybatch.core.mapper.RecordMappingException;
+import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.StringRecord;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,12 +37,9 @@ import java.util.Map;
 /**
  * Fixed Length Record to Object mapper implementation.
  *
- * @param <T> the target domain object type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
-
-    private ObjectMapper<T> objectMapper;
+public class FixedLengthRecordMapper extends AbstractRecordMapper implements RecordMapper<StringRecord, GenericRecord> {
 
     /**
      * Fields length array.
@@ -64,16 +62,17 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
     private int recordExpectedLength;
 
     /**
-     * Constructs a FixedLengthRecordMapper instance.
+     * Create a {@link FixedLengthRecordMapper} instance.
      *
      * @param recordClass  the target domain object class
      * @param fieldsLength an array of fields length in the same order in the FLR flat file.
      * @param fieldNames   a String array representing fields name in the same order in the FLR flat file.
      */
-    public FixedLengthRecordMapper(Class<? extends T> recordClass, int[] fieldsLength, String[] fieldNames) {
+    public FixedLengthRecordMapper(Class recordClass, int[] fieldsLength, String[] fieldNames) {
+        super(recordClass);
         this.fieldsLength = fieldsLength.clone();
         this.fieldNames = fieldNames.clone();
-        objectMapper = new ObjectMapper<T>(recordClass);
+        objectMapper = new ObjectMapper(recordClass);
         for (int fieldLength : fieldsLength) {
             recordExpectedLength += fieldLength;
         }
@@ -81,21 +80,21 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
     }
 
     @Override
-    public T mapRecord(final Record record) throws RecordMappingException {
+    public GenericRecord processRecord(final StringRecord record) throws RecordMappingException {
 
         FlatFileRecord flatFileRecord = parseRecord(record);
-        Map<String, String> fieldsContents = new HashMap<String, String>();
+        Map<String, String> fieldsContents = new HashMap<>();
         for (FlatFileField flatFileField : flatFileRecord.getFlatFileFields()) {
             String fieldName = fieldNames[flatFileField.getIndex()];
             String fieldValue = flatFileField.getRawContent();
             fieldsContents.put(fieldName, fieldValue);
         }
-        return objectMapper.mapObject(fieldsContents);
+        return new GenericRecord(record.getHeader(), objectMapper.mapObject(fieldsContents));
     }
 
-    FlatFileRecord parseRecord(final Record record) throws RecordMappingException {
+    FlatFileRecord parseRecord(final StringRecord record) throws RecordMappingException {
 
-        String payload = (String) record.getPayload();
+        String payload = record.getPayload();
         int recordLength = payload.length();
 
         if (recordLength != recordExpectedLength) {
@@ -126,15 +125,6 @@ public class FixedLengthRecordMapper<T> implements RecordMapper<T> {
             offsets[i + 1] = offsets[i] + lengths[i];
         }
         return offsets;
-    }
-
-    /**
-     * Register a custom type converter.
-     *
-     * @param typeConverter the type converter to user
-     */
-    public void registerTypeConverter(final TypeConverter typeConverter) {
-        objectMapper.registerTypeConverter(typeConverter);
     }
 
 }

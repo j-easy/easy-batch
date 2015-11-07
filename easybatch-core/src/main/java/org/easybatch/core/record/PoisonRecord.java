@@ -24,9 +24,6 @@
 
 package org.easybatch.core.record;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.Record;
-
 import java.io.Serializable;
 import java.util.Date;
 

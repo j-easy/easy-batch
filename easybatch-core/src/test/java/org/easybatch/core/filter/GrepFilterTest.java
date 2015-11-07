@@ -34,11 +34,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-/**
- * Test class for {@link GrepFilter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class GrepFilterTest {
 
@@ -48,48 +43,26 @@ public class GrepFilterTest {
     private StringRecord record;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         grepFilter = new GrepFilter("java");
     }
 
-    /*
-     * Test regular behavior
-     */
-
     @Test
-    public void whenRecordContainsPattern_ThenItShouldNotBeFiltered() throws Exception {
+    public void whenRecordContainsPattern_ThenItShouldNotBeFiltered() {
         when(record.getPayload()).thenReturn("java rocks!");
-        assertThat(grepFilter.filterRecord(record)).isFalse();
+        assertThat(grepFilter.processRecord(record)).isEqualTo(record);
     }
 
     @Test
-    public void whenRecordDoesNotContainPattern_ThenItShouldBeFiltered() throws Exception {
+    public void whenRecordDoesNotContainPattern_ThenItShouldBeFiltered() {
         when(record.getPayload()).thenReturn("c++ ..");
-        assertThat(grepFilter.filterRecord(record)).isTrue();
+        assertThat(grepFilter.processRecord(record)).isNull();
     }
 
     @Test
-    public void patternLookupShouldBeCaseSensitive() throws Exception {
+    public void patternLookupShouldBeCaseSensitive() {
         when(record.getPayload()).thenReturn("JAVA rocks!");
-        assertThat(grepFilter.filterRecord(record)).isTrue();
-    }
-
-    /*
-     * Test negate behavior
-     */
-
-    @Test
-    public void whenRecordContainsPattern_ThenItShouldBeFiltered() throws Exception {
-        grepFilter = new GrepFilter("java", true);
-        when(record.getPayload()).thenReturn("java rocks!");
-        assertThat(grepFilter.filterRecord(record)).isTrue();
-    }
-
-    @Test
-    public void whenRecordDoesNotContainPattern_ThenItShouldNotBeFiltered() throws Exception {
-        grepFilter = new GrepFilter("java", true);
-        when(record.getPayload()).thenReturn("c++ ..");
-        assertThat(grepFilter.filterRecord(record)).isFalse();
+        assertThat(grepFilter.processRecord(record)).isNull();
     }
 
 }

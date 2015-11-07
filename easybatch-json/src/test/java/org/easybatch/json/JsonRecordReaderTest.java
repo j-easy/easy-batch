@@ -24,6 +24,7 @@
 
 package org.easybatch.json;
 
+import org.easybatch.core.reader.RecordReadingException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,11 +34,6 @@ import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link JsonRecordReader}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class JsonRecordReaderTest {
 
     private JsonRecordReader jsonRecordReader;
@@ -117,7 +113,7 @@ public class JsonRecordReaderTest {
         assertThat(jsonRecordReader.hasNextRecord()).isFalse();
     }
 
-    @Test(expected = javax.json.stream.JsonParsingException.class) // TODO should be wrapped in an Easy Batch exception
+    @Test(expected = RecordReadingException.class)
     public void whenJsonStreamIsIllformed_thenTheJsonRecordReaderShouldThrowAnException() throws Exception {
         String dataSource = "[{\"name\":\"foo\",}]";// illegal trailing comma
         jsonRecordReader.close();

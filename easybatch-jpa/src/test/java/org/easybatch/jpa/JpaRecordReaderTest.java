@@ -25,10 +25,7 @@
 package org.easybatch.jpa;
 
 import org.easybatch.core.record.GenericRecord;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -40,20 +37,15 @@ import java.sql.Statement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link JpaRecordReader}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class JpaRecordReaderTest {
 
     private static final String DATABASE_URL = "jdbc:hsqldb:mem";
 
+    private static final int FETCH_SIZE = 2;
+
     private static Connection connection;
 
     private static EntityManagerFactory entityManagerFactory;
-
-    private static String query;
 
     private JpaRecordReader<Tweet> jpaRecordReader;
 
@@ -63,47 +55,6 @@ public class JpaRecordReaderTest {
         createTweetTable(connection);
         populateTweetTable(connection);
         entityManagerFactory = Persistence.createEntityManagerFactory("tweet");
-        query = "from Tweet";
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        jpaRecordReader = new JpaRecordReader<Tweet>(entityManagerFactory, query, Tweet.class);
-        jpaRecordReader.open();
-    }
-
-    @Test
-    public void testHasNextRecord() throws Exception {
-        assertThat(jpaRecordReader.hasNextRecord()).isTrue();
-    }
-
-    @Test
-    public void testTotalRecords() throws Exception {
-        assertThat(jpaRecordReader.getTotalRecords()).isNotNull().isEqualTo(2);
-    }
-
-    @Test
-    public void testReadNextRecord() throws Exception {
-        GenericRecord<Tweet> record = jpaRecordReader.readNextRecord();
-        long recordNumber = record.getHeader().getNumber();
-        Tweet tweet = record.getPayload();
-
-        assertThat(recordNumber).isEqualTo(1);
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.getId()).isEqualTo(1);
-        assertThat(tweet.getUser()).isEqualTo("foo");
-        assertThat(tweet.getMessage()).isEqualTo("easy batch rocks! #EasyBatch");
-    }
-
-    @Test
-    public void testMaxResultsParameter() throws Exception {
-        jpaRecordReader.close();
-        jpaRecordReader = new JpaRecordReader<Tweet>(entityManagerFactory, query, Tweet.class);
-        jpaRecordReader.setMaxResults(1);
-        jpaRecordReader.open();
-
-        jpaRecordReader.readNextRecord();
-        assertThat(jpaRecordReader.hasNextRecord()).isFalse();
     }
 
     @AfterClass
@@ -120,7 +71,9 @@ public class JpaRecordReaderTest {
 
     private static void createTweetTable(Connection connection) throws Exception {
         Statement statement = connection.createStatement();
-        String query = "CREATE TABLE if not exists tweet (\n" +
+        String query = "DROP TABLE IF EXISTS tweet";
+        statement.executeUpdate(query);
+        query = "CREATE TABLE tweet (\n" +
                 "  id integer NOT NULL PRIMARY KEY,\n" +
                 "  user varchar(32) NOT NULL,\n" +
                 "  message varchar(140) NOT NULL,\n" +
@@ -132,12 +85,65 @@ public class JpaRecordReaderTest {
     private static void populateTweetTable(Connection connection) throws Exception {
         executeQuery(connection, "INSERT INTO tweet VALUES (1,'foo','easy batch rocks! #EasyBatch');");
         executeQuery(connection, "INSERT INTO tweet VALUES (2,'bar','@foo I do confirm :-)');");
+        executeQuery(connection, "INSERT INTO tweet VALUES (3,'baz','yep');");
+        executeQuery(connection, "INSERT INTO tweet VALUES (4,'toto','what?');");
     }
 
     private static void executeQuery(Connection connection, String query) throws SQLException {
         Statement statement = connection.createStatement();
         statement.executeUpdate(query);
         statement.close();
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        String query = "from Tweet";
+        jpaRecordReader = new JpaRecordReader<Tweet>(entityManagerFactory, query, Tweet.class);
+        jpaRecordReader.setFetchSize(FETCH_SIZE);
+        jpaRecordReader.open();
+    }
+
+    @Test
+    public void testHasNextRecord() throws Exception {
+        assertThat(jpaRecordReader.hasNextRecord()).isTrue();
+    }
+
+    @Test
+    public void testTotalRecords() throws Exception {
+        assertThat(jpaRecordReader.getTotalRecords()).isNull();
+    }
+
+    @Test
+    public void testReadNextRecord() throws Exception {
+        GenericRecord<Tweet> record = jpaRecordReader.readNextRecord();
+        long recordNumber = record.getHeader().getNumber();
+        Tweet tweet = record.getPayload();
+
+        assertThat(recordNumber).isEqualTo(1);
+        assertThat(tweet).isNotNull();
+        assertThat(tweet.getId()).isEqualTo(1);
+        assertThat(tweet.getUser()).isEqualTo("foo");
+        assertThat(tweet.getMessage()).isEqualTo("easy batch rocks! #EasyBatch");
+    }
+
+    @Test
+    public void testPaging() {
+        int nbRecords = 0;
+        while (jpaRecordReader.hasNextRecord()) {
+            jpaRecordReader.readNextRecord();
+            nbRecords++;
+        }
+        assertThat(nbRecords).isEqualTo(4);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void fetchSizeParameterMustBeAtLeastEqualToOne() throws Exception {
+        jpaRecordReader.setFetchSize(0);
+    }
+
+    @After
+    public void tearDown() {
+        jpaRecordReader.close();
     }
 
 }

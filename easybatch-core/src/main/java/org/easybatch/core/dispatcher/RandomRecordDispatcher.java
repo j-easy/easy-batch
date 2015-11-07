@@ -24,21 +24,20 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.record.PoisonRecord;
+import org.easybatch.core.record.Record;
 
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
-import static java.lang.String.format;
-
 /**
- * A record dispatcher that dispatches records randomly to a list of queues.
+ * Dispatch records randomly to a list of {@link BlockingQueue}.
  *
+ * @param <T> type of record to dispatch
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RandomRecordDispatcher extends AbstractRecordDispatcher {
+public class RandomRecordDispatcher<T extends Record> extends AbstractRecordDispatcher<T> {
 
     /**
      * The total number of queues this dispatcher operates on.
@@ -48,12 +47,12 @@ public class RandomRecordDispatcher extends AbstractRecordDispatcher {
     /**
      * List of queues to which records should be dispatched.
      */
-    private List<BlockingQueue<Record>> queues;
+    private List<BlockingQueue<T>> queues;
 
     /**
      * A delegate dispatcher used to broadcast poison records to all queues.
      */
-    private BroadcastRecordDispatcher broadcastRecordDispatcher;
+    private BroadcastRecordDispatcher<T> broadcastRecordDispatcher;
 
     /**
      * The random generator.
@@ -65,29 +64,24 @@ public class RandomRecordDispatcher extends AbstractRecordDispatcher {
      *
      * @param queues the list of queues to which records should be dispatched
      */
-    public RandomRecordDispatcher(List<BlockingQueue<Record>> queues) {
+    public RandomRecordDispatcher(List<BlockingQueue<T>> queues) {
         this.queues = queues;
         this.queuesNumber = queues.size();
         this.random = new Random();
-        this.broadcastRecordDispatcher = new BroadcastRecordDispatcher(queues);
+        this.broadcastRecordDispatcher = new BroadcastRecordDispatcher<>(queues);
     }
 
     @Override
-    public void dispatchRecord(Record record) throws RecordDispatchingException {
+    public void dispatchRecord(T record) throws Exception {
         // when receiving a poising record, broadcast it to all queues
         if (record instanceof PoisonRecord) {
             broadcastRecordDispatcher.dispatchRecord(record);
             return;
         }
         //dispatch record randomly to one of the queues
-        BlockingQueue<Record> queue = null;
-        try {
-            queue = queues.get(random.nextInt(queuesNumber));
-            queue.put(record);
-        } catch (InterruptedException e) {
-            String message = format("Unable to put record %s in queue %s", record, queue);
-            throw new RecordDispatchingException(message, e);
-        }
+        BlockingQueue<T> queue = null;
+        queue = queues.get(random.nextInt(queuesNumber));
+        queue.put(record);
     }
 
 }

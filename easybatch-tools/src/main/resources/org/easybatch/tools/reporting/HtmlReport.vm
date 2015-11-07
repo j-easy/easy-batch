@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Easy Batch Report</title>
+    <title>Job Report</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
     <style>
@@ -9,20 +9,26 @@
             padding-top: 20px;
             padding-bottom: 20px;
         }
+        .table-fixed {
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
     </style>
 </head>
 <body>
 
 <div class="container col-md-8 col-md-offset-2">
     <div class="row">
-        <h1 class="text-center">Easy Batch Report</h1>
-        <h3>Engine name: $report.engineName <span class="pull-right">Execution id: $report.executionId</span></h3>
-        <h3>Data source: $report.dataSource <span class="pull-right">Status: $report.status</span></h3>
+        <h1 class="text-center">Job Report</h1>
+        <br/>
+        <h4><span class="label label-info">Name:</span> $report.parameters.name</h4>
+        <h4><span class="label label-info">Execution id:</span> $report.parameters.executionId</h4>
+        <h4><span class="label label-info">Data source:</span> $report.parameters.dataSource</h4>
         <br/>
     </div>
 
     <div class="row">
-
+        <h3>Job metrics</h3>
         <div class="col-md-6">
             <table class="table table-bordered table-hover table-condensed">
                 <tbody>
@@ -35,50 +41,72 @@
                     <td>$report.formattedEndTime</td>
                 </tr>
                 <tr>
-                    <td>Batch duration</td>
-                    <td>$report.formattedBatchDuration</td>
+                    <td>Duration</td>
+                    <td>$report.formattedDuration</td>
                 </tr>
                 <tr>
-                    <td>Total records</td>
-                    <td>$report.totalRecords</td>
+                    <td>Status</td>
+                    <td><span class="label label-status">$report.status</span></td>
                 </tr>
                 <tr>
                     <td>Record processing time average</td>
-                    <td>$report.formattedAverageRecordProcessingTime</td>
+                    <td>$report.formattedRecordProcessingTimeAverage</td>
+                </tr>
+                <tr>
+                    <td>Skipped records</td>
+                    <td><span class="label label-default skipped-records" data-total="$report.metrics.skippedCount">$report.formattedSkippedCount</span></td>
+                </tr>
+                <tr>
+                    <td>Filtered records</td>
+                    <td><span class="label label-warning filtered-records" data-total="$report.metrics.filteredCount">$report.formattedFilteredCount</span></td>
+                </tr>
+                <tr>
+                    <td>Error records</td>
+                    <td><span class="label label-danger error-records" data-total="$report.metrics.errorCount">$report.formattedErrorCount</span></td>
+                </tr>
+                <tr>
+                    <td>Success records</td>
+                    <td><span class="label label-success success-records" data-total="$report.metrics.successCount">$report.formattedSuccessCount</span></td>
+                </tr>
+                <tr>
+                    <td>Total records</td>
+                    <td><span class="label label-primary total-records" data-total="$report.metrics.totalCount">$report.formattedTotalCount (100%)</span></td>
                 </tr>
                 </tbody>
             </table>
         </div>
         <div class="col-md-6">
-            <table class="table table table-bordered table-hover table-condensed">
-                <tbody>
-                <tr>
-                    <td>Filtered records</td>
-                    <td><span class="label label-default filtered-records" data-total="$report.filteredRecordsCount">$report.formattedFilteredRecords</span></td>
-                </tr>
-                <tr>
-                    <td>Ignored records</td>
-                    <td><span class="label label-info ignored-records" data-total="$report.ignoredRecordsCount">$report.formattedIgnoredRecords</span></td>
-                </tr>
-                <tr>
-                    <td>Rejected records</td>
-                    <td><span class="label label-warning rejected-records" data-total="$report.rejectedRecordsCount">$report.formattedRejectedRecords</span></td>
-                </tr>
-                <tr>
-                    <td>Error records</td>
-                    <td><span class="label label-danger error-records" data-total="$report.errorRecordsCount">$report.formattedErrorRecords</span></td>
-                </tr>
-                <tr>
-                    <td>Success records</td>
-                    <td><span class="label label-success success-records" data-total="$report.successRecordsCount">$report.formattedSuccessRecords</span></td>
-                </tr>
-                </tbody>
-            </table>
+            <div id="chart" style="min-width: 300px; height: 320px; margin: 0 auto"></div>
         </div>
     </div>
 
     <div class="row">
-        <div id="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <h3>Job properties</h3>
+        <table class="table table-bordered table-striped table-hover table-condensed">
+            <tbody>
+            <tr> <td>Limit</td> <td>$report.formattedLimit</td> </tr>
+            <tr> <td>Skip</td> <td>$report.parameters.skip</td> </tr>
+            <tr> <td>Timeout</td> <td>$report.formattedTimeout</td> </tr>
+            <tr> <td>Strict mode</td> <td>$report.parameters.strictMode</td> </tr>
+            <tr> <td>Silent mode</td> <td>$report.parameters.silentMode</td> </tr>
+            <tr> <td>JMX mode</td> <td>$report.parameters.jmxMode</td> </tr>
+            <tr> <td>Keep alive</td> <td>$report.parameters.keepAlive</td> </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <h3>System properties</h3>
+        <table class="table table-bordered table-striped table-hover table-condensed table-fixed">
+            <tbody>
+            #foreach( $entry in $properties )
+            <tr>
+                <td>$entry.key</td>
+                <td>$entry.value</td>
+            </tr>
+            #end
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -88,21 +116,23 @@
 <script>
     jQuery(document).ready(function () {
 
+        var status = jQuery(".label-status");
+        if (status.html() == "COMPLETED") {
+            status.addClass("label-success");
+        } else {
+            status.addClass("label-danger");
+        }
+
         jQuery('#chart').highcharts({
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: true
             },title: {
-                text: 'Records statistics'
+                text: ''
             },
             tooltip: {
                 pointFormat: '<b>{point.y}</b>'
-            },
-            legend: {
-                labelFormatter: function() {
-                    return this.name + ' (' + this.y + ')';
-                }
             },
             credits: {
                 enabled: false
@@ -121,28 +151,23 @@
                 type: 'pie',
                 data: [
                     {
+                        name: 'Skipped',
+                        color: '#777',
+                        y: jQuery(".skipped-records").data("total")
+                    },
+                    {
                         name: 'Filtered',
-                        color: '#999999',
+                        color: '#f0ad4e',
                         y: jQuery(".filtered-records").data("total")
                     },
                     {
-                        name: 'Ignored',
-                        color: '#5BC0DE',
-                        y: jQuery(".ignored-records").data("total")
-                    },
-                    {
-                        name: 'Rejected',
-                        color: '#F0AD4E',
-                        y: jQuery(".rejected-records").data("total")
-                    },
-                    {
                         name: 'Errors',
-                        color: '#D9534F',
+                        color: '#d9534f',
                         y: jQuery(".error-records").data("total")
                     },
                     {
                         name: 'Success',
-                        color: '#5CB85C',
+                        color: '#5cb85c',
                         y: jQuery(".success-records").data("total")
                     }
                 ]

@@ -24,9 +24,9 @@
 
 package org.easybatch.core.converter;
 
-import org.easybatch.core.api.TypeConverter;
-
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.easybatch.core.util.Utils.checkArgument;
 
 /**
  * AtomicInteger type converter.
@@ -34,19 +34,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class AtomicIntegerTypeConverter implements TypeConverter<AtomicInteger> {
+public class AtomicIntegerTypeConverter implements TypeConverter<String, AtomicInteger> {
 
     /**
      * {@inheritDoc}
      */
     @Override
     public AtomicInteger convert(final String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value to convert must not be null");
-        }
-        if (value.isEmpty()) {
-            throw new IllegalArgumentException("Value to convert must not be empty");
-        }
+        checkArgument(value != null, "Value to convert must not be null");
+        checkArgument(!value.isEmpty(), "Value to convert must not be empty");
         return new AtomicInteger(Integer.valueOf(value));
     }
 

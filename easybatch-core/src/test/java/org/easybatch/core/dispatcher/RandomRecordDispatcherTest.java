@@ -24,8 +24,8 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.record.PoisonRecord;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,15 +38,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link org.easybatch.core.dispatcher.RandomRecordDispatcher}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class RandomRecordDispatcherTest {
 
-    private RandomRecordDispatcher randomRecordDispatcher;
+    private RandomRecordDispatcher<Record> randomRecordDispatcher;
 
     private BlockingQueue<Record> queue1, queue2;
 
@@ -58,9 +53,9 @@ public class RandomRecordDispatcherTest {
 
     @Before
     public void setUp() throws Exception {
-        queue1 = new LinkedBlockingQueue<Record>();
-        queue2 = new LinkedBlockingQueue<Record>();
-        randomRecordDispatcher = new RandomRecordDispatcher(Arrays.asList(queue1, queue2));
+        queue1 = new LinkedBlockingQueue<>();
+        queue2 = new LinkedBlockingQueue<>();
+        randomRecordDispatcher = new RandomRecordDispatcher<>(Arrays.asList(queue1, queue2));
     }
 
     @Test
@@ -74,7 +69,6 @@ public class RandomRecordDispatcherTest {
             assertThat(queue2).isEmpty();
             assertThat(queue1).containsOnly(record);
         }
-
     }
 
     @Test
@@ -84,7 +78,6 @@ public class RandomRecordDispatcherTest {
 
         assertThat(queue1).isNotEmpty().containsOnly(poisonRecord);
         assertThat(queue2).isNotEmpty().containsOnly(poisonRecord);
-
     }
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <websites>
     <website name="google" url="http://www.google.com?query=test&amp;sort=asc"/>
-    <website name="l&apos;équipe" url="http://www.lequipe.fr"/>
+    <website name="l&apos;equipe" url="http://www.lequipe.fr"/>
     <website name="l&quot;internaute.com" url="http://www.linternaute.com"/>
 </websites>

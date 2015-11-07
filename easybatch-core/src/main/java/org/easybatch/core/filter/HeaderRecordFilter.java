@@ -24,19 +24,21 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.record.Record;
 
 /**
- * A filter that filters the header record (first record in the data source).
+ * Filters the header record (first record in the data source).
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class HeaderRecordFilter implements RecordFilter {
+public class HeaderRecordFilter implements RecordFilter<Record> {
 
     @Override
-    public boolean filterRecord(Record record) {
-        return record.getHeader().getNumber() == 1;
+    public Record processRecord(final Record record) {
+        if (record.getHeader().getNumber() == 1) {
+            return null;
+        }
+        return record;
     }
 
 }

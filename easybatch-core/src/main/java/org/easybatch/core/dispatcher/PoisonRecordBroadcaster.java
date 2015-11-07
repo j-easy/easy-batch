@@ -24,44 +24,47 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.event.job.JobEventListener;
+import org.easybatch.core.job.JobParameters;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.record.PoisonRecord;
+import org.easybatch.core.record.Record;
+
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 /**
- * A utility job event listener that broadcasts a {@link PoisonRecord} record at the end of the job
- * using a delegate record dispatcher.
+ * A utility job listener that broadcasts a {@link PoisonRecord} record at the end of the job.
  *
+ * @param <T> record type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class PoisonRecordBroadcaster implements JobEventListener {
+@SuppressWarnings("unchecked")
+public class PoisonRecordBroadcaster<T extends Record> implements JobListener {
 
-    private AbstractRecordDispatcher recordDispatcher;
+    private BroadcastRecordDispatcher recordDispatcher;
 
     /**
      * Create a new {@link PoisonRecordBroadcaster}.
      *
-     * @param recordDispatcher the delegate record dispatcher used to dispatch the poison record
+     * @param queues the list of queues to which poison records should be dispatched
      */
-    public PoisonRecordBroadcaster(AbstractRecordDispatcher recordDispatcher) {
-        this.recordDispatcher = recordDispatcher;
+    public PoisonRecordBroadcaster(List<BlockingQueue<T>> queues) {
+        this.recordDispatcher = new BroadcastRecordDispatcher(queues);
     }
 
     @Override
-    public void beforeJobStart() {
+    public void beforeJobStart(final JobParameters jobParameters) {
         // no op
     }
 
     @Override
-    public void afterJobEnd() {
+    public void afterJobEnd(final JobReport jobReport) {
         try {
-            recordDispatcher.dispatchRecord(new PoisonRecord());
-        } catch (Exception e) {
+            recordDispatcher.processRecord(new PoisonRecord());
+        } catch (RecordDispatchingException e) {
             throw new RuntimeException("Unable to broadcast poison record.", e);
         }
     }
 
-    @Override
-    public void onJobException(Throwable throwable) {
-        // no op
-    }
 }

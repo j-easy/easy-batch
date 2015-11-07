@@ -24,8 +24,8 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Record;
 import org.easybatch.core.record.PoisonRecord;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,15 +38,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-/**
- * Test class for {@link org.easybatch.core.dispatcher.ContentBasedRecordDispatcher}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class ContentBasedRecordDispatcherTest {
 
-    private ContentBasedRecordDispatcher recordDispatcher;
+    private ContentBasedRecordDispatcher<Record> recordDispatcher;
 
     private BlockingQueue<Record> orangeQueue;
 
@@ -59,13 +54,13 @@ public class ContentBasedRecordDispatcherTest {
     private PoisonRecord poisonRecord;
 
     @Mock
-    private Predicate orangePredicate;
+    private Predicate<Record> orangePredicate;
 
     @Before
     public void setUp() throws Exception {
-        orangeQueue = new LinkedBlockingQueue<Record>();
-        defaultQueue = new LinkedBlockingQueue<Record>();
-        recordDispatcher = new ContentBasedRecordDispatcherBuilder()
+        orangeQueue = new LinkedBlockingQueue<>();
+        defaultQueue = new LinkedBlockingQueue<>();
+        recordDispatcher = new ContentBasedRecordDispatcherBuilder<>()
                 .when(orangePredicate).dispatchTo(orangeQueue)
                 .otherwise(defaultQueue)
                 .build();

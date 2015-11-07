@@ -24,8 +24,7 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.filter.RecordFilter;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -33,35 +32,39 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Filter jms poison records.
+ * Filter {@link JmsPoisonRecord}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class JmsPoisonRecordFilter implements RecordFilter {
+public class JmsPoisonRecordFilter implements RecordFilter<JmsRecord> {
 
     private static final Logger LOGGER = Logger.getLogger(JmsPoisonRecordFilter.class.getName());
 
     /**
-     * Return true if the record should be filtered (skipped).
+     * Return true if the record should be filtered.
      *
      * @param record the record to filter
-     * @return true if the record should be filtered (skipped)
+     * @return true if the record should be filtered, false else
      */
     @Override
-    public boolean filterRecord(Record record) {
-        JmsRecord jmsRecord = (JmsRecord) record;
+    public JmsRecord processRecord(JmsRecord record) {
         boolean isPoison = false;
-        Message payload = jmsRecord.getPayload();
+        Message payload = record.getPayload();
         try {
-            String type = payload.getJMSType();
-            if (type != null && !type.isEmpty()) {
-                isPoison = JmsPoisonMessage.TYPE.equals(type);
+            if (payload != null) {
+                String type = payload.getJMSType();
+                if (type != null && !type.isEmpty()) {
+                    isPoison = JmsPoisonMessage.TYPE.equals(type);
+                }
             }
         } catch (JMSException e) {
             LOGGER.log(Level.WARNING, "Unable to get type of JMS message " + payload, e);
-            return false;
+            return null;
         }
-        return isPoison || payload instanceof JmsPoisonMessage;
+        if (record instanceof JmsPoisonRecord || isPoison || payload instanceof JmsPoisonMessage) {
+            return null;
+        }
+        return record;
     }
 
 }

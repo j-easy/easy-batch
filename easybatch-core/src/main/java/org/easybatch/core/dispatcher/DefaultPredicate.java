@@ -24,14 +24,14 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Record;
+import org.easybatch.core.record.Record;
 
 /**
  * A default predicate used to put records in the default queue when building a {@link org.easybatch.core.dispatcher.ContentBasedRecordDispatcher}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class DefaultPredicate implements Predicate {
+public class DefaultPredicate<T extends Record> implements Predicate<T> {
 
     /*
      * needed for equals and hashcode, all instances should be equal to be able to get the default queue
@@ -40,7 +40,7 @@ public class DefaultPredicate implements Predicate {
     private String id = "defaultPredicate";
 
     @Override
-    public boolean matches(Record record) {
+    public boolean matches(T record) {
         return true;
     }
 

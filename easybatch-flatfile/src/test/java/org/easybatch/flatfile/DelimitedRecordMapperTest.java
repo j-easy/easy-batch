@@ -24,6 +24,7 @@
 
 package org.easybatch.flatfile;
 
+import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,11 +37,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-/**
- * Unit test class for {@link DelimitedRecordMapper}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class DelimitedRecordMapperTest {
 
@@ -51,8 +47,7 @@ public class DelimitedRecordMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class,
-                new String[]{"firstName", "lastName", "age", "birthDate", "married"});
+        delimitedRecordMapper = new DelimitedRecordMapper(Person.class, "firstName", "lastName", "age", "birthDate", "married");
 
         when(record.getPayload()).thenReturn("foo,bar,30,1990-12-12,true");
         when(headerRecord.getPayload()).thenReturn("firstName,lastName,age,birthDate,married");
@@ -139,7 +134,7 @@ public class DelimitedRecordMapperTest {
 
     @Test
     public void testFieldSubsetMapping() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class,
+        delimitedRecordMapper = new DelimitedRecordMapper(Person.class,
                 new Integer[]{0, 4},
                 new String[]{"firstName", "married"}
         );
@@ -168,10 +163,12 @@ public class DelimitedRecordMapperTest {
 
     @Test
     public void testFieldNamesConventionOverConfiguration() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class);
+        delimitedRecordMapper = new DelimitedRecordMapper(Person.class);
 
         delimitedRecordMapper.parseRecord(headerRecord);
-        Person person = (Person) delimitedRecordMapper.mapRecord(record);
+        GenericRecord<Person> actual = delimitedRecordMapper.processRecord(record);
+        Person person = actual.getPayload();
+
         assertThat(person).isNotNull();
         assertThat(person.getFirstName()).isEqualTo("foo");
         assertThat(person.getLastName()).isEqualTo("bar");
@@ -182,9 +179,10 @@ public class DelimitedRecordMapperTest {
 
     @Test
     public void testFieldSubsetMappingWithConventionOverConfiguration() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper<Person>(Person.class, new Integer[]{0, 4});
+        delimitedRecordMapper = new DelimitedRecordMapper(Person.class, 0, 4);
         delimitedRecordMapper.parseRecord(headerRecord);
-        Person person = (Person) delimitedRecordMapper.mapRecord(record);
+        GenericRecord<Person> actual = delimitedRecordMapper.processRecord(record);
+        Person person = actual.getPayload();
 
         assertThat(person).isNotNull();
         assertThat(person.getFirstName()).isEqualTo("foo");

@@ -24,16 +24,15 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.record.Record;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters records
+ * A {@link RecordFilter} that filters records
  * if their number is inside (inclusive) a given range.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordNumberBetweenFilter implements RecordFilter {
+public class RecordNumberBetweenFilter implements RecordFilter<Record> {
 
     /**
      * Record number range lower bound.
@@ -46,6 +45,8 @@ public class RecordNumberBetweenFilter implements RecordFilter {
     protected long higherBound;
 
     /**
+     * Create a {@link RecordNumberBetweenFilter} instance.
+     *
      * @param lowerBound  Record number range lower bound.
      * @param higherBound Record number range higher bound.
      */
@@ -54,12 +55,12 @@ public class RecordNumberBetweenFilter implements RecordFilter {
         this.higherBound = higherBound;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean filterRecord(final Record record) {
-        return record.getHeader().getNumber() >= lowerBound && record.getHeader().getNumber() <= higherBound;
+    public Record processRecord(final Record record) {
+        if (record.getHeader().getNumber() >= lowerBound && record.getHeader().getNumber() <= higherBound) {
+            return null;
+        }
+        return record;
     }
 
 }

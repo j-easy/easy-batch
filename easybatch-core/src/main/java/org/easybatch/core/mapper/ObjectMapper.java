@@ -24,8 +24,6 @@
 
 package org.easybatch.core.mapper;
 
-import org.easybatch.core.api.RecordMappingException;
-import org.easybatch.core.api.TypeConverter;
 import org.easybatch.core.converter.*;
 
 import java.beans.BeanInfo;
@@ -49,10 +47,9 @@ import static java.lang.String.format;
 /**
  * A helper class that maps a record to a domain object instance.
  *
- * @param <T> the target domain object type
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class ObjectMapper<T> {
+public class ObjectMapper {
 
     /**
      * The logger.
@@ -62,7 +59,7 @@ public class ObjectMapper<T> {
     /**
      * The target domain object class.
      */
-    private Class<? extends T> recordClass;
+    private Class recordClass;
 
     /**
      * A map holding setter methods for each field.
@@ -79,7 +76,7 @@ public class ObjectMapper<T> {
      *
      * @param recordClass the target object type
      */
-    public ObjectMapper(final Class<? extends T> recordClass) {
+    public ObjectMapper(final Class recordClass) {
         this.recordClass = recordClass;
         initializeTypeConverters();
         initializeSetters();
@@ -92,9 +89,9 @@ public class ObjectMapper<T> {
      * @return A populated instance of the target type.
      * @throws RecordMappingException thrown if values cannot be mapped to target object fields
      */
-    public T mapObject(final Map<String, String> values) throws RecordMappingException {
+    public Object mapObject(final Map<String, String> values) throws RecordMappingException {
 
-        T result = createInstance();
+        Object result = createInstance();
 
         // for each field
         for (String field : values.keySet()) {
@@ -122,6 +119,11 @@ public class ObjectMapper<T> {
                 continue;
             }
 
+            if (value.isEmpty()) {
+                LOGGER.log(Level.FINE, "Attempting to convert an empty string to type {0} for field {1}, this field will be ignored", new Object[]{type, field});
+                continue;
+            }
+
             convertValue(result, field, value, setter, type, typeConverter);
 
         }
@@ -130,7 +132,7 @@ public class ObjectMapper<T> {
     }
 
     private void initializeSetters() {
-        setters = new HashMap<String, Method>();
+        setters = new HashMap<>();
         try {
             BeanInfo beanInfo = Introspector.getBeanInfo(recordClass);
             PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
@@ -148,15 +150,15 @@ public class ObjectMapper<T> {
         setters.remove("class");
     }
 
-    private T createInstance() throws RecordMappingException {
+    private Object createInstance() throws RecordMappingException {
         try {
             return recordClass.newInstance();
         } catch (Exception e) {
-            throw new RecordMappingException("Unable to create a new instance of target type", e);
+            throw new RecordMappingException(format("Unable to create a new instance of target type %s", recordClass.getName()), e);
         }
     }
 
-    private void convertValue(T result, String field, String value, Method setter, Class<?> type, TypeConverter typeConverter) throws RecordMappingException {
+    private void convertValue(Object result, String field, String value, Method setter, Class<?> type, TypeConverter typeConverter) throws RecordMappingException {
         try {
             Object typedValue = typeConverter.convert(value);
             setter.invoke(result, typedValue);
@@ -166,7 +168,7 @@ public class ObjectMapper<T> {
     }
 
     private void initializeTypeConverters() {
-        typeConverters = new HashMap<Class, TypeConverter>();
+        typeConverters = new HashMap<>();
         typeConverters.put(AtomicInteger.class, new AtomicIntegerTypeConverter());
         typeConverters.put(AtomicLong.class, new AtomicLongTypeConverter());
         typeConverters.put(BigDecimal.class, new BigDecimalTypeConverter());
@@ -206,7 +208,7 @@ public class ObjectMapper<T> {
             return;
         }
         ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
-        Type type = parameterizedType.getActualTypeArguments()[0];
+        Type type = parameterizedType.getActualTypeArguments()[1];
 
         // register the converter
         try {

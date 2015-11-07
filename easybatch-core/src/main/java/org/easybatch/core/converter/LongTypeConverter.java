@@ -24,7 +24,7 @@
 
 package org.easybatch.core.converter;
 
-import org.easybatch.core.api.TypeConverter;
+import static org.easybatch.core.util.Utils.checkArgument;
 
 /**
  * Long type converter.
@@ -32,19 +32,15 @@ import org.easybatch.core.api.TypeConverter;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class LongTypeConverter implements TypeConverter<Long> {
+public class LongTypeConverter implements TypeConverter<String, Long> {
 
     /**
      * {@inheritDoc}
      */
     @Override
     public Long convert(final String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value to convert must not be null");
-        }
-        if (value.isEmpty()) {
-            throw new IllegalArgumentException("Value to convert must not be empty");
-        }
+        checkArgument(value != null, "Value to convert must not be null");
+        checkArgument(!value.isEmpty(), "Value to convert must not be empty");
         return Long.valueOf(value);
     }
 

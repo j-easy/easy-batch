@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains built-in implementations of the {@link org.easybatch.core.api.RecordReader} interface.
+ * This package contains built-in implementations of the {@link org.easybatch.core.reader.RecordReader} interface.
  */
 package org.easybatch.core.reader;

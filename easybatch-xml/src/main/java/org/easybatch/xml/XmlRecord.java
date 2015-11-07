@@ -24,7 +24,7 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.api.Header;
+import org.easybatch.core.record.Header;
 import org.easybatch.core.record.StringRecord;
 
 /**
@@ -34,6 +34,12 @@ import org.easybatch.core.record.StringRecord;
  */
 public class XmlRecord extends StringRecord {
 
+    /**
+     * Create a {@link XmlRecord}.
+     *
+     * @param header  the record header
+     * @param payload the record payload
+     */
     public XmlRecord(final Header header, String payload) {
         super(header, payload);
     }

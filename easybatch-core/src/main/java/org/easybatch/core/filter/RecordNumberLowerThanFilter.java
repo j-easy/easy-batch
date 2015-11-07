@@ -24,35 +24,35 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.record.Record;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters flat file records
- * if their number is lower than a given number.
+ * Filter a record if its number is lower than a given number.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordNumberLowerThanFilter implements RecordFilter {
+public class RecordNumberLowerThanFilter implements RecordFilter<Record> {
 
     /**
      * Record number under which records will be filtered.
      */
-    private long number;
+    protected long number;
 
     /**
+     * Create a {@link RecordNumberLowerThanFilter} instance.
+     *
      * @param number record number under which records will be filtered.
      */
     public RecordNumberLowerThanFilter(final long number) {
         this.number = number;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean filterRecord(final Record record) {
-        return record.getHeader().getNumber() < number;
+    public Record processRecord(final Record record) {
+        if (record.getHeader().getNumber() < number) {
+            return null;
+        }
+        return record;
     }
 
 }

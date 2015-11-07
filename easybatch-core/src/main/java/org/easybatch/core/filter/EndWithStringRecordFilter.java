@@ -24,17 +24,14 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.record.StringRecord;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters string records ending with one of the given suffixes.<br/>
- * The parameter negate can be set to true to inverse this behavior :
- * this filter will then filter records that do not start with one of the given suffixes.
+ * Filter string records ending with one of the given suffixes.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class EndWithStringRecordFilter implements RecordFilter {
+public class EndWithStringRecordFilter implements RecordFilter<StringRecord> {
 
     /**
      * Suffixes that causes the record to be filtered.
@@ -42,43 +39,22 @@ public class EndWithStringRecordFilter implements RecordFilter {
     private String[] suffixes;
 
     /**
-     * Parameter to filter a record if it does not end with one of the given suffixes.
-     */
-    private boolean negate;
-
-    /**
+     * Create a {@link EndWithStringRecordFilter} instance.
+     *
      * @param suffixes suffixes that cause the record to be filtered.
      */
     public EndWithStringRecordFilter(final String... suffixes) {
-        this(false, suffixes);
-    }
-
-    /**
-     * @param negate   true if the filter should filter records that do not end with any of the given suffixes.
-     * @param suffixes suffixes that cause the record to be filtered.
-     */
-    public EndWithStringRecordFilter(final boolean negate, final String... suffixes) {
-        this.negate = negate;
         this.suffixes = suffixes;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean filterRecord(final Record record) {
-        boolean result = doFilterRecord(record);
-        return negate ? !result : result;
-    }
-
-    private boolean doFilterRecord(Record record) {
-        String payload = (String) record.getPayload();
+    public StringRecord processRecord(final StringRecord record) {
+        String payload = record.getPayload();
         for (String prefix : suffixes) {
             if (payload.endsWith(prefix)) {
-                return true;
+                return null;
             }
         }
-        return false;
+        return record;
     }
 
 }

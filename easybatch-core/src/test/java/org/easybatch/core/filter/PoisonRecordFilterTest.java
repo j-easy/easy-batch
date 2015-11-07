@@ -34,11 +34,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test class for {@link PoisonRecordFilter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class PoisonRecordFilterTest {
 
@@ -54,13 +49,17 @@ public class PoisonRecordFilterTest {
 
     @Test
     public void whenTheRecordIsOfTypePoisonRecord_ThenItShouldBeFiltered() {
-        assertThat(poisonRecordFilter.filterRecord(new PoisonRecord())).isTrue();
-        assertThat(poisonRecordFilter.filterRecord(new CustomPoisonRecord())).isTrue();
+        assertThat(poisonRecordFilter.processRecord(new PoisonRecord())).isNull();
+    }
+
+    @Test
+    public void whenTheRecordIsOfCustomTypePoisonRecord_ThenItShouldBeFiltered() {
+        assertThat(poisonRecordFilter.processRecord(new CustomPoisonRecord())).isNull();
     }
 
     @Test
     public void whenTheRecordIsNotOfTypePoisonRecord_ThenItNotShouldBeFiltered() {
-        assertThat(poisonRecordFilter.filterRecord(record)).isFalse();
+        assertThat(poisonRecordFilter.processRecord(record)).isEqualTo(record);
     }
 
     class CustomPoisonRecord extends PoisonRecord {

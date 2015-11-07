@@ -24,16 +24,14 @@
 
 package org.easybatch.core.dispatcher;
 
+import org.easybatch.core.processor.RecordProcessingException;
+
 /**
- * Exception thrown when an error occurs during record mapping.
+ * Exception thrown when an error occurs during record dispatching.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordDispatchingException extends Exception {
-
-    public RecordDispatchingException(String message) {
-        super(message);
-    }
+public class RecordDispatchingException extends RecordProcessingException {
 
     public RecordDispatchingException(String message, Throwable cause) {
         super(message, cause);

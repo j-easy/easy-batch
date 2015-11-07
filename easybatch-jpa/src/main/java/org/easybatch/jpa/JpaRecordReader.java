@@ -24,9 +24,9 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.api.Header;
-import org.easybatch.core.api.RecordReader;
+import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Header;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,20 +35,26 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.easybatch.core.util.Utils.checkArgument;
+import static org.easybatch.core.util.Utils.checkNotNull;
+
 /**
- * Reader that reads data using the Java Persistence API.
+ * Read records using the Java Persistence API.
  * <p/>
- * This reader produces {@link GenericRecord} instances that can be mapped
- * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects.
+ * This reader produces {@link GenericRecord} instances with JPA entities as payload.
  *
  * @param <T> the type of objects this reader will read.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class JpaRecordReader<T> implements RecordReader {
 
+    public static final int DEFAULT_FETCH_SIZE = 1000;
+
     private EntityManager entityManager;
 
     private String query;
+
+    private TypedQuery<T> typedQuery;
 
     private Class<T> type;
 
@@ -56,43 +62,61 @@ public class JpaRecordReader<T> implements RecordReader {
 
     private Iterator<T> iterator;
 
-    private boolean maxResultsEnabled;
+    private int offset;
 
-    private int maxResults;
+    private int fetchSize;
 
     private long currentRecordNumber;
 
-    public JpaRecordReader(EntityManagerFactory entityManagerFactory, String query, Class<T> type) {
+    /**
+     * Reader that reads data using the Java Persistence API.
+     * <p/>
+     * This reader produces {@link GenericRecord} instances with JPA entities as payload.
+     *
+     * @param entityManagerFactory the entity manager factory
+     * @param query                the JPQL query to fetch data
+     * @param type                 the target type
+     */
+    public JpaRecordReader(final EntityManagerFactory entityManagerFactory, final String query, final Class<T> type) {
+        checkNotNull(entityManagerFactory, "entity manager factory");
+        checkNotNull(query, "query");
+        checkNotNull(type, "target type");
         this.entityManager = entityManagerFactory.createEntityManager();
         this.query = query;
         this.type = type;
+        this.fetchSize = DEFAULT_FETCH_SIZE;
     }
 
     @Override
     public void open() {
         currentRecordNumber = 0;
-        TypedQuery<T> typedQuery = entityManager.createQuery(query, type);
-        if (maxResultsEnabled) {
-            typedQuery.setMaxResults(maxResults);
-        }
+        offset = 0;
+        typedQuery = entityManager.createQuery(query, type);
+        typedQuery.setFirstResult(offset);
+        typedQuery.setMaxResults(fetchSize);
         records = typedQuery.getResultList();
         iterator = records.iterator();
     }
 
     @Override
     public boolean hasNextRecord() {
+        if (!iterator.hasNext()) {
+            typedQuery.setFirstResult(offset += records.size());
+            records = typedQuery.getResultList();
+            iterator = records.iterator();
+        }
         return iterator.hasNext();
     }
 
     @Override
     public GenericRecord<T> readNextRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new GenericRecord<T>(header, iterator.next());
+        return new GenericRecord<>(header, iterator.next());
     }
 
     @Override
     public Long getTotalRecords() {
-        return (long) records.size();
+        return null;
     }
 
     @Override
@@ -105,9 +129,13 @@ public class JpaRecordReader<T> implements RecordReader {
         entityManager.close();
     }
 
-    public void setMaxResults(int maxResults) {
-        this.maxResults = maxResults;
-        this.maxResultsEnabled = true;
+    /**
+     * Set the fetch size.
+     * @param fetchSize the fetch size
+     */
+    public void setFetchSize(final int fetchSize) {
+        checkArgument(fetchSize >= 1, "fetch size parameter must be >= 1");
+        this.fetchSize = fetchSize;
     }
 
 }

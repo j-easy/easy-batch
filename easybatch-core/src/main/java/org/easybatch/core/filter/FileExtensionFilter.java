@@ -24,42 +24,36 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
 import org.easybatch.core.record.FileRecord;
 
-import java.util.List;
-
 /**
- * A filter that filters {@link FileRecord} having a payload file name ending with a given extension.
+ * Filter {@link FileRecord} having a payload file name ending with a given extension.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class FileExtensionFilter implements RecordFilter {
+public class FileExtensionFilter implements RecordFilter<FileRecord> {
 
     /**
      * List of extensions to filter.
      */
-    private List<String> extensions;
+    private String[] extensions;
 
     /**
-     * Construct a file extension filter.
+     * Create a {@link FileExtensionFilter} instance.
      *
      * @param extensions a list of extensions. Example: .log
      */
-    public FileExtensionFilter(List<String> extensions) {
+    public FileExtensionFilter(String... extensions) {
         this.extensions = extensions;
     }
 
-    @Override
-    public boolean filterRecord(Record record) {
-        FileRecord fileRecord = (FileRecord) record;
+    public FileRecord processRecord(final FileRecord record) {
         for (String extension : extensions) {
-            if (fileRecord.getPayload().getName().endsWith(extension)) {
-                return true;
+            if (record.getPayload().getName().endsWith(extension)) {
+                return null;
             }
         }
-        return false;
+        return record;
     }
 
 }

@@ -24,7 +24,7 @@
 
 package org.easybatch.core.converter;
 
-import org.easybatch.core.api.TypeConverter;
+import static org.easybatch.core.util.Utils.checkArgument;
 
 /**
  * Character type converter.
@@ -33,19 +33,15 @@ import org.easybatch.core.api.TypeConverter;
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class CharacterTypeConverter implements TypeConverter<Character> {
+public class CharacterTypeConverter implements TypeConverter<String, Character> {
 
     /**
      * {@inheritDoc}
      */
     @Override
     public Character convert(final String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value to convert must not be null");
-        }
-        if (value.isEmpty()) {
-            throw new IllegalArgumentException("Value to convert must not be empty");
-        }
+        checkArgument(value != null, "Value to convert must not be null");
+        checkArgument(!value.isEmpty(), "Value to convert must not be empty");
         return value.charAt(0);
     }
 

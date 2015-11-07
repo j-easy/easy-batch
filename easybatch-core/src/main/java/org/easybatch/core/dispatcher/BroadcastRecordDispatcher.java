@@ -24,43 +24,36 @@
 
 package org.easybatch.core.dispatcher;
 
-import org.easybatch.core.api.Record;
+import org.easybatch.core.record.Record;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-import static java.lang.String.format;
-
 /**
- * A record dispatcher that broadcasts input records to a list of queues.
+ * Broadcast records to a list of {@link BlockingQueue}.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class BroadcastRecordDispatcher extends AbstractRecordDispatcher {
+public class BroadcastRecordDispatcher<T extends Record> extends AbstractRecordDispatcher<T> {
 
     /**
      * List of queues to which records should be dispatched.
      */
-    private List<BlockingQueue<Record>> queues;
+    private List<BlockingQueue<T>> queues;
 
     /**
      * Create a {@link BroadcastRecordDispatcher} instance.
      *
      * @param queues the list of queues to which records should be dispatched
      */
-    public BroadcastRecordDispatcher(List<BlockingQueue<Record>> queues) {
+    public BroadcastRecordDispatcher(List<BlockingQueue<T>> queues) {
         this.queues = queues;
     }
 
     @Override
-    public void dispatchRecord(final Record record) throws RecordDispatchingException {
-        for (BlockingQueue<Record> queue : queues) {
-            try {
-                queue.put(record);
-            } catch (InterruptedException e) {
-                String message = format("Unable to put record %s in queue %s", record, queue);
-                throw new RecordDispatchingException(message, e);
-            }
+    protected void dispatchRecord(final T record) throws Exception {
+        for (BlockingQueue<T> queue : queues) {
+            queue.put(record);
         }
     }
 

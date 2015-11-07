@@ -24,27 +24,22 @@
 
 package org.easybatch.core.filter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-import org.easybatch.core.api.Record;
+import org.easybatch.core.record.Record;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * Test class for {@link RecordNumberBetweenFilter}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 public class RecordNumberBetweenFilterTest {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Record record;
-    
+
     private RecordNumberBetweenFilter recordNumberBetweenFilter;
 
     @Test
@@ -52,10 +47,7 @@ public class RecordNumberBetweenFilterTest {
         recordNumberBetweenFilter = new RecordNumberBetweenFilter(1, 2);
 
         when(record.getHeader().getNumber()).thenReturn(1l);
-        assertThat(recordNumberBetweenFilter.filterRecord(record)).isTrue();
-        
-        when(record.getHeader().getNumber()).thenReturn(2l);
-        assertThat(recordNumberBetweenFilter.filterRecord(record)).isTrue();
+        assertThat(recordNumberBetweenFilter.processRecord(record)).isNull();
     }
 
     @Test
@@ -63,10 +55,10 @@ public class RecordNumberBetweenFilterTest {
         recordNumberBetweenFilter = new RecordNumberBetweenFilter(3, 4);
 
         when(record.getHeader().getNumber()).thenReturn(2l);
-        assertThat(recordNumberBetweenFilter.filterRecord(record)).isFalse();
+        assertThat(recordNumberBetweenFilter.processRecord(record)).isEqualTo(record);
 
         when(record.getHeader().getNumber()).thenReturn(5l);
-        assertThat(recordNumberBetweenFilter.filterRecord(record)).isFalse();
+        assertThat(recordNumberBetweenFilter.processRecord(record)).isEqualTo(record);
     }
 
 }

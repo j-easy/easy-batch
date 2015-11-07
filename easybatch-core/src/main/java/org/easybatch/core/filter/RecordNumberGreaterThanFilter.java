@@ -24,16 +24,15 @@
 
 package org.easybatch.core.filter;
 
-import org.easybatch.core.api.Record;
-import org.easybatch.core.api.RecordFilter;
+import org.easybatch.core.record.Record;
 
 /**
- * A {@link org.easybatch.core.api.RecordFilter} that filters flat file records
+ * A {@link RecordFilter} that filters records
  * if their number is greater than a given number.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
-public class RecordNumberGreaterThanFilter implements RecordFilter {
+public class RecordNumberGreaterThanFilter implements RecordFilter<Record> {
 
     /**
      * Record number after which records will be filtered.
@@ -41,18 +40,20 @@ public class RecordNumberGreaterThanFilter implements RecordFilter {
     private long number;
 
     /**
+     * Create a {@link RecordNumberGreaterThanFilter} instance.
+     *
      * @param number record number after which records will be filtered.
      */
     public RecordNumberGreaterThanFilter(final long number) {
         this.number = number;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean filterRecord(final Record record) {
-        return record.getHeader().getNumber() > number;
+    public Record processRecord(final Record record) {
+        if (record.getHeader().getNumber() > number) {
+            return null;
+        }
+        return record;
     }
 
 }

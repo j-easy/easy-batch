@@ -34,11 +34,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-/**
- * Unit test class for {@link FixedLengthRecordMapper}.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 @RunWith(MockitoJUnitRunner.class)
 public class FixedLengthRecordMapperTest {
 
@@ -49,7 +44,7 @@ public class FixedLengthRecordMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        fixedLengthRecordMapper = new FixedLengthRecordMapper<Bean>(Bean.class,
+        fixedLengthRecordMapper = new FixedLengthRecordMapper(Bean.class,
                 new int[]{4, 2, 3},
                 new String[]{"field1", "field2", "field3"});
         when(record.getPayload()).thenReturn("aaaabbccc");

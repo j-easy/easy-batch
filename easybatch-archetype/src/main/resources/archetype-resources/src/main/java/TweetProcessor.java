@@ -1,6 +1,7 @@
 package ${packageName};
 
-import org.easybatch.core.api.RecordProcessor;
+import org.easybatch.core.processor.RecordProcessingException;
+import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.record.StringRecord;
 
 /**
@@ -9,7 +10,7 @@ import org.easybatch.core.record.StringRecord;
 public class TweetProcessor implements RecordProcessor<StringRecord, StringRecord> {
 
     @Override
-    public StringRecord processRecord(StringRecord record) throws Exception {
+    public StringRecord processRecord(StringRecord record) throws RecordProcessingException {
         System.out.println(record.getPayload());
         return record;
     }
