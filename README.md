@@ -49,7 +49,7 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
  Easy Batch provides APIs to process data in both modes.
 
- ## Quick links
+## Quick links
 
 |Item                  |Link                                                                          |
 |----------------------|------------------------------------------------------------------------------|
@@ -70,18 +70,9 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 ## Current version
 
-<table>
-<tbody>
-    <tr>
-        <td>Stable: 4.0.0</td>
-        <td>[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.0.0|)</td>
-    </tr>
-    <tr>
-        <td>development: 4.0.1-SNAPSHOT</td>
-        <td>[![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)</td>
-    </tr>
-</tbody>
-</table>
+* Stable: 4.0.0 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.0.0|)
+
+* Development: 4.1.0-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)</td>
 
 If you want to import the snapshot version, you need to use the following repository:
 
