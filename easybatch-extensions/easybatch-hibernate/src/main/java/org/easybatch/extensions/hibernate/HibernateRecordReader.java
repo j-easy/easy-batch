@@ -35,10 +35,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Reader that reads data using Hibernate API.
- * <p/>
- * This reader produces {@link GenericRecord} instances that can be mapped
- * with {@link org.easybatch.core.mapper.GenericRecordMapper} in order to get the raw objects.
+ * Read records using Hibernate API.
  *
  * @param <T> the type of objects this reader will read.
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
@@ -112,11 +109,21 @@ public class HibernateRecordReader<T> implements RecordReader {
         session.close();
     }
 
+    /**
+     * Set the max results to fetch.
+     *
+     * @param maxResults the maximum results to fetch
+     */
     public void setMaxResults(final int maxResults) {
         checkArgument(maxResults >= 1, "max result parameter must be greater than or equal to 1");
         this.maxResults = maxResults;
     }
 
+    /**
+     * Set the fetch size
+     *
+     * @param fetchSize the fetch size
+     */
     public void setFetchSize(final int fetchSize) {
         checkArgument(fetchSize >= 1, "fetch size parameter must be greater than or equal to 1");
         this.fetchSize = fetchSize;

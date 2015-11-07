@@ -84,11 +84,11 @@ public class XmlRecordMapper<P> implements RecordMapper<XmlRecord, GenericRecord
     }
 
     /**
-     * Create a {@link }XmlRecordMapper} with a pre-configured Unmarshaller (with custom adapter, custom listener, etc).
+     * Create a {@link XmlRecordMapper} with a pre-configured Unmarshaller (with custom adapter, custom listener, etc).
      *
      * @param unmarshaller the unmarshaller to use
      */
-    public XmlRecordMapper(Unmarshaller unmarshaller) {
+    public XmlRecordMapper(final Unmarshaller unmarshaller) {
         this.jaxbUnmarshaller = unmarshaller;
     }
 
