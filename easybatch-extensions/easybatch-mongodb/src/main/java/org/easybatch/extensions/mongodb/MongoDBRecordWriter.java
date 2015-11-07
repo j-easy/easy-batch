@@ -24,11 +24,11 @@
 
 package org.easybatch.extensions.mongodb;
 
-import static org.easybatch.core.util.Utils.checkNotNull;
-
-import org.easybatch.core.writer.AbstractRecordWriter;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import org.easybatch.core.writer.AbstractRecordWriter;
+
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Writes a Mongo {@link DBObject} in a given collection.

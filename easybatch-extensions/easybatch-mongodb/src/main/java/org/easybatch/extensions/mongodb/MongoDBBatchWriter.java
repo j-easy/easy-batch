@@ -24,19 +24,20 @@
 
 package org.easybatch.extensions.mongodb;
 
-import static java.lang.String.format;
-import static org.easybatch.core.util.Utils.checkNotNull;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.mongodb.BulkWriteOperation;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.writer.RecordWriter;
 import org.easybatch.core.writer.RecordWritingException;
-import com.mongodb.BulkWriteOperation;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static java.lang.String.format;
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Writes a batch of {@link MongoDBRecord} to a given collection in bulk mode.

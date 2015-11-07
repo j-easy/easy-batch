@@ -26,8 +26,8 @@ package org.easybatch.json;
 
 import org.easybatch.core.reader.AbstractBatchReader;
 import org.easybatch.core.reader.RecordReadingException;
-import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 
 import java.io.InputStream;

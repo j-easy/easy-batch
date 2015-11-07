@@ -27,13 +27,11 @@ package org.easybatch.json;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.Batch;
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

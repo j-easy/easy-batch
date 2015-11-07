@@ -24,12 +24,13 @@
 
 package org.easybatch.jpa;
 
-import java.util.List;
-import javax.persistence.EntityManager;
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.writer.RecordWriter;
 import org.easybatch.core.writer.RecordWritingException;
+
+import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  * Writes a batch of records using a {@link JpaRecordWriter}.

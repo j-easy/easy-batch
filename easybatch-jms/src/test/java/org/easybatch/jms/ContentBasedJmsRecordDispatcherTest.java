@@ -31,7 +31,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.jms.Message;
 import javax.jms.QueueSender;
 
 import static org.mockito.Mockito.*;

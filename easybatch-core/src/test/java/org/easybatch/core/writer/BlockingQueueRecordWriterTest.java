@@ -33,9 +33,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.concurrent.BlockingQueue;
 
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BlockingQueueRecordWriterTest {

@@ -24,12 +24,12 @@
 
 package org.easybatch.core.marshaller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Marshal a list of objects using a delegate {@link RecordMarshaller}.

@@ -26,7 +26,6 @@ package org.easybatch.jms;
 
 import org.easybatch.core.processor.RecordProcessingException;
 import org.easybatch.core.processor.RecordProcessor;
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.StringRecord;
 
 import javax.jms.JMSException;

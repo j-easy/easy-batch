@@ -24,16 +24,17 @@
 
 package org.easybatch.jdbc;
 
-import static org.easybatch.core.util.Utils.checkNotNull;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
+import org.easybatch.core.writer.RecordWritingException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-import org.easybatch.core.record.Batch;
-import org.easybatch.core.record.Record;
-import org.easybatch.core.writer.RecordWriter;
-import org.easybatch.core.writer.RecordWritingException;
+
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Write a batch of records to a database using the JDBC API.

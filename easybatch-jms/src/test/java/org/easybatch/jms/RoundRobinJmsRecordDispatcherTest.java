@@ -32,7 +32,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.jms.Message;
 import javax.jms.QueueSender;
 import java.util.Arrays;
 

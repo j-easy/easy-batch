@@ -25,7 +25,6 @@
 package org.easybatch.extensions.hibernate;
 
 import org.easybatch.core.writer.AbstractRecordWriter;
-import org.easybatch.core.writer.RecordWritingException;
 import org.hibernate.Session;
 
 import static org.easybatch.core.util.Utils.checkNotNull;

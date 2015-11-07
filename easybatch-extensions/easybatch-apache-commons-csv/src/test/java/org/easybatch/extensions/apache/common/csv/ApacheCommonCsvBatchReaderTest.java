@@ -35,7 +35,6 @@ import org.easybatch.core.record.Batch;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.FileReader;
 import java.util.List;
 

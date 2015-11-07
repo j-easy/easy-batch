@@ -30,7 +30,6 @@ import java.util.Date;
 
 import static java.lang.String.valueOf;
 import static org.easybatch.core.job.JobParameters.DEFAULT_TIMEOUT;
-import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.easybatch.core.util.Utils.toMinutes;
 
 /**

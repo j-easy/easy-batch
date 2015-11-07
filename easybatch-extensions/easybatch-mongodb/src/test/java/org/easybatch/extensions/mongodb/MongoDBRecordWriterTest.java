@@ -24,10 +24,8 @@
 
 package org.easybatch.extensions.mongodb;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import org.easybatch.core.processor.RecordProcessingException;
 import org.easybatch.core.record.Header;
 import org.junit.Before;
@@ -35,8 +33,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MongoDBRecordWriterTest {

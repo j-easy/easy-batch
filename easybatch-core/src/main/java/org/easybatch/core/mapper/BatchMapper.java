@@ -24,11 +24,12 @@
 
 package org.easybatch.core.mapper;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Map a {@link Batch} of records using a delegate {@link RecordMapper}.

@@ -25,11 +25,9 @@
 package org.easybatch.core.writer;
 
 import org.easybatch.core.reader.IterableRecordReader;
-import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.StringWriter;
@@ -39,7 +37,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
-import static org.mockito.Mockito.when;
 
 /**
  * Test class for {@link StringRecordWriter}.

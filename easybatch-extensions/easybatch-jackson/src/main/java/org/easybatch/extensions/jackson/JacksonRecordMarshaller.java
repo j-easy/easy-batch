@@ -24,14 +24,15 @@
 
 package org.easybatch.extensions.jackson;
 
-import static org.easybatch.core.util.Utils.checkNotNull;
-
-import java.io.IOException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.easybatch.core.marshaller.RecordMarshaller;
 import org.easybatch.core.marshaller.RecordMarshallingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.json.JsonRecord;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Marshals a POJO to Json using <a href="http://jackson.codehaus.org/">Jackson</a>.

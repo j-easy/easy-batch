@@ -24,13 +24,7 @@
 
 package org.easybatch.extensions.mongodb;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.job.JobBuilder.aNewJob;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
+import com.mongodb.*;
 import org.assertj.core.api.Assertions;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.mapper.BatchMapper;
@@ -49,12 +43,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import com.mongodb.BasicDBObject;
-import com.mongodb.BulkWriteOperation;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MongoDBBatchWriterTest {

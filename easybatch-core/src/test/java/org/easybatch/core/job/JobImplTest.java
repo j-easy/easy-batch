@@ -40,7 +40,6 @@ import org.easybatch.core.reader.RecordReadingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
-import org.easybatch.core.record.StringRecord;
 import org.easybatch.core.validator.RecordValidationException;
 import org.easybatch.core.validator.RecordValidator;
 import org.junit.Before;

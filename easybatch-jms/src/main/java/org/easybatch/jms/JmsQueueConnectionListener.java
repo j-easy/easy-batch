@@ -24,15 +24,16 @@
 
 package org.easybatch.jms;
 
-import static org.easybatch.core.util.Utils.checkNotNull;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.jms.JMSException;
-import javax.jms.QueueConnection;
 import org.easybatch.core.job.JobParameters;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.listener.JobListener;
+
+import javax.jms.JMSException;
+import javax.jms.QueueConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Listener that closes a JMS queue connection at the end of the job.

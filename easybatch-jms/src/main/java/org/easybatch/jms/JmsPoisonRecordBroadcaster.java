@@ -24,13 +24,14 @@
 
 package org.easybatch.jms;
 
-import java.util.Date;
-import java.util.List;
-import javax.jms.QueueSender;
 import org.easybatch.core.job.JobParameters;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.record.Header;
+
+import javax.jms.QueueSender;
+import java.util.Date;
+import java.util.List;
 
 /**
  * A utility job listener that broadcasts a {@link JmsPoisonRecord} at the end of the job.

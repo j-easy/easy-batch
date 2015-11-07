@@ -24,17 +24,11 @@
 
 package org.easybatch.jms;
 
-import static org.easybatch.core.util.Utils.checkNotNull;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Queue;
-import javax.jms.QueueConnection;
-import javax.jms.QueueConnectionFactory;
-import javax.jms.QueueSender;
-import javax.jms.QueueSession;
-import javax.jms.Session;
 import org.easybatch.core.writer.AbstractRecordWriter;
+
+import javax.jms.*;
+
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Sends a Jms message to a given queue.

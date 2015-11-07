@@ -27,7 +27,6 @@ package org.easybatch.jms;
 import org.easybatch.core.dispatcher.DefaultPredicate;
 import org.easybatch.core.dispatcher.Predicate;
 
-import javax.jms.Message;
 import javax.jms.QueueSender;
 import java.util.HashMap;
 import java.util.Map;

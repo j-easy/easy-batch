@@ -24,15 +24,16 @@
 
 package org.easybatch.validation;
 
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.util.Utils;
 import org.easybatch.core.validator.RecordValidationException;
 import org.easybatch.core.validator.RecordValidator;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.util.Set;
 
 /**
  * An implementation of {@link RecordValidator} using JSR 303 API.

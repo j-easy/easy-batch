@@ -24,16 +24,6 @@
 
 package org.easybatch.extensions.hibernate;
 
-import static java.lang.Long.valueOf;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.job.JobBuilder.aNewJob;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableBatchReader;
 import org.hibernate.Session;
@@ -41,6 +31,17 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.Long.valueOf;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
 
 public class HibernateBatchWriterTest {
 

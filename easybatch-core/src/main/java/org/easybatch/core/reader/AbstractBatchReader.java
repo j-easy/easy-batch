@@ -24,8 +24,8 @@
 
 package org.easybatch.core.reader;
 
-import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 
 import java.util.ArrayList;

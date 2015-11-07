@@ -24,26 +24,23 @@
 
 package org.easybatch.jpa;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.job.JobBuilder.aNewJob;
-
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableBatchReader;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.io.File;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.easybatch.core.job.JobBuilder.aNewJob;
 
 public class JpaBatchWriterTest {
 

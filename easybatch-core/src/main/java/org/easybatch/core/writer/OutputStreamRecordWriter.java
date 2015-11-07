@@ -27,11 +27,10 @@ package org.easybatch.core.writer;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.record.Record;
 
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import static java.lang.String.format;
-import static org.easybatch.core.util.Utils.*;
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
