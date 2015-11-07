@@ -28,7 +28,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 /**
- * Quartz Job implementation to launch batch job instances.
+ * Quartz Job implementation to schedule Easy Batch jobs.
  *
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
@@ -37,10 +37,15 @@ class Job implements org.quartz.Job {
     /**
      * The job instance.
      */
-    private org.easybatch.core.job.Job job;
+    private org.easybatch.core.job.Job easyBatchJob;
 
-    public Job(final org.easybatch.core.job.Job job) {
-        this.job = job;
+    /**
+     * Create a quartz job to schedule a Easy Batch job.
+     *
+     * @param easyBatchJob the Easy Batch job to schedule
+     */
+    public Job(final org.easybatch.core.job.Job easyBatchJob) {
+        this.easyBatchJob = easyBatchJob;
     }
 
     /**
@@ -49,9 +54,9 @@ class Job implements org.quartz.Job {
     @Override
     public void execute(final JobExecutionContext context) throws JobExecutionException {
         try {
-            job.call();
+            easyBatchJob.call();
         } catch (Exception e) {
-            throw new JobExecutionException("An exception occurred during the execution of job " + job, e);
+            throw new JobExecutionException("An exception occurred during the execution of job " + easyBatchJob, e);
         }
     }
 
