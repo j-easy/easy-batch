@@ -1,4 +1,4 @@
-## What is Easy Batch?
+# What is Easy Batch?
 
 To better understand what Easy Batch is, let's see a quick definition of batch processing in general:
 
