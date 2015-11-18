@@ -28,8 +28,8 @@ Easy Batch provides APIs to process data in both modes.
  
 # Why Easy Batch?
 
-Because writing batch applications requires a lot of boilerplate code: reading/writing/filtering/parsing/validating data, logging and reporting to name a few..
-The idea if to free you from these tedious tasks and let you focus on your application logic.
+Because writing batch applications requires a **lot** of boilerplate code: reading, writing, filtering, parsing and validating data, logging, reporting to name a few..
+The idea is to free you from these tedious tasks and let you focus on your application's logic.
 
 Let's see a quick example. Suppose you have the following `tweets.csv` file:
 
