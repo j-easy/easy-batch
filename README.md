@@ -1,6 +1,35 @@
 ## What is Easy Batch?
 
-Easy Batch is a framework that aims to simplify batch processing with Java. It frees you from tedious tasks such as reading, writing, filtering, parsing and validating data and lets you keep focus on your batch processing business logic.
+To better understand what Easy Batch is, let's see a quick definition of batch processing in general:
+
+> "Batch processing is the execution of a series of **jobs** on a computer without manual intervention.
+> All input **parameters** are predefined through **job control language**.
+> This operating environment is termed as **'batch processing'** because the input data are collected into **batches** or sets of **records** and each batch is processed **as a unit**." - [Wikipedia](https://en.wikipedia.org/wiki/Batch_processing)
+
+Easy Batch is a Java framework that provides abstractions for key concepts of batch processing:
+
+* `Job`: a program executed without manual intervention
+* `JobParameters`: set of parameters to configure a job
+* `JobBuilder`: main entry point to configure jobs
+* `JobExecutor`: main entry point to execute jobs
+* `JobReport`: execution report with metrics and statistics about the job run
+* `Record`: one item in the data source (line in a flat file, row in database table, tag in a Xml file, etc)
+* `Batch`: a set of records processed as a unit
+
+Easy Batch jobs are simple processing pipelines. You can process data one record at a time:
+
+![Record processing](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/eb/record-processing.jpg)
+
+Or in batches where each batch is processed as a unit:
+
+![Batch processing](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/eb/batch-processing.jpg)
+
+Easy Batch provides APIs to process data in both modes.
+ 
+# Why Easy Batch?
+
+Because writing batch applications requires a lot of boilerplate code: reading/writing/filtering/parsing/validating data, logging and reporting to name a few..
+The idea if to free you from these tedious tasks and let you focus on your application logic.
 
 Let's see a quick example. Suppose you have the following `tweets.csv` file:
 
@@ -36,18 +65,6 @@ At the end of execution, you get a report with statistics and metrics about the 
 
 All the boilerplate code of resources I/O, iterating through the data source, filtering and parsing records, mapping data to the domain object `Tweet`, writing output and reporting
  is handled by Easy Batch. Your code becomes declarative, intuitive, easy to read, understand, test and maintain.
-
-## How does it work?
-
- Easy Batch jobs are simple processing pipelines. You can process data one record at a time (as in the previous example):
-
-![Record processing](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/eb/record-processing.jpg)
-
- Or in batches where each batch is processed as a unit:
-
-![Batch processing](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/eb/batch-processing.jpg)
-
- Easy Batch provides APIs to process data in both modes.
 
 ## Quick links
 
