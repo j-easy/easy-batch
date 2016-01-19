@@ -62,6 +62,16 @@ public class FixedLengthRecordMapper extends AbstractRecordMapper implements Rec
     private int recordExpectedLength;
 
     /**
+     * Default whitespace trimming value.
+     */
+    public static final boolean DEFAULT_WHITESPACE_TRIMMING = false;
+
+    /**
+     * Parameter to trim whitespaces.
+     */
+    private boolean trimWhitespaces = DEFAULT_WHITESPACE_TRIMMING;
+
+    /**
      * Create a {@link FixedLengthRecordMapper} instance.
      *
      * @param recordClass  the target domain object class
@@ -104,6 +114,7 @@ public class FixedLengthRecordMapper extends AbstractRecordMapper implements Rec
         FlatFileRecord flatFileRecord = new FlatFileRecord(record.getHeader(), payload);
         for (int i = 0; i < fieldsLength.length; i++) {
             String token = payload.substring(fieldsOffsets[i], fieldsOffsets[i + 1]);
+            token = trimWhitespaces(token);
             FlatFileField flatFileField = new FlatFileField(i, token);
             flatFileRecord.getFlatFileFields().add(flatFileField);
         }
@@ -125,6 +136,22 @@ public class FixedLengthRecordMapper extends AbstractRecordMapper implements Rec
             offsets[i + 1] = offsets[i] + lengths[i];
         }
         return offsets;
+    }
+
+    private String trimWhitespaces(final String token) {
+        if (trimWhitespaces) {
+            return token.trim();
+        }
+        return token;
+    }
+
+    /**
+     * Trim white spaces when parsing the fixed length record.
+     *
+     * @param trimWhitespaces true if whitespaces should be trimmed
+     */
+    public void setTrimWhitespaces(final boolean trimWhitespaces) {
+        this.trimWhitespaces = trimWhitespaces;
     }
 
 }

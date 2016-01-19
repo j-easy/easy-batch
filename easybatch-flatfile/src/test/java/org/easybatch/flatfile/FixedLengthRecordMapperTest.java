@@ -65,4 +65,15 @@ public class FixedLengthRecordMapperTest {
         assertThat(flatFileRecord.getFlatFileFields().get(2).getRawContent()).isEqualTo("ccc");
     }
 
+    @Test
+    public void testRecordParsingWithTrimmedWhitespaces() throws Exception {
+        fixedLengthRecordMapper.setTrimWhitespaces(true);
+        when(record.getPayload()).thenReturn(" aa bbcc ");
+        FlatFileRecord flatFileRecord = fixedLengthRecordMapper.parseRecord(record);
+        assertThat(flatFileRecord.getFlatFileFields().size()).isEqualTo(3);
+        assertThat(flatFileRecord.getFlatFileFields().get(0).getRawContent()).isEqualTo("aa");
+        assertThat(flatFileRecord.getFlatFileFields().get(1).getRawContent()).isEqualTo("bb");
+        assertThat(flatFileRecord.getFlatFileFields().get(2).getRawContent()).isEqualTo("cc");
+    }
+
 }
