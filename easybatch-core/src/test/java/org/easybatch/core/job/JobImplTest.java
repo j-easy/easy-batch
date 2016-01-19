@@ -116,6 +116,7 @@ public class JobImplTest {
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
+                .jobListener(jobListener)
                 .build();
     }
 
@@ -175,6 +176,16 @@ public class JobImplTest {
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getTotalCount()).isNull();
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+    }
+
+    @Test
+    public void whenNotAbleToOpenReader_thenTheJobListenerShouldBeInvoked() throws Exception {
+        doThrow(recordReaderOpeningException).when(reader).open();
+
+        JobReport jobReport = JobExecutor.execute(job);
+
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        verify(jobListener).afterJobEnd(jobReport);
     }
 
     @Test

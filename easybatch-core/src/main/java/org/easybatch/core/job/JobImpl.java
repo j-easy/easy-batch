@@ -87,13 +87,12 @@ final class JobImpl implements Job {
     @Override
     public JobReport call() {
 
-        if (!openRecordReader()) {
-            return report;
-        }
-
-        eventManager.fireBeforeJobStart(parameters);
-
         try {
+
+            if (!openRecordReader()) {
+                return report;
+            }
+            eventManager.fireBeforeJobStart(parameters);
             long recordCount = 0;
             while (recordReader.hasNextRecord() && recordCount < parameters.getLimit()) {
 
