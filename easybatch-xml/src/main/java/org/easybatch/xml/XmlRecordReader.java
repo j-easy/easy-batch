@@ -108,7 +108,7 @@ public class XmlRecordReader implements RecordReader {
                 } else if (xmlEvent.isEndElement()) {
                     writeEndElement(stringBuilder, xmlEvent);
                 } else {
-                    stringBuilder.append(xmlEvent.toString());
+                    stringBuilder.append(xmlEvent.asCharacters().getData());
                 }
             }
             writeEndElement(stringBuilder, xmlEventReader.nextEvent());
