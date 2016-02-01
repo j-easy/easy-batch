@@ -42,13 +42,13 @@ id,user,message
 and you would like to transform these tweets to XML format. Here is how you can do that with Easy Batch:
 
 ```java
-Job job = JobBuilder()
-        .reader(new FlatFileRecordReader("tweets.csv"))
-        .filter(new HeaderRecordFilter())
-        .mapper(new DelimitedRecordMapper(Tweet.class, "id", "user", "message"))
-        .processor(new XmlRecordMarshaller(Tweet.class))
-        .writer(new FileRecordWriter("tweets.xml"))
-        .build();
+Job job = new JobBuilder()
+         .reader(new FlatFileRecordReader("tweets.csv"))
+         .filter(new HeaderRecordFilter())
+         .mapper(new DelimitedRecordMapper(Tweet.class, "id", "user", "message"))
+         .processor(new XmlRecordMarshaller(Tweet.class))
+         .writer(new FileRecordWriter("tweets.xml"))
+         .build();
 
 JobReport report = JobExecutor.execute(job);
 ```
