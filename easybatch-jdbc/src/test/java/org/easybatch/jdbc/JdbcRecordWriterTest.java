@@ -140,7 +140,7 @@ public class JdbcRecordWriterTest {
     }
 
     private List<Tweet> createTweets(Integer nbTweetsToInsert) {
-        List<Tweet> tweets = new ArrayList<Tweet>();
+        List<Tweet> tweets = new ArrayList<>();
         for (int i = 1; i <= nbTweetsToInsert; i++) {
             tweets.add(new Tweet(i, "user " + i, "hello " + i));
         }

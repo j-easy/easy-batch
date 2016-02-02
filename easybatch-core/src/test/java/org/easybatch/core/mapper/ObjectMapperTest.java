@@ -45,7 +45,7 @@ public class ObjectMapperTest {
         ObjectMapper mapper = new ObjectMapper(Person.class);
 
         // input values
-        Map<String, String> values = new HashMap<String, String>();
+        Map<String, String> values = new HashMap<>();
         values.put("firstName", "foo");
         values.put("lastName", "bar");
         values.put("age", "30");
@@ -71,7 +71,7 @@ public class ObjectMapperTest {
         ObjectMapper mapper = new ObjectMapper(ExtendedPerson.class);
 
         // input values
-        Map<String, String> values = new HashMap<String, String>();
+        Map<String, String> values = new HashMap<>();
         values.put("firstName", "foo");
         values.put("lastName", "bar");
         values.put("age", "30");
@@ -105,7 +105,7 @@ public class ObjectMapperTest {
             }
         });
 
-        Map<String, String> values = new HashMap<String, String>();
+        Map<String, String> values = new HashMap<>();
         values.put("gender", "MALE");
 
         Person person = (Person) mapper.mapObject(values);
@@ -118,7 +118,7 @@ public class ObjectMapperTest {
 
         ObjectMapper mapper = new ObjectMapper(Person.class);
 
-        Map<String, String> values = new HashMap<String, String>();
+        Map<String, String> values = new HashMap<>();
         values.put("nickName", "foo");
 
         try {
@@ -134,7 +134,7 @@ public class ObjectMapperTest {
 
         ObjectMapper mapper = new ObjectMapper(Person.class);
 
-        Map<String, String> values = new HashMap<String, String>();
+        Map<String, String> values = new HashMap<>();
         values.put("age", null);
 
         Person person = (Person) mapper.mapObject(values);
