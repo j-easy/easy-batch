@@ -98,7 +98,7 @@ public class JpaRecordReaderTest {
     @Before
     public void setUp() throws Exception {
         String query = "from Tweet";
-        jpaRecordReader = new JpaRecordReader<Tweet>(entityManagerFactory, query, Tweet.class);
+        jpaRecordReader = new JpaRecordReader<>(entityManagerFactory, query, Tweet.class);
         jpaRecordReader.setFetchSize(FETCH_SIZE);
         jpaRecordReader.open();
     }

@@ -118,7 +118,7 @@ public class XmlRecordMapperTest {
     @Test(expected = RecordMappingException.class)
     public void testMappingWithUnescapedXmlSpecialCharacter() throws Exception {
         xmlRecord = new XmlRecord(header, "<website name='google' url='http://www.google.com?query=test&sort=asc'/>");
-        XmlRecordMapper<Website> xmlRecordMapper = new XmlRecordMapper<Website>(Website.class);
+        XmlRecordMapper<Website> xmlRecordMapper = new XmlRecordMapper<>(Website.class);
         xmlRecordMapper.processRecord(xmlRecord);
     }
 
