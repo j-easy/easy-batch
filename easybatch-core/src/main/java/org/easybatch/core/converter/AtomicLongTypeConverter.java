@@ -43,7 +43,7 @@ public class AtomicLongTypeConverter implements TypeConverter<String, AtomicLong
     public AtomicLong convert(final String value) {
         checkArgument(value != null, "Value to convert must not be null");
         checkArgument(!value.isEmpty(), "Value to convert must not be empty");
-        return new AtomicLong(Long.valueOf(value));
+        return new AtomicLong(Long.parseLong(value));
     }
 
 }

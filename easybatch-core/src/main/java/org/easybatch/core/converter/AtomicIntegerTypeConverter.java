@@ -43,7 +43,7 @@ public class AtomicIntegerTypeConverter implements TypeConverter<String, AtomicI
     public AtomicInteger convert(final String value) {
         checkArgument(value != null, "Value to convert must not be null");
         checkArgument(!value.isEmpty(), "Value to convert must not be empty");
-        return new AtomicInteger(Integer.valueOf(value));
+        return new AtomicInteger(Integer.parseInt(value));
     }
 
 }

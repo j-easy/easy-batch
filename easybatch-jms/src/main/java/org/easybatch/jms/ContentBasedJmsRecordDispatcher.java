@@ -70,7 +70,8 @@ public class ContentBasedJmsRecordDispatcher extends AbstractRecordDispatcher<Jm
         }
 
         Message payload = record.getPayload();
-        for (Predicate<JmsRecord> predicate : queueMap.keySet()) {
+        for (Map.Entry<Predicate<JmsRecord>, QueueSender> entry : queueMap.entrySet()) {
+            Predicate<JmsRecord> predicate = entry.getKey();
             //check if the record meets a given predicate
             if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
                 //put it in the mapped queue
