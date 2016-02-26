@@ -94,8 +94,9 @@ public class ObjectMapper {
         Object result = createInstance();
 
         // for each field
-        for (String field : values.keySet()) {
+        for (Map.Entry<String, String> entry : values.entrySet()) {
 
+            String field = entry.getKey();
             //get field raw value
             String value = values.get(field);
 

@@ -68,7 +68,8 @@ public class ContentBasedRecordDispatcher<T extends Record> extends AbstractReco
             return;
         }
 
-        for (Predicate<T> predicate : queueMap.keySet()) {
+        for (Map.Entry<Predicate<T>, BlockingQueue<T>> entry : queueMap.entrySet()) {
+            Predicate<T> predicate = entry.getKey();
             //check if the record meets a given predicate
             if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
                 //if so, put it in the mapped queue
