@@ -65,8 +65,8 @@ public class RoundRobinRecordDispatcherTest {
         roundRobinRecordDispatcher.dispatchRecord(record2);
         roundRobinRecordDispatcher.dispatchRecord(record3);
 
-        assertThat(queue1).isNotEmpty().containsExactly(record1, record3);
-        assertThat(queue2).isNotEmpty().containsOnly(record2);
+        assertThat(queue1).containsExactly(record1, record3);
+        assertThat(queue2).containsOnly(record2);
     }
 
     @Test
@@ -74,8 +74,8 @@ public class RoundRobinRecordDispatcherTest {
 
         roundRobinRecordDispatcher.dispatchRecord(poisonRecord);
 
-        assertThat(queue1).isNotEmpty().containsOnly(poisonRecord);
-        assertThat(queue2).isNotEmpty().containsOnly(poisonRecord);
+        assertThat(queue1).containsOnly(poisonRecord);
+        assertThat(queue2).containsOnly(poisonRecord);
     }
 
 }

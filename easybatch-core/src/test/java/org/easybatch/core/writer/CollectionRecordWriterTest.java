@@ -58,7 +58,7 @@ public class CollectionRecordWriterTest {
     @Test
     public void testWriteRecord() throws Exception {
         writer.writePayload(FOO);
-        assertThat(items).isNotEmpty().hasSize(1).containsExactly(FOO);
+        assertThat(items).containsExactly(FOO);
     }
 
     @Test
@@ -71,6 +71,6 @@ public class CollectionRecordWriterTest {
                 .writer(new CollectionRecordWriter(output))
                 .call();
 
-        assertThat(output).isNotEmpty().hasSize(2).containsExactly(FOO, BAR);
+        assertThat(output).containsExactly(FOO, BAR);
     }
 }

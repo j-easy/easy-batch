@@ -56,12 +56,12 @@ public class PayloadExtractorTest {
     @Test
     public void testExtractPayloadsFromListOfRecords() throws Exception {
         List<Object> list = PayloadExtractor.extractPayloads(Arrays.asList(record1, record2));
-        assertThat(list).isNotEmpty().hasSize(2).containsExactly(payload1, payload2);
+        assertThat(list).containsExactly(payload1, payload2);
     }
 
     @Test
     public void testExtractPayloadsFromBatchOfRecords() throws Exception {
         List<Object> list = PayloadExtractor.extractPayloads(batch);
-        assertThat(list).isNotEmpty().hasSize(2).containsExactly(payload1, payload2);
+        assertThat(list).containsExactly(payload1, payload2);
     }
 }

@@ -76,10 +76,10 @@ public class FileBatchReaderTest {
         Batch batch2 = batches.get(1);
 
         List<Record> records = batch1.getPayload();
-        assertThat(records.size()).isEqualTo(2);
+        assertThat(records).hasSize(2);
 
         records = batch2.getPayload();
-        assertThat(records.size()).isEqualTo(2);
+        assertThat(records).hasSize(2);
     }
 
     @After

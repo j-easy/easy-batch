@@ -75,7 +75,7 @@ public class OutputStreamRecordWriterTest {
     public void testProcessRecord() throws Exception {
         Record actual = outputStreamRecordWriter.processRecord(stringRecord);
 
-        assertThat(actual).isNotNull().isEqualTo(stringRecord);
+        assertThat(actual).isEqualTo(stringRecord);
         verify(outputStreamWriter).write(PAYLOAD);
         verify(outputStreamWriter).write(LINE_SEPARATOR);
         verify(outputStreamWriter).flush();

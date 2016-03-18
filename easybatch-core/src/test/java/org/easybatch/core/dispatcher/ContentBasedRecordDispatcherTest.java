@@ -72,22 +72,22 @@ public class ContentBasedRecordDispatcherTest {
     @Test
     public void orangeRecordShouldBeDispatchedToOrangeQueue() throws Exception {
         recordDispatcher.dispatchRecord(orangeRecord);
-        assertThat(orangeQueue).isNotEmpty().containsOnly(orangeRecord);
+        assertThat(orangeQueue).containsOnly(orangeRecord);
         assertThat(defaultQueue).isEmpty();
     }
 
     @Test
     public void nonOrangeRecordShouldBeDispatchedToDefaultQueue() throws Exception {
         recordDispatcher.dispatchRecord(appleRecord);
-        assertThat(defaultQueue).isNotEmpty().containsExactly(appleRecord);
+        assertThat(defaultQueue).containsExactly(appleRecord);
         assertThat(orangeQueue).isEmpty();
     }
 
     @Test
     public void poisonRecordShouldBeDispatchedToAllQueues() throws Exception {
         recordDispatcher.dispatchRecord(poisonRecord);
-        assertThat(defaultQueue).isNotEmpty().contains(poisonRecord);
-        assertThat(orangeQueue).isNotEmpty().contains(poisonRecord);
+        assertThat(defaultQueue).contains(poisonRecord);
+        assertThat(orangeQueue).contains(poisonRecord);
     }
 
 }

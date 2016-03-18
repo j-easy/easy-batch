@@ -88,7 +88,7 @@ public class JdbcIntegrationTest {
         List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
         List<Person> persons = extractPayloads(records);
 
-        assertThat(persons).isNotEmpty().hasSize(2);
+        assertThat(persons).hasSize(2);
 
         final Person person1 = persons.get(0);
         assertThat(person1.getId()).isEqualTo(1);

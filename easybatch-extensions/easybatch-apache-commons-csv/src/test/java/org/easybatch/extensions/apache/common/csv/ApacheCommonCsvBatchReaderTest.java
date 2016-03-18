@@ -70,7 +70,7 @@ public class ApacheCommonCsvBatchReaderTest {
         assertThat(batches).isNotNull().hasSize(2);
 
         Batch batch1 = batches.get(0);
-        assertThat(batch1.getPayload().size()).isEqualTo(2);
+        assertThat(batch1.getPayload()).hasSize(2);
         CSVRecord tweet = (CSVRecord) batch1.getPayload().get(0).getPayload();
         assertThat(tweet).isNotNull();
         assertThat(tweet.get(0)).isEqualTo("1");
@@ -84,7 +84,7 @@ public class ApacheCommonCsvBatchReaderTest {
         assertThat(tweet.get(2)).isEqualTo("hey");
 
         Batch batch2 = batches.get(1);
-        assertThat(batch2.getPayload().size()).isEqualTo(1);
+        assertThat(batch2.getPayload()).hasSize(1);
         tweet = (CSVRecord) batch2.getPayload().get(0).getPayload();
         assertThat(tweet).isNotNull();
         assertThat(tweet.get(0)).isEqualTo("3");

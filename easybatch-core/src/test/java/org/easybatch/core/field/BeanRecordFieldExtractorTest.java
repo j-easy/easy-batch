@@ -30,7 +30,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
-import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,7 +48,6 @@ public class BeanRecordFieldExtractorTest {
         record.setAge(33);
         record.setGender(Gender.FEMALE);
         record.setMarried(true);
-
     }
 
     @Test
@@ -66,12 +64,7 @@ public class BeanRecordFieldExtractorTest {
     public void whenFieldsIsNotEmpty_ThenItShouldExtractAllPropertiesValuesInRightOrder() throws Exception {
         fieldExtractor = new BeanRecordFieldExtractor(Person.class, "lastName", "age", "married");
         Iterable<Object> values = fieldExtractor.extractFields(record);
-        assertThat(values).hasSize(3);
-        Iterator<Object> iterator = values.iterator();
-        assertThat(iterator.next()).isEqualTo(record.getLastName());
-        assertThat(iterator.next()).isEqualTo(record.getAge());
-        assertThat(iterator.next()).isEqualTo(record.isMarried());
-
+        assertThat(values).containsExactly(record.getLastName(), record.getAge(), record.isMarried());
     }
 
 }
