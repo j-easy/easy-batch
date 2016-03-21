@@ -67,8 +67,6 @@ public class BatchMarshallerTest {
 
         assertThat(actual).isNotNull();
         assertThat(actual.getHeader()).isEqualTo(header);
-        assertThat(actual.getPayload()).isNotEmpty()
-                .hasSize(2)
-                .containsExactly(marshalledRecord1, marshalledRecord2);
+        assertThat(actual.getPayload()).containsExactly(marshalledRecord1, marshalledRecord2);
     }
 }

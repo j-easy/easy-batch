@@ -56,10 +56,6 @@ public class RecordCollectorTest {
         recordCollector.processRecord(record1);
         recordCollector.processRecord(record2);
 
-        assertThat(recordCollector.getComputationResult())
-                .isNotNull()
-                .isNotEmpty()
-                .hasSize(2)
-                .containsExactly(record1, record2);
+        assertThat(recordCollector.getComputationResult()).containsExactly(record1, record2);
     }
 }

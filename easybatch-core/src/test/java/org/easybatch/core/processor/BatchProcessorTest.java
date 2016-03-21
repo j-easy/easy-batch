@@ -79,7 +79,7 @@ public class BatchProcessorTest {
             Batch actual = batchProcessor.processRecord(this.batch);
             assertThat(actual).isNotNull();
             assertThat(actual.getHeader()).isEqualTo(header);
-            assertThat(actual.getPayload()).isNotEmpty().hasSize(1).containsExactly(processedRecord);
+            assertThat(actual.getPayload()).containsExactly(processedRecord);
         } catch (RecordProcessingException e) {
             fail("No exception should be thrown for the batch when all its records are processed without errors");
         }

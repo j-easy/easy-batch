@@ -59,9 +59,8 @@ public class BroadcastRecordDispatcherTest {
 
         broadcastRecordDispatcher.dispatchRecord(record);
 
-        assertThat(queue1).isNotEmpty().containsOnly(record);
-        assertThat(queue2).isNotEmpty().containsOnly(record);
-
+        assertThat(queue1).containsOnly(record);
+        assertThat(queue2).containsOnly(record);
     }
 
 }

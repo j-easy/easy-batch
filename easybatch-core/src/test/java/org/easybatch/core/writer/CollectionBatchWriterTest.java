@@ -63,6 +63,6 @@ public class CollectionBatchWriterTest {
         Batch actual = collectionBatchWriter.processRecord(batch);
 
         assertThat(actual).isNotNull().isEqualTo(batch);
-        assertThat(output).isNotEmpty().hasSize(2).containsExactly(record1.getPayload(), record2.getPayload());
+        assertThat(output).containsExactly(record1.getPayload(), record2.getPayload());
     }
 }

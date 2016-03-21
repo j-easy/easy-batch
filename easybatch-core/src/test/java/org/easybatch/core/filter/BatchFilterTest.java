@@ -66,7 +66,7 @@ public class BatchFilterTest {
         batchFilter.processRecord(batch);
 
         assertThat(batch).isNotNull();
-        assertThat(batch.getPayload()).isNotNull().isNotEmpty().hasSize(1).containsOnly(record1);
+        assertThat(batch.getPayload()).containsExactly(record1);
     }
 
 }

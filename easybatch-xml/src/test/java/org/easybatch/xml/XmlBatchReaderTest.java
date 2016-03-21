@@ -59,11 +59,11 @@ public class XmlBatchReaderTest {
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();
 
-        assertThat(batches).isNotNull().hasSize(3);
+        assertThat(batches).hasSize(3);
 
         Batch batch1 = batches.get(0);
         List<Record> records = batch1.getPayload();
-        assertThat(records.size()).isEqualTo(2);
+        assertThat(records).hasSize(2);
         assertThat(records.get(0).getHeader().getNumber()).isEqualTo(1L);
         assertThat(records.get(0).getPayload().toString()).isXmlEqualTo("<data>1</data>");
         assertThat(records.get(1).getHeader().getNumber()).isEqualTo(2L);
@@ -71,7 +71,7 @@ public class XmlBatchReaderTest {
 
         Batch batch2 = batches.get(1);
         records = batch2.getPayload();
-        assertThat(records.size()).isEqualTo(2);
+        assertThat(records).hasSize(2);
         assertThat(records.get(0).getHeader().getNumber()).isEqualTo(3L);
         assertThat(records.get(0).getPayload().toString()).isXmlEqualTo("<data>3</data>");
         assertThat(records.get(1).getHeader().getNumber()).isEqualTo(4L);
@@ -79,7 +79,7 @@ public class XmlBatchReaderTest {
 
         Batch batch3 = batches.get(2);
         records = batch3.getPayload();
-        assertThat(records.size()).isEqualTo(1);
+        assertThat(records).hasSize(1);
         assertThat(records.get(0).getHeader().getNumber()).isEqualTo(5L);
         assertThat(records.get(0).getPayload().toString()).isXmlEqualTo("<data>5</data>");
     }

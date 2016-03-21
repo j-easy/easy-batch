@@ -67,10 +67,7 @@ public class BatchMapperTest {
 
         assertThat(actual).isNotNull();
         assertThat(actual.getHeader()).isEqualTo(header);
-        assertThat(actual.getPayload())
-                .isNotEmpty()
-                .hasSize(2)
-                .containsExactly(mappedRecord1, mappedRecord2);
+        assertThat(actual.getPayload()).containsExactly(mappedRecord1, mappedRecord2);
     }
 
 }

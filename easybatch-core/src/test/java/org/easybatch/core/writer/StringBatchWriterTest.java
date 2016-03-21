@@ -70,7 +70,7 @@ public class StringBatchWriterTest {
 
         Batch actual = stringBatchWriter.processRecord(this.batch);
 
-        assertThat(actual).isNotNull().isEqualTo(batch);
+        assertThat(actual).isEqualTo(batch);
 
         assertThat(stringWriter.toString()).isEqualTo("foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR);
     }

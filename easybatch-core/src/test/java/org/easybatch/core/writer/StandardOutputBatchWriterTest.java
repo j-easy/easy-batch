@@ -65,7 +65,7 @@ public class StandardOutputBatchWriterTest {
     public void testWriteBatch() throws Exception {
         Batch actual = writer.processRecord(this.batch);
 
-        assertThat(actual).isNotNull().isEqualTo(batch);
+        assertThat(actual).isEqualTo(batch);
         assertThat(systemOut.getLog()).isEqualTo("foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR);
     }
 }

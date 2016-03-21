@@ -63,7 +63,7 @@ public class JsonBatchReaderTest {
 
         Batch batch1 = batches.get(0);
         List<Record> records = batch1.getPayload();
-        assertThat(records.size()).isEqualTo(2);
+        assertThat(records).hasSize(2);
         assertThat(records.get(0).getHeader().getNumber()).isEqualTo(1L);
         assertThat(records.get(0).getPayload().toString()).isEqualTo("{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}");
         assertThat(records.get(1).getHeader().getNumber()).isEqualTo(2L);
@@ -71,7 +71,7 @@ public class JsonBatchReaderTest {
 
         Batch batch2 = batches.get(1);
         records = batch2.getPayload();
-        assertThat(records.size()).isEqualTo(1);
+        assertThat(records).hasSize(1);
         assertThat(records.get(0).getHeader().getNumber()).isEqualTo(3L);
         assertThat(records.get(0).getPayload().toString()).isEqualTo("{\"id\":3,\"user\":\"toto\",\"message\":\"yep ;-)\"}");
     }
