@@ -59,7 +59,7 @@ public class JsonBatchReaderTest {
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();
 
-        assertThat(batches).isNotNull().hasSize(2);
+        assertThat(batches).hasSize(2);
 
         Batch batch1 = batches.get(0);
         List<Record> records = batch1.getPayload();

@@ -62,7 +62,7 @@ public class CollectionBatchWriterTest {
     public void testWriteRecord() throws Exception {
         Batch actual = collectionBatchWriter.processRecord(batch);
 
-        assertThat(actual).isNotNull().isEqualTo(batch);
+        assertThat(actual).isEqualTo(batch);
         assertThat(output).containsExactly(record1.getPayload(), record2.getPayload());
     }
 }

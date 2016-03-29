@@ -83,8 +83,6 @@ public class EmptyRecordFilterTest {
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
 
         List<StringRecord> records = (List<StringRecord>) jobReport.getResult();
-        assertThat(records).hasSize(2);
-        assertThat(records.get(0).getPayload()).isEqualTo("foo");
-        assertThat(records.get(1).getPayload()).isEqualTo("bar");
+        assertThat(records).extracting("payload").containsExactly("foo", "bar");
     }
 }

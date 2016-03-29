@@ -76,7 +76,7 @@ public class HibernateRecordReaderTest {
 
         List<GenericRecord<Tweet>> tweets = (List<GenericRecord<Tweet>>) jobReport.getResult();
 
-        assertThat(tweets).isNotEmpty().hasSize(3);
+        assertThat(tweets).hasSize(3);
 
         Tweet tweet = tweets.get(0).getPayload();
         assertThat(tweet).isNotNull();

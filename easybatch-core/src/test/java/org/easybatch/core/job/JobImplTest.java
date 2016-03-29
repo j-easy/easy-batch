@@ -312,8 +312,8 @@ public class JobImplTest {
 
         List<GenericRecord> records = (List<GenericRecord>) jobReport.getResult();
 
-        assertThat(records).isNotNull().hasSize(1);
-        assertThat(records.get(0).getPayload()).isNotNull().isEqualTo("bar");
+        assertThat(records).hasSize(1);
+        assertThat(records.get(0).getPayload()).isEqualTo("bar");
 
     }
 
@@ -332,10 +332,7 @@ public class JobImplTest {
 
         List<GenericRecord> records = (List<GenericRecord>) jobReport.getResult();
 
-        assertThat(records).isNotNull().hasSize(2);
-        assertThat(records.get(0).getPayload()).isNotNull().isEqualTo("foo");
-        assertThat(records.get(1).getPayload()).isNotNull().isEqualTo("bar");
-
+        assertThat(records).extracting("payload").containsExactly("foo", "bar");
     }
 
     @Test

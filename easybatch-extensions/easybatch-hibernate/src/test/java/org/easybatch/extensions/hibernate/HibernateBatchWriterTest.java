@@ -39,7 +39,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Long.valueOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
 
@@ -80,8 +79,8 @@ public class HibernateBatchWriterTest {
                 .call();
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(valueOf(3));// 3 batches
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(valueOf(3));// 3 batches
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);// 3 batches
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(3);// 3 batches
 
         int nbTweetsInDatabase = countTweetsInDatabase();
 

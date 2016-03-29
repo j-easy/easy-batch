@@ -67,29 +67,20 @@ public class ApacheCommonCsvBatchReaderTest {
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();
-        assertThat(batches).isNotNull().hasSize(2);
+        assertThat(batches).hasSize(2);
 
         Batch batch1 = batches.get(0);
         assertThat(batch1.getPayload()).hasSize(2);
         CSVRecord tweet = (CSVRecord) batch1.getPayload().get(0).getPayload();
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.get(0)).isEqualTo("1");
-        assertThat(tweet.get(1)).isEqualTo("foo");
-        assertThat(tweet.get(2)).isEqualTo("hello");
+        assertThat(tweet).containsExactly("1", "foo", "hello");
 
         tweet = (CSVRecord) batch1.getPayload().get(1).getPayload();
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.get(0)).isEqualTo("2");
-        assertThat(tweet.get(1)).isEqualTo("bar");
-        assertThat(tweet.get(2)).isEqualTo("hey");
+        assertThat(tweet).containsExactly("2", "bar", "hey");
 
         Batch batch2 = batches.get(1);
         assertThat(batch2.getPayload()).hasSize(1);
         tweet = (CSVRecord) batch2.getPayload().get(0).getPayload();
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.get(0)).isEqualTo("3");
-        assertThat(tweet.get(1)).isEqualTo("baz");
-        assertThat(tweet.get(2)).isEqualTo("hi");
+        assertThat(tweet).containsExactly("3", "baz", "hi");
     }
 
 }
