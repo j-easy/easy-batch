@@ -87,7 +87,7 @@ public class JmsQueueRecordReaderTest {
 
         verify(queueReceiver).receive();
         assertThat(record).isNotNull().isInstanceOf(JmsRecord.class);
-        assertThat(record.getPayload()).isNotNull().isEqualTo(message);
+        assertThat(record.getPayload()).isEqualTo(message);
     }
 
     @Test

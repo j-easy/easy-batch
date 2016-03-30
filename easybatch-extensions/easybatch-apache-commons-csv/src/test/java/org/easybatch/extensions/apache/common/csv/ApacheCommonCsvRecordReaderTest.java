@@ -29,7 +29,6 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.record.Record;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,14 +51,14 @@ public class ApacheCommonCsvRecordReaderTest {
 
     @Test
     public void testHasNextRecord() throws Exception {
-        Assert.assertTrue(recordReader.hasNextRecord());
+      assertThat(recordReader.hasNextRecord()).isTrue();
     }
 
     @Test
     public void testReadNextRecord() throws Exception {
         recordReader.hasNextRecord();
         Record record = recordReader.readNextRecord();
-        assertThat(record).isNotNull().isInstanceOf(ApacheCommonCsvRecord.class);
+        assertThat(record).isInstanceOf(ApacheCommonCsvRecord.class);
 
         ApacheCommonCsvRecord apacheCommonCsvRecord = (ApacheCommonCsvRecord) record;
         assertThat(apacheCommonCsvRecord.getHeader()).isNotNull();

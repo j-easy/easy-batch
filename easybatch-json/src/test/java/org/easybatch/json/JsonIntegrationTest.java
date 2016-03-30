@@ -89,7 +89,7 @@ public class JsonIntegrationTest {
         assertThatReportIsValid(jobReport);
 
         List<JsonRecord> trees = (List<JsonRecord>) jobReport.getResult();
-        assertThat(trees).isNotEmpty().hasSize(3);
+        assertThat(trees).hasSize(3);
 
         JsonRecord record = trees.get(0);
         assertThat(record.getHeader().getNumber()).isEqualTo(1);
@@ -121,7 +121,7 @@ public class JsonIntegrationTest {
         assertThatReportIsValid(jobReport);
 
         List<JsonRecord> complaints = (List<JsonRecord>) jobReport.getResult();
-        assertThat(complaints).isNotEmpty().hasSize(3);
+        assertThat(complaints).hasSize(3);
 
         JsonRecord record = complaints.get(0);
         assertThat(record.getHeader().getNumber()).isEqualTo(1);

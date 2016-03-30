@@ -70,7 +70,7 @@ public class FileBatchReaderTest {
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();
 
-        assertThat(batches).isNotNull().hasSize(2);
+        assertThat(batches).hasSize(2);
 
         Batch batch1 = batches.get(0);
         Batch batch2 = batches.get(1);

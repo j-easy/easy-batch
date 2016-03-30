@@ -111,10 +111,10 @@ public class JmsIntegrationTest {
         assertThat(header.getSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
 
         Message payload = jmsRecord.getPayload();
-        assertThat(payload).isNotNull().isInstanceOf(TextMessage.class);
+        assertThat(payload).isInstanceOf(TextMessage.class);
 
         TextMessage textMessage = (TextMessage) payload;
-        assertThat(textMessage.getText()).isNotNull().isEqualTo(MESSAGE_TEXT);
+        assertThat(textMessage.getText()).isEqualTo(MESSAGE_TEXT);
 
     }
 

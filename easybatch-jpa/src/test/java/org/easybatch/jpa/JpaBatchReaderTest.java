@@ -123,7 +123,7 @@ public class JpaBatchReaderTest {
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();
-        assertThat(batches).isNotNull().hasSize(2);
+        assertThat(batches).hasSize(2);
 
         Batch batch1 = batches.get(0);
         assertThat(batch1.getPayload()).hasSize(2);
