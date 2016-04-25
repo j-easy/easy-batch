@@ -114,6 +114,7 @@ final class JobImpl implements Job {
 
                 //Skip records if any
                 if (shouldSkipRecord(recordCount)) {
+                    metrics.incrementSkippedCount();
                     continue;
                 }
 
@@ -142,11 +143,7 @@ final class JobImpl implements Job {
     }
 
     private boolean shouldSkipRecord(long recordCount) {
-        if (recordCount <= parameters.getSkip()) {
-            metrics.incrementSkippedCount();
-            return true;
-        }
-        return false;
+        return recordCount <= parameters.getSkip();
     }
 
     private boolean openRecordReader() {
