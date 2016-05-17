@@ -24,8 +24,11 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Record;
+
 import java.util.concurrent.BlockingQueue;
 
+import static java.lang.String.format;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
@@ -33,19 +36,23 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class BlockingQueueRecordWriter extends AbstractRecordWriter {
+public class BlockingQueueRecordWriter<R extends Record> implements RecordWriter<R> {
 
-    private BlockingQueue blockingQueue;
+    private BlockingQueue<R> blockingQueue;
 
-    public BlockingQueueRecordWriter(final BlockingQueue blockingQueue) {
+    public BlockingQueueRecordWriter(final BlockingQueue<R> blockingQueue) {
         checkNotNull(blockingQueue, "queue");
         this.blockingQueue = blockingQueue;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    protected void writePayload(Object payload) throws Exception {
-        blockingQueue.put(payload);
+    public R processRecord(R record) throws RecordWritingException {
+        try {
+            blockingQueue.put(record);
+            return record;
+        } catch (InterruptedException exception) {
+            String message = format("Unable to write record %s ", record);
+            throw new RecordWritingException(message, exception);
+        }
     }
-
 }
