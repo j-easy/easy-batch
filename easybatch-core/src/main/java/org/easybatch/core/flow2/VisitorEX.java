@@ -16,5 +16,5 @@ interface VisitorEX<T, E extends Exception> {
    * @throws E
    *           exception for any error
    */
-  public void visit(WorkflowGraph<T> g, Vertex<T> v) throws E;
+  void visit(WorkflowGraph<T> g, Vertex<T> v) throws E;
 }

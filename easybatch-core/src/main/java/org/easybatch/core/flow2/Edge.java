@@ -5,11 +5,11 @@ package org.easybatch.core.flow2;
  *
  */
 class Edge<T> {
-  private Vertex<T> from;
+  private final Vertex<T> from;
 
-  private Vertex<T> to;
+  private final Vertex<T> to;
 
-  private int cost;
+  private final int cost;
 
   private boolean mark;
 

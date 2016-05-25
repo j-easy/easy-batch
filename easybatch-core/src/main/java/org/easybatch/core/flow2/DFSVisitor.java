@@ -15,7 +15,7 @@ interface DFSVisitor<T> {
    * @param v -
    *          the vertex being visited.
    */
-  public void visit(WorkflowGraph<T> g, Vertex<T> v);
+  void visit(WorkflowGraph<T> g, Vertex<T> v);
 
   /**
    * Used dfsSpanningTree to notify the visitor of each outgoing edge to an
@@ -28,5 +28,5 @@ interface DFSVisitor<T> {
    * @param e -
    *          the outgoing edge from v
    */
-  public void visit(WorkflowGraph<T> g, Vertex<T> v, Edge<T> e);
+  void visit(WorkflowGraph<T> g, Vertex<T> v, Edge<T> e);
 }

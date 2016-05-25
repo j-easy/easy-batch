@@ -13,5 +13,5 @@ interface Visitor<T> {
    * @param v -
    *          the vertex being visited.
    */
-  public void visit(WorkflowGraph<T> g, Vertex<T> v);
+  void visit(WorkflowGraph<T> g, Vertex<T> v);
 }

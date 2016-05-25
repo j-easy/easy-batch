@@ -11,19 +11,19 @@ import java.util.List;
  */
 public class WorkflowGraph<T> {
   /** Color used to mark unvisited nodes */
-  public static final int VISIT_COLOR_WHITE = 1;
+  private static final int VISIT_COLOR_WHITE = 1;
 
   /** Color used to mark nodes as they are first visited in DFS order */
-  public static final int VISIT_COLOR_GREY = 2;
+  private static final int VISIT_COLOR_GREY = 2;
 
   /** Color used to mark nodes after descendants are completely visited */
-  public static final int VISIT_COLOR_BLACK = 3;
+  private static final int VISIT_COLOR_BLACK = 3;
 
   /** Vector<Vertex> of graph vertices */
-  private List<Vertex<T>> vertices;
+  private final List<Vertex<T>> vertices;
 
   /** Vector<Edge> of edges in the graph */
-  private List<Edge<T>> edges;
+  private final List<Edge<T>> edges;
 
   /** The vertex identified as the root of the graph */
   private Vertex<T> rootVertex;
@@ -54,7 +54,7 @@ public class WorkflowGraph<T> {
    */
   public boolean addVertex(Vertex<T> v) {
     boolean added = false;
-    if (vertices.contains(v) == false) {
+    if (!vertices.contains(v)) {
       added = vertices.add(v);
     }
     return added;
@@ -88,7 +88,7 @@ public class WorkflowGraph<T> {
    */
   public void setRootVertex(Vertex<T> root) {
     this.rootVertex = root;
-    if (vertices.contains(root) == false)
+    if (!vertices.contains(root))
       this.addVertex(root);
   }
 
@@ -126,9 +126,9 @@ public class WorkflowGraph<T> {
    *           if from/to are not vertices in the graph
    */
   public boolean addEdge(Vertex<T> from, Vertex<T> to, int cost) throws IllegalArgumentException {
-    if (vertices.contains(from) == false)
+    if (!vertices.contains(from))
       throw new IllegalArgumentException("from is not in graph");
-    if (vertices.contains(to) == false)
+    if (!vertices.contains(to))
       throw new IllegalArgumentException("to is not in graph");
 
     Edge<T> e = new Edge<T>(from, to, cost);
@@ -306,7 +306,7 @@ public class WorkflowGraph<T> {
   }
 
   /**
-   * Perform a breadth first search of this graph, starting at v. The visot may
+   * Perform a breadth first search of this graph, starting at v. The visit may
    * be cut short if visitor throws an exception during a visit callback.
    *
    * @param <E>
@@ -325,7 +325,7 @@ public class WorkflowGraph<T> {
     if (visitor != null)
       visitor.visit(this, v);
     v.visit();
-    while (q.isEmpty() == false) {
+    while (!q.isEmpty()) {
       v = q.removeFirst();
       for (int i = 0; i < v.getOutgoingEdgeCount(); i++) {
         Edge<T> e = v.getOutgoingEdge(i);

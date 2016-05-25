@@ -15,7 +15,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.util.Collections.singletonList;
-import static org.easybatch.core.flow2.JobState.FAILURE;
 import static org.easybatch.core.flow2.JobState.SUCCESS;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
@@ -53,7 +52,7 @@ public class JobPipelineTest {
     FlowDefinition flowDefinition = new FlowDefinition();
     final WorkflowGraph<Job> workflowGraph = flowDefinition
             .flow(job1, SUCCESS, job2)
-            .flow(job1, FAILURE, job3)
+            .flow(job1, SUCCESS, job3)
             .build();
 
     workflowGraph.breadthFirstSearch(workflowGraph.getRootVertex(), new JobVisitor());

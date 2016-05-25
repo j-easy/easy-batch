@@ -8,11 +8,11 @@ import java.util.List;
  *
  */
 class Vertex<T> {
-  private List<Edge<T>> incomingEdges;
+  private final List<Edge<T>> incomingEdges;
 
-  private List<Edge<T>> outgoingEdges;
+  private final List<Edge<T>> outgoingEdges;
 
-  private String name;
+  private final String name;
 
   private boolean mark;
 

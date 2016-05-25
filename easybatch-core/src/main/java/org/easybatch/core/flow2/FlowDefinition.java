@@ -7,19 +7,20 @@ import org.easybatch.core.job.Job;
  */
 public class FlowDefinition {
 
-  WorkflowGraph<Job> graph;
+  private final WorkflowGraph<Job> graph;
+
   public FlowDefinition() {
     graph = new WorkflowGraph<>();
   }
 
   public FlowDefinition flow(Job from, JobState state, Job to) {
 
-    final Vertex<Job> start = (Vertex<Job>) new Vertex<>(from.getName(), from);
+    final Vertex<Job> start = getVertex(from);
     if(graph.getVertices().size() == 0) {
       graph.setRootVertex(start);
     }
     graph.addVertex(start);
-    final Vertex<Job> end = (Vertex<Job>) new Vertex<>(to.getName(), to);
+    final Vertex<Job> end = getVertex(to);
     graph.addVertex(end);
     graph.addEdge(start, end, state.getCost());
     return this;
@@ -35,5 +36,13 @@ public class FlowDefinition {
     return graph;
   }
 
-
+  private Vertex<Job> getVertex(Job job) {
+    final Vertex<Job> vertexByName = graph.findVertexByName(job.getName());
+    if(vertexByName != null) {
+      return vertexByName;
+    }
+    else {
+      return new Vertex<>(job.getName(), job);
+    }
+  }
 }
