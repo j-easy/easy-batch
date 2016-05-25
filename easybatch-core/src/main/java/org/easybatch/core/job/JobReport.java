@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static java.lang.String.valueOf;
+import static org.easybatch.core.job.JobParameters.DEFAULT_LIMIT;
 import static org.easybatch.core.job.JobParameters.DEFAULT_TIMEOUT;
 import static org.easybatch.core.util.Utils.toMinutes;
 
@@ -92,6 +93,16 @@ public class JobReport implements Serializable {
         stringBuilder.append(" (").append(percent).append("%)");
     }
 
+    private String getFormattedMetric(final long metric) {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(metric);
+        Long totalCount = metrics.getTotalCount();
+        if (totalCount != null && totalCount != 0) {
+            appendPercent(sb, percent(metric, totalCount));
+        }
+        return sb.toString();
+    }
+
     /*
      * Public utility methods to format report statistics
      */
@@ -111,47 +122,19 @@ public class JobReport implements Serializable {
     }
 
     public String getFormattedFilteredCount() {
-        final StringBuilder sb = new StringBuilder();
-        long filteredCount = metrics.getFilteredCount();
-        sb.append(filteredCount);
-        Long totalCount = metrics.getTotalCount();
-        if (totalCount != null && totalCount != 0) {
-            appendPercent(sb, percent(filteredCount, totalCount));
-        }
-        return sb.toString();
+        return getFormattedMetric(metrics.getFilteredCount());
     }
 
     public String getFormattedSkippedCount() {
-        final StringBuilder sb = new StringBuilder();
-        long skippedCount = metrics.getSkippedCount();
-        sb.append(skippedCount);
-        Long totalCount = metrics.getTotalCount();
-        if (totalCount != null && totalCount != 0) {
-            appendPercent(sb, percent(skippedCount, totalCount));
-        }
-        return sb.toString();
+        return getFormattedMetric(metrics.getSkippedCount());
     }
 
     public String getFormattedErrorCount() {
-        final StringBuilder sb = new StringBuilder();
-        long errorCount = metrics.getErrorCount();
-        sb.append(errorCount);
-        Long totalCount = metrics.getTotalCount();
-        if (totalCount != null && totalCount != 0) {
-            appendPercent(sb, percent(errorCount, totalCount));
-        }
-        return sb.toString();
+        return getFormattedMetric(metrics.getErrorCount());
     }
 
     public String getFormattedSuccessCount() {
-        final StringBuilder sb = new StringBuilder();
-        long successCount = metrics.getSuccessCount();
-        sb.append(successCount);
-        Long totalCount = metrics.getTotalCount();
-        if (totalCount != null && totalCount != 0) {
-            appendPercent(sb, percent(successCount, totalCount));
-        }
-        return sb.toString();
+        return getFormattedMetric(metrics.getSuccessCount());
     }
 
     public String getFormattedTotalCount() {
@@ -164,9 +147,7 @@ public class JobReport implements Serializable {
         if (totalCount == null || totalCount == 0) {
             return NOT_APPLICABLE;
         }
-        final StringBuilder sb = new StringBuilder();
-        sb.append((float) metrics.getDuration() / (float) totalCount).append("ms");
-        return sb.toString();
+        return String.valueOf((float) metrics.getDuration() / (float) totalCount) + "ms";
     }
 
     // This is needed only for JMX
@@ -186,7 +167,7 @@ public class JobReport implements Serializable {
     }
 
     public String getFormattedLimit() {
-        return parameters.getLimit() != JobParameters.DEFAULT_LIMIT ? valueOf(parameters.getLimit()) : NOT_APPLICABLE;
+        return parameters.getLimit() != DEFAULT_LIMIT ? valueOf(parameters.getLimit()) : NOT_APPLICABLE;
     }
 
     public String getFormattedResult() {
