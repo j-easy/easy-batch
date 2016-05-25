@@ -22,9 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.monitor;
-
-import org.easybatch.core.job.JobStatus;
+package org.easybatch.core.job;
 
 /**
  * JMX MBean interface to expose monitoring attributes.

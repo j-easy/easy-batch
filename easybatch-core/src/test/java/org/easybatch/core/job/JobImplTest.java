@@ -28,7 +28,6 @@ import org.easybatch.core.filter.RecordFilter;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.listener.PipelineListener;
 import org.easybatch.core.listener.RecordReaderListener;
-import org.easybatch.core.monitor.JobMonitor;
 import org.easybatch.core.processor.ComputationalRecordProcessor;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.processor.RecordProcessingException;

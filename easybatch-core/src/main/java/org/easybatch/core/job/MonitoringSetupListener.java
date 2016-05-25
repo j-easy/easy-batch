@@ -25,7 +25,6 @@
 package org.easybatch.core.job;
 
 import org.easybatch.core.listener.JobListener;
-import org.easybatch.core.monitor.JobMonitor;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;

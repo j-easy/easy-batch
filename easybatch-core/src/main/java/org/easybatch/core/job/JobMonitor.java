@@ -22,16 +22,14 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.monitor;
-
-import org.easybatch.core.job.JobReport;
+package org.easybatch.core.job;
 
 /**
  * JMX MBean implementation of {@link JobMonitorMBean}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JobMonitor implements JobMonitorMBean {
+class JobMonitor implements JobMonitorMBean {
 
     public static final String JMX_MBEAN_NAME = "org.easybatch.core.monitor:";
 
