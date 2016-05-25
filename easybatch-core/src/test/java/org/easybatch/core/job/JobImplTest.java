@@ -175,6 +175,7 @@ public class JobImplTest {
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getTotalCount()).isNull();
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        assertThat(jobReport.getMetrics().getLastError()).isEqualTo(recordReaderOpeningException);
     }
 
     @Test
@@ -184,6 +185,7 @@ public class JobImplTest {
         JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        assertThat(jobReport.getMetrics().getLastError()).isEqualTo(recordReaderOpeningException);
         verify(jobListener).afterJobEnd(jobReport);
     }
 
@@ -199,6 +201,7 @@ public class JobImplTest {
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getTotalCount()).isNull();
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        assertThat(jobReport.getMetrics().getLastError()).isEqualTo(recordReadingException);
     }
 
     @Test
@@ -222,6 +225,7 @@ public class JobImplTest {
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
+        assertThat(jobReport.getMetrics().getLastError()).isNull();
     }
 
     @Test
@@ -265,9 +269,10 @@ public class JobImplTest {
 
     @Test
     public void whenARuntimeExceptionIsThrown_thenTheJobShouldFail() {
-        when(reader.hasNextRecord()).thenThrow(new RuntimeException());
+        when(reader.hasNextRecord()).thenThrow(runtimeException);
         JobReport jobReport = JobExecutor.execute(job);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        assertThat(jobReport.getMetrics().getLastError()).isEqualTo(runtimeException);
     }
     
     /*

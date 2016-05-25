@@ -109,6 +109,7 @@ final class JobImpl implements Job {
                     recordCount++;
                 } catch (RecordReadingException e) {
                     eventManager.fireOnRecordReadingException(e);
+                    report.getMetrics().setLastError(e);
                     return report;
                 }
 
@@ -125,6 +126,7 @@ final class JobImpl implements Job {
                     if (parameters.isStrictMode()) {
                         LOGGER.info("Strict mode enabled: aborting execution");
                         report.setStatus(JobStatus.ABORTED);
+                        report.getMetrics().setLastError(e);
                         break;
                     }
                 }
@@ -134,6 +136,7 @@ final class JobImpl implements Job {
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "A unexpected error occurred", e);
             report.setStatus(JobStatus.FAILED);
+            report.getMetrics().setLastError(e);
         } finally {
             closeRecordReader();
             eventManager.fireAfterJobEnd(report);
@@ -155,6 +158,7 @@ final class JobImpl implements Job {
             LOGGER.log(Level.SEVERE, "Unable to open the record reader", e);
             report.setStatus(JobStatus.FAILED);
             metrics.setEndTime(System.currentTimeMillis());
+            metrics.setLastError(e);
             return false;
         }
         return true;

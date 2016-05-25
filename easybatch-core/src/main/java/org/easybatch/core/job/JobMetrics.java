@@ -47,6 +47,8 @@ public class JobMetrics implements Serializable {
 
     private long successCount;
 
+    private Throwable lastError;
+
     public void incrementSkippedCount() {
         skippedCount++;
     }
@@ -105,5 +107,13 @@ public class JobMetrics implements Serializable {
 
     public long getSuccessCount() {
         return successCount;
+    }
+
+    public Throwable getLastError() {
+        return lastError;
+    }
+
+    public void setLastError(Throwable lastError) {
+        this.lastError = lastError;
     }
 }
