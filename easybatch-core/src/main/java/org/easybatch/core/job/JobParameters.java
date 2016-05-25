@@ -24,6 +24,8 @@
 
 package org.easybatch.core.job;
 
+import org.easybatch.core.util.Utils;
+
 import java.io.Serializable;
 import java.util.Properties;
 import java.util.UUID;
@@ -47,6 +49,8 @@ public class JobParameters implements Serializable {
     private String name;
 
     private String executionId;
+
+    private String hostname;
 
     private String dataSource;
 
@@ -73,6 +77,15 @@ public class JobParameters implements Serializable {
         this.limit = DEFAULT_LIMIT;
         this.timeout = DEFAULT_TIMEOUT;
         this.systemProperties = System.getProperties();
+        this.hostname = Utils.getHostName();
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
     }
 
     public String getName() {

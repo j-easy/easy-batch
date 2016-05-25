@@ -63,6 +63,7 @@ class DefaultJobListener implements JobListener {
 
         LOGGER.log(Level.INFO, "Starting job ''{0}''", jobName);
         LOGGER.log(Level.INFO, "Execution id: {0}", jobParameters.getExecutionId());
+        LOGGER.log(Level.INFO, "Host name: {0}", jobParameters.getHostname());
         LOGGER.log(Level.INFO, "Data source: {0}", dataSource != null ? dataSource : "N/A");
         LOGGER.log(Level.INFO, "Skip: {0}", jobParameters.getSkip());
         LOGGER.log(Level.INFO, "Limit: {0}", limit != DEFAULT_LIMIT ? limit : "N/A");

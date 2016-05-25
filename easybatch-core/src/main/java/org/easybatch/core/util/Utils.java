@@ -29,11 +29,14 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -46,6 +49,8 @@ import static java.lang.String.format;
  */
 public abstract class Utils {
 
+    private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
+
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
@@ -54,6 +59,20 @@ public abstract class Utils {
 
     private Utils() {
 
+    }
+
+    /**
+     * Return the localhost name
+     * @return get host name
+     */
+    public static String getHostName() {
+        String hostName = "N/A";
+        try {
+            hostName = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            LOGGER.log(Level.WARNING, "Unable to get host name", e);
+        }
+        return hostName;
     }
 
     /**

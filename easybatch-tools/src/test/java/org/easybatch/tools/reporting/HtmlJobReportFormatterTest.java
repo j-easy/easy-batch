@@ -63,6 +63,7 @@ public class HtmlJobReportFormatterTest {
         jobReport.getParameters().setDataSource("In-Memory String");
         jobReport.getParameters().setLimit(8L);
         jobReport.getParameters().setName("job");
+        jobReport.getParameters().setHostname("batch-server");
         jobReport.getParameters().setExecutionId("c8d6a5fc-b2b4-4ee0-9dda-f9ec042d5864");
         jobReport.getParameters().setSystemProperties(System.getProperties());
 
