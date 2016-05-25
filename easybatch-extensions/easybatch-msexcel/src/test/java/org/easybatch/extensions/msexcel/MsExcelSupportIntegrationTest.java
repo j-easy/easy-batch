@@ -31,7 +31,6 @@ import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobBuilder;
 import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
-import org.easybatch.core.writer.StandardOutputRecordWriter;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,9 +47,8 @@ public class MsExcelSupportIntegrationTest {
                 .reader(new MsExcelRecordReader(inputTweets))
                 .filter(new HeaderRecordFilter())
                 .mapper(new MsExcelRecordMapper(Tweet.class, "id", "user", "message"))
-                //.marshaller(new MsExcelRecordMarshaller<>(Tweet.class, "id", "user", "message"))
-                //.writer(new MsExcelRecordWriter(outputTweets))
-                .writer(new StandardOutputRecordWriter())
+                .marshaller(new MsExcelRecordMarshaller<>(Tweet.class, "id", "user", "message"))
+                .writer(new MsExcelRecordWriter(outputTweets))
                 .build();
 
         JobReport report = JobExecutor.execute(job);

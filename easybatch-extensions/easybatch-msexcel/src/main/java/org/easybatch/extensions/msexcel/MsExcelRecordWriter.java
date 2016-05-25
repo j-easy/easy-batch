@@ -28,12 +28,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.easybatch.core.writer.RecordWriter;
 import org.easybatch.core.writer.RecordWritingException;
 
@@ -58,14 +59,15 @@ public class MsExcelRecordWriter implements RecordWriter<MsExcelRecord> {
     public MsExcelRecord processRecord(MsExcelRecord msExcelRecord) throws RecordWritingException {
         HSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
         // fill in row
-        Iterator<Cell> cellIterator = msExcelRecord.getPayload().cellIterator();
+        Row payload = msExcelRecord.getPayload();
         int i = 0;
-        while (cellIterator.hasNext()) {
-            Cell next = cellIterator.next();
+        int lastCellNum = payload.getLastCellNum();
+        for (int index = 0; index < lastCellNum; index++) {
+            Cell nextCell = payload.getCell(index);
             HSSFCell cell = row.createCell(i++);
-            setValue(cell, next);
+            setValue(cell, nextCell);
         }
-        // write workbook (not efficient, Apache PIO does not allow writing rows in iterative mode)
+        // FIXME write workbook (not efficient, Apache PIO does not allow writing rows in iterative mode)
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             workbook.write(fileOutputStream);
             return msExcelRecord;
@@ -75,7 +77,7 @@ public class MsExcelRecordWriter implements RecordWriter<MsExcelRecord> {
     }
 
     private void setValue(HSSFCell cell, Cell next) {
-        switch(next.getCellType()) {
+        switch (next.getCellType()) {
             case Cell.CELL_TYPE_BOOLEAN:
                 cell.setCellValue(next.getBooleanCellValue());
                 break;
