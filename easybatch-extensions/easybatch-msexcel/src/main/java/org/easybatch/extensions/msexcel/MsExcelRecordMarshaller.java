@@ -25,7 +25,9 @@
 package org.easybatch.extensions.msexcel;
 
 import java.beans.IntrospectionException;
+import java.util.Calendar;
 import java.util.Date;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.easybatch.core.field.BeanRecordFieldExtractor;
@@ -37,11 +39,11 @@ import org.easybatch.core.record.GenericRecord;
 public class MsExcelRecordMarshaller<P> implements RecordMarshaller<GenericRecord<P>, MsExcelRecord> {
 
     private RecordFieldExtractor fieldExtractor;
-    
+
     public MsExcelRecordMarshaller(Class<? extends P> type, String... fields) throws IntrospectionException {
         this.fieldExtractor = new BeanRecordFieldExtractor(type, fields);
     }
-    
+
     public MsExcelRecord processRecord(GenericRecord<P> genericRecord) throws RecordMarshallingException {
         Row row = new MsExcelRow();
         Iterable<?> values = fieldExtractor.extractFields(genericRecord.getPayload());
@@ -52,19 +54,22 @@ public class MsExcelRecordMarshaller<P> implements RecordMarshaller<GenericRecor
         }
         return new MsExcelRecord(genericRecord.getHeader(), row);
     }
-    
+
     private void setValue(Cell cell, Object value) {
-        if(value instanceof Boolean) {
+        if (value instanceof Boolean) {
             cell.setCellValue((Boolean) value);
         }
-        if(value instanceof Number) {
-            cell.setCellValue((Integer) value);
+        if (value instanceof Double) {
+            cell.setCellValue((Double) value);
         }
-        if(value instanceof String) {
+        if (value instanceof String) {
             cell.setCellValue((String) value);
         }
-        if(value instanceof Date) {
+        if (value instanceof Date) {
             cell.setCellValue((Date) value);
+        }
+        if (value instanceof Calendar) {
+            cell.setCellValue((Calendar) value);
         }
     }
 }
