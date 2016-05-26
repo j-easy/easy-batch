@@ -41,7 +41,7 @@ public class ShortTypeConverter implements TypeConverter<String, Short> {
     public Short convert(final String value) {
         checkArgument(value != null, "Value to convert must not be null");
         checkArgument(!value.isEmpty(), "Value to convert must not be empty");
-        return Short.valueOf(value);
+        return Double.valueOf(value).shortValue();
     }
 
 }

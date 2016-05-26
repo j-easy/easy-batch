@@ -38,8 +38,8 @@ public class LongTypeConverterTest extends BaseConverterTest<Long> {
 
     @Test
     public void whenInputIsLegalValue_ThenShouldReturnLong() {
-        assertThat(converter.convert("5")).isNotNull();
-        assertThat(converter.convert("5")).isEqualTo(5);
+        assertThat(converter.convert("5")).isEqualTo(5L);
+        assertThat(converter.convert("5.0")).isEqualTo(5L);
     }
 
 }

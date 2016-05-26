@@ -38,8 +38,8 @@ public class DoubleTypeConverterTest extends BaseConverterTest<Double> {
 
     @Test
     public void whenInputIsLegalValue_ThenShouldReturnDouble() {
-        assertThat(converter.convert("5")).isNotNull();
-        assertThat(converter.convert("5")).isEqualTo(5);
+        assertThat(converter.convert("5")).isEqualTo(5D);
+        assertThat(converter.convert("5.0")).isEqualTo(5D);
     }
 
 }

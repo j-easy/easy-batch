@@ -38,8 +38,8 @@ public class ByteTypeConverterTest extends BaseConverterTest<Byte> {
 
     @Test
     public void whenInputIsLegalValue_ThenShouldReturnBigInteger() {
-        assertThat(converter.convert("5")).isNotNull();
         assertThat(converter.convert("5")).isEqualTo((byte) 5);
+        assertThat(converter.convert("5.0")).isEqualTo((byte) 5);
     }
 
 }

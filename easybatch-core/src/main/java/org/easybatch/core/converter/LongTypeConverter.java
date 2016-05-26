@@ -41,7 +41,7 @@ public class LongTypeConverter implements TypeConverter<String, Long> {
     public Long convert(final String value) {
         checkArgument(value != null, "Value to convert must not be null");
         checkArgument(!value.isEmpty(), "Value to convert must not be empty");
-        return Long.valueOf(value);
+        return Double.valueOf(value).longValue();
     }
 
 }

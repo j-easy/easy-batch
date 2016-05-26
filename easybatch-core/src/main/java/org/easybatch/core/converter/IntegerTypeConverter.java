@@ -41,7 +41,7 @@ public class IntegerTypeConverter implements TypeConverter<String, Integer> {
     public Integer convert(final String value) {
         checkArgument(value != null, "Value to convert must not be null");
         checkArgument(!value.isEmpty(), "Value to convert must not be empty");
-        return Integer.valueOf(value);
+        return Double.valueOf(value).intValue();
     }
 
 }

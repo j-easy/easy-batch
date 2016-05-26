@@ -41,7 +41,7 @@ public class FloatTypeConverter implements TypeConverter<String, Float> {
     public Float convert(final String value) {
         checkArgument(value != null, "Value to convert must not be null");
         checkArgument(!value.isEmpty(), "Value to convert must not be empty");
-        return Float.valueOf(value);
+        return Double.valueOf(value).floatValue();
     }
 
 }

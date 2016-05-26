@@ -38,8 +38,8 @@ public class FloatTypeConverterTest extends BaseConverterTest<Float> {
 
     @Test
     public void whenInputIsLegalValue_ThenShouldReturnFloat() {
-        assertThat(converter.convert("5")).isNotNull();
-        assertThat(converter.convert("5")).isEqualTo(5);
+        assertThat(converter.convert("5")).isEqualTo(5F);
+        assertThat(converter.convert("5.0")).isEqualTo(5F);
     }
 
 }

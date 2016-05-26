@@ -41,7 +41,7 @@ public class ByteTypeConverter implements TypeConverter<String, Byte> {
     public Byte convert(final String value) {
         checkArgument(value != null, "Value to convert must not be null");
         checkArgument(!value.isEmpty(), "Value to convert must not be empty");
-        return Byte.valueOf(value);
+        return Double.valueOf(value).byteValue();
     }
 
 }
