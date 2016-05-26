@@ -34,6 +34,7 @@ import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 class MsExcelCell implements Cell {
@@ -191,6 +192,11 @@ class MsExcelCell implements Cell {
     }
 
     @Override
+    public CellAddress getAddress() {
+        return null;
+    }
+
+    @Override
     public void setCellComment(Comment comment) {
         this.comment = comment;
     }
@@ -213,6 +219,11 @@ class MsExcelCell implements Cell {
     @Override
     public void setHyperlink(Hyperlink hyperlink) {
         this.hyperlink = hyperlink;
+    }
+
+    @Override
+    public void removeHyperlink() {
+        this.hyperlink = null;
     }
 
     @Override

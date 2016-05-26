@@ -151,6 +151,11 @@ class MsExcelRow implements Row {
     }
 
     @Override
+    public int getOutlineLevel() {
+        return 0;
+    }
+
+    @Override
     public Iterator<Cell> iterator() {
         return iterator;
     }
