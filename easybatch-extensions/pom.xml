@@ -60,6 +60,7 @@
         <module>easybatch-jackson</module>
         <module>easybatch-mongodb</module>
         <module>easybatch-hibernate</module>
+        <module>easybatch-msexcel</module>
     </modules>
 
 
