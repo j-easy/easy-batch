@@ -24,9 +24,9 @@
 
 package org.easybatch.extensions.msexcel;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.easybatch.core.job.*;
 import org.junit.Test;
 
@@ -42,8 +42,8 @@ public class MsExcelSupportIntegrationTest {
     @Test
     public void integrationTest() throws Exception {
 
-        File inputTweets = new File(this.getClass().getResource("/tweets-in.xls").toURI());
-        File outputTweets = new File(this.getClass().getResource("/tweets-out.xls").toURI());
+        File inputTweets = new File(this.getClass().getResource("/tweets-in.xlsx").toURI());
+        File outputTweets = new File(this.getClass().getResource("/tweets-out.xlsx").toURI());
 
         Job job = JobBuilder.aNewJob()
                 .reader(new MsExcelRecordReader(inputTweets))
@@ -59,16 +59,16 @@ public class MsExcelSupportIntegrationTest {
         assertThat(report.getMetrics().getSuccessCount()).isEqualTo(2);
         assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);
 
-        HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(outputTweets));
-        HSSFSheet sheet = workbook.getSheet(SHEET_NAME);
-        HSSFRow firstRow = sheet.getRow(1);
-        assertThat(firstRow.getCell(0).getNumericCellValue()).isEqualTo(1.0);
-        assertThat(firstRow.getCell(1).getStringCellValue()).isEqualTo("foo");
-        assertThat(firstRow.getCell(2).getStringCellValue()).isEqualTo("hi");
-        HSSFRow secondRow = sheet.getRow(2);
-        assertThat(secondRow.getCell(0).getNumericCellValue()).isEqualTo(2.0);
-        assertThat(secondRow.getCell(1).getStringCellValue()).isEqualTo("bar");
-        assertThat(secondRow.getCell(2).getStringCellValue()).isEqualTo("hello");
+        XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(outputTweets));
+        XSSFSheet sheet = workbook.getSheet(SHEET_NAME);
+        XSSFRow row = sheet.getRow(1);
+        assertThat(row.getCell(0).getNumericCellValue()).isEqualTo(1.0);
+        assertThat(row.getCell(1).getStringCellValue()).isEqualTo("foo");
+        assertThat(row.getCell(2).getStringCellValue()).isEqualTo("hi");
+        row = sheet.getRow(2);
+        assertThat(row.getCell(0).getNumericCellValue()).isEqualTo(2.0);
+        assertThat(row.getCell(1).getStringCellValue()).isEqualTo("bar");
+        assertThat(row.getCell(2).getStringCellValue()).isEqualTo("hello");
     }
 
 }

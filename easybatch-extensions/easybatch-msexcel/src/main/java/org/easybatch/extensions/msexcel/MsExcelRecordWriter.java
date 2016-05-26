@@ -28,12 +28,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.easybatch.core.writer.RecordWriter;
 import org.easybatch.core.writer.RecordWritingException;
 
@@ -41,28 +41,24 @@ public class MsExcelRecordWriter implements RecordWriter<MsExcelRecord> {
 
     private File file;
 
-    private HSSFWorkbook workbook;
+    private XSSFWorkbook workbook;
 
-    private HSSFSheet sheet;
-
-    public MsExcelRecordWriter(final File file) throws IOException {
-        this(file, "sheet");
-    }
+    private XSSFSheet sheet;
 
     public MsExcelRecordWriter(final File file, final String sheetName) throws IOException {
         this.file = file;
-        workbook = new HSSFWorkbook();
+        workbook = new XSSFWorkbook();
         sheet = workbook.createSheet(sheetName);
     }
 
     public MsExcelRecord processRecord(MsExcelRecord msExcelRecord) throws RecordWritingException {
-        HSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
+        XSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
         Row payload = msExcelRecord.getPayload();
         int i = 0;
         int lastCellNum = payload.getLastCellNum();
         for (int index = 0; index < lastCellNum; index++) {
             Cell nextCell = payload.getCell(index);
-            HSSFCell cell = row.createCell(i++);
+            XSSFCell cell = row.createCell(i++);
             setValue(cell, nextCell);
         }
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
@@ -73,7 +69,7 @@ public class MsExcelRecordWriter implements RecordWriter<MsExcelRecord> {
         }
     }
 
-    private void setValue(HSSFCell cell, Cell next) {
+    private void setValue(XSSFCell cell, Cell next) {
         switch (next.getCellType()) {
             case Cell.CELL_TYPE_BOOLEAN:
                 cell.setCellValue(next.getBooleanCellValue());

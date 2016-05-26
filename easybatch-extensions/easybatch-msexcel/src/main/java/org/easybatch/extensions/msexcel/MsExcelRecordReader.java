@@ -25,13 +25,14 @@
 package org.easybatch.extensions.msexcel;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.reader.RecordReaderClosingException;
 import org.easybatch.core.reader.RecordReaderOpeningException;
@@ -42,7 +43,7 @@ public class MsExcelRecordReader implements RecordReader {
 
     private File file;
     
-    private HSSFSheet sheet;
+    private XSSFSheet sheet;
 
     private Iterator<Row> rowIterator;
 
@@ -52,10 +53,15 @@ public class MsExcelRecordReader implements RecordReader {
         this(file, 0);
     }
 
-    public MsExcelRecordReader(final File file, final int sheetIndex)  throws IOException {
+    public MsExcelRecordReader(final File file, final int sheetIndex) throws IOException {
         this.file = file;
-        HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(file));
-        sheet = workbook.getSheetAt(sheetIndex);
+        XSSFWorkbook workbook;
+        try {
+            workbook = new XSSFWorkbook(file);
+            sheet = workbook.getSheetAt(sheetIndex);
+        } catch (InvalidFormatException e) {
+            throw new IOException("Invalid MsExcel file format. Only 'xlsx' is supported", e);
+        }
     }
 
     public void open() throws RecordReaderOpeningException {
