@@ -58,18 +58,23 @@ public class MsExcelRecordMarshaller<P> implements RecordMarshaller<GenericRecor
     private void setValue(Cell cell, Object value) {
         if (value instanceof Boolean) {
             cell.setCellValue((Boolean) value);
+            cell.setCellType(Cell.CELL_TYPE_BOOLEAN);
         }
-        if (value instanceof Double) {
-            cell.setCellValue((Double) value);
+        if (value instanceof Byte || value instanceof Short || value instanceof Integer || value instanceof Long || value instanceof Float || value instanceof Double) {
+            cell.setCellValue(Double.parseDouble(value.toString()));
+            cell.setCellType(Cell.CELL_TYPE_NUMERIC);
         }
         if (value instanceof String) {
             cell.setCellValue((String) value);
+            cell.setCellType(Cell.CELL_TYPE_STRING);
         }
         if (value instanceof Date) {
             cell.setCellValue((Date) value);
+            cell.setCellType(Cell.CELL_TYPE_STRING);
         }
         if (value instanceof Calendar) {
             cell.setCellValue((Calendar) value);
+            cell.setCellType(Cell.CELL_TYPE_STRING);
         }
     }
 }

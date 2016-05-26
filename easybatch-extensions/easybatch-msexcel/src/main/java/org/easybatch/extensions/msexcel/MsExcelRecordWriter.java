@@ -25,7 +25,6 @@
 package org.easybatch.extensions.msexcel;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -46,19 +45,18 @@ public class MsExcelRecordWriter implements RecordWriter<MsExcelRecord> {
 
     private HSSFSheet sheet;
 
-    public MsExcelRecordWriter(File file) throws IOException {
-        this(file, 0);
+    public MsExcelRecordWriter(final File file) throws IOException {
+        this(file, "sheet");
     }
 
-    public MsExcelRecordWriter(File file, int sheetIndex) throws IOException {
+    public MsExcelRecordWriter(final File file, final String sheetName) throws IOException {
         this.file = file;
-        workbook = new HSSFWorkbook(new FileInputStream(file));
-        sheet = workbook.getSheetAt(sheetIndex);
+        workbook = new HSSFWorkbook();
+        sheet = workbook.createSheet(sheetName);
     }
 
     public MsExcelRecord processRecord(MsExcelRecord msExcelRecord) throws RecordWritingException {
         HSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
-        // fill in row
         Row payload = msExcelRecord.getPayload();
         int i = 0;
         int lastCellNum = payload.getLastCellNum();
@@ -67,7 +65,6 @@ public class MsExcelRecordWriter implements RecordWriter<MsExcelRecord> {
             HSSFCell cell = row.createCell(i++);
             setValue(cell, nextCell);
         }
-        // FIXME write workbook (not efficient, Apache PIO does not allow writing rows in iterative mode)
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             workbook.write(fileOutputStream);
             return msExcelRecord;
@@ -80,15 +77,19 @@ public class MsExcelRecordWriter implements RecordWriter<MsExcelRecord> {
         switch (next.getCellType()) {
             case Cell.CELL_TYPE_BOOLEAN:
                 cell.setCellValue(next.getBooleanCellValue());
+                cell.setCellType(Cell.CELL_TYPE_BOOLEAN);
                 break;
             case Cell.CELL_TYPE_NUMERIC:
                 cell.setCellValue(next.getNumericCellValue());
+                cell.setCellType(Cell.CELL_TYPE_NUMERIC);
                 break;
             case Cell.CELL_TYPE_STRING:
                 cell.setCellValue(next.getStringCellValue());
+                cell.setCellType(Cell.CELL_TYPE_STRING);
                 break;
             case Cell.CELL_TYPE_FORMULA:
                 cell.setCellValue(next.getCellFormula());
+                cell.setCellType(Cell.CELL_TYPE_FORMULA);
                 break;
         }
     }

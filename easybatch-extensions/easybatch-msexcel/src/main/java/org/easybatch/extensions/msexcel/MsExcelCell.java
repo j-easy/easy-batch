@@ -48,6 +48,12 @@ class MsExcelCell implements Cell {
     
     private int type;
 
+    private CellStyle style;
+
+    private Comment comment;
+
+    private Hyperlink hyperlink;
+
     public MsExcelCell(int columnIndex) {
         this.columnIndex = columnIndex;
     }
@@ -96,19 +102,19 @@ class MsExcelCell implements Cell {
     @Override
     public void setCellValue(Date value) {
         this.value = value;
-        setCellType(6); // missing CELL_TYPE_DATE in Cell ??
+        setCellType(CELL_TYPE_STRING); // missing CELL_TYPE_DATE in Cell ??
     }
 
     @Override
     public void setCellValue(Calendar value) {
         this.value = value;
-        setCellType(7); // missing CELL_TYPE_CALENDAR in Cell ??
+        setCellType(CELL_TYPE_STRING); // missing CELL_TYPE_CALENDAR in Cell ??
     }
 
     @Override
     public void setCellValue(RichTextString value) {
         this.value = value;
-        setCellType(8);// missing CELL_TYPE_RICH_TEXT_STRING in Cell ??
+        setCellType(CELL_TYPE_STRING);// missing CELL_TYPE_RICH_TEXT_STRING in Cell ??
     }
 
     @Override
@@ -120,6 +126,7 @@ class MsExcelCell implements Cell {
     @Override
     public void setCellFormula(String formula) throws FormulaParseException {
         this.formula = formula;
+        setCellType(CELL_TYPE_FORMULA);
     }
 
     @Override
@@ -170,12 +177,12 @@ class MsExcelCell implements Cell {
 
     @Override
     public void setCellStyle(CellStyle style) {
-
+        this.style = style;
     }
 
     @Override
     public CellStyle getCellStyle() {
-        return null;
+        return style;
     }
 
     @Override
@@ -185,27 +192,27 @@ class MsExcelCell implements Cell {
 
     @Override
     public void setCellComment(Comment comment) {
-
+        this.comment = comment;
     }
 
     @Override
     public Comment getCellComment() {
-        return null;
+        return comment;
     }
 
     @Override
     public void removeCellComment() {
-
+        comment = null;
     }
 
     @Override
     public Hyperlink getHyperlink() {
-        return null;
+        return hyperlink;
     }
 
     @Override
-    public void setHyperlink(Hyperlink link) {
-
+    public void setHyperlink(Hyperlink hyperlink) {
+        this.hyperlink = hyperlink;
     }
 
     @Override

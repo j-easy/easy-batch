@@ -67,9 +67,9 @@ public class MsExcelRecordMapper implements RecordMapper<MsExcelRecord, GenericR
             case Cell.CELL_TYPE_BOOLEAN:
                 return String.valueOf(cell.getBooleanCellValue());
             case Cell.CELL_TYPE_NUMERIC:
-                return String.valueOf((int)cell.getNumericCellValue()); // TODO bug in object mapper for numeric values
+                return String.valueOf(cell.getNumericCellValue());
             case Cell.CELL_TYPE_STRING:
-                return String.valueOf(cell.getStringCellValue());
+                return cell.getStringCellValue();
         }
         return "";
     }

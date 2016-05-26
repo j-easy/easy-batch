@@ -24,7 +24,6 @@
 
 package org.easybatch.extensions.msexcel;
 
-import java.util.Iterator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.easybatch.core.record.GenericRecord;
@@ -49,9 +48,9 @@ public class MsExcelRecord extends GenericRecord<Row> {
     
     private String dump(Row row) {
         StringBuilder stringBuilder = new StringBuilder();
-        Iterator<Cell> cellIterator = row.cellIterator();
-        while (cellIterator.hasNext()) {
-            Cell cell = cellIterator.next();
+        short lastCellNum = row.getLastCellNum();
+        for (int i = 0; i < lastCellNum; i++) {
+            Cell cell = row.getCell(i);
             stringBuilder.append("\"");
             switch(cell.getCellType()) {
                 case Cell.CELL_TYPE_BOOLEAN:
@@ -68,10 +67,11 @@ public class MsExcelRecord extends GenericRecord<Row> {
                     break;
             }
             stringBuilder.append("\"");
-            if (cellIterator.hasNext()) {
+            if (i < lastCellNum - 1) {
                 stringBuilder.append(",");
             }
         }
+
         return stringBuilder.toString();
     }
 }

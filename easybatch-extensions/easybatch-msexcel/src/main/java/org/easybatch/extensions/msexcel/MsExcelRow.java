@@ -87,7 +87,7 @@ class MsExcelRow implements Row {
 
     @Override
     public short getLastCellNum() {
-        return 0;
+        return (short) cells.size();
     }
 
     @Override

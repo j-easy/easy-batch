@@ -24,18 +24,20 @@
 
 package org.easybatch.extensions.msexcel;
 
-import java.io.File;
-
-import org.easybatch.core.filter.HeaderRecordFilter;
-import org.easybatch.core.job.Job;
-import org.easybatch.core.job.JobBuilder;
-import org.easybatch.core.job.JobExecutor;
-import org.easybatch.core.job.JobReport;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.easybatch.core.job.*;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.FileInputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MsExcelSupportIntegrationTest {
+
+    public static final String SHEET_NAME = "tweets";
 
     @Test
     public void integrationTest() throws Exception {
@@ -45,18 +47,28 @@ public class MsExcelSupportIntegrationTest {
 
         Job job = JobBuilder.aNewJob()
                 .reader(new MsExcelRecordReader(inputTweets))
-                .filter(new HeaderRecordFilter())
                 .mapper(new MsExcelRecordMapper(Tweet.class, "id", "user", "message"))
                 .marshaller(new MsExcelRecordMarshaller<>(Tweet.class, "id", "user", "message"))
-                .writer(new MsExcelRecordWriter(outputTweets))
+                .writer(new MsExcelRecordWriter(outputTweets, SHEET_NAME))
                 .build();
 
         JobReport report = JobExecutor.execute(job);
 
         assertThat(report).isNotNull();
-        assertThat(report.getMetrics().getTotalCount()).isEqualTo(3);
-        assertThat(report.getMetrics().getFilteredCount()).isEqualTo(1);
+        assertThat(report.getMetrics().getTotalCount()).isEqualTo(2);
         assertThat(report.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);
+
+        HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(outputTweets));
+        HSSFSheet sheet = workbook.getSheet(SHEET_NAME);
+        HSSFRow firstRow = sheet.getRow(1);
+        assertThat(firstRow.getCell(0).getNumericCellValue()).isEqualTo(1.0);
+        assertThat(firstRow.getCell(1).getStringCellValue()).isEqualTo("foo");
+        assertThat(firstRow.getCell(2).getStringCellValue()).isEqualTo("hi");
+        HSSFRow secondRow = sheet.getRow(2);
+        assertThat(secondRow.getCell(0).getNumericCellValue()).isEqualTo(2.0);
+        assertThat(secondRow.getCell(1).getStringCellValue()).isEqualTo("bar");
+        assertThat(secondRow.getCell(2).getStringCellValue()).isEqualTo("hello");
     }
 
 }
