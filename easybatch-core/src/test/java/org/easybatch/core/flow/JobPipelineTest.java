@@ -7,7 +7,6 @@ import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.BlockingQueueRecordReader;
 import org.easybatch.core.reader.StringRecordReader;
 import org.easybatch.core.record.Record;
-import org.easybatch.core.record.StringRecord;
 import org.easybatch.core.writer.BlockingQueueRecordWriter;
 import org.easybatch.core.writer.CollectionRecordWriter;
 import org.junit.Test;
@@ -16,8 +15,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -55,12 +54,15 @@ public class JobPipelineTest {
                 .when(jobFailed()).then(job3)
                 .build();
 
-        JobReport lastJobReport = jobPipeline.call();
+        Map<Job, JobReport> jobReports = jobPipeline.call();
 
         verify(job1).call();
         verify(job2).call();
         verify(job3).call();
-        assertThat(lastJobReport).isEqualTo(jobReport3);
+        assertThat(jobReports).hasSize(3);
+        assertThat(jobReports.get(job1)).isEqualTo(jobReport1);
+        assertThat(jobReports.get(job2)).isEqualTo(jobReport2);
+        assertThat(jobReports.get(job3)).isEqualTo(jobReport3);
     }
 
     @Test
@@ -88,10 +90,10 @@ public class JobPipelineTest {
                 .startWith(job1)
                 .when(jobCompleted()).then(job2)
                 .build();
-        JobReport lastJobReport = jobPipeline.call();
+        Map<Job, JobReport> jobReports = jobPipeline.call();
 
         // Then
-        assertThat(lastJobReport).isNotNull();
+        assertThat(jobReports).hasSize(2);
         assertThat(records).hasSize(2);
     }
 }
