@@ -232,6 +232,12 @@
                             <include>**/*Test*.java</include>
                         </includes>
                         <reportFormat>html</reportFormat>
+                        <systemProperties>
+                            <property>
+                                <name>java.util.logging.SimpleFormatter.format</name>
+                                <value>%1$tF %tT.%1$tL %4$s [%2$s] - %5$s %6$s%n</value>
+                            </property>
+                        </systemProperties>
                     </configuration>
                 </plugin>
                 <plugin>
