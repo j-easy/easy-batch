@@ -22,43 +22,34 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.job;
-
-import org.easybatch.core.listener.RecordReaderListener;
-import org.easybatch.core.record.Record;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+package org.easybatch.core.reader;
 
 /**
- * Default listener that logs and reports record reading exceptions.
+ * Retry policy for the {@link RecordReader}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-class DefaultRecordReaderListener implements RecordReaderListener {
+public class RetryPolicy {
 
-    private static final Logger LOGGER = Logger.getLogger(DefaultRecordReaderListener.class.getName());
+    private int maxAttempts;
 
-    private JobImpl job;
+    private long backOffDelay;
 
-    DefaultRecordReaderListener(JobImpl job) {
-        this.job = job;
+    /**
+     * Create a new {@link RetryPolicy}
+     * @param maxAttempts number of retries
+     * @param backOffDelay delay (in milliseconds) to wait between retries
+     */
+    public RetryPolicy(final int maxAttempts, final long backOffDelay) {
+        this.maxAttempts = maxAttempts;
+        this.backOffDelay = backOffDelay;
     }
 
-    @Override
-    public void beforeRecordReading() {
-        //no-op
+    public int getMaxAttempts() {
+        return maxAttempts;
     }
 
-    @Override
-    public void afterRecordReading(Record record) {
-        //no-op
-    }
-
-    @Override
-    public void onRecordReadingException(Throwable throwable) {
-        LOGGER.log(Level.SEVERE, "Unable to read next record", throwable);
-        job.getJobReport().setStatus(JobStatus.FAILED);
-        job.getJobReport().getMetrics().setEndTime(System.currentTimeMillis());
+    public long getBackOffDelay() {
+        return backOffDelay;
     }
 }

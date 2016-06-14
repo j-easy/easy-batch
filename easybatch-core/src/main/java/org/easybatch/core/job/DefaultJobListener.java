@@ -27,6 +27,7 @@ package org.easybatch.core.job;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.processor.ComputationalRecordProcessor;
 import org.easybatch.core.processor.RecordProcessor;
+import org.easybatch.core.reader.RetryPolicy;
 import org.easybatch.core.util.Utils;
 
 import java.util.logging.Level;
@@ -35,6 +36,7 @@ import java.util.logging.Logger;
 import static org.easybatch.core.job.JobParameters.DEFAULT_LIMIT;
 import static org.easybatch.core.job.JobParameters.DEFAULT_TIMEOUT;
 import static org.easybatch.core.util.Utils.toMinutes;
+import static org.easybatch.core.util.Utils.toSeconds;
 
 /**
  * Job listener that logs and reports job parameters and metrics.
@@ -60,17 +62,20 @@ class DefaultJobListener implements JobListener {
         long limit = jobParameters.getLimit();
         long timeout = jobParameters.getTimeout();
         String jobName = jobParameters.getName();
+        RetryPolicy retryPolicy = jobParameters.getRetryPolicy();
 
         LOGGER.log(Level.INFO, "Starting job ''{0}''", jobName);
         LOGGER.log(Level.INFO, "Execution id: {0}", jobParameters.getExecutionId());
         LOGGER.log(Level.INFO, "Host name: {0}", jobParameters.getHostname());
         LOGGER.log(Level.INFO, "Data source: {0}", dataSource != null ? dataSource : "N/A");
+        LOGGER.log(Level.INFO, "Max retry attempts: {0}", retryPolicy.getMaxAttempts());
+        LOGGER.log(Level.INFO, "BackOff: {0}", toSeconds(retryPolicy.getBackOffDelay()) + "s");
+        LOGGER.log(Level.INFO, "Keep reader alive: {0}", jobParameters.isKeepAlive());
         LOGGER.log(Level.INFO, "Skip: {0}", jobParameters.getSkip());
         LOGGER.log(Level.INFO, "Limit: {0}", limit != DEFAULT_LIMIT ? limit : "N/A");
         LOGGER.log(Level.INFO, "Timeout: {0}", timeout != DEFAULT_TIMEOUT ? toMinutes(timeout) + "m" : "N/A");
         LOGGER.log(Level.INFO, "Strict mode: {0}", jobParameters.isStrictMode());
         LOGGER.log(Level.INFO, "Silent mode: {0}", jobParameters.isSilentMode());
-        LOGGER.log(Level.INFO, "Keep alive: {0}", jobParameters.isKeepAlive());
         LOGGER.log(Level.INFO, "Jmx mode: {0}", jobParameters.isJmxMode());
         LOGGER.log(Level.INFO, "Job ''{0}'' started", jobName);
 

@@ -33,6 +33,7 @@ import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.marshaller.RecordMarshaller;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.reader.RetryPolicy;
 import org.easybatch.core.validator.RecordValidator;
 import org.easybatch.core.writer.RecordWriter;
 
@@ -148,6 +149,38 @@ public final class JobBuilder {
         checkNotNull(recordReader, "record reader");
         job.setRecordReader(recordReader);
         job.getJobReport().getParameters().setKeepAlive(keepAlive);
+        return this;
+    }
+
+    /**
+     * Register a record reader.
+     *
+     * @param recordReader the record reader to register
+     * @param retryPolicy  the retry policy of the reader
+     * @return the job builder
+     */
+    public JobBuilder reader(final RecordReader recordReader, final RetryPolicy retryPolicy) {
+        checkNotNull(recordReader, "record reader");
+        checkNotNull(retryPolicy, "retry policy");
+        job.setRecordReader(recordReader);
+        job.getJobReport().getParameters().setRetryPolicy(retryPolicy);
+        return this;
+    }
+
+    /**
+     * Register a record reader.
+     *
+     * @param recordReader the record reader to register
+     * @param keepAlive    true if the reader should <strong>NOT</strong> be closed
+     * @param retryPolicy  the retry policy of the reader
+     * @return the job builder
+     */
+    public JobBuilder reader(final RecordReader recordReader, final boolean keepAlive, final RetryPolicy retryPolicy) {
+        checkNotNull(recordReader, "record reader");
+        checkNotNull(retryPolicy, "retry policy");
+        job.setRecordReader(recordReader);
+        job.getJobReport().getParameters().setKeepAlive(keepAlive);
+        job.getJobReport().getParameters().setRetryPolicy(retryPolicy);
         return this;
     }
 

@@ -100,6 +100,10 @@ public abstract class Utils {
         return TimeUnit.MILLISECONDS.toMinutes(milliseconds);
     }
 
+    public static long toSeconds(long milliseconds) {
+        return TimeUnit.MILLISECONDS.toSeconds(milliseconds);
+    }
+
     public static void checkNotNull(Object argument, String argumentName) {
         if (argument == null) {
             throw new IllegalArgumentException(format("The %s must not be null", argumentName));

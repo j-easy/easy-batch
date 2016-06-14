@@ -32,10 +32,13 @@ import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.reader.RecordReadingException;
 import org.easybatch.core.record.Record;
+import org.easybatch.core.util.Utils;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static org.easybatch.core.util.Utils.toSeconds;
 
 /**
  * Core Easy Batch job implementation.
@@ -67,7 +70,6 @@ final class JobImpl implements Job {
         this.parameters = report.getParameters();
         this.metrics = report.getMetrics();
         this.pipeline = new Pipeline(new ArrayList<RecordProcessor>(), eventManager);
-        this.eventManager.addRecordReaderListener(new DefaultRecordReaderListener(this));
         this.eventManager.addPipelineListener(new DefaultPipelineListener(this));
         this.eventManager.addPipelineListener(new JobTimeoutListener(this));
         this.eventManager.addJobListener(new DefaultJobListener(this));
@@ -103,14 +105,32 @@ final class JobImpl implements Job {
                 }
 
                 //read next record
-                Record currentRecord;
-                try {
-                    currentRecord = readNextRecord();
-                    recordCount++;
-                } catch (RecordReadingException e) {
-                    eventManager.fireOnRecordReadingException(e);
-                    report.getMetrics().setLastError(e);
-                    return report;
+                // TODO clean record reading code
+                Record currentRecord = null;
+                int readAttempts = 0;
+                int maxAttempts = parameters.getRetryPolicy().getMaxAttempts();
+                long backOffDelay = parameters.getRetryPolicy().getBackOffDelay();
+                while(readAttempts < maxAttempts) {
+                    try {
+                        readAttempts++;
+                        eventManager.fireBeforeRecordReading();
+                        currentRecord = recordReader.readNextRecord();
+                        eventManager.fireAfterRecordReading(currentRecord);
+                        recordCount++;
+                        readAttempts = maxAttempts;
+                    } catch (RecordReadingException e) {
+                        eventManager.fireOnRecordReadingException(e);
+                        LOGGER.log(Level.SEVERE, "Unable to read next record", e);
+                        report.getMetrics().setLastError(e);
+                        if (readAttempts >= maxAttempts) {
+                            LOGGER.log(Level.WARNING, "Unable to read next record after {0} attempt(s), aborting job", maxAttempts);
+                            report.setStatus(JobStatus.ABORTED);
+                            report.getMetrics().setEndTime(System.currentTimeMillis());
+                            return report;
+                        }
+                        Thread.sleep(backOffDelay);
+                        LOGGER.log(Level.INFO, "Waiting for {0}s before retrying to read next record", toSeconds(backOffDelay));
+                    }
                 }
 
                 //Skip records if any
@@ -162,13 +182,6 @@ final class JobImpl implements Job {
             return false;
         }
         return true;
-    }
-
-    private Record readNextRecord() throws RecordReadingException {
-        eventManager.fireBeforeRecordReading();
-        Record nextRecord = recordReader.readNextRecord();
-        eventManager.fireAfterRecordReading(nextRecord);
-        return nextRecord;
     }
 
     private void closeRecordReader() {
