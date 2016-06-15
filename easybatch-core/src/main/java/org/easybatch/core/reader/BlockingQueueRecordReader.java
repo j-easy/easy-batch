@@ -84,7 +84,7 @@ public class BlockingQueueRecordReader<T extends Record> implements RecordReader
 
     @Override
     public String getDataSourceName() {
-        return "Queue:" + queue;
+        return "In-Memory Queue";
     }
 
     @Override
