@@ -28,6 +28,7 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -59,6 +60,17 @@ public abstract class Utils {
 
     private Utils() {
 
+    }
+
+    static {
+        try {
+            if (System.getProperty("java.util.logging.config.file") == null &&
+                    System.getProperty("java.util.logging.config.class") == null) {
+                LogManager.getLogManager().readConfiguration(Utils.class.getResourceAsStream("/logging.properties"));
+            }
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Unable to load logging configuration file", e);
+        }
     }
 
     /**
