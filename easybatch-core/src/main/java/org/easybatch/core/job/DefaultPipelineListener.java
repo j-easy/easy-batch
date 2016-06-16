@@ -53,6 +53,9 @@ class DefaultPipelineListener implements PipelineListener {
      */
     @Override
     public Record beforeRecordProcessing(Record record) {
+        if (job.getJobReport().getParameters().isJmxMode()) {
+            job.getJobMonitor().notifyJobReportUpdate();
+        }
         return record;
     }
 

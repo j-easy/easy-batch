@@ -24,14 +24,22 @@
 
 package org.easybatch.core.job;
 
+import javax.management.AttributeChangeNotification;
+import javax.management.Notification;
+import javax.management.NotificationBroadcasterSupport;
+import java.util.Date;
+
 /**
  * JMX MBean implementation of {@link JobMonitorMBean}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-class JobMonitor implements JobMonitorMBean {
+class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBean {
 
-    public static final String JMX_MBEAN_NAME = "org.easybatch.core.monitor:";
+    /**
+     * JMX notification sequence number.
+     */
+    private long sequenceNumber = 1;
 
     /**
      * The batch report holding data exposed as JMX attributes.
@@ -151,4 +159,16 @@ class JobMonitor implements JobMonitorMBean {
         return jobReport.getStatus().toString();
     }
 
+    void notifyJobReportUpdate() {
+        Notification notification = new AttributeChangeNotification(
+                this,
+                sequenceNumber++,
+                new Date().getTime(),
+                "job report updated",
+                "JobReport",
+                JobReport.class.getName(),
+                null, //no need for old value
+                jobReport);
+        sendNotification(notification);
+    }
 }

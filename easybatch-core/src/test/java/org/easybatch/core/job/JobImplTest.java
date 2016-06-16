@@ -39,6 +39,7 @@ import org.easybatch.core.reader.RecordReadingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
+import org.easybatch.core.util.Utils;
 import org.easybatch.core.validator.RecordValidationException;
 import org.easybatch.core.validator.RecordValidator;
 import org.junit.Before;
@@ -58,6 +59,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.easybatch.core.util.Utils.*;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
@@ -284,7 +286,7 @@ public class JobImplTest {
         job = new JobBuilder().jmxMode(true).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(JobMonitor.JMX_MBEAN_NAME + "name=" + JobParameters.DEFAULT_JOB_NAME + ",id=" + job.getExecutionId()))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(JMX_MBEAN_NAME + "name=" + JobParameters.DEFAULT_JOB_NAME + ",id=" + job.getExecutionId()))).isTrue();
     }
 
     @Test
@@ -293,7 +295,7 @@ public class JobImplTest {
         job = new JobBuilder().jmxMode(true).named(name).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(JobMonitor.JMX_MBEAN_NAME + "name=" + name + ",id=" + job.getExecutionId()))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(JMX_MBEAN_NAME + "name=" + name + ",id=" + job.getExecutionId()))).isTrue();
     }
 
     /*

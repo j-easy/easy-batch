@@ -54,6 +54,8 @@ final class JobImpl implements Job {
 
     private JobReport report;
 
+    private JobMonitor jobMonitor;
+
     private JobParameters parameters;
 
     private JobMetrics metrics;
@@ -66,6 +68,7 @@ final class JobImpl implements Job {
         this.report = new JobReport();
         this.parameters = report.getParameters();
         this.metrics = report.getMetrics();
+        this.jobMonitor = new JobMonitor(report);
         this.pipeline = new Pipeline(new ArrayList<RecordProcessor>(), eventManager);
         this.eventManager.addRecordReaderListener(new DefaultRecordReaderListener(this));
         this.eventManager.addPipelineListener(new DefaultPipelineListener(this));
@@ -224,6 +227,10 @@ final class JobImpl implements Job {
 
     Pipeline getPipeline() {
         return pipeline;
+    }
+
+    JobMonitor getJobMonitor() {
+        return jobMonitor;
     }
 
     @Override

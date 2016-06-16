@@ -92,6 +92,9 @@ class DefaultJobListener implements JobListener {
             Object jobResult = computationalRecordProcessor.getComputationResult();
             jobReport.setJobResult(new JobResult(jobResult));
         }
+        if (job.getJobReport().getParameters().isJmxMode()) {
+            job.getJobMonitor().notifyJobReportUpdate();
+        }
         LOGGER.log(Level.INFO, "Job ''{0}'' finished with exit status: {1}", new Object[]{jobReport.getParameters().getName(), jobReport.getStatus()});
     }
 }

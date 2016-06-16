@@ -58,6 +58,8 @@ public abstract class Utils {
 
     public static final String JAVA_IO_TMPDIR = System.getProperty("java.io.tmpdir");
 
+    public static final String JMX_MBEAN_NAME = "org.easybatch.core.monitor:";
+
     private Utils() {
 
     }
