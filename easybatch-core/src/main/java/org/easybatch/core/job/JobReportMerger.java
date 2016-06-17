@@ -22,9 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tools.reporting;
-
-import org.easybatch.core.job.JobReport;
+package org.easybatch.core.job;
 
 /**
  * A service that merges multiple reports into a global report.

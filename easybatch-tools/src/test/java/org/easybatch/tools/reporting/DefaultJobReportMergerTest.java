@@ -25,6 +25,7 @@
 package org.easybatch.tools.reporting;
 
 import org.easybatch.core.job.JobReport;
+import org.easybatch.core.job.JobReportMerger;
 import org.easybatch.core.job.JobResult;
 import org.easybatch.core.job.JobStatus;
 import org.junit.Before;
