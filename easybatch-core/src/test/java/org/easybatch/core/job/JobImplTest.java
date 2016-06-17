@@ -32,10 +32,7 @@ import org.easybatch.core.processor.ComputationalRecordProcessor;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.processor.RecordProcessingException;
 import org.easybatch.core.processor.RecordProcessor;
-import org.easybatch.core.reader.IterableRecordReader;
-import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RecordReaderOpeningException;
-import org.easybatch.core.reader.RecordReadingException;
+import org.easybatch.core.reader.*;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
@@ -53,8 +50,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,6 +70,8 @@ public class JobImplTest {
     private Record record1, record2;
     @Mock
     private RecordReader reader;
+    @Mock
+    private RecordReader unreliableReader;
     @Mock
     private RecordFilter filter;
     @Mock
@@ -192,7 +190,7 @@ public class JobImplTest {
     }
 
     @Test
-    public void whenNotAbleToReadNextRecord_ThenTheJobShouldBeFailed() throws Exception {
+    public void whenNotAbleToReadNextRecord_ThenTheJobShouldBeAborted() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true);
         when(reader.readNextRecord()).thenThrow(recordReadingException);
 
@@ -202,7 +200,7 @@ public class JobImplTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getTotalCount()).isNull();
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.ABORTED);
         assertThat(jobReport.getMetrics().getLastError()).isEqualTo(recordReadingException);
     }
 
@@ -364,6 +362,42 @@ public class JobImplTest {
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.ABORTED);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(1);
+    }
+
+    /*
+     * Test retry parameter
+     */
+
+    @Test
+    public void testRetry_whenMaxAttemptsExceeded() throws Exception {
+        job = new JobBuilder()
+                .reader(new UnreliableRecordReader(), new RetryPolicy(2, 1000))
+                .processor(new RecordCollector())
+                .build();
+
+        JobReport jobReport = job.call();
+
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.ABORTED);
+    }
+
+    @Test
+    public void testRetry_whenMaxAttemptsNotExceeded() throws Exception {
+        job = new JobBuilder()
+                .reader(new UnreliableRecordReader(), new RetryPolicy(5, 1000))
+                .processor(new RecordCollector())
+                .build();
+
+        JobReport jobReport = job.call();
+
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(3);
+
+        List<Record> records = (List<Record>) jobReport.getResult();
+        assertThat(records).hasSize(3);
+        assertThat(records.get(0).getPayload()).isEqualTo("r1");
+        assertThat(records.get(1).getPayload()).isEqualTo("r2");
+        assertThat(records.get(2).getPayload()).isEqualTo("r3");
     }
 
     /*

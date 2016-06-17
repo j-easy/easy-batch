@@ -24,6 +24,7 @@
 
 package org.easybatch.core.job;
 
+import org.easybatch.core.reader.RetryPolicy;
 import org.easybatch.core.util.Utils;
 
 import java.io.Serializable;
@@ -45,6 +46,8 @@ public class JobParameters implements Serializable {
     public static final Long DEFAULT_SKIP = 0L;
 
     public static final long DEFAULT_TIMEOUT = TimeUnit.MILLISECONDS.convert(31, TimeUnit.DAYS);
+
+    private  static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(1, 1000);
 
     private String name;
 
@@ -70,6 +73,8 @@ public class JobParameters implements Serializable {
 
     private Properties systemProperties;
 
+    private RetryPolicy retryPolicy;
+
     public JobParameters() {
         this.name = DEFAULT_JOB_NAME;
         this.executionId = UUID.randomUUID().toString();
@@ -78,6 +83,7 @@ public class JobParameters implements Serializable {
         this.timeout = DEFAULT_TIMEOUT;
         this.systemProperties = System.getProperties();
         this.hostname = Utils.getHostName();
+        this.retryPolicy = DEFAULT_RETRY_POLICY;
     }
 
     public String getHostname() {
@@ -174,5 +180,13 @@ public class JobParameters implements Serializable {
 
     public void setDataSource(String dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public RetryPolicy getRetryPolicy() {
+        return retryPolicy;
+    }
+
+    public void setRetryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
     }
 }
