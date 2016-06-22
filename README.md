@@ -129,7 +129,7 @@ Thank you all for your contributions!
 
 |JetBrains|YourKit|Travis CI|
 |:-:|:-:|:-:|
-|![IntelliJ IDEA](https://www.jetbrains.com/idea/docs/logo_intellij_idea.png)|![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)|![Travis CI](https://cdn.travis-ci.com/images/logos/TravisCI-Full-Color-4f9bce317a2b82518737a7ee7381c2ec.png)|
+|![IntelliJ IDEA](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/logo/intellijidea-logo.png)|![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)|![Travis CI](https://cdn.travis-ci.com/images/logos/TravisCI-Full-Color-7f5db09495c8b09c21cb678c4de18d21.png)|
 |Many thanks to [JetBrains](https://www.jetbrains.com/) for providing a free license of [IntelliJ IDEA](https://www.jetbrains.com/idea/) to kindly support the development of Easy Batch|Many thanks to [YourKit, LLC](https://www.yourkit.com/) for providing a free license of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/index.jsp) to kindly support the development of Easy Batch.|Many thanks to [Travis CI](https://travis-ci.org) for providing a free continuous integration service for open source projects.|
 
 ## License
