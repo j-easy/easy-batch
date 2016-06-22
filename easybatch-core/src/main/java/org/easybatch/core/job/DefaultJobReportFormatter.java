@@ -50,6 +50,7 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
         sb.append(LINE_SEPARATOR).append("Parameters:");
         sb.append(LINE_SEPARATOR).append("\tName = ").append(parameters.getName());
         sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(parameters.getExecutionId());
+        sb.append(LINE_SEPARATOR).append("\tHost name = ").append(parameters.getHostname());
         sb.append(LINE_SEPARATOR).append("\tData source = ").append(parameters.getDataSource());
         sb.append(LINE_SEPARATOR).append("\tSkip = ").append(parameters.getSkip());
         sb.append(LINE_SEPARATOR).append("\tLimit = ").append(jobReport.getFormattedLimit());
