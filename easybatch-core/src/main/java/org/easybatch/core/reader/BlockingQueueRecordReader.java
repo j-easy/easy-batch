@@ -43,6 +43,16 @@ public class BlockingQueueRecordReader<T extends Record> implements RecordReader
     private boolean stop;
 
     /**
+     * The number of poison records received.
+     */
+    private int poisonRecords;
+
+    /**
+     * The total number of poison records to receive to stop the queue.
+     */
+    private int totalPoisonRecords;
+
+    /**
      * The source queue.
      */
     private BlockingQueue<T> queue;
@@ -53,12 +63,23 @@ public class BlockingQueueRecordReader<T extends Record> implements RecordReader
      * @param queue the queue to read records from
      */
     public BlockingQueueRecordReader(final BlockingQueue<T> queue) {
+        this(queue, 1);
+    }
+
+    /**
+     * Create a {@link BlockingQueueRecordReader}.
+     *
+     * @param queue the queue to read records from
+     * @param totalPoisonRecords number of poison records to receive to stop reading from the queue
+     */
+    public BlockingQueueRecordReader(final BlockingQueue<T> queue, int totalPoisonRecords) {
         this.queue = queue;
+        this.totalPoisonRecords = totalPoisonRecords;
     }
 
     @Override
     public void open() {
-        // no op
+        poisonRecords = 0;
     }
 
     @Override
@@ -70,7 +91,10 @@ public class BlockingQueueRecordReader<T extends Record> implements RecordReader
     public T readNextRecord() throws RecordReadingException {
         try {
             T record = queue.take();
-            stop = record instanceof PoisonRecord;
+            if (record instanceof PoisonRecord) {
+                poisonRecords++;
+            }
+            stop = poisonRecords == totalPoisonRecords;
             return record;
         } catch (InterruptedException e) {
             throw new RecordReadingException("Unable to read next record from the queue", e);
