@@ -22,12 +22,8 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tools.reporting;
+package org.easybatch.core.job;
 
-import org.easybatch.core.job.JobReport;
-import org.easybatch.core.job.JobReportMerger;
-import org.easybatch.core.job.JobResult;
-import org.easybatch.core.job.JobStatus;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,9 +45,9 @@ public class DefaultJobReportMergerTest {
     public void testReportsMerging() throws Exception {
 
         JobReport jobReport1 = new JobReport();
-        long startTime1 = 1l;
-        long endTime1 = 10l;
-        jobReport1.getMetrics().setTotalCount(6l);
+        long startTime1 = 1L;
+        long endTime1 = 10L;
+        jobReport1.getMetrics().setTotalCount(6L);
         jobReport1.getMetrics().incrementSkippedCount();
         jobReport1.getMetrics().incrementFilteredCount();
         jobReport1.getMetrics().incrementErrorCount();
@@ -63,9 +59,9 @@ public class DefaultJobReportMergerTest {
         jobReport1.setStatus(JobStatus.ABORTED);
 
         JobReport jobReport2 = new JobReport();
-        long startTime2 = 2l;
-        long endTime2 = 11l;
-        jobReport2.getMetrics().setTotalCount(6l);
+        long startTime2 = 2L;
+        long endTime2 = 11L;
+        jobReport2.getMetrics().setTotalCount(6L);
         jobReport2.getMetrics().incrementSkippedCount();
         jobReport2.getMetrics().incrementFilteredCount();
         jobReport2.getMetrics().incrementErrorCount();
