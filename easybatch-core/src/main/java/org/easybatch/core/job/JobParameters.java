@@ -24,7 +24,7 @@
 
 package org.easybatch.core.job;
 
-import org.easybatch.core.reader.RetryPolicy;
+import org.easybatch.core.retry.RetryPolicy;
 import org.easybatch.core.util.Utils;
 
 import java.io.Serializable;

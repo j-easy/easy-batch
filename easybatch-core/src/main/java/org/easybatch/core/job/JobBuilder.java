@@ -33,7 +33,7 @@ import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.marshaller.RecordMarshaller;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RetryPolicy;
+import org.easybatch.core.retry.RetryPolicy;
 import org.easybatch.core.validator.RecordValidator;
 import org.easybatch.core.writer.RecordWriter;
 
@@ -147,8 +147,8 @@ public final class JobBuilder {
      */
     public JobBuilder reader(final RecordReader recordReader, final boolean keepAlive) {
         checkNotNull(recordReader, "record reader");
-        job.setRecordReader(recordReader);
         job.getJobReport().getParameters().setKeepAlive(keepAlive);
+        job.setRecordReader(recordReader);
         return this;
     }
 
@@ -162,8 +162,8 @@ public final class JobBuilder {
     public JobBuilder reader(final RecordReader recordReader, final RetryPolicy retryPolicy) {
         checkNotNull(recordReader, "record reader");
         checkNotNull(retryPolicy, "retry policy");
-        job.setRecordReader(recordReader);
         job.getJobReport().getParameters().setRetryPolicy(retryPolicy);
+        job.setRecordReader(recordReader);
         return this;
     }
 
@@ -178,9 +178,9 @@ public final class JobBuilder {
     public JobBuilder reader(final RecordReader recordReader, final boolean keepAlive, final RetryPolicy retryPolicy) {
         checkNotNull(recordReader, "record reader");
         checkNotNull(retryPolicy, "retry policy");
-        job.setRecordReader(recordReader);
         job.getJobReport().getParameters().setKeepAlive(keepAlive);
         job.getJobReport().getParameters().setRetryPolicy(retryPolicy);
+        job.setRecordReader(recordReader);
         return this;
     }
 

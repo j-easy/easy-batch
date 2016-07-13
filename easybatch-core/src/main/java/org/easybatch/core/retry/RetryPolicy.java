@@ -22,10 +22,10 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.reader;
+package org.easybatch.core.retry;
 
 /**
- * Retry policy for the {@link RecordReader}.
+ * Retry policy for a retryable code.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -36,7 +36,8 @@ public class RetryPolicy {
     private long backOffDelay;
 
     /**
-     * Create a new {@link RetryPolicy}
+     * Create a new {@link RetryPolicy}.
+     *
      * @param maxAttempts number of retries
      * @param backOffDelay delay (in milliseconds) to wait between retries
      */
