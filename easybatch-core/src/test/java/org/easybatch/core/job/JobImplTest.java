@@ -51,8 +51,8 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.*;
@@ -345,7 +345,7 @@ public class JobImplTest {
 
         JobReport jobReport = aNewJob()
                 .reader(new IterableRecordReader(dataSource))
-                .timeout(1, TimeUnit.SECONDS)
+                .timeout(1, SECONDS)
                 .processor(new RecordProcessor<Record, Record>() {
                     @Override
                     public Record processRecord(Record record) throws RecordProcessingException {
@@ -371,7 +371,7 @@ public class JobImplTest {
     @Test
     public void testRetry_whenMaxAttemptsExceeded() throws Exception {
         job = new JobBuilder()
-                .reader(new UnreliableRecordReader(), new RetryPolicy(2, 1000))
+                .reader(new UnreliableRecordReader(), new RetryPolicy(2, 1, SECONDS))
                 .processor(new RecordCollector())
                 .build();
 
@@ -383,7 +383,7 @@ public class JobImplTest {
     @Test
     public void testRetry_whenMaxAttemptsNotExceeded() throws Exception {
         job = new JobBuilder()
-                .reader(new UnreliableRecordReader(), new RetryPolicy(5, 1000))
+                .reader(new UnreliableRecordReader(), new RetryPolicy(5, 1, SECONDS))
                 .processor(new RecordCollector())
                 .build();
 

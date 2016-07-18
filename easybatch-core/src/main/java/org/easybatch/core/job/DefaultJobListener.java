@@ -36,7 +36,6 @@ import java.util.logging.Logger;
 import static org.easybatch.core.job.JobParameters.DEFAULT_LIMIT;
 import static org.easybatch.core.job.JobParameters.DEFAULT_TIMEOUT;
 import static org.easybatch.core.util.Utils.toMinutes;
-import static org.easybatch.core.util.Utils.toSeconds;
 
 /**
  * Job listener that logs and reports job parameters and metrics.
@@ -68,9 +67,8 @@ class DefaultJobListener implements JobListener {
         LOGGER.log(Level.INFO, "Execution id: {0}", jobParameters.getExecutionId());
         LOGGER.log(Level.INFO, "Host name: {0}", jobParameters.getHostname());
         LOGGER.log(Level.INFO, "Data source: {0}", dataSource != null ? dataSource : "N/A");
-        LOGGER.log(Level.INFO, "Max retry attempts: {0}", retryPolicy.getMaxAttempts());
-        LOGGER.log(Level.INFO, "BackOff: {0}", toSeconds(retryPolicy.getBackOffDelay()) + "s");
-        LOGGER.log(Level.INFO, "Keep reader alive: {0}", jobParameters.isKeepAlive());
+        LOGGER.log(Level.INFO, "Reader retry policy: {0}", retryPolicy);
+        LOGGER.log(Level.INFO, "Reader keep alive: {0}", jobParameters.isKeepAlive());
         LOGGER.log(Level.INFO, "Skip: {0}", jobParameters.getSkip());
         LOGGER.log(Level.INFO, "Limit: {0}", limit != DEFAULT_LIMIT ? limit : "N/A");
         LOGGER.log(Level.INFO, "Timeout: {0}", timeout != DEFAULT_TIMEOUT ? toMinutes(timeout) + "m" : "N/A");

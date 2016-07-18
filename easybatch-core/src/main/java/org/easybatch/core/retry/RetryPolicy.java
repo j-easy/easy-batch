@@ -24,6 +24,8 @@
 
 package org.easybatch.core.retry;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Retry policy for a retryable code.
  *
@@ -33,24 +35,37 @@ public class RetryPolicy {
 
     private int maxAttempts;
 
-    private long backOffDelay;
+    private long delay;
+
+    private TimeUnit timeUnit;
 
     /**
      * Create a new {@link RetryPolicy}.
      *
      * @param maxAttempts number of retries
-     * @param backOffDelay delay (in milliseconds) to wait between retries
+     * @param delay to wait between retries
+     * @param timeUnit of the delay to wait between retries
      */
-    public RetryPolicy(final int maxAttempts, final long backOffDelay) {
+    public RetryPolicy(final int maxAttempts, final long delay, final TimeUnit timeUnit) {
         this.maxAttempts = maxAttempts;
-        this.backOffDelay = backOffDelay;
+        this.delay = delay;
+        this.timeUnit = timeUnit;
     }
 
     public int getMaxAttempts() {
         return maxAttempts;
     }
 
-    public long getBackOffDelay() {
-        return backOffDelay;
+    public long getDelay() {
+        return delay;
+    }
+
+    public TimeUnit getTimeUnit() {
+        return timeUnit;
+    }
+
+    @Override
+    public String toString() {
+        return "{ maxAttempts = " + maxAttempts + ", delay = " + delay + " " + timeUnit + " }";
     }
 }

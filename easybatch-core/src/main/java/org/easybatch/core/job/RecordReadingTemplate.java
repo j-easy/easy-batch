@@ -7,8 +7,6 @@ import org.easybatch.core.retry.RetryTemplate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.easybatch.core.util.Utils.toSeconds;
-
 class RecordReadingTemplate extends RetryTemplate {
 
     private final Logger LOGGER = Logger.getLogger(Job.class.getName());
@@ -42,14 +40,14 @@ class RecordReadingTemplate extends RetryTemplate {
 
     @Override
     protected void onMaxAttempts(Exception e) {
-        LOGGER.log(Level.WARNING, "Unable to read next record after {0} attempt(s), aborting job", maxAttempts);
+        LOGGER.log(Level.WARNING, "Unable to read next record after {0} attempt(s), aborting job", retryPolicy.getMaxAttempts());
         jobReport.setStatus(JobStatus.ABORTED);
         jobReport.getMetrics().setEndTime(System.currentTimeMillis());
     }
 
     @Override
     protected void beforeWait() {
-        LOGGER.log(Level.INFO, "Waiting for {0}s before retrying to read next record", toSeconds(backOffDelay));
+        LOGGER.log(Level.INFO, "Waiting for {0} {1} before retrying to read next record", new Object[]{retryPolicy.getDelay(), retryPolicy.getTimeUnit()});
     }
 
     @Override

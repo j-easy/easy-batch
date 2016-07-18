@@ -47,7 +47,7 @@ public class JobParameters implements Serializable {
 
     public static final long DEFAULT_TIMEOUT = TimeUnit.MILLISECONDS.convert(31, TimeUnit.DAYS);
 
-    private  static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(1, 1000);
+    private  static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(1, 1, TimeUnit.SECONDS);
 
     private String name;
 

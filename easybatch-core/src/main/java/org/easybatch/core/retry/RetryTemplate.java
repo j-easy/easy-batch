@@ -1,6 +1,7 @@
 package org.easybatch.core.retry;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.Thread.sleep;
 
@@ -11,17 +12,15 @@ import static java.lang.Thread.sleep;
  */
 public abstract class RetryTemplate {
 
-    protected int maxAttempts;
-    protected long backOffDelay;
+    protected RetryPolicy retryPolicy;
 
     /**
      * Create a new {@link RetryTemplate}.
      *
      * @param retryPolicy the retry policy to apply
      */
-    public RetryTemplate(RetryPolicy retryPolicy) {
-        this.maxAttempts = retryPolicy.getMaxAttempts();
-        this.backOffDelay = retryPolicy.getBackOffDelay();
+    public RetryTemplate(final RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
     }
 
     /**
@@ -34,6 +33,9 @@ public abstract class RetryTemplate {
      */
     public <T> T execute(final Callable<T> callable) throws Exception {
         int attempts = 0;
+        int maxAttempts = retryPolicy.getMaxAttempts();
+        long delay = retryPolicy.getDelay();
+        TimeUnit timeUnit = retryPolicy.getTimeUnit();
         while(attempts < maxAttempts) {
             try {
                 attempts++;
@@ -48,7 +50,7 @@ public abstract class RetryTemplate {
                     throw e;
                 }
                 beforeWait();
-                sleep(backOffDelay);
+                sleep(timeUnit.toMillis(delay));
                 afterWait();
             }
         }
