@@ -15,7 +15,7 @@
     <url>http://www.easybatch.org</url>
 
     <properties>
-        <mongodb-driver.version>3.1.0</mongodb-driver.version>
+        <mongodb-driver.version>3.2.2</mongodb-driver.version>
         <morphia.version>1.0.1</morphia.version>
     </properties>
 

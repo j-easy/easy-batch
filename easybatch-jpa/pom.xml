@@ -59,7 +59,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>4.3.11.Final</version>
+            <version>${hibernate.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -67,7 +67,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>5.2.2.Final</version>
+            <version>${hibernate-validator.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -104,6 +104,7 @@
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
+            <!-- <version>${hsqldb.version}</version>  FIXME JpaBatchReaderTest runs indefinitely with 2.3.4  -->
             <version>2.3.3</version>
             <scope>test</scope>
         </dependency>
