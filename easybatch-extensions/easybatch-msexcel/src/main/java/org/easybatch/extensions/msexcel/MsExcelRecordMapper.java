@@ -34,12 +34,23 @@ import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
 
+/**
+ * Mapper that unmarshal MS Excel records to Java objects.
+ *
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
 public class MsExcelRecordMapper implements RecordMapper<MsExcelRecord, GenericRecord> {
 
     private String[] fields;
     
     private ObjectMapper objectMapper;
 
+    /**
+     * Create a new {@link MsExcelRecordMapper}.
+     *
+     * @param type the target object type
+     * @param fields the fields to unmarshal
+     */
     public MsExcelRecordMapper(final Class type, final String... fields) {
         this.fields = fields;
         objectMapper = new ObjectMapper(type);

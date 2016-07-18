@@ -39,6 +39,12 @@ import org.easybatch.core.reader.RecordReaderOpeningException;
 import org.easybatch.core.reader.RecordReadingException;
 import org.easybatch.core.record.Header;
 
+/**
+ * Reader that read data from a MS Excel sheet.
+ * <strong>Only MS Excel XLSX format is supported</strong>
+ *
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
 public class MsExcelRecordReader implements RecordReader {
 
     private File file;
@@ -48,11 +54,24 @@ public class MsExcelRecordReader implements RecordReader {
     private Iterator<Row> rowIterator;
 
     private long recordNumber;
-    
+
+    /**
+     * Create a new {@link MsExcelRecordReader}.
+     *
+     * @param file the input file
+     * @throws IOException when an error occurs during file opening
+     */
     public MsExcelRecordReader(final File file) throws IOException {
         this(file, 0);
     }
 
+    /**
+     * Create a new {@link MsExcelRecordReader}.
+     *
+     * @param file he input file
+     * @param sheetIndex the sheet index
+     * @throws IOException when an error occurs during file opening
+     */
     public MsExcelRecordReader(final File file, final int sheetIndex) throws IOException {
         this.file = file;
         XSSFWorkbook workbook;

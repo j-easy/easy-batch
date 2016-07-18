@@ -36,14 +36,30 @@ import org.easybatch.core.marshaller.RecordMarshaller;
 import org.easybatch.core.marshaller.RecordMarshallingException;
 import org.easybatch.core.record.GenericRecord;
 
+/**
+ * Marshaller of Java objects to {@link MsExcelRecord}s.
+ * @param <P> the POJO type
+ *
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
 public class MsExcelRecordMarshaller<P> implements RecordMarshaller<GenericRecord<P>, MsExcelRecord> {
 
     private RecordFieldExtractor fieldExtractor;
 
+    /**
+     * Create a new {@link MsExcelRecordMarshaller}.
+     *
+     * @param type the POJO type
+     * @param fields the fields to marshal
+     * @throws IntrospectionException when an error occurs during bean introspection
+     */
     public MsExcelRecordMarshaller(Class<? extends P> type, String... fields) throws IntrospectionException {
         this.fieldExtractor = new BeanRecordFieldExtractor(type, fields);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public MsExcelRecord processRecord(GenericRecord<P> genericRecord) throws RecordMarshallingException {
         Row row = new MsExcelRow();
         Iterable<?> values = fieldExtractor.extractFields(genericRecord.getPayload());

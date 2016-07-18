@@ -29,8 +29,19 @@ import org.apache.poi.ss.usermodel.Row;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 
+/**
+ * Record containing a {@link Row} as payload.
+ *
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
 public class MsExcelRecord extends GenericRecord<Row> {
-    
+
+    /**
+     * Create a new {@link MsExcelRecord}.
+     *
+     * @param header the record header
+     * @param payload the record payload
+     */
     public MsExcelRecord(Header header, Row payload) {
         super(header, payload);
     }

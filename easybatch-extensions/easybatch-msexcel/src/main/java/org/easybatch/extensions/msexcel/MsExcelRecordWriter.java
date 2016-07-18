@@ -37,6 +37,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.easybatch.core.writer.RecordWriter;
 import org.easybatch.core.writer.RecordWritingException;
 
+/**
+ * Writer that write {@link MsExcelRecord} to a file.
+ *
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
 public class MsExcelRecordWriter implements RecordWriter<MsExcelRecord> {
 
     private File file;
@@ -45,12 +50,22 @@ public class MsExcelRecordWriter implements RecordWriter<MsExcelRecord> {
 
     private XSSFSheet sheet;
 
+    /**
+     * Create a new {@link MsExcelRecordWriter}.
+     *
+     * @param file the output file
+     * @param sheetName the sheet name
+     * @throws IOException when an error occurs during record writing
+     */
     public MsExcelRecordWriter(final File file, final String sheetName) throws IOException {
         this.file = file;
         workbook = new XSSFWorkbook();
         sheet = workbook.createSheet(sheetName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public MsExcelRecord processRecord(MsExcelRecord msExcelRecord) throws RecordWritingException {
         XSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
         Row payload = msExcelRecord.getPayload();
