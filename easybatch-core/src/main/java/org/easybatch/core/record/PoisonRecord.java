@@ -50,4 +50,14 @@ public class PoisonRecord implements Record<Object>, Serializable {
         return "Poison Record";
     }
 
+    /**
+     * Check if a record is a {@link PoisonRecord}.
+     *
+     * @param record to check
+     * @return true if the record is a poison record, false otherwise
+     */
+    public static boolean isPoisonRecord(final Record record) {
+        return record instanceof PoisonRecord;
+    }
+
 }

@@ -62,6 +62,17 @@ public class PoisonRecordFilterTest {
         assertThat(poisonRecordFilter.processRecord(record)).isEqualTo(record);
     }
 
+    @Test
+    public void whenTheRecordIsOfTypePoisonRecord_ThenIsPoisonRecordShouldReturnTrue() {
+        assertThat(PoisonRecord.isPoisonRecord(new PoisonRecord())).isTrue();
+        assertThat(PoisonRecord.isPoisonRecord(new CustomPoisonRecord())).isTrue();
+    }
+
+    @Test
+    public void whenTheRecordIsNotOfTypePoisonRecord_ThenIsPoisonRecordShouldReturnFalse() {
+        assertThat(PoisonRecord.isPoisonRecord(record)).isFalse();
+    }
+
     class CustomPoisonRecord extends PoisonRecord {
         public CustomPoisonRecord() {
         }
