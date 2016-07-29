@@ -10,9 +10,51 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>easybatch-msexcel</artifactId>
+    <packaging>jar</packaging>
+
+    <name>easybatch-msexcel</name>
+    <description>Extension to support MsExcel</description>
+    <url>http://www.easybatch.org</url>
+
     <properties>
         <poi.version>3.14</poi.version>
     </properties>
+
+    <developers>
+        <developer>
+            <id>benas</id>
+            <name>Mahmoud Ben Hassine</name>
+            <url>http://benas.github.io</url>
+            <email>mahmoud.benhassine@icloud.com</email>
+            <roles>
+                <role>Project founder</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>git@github.com:easybatch/easybatch-framework.git</url>
+        <connection>scm:git:git@github.com:easybatch/easybatch-framework.git</connection>
+        <developerConnection>scm:git:git@github.com:easybatch/easybatch-framework.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/easybatch/easybatch-framework/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Travis CI</system>
+        <url>https://travis-ci.org/EasyBatch/easybatch-framework</url>
+    </ciManagement>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
 
     <dependencies>
         <dependency>
@@ -23,7 +65,7 @@
         <dependency>
             <groupId>org.easybatch</groupId>
             <artifactId>easybatch-core</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
@@ -31,7 +73,6 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
@@ -43,6 +84,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 
 </project>
