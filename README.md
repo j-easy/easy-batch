@@ -1,6 +1,6 @@
 # What is Easy Batch?
 
-To better understand what Easy Batch is, let's see a quick definition of batch processing in general:
+To better understand what Easy Batch is, let's see a quick definition of batch processing:
 
 > "Batch processing is the execution of a series of **jobs** on a computer without manual intervention.
 > All input **parameters** are predefined through **job control language**.
@@ -87,9 +87,9 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 ## Current version
 
-* Stable: 4.0.0 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.0.0|)
+* Stable: 4.1.0 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.1.0|)
 
-* Development: 4.1.0-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)</td>
+* Development: 4.2.0-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)</td>
 
 If you want to import the snapshot version, you need to use the following repository:
 
@@ -112,6 +112,7 @@ For any further question, you can use the [forum](https://groups.google.com/d/fo
 
 * [ammachado](https://github.com/ammachado)
 * [anandhi](https://github.com/anandhi)
+* [AymanDF](https://github.com/AymanDF)
 * [chellan](https://github.com/chellan)
 * [gs-spadmanabhan](https://github.com/gs-spadmanabhan)
 * [imranrajjad](https://github.com/imranrajjad)
@@ -120,6 +121,7 @@ For any further question, you can use the [forum](https://groups.google.com/d/fo
 * [natlantisprog](https://github.com/natlantisprog)
 * [nicopatch](https://github.com/nicopatch)
 * [nihed](https://github.com/nihed)
+* [PascalSchumacher](https://github.com/PascalSchumacher)
 * [Toilal](https://github.com/Toilal)
 * [xenji](https://github.com/xenji)
 

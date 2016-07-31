@@ -2,6 +2,33 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
+Changes in version 4.0.0 (2016-07-30)
+-------------------------------------
+
+Features
+
+* issue #123: Add support for MS Excel format using Apache POI
+* issue #168: Add last error in job report
+* issue #171: Add support to trim whitespace for `FixedLengthRecordMapper`
+* issue #175: Add retry on failure for the record reader
+* issue #187: Add host name to job report
+* issue #196: Add JMX monitoring push notifications
+* issue #198: `BlockingQueueRecordReader` should be configurable with the number of poison records received
+
+Fixed bugs
+
+* Issue #169: When Reader fails Job Listeners are not being invoked
+* Issue #191: `NumberFormatException` in `IntegerTypeConverter`
+
+Enhancements and API changes
+
+* issue #186: inconsistent `BlockingQueue` record reader/writer APIs
+* issue #190: `JobMonitor` should not be public
+* issue #193: Data source name of blocking queue is too long
+* issue #194: Improve JUL log record format
+* issue #195: Not appropriate `JobReportMerger` and `DefaultJobReportMerger` API package
+* issue #199: Add utility method to check if a record is a poison record
+
 Changes in version 4.0.0 (2015-11-07)
 -------------------------------------
 
