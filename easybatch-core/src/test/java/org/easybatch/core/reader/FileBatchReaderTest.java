@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -70,16 +70,16 @@ public class FileBatchReaderTest {
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();
 
-        assertThat(batches).isNotNull().hasSize(2);
+        assertThat(batches).hasSize(2);
 
         Batch batch1 = batches.get(0);
         Batch batch2 = batches.get(1);
 
         List<Record> records = batch1.getPayload();
-        assertThat(records.size()).isEqualTo(2);
+        assertThat(records).hasSize(2);
 
         records = batch2.getPayload();
-        assertThat(records.size()).isEqualTo(2);
+        assertThat(records).hasSize(2);
     }
 
     @After

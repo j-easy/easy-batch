@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -67,8 +67,6 @@ public class BatchMarshallerTest {
 
         assertThat(actual).isNotNull();
         assertThat(actual.getHeader()).isEqualTo(header);
-        assertThat(actual.getPayload()).isNotEmpty()
-                .hasSize(2)
-                .containsExactly(marshalledRecord1, marshalledRecord2);
+        assertThat(actual.getPayload()).containsExactly(marshalledRecord1, marshalledRecord2);
     }
 }

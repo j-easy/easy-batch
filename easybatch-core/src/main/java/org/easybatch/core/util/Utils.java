@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -28,12 +28,16 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -42,9 +46,11 @@ import static java.lang.String.format;
 /**
  * Easy Batch's utilities class.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public abstract class Utils {
+
+    private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
 
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
@@ -52,8 +58,35 @@ public abstract class Utils {
 
     public static final String JAVA_IO_TMPDIR = System.getProperty("java.io.tmpdir");
 
+    public static final String JMX_MBEAN_NAME = "org.easybatch.core.monitor:";
+
     private Utils() {
 
+    }
+
+    static {
+        try {
+            if (System.getProperty("java.util.logging.config.file") == null &&
+                    System.getProperty("java.util.logging.config.class") == null) {
+                LogManager.getLogManager().readConfiguration(Utils.class.getResourceAsStream("/logging.properties"));
+            }
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Unable to load logging configuration file", e);
+        }
+    }
+
+    /**
+     * Return the localhost name
+     * @return get host name
+     */
+    public static String getHostName() {
+        String hostName = "N/A";
+        try {
+            hostName = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            LOGGER.log(Level.WARNING, "Unable to get host name", e);
+        }
+        return hostName;
     }
 
     /**

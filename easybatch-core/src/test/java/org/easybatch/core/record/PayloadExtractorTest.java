@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -56,12 +56,12 @@ public class PayloadExtractorTest {
     @Test
     public void testExtractPayloadsFromListOfRecords() throws Exception {
         List<Object> list = PayloadExtractor.extractPayloads(Arrays.asList(record1, record2));
-        assertThat(list).isNotEmpty().hasSize(2).containsExactly(payload1, payload2);
+        assertThat(list).containsExactly(payload1, payload2);
     }
 
     @Test
     public void testExtractPayloadsFromBatchOfRecords() throws Exception {
         List<Object> list = PayloadExtractor.extractPayloads(batch);
-        assertThat(list).isNotEmpty().hasSize(2).containsExactly(payload1, payload2);
+        assertThat(list).containsExactly(payload1, payload2);
     }
 }

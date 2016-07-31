@@ -10,7 +10,7 @@
 
     <groupId>org.easybatch</groupId>
     <artifactId>easybatch</artifactId>
-    <version>4.1.0-SNAPSHOT</version>
+    <version>4.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>easybatch</name>
     <description>Easy Batch parent module</description>
@@ -20,16 +20,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
         <junit.version>4.12</junit.version>
-        <assertj.version>2.2.0</assertj.version>
+        <assertj.version>2.5.0</assertj.version>
         <mockito.version>1.10.19</mockito.version>
-        <system-rules.version>1.13.0</system-rules.version>
+        <system-rules.version>1.16.0</system-rules.version>
+        <hsqldb.version>2.3.4</hsqldb.version>
+        <hibernate.version>4.3.11.Final</hibernate.version>
+        <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
 
-        <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
-        <maven-site-plugin.version>3.4</maven-site-plugin.version>
-        <maven-surefire-plugin.version>2.19</maven-surefire-plugin.version>
-        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+        <maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
+        <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+        <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
         <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
-        <coveralls-maven-plugin.version>4.0.0</coveralls-maven-plugin.version>
+        <coveralls-maven-plugin.version>4.2.0</coveralls-maven-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     </properties>
 
@@ -51,8 +53,8 @@
         <developer>
             <id>benas</id>
             <name>Mahmoud Ben Hassine</name>
-            <url>http://www.mahmoud-benhassine.fr</url>
-            <email>mahmoud@benhassine.fr</email>
+            <url>http://benas.github.io</url>
+            <email>mahmoud.benhassine@icloud.com</email>
             <roles>
                 <role>Project founder</role>
             </roles>
@@ -232,19 +234,20 @@
                             <include>**/*Test*.java</include>
                         </includes>
                         <reportFormat>html</reportFormat>
+                        <systemProperties>
+                            <property>
+                                <name>java.util.logging.SimpleFormatter.format</name>
+                                <value>%1$tF %tT.%1$tL %4$s [%2$s] - %5$s %6$s%n</value>
+                            </property>
+                        </systemProperties>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>${maven-site-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${maven-javadoc-plugin.version}</version>
                     <configuration>
-                        <stylesheet>maven</stylesheet>
+                        <additionalparam>-Xdoclint:none</additionalparam>
                     </configuration>
                     <executions>
                         <execution>

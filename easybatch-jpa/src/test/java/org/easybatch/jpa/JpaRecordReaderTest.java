@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -98,7 +98,7 @@ public class JpaRecordReaderTest {
     @Before
     public void setUp() throws Exception {
         String query = "from Tweet";
-        jpaRecordReader = new JpaRecordReader<Tweet>(entityManagerFactory, query, Tweet.class);
+        jpaRecordReader = new JpaRecordReader<>(entityManagerFactory, query, Tweet.class);
         jpaRecordReader.setFetchSize(FETCH_SIZE);
         jpaRecordReader.open();
     }

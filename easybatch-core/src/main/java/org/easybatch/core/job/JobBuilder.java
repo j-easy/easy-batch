@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,7 @@ import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.marshaller.RecordMarshaller;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.retry.RetryPolicy;
 import org.easybatch.core.validator.RecordValidator;
 import org.easybatch.core.writer.RecordWriter;
 
@@ -45,7 +46,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * Job instance builder.
  * This is the main entry point to configure a job.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public final class JobBuilder {
 
@@ -146,8 +147,40 @@ public final class JobBuilder {
      */
     public JobBuilder reader(final RecordReader recordReader, final boolean keepAlive) {
         checkNotNull(recordReader, "record reader");
-        job.setRecordReader(recordReader);
         job.getJobReport().getParameters().setKeepAlive(keepAlive);
+        job.setRecordReader(recordReader);
+        return this;
+    }
+
+    /**
+     * Register a record reader.
+     *
+     * @param recordReader the record reader to register
+     * @param retryPolicy  the retry policy of the reader
+     * @return the job builder
+     */
+    public JobBuilder reader(final RecordReader recordReader, final RetryPolicy retryPolicy) {
+        checkNotNull(recordReader, "record reader");
+        checkNotNull(retryPolicy, "retry policy");
+        job.getJobReport().getParameters().setRetryPolicy(retryPolicy);
+        job.setRecordReader(recordReader);
+        return this;
+    }
+
+    /**
+     * Register a record reader.
+     *
+     * @param recordReader the record reader to register
+     * @param keepAlive    true if the reader should <strong>NOT</strong> be closed
+     * @param retryPolicy  the retry policy of the reader
+     * @return the job builder
+     */
+    public JobBuilder reader(final RecordReader recordReader, final boolean keepAlive, final RetryPolicy retryPolicy) {
+        checkNotNull(recordReader, "record reader");
+        checkNotNull(retryPolicy, "retry policy");
+        job.getJobReport().getParameters().setKeepAlive(keepAlive);
+        job.getJobReport().getParameters().setRetryPolicy(retryPolicy);
+        job.setRecordReader(recordReader);
         return this;
     }
 

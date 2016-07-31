@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -111,10 +111,10 @@ public class JmsIntegrationTest {
         assertThat(header.getSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
 
         Message payload = jmsRecord.getPayload();
-        assertThat(payload).isNotNull().isInstanceOf(TextMessage.class);
+        assertThat(payload).isInstanceOf(TextMessage.class);
 
         TextMessage textMessage = (TextMessage) payload;
-        assertThat(textMessage.getText()).isNotNull().isEqualTo(MESSAGE_TEXT);
+        assertThat(textMessage.getText()).isEqualTo(MESSAGE_TEXT);
 
     }
 

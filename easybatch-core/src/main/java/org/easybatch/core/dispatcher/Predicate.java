@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ import org.easybatch.core.record.Record;
  * Predicates are used to check if a record matches a criteria so that it is dispatched to the correct queue.
  *
  * @param <T> type of record
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  * @see org.easybatch.core.dispatcher.ContentBasedRecordDispatcher
  * @see org.easybatch.core.dispatcher.ContentBasedRecordDispatcherBuilder
  */

@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -123,10 +123,10 @@ public class JpaBatchReaderTest {
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();
-        assertThat(batches).isNotNull().hasSize(2);
+        assertThat(batches).hasSize(2);
 
         Batch batch1 = batches.get(0);
-        assertThat(batch1.getPayload().size()).isEqualTo(2);
+        assertThat(batch1.getPayload()).hasSize(2);
         Tweet tweet = (Tweet) batch1.getPayload().get(0).getPayload();
         assertThat(tweet).isNotNull();
         assertThat(tweet.getId()).isEqualTo(1);
@@ -140,7 +140,7 @@ public class JpaBatchReaderTest {
         assertThat(tweet.getMessage()).isEqualTo("@foo I do confirm :-)");
 
         Batch batch2 = batches.get(1);
-        assertThat(batch2.getPayload().size()).isEqualTo(1);
+        assertThat(batch2.getPayload()).hasSize(1);
         tweet = (Tweet) batch2.getPayload().get(0).getPayload();
         assertThat(tweet).isNotNull();
         assertThat(tweet.getId()).isEqualTo(3);

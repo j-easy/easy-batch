@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
  * Long type converter.
  * Does not accept null or empty strings.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class LongTypeConverter implements TypeConverter<String, Long> {
 
@@ -41,7 +41,7 @@ public class LongTypeConverter implements TypeConverter<String, Long> {
     public Long convert(final String value) {
         checkArgument(value != null, "Value to convert must not be null");
         checkArgument(!value.isEmpty(), "Value to convert must not be empty");
-        return Long.valueOf(value);
+        return Double.valueOf(value).longValue();
     }
 
 }

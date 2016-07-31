@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -56,10 +56,6 @@ public class RecordCollectorTest {
         recordCollector.processRecord(record1);
         recordCollector.processRecord(record2);
 
-        assertThat(recordCollector.getComputationResult())
-                .isNotNull()
-                .isNotEmpty()
-                .hasSize(2)
-                .containsExactly(record1, record2);
+        assertThat(recordCollector.getComputationResult()).containsExactly(record1, record2);
     }
 }

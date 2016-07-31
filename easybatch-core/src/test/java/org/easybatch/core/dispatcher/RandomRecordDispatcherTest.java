@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -64,7 +64,7 @@ public class RandomRecordDispatcherTest {
         randomRecordDispatcher.dispatchRecord(record);
 
         if (queue1.isEmpty()) {
-            assertThat(queue2).isNotEmpty().containsOnly(record);
+            assertThat(queue2).containsOnly(record);
         } else {
             assertThat(queue2).isEmpty();
             assertThat(queue1).containsOnly(record);
@@ -76,8 +76,8 @@ public class RandomRecordDispatcherTest {
 
         randomRecordDispatcher.dispatchRecord(poisonRecord);
 
-        assertThat(queue1).isNotEmpty().containsOnly(poisonRecord);
-        assertThat(queue2).isNotEmpty().containsOnly(poisonRecord);
+        assertThat(queue1).containsOnly(poisonRecord);
+        assertThat(queue2).containsOnly(poisonRecord);
     }
 
 }

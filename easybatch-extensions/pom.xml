@@ -4,7 +4,7 @@
     <parent>
         <artifactId>easybatch</artifactId>
         <groupId>org.easybatch</groupId>
-        <version>4.1.0-SNAPSHOT</version>
+        <version>4.1.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
@@ -18,8 +18,8 @@
         <developer>
             <id>benas</id>
             <name>Mahmoud Ben Hassine</name>
-            <url>http://www.mahmoud-benhassine.fr</url>
-            <email>mahmoud@benhassine.fr</email>
+            <url>http://benas.github.io</url>
+            <email>mahmoud.benhassine@icloud.com</email>
             <roles>
                 <role>Project founder</role>
             </roles>
@@ -60,6 +60,7 @@
         <module>easybatch-jackson</module>
         <module>easybatch-mongodb</module>
         <module>easybatch-hibernate</module>
+        <module>easybatch-msexcel</module>
     </modules>
 
 

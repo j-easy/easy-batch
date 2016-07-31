@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -83,8 +83,6 @@ public class EmptyRecordFilterTest {
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
 
         List<StringRecord> records = (List<StringRecord>) jobReport.getResult();
-        assertThat(records).hasSize(2);
-        assertThat(records.get(0).getPayload()).isEqualTo("foo");
-        assertThat(records.get(1).getPayload()).isEqualTo("bar");
+        assertThat(records).extracting("payload").containsExactly("foo", "bar");
     }
 }

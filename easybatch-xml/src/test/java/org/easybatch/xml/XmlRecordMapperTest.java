@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -118,7 +118,7 @@ public class XmlRecordMapperTest {
     @Test(expected = RecordMappingException.class)
     public void testMappingWithUnescapedXmlSpecialCharacter() throws Exception {
         xmlRecord = new XmlRecord(header, "<website name='google' url='http://www.google.com?query=test&sort=asc'/>");
-        XmlRecordMapper<Website> xmlRecordMapper = new XmlRecordMapper<Website>(Website.class);
+        XmlRecordMapper<Website> xmlRecordMapper = new XmlRecordMapper<>(Website.class);
         xmlRecordMapper.processRecord(xmlRecord);
     }
 

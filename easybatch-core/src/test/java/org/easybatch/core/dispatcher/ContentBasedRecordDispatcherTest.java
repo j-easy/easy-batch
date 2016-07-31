@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -72,22 +72,22 @@ public class ContentBasedRecordDispatcherTest {
     @Test
     public void orangeRecordShouldBeDispatchedToOrangeQueue() throws Exception {
         recordDispatcher.dispatchRecord(orangeRecord);
-        assertThat(orangeQueue).isNotEmpty().containsOnly(orangeRecord);
+        assertThat(orangeQueue).containsOnly(orangeRecord);
         assertThat(defaultQueue).isEmpty();
     }
 
     @Test
     public void nonOrangeRecordShouldBeDispatchedToDefaultQueue() throws Exception {
         recordDispatcher.dispatchRecord(appleRecord);
-        assertThat(defaultQueue).isNotEmpty().containsExactly(appleRecord);
+        assertThat(defaultQueue).containsExactly(appleRecord);
         assertThat(orangeQueue).isEmpty();
     }
 
     @Test
     public void poisonRecordShouldBeDispatchedToAllQueues() throws Exception {
         recordDispatcher.dispatchRecord(poisonRecord);
-        assertThat(defaultQueue).isNotEmpty().contains(poisonRecord);
-        assertThat(orangeQueue).isNotEmpty().contains(poisonRecord);
+        assertThat(defaultQueue).contains(poisonRecord);
+        assertThat(orangeQueue).contains(poisonRecord);
     }
 
 }

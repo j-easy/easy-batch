@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,12 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.tools.reporting;
-
-import org.easybatch.core.job.JobReport;
+package org.easybatch.core.job;
 
 /**
  * A service that merges multiple reports into a global report.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public interface JobReportMerger {
 

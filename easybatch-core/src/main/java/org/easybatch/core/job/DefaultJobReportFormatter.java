@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 /**
  * Default job report formatter.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class DefaultJobReportFormatter implements JobReportFormatter<String> {
 
@@ -50,13 +50,15 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
         sb.append(LINE_SEPARATOR).append("Parameters:");
         sb.append(LINE_SEPARATOR).append("\tName = ").append(parameters.getName());
         sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(parameters.getExecutionId());
+        sb.append(LINE_SEPARATOR).append("\tHost name = ").append(parameters.getHostname());
         sb.append(LINE_SEPARATOR).append("\tData source = ").append(parameters.getDataSource());
+        sb.append(LINE_SEPARATOR).append("\tReader retry policy = ").append(parameters.getRetryPolicy());
+        sb.append(LINE_SEPARATOR).append("\tReader keep alive = ").append(parameters.isKeepAlive());
         sb.append(LINE_SEPARATOR).append("\tSkip = ").append(parameters.getSkip());
         sb.append(LINE_SEPARATOR).append("\tLimit = ").append(jobReport.getFormattedLimit());
         sb.append(LINE_SEPARATOR).append("\tTimeout = ").append(jobReport.getFormattedTimeout());
         sb.append(LINE_SEPARATOR).append("\tStrict mode = ").append(parameters.isStrictMode());
         sb.append(LINE_SEPARATOR).append("\tSilent mode = ").append(parameters.isSilentMode());
-        sb.append(LINE_SEPARATOR).append("\tKeep alive = ").append(parameters.isKeepAlive());
         sb.append(LINE_SEPARATOR).append("\tJmx mode = ").append(parameters.isJmxMode());
 
         /*

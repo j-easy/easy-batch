@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,9 @@
 
 package org.easybatch.core.job;
 
+import org.easybatch.core.retry.RetryPolicy;
+import org.easybatch.core.util.Utils;
+
 import java.io.Serializable;
 import java.util.Properties;
 import java.util.UUID;
@@ -32,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Parameters of a job.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class JobParameters implements Serializable {
 
@@ -44,9 +47,13 @@ public class JobParameters implements Serializable {
 
     public static final long DEFAULT_TIMEOUT = TimeUnit.MILLISECONDS.convert(31, TimeUnit.DAYS);
 
+    private  static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(1, 1, TimeUnit.SECONDS);
+
     private String name;
 
     private String executionId;
+
+    private String hostname;
 
     private String dataSource;
 
@@ -66,6 +73,8 @@ public class JobParameters implements Serializable {
 
     private Properties systemProperties;
 
+    private RetryPolicy retryPolicy;
+
     public JobParameters() {
         this.name = DEFAULT_JOB_NAME;
         this.executionId = UUID.randomUUID().toString();
@@ -73,6 +82,16 @@ public class JobParameters implements Serializable {
         this.limit = DEFAULT_LIMIT;
         this.timeout = DEFAULT_TIMEOUT;
         this.systemProperties = System.getProperties();
+        this.hostname = Utils.getHostName();
+        this.retryPolicy = DEFAULT_RETRY_POLICY;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
     }
 
     public String getName() {
@@ -161,5 +180,13 @@ public class JobParameters implements Serializable {
 
     public void setDataSource(String dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public RetryPolicy getRetryPolicy() {
+        return retryPolicy;
+    }
+
+    public void setRetryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
     }
 }

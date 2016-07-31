@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,11 @@
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
+ *//**
+ * Created by benas on 7/18/16.
  */
 
-package org.easybatch.tools.reporting;
-
-import org.easybatch.core.job.JobReport;
-import org.easybatch.core.job.JobResult;
-import org.easybatch.core.job.JobStatus;
+package org.easybatch.core.job;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,7 +48,7 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
  * or {@link JobStatus#ABORTED} (if one of partials has been aborted) or {@link JobStatus#FAILED} (if one of partials has failed).</li>
  * </ul>
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class DefaultJobReportMerger implements JobReportMerger {
 

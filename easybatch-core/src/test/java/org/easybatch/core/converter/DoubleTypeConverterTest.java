@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -38,8 +38,8 @@ public class DoubleTypeConverterTest extends BaseConverterTest<Double> {
 
     @Test
     public void whenInputIsLegalValue_ThenShouldReturnDouble() {
-        assertThat(converter.convert("5")).isNotNull();
-        assertThat(converter.convert("5")).isEqualTo(5);
+        assertThat(converter.convert("5")).isEqualTo(5D);
+        assertThat(converter.convert("5.0")).isEqualTo(5D);
     }
 
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,7 @@ import static java.lang.String.format;
 /**
  * A helper class that maps a record to a domain object instance.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class ObjectMapper {
 
@@ -94,8 +94,9 @@ public class ObjectMapper {
         Object result = createInstance();
 
         // for each field
-        for (String field : values.keySet()) {
+        for (Map.Entry<String, String> entry : values.entrySet()) {
 
+            String field = entry.getKey();
             //get field raw value
             String value = values.get(field);
 

@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -76,7 +76,7 @@ public class HibernateRecordReaderTest {
 
         List<GenericRecord<Tweet>> tweets = (List<GenericRecord<Tweet>>) jobReport.getResult();
 
-        assertThat(tweets).isNotEmpty().hasSize(3);
+        assertThat(tweets).hasSize(3);
 
         Tweet tweet = tweets.get(0).getPayload();
         assertThat(tweet).isNotNull();

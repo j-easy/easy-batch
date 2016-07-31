@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@ import static org.mockito.Mockito.when;
 /**
  * Test class for {@link OutputStreamRecordWriter}.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 @RunWith(MockitoJUnitRunner.class)
 public class OutputStreamRecordWriterTest {
@@ -75,7 +75,7 @@ public class OutputStreamRecordWriterTest {
     public void testProcessRecord() throws Exception {
         Record actual = outputStreamRecordWriter.processRecord(stringRecord);
 
-        assertThat(actual).isNotNull().isEqualTo(stringRecord);
+        assertThat(actual).isEqualTo(stringRecord);
         verify(outputStreamWriter).write(PAYLOAD);
         verify(outputStreamWriter).write(LINE_SEPARATOR);
         verify(outputStreamWriter).flush();

@@ -296,7 +296,7 @@ public class Dependency {
          */
         public List<Exclusion> getExclusion() {
             if (exclusion == null) {
-                exclusion = new ArrayList<Exclusion>();
+                exclusion = new ArrayList<>();
             }
             return this.exclusion;
         }

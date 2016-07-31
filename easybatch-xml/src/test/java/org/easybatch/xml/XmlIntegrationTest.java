@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -54,7 +54,7 @@ public class XmlIntegrationTest {
         List<GenericRecord<Website>> records = (List<GenericRecord<Website>>) jobReport.getResult();
         List<Website> websites = extractPayloads(records);
 
-        assertThat(websites).isNotEmpty().hasSize(3);
+        assertThat(websites).hasSize(3);
 
         Website website = websites.get(0);
         assertThat(website.getName()).isEqualTo("google");
@@ -87,7 +87,7 @@ public class XmlIntegrationTest {
         List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
         List<Person> persons = extractPayloads(records);
 
-        assertThat(persons).isNotEmpty().hasSize(2);
+        assertThat(persons).hasSize(2);
 
         Person person = persons.get(0);
         assertThat(person.getId()).isEqualTo(1);
@@ -121,7 +121,7 @@ public class XmlIntegrationTest {
         List<GenericRecord<Dependency>> records = (List<GenericRecord<Dependency>>) jobReport.getResult();
         List<Dependency> dependencies = extractPayloads(records);
 
-        assertThat(dependencies).isNotEmpty().hasSize(2);
+        assertThat(dependencies).hasSize(2);
 
         Dependency dependency = dependencies.get(0);
         assertThat(dependency).isNotNull();
@@ -152,10 +152,8 @@ public class XmlIntegrationTest {
 
         Exclusion exclusion = exclusions.getExclusion().get(0);
         assertThat(exclusion).isNotNull();
-        assertThat(exclusion.getGroupId()).isNotNull().isEqualTo("some.excluded.dep");
-        assertThat(exclusion.getArtifactId()).isNotNull().isEqualTo("dep-core");
-
-
+        assertThat(exclusion.getGroupId()).isEqualTo("some.excluded.dep");
+        assertThat(exclusion.getArtifactId()).isEqualTo("dep-core");
     }
 
     @Test
@@ -188,7 +186,6 @@ public class XmlIntegrationTest {
         assertThat(bean).isNotNull();
         assertThat(bean.getId()).isEqualTo("bar");
         assertThat(bean.getClazz()).isEqualTo("java.lang.String");
-
     }
 
     private void assertThatReportIsCorrect(JobReport jobReport) {

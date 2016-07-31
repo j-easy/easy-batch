@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ import java.util.Date;
  * A marker record that serves as End-Of-Stream record or Poison Record.
  * This is useful to mark the end of reading in a queue based record pulling system.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class PoisonRecord implements Record<Object>, Serializable {
 
@@ -48,6 +48,16 @@ public class PoisonRecord implements Record<Object>, Serializable {
     @Override
     public String toString() {
         return "Poison Record";
+    }
+
+    /**
+     * Check if a record is a {@link PoisonRecord}.
+     *
+     * @param record to check
+     * @return true if the record is a poison record, false otherwise
+     */
+    public static boolean isPoisonRecord(final Record record) {
+        return record instanceof PoisonRecord;
     }
 
 }

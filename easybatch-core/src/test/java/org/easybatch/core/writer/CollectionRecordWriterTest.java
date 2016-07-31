@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,7 @@ import static org.easybatch.core.job.JobBuilder.aNewJob;
 /**
  * Test class for {@link CollectionRecordWriter}.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class CollectionRecordWriterTest {
 
@@ -58,7 +58,7 @@ public class CollectionRecordWriterTest {
     @Test
     public void testWriteRecord() throws Exception {
         writer.writePayload(FOO);
-        assertThat(items).isNotEmpty().hasSize(1).containsExactly(FOO);
+        assertThat(items).containsExactly(FOO);
     }
 
     @Test
@@ -71,6 +71,6 @@ public class CollectionRecordWriterTest {
                 .writer(new CollectionRecordWriter(output))
                 .call();
 
-        assertThat(output).isNotEmpty().hasSize(2).containsExactly(FOO, BAR);
+        assertThat(output).containsExactly(FOO, BAR);
     }
 }

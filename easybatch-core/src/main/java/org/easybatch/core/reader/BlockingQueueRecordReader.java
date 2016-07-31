@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ import java.util.concurrent.BlockingQueue;
  * A convenient {@link RecordReader} that reads record from a {@link BlockingQueue}.
  *
  * @param <T> the type of elements in the queue
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class BlockingQueueRecordReader<T extends Record> implements RecordReader {
 
@@ -41,6 +41,16 @@ public class BlockingQueueRecordReader<T extends Record> implements RecordReader
      * The stop reading flag.
      */
     private boolean stop;
+
+    /**
+     * The number of poison records received.
+     */
+    private int poisonRecords;
+
+    /**
+     * The total number of poison records to receive to stop the queue.
+     */
+    private int totalPoisonRecords;
 
     /**
      * The source queue.
@@ -53,12 +63,23 @@ public class BlockingQueueRecordReader<T extends Record> implements RecordReader
      * @param queue the queue to read records from
      */
     public BlockingQueueRecordReader(final BlockingQueue<T> queue) {
+        this(queue, 1);
+    }
+
+    /**
+     * Create a {@link BlockingQueueRecordReader}.
+     *
+     * @param queue the queue to read records from
+     * @param totalPoisonRecords number of poison records to receive to stop reading from the queue
+     */
+    public BlockingQueueRecordReader(final BlockingQueue<T> queue, int totalPoisonRecords) {
         this.queue = queue;
+        this.totalPoisonRecords = totalPoisonRecords;
     }
 
     @Override
     public void open() {
-        // no op
+        poisonRecords = 0;
     }
 
     @Override
@@ -70,7 +91,10 @@ public class BlockingQueueRecordReader<T extends Record> implements RecordReader
     public T readNextRecord() throws RecordReadingException {
         try {
             T record = queue.take();
-            stop = record instanceof PoisonRecord;
+            if (record instanceof PoisonRecord) {
+                poisonRecords++;
+            }
+            stop = poisonRecords == totalPoisonRecords;
             return record;
         } catch (InterruptedException e) {
             throw new RecordReadingException("Unable to read next record from the queue", e);
@@ -84,7 +108,7 @@ public class BlockingQueueRecordReader<T extends Record> implements RecordReader
 
     @Override
     public String getDataSourceName() {
-        return "Queue:" + queue;
+        return "In-Memory Queue";
     }
 
     @Override

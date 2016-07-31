@@ -22,43 +22,45 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.job;
+package org.easybatch.extensions.msexcel;
 
-import org.easybatch.core.listener.RecordReaderListener;
-import org.easybatch.core.record.Record;
+public class Tweet {
+    
+    private int id;
+    
+    private String user, message;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+    public int getId() {
+        return id;
+    }
 
-/**
- * Default listener that logs and reports record reading exceptions.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
-class DefaultRecordReaderListener implements RecordReaderListener {
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    private static final Logger LOGGER = Logger.getLogger(DefaultRecordReaderListener.class.getName());
+    public String getMessage() {
+        return message;
+    }
 
-    private JobImpl job;
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-    DefaultRecordReaderListener(JobImpl job) {
-        this.job = job;
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     @Override
-    public void beforeRecordReading() {
-        //no-op
-    }
-
-    @Override
-    public void afterRecordReading(Record record) {
-        //no-op
-    }
-
-    @Override
-    public void onRecordReadingException(Throwable throwable) {
-        LOGGER.log(Level.SEVERE, "Unable to read next record", throwable);
-        job.getJobReport().setStatus(JobStatus.FAILED);
-        job.getJobReport().getMetrics().setEndTime(System.currentTimeMillis());
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Tweet{");
+        sb.append("id=").append(id);
+        sb.append(", user='").append(user).append('\'');
+        sb.append(", message='").append(message).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

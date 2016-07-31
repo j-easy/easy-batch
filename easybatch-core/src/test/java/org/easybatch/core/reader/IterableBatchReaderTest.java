@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -60,21 +60,15 @@ public class IterableBatchReaderTest {
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();
 
-        assertThat(batches).isNotNull().isNotEmpty().hasSize(3);
+        assertThat(batches).hasSize(3);
 
         List<Record> batch1 = batches.get(0).getPayload();
-        assertThat(batch1).isNotNull().isNotEmpty().hasSize(2);
-        assertThat(batch1.get(0).getPayload()).isEqualTo(record1);
-        assertThat(batch1.get(1).getPayload()).isEqualTo(record2);
+        assertThat(batch1).extracting("payload").containsExactly(record1, record2);
 
         List<Record> batch2 = batches.get(1).getPayload();
-        assertThat(batch2).isNotNull().isNotEmpty().hasSize(2);
-        assertThat(batch2.get(0).getPayload()).isEqualTo(record3);
-        assertThat(batch2.get(1).getPayload()).isEqualTo(record4);
+        assertThat(batch2).extracting("payload").containsExactly(record3, record4);
 
         List<Record> batch3 = batches.get(2).getPayload();
-        assertThat(batch3).isNotNull().isNotEmpty().hasSize(1);
-        assertThat(batch3.get(0).getPayload()).isEqualTo(record5);
-
+        assertThat(batch3).extracting("payload").containsExactly(record5);
     }
 }

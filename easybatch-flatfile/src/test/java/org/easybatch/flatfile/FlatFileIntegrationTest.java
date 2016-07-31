@@ -206,7 +206,7 @@ public class FlatFileIntegrationTest {
         List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
         List<Person> persons = extractPayloads(records);
 
-        assertThat(persons).isNotEmpty().hasSize(2);
+        assertThat(persons).hasSize(2);
 
         assertPerson(persons.get(0), "foo ", "bar ", 30, true);
         assertPerson(persons.get(1), "toto", "titi", 15, false);

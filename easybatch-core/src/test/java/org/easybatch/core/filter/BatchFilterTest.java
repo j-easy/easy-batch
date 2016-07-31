@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -66,7 +66,7 @@ public class BatchFilterTest {
         batchFilter.processRecord(batch);
 
         assertThat(batch).isNotNull();
-        assertThat(batch.getPayload()).isNotNull().isNotEmpty().hasSize(1).containsOnly(record1);
+        assertThat(batch.getPayload()).containsExactly(record1);
     }
 
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -140,21 +140,19 @@ public class DelimitedRecordMapperTest {
         );
         FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(record);
         assertThat(flatFileRecord).isNotNull();
-        assertThat(flatFileRecord.getFlatFileFields().size()).isEqualTo(2);
-        assertThat(flatFileRecord.getFlatFileFields().get(0).getRawContent()).isEqualTo("foo");
-        assertThat(flatFileRecord.getFlatFileFields().get(1).getRawContent()).isEqualTo("true");
+        List<FlatFileField> flatFileFields = flatFileRecord.getFlatFileFields();
+        assertThat(flatFileFields).hasSize(2);
+        assertThat(flatFileFields).extracting("rawContent")
+          .containsExactly("foo", "true");
     }
 
     private void validateRecord(final StringRecord stringRecord) throws Exception {
         FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(stringRecord);
         assertThat(flatFileRecord).isNotNull();
         List<FlatFileField> flatFileFields = flatFileRecord.getFlatFileFields();
-        assertThat(flatFileFields.size()).isEqualTo(5);
-        assertThat(flatFileFields.get(0).getRawContent()).isEqualTo("foo");
-        assertThat(flatFileFields.get(1).getRawContent()).isEqualTo("bar");
-        assertThat(flatFileFields.get(2).getRawContent()).isEqualTo("30");
-        assertThat(flatFileFields.get(3).getRawContent()).isEqualTo("1990-12-12");
-        assertThat(flatFileFields.get(4).getRawContent()).isEqualTo("true");
+        assertThat(flatFileFields).hasSize(5);
+        assertThat(flatFileFields).extracting("rawContent")
+          .containsExactly("foo", "bar", "30", "1990-12-12", "true");
     }
 
      /*

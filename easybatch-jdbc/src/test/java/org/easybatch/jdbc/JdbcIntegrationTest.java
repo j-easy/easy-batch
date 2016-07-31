@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -88,7 +88,7 @@ public class JdbcIntegrationTest {
         List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
         List<Person> persons = extractPayloads(records);
 
-        assertThat(persons).isNotEmpty().hasSize(2);
+        assertThat(persons).hasSize(2);
 
         final Person person1 = persons.get(0);
         assertThat(person1.getId()).isEqualTo(1);

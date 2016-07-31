@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,7 @@ import static org.mockito.Mockito.when;
 /**
  * Test class for {@link StringBatchWriter}.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 @RunWith(MockitoJUnitRunner.class)
 public class StringBatchWriterTest {
@@ -70,7 +70,7 @@ public class StringBatchWriterTest {
 
         Batch actual = stringBatchWriter.processRecord(this.batch);
 
-        assertThat(actual).isNotNull().isEqualTo(batch);
+        assertThat(actual).isEqualTo(batch);
 
         assertThat(stringWriter.toString()).isEqualTo("foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR);
     }

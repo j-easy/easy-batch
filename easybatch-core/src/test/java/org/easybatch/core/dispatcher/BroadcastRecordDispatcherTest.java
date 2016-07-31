@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -59,9 +59,8 @@ public class BroadcastRecordDispatcherTest {
 
         broadcastRecordDispatcher.dispatchRecord(record);
 
-        assertThat(queue1).isNotEmpty().containsOnly(record);
-        assertThat(queue2).isNotEmpty().containsOnly(record);
-
+        assertThat(queue1).containsOnly(record);
+        assertThat(queue2).containsOnly(record);
     }
 
 }

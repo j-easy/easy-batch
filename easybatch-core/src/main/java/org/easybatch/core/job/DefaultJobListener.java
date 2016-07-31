@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@ package org.easybatch.core.job;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.processor.ComputationalRecordProcessor;
 import org.easybatch.core.processor.RecordProcessor;
+import org.easybatch.core.retry.RetryPolicy;
 import org.easybatch.core.util.Utils;
 
 import java.util.logging.Level;
@@ -39,7 +40,7 @@ import static org.easybatch.core.util.Utils.toMinutes;
 /**
  * Job listener that logs and reports job parameters and metrics.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 class DefaultJobListener implements JobListener {
 
@@ -60,16 +61,19 @@ class DefaultJobListener implements JobListener {
         long limit = jobParameters.getLimit();
         long timeout = jobParameters.getTimeout();
         String jobName = jobParameters.getName();
+        RetryPolicy retryPolicy = jobParameters.getRetryPolicy();
 
         LOGGER.log(Level.INFO, "Starting job ''{0}''", jobName);
         LOGGER.log(Level.INFO, "Execution id: {0}", jobParameters.getExecutionId());
+        LOGGER.log(Level.INFO, "Host name: {0}", jobParameters.getHostname());
         LOGGER.log(Level.INFO, "Data source: {0}", dataSource != null ? dataSource : "N/A");
+        LOGGER.log(Level.INFO, "Reader retry policy: {0}", retryPolicy);
+        LOGGER.log(Level.INFO, "Reader keep alive: {0}", jobParameters.isKeepAlive());
         LOGGER.log(Level.INFO, "Skip: {0}", jobParameters.getSkip());
         LOGGER.log(Level.INFO, "Limit: {0}", limit != DEFAULT_LIMIT ? limit : "N/A");
         LOGGER.log(Level.INFO, "Timeout: {0}", timeout != DEFAULT_TIMEOUT ? toMinutes(timeout) + "m" : "N/A");
         LOGGER.log(Level.INFO, "Strict mode: {0}", jobParameters.isStrictMode());
         LOGGER.log(Level.INFO, "Silent mode: {0}", jobParameters.isSilentMode());
-        LOGGER.log(Level.INFO, "Keep alive: {0}", jobParameters.isKeepAlive());
         LOGGER.log(Level.INFO, "Jmx mode: {0}", jobParameters.isJmxMode());
         LOGGER.log(Level.INFO, "Job ''{0}'' started", jobName);
 
@@ -90,6 +94,9 @@ class DefaultJobListener implements JobListener {
             ComputationalRecordProcessor computationalRecordProcessor = (ComputationalRecordProcessor) lastRecordProcessor;
             Object jobResult = computationalRecordProcessor.getComputationResult();
             jobReport.setJobResult(new JobResult(jobResult));
+        }
+        if (job.getJobReport().getParameters().isJmxMode()) {
+            job.getJobMonitor().notifyJobReportUpdate();
         }
         LOGGER.log(Level.INFO, "Job ''{0}'' finished with exit status: {1}", new Object[]{jobReport.getParameters().getName(), jobReport.getStatus()});
     }

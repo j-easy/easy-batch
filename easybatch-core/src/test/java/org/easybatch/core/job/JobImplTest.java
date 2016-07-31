@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -28,18 +28,15 @@ import org.easybatch.core.filter.RecordFilter;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.listener.PipelineListener;
 import org.easybatch.core.listener.RecordReaderListener;
-import org.easybatch.core.monitor.JobMonitor;
 import org.easybatch.core.processor.ComputationalRecordProcessor;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.processor.RecordProcessingException;
 import org.easybatch.core.processor.RecordProcessor;
-import org.easybatch.core.reader.IterableRecordReader;
-import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RecordReaderOpeningException;
-import org.easybatch.core.reader.RecordReadingException;
+import org.easybatch.core.reader.*;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
+import org.easybatch.core.retry.RetryPolicy;
 import org.easybatch.core.validator.RecordValidationException;
 import org.easybatch.core.validator.RecordValidator;
 import org.junit.Before;
@@ -53,12 +50,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.easybatch.core.util.Utils.*;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("unchecked")
@@ -73,6 +70,8 @@ public class JobImplTest {
     private Record record1, record2;
     @Mock
     private RecordReader reader;
+    @Mock
+    private RecordReader unreliableReader;
     @Mock
     private RecordFilter filter;
     @Mock
@@ -116,6 +115,7 @@ public class JobImplTest {
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
+                .jobListener(jobListener)
                 .build();
     }
 
@@ -175,10 +175,22 @@ public class JobImplTest {
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getTotalCount()).isNull();
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        assertThat(jobReport.getMetrics().getLastError()).isEqualTo(recordReaderOpeningException);
     }
 
     @Test
-    public void whenNotAbleToReadNextRecord_ThenTheJobShouldBeFailed() throws Exception {
+    public void whenNotAbleToOpenReader_thenTheJobListenerShouldBeInvoked() throws Exception {
+        doThrow(recordReaderOpeningException).when(reader).open();
+
+        JobReport jobReport = JobExecutor.execute(job);
+
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        assertThat(jobReport.getMetrics().getLastError()).isEqualTo(recordReaderOpeningException);
+        verify(jobListener).afterJobEnd(jobReport);
+    }
+
+    @Test
+    public void whenNotAbleToReadNextRecord_ThenTheJobShouldBeAborted() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true);
         when(reader.readNextRecord()).thenThrow(recordReadingException);
 
@@ -188,7 +200,8 @@ public class JobImplTest {
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getTotalCount()).isNull();
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.ABORTED);
+        assertThat(jobReport.getMetrics().getLastError()).isEqualTo(recordReadingException);
     }
 
     @Test
@@ -212,6 +225,7 @@ public class JobImplTest {
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
+        assertThat(jobReport.getMetrics().getLastError()).isNull();
     }
 
     @Test
@@ -255,9 +269,10 @@ public class JobImplTest {
 
     @Test
     public void whenARuntimeExceptionIsThrown_thenTheJobShouldFail() {
-        when(reader.hasNextRecord()).thenThrow(new RuntimeException());
+        when(reader.hasNextRecord()).thenThrow(runtimeException);
         JobReport jobReport = JobExecutor.execute(job);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        assertThat(jobReport.getMetrics().getLastError()).isEqualTo(runtimeException);
     }
     
     /*
@@ -269,7 +284,7 @@ public class JobImplTest {
         job = new JobBuilder().jmxMode(true).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(JobMonitor.JMX_MBEAN_NAME + "name=" + JobParameters.DEFAULT_JOB_NAME + ",id=" + job.getExecutionId()))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(JMX_MBEAN_NAME + "name=" + JobParameters.DEFAULT_JOB_NAME + ",id=" + job.getExecutionId()))).isTrue();
     }
 
     @Test
@@ -278,7 +293,7 @@ public class JobImplTest {
         job = new JobBuilder().jmxMode(true).named(name).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(JobMonitor.JMX_MBEAN_NAME + "name=" + name + ",id=" + job.getExecutionId()))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(JMX_MBEAN_NAME + "name=" + name + ",id=" + job.getExecutionId()))).isTrue();
     }
 
     /*
@@ -301,8 +316,8 @@ public class JobImplTest {
 
         List<GenericRecord> records = (List<GenericRecord>) jobReport.getResult();
 
-        assertThat(records).isNotNull().hasSize(1);
-        assertThat(records.get(0).getPayload()).isNotNull().isEqualTo("bar");
+        assertThat(records).hasSize(1);
+        assertThat(records.get(0).getPayload()).isEqualTo("bar");
 
     }
 
@@ -321,10 +336,7 @@ public class JobImplTest {
 
         List<GenericRecord> records = (List<GenericRecord>) jobReport.getResult();
 
-        assertThat(records).isNotNull().hasSize(2);
-        assertThat(records.get(0).getPayload()).isNotNull().isEqualTo("foo");
-        assertThat(records.get(1).getPayload()).isNotNull().isEqualTo("bar");
-
+        assertThat(records).extracting("payload").containsExactly("foo", "bar");
     }
 
     @Test
@@ -333,7 +345,7 @@ public class JobImplTest {
 
         JobReport jobReport = aNewJob()
                 .reader(new IterableRecordReader(dataSource))
-                .timeout(1, TimeUnit.SECONDS)
+                .timeout(1, SECONDS)
                 .processor(new RecordProcessor<Record, Record>() {
                     @Override
                     public Record processRecord(Record record) throws RecordProcessingException {
@@ -350,6 +362,42 @@ public class JobImplTest {
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.ABORTED);
         assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(1);
+    }
+
+    /*
+     * Test retry parameter
+     */
+
+    @Test
+    public void testRetry_whenMaxAttemptsExceeded() throws Exception {
+        job = new JobBuilder()
+                .reader(new UnreliableRecordReader(), new RetryPolicy(2, 1, SECONDS))
+                .processor(new RecordCollector())
+                .build();
+
+        JobReport jobReport = job.call();
+
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.ABORTED);
+    }
+
+    @Test
+    public void testRetry_whenMaxAttemptsNotExceeded() throws Exception {
+        job = new JobBuilder()
+                .reader(new UnreliableRecordReader(), new RetryPolicy(5, 1, SECONDS))
+                .processor(new RecordCollector())
+                .build();
+
+        JobReport jobReport = job.call();
+
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
+        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
+        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(3);
+
+        List<Record> records = (List<Record>) jobReport.getResult();
+        assertThat(records).hasSize(3);
+        assertThat(records.get(0).getPayload()).isEqualTo("r1");
+        assertThat(records.get(1).getPayload()).isEqualTo("r2");
+        assertThat(records.get(2).getPayload()).isEqualTo("r3");
     }
 
     /*

@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@
 package org.easybatch.core.job;
 
 import org.easybatch.core.listener.JobListener;
-import org.easybatch.core.monitor.JobMonitor;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -33,10 +32,12 @@ import java.lang.management.ManagementFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.easybatch.core.util.Utils.JMX_MBEAN_NAME;
+
 /**
  * Job listener that sets up monitoring MBean if JMX mode is enabled.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 class MonitoringSetupListener implements JobListener {
 
@@ -69,10 +70,9 @@ class MonitoringSetupListener implements JobListener {
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
         try {
-            name = new ObjectName(JobMonitor.JMX_MBEAN_NAME + "name=" + job.getName() + ",id=" + job.getExecutionId());
+            name = new ObjectName(JMX_MBEAN_NAME + "name=" + job.getName() + ",id=" + job.getExecutionId());
             if (!mbs.isRegistered(name)) {
-                JobMonitor monitor = new JobMonitor(job.getJobReport());
-                mbs.registerMBean(monitor, name);
+                mbs.registerMBean(job.getJobMonitor(), name);
                 LOGGER.log(Level.INFO, "JMX MBean registered successfully as: {0}", name.getCanonicalName());
             } else {
                 LOGGER.log(Level.WARNING, "JMX MBean {0} already registered for another job." +

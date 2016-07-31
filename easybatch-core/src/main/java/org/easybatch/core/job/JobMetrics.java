@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ import java.io.Serializable;
 /**
  * Metrics of a job.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class JobMetrics implements Serializable {
 
@@ -46,6 +46,8 @@ public class JobMetrics implements Serializable {
     private long errorCount;
 
     private long successCount;
+
+    private Throwable lastError;
 
     public void incrementSkippedCount() {
         skippedCount++;
@@ -105,5 +107,13 @@ public class JobMetrics implements Serializable {
 
     public long getSuccessCount() {
         return successCount;
+    }
+
+    public Throwable getLastError() {
+        return lastError;
+    }
+
+    public void setLastError(Throwable lastError) {
+        this.lastError = lastError;
     }
 }

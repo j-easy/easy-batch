@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -63,6 +63,7 @@ public class HtmlJobReportFormatterTest {
         jobReport.getParameters().setDataSource("In-Memory String");
         jobReport.getParameters().setLimit(8L);
         jobReport.getParameters().setName("job");
+        jobReport.getParameters().setHostname("batch-server");
         jobReport.getParameters().setExecutionId("c8d6a5fc-b2b4-4ee0-9dda-f9ec042d5864");
         jobReport.getParameters().setSystemProperties(System.getProperties());
 

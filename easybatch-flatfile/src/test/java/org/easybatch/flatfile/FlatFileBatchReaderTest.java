@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -59,30 +59,30 @@ public class FlatFileBatchReaderTest {
         Batch batch = flatFileBatchReader.readNextRecord();
         List<Record> batch1 = batch.getPayload();
 
-        assertThat(batch1).isNotNull().isNotEmpty().hasSize(4);
-        assertThat(batch1.get(0).getPayload()).isEqualTo("Complaint ID,Product,Sub-product,Issue,Sub-issue,State,ZIP code,Submitted via,Date received,Date sent to company,Company,Company response,Timely response?,Consumer disputed?");
-        assertThat(batch1.get(1).getPayload()).isEqualTo("1355160,Student loan,Non-federal student loan,Dealing with my lender or servicer,,NJ,08807,Web,04/30/2015,04/30/2015,Transworld Systems Inc.,In progress,Yes,");
-        assertThat(batch1.get(2).getPayload()).isEqualTo("1354249,Bank account or service,Checking account,Problems caused by my funds being low,,AL,35127,Web,04/30/2015,04/30/2015,Wells Fargo,Closed with explanation,Yes,");
-        assertThat(batch1.get(3).getPayload()).isEqualTo("1354227,Debt collection,Medical,False statements or representation,Indicated committed crime not paying,FL,32792,Web,04/29/2015,04/30/2015,Transworld Systems Inc.,In progress,Yes,");
+        assertThat(batch1).extracting("payload").containsExactly(
+            "Complaint ID,Product,Sub-product,Issue,Sub-issue,State,ZIP code,Submitted via,Date received,Date sent to company,Company,Company response,Timely response?,Consumer disputed?",
+            "1355160,Student loan,Non-federal student loan,Dealing with my lender or servicer,,NJ,08807,Web,04/30/2015,04/30/2015,Transworld Systems Inc.,In progress,Yes,",
+            "1354249,Bank account or service,Checking account,Problems caused by my funds being low,,AL,35127,Web,04/30/2015,04/30/2015,Wells Fargo,Closed with explanation,Yes,",
+            "1354227,Debt collection,Medical,False statements or representation,Indicated committed crime not paying,FL,32792,Web,04/29/2015,04/30/2015,Transworld Systems Inc.,In progress,Yes,");
 
         assertThat(flatFileBatchReader.hasNextRecord()).isTrue();
         batch = flatFileBatchReader.readNextRecord();
         List<Record> batch2 = batch.getPayload();
 
-        assertThat(batch2).isNotNull().isNotEmpty().hasSize(4);
-        assertThat(batch2.get(0).getPayload()).isEqualTo("1354200,Debt collection,Credit card,False statements or representation,Indicated committed crime not paying,AZ,85304,Web,04/29/2015,04/30/2015,Patenaude & Felix APC,Closed with explanation,Yes,");
-        assertThat(batch2.get(1).getPayload()).isEqualTo("1354191,Bank account or service,Checking account,Problems caused by my funds being low,,CA,90044,Web,04/29/2015,04/30/2015,Wells Fargo,Closed with explanation,Yes,");
-        assertThat(batch2.get(2).getPayload()).isEqualTo("1353502,Consumer loan,Vehicle loan,Problems when you are unable to pay,,TX,75287,Web,04/29/2015,04/29/2015,Ally Financial Inc.,In progress,Yes,");
-        assertThat(batch2.get(3).getPayload()).isEqualTo("1353247,Money transfers,Domestic (US) money transfer,Fraud or scam,,AR,72712,Web,04/29/2015,04/29/2015,MoneyGram,In progress,Yes,");
+        assertThat(batch2).extracting("payload").containsExactly(
+            "1354200,Debt collection,Credit card,False statements or representation,Indicated committed crime not paying,AZ,85304,Web,04/29/2015,04/30/2015,Patenaude & Felix APC,Closed with explanation,Yes,",
+            "1354191,Bank account or service,Checking account,Problems caused by my funds being low,,CA,90044,Web,04/29/2015,04/30/2015,Wells Fargo,Closed with explanation,Yes,",
+            "1353502,Consumer loan,Vehicle loan,Problems when you are unable to pay,,TX,75287,Web,04/29/2015,04/29/2015,Ally Financial Inc.,In progress,Yes,",
+            "1353247,Money transfers,Domestic (US) money transfer,Fraud or scam,,AR,72712,Web,04/29/2015,04/29/2015,MoneyGram,In progress,Yes,");
 
         assertThat(flatFileBatchReader.hasNextRecord()).isTrue();
         batch = flatFileBatchReader.readNextRecord();
         List<Record> batch3 = batch.getPayload();
 
-        assertThat(batch3).isNotNull().isNotEmpty().hasSize(3);
-        assertThat(batch3.get(0).getPayload()).isEqualTo("1351451,Consumer loan,Installment loan,Taking out the loan or lease,,GA,30346,Web,04/28/2015,04/30/2015,Springleaf Finance Corporation,In progress,Yes,");
-        assertThat(batch3.get(1).getPayload()).isEqualTo("1353946,Debt collection,Medical,Disclosure verification of debt,Not given enough info to verify debt,NJ,07740,Web,04/28/2015,04/29/2015,Senex Services Corp.,Closed with explanation,Yes,");
-        assertThat(batch3.get(2).getPayload()).isEqualTo("1351334,Money transfers,International money transfer,Money was not available when promised,,TX,78666,Phone,04/28/2015,04/29/2015,MoneyGram,In progress,Yes,");
+        assertThat(batch3).extracting("payload").containsExactly(
+            "1351451,Consumer loan,Installment loan,Taking out the loan or lease,,GA,30346,Web,04/28/2015,04/30/2015,Springleaf Finance Corporation,In progress,Yes,",
+            "1353946,Debt collection,Medical,Disclosure verification of debt,Not given enough info to verify debt,NJ,07740,Web,04/28/2015,04/29/2015,Senex Services Corp.,Closed with explanation,Yes,",
+            "1351334,Money transfers,International money transfer,Money was not available when promised,,TX,78666,Phone,04/28/2015,04/29/2015,MoneyGram,In progress,Yes,");
 
         assertThat(flatFileBatchReader.hasNextRecord()).isFalse();
     }
@@ -97,23 +97,22 @@ public class FlatFileBatchReaderTest {
 
         List<Batch> batches = (List<Batch>) jobReport.getResult();
 
-        assertThat(batches).isNotNull().isNotEmpty().hasSize(3);
+        assertThat(batches).hasSize(3);
 
         Batch batch1 = batches.get(0);
         assertThat(batch1).isNotNull();
         assertThat(batch1.getHeader().getNumber()).isEqualTo(1);
-        assertThat(batch1.getPayload()).isNotEmpty().hasSize(4);
+        assertThat(batch1.getPayload()).hasSize(4);
 
         Batch batch2 = batches.get(1);
         assertThat(batch2).isNotNull();
         assertThat(batch2.getHeader().getNumber()).isEqualTo(2);
-        assertThat(batch2.getPayload()).isNotEmpty().hasSize(4);
+        assertThat(batch2.getPayload()).hasSize(4);
 
         Batch batch3 = batches.get(2);
         assertThat(batch3).isNotNull();
         assertThat(batch3.getHeader().getNumber()).isEqualTo(3);
-        assertThat(batch3.getPayload()).isNotEmpty().hasSize(3);
-
+        assertThat(batch3.getPayload()).hasSize(3);
     }
 
     @After

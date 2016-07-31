@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -62,7 +62,7 @@ public class CollectionBatchWriterTest {
     public void testWriteRecord() throws Exception {
         Batch actual = collectionBatchWriter.processRecord(batch);
 
-        assertThat(actual).isNotNull().isEqualTo(batch);
-        assertThat(output).isNotEmpty().hasSize(2).containsExactly(record1.getPayload(), record2.getPayload());
+        assertThat(actual).isEqualTo(batch);
+        assertThat(output).containsExactly(record1.getPayload(), record2.getPayload());
     }
 }

@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -79,7 +79,7 @@ public class BatchProcessorTest {
             Batch actual = batchProcessor.processRecord(this.batch);
             assertThat(actual).isNotNull();
             assertThat(actual.getHeader()).isEqualTo(header);
-            assertThat(actual.getPayload()).isNotEmpty().hasSize(1).containsExactly(processedRecord);
+            assertThat(actual.getPayload()).containsExactly(processedRecord);
         } catch (RecordProcessingException e) {
             fail("No exception should be thrown for the batch when all its records are processed without errors");
         }

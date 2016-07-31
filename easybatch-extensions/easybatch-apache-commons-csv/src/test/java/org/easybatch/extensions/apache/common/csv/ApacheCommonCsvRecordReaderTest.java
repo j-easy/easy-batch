@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,6 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.record.Record;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,14 +51,14 @@ public class ApacheCommonCsvRecordReaderTest {
 
     @Test
     public void testHasNextRecord() throws Exception {
-        Assert.assertTrue(recordReader.hasNextRecord());
+      assertThat(recordReader.hasNextRecord()).isTrue();
     }
 
     @Test
     public void testReadNextRecord() throws Exception {
         recordReader.hasNextRecord();
         Record record = recordReader.readNextRecord();
-        assertThat(record).isNotNull().isInstanceOf(ApacheCommonCsvRecord.class);
+        assertThat(record).isInstanceOf(ApacheCommonCsvRecord.class);
 
         ApacheCommonCsvRecord apacheCommonCsvRecord = (ApacheCommonCsvRecord) record;
         assertThat(apacheCommonCsvRecord.getHeader()).isNotNull();

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
+
 @RunWith(MockitoJUnitRunner.class)
 public class FixedLengthRecordMapperTest {
 
@@ -59,10 +61,21 @@ public class FixedLengthRecordMapperTest {
     @Test
     public void testRecordParsing() throws Exception {
         FlatFileRecord flatFileRecord = fixedLengthRecordMapper.parseRecord(record);
-        assertThat(flatFileRecord.getFlatFileFields().size()).isEqualTo(3);
-        assertThat(flatFileRecord.getFlatFileFields().get(0).getRawContent()).isEqualTo("aaaa");
-        assertThat(flatFileRecord.getFlatFileFields().get(1).getRawContent()).isEqualTo("bb");
-        assertThat(flatFileRecord.getFlatFileFields().get(2).getRawContent()).isEqualTo("ccc");
+        List<FlatFileField> flatFileFields = flatFileRecord.getFlatFileFields();
+        assertThat(flatFileFields).hasSize(3);
+        assertThat(flatFileFields).extracting("rawContent")
+            .containsExactly("aaaa", "bb", "ccc");
+    }
+
+    @Test
+    public void testRecordParsingWithTrimmedWhitespaces() throws Exception {
+        fixedLengthRecordMapper.setTrimWhitespaces(true);
+        when(record.getPayload()).thenReturn(" aa bbcc ");
+        FlatFileRecord flatFileRecord = fixedLengthRecordMapper.parseRecord(record);
+        List<FlatFileField> flatFileFields = flatFileRecord.getFlatFileFields();
+        assertThat(flatFileFields).hasSize(3);
+        assertThat(flatFileFields).extracting("rawContent")
+            .containsExactly("aa", "bb", "cc");
     }
 
 }

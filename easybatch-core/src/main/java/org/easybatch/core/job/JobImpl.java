@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,6 @@ import org.easybatch.core.listener.RecordReaderListener;
 import org.easybatch.core.processor.RecordProcessingException;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RecordReadingException;
 import org.easybatch.core.record.Record;
 
 import java.util.ArrayList;
@@ -40,19 +39,23 @@ import java.util.logging.Logger;
 /**
  * Core Easy Batch job implementation.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 final class JobImpl implements Job {
 
     private static final Logger LOGGER = Logger.getLogger(Job.class.getName());
 
     private RecordReader recordReader;
+    private RecordReadingCallable recordReadingCallable;
+    private RecordReadingTemplate recordReadingTemplate;
 
     private Pipeline pipeline;
 
     private EventManager eventManager;
 
     private JobReport report;
+
+    private JobMonitor jobMonitor;
 
     private JobParameters parameters;
 
@@ -66,12 +69,14 @@ final class JobImpl implements Job {
         this.report = new JobReport();
         this.parameters = report.getParameters();
         this.metrics = report.getMetrics();
+        this.jobMonitor = new JobMonitor(report);
         this.pipeline = new Pipeline(new ArrayList<RecordProcessor>(), eventManager);
-        this.eventManager.addRecordReaderListener(new DefaultRecordReaderListener(this));
         this.eventManager.addPipelineListener(new DefaultPipelineListener(this));
         this.eventManager.addPipelineListener(new JobTimeoutListener(this));
         this.eventManager.addJobListener(new DefaultJobListener(this));
         this.eventManager.addJobListener(new MonitoringSetupListener(this));
+        this.recordReadingCallable = new RecordReadingCallable(recordReader);
+        this.recordReadingTemplate = new RecordReadingTemplate(parameters.getRetryPolicy(), eventManager, report);
     }
 
     @Override
@@ -87,13 +92,12 @@ final class JobImpl implements Job {
     @Override
     public JobReport call() {
 
-        if (!openRecordReader()) {
-            return report;
-        }
-
-        eventManager.fireBeforeJobStart(parameters);
-
         try {
+
+            if (!openRecordReader()) {
+                return report;
+            }
+            eventManager.fireBeforeJobStart(parameters);
             long recordCount = 0;
             while (recordReader.hasNextRecord() && recordCount < parameters.getLimit()) {
 
@@ -104,17 +108,15 @@ final class JobImpl implements Job {
                 }
 
                 //read next record
-                Record currentRecord;
-                try {
-                    currentRecord = readNextRecord();
-                    recordCount++;
-                } catch (RecordReadingException e) {
-                    eventManager.fireOnRecordReadingException(e);
+                Record currentRecord = readNextRecord();
+                if (currentRecord == null) {
                     return report;
                 }
+                recordCount++;
 
                 //Skip records if any
                 if (shouldSkipRecord(recordCount)) {
+                    metrics.incrementSkippedCount();
                     continue;
                 }
 
@@ -125,6 +127,7 @@ final class JobImpl implements Job {
                     if (parameters.isStrictMode()) {
                         LOGGER.info("Strict mode enabled: aborting execution");
                         report.setStatus(JobStatus.ABORTED);
+                        report.getMetrics().setLastError(e);
                         break;
                     }
                 }
@@ -134,6 +137,7 @@ final class JobImpl implements Job {
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "A unexpected error occurred", e);
             report.setStatus(JobStatus.FAILED);
+            report.getMetrics().setLastError(e);
         } finally {
             closeRecordReader();
             eventManager.fireAfterJobEnd(report);
@@ -142,12 +146,16 @@ final class JobImpl implements Job {
 
     }
 
-    private boolean shouldSkipRecord(long recordCount) {
-        if (recordCount <= parameters.getSkip()) {
-            metrics.incrementSkippedCount();
-            return true;
+    private Record readNextRecord() {
+        try {
+            return recordReadingTemplate.execute(recordReadingCallable);
+        } catch (Exception e) {
+            return null;
         }
-        return false;
+    }
+
+    private boolean shouldSkipRecord(long recordCount) {
+        return recordCount <= parameters.getSkip();
     }
 
     private boolean openRecordReader() {
@@ -159,16 +167,10 @@ final class JobImpl implements Job {
             LOGGER.log(Level.SEVERE, "Unable to open the record reader", e);
             report.setStatus(JobStatus.FAILED);
             metrics.setEndTime(System.currentTimeMillis());
+            metrics.setLastError(e);
             return false;
         }
         return true;
-    }
-
-    private Record readNextRecord() throws RecordReadingException {
-        eventManager.fireBeforeRecordReading();
-        Record nextRecord = recordReader.readNextRecord();
-        eventManager.fireAfterRecordReading(nextRecord);
-        return nextRecord;
     }
 
     private void closeRecordReader() {
@@ -188,6 +190,8 @@ final class JobImpl implements Job {
 
     void setRecordReader(final RecordReader recordReader) {
         this.recordReader = recordReader;
+        this.recordReadingCallable = new RecordReadingCallable(recordReader);
+        this.recordReadingTemplate = new RecordReadingTemplate(parameters.getRetryPolicy(), eventManager, report);
     }
 
     void addRecordProcessor(final RecordProcessor recordProcessor) {
@@ -224,6 +228,10 @@ final class JobImpl implements Job {
 
     Pipeline getPipeline() {
         return pipeline;
+    }
+
+    JobMonitor getJobMonitor() {
+        return jobMonitor;
     }
 
     @Override

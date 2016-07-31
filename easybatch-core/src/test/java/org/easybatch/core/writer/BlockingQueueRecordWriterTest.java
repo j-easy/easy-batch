@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -39,31 +39,28 @@ import static org.mockito.Mockito.*;
 public class BlockingQueueRecordWriterTest {
 
     @Mock
-    private Record<Object> record;
-    @Mock
-    private Object payload;
+    private Record record;
     @Mock
     private InterruptedException interruptedException;
     @Mock
-    private BlockingQueue<Object> blockingQueue;
+    private BlockingQueue<Record> blockingQueue;
 
-    private BlockingQueueRecordWriter writer;
+    private BlockingQueueRecordWriter<Record> writer;
 
     @Before
     public void setUp() {
-        when(record.getPayload()).thenReturn(payload);
-        writer = new BlockingQueueRecordWriter(blockingQueue);
+        writer = new BlockingQueueRecordWriter<>(blockingQueue);
     }
 
     @Test
     public void writeRecord_whenNoException() throws Exception {
         writer.processRecord(record);
-        verify(blockingQueue).put(payload);
+        verify(blockingQueue).put(record);
     }
 
     @Test(expected = RecordWritingException.class)
     public void writeRecord_whenException() throws Exception {
-        doThrow(interruptedException).when(blockingQueue).put(payload);
+        doThrow(interruptedException).when(blockingQueue).put(record);
         writer.processRecord(record);
     }
 }

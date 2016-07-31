@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * Dispatch records to a list of Jms Queues based on their content.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class ContentBasedJmsRecordDispatcher extends AbstractRecordDispatcher<JmsRecord> {
 
@@ -70,7 +70,8 @@ public class ContentBasedJmsRecordDispatcher extends AbstractRecordDispatcher<Jm
         }
 
         Message payload = record.getPayload();
-        for (Predicate<JmsRecord> predicate : queueMap.keySet()) {
+        for (Map.Entry<Predicate<JmsRecord>, QueueSender> entry : queueMap.entrySet()) {
+            Predicate<JmsRecord> predicate = entry.getKey();
             //check if the record meets a given predicate
             if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
                 //put it in the mapped queue

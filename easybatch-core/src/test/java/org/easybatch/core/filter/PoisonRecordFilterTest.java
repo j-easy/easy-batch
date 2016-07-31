@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -60,6 +60,17 @@ public class PoisonRecordFilterTest {
     @Test
     public void whenTheRecordIsNotOfTypePoisonRecord_ThenItNotShouldBeFiltered() {
         assertThat(poisonRecordFilter.processRecord(record)).isEqualTo(record);
+    }
+
+    @Test
+    public void whenTheRecordIsOfTypePoisonRecord_ThenIsPoisonRecordShouldReturnTrue() {
+        assertThat(PoisonRecord.isPoisonRecord(new PoisonRecord())).isTrue();
+        assertThat(PoisonRecord.isPoisonRecord(new CustomPoisonRecord())).isTrue();
+    }
+
+    @Test
+    public void whenTheRecordIsNotOfTypePoisonRecord_ThenIsPoisonRecordShouldReturnFalse() {
+        assertThat(PoisonRecord.isPoisonRecord(record)).isFalse();
     }
 
     class CustomPoisonRecord extends PoisonRecord {
