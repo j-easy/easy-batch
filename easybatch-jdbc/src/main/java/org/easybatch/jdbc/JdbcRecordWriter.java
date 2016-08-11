@@ -68,6 +68,7 @@ public class JdbcRecordWriter extends AbstractRecordWriter {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatementProvider.prepareStatement(preparedStatement, record);
             preparedStatement.executeUpdate();
+            preparedStatement.close();
         } catch (SQLException e) {
             throw new RecordWritingException("Unable to write record " + record + " to database", e);
         }
