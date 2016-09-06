@@ -91,16 +91,7 @@ public class JdbcRecordWriterTest {
     @Before
     public void setUp() throws Exception {
         String query = "INSERT INTO tweet VALUES (?,?,?);";
-        PreparedStatementProvider preparedStatementProvider = new PreparedStatementProvider() {
-            @Override
-            public void prepareStatement(PreparedStatement statement, Object record) throws SQLException {
-                Tweet tweet = (Tweet) record;
-                statement.setInt(1, tweet.getId());
-                statement.setString(2, tweet.getUser());
-                statement.setString(3, tweet.getMessage());
-            }
-        };
-        jdbcRecordWriter = new JdbcRecordWriter(connection, query, preparedStatementProvider);
+        jdbcRecordWriter = new JdbcRecordWriter(connection, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, "id", "user", "message"));
     }
 
     @Test
