@@ -121,6 +121,11 @@ public class JobReport implements Serializable {
         return sb.toString();
     }
 
+    public String getFormattedDataSource() {
+        String dataSource = parameters.getDataSource();
+        return valueOf(dataSource == null ? NOT_APPLICABLE : dataSource);
+    }
+
     public String getFormattedFilteredCount() {
         return getFormattedMetric(metrics.getFilteredCount());
     }

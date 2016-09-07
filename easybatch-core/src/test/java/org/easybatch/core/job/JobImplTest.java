@@ -177,6 +177,7 @@ public class JobImplTest {
         assertThat(jobReport.getMetrics().getTotalCount()).isNull();
         assertThat(jobReport.getMetrics().getDuration()).isGreaterThanOrEqualTo(0);
         assertThat(jobReport.getMetrics().getLastError()).isEqualTo(recordReaderOpeningException);
+        assertThat(jobReport.getParameters().getDataSource()).isNull();
     }
 
     @Test

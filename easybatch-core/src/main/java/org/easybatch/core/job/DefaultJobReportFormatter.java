@@ -51,7 +51,7 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
         sb.append(LINE_SEPARATOR).append("\tName = ").append(parameters.getName());
         sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(parameters.getExecutionId());
         sb.append(LINE_SEPARATOR).append("\tHost name = ").append(parameters.getHostname());
-        sb.append(LINE_SEPARATOR).append("\tData source = ").append(parameters.getDataSource());
+        sb.append(LINE_SEPARATOR).append("\tData source = ").append(jobReport.getFormattedDataSource());
         sb.append(LINE_SEPARATOR).append("\tReader retry policy = ").append(parameters.getRetryPolicy());
         sb.append(LINE_SEPARATOR).append("\tReader keep alive = ").append(parameters.isKeepAlive());
         sb.append(LINE_SEPARATOR).append("\tSkip = ").append(parameters.getSkip());
