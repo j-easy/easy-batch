@@ -170,11 +170,12 @@ public class JobImplTest {
         JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getTotalCount()).isNull();
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        assertThat(jobReport.getMetrics().getDuration()).isGreaterThanOrEqualTo(0);
         assertThat(jobReport.getMetrics().getLastError()).isEqualTo(recordReaderOpeningException);
     }
 

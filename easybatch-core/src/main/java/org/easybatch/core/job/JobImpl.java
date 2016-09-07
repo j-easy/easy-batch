@@ -160,13 +160,13 @@ final class JobImpl implements Job {
 
     private boolean openRecordReader() {
         try {
+            metrics.setStartTime(System.currentTimeMillis());
             recordReader.open();
             String dataSourceName = recordReader.getDataSourceName();
             parameters.setDataSource(dataSourceName);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unable to open the record reader", e);
             report.setStatus(JobStatus.FAILED);
-            metrics.setEndTime(System.currentTimeMillis());
             metrics.setLastError(e);
             return false;
         }
