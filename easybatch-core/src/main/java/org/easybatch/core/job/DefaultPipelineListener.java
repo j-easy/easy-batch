@@ -68,7 +68,7 @@ class DefaultPipelineListener implements PipelineListener {
     @Override
     public void afterRecordProcessing(Record inputRecord, Record outputRecord) {
         if (outputRecord == null) {
-            LOGGER.log(Level.INFO, "Record {0} has been filtered", inputRecord);
+            LOGGER.log(Level.INFO, "{0} has been filtered", inputRecord);
             job.getJobReport().getMetrics().incrementFilteredCount();
         } else {
             job.getJobReport().getMetrics().incrementSuccessCount();

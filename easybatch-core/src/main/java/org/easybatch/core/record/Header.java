@@ -82,11 +82,10 @@ public class Header {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("[");
+        final StringBuilder sb = new StringBuilder();
         sb.append("number=").append(number);
         sb.append(", source=\"").append(source).append('\"');
-        sb.append(", creationDate=\"").append(creationDate);
-        sb.append("\"]");
+        sb.append(", creationDate=\"").append(creationDate).append('\"');
         return sb.toString();
     }
 }

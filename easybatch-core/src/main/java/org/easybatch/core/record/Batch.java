@@ -49,12 +49,15 @@ public class Batch extends GenericRecord<List<Record>> {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder("Batch: {");
         stringBuilder.append(LINE_SEPARATOR);
+        stringBuilder.append("header=[").append(header).append("],");
+        stringBuilder.append(LINE_SEPARATOR);
+        stringBuilder.append("payload=[").append(LINE_SEPARATOR);
         for (Record record : payload) {
-            stringBuilder.append("\trecord = ");
+            stringBuilder.append("\t");
             stringBuilder.append(record);
             stringBuilder.append(LINE_SEPARATOR);
         }
-        stringBuilder.append("}");
+        stringBuilder.append("]}");
         return stringBuilder.toString();
     }
 }
