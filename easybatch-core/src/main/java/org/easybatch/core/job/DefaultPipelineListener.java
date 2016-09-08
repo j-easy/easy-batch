@@ -83,7 +83,7 @@ class DefaultPipelineListener implements PipelineListener {
      */
     @Override
     public void onRecordProcessingException(Record record, Throwable throwable) {
-        LOGGER.log(Level.SEVERE, "An exception occurred while processing record " + record, throwable);
+        LOGGER.log(Level.SEVERE, "An exception occurred while processing " + record, throwable);
         job.getJobReport().getMetrics().incrementErrorCount();
     }
 }
