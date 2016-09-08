@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class BlockingQueueRecordReaderTest {
 
-    private BlockingQueueRecordReader<Record> blockingQueueRecordReader;
+    private BlockingQueueRecordReader blockingQueueRecordReader;
 
     private BlockingQueue<Record> queue;
 
@@ -57,7 +57,7 @@ public class BlockingQueueRecordReaderTest {
         queue.put(record);
         queue.put(poisonRecord);
 
-        blockingQueueRecordReader = new BlockingQueueRecordReader<>(queue);
+        blockingQueueRecordReader = new BlockingQueueRecordReader(queue);
         blockingQueueRecordReader.open();
     }
 
