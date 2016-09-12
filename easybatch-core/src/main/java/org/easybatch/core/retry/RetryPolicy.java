@@ -24,6 +24,7 @@
 
 package org.easybatch.core.retry;
 
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -31,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RetryPolicy {
+public class RetryPolicy implements Serializable {
 
     private int maxAttempts;
 
