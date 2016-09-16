@@ -25,6 +25,7 @@
 package org.easybatch.core.job;
 
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import static org.easybatch.core.util.Utils.formatTime;
 
 /**
  * Default job report formatter.
@@ -50,35 +51,22 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
         sb.append(LINE_SEPARATOR).append("Parameters:");
         sb.append(LINE_SEPARATOR).append("\tName = ").append(parameters.getName());
         sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(parameters.getExecutionId());
-        sb.append(LINE_SEPARATOR).append("\tHost name = ").append(parameters.getHostname());
-        sb.append(LINE_SEPARATOR).append("\tData source = ").append(jobReport.getFormattedDataSource());
-        sb.append(LINE_SEPARATOR).append("\tReader retry policy = ").append(parameters.getRetryPolicy());
-        sb.append(LINE_SEPARATOR).append("\tReader keep alive = ").append(parameters.isKeepAlive());
-        sb.append(LINE_SEPARATOR).append("\tSkip = ").append(parameters.getSkip());
-        sb.append(LINE_SEPARATOR).append("\tLimit = ").append(jobReport.getFormattedLimit());
-        sb.append(LINE_SEPARATOR).append("\tTimeout = ").append(jobReport.getFormattedTimeout());
-        sb.append(LINE_SEPARATOR).append("\tStrict mode = ").append(parameters.isStrictMode());
-        sb.append(LINE_SEPARATOR).append("\tSilent mode = ").append(parameters.isSilentMode());
+        sb.append(LINE_SEPARATOR).append("\tBatch size = ").append(parameters.getBatchSize());
+        sb.append(LINE_SEPARATOR).append("\tError threshold = ").append(parameters.getErrorThreshold());
         sb.append(LINE_SEPARATOR).append("\tJmx mode = ").append(parameters.isJmxMode());
 
         /*
          * Job metrics
          */
+        JobMetrics metrics = jobReport.getMetrics();
         sb.append(LINE_SEPARATOR).append("Metrics:");
-        sb.append(LINE_SEPARATOR).append("\tStart time = ").append(jobReport.getFormattedStartTime());
-        sb.append(LINE_SEPARATOR).append("\tEnd time = ").append(jobReport.getFormattedEndTime());
-        sb.append(LINE_SEPARATOR).append("\tDuration = ").append(jobReport.getFormattedDuration());
-        sb.append(LINE_SEPARATOR).append("\tTotal count = ").append(jobReport.getFormattedTotalCount());
-        sb.append(LINE_SEPARATOR).append("\tSkipped count = ").append(jobReport.getFormattedSkippedCount());
-        sb.append(LINE_SEPARATOR).append("\tFiltered count = ").append(jobReport.getFormattedFilteredCount());
-        sb.append(LINE_SEPARATOR).append("\tError count = ").append(jobReport.getFormattedErrorCount());
-        sb.append(LINE_SEPARATOR).append("\tSuccess count = ").append(jobReport.getFormattedSuccessCount());
-        sb.append(LINE_SEPARATOR).append("\tRecord processing time average = ").append(jobReport.getFormattedRecordProcessingTimeAverage());
-
-        /*
-         * Job result (if any)
-         */
-        sb.append(LINE_SEPARATOR).append("Result: ").append(jobReport.getFormattedResult());
+        sb.append(LINE_SEPARATOR).append("\tStart time = ").append(formatTime(metrics.getStartTime()));
+        sb.append(LINE_SEPARATOR).append("\tEnd time = ").append(formatTime(metrics.getEndTime()));
+        sb.append(LINE_SEPARATOR).append("\tDuration = ").append(metrics.getDuration()).append("ms");
+        sb.append(LINE_SEPARATOR).append("\tRead count = ").append(metrics.getReadCount());
+        sb.append(LINE_SEPARATOR).append("\tWrite count = ").append(metrics.getWriteCount());
+        sb.append(LINE_SEPARATOR).append("\tFiltered count = ").append(metrics.getFilteredCount());
+        sb.append(LINE_SEPARATOR).append("\tError count = ").append(metrics.getErrorCount());
 
         return sb.toString();
     }

@@ -28,7 +28,7 @@ import org.easybatch.core.record.Record;
 
 /**
  * Interface for record reader.
- * This will be used by easy batch to <strong>sequentially</strong> read records from a data source.
+ * This will be used to read records <strong>sequentially</strong> from a data source.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -37,45 +37,23 @@ public interface RecordReader {
     /**
      * Open the reader.
      *
-     * @throws RecordReaderOpeningException thrown if an exception occurs during reader opening
+     * @throws Exception thrown if an exception occurs during reader opening
      */
-    void open() throws RecordReaderOpeningException;
-
-    /**
-     * Check if the reader has a next record.
-     *
-     * @return true if the reader has a next record, false else.
-     */
-    boolean hasNextRecord();
+    void open() throws Exception;
 
     /**
      * Read next record from the data source.
      *
      * @return the next record from the data source.
-     * @throws RecordReadingException thrown if an exception occurs during reading next record
+     * @throws Exception thrown if an exception occurs during reading next record
      */
-    Record readNextRecord() throws RecordReadingException;
-
-    /**
-     * Get the total record number in the data source. This is useful to calculate execution progress.
-     *
-     * @return the total record number in the data source or null if the total records number cannot be
-     * calculated in advance
-     */
-    Long getTotalRecords();
-
-    /**
-     * This method returns a human readable data source name to be shown in the batch report.
-     *
-     * @return the data source name this reader is reading data from
-     */
-    String getDataSourceName();
+    Record readRecord() throws Exception;
 
     /**
      * Close the reader.
      *
-     * @throws RecordReaderClosingException thrown if an exception occurs during reader closing
+     * @throws Exception thrown if an exception occurs during reader closing
      */
-    void close() throws RecordReaderClosingException;
+    void close() throws Exception;
 
 }

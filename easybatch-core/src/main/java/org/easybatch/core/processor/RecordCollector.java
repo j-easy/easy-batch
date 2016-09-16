@@ -34,7 +34,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RecordCollector implements ComputationalRecordProcessor<Record, Record, List<Record>> {
+public class RecordCollector implements RecordProcessor<Record, Record> {
 
     private List<Record> items = new ArrayList<>();
 
@@ -44,8 +44,7 @@ public class RecordCollector implements ComputationalRecordProcessor<Record, Rec
         return item;
     }
 
-    @Override
-    public List<Record> getComputationResult() {
+    public List<Record> getRecords() {
         return items;
     }
 

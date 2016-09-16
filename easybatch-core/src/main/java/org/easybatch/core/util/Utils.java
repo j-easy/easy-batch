@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,20 +62,13 @@ public abstract class Utils {
 
     public static final String JMX_MBEAN_NAME = "org.easybatch.core.monitor:";
 
+    public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+
     private Utils() {
 
     }
 
-    static {
-        try {
-            if (System.getProperty("java.util.logging.config.file") == null &&
-                    System.getProperty("java.util.logging.config.class") == null) {
-                LogManager.getLogManager().readConfiguration(Utils.class.getResourceAsStream("/logging.properties"));
-            }
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Unable to load logging configuration file", e);
-        }
-    }
+
 
     /**
      * Return the localhost name
@@ -135,6 +130,10 @@ public abstract class Utils {
         }
         getters.remove("class"); //exclude property "class"
         return getters;
+    }
+
+    public static String formatTime(long time) {
+        return new SimpleDateFormat(DATE_FORMAT).format(new Date(time));
     }
 
 }

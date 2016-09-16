@@ -64,27 +64,16 @@ public class IterableRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws RecordReaderOpeningException {
+    public void open() throws Exception {
         currentRecordNumber = 0;
     }
 
     @Override
-    public boolean hasNextRecord() {
-        return iterator.hasNext();
-    }
-
-    @Override
-    public GenericRecord readNextRecord() throws RecordReadingException {
+    public GenericRecord readRecord() throws Exception {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
         return new GenericRecord<>(header, iterator.next());
     }
 
-    @Override
-    public Long getTotalRecords() {
-        return null;
-    }
-
-    @Override
     public String getDataSourceName() {
         return "In-Memory Iterable";
     }

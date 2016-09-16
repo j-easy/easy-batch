@@ -40,5 +40,5 @@ public interface RecordFieldExtractor<T> {
      * @param record the record
      * @return a iterable containing record's fields
      */
-    Iterable<Object> extractFields(T record) throws RecordFieldExtractionException;
+    Iterable<Object> extractFields(T record) throws Exception;
 }

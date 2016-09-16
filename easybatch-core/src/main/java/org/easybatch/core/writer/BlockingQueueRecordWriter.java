@@ -26,9 +26,9 @@ package org.easybatch.core.writer;
 
 import org.easybatch.core.record.Record;
 
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-import static java.lang.String.format;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
@@ -46,13 +46,19 @@ public class BlockingQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public Record processRecord(Record record) throws RecordWritingException {
-        try {
+    public void open() throws Exception {
+
+    }
+
+    @Override
+    public void writeRecords(List<Record> records) throws Exception {
+        for (Record record : records) {
             blockingQueue.put(record);
-            return record;
-        } catch (InterruptedException exception) {
-            String message = format("Unable to write record %s", record);
-            throw new RecordWritingException(message, exception);
         }
+    }
+
+    @Override
+    public void close() throws Exception {
+
     }
 }

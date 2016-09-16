@@ -87,9 +87,9 @@ public class ObjectMapper {
      *
      * @param values fields values
      * @return A populated instance of the target type.
-     * @throws RecordMappingException thrown if values cannot be mapped to target object fields
+     * @throws Exception thrown if values cannot be mapped to target object fields
      */
-    public Object mapObject(final Map<String, String> values) throws RecordMappingException {
+    public Object mapObject(final Map<String, String> values) throws Exception {
 
         Object result = createInstance();
 
@@ -151,20 +151,20 @@ public class ObjectMapper {
         setters.remove("class");
     }
 
-    private Object createInstance() throws RecordMappingException {
+    private Object createInstance() throws Exception {
         try {
             return recordClass.newInstance();
         } catch (Exception e) {
-            throw new RecordMappingException(format("Unable to create a new instance of target type %s", recordClass.getName()), e);
+            throw new Exception(format("Unable to create a new instance of target type %s", recordClass.getName()), e);
         }
     }
 
-    private void convertValue(Object result, String field, String value, Method setter, Class<?> type, TypeConverter typeConverter) throws RecordMappingException {
+    private void convertValue(Object result, String field, String value, Method setter, Class<?> type, TypeConverter typeConverter) throws Exception {
         try {
             Object typedValue = typeConverter.convert(value);
             setter.invoke(result, typedValue);
         } catch (Exception e) {
-            throw new RecordMappingException(format("Unable to convert %s to type %s for field %s", value, type, field), e);
+            throw new Exception(format("Unable to convert %s to type %s for field %s", value, type, field), e);
         }
     }
 

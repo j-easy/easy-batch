@@ -53,18 +53,4 @@ public abstract class PayloadExtractor {
         return payloads;
     }
 
-    /**
-     * Extract the payload form a batch of records.
-     *
-     * @param batch the batch of records
-     * @return the list of payloads
-     */
-    public static List<Object> extractPayloads(final Batch batch) {
-        List<Record> records = batch.getPayload();
-        List<Object> payloads = new ArrayList<>();
-        for (Record record : records) {
-            payloads.add(record.getPayload());
-        }
-        return payloads;
-    }
 }

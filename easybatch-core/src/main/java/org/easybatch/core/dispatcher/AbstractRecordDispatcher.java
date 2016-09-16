@@ -37,13 +37,9 @@ public abstract class AbstractRecordDispatcher<T extends Record> implements Reco
     protected abstract void dispatchRecord(final T record) throws Exception;
 
     @Override
-    public T processRecord(final T record) throws RecordDispatchingException {
-        try {
-            dispatchRecord(record);
-            return record;
-        } catch (Exception e) {
-            throw new RecordDispatchingException("Unable to dispatch record " + record, e);
-        }
+    public T processRecord(final T record) throws Exception {
+        dispatchRecord(record);
+        return record;
     }
 
 }

@@ -40,8 +40,8 @@ public interface RecordDispatcher<I extends Record> extends RecordProcessor<I, I
      *
      * @param record the record to dispatch.
      * @return the dispatched record
-     * @throws RecordDispatchingException if an error occurs when dispatching the record
+     * @throws Exception if an error occurs when dispatching the record
      */
     @Override
-    I processRecord(I record) throws RecordDispatchingException;
+    I processRecord(I record) throws Exception;
 }

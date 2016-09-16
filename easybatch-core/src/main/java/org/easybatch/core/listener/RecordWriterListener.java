@@ -22,27 +22,36 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.processor;
+package org.easybatch.core.listener;
 
 import org.easybatch.core.record.Record;
 
+import java.util.List;
+
 /**
- * A computational record processor is a processor that performs some computation on input records.<br/>
- * The result of computation is returned at the end of job execution.
- * A computational record processor should be placed at the end of the pipeline.
+ * Enables the implementing class to get notified before/after reading a record.
  *
- * @param <I> The input record type.
- * @param <O> The output record type.
- * @param <R> The computed result type.
- * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @author Mario Mueller (mario@xenji.com)
  */
-public interface ComputationalRecordProcessor<I extends Record, O extends Record, R> extends RecordProcessor<I, O> {
+public interface RecordWriterListener {
 
     /**
-     * Returns the computation result.
-     *
-     * @return the computation result
+     * Called before writing each batch of records.
      */
-    R getComputationResult();
+    void beforeRecordWriting(List<Record> batch);
+
+    /**
+     * Called after writing each batch of records.
+     *
+     * @param batch The batch of records written.
+     */
+    void afterRecordWriting(List<Record> batch);
+
+    /**
+     * Called when an exception occurs during record reading.
+     *
+     * @param throwable the throwable thrown during record reading
+     */
+    void onRecordWritingException(List<Record> batch, final Throwable throwable);
 
 }

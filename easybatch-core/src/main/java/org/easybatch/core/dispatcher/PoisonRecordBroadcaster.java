@@ -62,7 +62,7 @@ public class PoisonRecordBroadcaster<T extends Record> implements JobListener {
     public void afterJobEnd(final JobReport jobReport) {
         try {
             recordDispatcher.processRecord(new PoisonRecord());
-        } catch (RecordDispatchingException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Unable to broadcast poison record.", e);
         }
     }

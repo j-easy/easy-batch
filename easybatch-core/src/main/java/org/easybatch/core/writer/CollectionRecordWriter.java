@@ -49,7 +49,7 @@ public class CollectionRecordWriter extends AbstractRecordWriter {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected void writePayload(final Object payload) throws RecordWritingException {
+    protected void writePayload(final Object payload) throws Exception {
         collection.add(payload);
     }
 }

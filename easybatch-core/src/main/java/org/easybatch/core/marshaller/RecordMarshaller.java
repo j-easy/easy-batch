@@ -41,8 +41,8 @@ public interface RecordMarshaller<I extends Record, O extends Record> extends Re
      *
      * @param record the record to marshal.
      * @return the marshalled record
-     * @throws RecordMarshallingException if an error occurs during record marshalling
+     * @throws Exception if an error occurs during record marshalling
      */
     @Override
-    O processRecord(I record) throws RecordMarshallingException;
+    O processRecord(I record) throws Exception;
 }

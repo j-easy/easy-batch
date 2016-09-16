@@ -27,7 +27,7 @@ package org.easybatch.core.job;
 import java.util.concurrent.Callable;
 
 /**
- * Interface that represent an Easy Batch job.
+ * Interface that represent an batch job.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

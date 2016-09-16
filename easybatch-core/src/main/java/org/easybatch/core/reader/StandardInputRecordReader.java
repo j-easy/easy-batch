@@ -88,29 +88,18 @@ public class StandardInputRecordReader implements RecordReader {
     }
 
     @Override
-    public boolean hasNextRecord() {
-        return !stop;
-    }
-
-    @Override
-    public Record readNextRecord() {
+    public Record readRecord() throws Exception {
         String payload = scanner.nextLine();
         stop = payload != null && !payload.isEmpty() && payload.equalsIgnoreCase(terminationInput);
         if (stop) {
-            return new PoisonRecord();
+            return null;
         }
         Header header = new Header(++recordNumber, getDataSourceName(), new Date());
         return new StringRecord(header, payload);
     }
 
-    @Override
-    public Long getTotalRecords() {
-        // total record cannot be calculated upfront
-        return null;
-    }
 
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return "Standard Input";
     }
 

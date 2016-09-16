@@ -41,7 +41,7 @@ public interface RecordReaderListener {
     /**
      * Called after each record read operation.
      *
-     * @param record The record that has been read.
+     * @param record The record that has been read. May be null if the reader reached the end of data source
      */
     void afterRecordReading(final Record record);
 

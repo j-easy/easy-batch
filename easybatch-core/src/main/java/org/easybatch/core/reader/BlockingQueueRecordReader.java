@@ -37,11 +37,6 @@ import java.util.concurrent.BlockingQueue;
 public class BlockingQueueRecordReader implements RecordReader {
 
     /**
-     * The stop reading flag.
-     */
-    private boolean stop;
-
-    /**
      * The number of poison records received.
      */
     private int poisonRecords;
@@ -68,7 +63,7 @@ public class BlockingQueueRecordReader implements RecordReader {
     /**
      * Create a {@link BlockingQueueRecordReader}.
      *
-     * @param queue the queue to read records from
+     * @param queue              the queue to read records from
      * @param totalPoisonRecords number of poison records to receive to stop reading from the queue
      */
     public BlockingQueueRecordReader(final BlockingQueue<Record> queue, int totalPoisonRecords) {
@@ -82,32 +77,15 @@ public class BlockingQueueRecordReader implements RecordReader {
     }
 
     @Override
-    public boolean hasNextRecord() {
-        return !stop;
-    }
-
-    @Override
-    public Record readNextRecord() throws RecordReadingException {
-        try {
-            Record record = queue.take();
-            if (record instanceof PoisonRecord) {
-                poisonRecords++;
-            }
-            stop = poisonRecords == totalPoisonRecords;
-            return record;
-        } catch (InterruptedException e) {
-            throw new RecordReadingException("Unable to read next record from the queue", e);
+    public Record readRecord() throws Exception {
+        Record record = queue.take();
+        if (record instanceof PoisonRecord) {
+            poisonRecords++;
         }
-    }
-
-    @Override
-    public Long getTotalRecords() {
-        return null;
-    }
-
-    @Override
-    public String getDataSourceName() {
-        return "In-Memory Queue";
+        if (poisonRecords == totalPoisonRecords) {
+            return null;
+        }
+        return record;
     }
 
     @Override

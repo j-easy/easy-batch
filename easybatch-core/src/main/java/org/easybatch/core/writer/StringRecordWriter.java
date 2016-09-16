@@ -50,7 +50,7 @@ public class StringRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    protected void writePayload(final Object payload) throws RecordWritingException {
+    protected void writePayload(final Object payload) throws Exception {
         stringWriter.write(payload.toString());
         stringWriter.write(Utils.LINE_SEPARATOR);
     }
