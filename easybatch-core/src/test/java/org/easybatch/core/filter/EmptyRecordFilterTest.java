@@ -27,6 +27,7 @@ package org.easybatch.core.filter;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.StringRecordReader;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,18 +72,19 @@ public class EmptyRecordFilterTest {
     public void integrationTest() throws Exception {
         String dataSource = "foo" + LINE_SEPARATOR + "" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR + "" + LINE_SEPARATOR;
 
+        RecordCollector recordCollector = new RecordCollector();
         JobReport jobReport = aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .filter(new EmptyRecordFilter())
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .call();
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(4);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(4);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(2);
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(2);
 
-        List<StringRecord> records = (List<StringRecord>) jobReport.getResult();
+        List<Record> records = recordCollector.getRecords();
         assertThat(records).extracting("payload").containsExactly("foo", "bar");
     }
 }

@@ -56,7 +56,9 @@ public class DefaultJobReportMerger implements JobReportMerger {
         List<Long> startTimes = new ArrayList<>();
         List<Long> endTimes = new ArrayList<>();
 
+        JobMetrics metrics = new JobMetrics();
         JobReport finalJobReport = new JobReport();
+        finalJobReport.setMetrics(metrics);
         finalJobReport.setStatus(JobStatus.COMPLETED);
 
         for (JobReport jobReport : jobReports) {

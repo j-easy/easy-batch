@@ -65,20 +65,10 @@ public class IterableRecordReaderTest {
     }
 
     @Test
-    public void testHasNextRecord() throws Exception {
-        assertThat(iterableRecordReader.hasNextRecord()).isTrue();
-    }
-
-    @Test
-    public void testReadNextRecord() throws Exception {
-        GenericRecord genericRecord = iterableRecordReader.readNextRecord();
+    public void testReadRecord() throws Exception {
+        GenericRecord genericRecord = iterableRecordReader.readRecord();
         assertThat(genericRecord).isNotNull();
         assertThat(genericRecord.getPayload()).isEqualTo(RECORD);
-    }
-
-    @Test
-    public void testGetTotalRecords() throws Exception {
-        assertThat(iterableRecordReader.getTotalRecords()).isNull();
     }
 
     @Test

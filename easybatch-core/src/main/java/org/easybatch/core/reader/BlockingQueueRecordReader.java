@@ -78,12 +78,12 @@ public class BlockingQueueRecordReader implements RecordReader {
 
     @Override
     public Record readRecord() throws Exception {
+        if (poisonRecords == totalPoisonRecords) {
+            return null;
+        }
         Record record = queue.take();
         if (record instanceof PoisonRecord) {
             poisonRecords++;
-        }
-        if (poisonRecords == totalPoisonRecords) {
-            return null;
         }
         return record;
     }

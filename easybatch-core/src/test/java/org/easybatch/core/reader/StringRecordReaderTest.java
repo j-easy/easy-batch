@@ -35,8 +35,6 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 public class StringRecordReaderTest {
 
-    public static final String EXPECTED_DATA_SOURCE_NAME = "In-Memory String";
-
     private StringRecordReader stringRecordReader;
 
     private String dataSource;
@@ -50,46 +48,30 @@ public class StringRecordReaderTest {
 
     @Test
     public void whenTheDataSourceIsNotEmpty_ThenThereShouldBeANextRecordToRead() throws Exception {
-        assertThat(stringRecordReader.hasNextRecord()).isTrue();
+        assertThat(stringRecordReader.readRecord()).isNotNull();
     }
 
     @Test
     public void whenTheDataSourceIsEmpty_ThenThereShouldBeNoNextRecordToRead() throws Exception {
         setupEmptyDataSource();
-        assertThat(stringRecordReader.hasNextRecord()).isFalse();
-    }
-
-    @Test
-    public void whenTheDataSourceIsNotEmpty_ThenTotalRecordsShouldBeEqualToTheNumberOfRecords() throws Exception {
-        assertThat(stringRecordReader.getTotalRecords()).isEqualTo(2);
-    }
-
-    @Test
-    public void whenTheDataSourceIsEmpty_ThenTotalRecordsShouldBeEqualToZero() throws Exception {
-        setupEmptyDataSource();
-        assertThat(stringRecordReader.getTotalRecords()).isEqualTo(0);
+        assertThat(stringRecordReader.readRecord()).isNull();
     }
 
     @Test
     public void whenTheDataSourceIsNotEmpty_ThenTheNextRecordShouldBeReadCorrectly() throws Exception {
-        Record record = stringRecordReader.readNextRecord();
+        Record record = stringRecordReader.readRecord();
         assertThat(record).isInstanceOf(StringRecord.class);
         assertThat(record.getHeader()).isNotNull();
         assertThat(record.getHeader().getNumber()).isEqualTo(1l);
         assertThat(record.getPayload()).isEqualTo("foo");
 
-        record = stringRecordReader.readNextRecord();
+        record = stringRecordReader.readRecord();
         assertThat(record).isInstanceOf(StringRecord.class);
         assertThat(record.getHeader()).isNotNull();
         assertThat(record.getHeader().getNumber()).isEqualTo(2l);
         assertThat(record.getPayload()).isEqualTo("bar");
 
-        assertThat(stringRecordReader.hasNextRecord()).isFalse();
-    }
-
-    @Test
-    public void theDataSourceNameShouldBeEqualToInMemoryString() throws Exception {
-        assertThat(stringRecordReader.getDataSourceName()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
+        assertThat(stringRecordReader.readRecord()).isNull();
     }
 
     @After

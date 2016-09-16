@@ -43,7 +43,7 @@ public abstract class AbstractRecordWriter implements RecordWriter {
     @Override
     public void writeRecords(List<Record> batch) throws Exception {
         for (Record record : batch) {
-                writePayload(record.getPayload());
+            writePayload(record.getPayload());
         }
     }
 

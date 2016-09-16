@@ -114,7 +114,11 @@ public class FileRecordReader implements RecordReader {
     @Override
     public FileRecord readRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new FileRecord(header, iterator.next());
+        if (iterator.hasNext()) {
+            return new FileRecord(header, iterator.next());
+        } else {
+            return null;
+        }
     }
 
     /**

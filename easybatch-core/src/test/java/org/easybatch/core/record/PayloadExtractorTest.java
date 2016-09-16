@@ -43,14 +43,11 @@ public class PayloadExtractorTest {
     private Object payload1, payload2;
     @Mock
     private Record<Object> record1, record2;
-    @Mock
-    private Batch batch;
 
     @Before
     public void setUp() throws Exception {
         when(record1.getPayload()).thenReturn(payload1);
         when(record2.getPayload()).thenReturn(payload2);
-        when(batch.getPayload()).thenReturn(Arrays.<Record>asList(record1, record2));
     }
 
     @Test
@@ -59,9 +56,4 @@ public class PayloadExtractorTest {
         assertThat(list).containsExactly(payload1, payload2);
     }
 
-    @Test
-    public void testExtractPayloadsFromBatchOfRecords() throws Exception {
-        List<Object> list = PayloadExtractor.extractPayloads(batch);
-        assertThat(list).containsExactly(payload1, payload2);
-    }
 }

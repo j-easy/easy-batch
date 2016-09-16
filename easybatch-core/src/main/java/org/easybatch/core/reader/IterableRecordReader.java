@@ -71,7 +71,11 @@ public class IterableRecordReader implements RecordReader {
     @Override
     public GenericRecord readRecord() throws Exception {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new GenericRecord<>(header, iterator.next());
+        if (iterator.hasNext()) {
+            return new GenericRecord<>(header, iterator.next());
+        } else {
+            return null;
+        }
     }
 
     public String getDataSourceName() {

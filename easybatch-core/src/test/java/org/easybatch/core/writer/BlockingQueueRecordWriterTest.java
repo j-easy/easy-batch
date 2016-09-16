@@ -31,6 +31,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 
 import static org.mockito.Mockito.*;
@@ -39,9 +40,7 @@ import static org.mockito.Mockito.*;
 public class BlockingQueueRecordWriterTest {
 
     @Mock
-    private Record record;
-    @Mock
-    private InterruptedException interruptedException;
+    private Record record1, record2;
     @Mock
     private BlockingQueue<Record> blockingQueue;
 
@@ -53,14 +52,10 @@ public class BlockingQueueRecordWriterTest {
     }
 
     @Test
-    public void writeRecord_whenNoException() throws Exception {
-        writer.processRecord(record);
-        verify(blockingQueue).put(record);
+    public void testWriteRecords() throws Exception {
+        writer.writeRecords(Arrays.asList(record1, record2));
+        verify(blockingQueue).put(record1);
+        verify(blockingQueue).put(record2);
     }
 
-    @Test(expected = RecordWritingException.class)
-    public void writeRecord_whenException() throws Exception {
-        doThrow(interruptedException).when(blockingQueue).put(record);
-        writer.processRecord(record);
-    }
 }

@@ -108,6 +108,7 @@ public class BatchJob implements Job {
             report.setStatus(JobStatus.FAILED);
             metrics.setEndTime(System.currentTimeMillis());
             report.setLastError(e);
+            jobListener.afterJobEnd(report);
             return report;
         }
 
@@ -121,6 +122,7 @@ public class BatchJob implements Job {
             report.setStatus(JobStatus.FAILED);
             metrics.setEndTime(System.currentTimeMillis());
             report.setLastError(e);
+            jobListener.afterJobEnd(report);
             return report;
         }
 
@@ -159,6 +161,7 @@ public class BatchJob implements Job {
                     report.setStatus(JobStatus.FAILED);
                     metrics.setEndTime(System.currentTimeMillis());
                     report.setLastError(e);
+                    jobListener.afterJobEnd(report);
                     return report;
                 }
 
@@ -189,6 +192,7 @@ public class BatchJob implements Job {
                         executed = true;
                         report.setStatus(JobStatus.FAILED);
                         metrics.setEndTime(System.currentTimeMillis());
+                        jobListener.afterJobEnd(report);
                         return report;
                     }
                 }
@@ -212,6 +216,7 @@ public class BatchJob implements Job {
                 report.setStatus(JobStatus.FAILED);
                 metrics.setEndTime(System.currentTimeMillis());
                 report.setLastError(e);
+                jobListener.afterJobEnd(report);
                 return report;
             }
 

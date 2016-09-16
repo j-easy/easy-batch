@@ -65,7 +65,7 @@ public class FileRecordReaderTest {
 
     @Test
     public void whenTheDataSourceIsNotEmpty_ThenThereShouldBeANextRecordToRead() throws Exception {
-        assertThat(fileRecordReader.hasNextRecord()).isTrue();
+        assertThat(fileRecordReader.readRecord()).isNotNull();
     }
 
     @Test
@@ -89,15 +89,7 @@ public class FileRecordReaderTest {
         fileRecordReader.close();
         fileRecordReader = new FileRecordReader(emptyDataSource);
         fileRecordReader.open();
-        assertThat(fileRecordReader.hasNextRecord()).isFalse();
-    }
-
-    @Test
-    public void whenTheDataSourceIsEmpty_ThenTotalRecordsShouldBeEqualToZero() throws Exception {
-        fileRecordReader.close();
-        fileRecordReader = new FileRecordReader(emptyDataSource);
-        fileRecordReader.open();
-        assertThat(fileRecordReader.getTotalRecords()).isEqualTo(0);
+        assertThat(fileRecordReader.readRecord()).isNull();
     }
 
 }

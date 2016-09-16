@@ -47,7 +47,6 @@ public class BlockingQueueRecordReaderTest {
 
     @Mock
     private Record record;
-
     @Mock
     private PoisonRecord poisonRecord;
 
@@ -61,23 +60,12 @@ public class BlockingQueueRecordReaderTest {
         blockingQueueRecordReader.open();
     }
 
-    @Test
-    public void testTotalRecordsIsNull() throws Exception {
-        assertThat(blockingQueueRecordReader.getTotalRecords()).isNull();
-    }
 
     @Test
-    public void testHasNextRecord() throws Exception {
-        assertThat(blockingQueueRecordReader.hasNextRecord()).isTrue();
-    }
-
-    @Test
-    public void testReadNextRecord() throws Exception {
-        assertThat(blockingQueueRecordReader.hasNextRecord()).isTrue();
-        assertThat(blockingQueueRecordReader.readNextRecord()).isEqualTo(record);
-        assertThat(blockingQueueRecordReader.hasNextRecord()).isTrue();
-        assertThat(blockingQueueRecordReader.readNextRecord()).isEqualTo(poisonRecord);
-        assertThat(blockingQueueRecordReader.hasNextRecord()).isFalse();
+    public void testReadRecord() throws Exception {
+        assertThat(blockingQueueRecordReader.readRecord()).isEqualTo(record);
+        assertThat(blockingQueueRecordReader.readRecord()).isEqualTo(poisonRecord);
+        assertThat(blockingQueueRecordReader.readRecord()).isNull();
         assertThat(queue).isEmpty();
     }
 

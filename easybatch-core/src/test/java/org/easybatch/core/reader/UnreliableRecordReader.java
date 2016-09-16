@@ -14,38 +14,26 @@ public class UnreliableRecordReader implements RecordReader {
     private int nbRecord;
 
     @Override
-    public void open() throws RecordReaderOpeningException {
+    public void open() throws Exception {
         attempt = 0;
         nbRecord = 0;
     }
 
     @Override
-    public boolean hasNextRecord() {
-        return ++nbRecord <= TOTAL_RECORDS;
-    }
-
-    @Override
-    public Record readNextRecord() throws RecordReadingException {
+    public Record readRecord() throws Exception {
+        if (++nbRecord > TOTAL_RECORDS) {
+            return null;
+        }
         attempt++;
         if (attempt >= 3) {
             return new StringRecord(new Header((long) nbRecord, DATA_SOURCE_NAME, new Date()), "r" + nbRecord);
         } else {
-            throw new RecordReadingException("Data source has gone!");
+            throw new Exception("Data source has gone!");
         }
     }
 
     @Override
-    public Long getTotalRecords() {
-        return 1L;
-    }
-
-    @Override
-    public String getDataSourceName() {
-        return DATA_SOURCE_NAME;
-    }
-
-    @Override
-    public void close() throws RecordReaderClosingException {
+    public void close() throws Exception {
 
     }
 }
