@@ -28,7 +28,6 @@ import org.easybatch.core.job.*;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
-import org.easybatch.core.validator.RecordValidationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,7 +54,7 @@ public class BeanValidationRecordValidatorTest {
         validator = new BeanValidationRecordValidator();
     }
 
-    @Test(expected = RecordValidationException.class)
+    @Test(expected = Exception.class)
     public void nonValidBeanShouldBeRejected() throws Exception {
         Foo foo = new Foo(-1, null);
         when(record.getPayload()).thenReturn(foo);
@@ -81,9 +80,9 @@ public class BeanValidationRecordValidatorTest {
         JobReport report = JobExecutor.execute(job);
 
         assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);
-        assertThat(report.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(report.getMetrics().getReadCount()).isEqualTo(2);
         assertThat(report.getMetrics().getErrorCount()).isEqualTo(1);
-        assertThat(report.getMetrics().getSuccessCount()).isEqualTo(1);
+        assertThat(report.getMetrics().getWriteCount()).isEqualTo(1);
 
     }
 

@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class BatchJob implements Job {
+class BatchJob implements Job {
 
     private static final Logger LOGGER = Logger.getLogger(BatchJob.class.getName());
 
@@ -62,7 +62,7 @@ public class BatchJob implements Job {
         return parameters.getExecutionId();
     }
 
-    public BatchJob(JobParameters parameters) {
+    BatchJob(JobParameters parameters) {
         this.parameters = parameters;
         metrics = new JobMetrics();
         report = new JobReport();

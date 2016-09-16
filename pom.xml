@@ -37,7 +37,7 @@
 
     <modules>
         <module>easybatch-core</module>
-<!--        <module>easybatch-validation</module>
+        <module>easybatch-validation</module>
         <module>easybatch-flatfile</module>
         <module>easybatch-tools</module>
         <module>easybatch-jdbc</module>
@@ -46,7 +46,7 @@
         <module>easybatch-xml</module>
         <module>easybatch-json</module>
         <module>easybatch-extensions</module>
-        <module>easybatch-archetype</module>-->
+        <module>easybatch-archetype</module>
     </modules>
 
     <developers>

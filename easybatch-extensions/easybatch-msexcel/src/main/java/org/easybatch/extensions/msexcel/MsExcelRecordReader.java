@@ -24,20 +24,17 @@
 
 package org.easybatch.extensions.msexcel;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Date;
-import java.util.Iterator;
-
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RecordReaderClosingException;
-import org.easybatch.core.reader.RecordReaderOpeningException;
-import org.easybatch.core.reader.RecordReadingException;
 import org.easybatch.core.record.Header;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Reader that read data from a MS Excel sheet.
@@ -83,28 +80,29 @@ public class MsExcelRecordReader implements RecordReader {
         }
     }
 
-    public void open() throws RecordReaderOpeningException {
+    @Override
+    public void open() throws Exception {
         recordNumber = 1;
         rowIterator = sheet.iterator();
     }
 
-    public boolean hasNextRecord() {
-        return rowIterator.hasNext();
+    @Override
+    public MsExcelRecord readRecord() throws Exception {
+        if (rowIterator.hasNext()) {
+            Header header = new Header(recordNumber++, getDataSourceName(), new Date());
+            Row payload = rowIterator.next();
+            return new MsExcelRecord(header, payload);
+        } else {
+            return null;
+        }
     }
 
-    public MsExcelRecord readNextRecord() throws RecordReadingException {
-        return new MsExcelRecord(new Header(recordNumber++, getDataSourceName(), new Date()), rowIterator.next());
-    }
-
-    public Long getTotalRecords() {
-        return (long) sheet.getPhysicalNumberOfRows();
-    }
-
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return String.format("Sheet '%s' in file %s", sheet.getSheetName(), file.getAbsolutePath());
     }
 
-    public void close() throws RecordReaderClosingException {
+    @Override
+    public void close() throws Exception {
         // no op
     }
 }

@@ -24,11 +24,12 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.listener.PipelineListener;
+import org.easybatch.core.listener.RecordWriterListener;
 import org.easybatch.core.record.Record;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,7 +40,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JdbcTransactionListener implements PipelineListener {
+public class JdbcTransactionListener implements RecordWriterListener {
 
     private static final Logger LOGGER = Logger.getLogger(JdbcTransactionListener.class.getSimpleName());
 
@@ -58,27 +59,27 @@ public class JdbcTransactionListener implements PipelineListener {
     }
 
     @Override
-    public Record beforeRecordProcessing(final Record record) {
-        recordNumber++;
-        return record;
+    public void beforeRecordWriting(List<Record> batch) {
+        // no op
     }
 
     @Override
-    public void afterRecordProcessing(final Record inputRecord, final Record outputRecord) {
+    public void afterRecordWriting(List<Record> batch) {
         try {
+            LOGGER.info("Committing transaction");
             connection.commit();
-            LOGGER.info("Committing transaction after record " + recordNumber);
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Unable to commit transaction after record " + recordNumber, e);
+            LOGGER.log(Level.SEVERE, "Unable to commit transaction", e);
         }
     }
 
     @Override
-    public void onRecordProcessingException(final Record record, final Throwable throwable) {
+    public void onRecordWritingException(List<Record> batch, Throwable throwable) {
         try {
+            LOGGER.info("Rolling transaction back");
             connection.rollback();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Unable to rollback transaction after record " + recordNumber, e);
+            LOGGER.log(Level.SEVERE, "Unable to rollback transaction", e);
         }
     }
 }

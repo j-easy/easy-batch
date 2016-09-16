@@ -25,9 +25,6 @@
 package org.easybatch.xml;
 
 import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RecordReaderClosingException;
-import org.easybatch.core.reader.RecordReaderOpeningException;
-import org.easybatch.core.reader.RecordReadingException;
 import org.easybatch.core.record.Header;
 
 import javax.xml.stream.XMLEventReader;
@@ -73,34 +70,15 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws RecordReaderOpeningException {
+    public void open() throws Exception {
         currentRecordNumber = 0;
-        try {
-            xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream);
-        } catch (XMLStreamException e) {
-            throw new RecordReaderOpeningException("Unable to open record reader", e);
-        }
+        xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream);
     }
 
     @Override
-    public boolean hasNextRecord() {
-        try {
-            while (!nextTagIsRootElementStart()) {
-                XMLEvent xmlEvent = xmlEventReader.nextEvent();
-                if (xmlEvent instanceof EndDocument) {
-                    return false;
-                }
-            }
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    @Override
-    public XmlRecord readNextRecord() throws RecordReadingException {
-        StringBuilder stringBuilder = new StringBuilder("");
-        try {
+    public XmlRecord readRecord() throws Exception {
+        if (hasNextRecord()) {
+            StringBuilder stringBuilder = new StringBuilder("");
             while (!nextTagIsRootElementEnd()) {
                 XMLEvent xmlEvent = xmlEventReader.nextEvent();
                 if (xmlEvent.isStartElement()) {
@@ -114,29 +92,33 @@ public class XmlRecordReader implements RecordReader {
             writeEndElement(stringBuilder, xmlEventReader.nextEvent());
             Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
             return new XmlRecord(header, stringBuilder.toString());
-        } catch (XMLStreamException e) {
-            throw new RecordReadingException("Unable to read next record", e);
+        } else {
+            return null;
         }
     }
 
-    @Override
-    public Long getTotalRecords() {
-        return null;
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return "XML stream";
     }
 
     @Override
-    public void close() throws RecordReaderClosingException {
+    public void close() throws Exception {
+        if (xmlEventReader != null) {
+            xmlEventReader.close();
+        }
+    }
+
+    private boolean hasNextRecord() {
         try {
-            if (xmlEventReader != null) {
-                xmlEventReader.close();
+            while (!nextTagIsRootElementStart()) {
+                XMLEvent xmlEvent = xmlEventReader.nextEvent();
+                if (xmlEvent instanceof EndDocument) {
+                    return false;
+                }
             }
-        } catch (XMLStreamException e) {
-            throw new RecordReaderClosingException("Unable to close record reader", e);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 

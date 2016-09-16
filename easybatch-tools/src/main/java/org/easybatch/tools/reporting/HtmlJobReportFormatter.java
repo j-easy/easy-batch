@@ -63,7 +63,8 @@ public class HtmlJobReportFormatter implements JobReportFormatter<String> {
         StringWriter stringWriter = new StringWriter();
         Context context = new VelocityContext();
         context.put("report", jobReport);
-        context.put("properties", jobReport.getParameters().getSystemProperties().entrySet());
+        // TODO update report
+        //context.put("properties", jobReport.getParameters().getSystemProperties().entrySet());
         template.merge(context, stringWriter);
         return stringWriter.toString();
     }

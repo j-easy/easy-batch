@@ -27,29 +27,14 @@ public class FlatFileRecordReaderTest {
     }
 
     @Test
-    public void testHasNextRecord() throws Exception {
-        assertThat(flatFileRecordReader.hasNextRecord()).isTrue();
-    }
-
-    @Test
     public void testReadNextRecord() throws Exception {
-        StringRecord record = flatFileRecordReader.readNextRecord();
-        assertThat(record.getHeader().getNumber()).isEqualTo(1l);
+        StringRecord record = flatFileRecordReader.readRecord();
+        assertThat(record.getHeader().getNumber()).isEqualTo(1L);
         assertThat(record.getPayload()).isEqualTo("id,user,message");
 
-        record = flatFileRecordReader.readNextRecord();
-        assertThat(record.getHeader().getNumber()).isEqualTo(2l);
+        record = flatFileRecordReader.readRecord();
+        assertThat(record.getHeader().getNumber()).isEqualTo(2L);
         assertThat(record.getPayload()).isEqualTo("1,foo,easy batch rocks! #EasyBatch");
-    }
-
-    @Test
-    public void testTotalRecords() throws Exception {
-        assertThat(flatFileRecordReader.getTotalRecords()).isEqualTo(3l);
-    }
-
-    @Test
-    public void testGetDataSourceName() throws Exception {
-        assertThat(flatFileRecordReader.getDataSourceName()).isEqualTo(dataSource.getAbsolutePath());
     }
 
     /*
@@ -57,27 +42,12 @@ public class FlatFileRecordReaderTest {
      */
 
     @Test
-    public void testHasNextRecordForEmptyFile() throws Exception {
+    public void testReadRecordForEmptyFile() throws Exception {
         flatFileRecordReader.close();
         flatFileRecordReader = new FlatFileRecordReader(emptyDataSource);
         flatFileRecordReader.open();
-        assertThat(flatFileRecordReader.hasNextRecord()).isFalse();
+        assertThat(flatFileRecordReader.readRecord()).isNull();
     }
-
-    @Test
-    public void testTotalRecordsForEmptyFile() throws Exception {
-        flatFileRecordReader.close();
-        flatFileRecordReader = new FlatFileRecordReader(emptyDataSource);
-        assertThat(flatFileRecordReader.getTotalRecords()).isEqualTo(0l);
-    }
-
-    @Test
-    public void testTotalRecordsForNonExistingFile() throws Exception {
-        flatFileRecordReader.close();
-        flatFileRecordReader = new FlatFileRecordReader(nonExistingDataSource);
-        assertThat(flatFileRecordReader.getTotalRecords()).isNull();
-    }
-
 
     @After
     public void tearDown() throws Exception {

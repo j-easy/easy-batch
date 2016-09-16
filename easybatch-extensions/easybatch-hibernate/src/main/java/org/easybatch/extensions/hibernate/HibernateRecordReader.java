@@ -83,24 +83,21 @@ public class HibernateRecordReader<T> implements RecordReader {
         scrollableResults = hibernateQuery.scroll(ScrollMode.FORWARD_ONLY);
     }
 
-    @Override
-    public boolean hasNextRecord() {
+    private boolean hasNextRecord() {
         return scrollableResults.next();
     }
 
     @Override
-    public GenericRecord<T> readNextRecord() {
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new GenericRecord<>(header, (T) scrollableResults.get()[0]);
+    public GenericRecord<T> readRecord() {
+        if (hasNextRecord()) {
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            return new GenericRecord<>(header, (T) scrollableResults.get()[0]);
+        } else {
+            return null;
+        }
     }
 
-    @Override
-    public Long getTotalRecords() {
-        return null; // Not possible with FORWARD_ONLY scrollable results
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return "Result of HQL query: " + query;
     }
 

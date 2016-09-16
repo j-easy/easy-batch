@@ -25,7 +25,6 @@
 package org.easybatch.extensions.xstream;
 
 import com.thoughtworks.xstream.XStream;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.easybatch.xml.XmlRecord;
@@ -102,7 +101,7 @@ public class XstreamRecordMapperTest {
         assertThat(person.isMarried()).isFalse();
     }
 
-    @Test(expected = RecordMappingException.class)
+    @Test(expected = Exception.class)
     public void testInvalidXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person-invalid.xml"));
 

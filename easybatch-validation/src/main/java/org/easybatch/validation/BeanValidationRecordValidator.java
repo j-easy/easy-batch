@@ -26,7 +26,6 @@ package org.easybatch.validation;
 
 import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
-import org.easybatch.core.validator.RecordValidationException;
 import org.easybatch.core.validator.RecordValidator;
 
 import javax.validation.ConstraintViolation;
@@ -53,7 +52,7 @@ public class BeanValidationRecordValidator implements RecordValidator {
     }
 
     @Override
-    public Record processRecord(Record record) throws RecordValidationException {
+    public Record processRecord(Record record) throws Exception {
         Set<ConstraintViolation<Object>> constraintViolationSet = validator.validate(record.getPayload());
         if (!constraintViolationSet.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -64,7 +63,7 @@ public class BeanValidationRecordValidator implements RecordValidator {
                         .append(constraintViolation.getMessage())
                         .append(Utils.LINE_SEPARATOR);
             }
-            throw new RecordValidationException(stringBuilder.toString());
+            throw new Exception(stringBuilder.toString());
         }
         return record;
     }

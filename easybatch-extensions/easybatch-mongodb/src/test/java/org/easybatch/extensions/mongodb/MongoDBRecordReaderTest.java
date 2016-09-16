@@ -74,36 +74,12 @@ public class MongoDBRecordReaderTest {
     }
 
     @Test
-    public void testHasNextRecord() throws Exception {
-        boolean actual = reader.hasNextRecord();
-
-        assertThat(actual).isTrue();
-        verify(cursor).hasNext();
-    }
-
-    @Test
-    public void testGetNextRecord() throws Exception {
-        Record record = reader.readNextRecord();
+    public void testReadRecord() throws Exception {
+        Record record = reader.readRecord();
 
         assertThat(record.getHeader().getNumber()).isEqualTo(1);
         assertThat(record.getPayload()).isEqualTo(dbObject);
         verify(cursor).next();
-    }
-
-    @Test
-    public void testGetTotalRecords() throws Exception {
-        Long totalRecords = reader.getTotalRecords();
-
-        assertThat(totalRecords).isEqualTo(TOTAL_RECORDS);
-        verify(cursor).count();
-    }
-
-    @Test
-    public void testGetDataSourceName() throws Exception {
-        String dataSourceName = reader.getDataSourceName();
-
-        assertThat(dataSourceName).isEqualTo("MongoDB collection: " + DATA_SOURCE_NAME);
-        verify(collection).getName();
     }
 
     @After

@@ -77,13 +77,13 @@ public class HibernateRecordWriterTest {
         JobReport jobReport = aNewJob()
                 .reader(new IterableRecordReader(tweets))
                 .writer(hibernateRecordWriter)
-                .pipelineListener(new HibernateTransactionListener(session))
+                .writerListener(new HibernateTransactionListener(session))
                 .jobListener(new HibernateSessionListener(session))
                 .call();
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(valueOf(nbTweetsToInsert));
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(valueOf(nbTweetsToInsert));
 
         int nbTweetsInDatabase = countTweetsInDatabase();
 

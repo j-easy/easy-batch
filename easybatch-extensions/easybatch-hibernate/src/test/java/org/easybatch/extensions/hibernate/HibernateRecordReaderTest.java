@@ -66,15 +66,16 @@ public class HibernateRecordReaderTest {
     @Test
     public void testRecordReading() throws Exception {
 
+        RecordCollector recordCollector = new RecordCollector();
         Job job = aNewJob()
                 .reader(hibernateRecordReader)
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .build();
 
         JobReport jobReport = JobExecutor.execute(job);
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(3);
 
-        List<GenericRecord<Tweet>> tweets = (List<GenericRecord<Tweet>>) jobReport.getResult();
+        List<GenericRecord<Tweet>> tweets = recordCollector.getRecords();
 
         assertThat(tweets).hasSize(3);
 

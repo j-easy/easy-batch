@@ -47,8 +47,6 @@ public class JdbcIntegrationTest {
 
     private static final String DATABASE_URL = "jdbc:hsqldb:mem";
 
-    private static final String DATA_SOURCE_NAME = "Connection URL: jdbc:hsqldb:mem | Query string: select id, name from person";
-
     private Connection connection;
 
     private String query;
@@ -69,23 +67,23 @@ public class JdbcIntegrationTest {
     @Test
     public void testDatabaseProcessing() throws Exception {
 
+        RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
                 .reader(new JdbcRecordReader(connection, query))
                 .mapper(new JdbcRecordMapper(Person.class, "id", "name"))
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .build();
 
         JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(2);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
-        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(DATA_SOURCE_NAME);
 
-        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
+        List<GenericRecord<Person>> records = recordCollector.getRecords();
         List<Person> persons = extractPayloads(records);
 
         assertThat(persons).hasSize(2);

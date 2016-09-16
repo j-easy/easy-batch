@@ -108,8 +108,8 @@ public class JdbcRecordWriterTest {
                 .call();
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(valueOf(nbTweetsToInsert));
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(valueOf(nbTweetsToInsert));
 
         int nbTweetsInDatabase = countTweetsInDatabase();
 

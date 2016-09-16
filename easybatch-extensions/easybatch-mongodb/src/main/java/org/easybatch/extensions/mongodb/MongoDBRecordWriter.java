@@ -35,7 +35,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MongoDBRecordWriter extends AbstractRecordWriter<DBObject, MongoDBRecord> {
+public class MongoDBRecordWriter extends AbstractRecordWriter {
 
     private DBCollection collection;
 
@@ -50,8 +50,8 @@ public class MongoDBRecordWriter extends AbstractRecordWriter<DBObject, MongoDBR
     }
 
     @Override
-    protected void writePayload(final DBObject record) throws Exception {
-        collection.save(record);
+    protected void writePayload(final Object record) throws Exception {
+        collection.save((DBObject) record);
     }
 
 }

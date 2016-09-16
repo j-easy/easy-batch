@@ -25,11 +25,9 @@
 package org.easybatch.jdbc;
 
 import org.easybatch.core.writer.AbstractRecordWriter;
-import org.easybatch.core.writer.RecordWritingException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -63,15 +61,11 @@ public class JdbcRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    public void writePayload(final Object record) throws RecordWritingException {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatementProvider.prepareStatement(preparedStatement, record);
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            throw new RecordWritingException("Unable to write record " + record + " to database", e);
-        }
+    public void writePayload(final Object record) throws Exception {
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatementProvider.prepareStatement(preparedStatement, record);
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
     }
 
 }

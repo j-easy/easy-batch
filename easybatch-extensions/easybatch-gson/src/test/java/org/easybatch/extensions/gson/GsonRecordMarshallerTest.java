@@ -24,7 +24,6 @@
 
 package org.easybatch.extensions.gson;
 
-import org.easybatch.core.marshaller.RecordMarshallingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.junit.Before;
@@ -49,7 +48,7 @@ public class GsonRecordMarshallerTest {
     }
 
     @Test
-    public void marshal() throws RecordMarshallingException {
+    public void marshal() throws Exception {
         Tweet tweet = new Tweet(1, "foo", "hi");
         GenericRecord<Tweet> record = new GenericRecord<>(header, tweet);
 

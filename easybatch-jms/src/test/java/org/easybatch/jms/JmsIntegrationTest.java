@@ -84,10 +84,11 @@ public class JmsIntegrationTest {
         //send a poison record to the queue
         queueSender.send(new JmsPoisonMessage());
 
+        RecordCollector recordCollector = new RecordCollector();
         Job job = aNewJob()
                 .reader(new JmsQueueRecordReader(queueConnectionFactory, queue))
                 .filter(new JmsPoisonRecordFilter())
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .jobListener(new JmsQueueSessionListener(queueSession))
                 .jobListener(new JmsQueueConnectionListener(queueConnection))
                 .build();
@@ -95,12 +96,11 @@ public class JmsIntegrationTest {
         JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(1);
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(1);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(1);
 
-        List<JmsRecord> records = (List<JmsRecord>) jobReport.getResult();
+        List<JmsRecord> records = recordCollector.getRecords();
 
         assertThat(records).isNotNull().isNotEmpty().hasSize(1);
 

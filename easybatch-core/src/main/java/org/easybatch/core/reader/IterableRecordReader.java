@@ -78,7 +78,7 @@ public class IterableRecordReader implements RecordReader {
         }
     }
 
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return "In-Memory Iterable";
     }
 

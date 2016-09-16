@@ -35,7 +35,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JmsQueueRecordWriter extends AbstractRecordWriter<Message, JmsRecord> {
+public class JmsQueueRecordWriter extends AbstractRecordWriter {
 
     private QueueSender queueSender;
 
@@ -55,8 +55,8 @@ public class JmsQueueRecordWriter extends AbstractRecordWriter<Message, JmsRecor
     }
 
     @Override
-    public void writePayload(final Message message) throws Exception {
-        queueSender.send(message);
+    public void writePayload(final Object message) throws Exception {
+        queueSender.send((Message) message);
     }
 
 }

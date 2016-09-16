@@ -216,6 +216,9 @@ public final class JobBuilder {
      * @return the job builder
      */
     public JobBuilder batchSize(final int batchSize) {
+        if (batchSize < 1) {
+            throw new IllegalArgumentException("Batch size must be >= 1");
+        }
         parameters.setBatchSize(batchSize);
         return this;
     }

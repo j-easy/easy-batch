@@ -24,7 +24,6 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.processor.RecordProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,7 +40,7 @@ public class XmlRecordCompactorTest {
     }
 
     @Test
-    public void testFlattenXmlRecord() throws RecordProcessingException {
+    public void testFlattenXmlRecord() throws Exception {
         String expectedPayload = "<foo><bar><baz name='baz'/></bar></foo>";
         String payload = "<foo>" + LINE_SEPARATOR +
                 "<bar>" + LINE_SEPARATOR +

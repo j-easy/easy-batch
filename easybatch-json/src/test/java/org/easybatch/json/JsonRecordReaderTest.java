@@ -24,7 +24,6 @@
 
 package org.easybatch.json;
 
-import org.easybatch.core.reader.RecordReadingException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,38 +44,27 @@ public class JsonRecordReaderTest {
     }
 
     @Test
-    public void whenTheDataSourceIsNotEmpty_ThenTheJsonRecordReaderShouldHaveNextRecord() throws Exception {
-        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
-    }
-
-    @Test
     public void parsedJsonRecordPayloadShouldBeTheSameAsInTheDataSource() throws Exception {
 
-        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
-
         String expectedJson = "{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}";
-        JsonRecord jsonRecord = jsonRecordReader.readNextRecord();
+        JsonRecord jsonRecord = jsonRecordReader.readRecord();
         assertThat(jsonRecord).isNotNull();
         assertThat(jsonRecord.getHeader().getNumber()).isEqualTo(1);
         assertThat(jsonRecord.getPayload()).isEqualTo(expectedJson);
 
-        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
-
         expectedJson = "{\"id\":2,\"user\":\"bar\",\"message\":\"Hi!\"}";
-        jsonRecord = jsonRecordReader.readNextRecord();
+        jsonRecord = jsonRecordReader.readRecord();
         assertThat(jsonRecord).isNotNull();
         assertThat(jsonRecord.getHeader().getNumber()).isEqualTo(2);
         assertThat(jsonRecord.getPayload()).isEqualTo(expectedJson);
 
-        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
-
         expectedJson = "{\"id\":3,\"user\":\"toto\",\"message\":\"yep ;-)\"}";
-        jsonRecord = jsonRecordReader.readNextRecord();
+        jsonRecord = jsonRecordReader.readRecord();
         assertThat(jsonRecord).isNotNull();
         assertThat(jsonRecord.getHeader().getNumber()).isEqualTo(3);
         assertThat(jsonRecord.getPayload()).isEqualTo(expectedJson);
 
-        assertThat(jsonRecordReader.hasNextRecord()).isFalse();
+        assertThat(jsonRecordReader.readRecord()).isNull();
     }
 
     @Test
@@ -85,8 +73,7 @@ public class JsonRecordReaderTest {
         jsonRecordReader.close();
         jsonRecordReader = new JsonRecordReader(new ByteArrayInputStream(dataSource.getBytes()));
         jsonRecordReader.open();
-        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
-        JsonRecord record = jsonRecordReader.readNextRecord();
+        JsonRecord record = jsonRecordReader.readRecord();
         assertThat(record.getPayload()).isEqualTo("{\"name\":\"foo\",\"address\":{\"zipcode\":1000,\"city\":\"brussels\"}}");
     }
 
@@ -96,8 +83,7 @@ public class JsonRecordReaderTest {
         jsonRecordReader.close();
         jsonRecordReader = new JsonRecordReader(new ByteArrayInputStream(dataSource.getBytes()));
         jsonRecordReader.open();
-        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
-        JsonRecord record = jsonRecordReader.readNextRecord();
+        JsonRecord record = jsonRecordReader.readRecord();
         assertThat(record.getPayload()).isEqualTo("{\"friends\":[\"foo\",\"bar\"]}");
     }
 
@@ -110,17 +96,16 @@ public class JsonRecordReaderTest {
         jsonRecordReader.close();
         jsonRecordReader = new JsonRecordReader(getDataSource("/empty.json"));
         jsonRecordReader.open();
-        assertThat(jsonRecordReader.hasNextRecord()).isFalse();
+        assertThat(jsonRecordReader.readRecord()).isNull();
     }
 
-    @Test(expected = RecordReadingException.class)
+    @Test(expected = Exception.class)
     public void whenJsonStreamIsIllformed_thenTheJsonRecordReaderShouldThrowAnException() throws Exception {
         String dataSource = "[{\"name\":\"foo\",}]";// illegal trailing comma
         jsonRecordReader.close();
         jsonRecordReader = new JsonRecordReader(new ByteArrayInputStream(dataSource.getBytes()));
         jsonRecordReader.open();
-        assertThat(jsonRecordReader.hasNextRecord()).isTrue();
-        jsonRecordReader.readNextRecord();
+        jsonRecordReader.readRecord();
 
     }
 

@@ -98,8 +98,7 @@ public class JpaRecordReader<T> implements RecordReader {
         iterator = records.iterator();
     }
 
-    @Override
-    public boolean hasNextRecord() {
+    private boolean hasNextRecord() {
         if (!iterator.hasNext()) {
             typedQuery.setFirstResult(offset += records.size());
             records = typedQuery.getResultList();
@@ -109,18 +108,16 @@ public class JpaRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public GenericRecord<T> readNextRecord() {
+    public GenericRecord<T> readRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new GenericRecord<>(header, iterator.next());
+        if (hasNextRecord()) {
+            return new GenericRecord<>(header, iterator.next());
+        } else {
+            return null;
+        }
     }
 
-    @Override
-    public Long getTotalRecords() {
-        return null;
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return "Result of JPA query: " + query;
     }
 

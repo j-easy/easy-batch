@@ -39,8 +39,6 @@ import static org.mockito.Mockito.when;
 @RunWith(value = MockitoJUnitRunner.class)
 public class IterableRecordReaderTest {
 
-    private static final String EXPECTED_DATA_SOURCE_NAME = "In-Memory Iterable";
-
     private static final String RECORD = "Foo";
 
     @Mock
@@ -71,9 +69,4 @@ public class IterableRecordReaderTest {
         assertThat(genericRecord.getPayload()).isEqualTo(RECORD);
     }
 
-    @Test
-    public void testGetDataSourceName() throws Exception {
-        assertThat(iterableRecordReader.getDataSourceName()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
-
-    }
 }

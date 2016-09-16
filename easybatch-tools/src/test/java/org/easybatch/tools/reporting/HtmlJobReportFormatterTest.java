@@ -24,9 +24,7 @@
 
 package org.easybatch.tools.reporting;
 
-import org.easybatch.core.job.JobReport;
-import org.easybatch.core.job.JobReportFormatter;
-import org.easybatch.core.job.JobStatus;
+import org.easybatch.core.job.*;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -56,28 +54,28 @@ public class HtmlJobReportFormatterTest {
     @Before
     public void setUp() throws Exception {
         jobReportFormatter = new HtmlJobReportFormatter();
+        JobParameters parameters = new JobParameters();
+        JobMetrics metrics = new JobMetrics();
         jobReport = new JobReport();
+        jobReport.setParameters(parameters);
+        jobReport.setMetrics(metrics);
 
         jobReport.setStatus(JobStatus.COMPLETED);
 
-        jobReport.getParameters().setDataSource("In-Memory String");
-        jobReport.getParameters().setLimit(8L);
+        jobReport.getParameters().setBatchSize(10);
         jobReport.getParameters().setName("job");
-        jobReport.getParameters().setHostname("batch-server");
+        jobReport.getParameters().setErrorThreshold(5);
         jobReport.getParameters().setExecutionId("c8d6a5fc-b2b4-4ee0-9dda-f9ec042d5864");
-        jobReport.getParameters().setSystemProperties(System.getProperties());
+        jobReport.getParameters().setJmxMode(true);
 
         jobReport.getMetrics().setStartTime(START_TIME);
         jobReport.getMetrics().setEndTime(END_TIME);
-        jobReport.getMetrics().setTotalCount(8L);
-        jobReport.getMetrics().incrementSkippedCount();
-        jobReport.getMetrics().incrementSkippedCount();
-        jobReport.getMetrics().incrementFilteredCount();
         jobReport.getMetrics().incrementFilteredCount();
         jobReport.getMetrics().incrementErrorCount();
-        jobReport.getMetrics().incrementErrorCount();
-        jobReport.getMetrics().incrementSuccessCount();
-        jobReport.getMetrics().incrementSuccessCount();
+        jobReport.getMetrics().incrementReadCount();
+        jobReport.getMetrics().incrementReadCount();
+        jobReport.getMetrics().incrementReadCount();
+        jobReport.getMetrics().incrementWriteCount(1);
     }
 
     @Ignore("TODO: Contents are identical but assertion fails due to different whitespaces")

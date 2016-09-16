@@ -26,11 +26,8 @@ package org.easybatch.extensions.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.marshaller.RecordMarshallingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.json.JsonRecord;
-
-import java.io.IOException;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -58,12 +55,8 @@ public class JacksonRecordMarshaller implements RecordMarshaller<GenericRecord, 
     }
 
     @Override
-    public JsonRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
-        try {
-            return new JsonRecord(record.getHeader(), mapper.writeValueAsString(record.getPayload()));
-        } catch (IOException e) {
-            throw new RecordMarshallingException(e);
-        }
+    public JsonRecord processRecord(final GenericRecord record) throws Exception {
+        return new JsonRecord(record.getHeader(), mapper.writeValueAsString(record.getPayload()));
     }
 
 }

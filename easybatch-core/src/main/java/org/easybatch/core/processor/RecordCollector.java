@@ -32,20 +32,21 @@ import java.util.List;
 /**
  * Convenient processor that collects records.
  *
+ * @param <P> The type of the record's payload.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RecordCollector implements RecordProcessor<Record, Record> {
+public class RecordCollector<P> implements RecordProcessor<Record<P>, Record<P>> {
 
-    private List<Record> items = new ArrayList<>();
+    private List<Record<P>> records = new ArrayList<>();
 
     @Override
-    public Record processRecord(final Record item) {
-        items.add(item);
-        return item;
+    public Record<P> processRecord(final Record<P> record) {
+        records.add(record);
+        return record;
     }
 
-    public List<Record> getRecords() {
-        return items;
+    public List<Record<P>> getRecords() {
+        return records;
     }
 
 }

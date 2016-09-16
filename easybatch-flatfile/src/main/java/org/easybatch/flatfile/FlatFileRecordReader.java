@@ -25,7 +25,6 @@
 package org.easybatch.flatfile;
 
 import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RecordReaderOpeningException;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.StringRecord;
 
@@ -35,8 +34,6 @@ import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A {@link RecordReader} implementation that read data from a flat file.
@@ -46,8 +43,6 @@ import java.util.logging.Logger;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class FlatFileRecordReader implements RecordReader {
-
-    private static final Logger LOGGER = Logger.getLogger(FlatFileRecordReader.class.getName());
 
     /**
      * The current read record number.
@@ -68,13 +63,6 @@ public class FlatFileRecordReader implements RecordReader {
      * Scanner to read input file.
      */
     private Scanner scanner;
-
-    /**
-     * A second scanner used to calculate the number of records in the input file.
-     * The main scanner may be used instead but since the {@link Scanner} class does not have a method to rewind it to the
-     * beginning of the file ( {@link java.util.Scanner#reset()} does not rewind the scanner), another scanner instance is needed.
-     */
-    private Scanner recordCounterScanner;
 
     /**
      * Constructs a flat file record reader.
@@ -109,67 +97,26 @@ public class FlatFileRecordReader implements RecordReader {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public StringRecord readNextRecord() {
+    public StringRecord readRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new StringRecord(header, scanner.nextLine());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long getTotalRecords() {
-        long totalRecords = 0;
-        try {
-            recordCounterScanner = new Scanner(new FileInputStream(input), charsetName);
-            while (recordCounterScanner.hasNextLine()) {
-                totalRecords++;
-                recordCounterScanner.nextLine();
-            }
-        } catch (FileNotFoundException e) {
-            LOGGER.log(Level.SEVERE, "Unable to calculate total records number", e);
+        if (scanner.hasNextLine()) {
+            return new StringRecord(header, scanner.nextLine());
+        } else {
             return null;
-        } finally {
-            if (recordCounterScanner != null) {
-                recordCounterScanner.close();
-            }
         }
-        return totalRecords;
     }
 
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return input.getAbsolutePath();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void open() throws RecordReaderOpeningException {
+    public void open() throws Exception {
         currentRecordNumber = 0;
-        try {
-            scanner = new Scanner(new FileInputStream(input), charsetName);
-        } catch (FileNotFoundException e) {
-            throw new RecordReaderOpeningException("Unable to find file " + input.getName(), e);
-        }
+        scanner = new Scanner(new FileInputStream(input), charsetName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean hasNextRecord() {
-        return scanner.hasNextLine();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void close() {
         if (scanner != null) {

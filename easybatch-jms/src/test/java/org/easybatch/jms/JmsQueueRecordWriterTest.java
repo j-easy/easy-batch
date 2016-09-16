@@ -24,7 +24,6 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.processor.RecordProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,11 +73,11 @@ public class JmsQueueRecordWriterTest {
         verify(queueSender).send(message);
     }
 
-    @Test(expected = RecordProcessingException.class)
+    @Test(expected = Exception.class)
     public void testRecordProcessingWithError() throws Exception {
         Mockito.when(record.getPayload()).thenReturn(message);
         doThrow(jmsException).when(queueSender).send(message);
 
-        jmsQueueRecordWriter.processRecord(record);
+        jmsQueueRecordWriter.writePayload(record);
     }
 }

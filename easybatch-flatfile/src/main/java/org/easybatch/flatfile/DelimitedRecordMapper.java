@@ -27,7 +27,6 @@ package org.easybatch.flatfile;
 import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.ObjectMapper;
 import org.easybatch.core.mapper.RecordMapper;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.StringRecord;
 
@@ -167,7 +166,7 @@ public class DelimitedRecordMapper extends AbstractRecordMapper implements Recor
     }
 
     @Override
-    public GenericRecord processRecord(final StringRecord record) throws RecordMappingException {
+    public GenericRecord processRecord(final StringRecord record) throws Exception {
         FlatFileRecord flatFileRecord = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<>();
         int index = 0;
@@ -184,7 +183,7 @@ public class DelimitedRecordMapper extends AbstractRecordMapper implements Recor
         return new GenericRecord(record.getHeader(), objectMapper.mapObject(fieldsContents));
     }
 
-    FlatFileRecord parseRecord(final StringRecord record) throws RecordMappingException {
+    FlatFileRecord parseRecord(final StringRecord record) throws Exception {
 
         String payload = record.getPayload();
         String[] tokens = payload.split(delimiter, -1);
@@ -213,19 +212,19 @@ public class DelimitedRecordMapper extends AbstractRecordMapper implements Recor
         return flatFileRecord;
     }
 
-    private void checkQualifier(String[] tokens) throws RecordMappingException {
+    private void checkQualifier(String[] tokens) throws Exception {
         if (qualifier.length() > 0) {
             for (String token : tokens) {
                 if (!token.startsWith(qualifier) || !token.endsWith(qualifier)) {
-                    throw new RecordMappingException("field [" + token + "] is not enclosed as expected with '" + qualifier + "'");
+                    throw new Exception("field [" + token + "] is not enclosed as expected with '" + qualifier + "'");
                 }
             }
         }
     }
 
-    private void checkRecordLength(String[] tokens) throws RecordMappingException {
+    private void checkRecordLength(String[] tokens) throws Exception {
         if (tokens.length != recordExpectedLength) {
-            throw new RecordMappingException("record length (" + tokens.length + " fields) not equal to expected length of "
+            throw new Exception("record length (" + tokens.length + " fields) not equal to expected length of "
                     + recordExpectedLength + " fields");
         }
     }

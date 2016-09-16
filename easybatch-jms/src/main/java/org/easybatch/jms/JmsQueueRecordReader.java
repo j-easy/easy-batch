@@ -25,9 +25,6 @@
 package org.easybatch.jms;
 
 import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RecordReaderClosingException;
-import org.easybatch.core.reader.RecordReaderOpeningException;
-import org.easybatch.core.reader.RecordReadingException;
 import org.easybatch.core.record.Header;
 
 import javax.jms.*;
@@ -74,44 +71,31 @@ public class JmsQueueRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws RecordReaderOpeningException {
-        try {
-            queueConnection = queueConnectionFactory.createQueueConnection();
-            queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-            queueReceiver = queueSession.createReceiver(queue);
-            queueConnection.start();
-        } catch (JMSException e) {
-            throw new RecordReaderOpeningException("Unable to open record reader", e);
-        }
+    public void open() throws Exception {
+        queueConnection = queueConnectionFactory.createQueueConnection();
+        queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+        queueReceiver = queueSession.createReceiver(queue);
+        queueConnection.start();
     }
 
-    @Override
-    public boolean hasNextRecord() {
+    private boolean hasNextRecord() {
         return !stop;
     }
 
     @Override
-    public JmsRecord readNextRecord() throws RecordReadingException {
-        try {
+    public JmsRecord readRecord() throws Exception {
+        if (!stop) {
             Message message = queueReceiver.receive();
             String type = message.getJMSType();
             stop = message instanceof JmsPoisonMessage || (type != null && JmsPoisonMessage.TYPE.equals(type));
             Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
             return new JmsRecord(header, message);
-        } catch (JMSException e) {
-            throw new RecordReadingException("Unable to read next record", e);
+        } else {
+            return null;
         }
-
     }
 
-    @Override
-    public Long getTotalRecords() {
-        //undefined, cannot be calculated upfront
-        return null;
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         try {
             return "JMS queue: " + queue.getQueueName();
         } catch (JMSException e) {
@@ -120,19 +104,15 @@ public class JmsQueueRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws RecordReaderClosingException {
-        try {
-            if (queueConnection != null) {
-                queueConnection.close();
-            }
-            if (queueSession != null) {
-                queueSession.close();
-            }
-            if (queueReceiver != null) {
-                queueReceiver.close();
-            }
-        } catch (JMSException e) {
-            throw new RecordReaderClosingException("Unable to close record reader", e);
+    public void close() throws Exception {
+        if (queueConnection != null) {
+            queueConnection.close();
+        }
+        if (queueSession != null) {
+            queueSession.close();
+        }
+        if (queueReceiver != null) {
+            queueReceiver.close();
         }
     }
 

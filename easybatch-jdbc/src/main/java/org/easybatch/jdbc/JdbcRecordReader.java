@@ -25,8 +25,6 @@
 package org.easybatch.jdbc;
 
 import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RecordReaderClosingException;
-import org.easybatch.core.reader.RecordReaderOpeningException;
 import org.easybatch.core.record.Header;
 
 import java.sql.Connection;
@@ -108,28 +106,22 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws RecordReaderOpeningException {
+    public void open() throws Exception {
         currentRecordNumber = 0;
-        try {
-            statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-            if (maxRows >= 1) {
-                statement.setMaxRows(maxRows);
-            }
-            if (fetchSize >= 1) {
-                statement.setFetchSize(fetchSize);
-            }
-            if (queryTimeout >= 1) {
-                statement.setQueryTimeout(queryTimeout);
-            }
-            resultSet = statement.executeQuery(query);
-
-        } catch (SQLException e) {
-            throw new RecordReaderOpeningException("Unable to open record reader", e);
+        statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        if (maxRows >= 1) {
+            statement.setMaxRows(maxRows);
         }
+        if (fetchSize >= 1) {
+            statement.setFetchSize(fetchSize);
+        }
+        if (queryTimeout >= 1) {
+            statement.setQueryTimeout(queryTimeout);
+        }
+        resultSet = statement.executeQuery(query);
     }
 
-    @Override
-    public boolean hasNextRecord() {
+    private boolean hasNextRecord() {
         try {
             return resultSet.next();
         } catch (SQLException e) {
@@ -139,18 +131,16 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
-    public JdbcRecord readNextRecord() {
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new JdbcRecord(header, resultSet);
+    public JdbcRecord readRecord() {
+        if (hasNextRecord()) {
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            return new JdbcRecord(header, resultSet);
+        } else {
+            return null;
+        }
     }
 
-    @Override
-    public Long getTotalRecords() {
-        return null;
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         try {
             return "Connection URL: " + connection.getMetaData().getURL() + " | " +
                     "Query string: " + query;
@@ -161,21 +151,16 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws RecordReaderClosingException {
-        try {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (statement != null) {
-                statement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            throw new RecordReaderClosingException("Unable to close record reader", e);
+    public void close() throws Exception {
+        if (resultSet != null) {
+            resultSet.close();
         }
-
+        if (statement != null) {
+            statement.close();
+        }
+        if (connection != null) {
+            connection.close();
+        }
     }
 
     /**

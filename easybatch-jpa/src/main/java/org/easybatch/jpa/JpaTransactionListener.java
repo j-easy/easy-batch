@@ -24,30 +24,29 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.listener.PipelineListener;
+import org.easybatch.core.listener.RecordWriterListener;
 import org.easybatch.core.record.Record;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Listener that commits a JPA transaction after each record.
+ * Listener that commits a JPA transaction after each batch of records.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JpaTransactionListener implements PipelineListener {
+public class JpaTransactionListener implements RecordWriterListener {
 
     private static final Logger LOGGER = Logger.getLogger(JpaTransactionListener.class.getSimpleName());
 
     private EntityManager entityManager;
 
     private EntityTransaction transaction;
-
-    private long recordNumber;
 
     /**
      * Create a JPA transaction listener.
@@ -62,33 +61,30 @@ public class JpaTransactionListener implements PipelineListener {
     }
 
     @Override
-    public Record beforeRecordProcessing(final Record record) {
+    public void beforeRecordWriting(List<Record> batch) {
         this.transaction = entityManager.getTransaction();
         this.transaction.begin();
-        recordNumber++;
-        return record;
     }
 
     @Override
-    public void afterRecordProcessing(final Record inputRecord, final Record outputRecord) {
+    public void afterRecordWriting(List<Record> batch) {
         try {
             entityManager.flush();
             entityManager.clear();
             transaction.commit();
-            LOGGER.info("Transaction Committed after record " + recordNumber);
+            LOGGER.info("Transaction committed");
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to commit transaction for record " + recordNumber, e);
+            LOGGER.log(Level.SEVERE, "Unable to commit transaction", e);
         }
     }
 
     @Override
-    public void onRecordProcessingException(final Record record, final Throwable throwable) {
+    public void onRecordWritingException(List<Record> batch, Throwable throwable) {
         try {
             transaction.rollback();
-            LOGGER.info("Transaction rolled back after record " + recordNumber);
+            LOGGER.info("Transaction rolled back");
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to rollback transaction for record " + recordNumber, e);
+            LOGGER.log(Level.SEVERE, "Unable to rollback transaction", e);
         }
     }
-
 }

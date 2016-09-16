@@ -103,14 +103,14 @@ public class JpaRecordWriterTest {
 
         JobReport jobReport = aNewJob()
                 .reader(new IterableRecordReader(tweets))
-                .writer(new JpaRecordWriter<Tweet>(entityManager))
-                .pipelineListener(new JpaTransactionListener(entityManager))
+                .writer(new JpaRecordWriter(entityManager))
+                .writerListener(new JpaTransactionListener(entityManager))
                 .jobListener(new JpaEntityManagerListener(entityManager))
                 .call();
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(valueOf(nbTweetsToInsert));
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(valueOf(nbTweetsToInsert));
 
         int nbTweetsInDatabase = countTweetsInDatabase();
 

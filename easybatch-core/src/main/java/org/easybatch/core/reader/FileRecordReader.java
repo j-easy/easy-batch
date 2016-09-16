@@ -126,7 +126,7 @@ public class FileRecordReader implements RecordReader {
      *
      * @return the data source name this reader is reading data from
      */
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return directory.getAbsolutePath();
     }
 

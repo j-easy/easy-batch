@@ -24,25 +24,24 @@
 
 package org.easybatch.extensions.msexcel;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.easybatch.core.writer.RecordWriter;
-import org.easybatch.core.writer.RecordWritingException;
+import org.easybatch.core.writer.AbstractRecordWriter;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Writer that write {@link MsExcelRecord} to a file.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MsExcelRecordWriter implements RecordWriter<MsExcelRecord> {
+public class MsExcelRecordWriter extends AbstractRecordWriter {
 
     private File file;
 
@@ -53,7 +52,7 @@ public class MsExcelRecordWriter implements RecordWriter<MsExcelRecord> {
     /**
      * Create a new {@link MsExcelRecordWriter}.
      *
-     * @param file the output file
+     * @param file      the output file
      * @param sheetName the sheet name
      * @throws IOException when an error occurs during record writing
      */
@@ -61,27 +60,6 @@ public class MsExcelRecordWriter implements RecordWriter<MsExcelRecord> {
         this.file = file;
         workbook = new XSSFWorkbook();
         sheet = workbook.createSheet(sheetName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public MsExcelRecord processRecord(MsExcelRecord msExcelRecord) throws RecordWritingException {
-        XSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
-        Row payload = msExcelRecord.getPayload();
-        int i = 0;
-        int lastCellNum = payload.getLastCellNum();
-        for (int index = 0; index < lastCellNum; index++) {
-            Cell nextCell = payload.getCell(index);
-            XSSFCell cell = row.createCell(i++);
-            setValue(cell, nextCell);
-        }
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-            workbook.write(fileOutputStream);
-            return msExcelRecord;
-        } catch (IOException e) {
-            throw new RecordWritingException("Unable to write record " + msExcelRecord, e);
-        }
     }
 
     private void setValue(XSSFCell cell, Cell next) {
@@ -103,5 +81,19 @@ public class MsExcelRecordWriter implements RecordWriter<MsExcelRecord> {
                 cell.setCellType(Cell.CELL_TYPE_FORMULA);
                 break;
         }
+    }
+
+    @Override
+    protected void writePayload(Object payload) throws Exception {
+        XSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
+        int i = 0;
+        int lastCellNum = ((Row) payload).getLastCellNum();
+        for (int index = 0; index < lastCellNum; index++) {
+            Cell nextCell = ((Row) payload).getCell(index);
+            XSSFCell cell = row.createCell(i++);
+            setValue(cell, nextCell);
+        }
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        workbook.write(fileOutputStream);
     }
 }

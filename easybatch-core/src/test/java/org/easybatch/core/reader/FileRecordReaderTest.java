@@ -68,11 +68,6 @@ public class FileRecordReaderTest {
         assertThat(fileRecordReader.readRecord()).isNotNull();
     }
 
-    @Test
-    public void theDataSourceNameShouldBeEqualToTheDirectoryAbsolutePath() throws Exception {
-        assertThat(fileRecordReader.getDataSourceName()).isEqualTo(dataSource.getAbsolutePath());
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void whenTheDirectoryDoesNotExist_ThenShouldThrowAnIllegalArgumentException() throws Exception {
         fileRecordReader.close();

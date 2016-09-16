@@ -55,8 +55,8 @@ public class MsExcelSupportIntegrationTest {
         JobReport report = JobExecutor.execute(job);
 
         assertThat(report).isNotNull();
-        assertThat(report.getMetrics().getTotalCount()).isEqualTo(2);
-        assertThat(report.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(report.getMetrics().getReadCount()).isEqualTo(2);
+        assertThat(report.getMetrics().getWriteCount()).isEqualTo(2);
         assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);
 
         XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(outputTweets));
