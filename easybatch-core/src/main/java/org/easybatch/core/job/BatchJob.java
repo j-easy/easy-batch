@@ -104,6 +104,7 @@ class BatchJob implements Job {
         try {
             recordReader.open();
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Unable to open record reader", e);
             executed = true;
             report.setStatus(JobStatus.FAILED);
             metrics.setEndTime(System.currentTimeMillis());
@@ -118,6 +119,7 @@ class BatchJob implements Job {
         try {
             recordWriter.open();
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Unable to open record writer", e);
             executed = true;
             report.setStatus(JobStatus.FAILED);
             metrics.setEndTime(System.currentTimeMillis());
