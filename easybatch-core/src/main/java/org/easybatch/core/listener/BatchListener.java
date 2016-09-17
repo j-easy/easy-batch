@@ -5,7 +5,7 @@ import org.easybatch.core.record.Record;
 import java.util.List;
 
 /**
- * Allow implementing classes to get notified before/after each batch.
+ * Allow implementing classes to get notified before/after processing each batch.
  * Exception handling is done by the implementing class.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
@@ -13,15 +13,30 @@ import java.util.List;
 public interface BatchListener {
 
     /**
-     * Executed before processing each batch.
+     * Executed before reading each batch.
      */
-    void beforeBatch();
+    void beforeBatchReading();
 
     /**
      * Executed after processing each batch.
      *
      * @param records the batch of records that has been processed
      */
-    void afterBatch(List<Record> records);
+    void afterBatchProcessing(List<Record> records);
+
+    /**
+     * Executed after successfully writing each batch.
+     *
+     * @param records the batch of records that has been written
+     */
+    void afterBatchWriting(List<Record> records);
+
+    /**
+     * Executed when an error occurs during writing each batch.
+     *
+     * @param records   the batch attempted to be written
+     * @param throwable the error occurred
+     */
+    void onBatchWritingException(List<Record> records, Throwable throwable);
 
 }

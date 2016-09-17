@@ -135,9 +135,9 @@ class BatchJob implements Job {
         while (moreRecords) {
 
             /*
-             * Process batch
+             * Begin batch processing
              */
-            batchListener.beforeBatch();
+            batchListener.beforeBatchReading();
 
             List<Record> batch = new ArrayList<>();
             for (int i = 0; i < parameters.getBatchSize(); i++) {
@@ -201,6 +201,8 @@ class BatchJob implements Job {
 
             }
 
+            batchListener.afterBatchProcessing(batch);
+
             /*
              * Write records
              */
@@ -209,11 +211,13 @@ class BatchJob implements Job {
                     recordWriterListener.beforeRecordWriting(batch);
                     recordWriter.writeRecords(batch);
                     recordWriterListener.afterRecordWriting(batch);
+                    batchListener.afterBatchWriting(batch);
                     metrics.incrementWriteCount(batch.size());
                 }
             } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "Unable to write records", e);
                 recordWriterListener.onRecordWritingException(batch, e);
+                batchListener.onBatchWritingException(batch, e);
                 executed = true;
                 report.setStatus(JobStatus.FAILED);
                 metrics.setEndTime(System.currentTimeMillis());
@@ -222,9 +226,8 @@ class BatchJob implements Job {
                 return report;
             }
 
-            batchListener.afterBatch(batch);
             /*
-             * End process batch
+             * End batch processing
              */
         }
 

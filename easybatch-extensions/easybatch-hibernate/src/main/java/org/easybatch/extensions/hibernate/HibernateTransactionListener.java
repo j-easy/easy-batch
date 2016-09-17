@@ -24,7 +24,7 @@
 
 package org.easybatch.extensions.hibernate;
 
-import org.easybatch.core.listener.RecordWriterListener;
+import org.easybatch.core.listener.BatchListener;
 import org.easybatch.core.record.Record;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -40,7 +40,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class HibernateTransactionListener implements RecordWriterListener {
+public class HibernateTransactionListener implements BatchListener {
 
     private static final Logger LOGGER = Logger.getLogger(HibernateTransactionListener.class.getSimpleName());
 
@@ -59,13 +59,18 @@ public class HibernateTransactionListener implements RecordWriterListener {
     }
 
     @Override
-    public void beforeRecordWriting(List<Record> batch) {
+    public void beforeBatchReading() {
         transaction = session.getTransaction();
         transaction.begin();
     }
 
     @Override
-    public void afterRecordWriting(List<Record> batch) {
+    public void afterBatchProcessing(List<Record> records) {
+        // no op
+    }
+
+    @Override
+    public void afterBatchWriting(List<Record> records) {
         try {
             session.flush();
             session.clear();
@@ -77,7 +82,7 @@ public class HibernateTransactionListener implements RecordWriterListener {
     }
 
     @Override
-    public void onRecordWritingException(List<Record> batch, Throwable throwable) {
+    public void onBatchWritingException(List<Record> records, Throwable throwable) {
         try {
             transaction.rollback();
             LOGGER.info("Transaction rolled back");

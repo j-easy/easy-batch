@@ -77,7 +77,7 @@ public class HibernateRecordWriterTest {
         JobReport jobReport = aNewJob()
                 .reader(new IterableRecordReader(tweets))
                 .writer(hibernateRecordWriter)
-                .writerListener(new HibernateTransactionListener(session))
+                .batchListener(new HibernateTransactionListener(session))
                 .jobListener(new HibernateSessionListener(session))
                 .call();
 

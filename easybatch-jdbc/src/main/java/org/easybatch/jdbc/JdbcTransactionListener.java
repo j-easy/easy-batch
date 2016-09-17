@@ -24,7 +24,7 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.listener.RecordWriterListener;
+import org.easybatch.core.listener.BatchListener;
 import org.easybatch.core.record.Record;
 
 import java.sql.Connection;
@@ -40,7 +40,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JdbcTransactionListener implements RecordWriterListener {
+public class JdbcTransactionListener implements BatchListener {
 
     private static final Logger LOGGER = Logger.getLogger(JdbcTransactionListener.class.getSimpleName());
 
@@ -59,25 +59,30 @@ public class JdbcTransactionListener implements RecordWriterListener {
     }
 
     @Override
-    public void beforeRecordWriting(List<Record> batch) {
+    public void beforeBatchReading() {
         // no op
     }
 
     @Override
-    public void afterRecordWriting(List<Record> batch) {
+    public void afterBatchProcessing(List<Record> records) {
+        // no op
+    }
+
+    @Override
+    public void afterBatchWriting(List<Record> records) {
         try {
-            LOGGER.info("Committing transaction");
             connection.commit();
+            LOGGER.info("Transaction committed");
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Unable to commit transaction", e);
         }
     }
 
     @Override
-    public void onRecordWritingException(List<Record> batch, Throwable throwable) {
+    public void onBatchWritingException(List<Record> records, Throwable throwable) {
         try {
-            LOGGER.info("Rolling transaction back");
             connection.rollback();
+            LOGGER.info("Transaction rolled back");
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Unable to rollback transaction", e);
         }

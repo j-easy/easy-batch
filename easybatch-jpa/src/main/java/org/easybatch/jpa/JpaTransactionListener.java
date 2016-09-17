@@ -24,7 +24,7 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.listener.RecordWriterListener;
+import org.easybatch.core.listener.BatchListener;
 import org.easybatch.core.record.Record;
 
 import javax.persistence.EntityManager;
@@ -40,7 +40,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JpaTransactionListener implements RecordWriterListener {
+public class JpaTransactionListener implements BatchListener {
 
     private static final Logger LOGGER = Logger.getLogger(JpaTransactionListener.class.getSimpleName());
 
@@ -61,13 +61,18 @@ public class JpaTransactionListener implements RecordWriterListener {
     }
 
     @Override
-    public void beforeRecordWriting(List<Record> batch) {
+    public void beforeBatchReading() {
         this.transaction = entityManager.getTransaction();
         this.transaction.begin();
     }
 
     @Override
-    public void afterRecordWriting(List<Record> batch) {
+    public void afterBatchProcessing(List<Record> records) {
+        // no op
+    }
+
+    @Override
+    public void afterBatchWriting(List<Record> records) {
         try {
             entityManager.flush();
             entityManager.clear();
@@ -79,7 +84,7 @@ public class JpaTransactionListener implements RecordWriterListener {
     }
 
     @Override
-    public void onRecordWritingException(List<Record> batch, Throwable throwable) {
+    public void onBatchWritingException(List<Record> records, Throwable throwable) {
         try {
             transaction.rollback();
             LOGGER.info("Transaction rolled back");

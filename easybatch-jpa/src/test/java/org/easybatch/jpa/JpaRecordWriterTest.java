@@ -104,7 +104,7 @@ public class JpaRecordWriterTest {
         JobReport jobReport = aNewJob()
                 .reader(new IterableRecordReader(tweets))
                 .writer(new JpaRecordWriter(entityManager))
-                .writerListener(new JpaTransactionListener(entityManager))
+                .batchListener(new JpaTransactionListener(entityManager))
                 .jobListener(new JpaEntityManagerListener(entityManager))
                 .call();
 
