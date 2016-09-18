@@ -26,11 +26,10 @@ package org.easybatch.tools.reporting;
 
 import org.easybatch.core.job.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.Calendar;
-import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,7 +62,7 @@ public class HtmlJobReportFormatterTest {
         jobReport.setStatus(JobStatus.COMPLETED);
 
         jobReport.getParameters().setBatchSize(10);
-        jobReport.getParameters().setName("job");
+        jobReport.getParameters().setName("end-of-day job");
         jobReport.getParameters().setErrorThreshold(5);
         jobReport.getParameters().setExecutionId("c8d6a5fc-b2b4-4ee0-9dda-f9ec042d5864");
         jobReport.getParameters().setJmxMode(true);
@@ -78,18 +77,10 @@ public class HtmlJobReportFormatterTest {
         jobReport.getMetrics().incrementWriteCount(1);
     }
 
-    @Ignore("TODO: Contents are identical but assertion fails due to different whitespaces")
     @Test
     public void testReportFormatting() {
         String result = jobReportFormatter.formatReport(jobReport);
-        Scanner scanner = new Scanner(HtmlJobReportFormatterTest.class.getResourceAsStream("expectedReport.html"));
-        StringBuilder stringBuilder = new StringBuilder();
-        while (scanner.hasNextLine()) {
-            stringBuilder.append(scanner.nextLine());
-        }
-
-        String expectedResult = stringBuilder.toString();
-        assertThat(result).isXmlEqualTo(expectedResult);
+        assertThat(result).isXmlEqualToContentOf(new File("src/test/resources/org/easybatch/tools/reporting/expectedReport.html"));
     }
 
 }

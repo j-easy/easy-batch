@@ -28,11 +28,15 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
+import org.easybatch.core.job.JobMetrics;
+import org.easybatch.core.job.JobParameters;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.job.JobReportFormatter;
 
 import java.io.StringWriter;
 import java.util.Properties;
+
+import static org.easybatch.core.util.Utils.formatTime;
 
 /**
  * Format a report into HTML format.
@@ -63,8 +67,34 @@ public class HtmlJobReportFormatter implements JobReportFormatter<String> {
         StringWriter stringWriter = new StringWriter();
         Context context = new VelocityContext();
         context.put("report", jobReport);
-        // TODO update report
-        //context.put("properties", jobReport.getParameters().getSystemProperties().entrySet());
+
+        /*
+         * Job status
+         */
+        context.put("status",jobReport.getStatus());
+
+        /*
+         * Job parameters
+         */
+        JobParameters parameters = jobReport.getParameters();
+        context.put("name",parameters.getName());
+        context.put("executionId",parameters.getExecutionId());
+        context.put("batchSize",parameters.getBatchSize());
+        context.put("errorThreshold",parameters.getErrorThreshold());
+        context.put("jmx",parameters.isJmxMode());
+
+        /*
+         * Job metrics
+         */
+        JobMetrics metrics = jobReport.getMetrics();
+        context.put("startTime",formatTime(metrics.getStartTime()));
+        context.put("endTime",formatTime(metrics.getEndTime()));
+        context.put("duration",metrics.getDuration() + "ms");
+        context.put("readCount",metrics.getReadCount());
+        context.put("writeCount",metrics.getWriteCount());
+        context.put("filteredCount",metrics.getFilteredCount());
+        context.put("errorCount",metrics.getErrorCount());
+
         template.merge(context, stringWriter);
         return stringWriter.toString();
     }
