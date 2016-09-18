@@ -92,6 +92,6 @@ public interface JobMonitorMBean {
      *
      * @return the job status
      */
-    JobStatus getJobStatus();
+    String getJobStatus();
 
 }
