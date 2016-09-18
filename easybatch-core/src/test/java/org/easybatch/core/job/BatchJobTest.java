@@ -18,10 +18,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
-import java.util.Arrays;
+import java.util.List;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.JMX_MBEAN_NAME;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -81,6 +84,12 @@ public class BatchJobTest {
      * Core batch job implementation tests
      */
 
+    @Test(expected = IllegalStateException.class)
+    public void jobInstanceShouldBeUsedOnlyOnce() throws Exception {
+        JobExecutor.execute(job);
+        JobExecutor.execute(job);
+    }
+
     @Test
     public void allComponentsShouldBeInvokedForEachRecordInOrder() throws Exception {
 
@@ -96,7 +105,7 @@ public class BatchJobTest {
         inOrder.verify(firstProcessor).processRecord(record2);
         inOrder.verify(secondProcessor).processRecord(record2);
 
-        inOrder.verify(writer).writeRecords(Arrays.asList(record1, record2));
+        inOrder.verify(writer).writeRecords(asList(record1, record2));
 
     }
 
@@ -178,7 +187,7 @@ public class BatchJobTest {
 
     @Test
     public void whenNotAbleToWriteRecords_ThenTheJobShouldFail() throws Exception {
-        doThrow(exception).when(writer).writeRecords(Arrays.asList(record1, record2));
+        doThrow(exception).when(writer).writeRecords(asList(record1, record2));
 
         JobReport jobReport = JobExecutor.execute(job);
 
@@ -256,9 +265,73 @@ public class BatchJobTest {
     }
 
     /*
+     * ***************
      * Listeners tests
+     * ***************
      */
 
+    /*
+     * Job listener
+     */
+    @Test
+    public void jobListenerShouldBeInvoked() throws Exception {
+        job = new JobBuilder()
+                .reader(reader)
+                .jobListener(jobListener)
+                .build();
+
+        JobReport report = job.call();
+
+        verify(jobListener).beforeJobStart(any(JobParameters.class));
+        verify(jobListener).afterJobEnd(report);
+    }
+
+    /*
+     * Batch listener
+     */
+    @Test
+    public void batchListenerShouldBeInvokedForEachBatch() throws Exception {
+        when(reader.readRecord()).thenReturn(record1, record2, null);
+        job = new JobBuilder()
+                .reader(reader)
+                .writer(writer)
+                .batchListener(batchListener)
+                .batchSize(1)
+                .build();
+
+        job.call();
+
+        List<Record> batch1 = singletonList(record1);
+        List<Record> batch2 = singletonList(record2);
+        verify(batchListener, times(3)).beforeBatchReading();
+        verify(batchListener).afterBatchProcessing(batch1);
+        verify(batchListener).afterBatchProcessing(batch2);
+        verify(batchListener).afterBatchWriting(batch1);
+        verify(batchListener).afterBatchWriting(batch2);
+    }
+
+    @Test
+    public void whenWriterThrowsException_thenBatchListenerShouldBeInvoked() throws Exception {
+        when(reader.readRecord()).thenReturn(record1, record2, null);
+        doThrow(exception).when(writer).writeRecords(asList(record1, record2));
+
+        job = new JobBuilder()
+                .reader(reader)
+                .writer(writer)
+                .batchListener(batchListener)
+                .batchSize(2)
+                .build();
+
+        job.call();
+
+        List<Record> batch = asList(record1, record2);
+        verify(batchListener, times(1)).beforeBatchReading();
+        verify(batchListener).onBatchWritingException(batch, exception);
+    }
+
+    /*
+     * Reader listener
+     */
     @Test
     public void recordReaderListenerShouldBeInvokedForEachRecord() throws Exception {
         when(reader.readRecord()).thenReturn(record1, record2, null);
@@ -274,6 +347,57 @@ public class BatchJobTest {
         verify(recordReaderListener).afterRecordReading(record2);
     }
 
+    @Test
+    public void whenRecordReaderThrowException_thenReaderListenerShouldBeInvoked() throws Exception {
+        when(reader.readRecord()).thenThrow(exception);
+        job = new JobBuilder()
+                .reader(reader)
+                .readerListener(recordReaderListener)
+                .build();
+
+        job.call();
+
+        verify(recordReaderListener).onRecordReadingException(exception);
+    }
+
+    /*
+     * Writer listener
+     */
+    @Test
+    public void recordWriterListenerShouldBeInvokedForEachBatch() throws Exception {
+        when(reader.readRecord()).thenReturn(record1, record2, null);
+        job = new JobBuilder()
+                .reader(reader)
+                .writer(writer)
+                .writerListener(recordWriterListener)
+                .batchSize(2)
+                .build();
+
+        job.call();
+
+        List<Record> batch = asList(record1, record2);
+        verify(recordWriterListener).beforeRecordWriting(batch);
+        verify(recordWriterListener).afterRecordWriting(batch);
+    }
+
+    @Test
+    public void whenRecordWriterThrowException_thenWriterListenerShouldBeInvoked() throws Exception {
+        List<Record> records = asList(record1, record2);
+        doThrow(exception).when(writer).writeRecords(records);
+        job = new JobBuilder()
+                .reader(reader)
+                .writer(writer)
+                .writerListener(recordWriterListener)
+                .build();
+
+        job.call();
+
+        verify(recordWriterListener).onRecordWritingException(records, exception);
+    }
+
+    /*
+     * Pipeline listener
+     */
     @Test
     public void pipelineListenerShouldBeInvokedForEachRecord() throws Exception {
 
@@ -291,6 +415,21 @@ public class BatchJobTest {
         verify(pipelineListener).afterRecordProcessing(record1, record1);
         verify(pipelineListener).beforeRecordProcessing(record2);
         verify(pipelineListener).afterRecordProcessing(record2, record2);
+    }
+
+    @Test
+    public void whenProcessorThrowsException_thenPipelineListenerShouldBeInvoked() throws Exception {
+        when(firstProcessor.processRecord(record1)).thenThrow(exception);
+
+        job = new JobBuilder()
+                .reader(reader)
+                .processor(firstProcessor)
+                .pipelineListener(pipelineListener)
+                .build();
+
+        job.call();
+
+        verify(pipelineListener).onRecordProcessingException(record1, exception);
     }
 
 }
