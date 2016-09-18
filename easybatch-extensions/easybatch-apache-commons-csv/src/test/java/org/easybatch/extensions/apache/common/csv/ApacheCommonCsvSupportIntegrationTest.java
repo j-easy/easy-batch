@@ -35,6 +35,7 @@ import java.io.FileReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.easybatch.core.job.JobExecutor.execute;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 public class ApacheCommonCsvSupportIntegrationTest {
@@ -48,12 +49,12 @@ public class ApacheCommonCsvSupportIntegrationTest {
         CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader("id", "user", "message");
         CSVParser parser = new CSVParser(new FileReader(this.getClass().getResource("/tweets.csv").getFile()), csvFormat);
 
-        aNewJob()
+        execute(aNewJob()
                 .reader(new ApacheCommonCsvRecordReader(parser))
                 .mapper(new ApacheCommonCsvRecordMapper(Tweet.class))
                 .marshaller(new ApacheCommonCsvRecordMarshaller(Tweet.class, new String[]{"id", "user", "message"}, ';', '\''))
                 .writer(new StandardOutputRecordWriter())
-                .call();
+                .build());
 
         assertThat(systemOut.getLog()).isEqualTo("'1';'foo';'hello'" + LINE_SEPARATOR +
                 "'2';'bar';'hey'" + LINE_SEPARATOR +

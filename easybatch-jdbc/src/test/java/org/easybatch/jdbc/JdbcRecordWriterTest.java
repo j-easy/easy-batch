@@ -24,6 +24,8 @@
 
 package org.easybatch.jdbc;
 
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.junit.AfterClass;
@@ -101,12 +103,14 @@ public class JdbcRecordWriterTest {
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        JobReport jobReport = aNewJob()
+        Job job = aNewJob()
                 .reader(new IterableRecordReader(tweets))
                 .writer(jdbcRecordWriter)
                 .batchListener(new JdbcTransactionListener(connection))
                 .jobListener(new JdbcConnectionListener(connection))
-                .call();
+                .build();
+
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(nbTweetsToInsert);

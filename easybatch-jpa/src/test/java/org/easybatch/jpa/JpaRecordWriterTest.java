@@ -24,6 +24,8 @@
 
 package org.easybatch.jpa;
 
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.junit.AfterClass;
@@ -101,12 +103,14 @@ public class JpaRecordWriterTest {
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        JobReport jobReport = aNewJob()
+        Job job = aNewJob()
                 .reader(new IterableRecordReader(tweets))
                 .writer(new JpaRecordWriter(entityManager))
                 .batchListener(new JpaTransactionListener(entityManager))
                 .jobListener(new JpaEntityManagerListener(entityManager))
-                .call();
+                .build();
+
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(valueOf(nbTweetsToInsert));

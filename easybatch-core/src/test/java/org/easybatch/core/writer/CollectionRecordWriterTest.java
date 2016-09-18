@@ -34,6 +34,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.easybatch.core.job.JobExecutor.execute;
 
 /**
  * Test class for {@link CollectionRecordWriter}.
@@ -66,10 +67,10 @@ public class CollectionRecordWriterTest {
         List<String> input = Arrays.asList(FOO, BAR);
         List<String> output = new ArrayList<>();
 
-        aNewJob()
+        execute(aNewJob()
                 .reader(new IterableRecordReader(input))
                 .writer(new CollectionRecordWriter(output))
-                .call();
+                .build());
 
         assertThat(output).containsExactly(FOO, BAR);
     }

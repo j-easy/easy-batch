@@ -297,13 +297,4 @@ public final class JobBuilder {
         return job;
     }
 
-    /**
-     * Build and call the job.
-     *
-     * @return job execution report
-     */
-    public JobReport call() {
-        return job.call();
-    }
-
 }

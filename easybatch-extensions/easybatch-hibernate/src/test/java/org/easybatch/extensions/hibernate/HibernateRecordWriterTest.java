@@ -24,6 +24,8 @@
 
 package org.easybatch.extensions.hibernate;
 
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.hibernate.Session;
@@ -74,12 +76,14 @@ public class HibernateRecordWriterTest {
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        JobReport jobReport = aNewJob()
+        Job job = aNewJob()
                 .reader(new IterableRecordReader(tweets))
                 .writer(hibernateRecordWriter)
                 .batchListener(new HibernateTransactionListener(session))
                 .jobListener(new HibernateSessionListener(session))
-                .call();
+                .build();
+
+        JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(valueOf(nbTweetsToInsert));
