@@ -24,9 +24,7 @@ public class CompositeRecordReaderListener implements RecordReaderListener {
 
     @Override
     public void beforeRecordReading() {
-        for (RecordReaderListener listener : listeners) {
-            listener.beforeRecordReading();
-        }
+        listeners.forEach(RecordReaderListener::beforeRecordReading);
     }
 
     @Override

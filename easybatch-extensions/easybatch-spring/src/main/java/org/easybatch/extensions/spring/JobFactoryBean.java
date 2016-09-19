@@ -91,9 +91,7 @@ public class JobFactoryBean implements FactoryBean {
             jobBuilder.writer(recordWriter);
         }
         if (recordProcessors != null) {
-            for (RecordProcessor recordProcessor : recordProcessors) {
-                jobBuilder.processor(recordProcessor);
-            }
+            recordProcessors.forEach(jobBuilder::processor);
         }
     }
 

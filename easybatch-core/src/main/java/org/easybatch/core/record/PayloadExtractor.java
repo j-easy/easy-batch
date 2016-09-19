@@ -24,8 +24,9 @@
 
 package org.easybatch.core.record;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Utility class to extract payloads from records and batches.
@@ -46,11 +47,7 @@ public abstract class PayloadExtractor {
      * @return the list of payloads
      */
     public static <P> List<P> extractPayloads(final List<? extends Record<P>> records) {
-        List<P> payloads = new ArrayList<>();
-        for (Record<P> record : records) {
-            payloads.add(record.getPayload());
-        }
-        return payloads;
+        return records.stream().map(Record::getPayload).collect(toList());
     }
 
 }

@@ -24,9 +24,7 @@ public class CompositeBatchListener implements BatchListener {
 
     @Override
     public void beforeBatchReading() {
-        for (BatchListener listener : listeners) {
-            listener.beforeBatchReading();
-        }
+        listeners.forEach(BatchListener::beforeBatchReading);
     }
 
     @Override
