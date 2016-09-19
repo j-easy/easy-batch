@@ -62,11 +62,6 @@ public class StandardInputRecordReader implements RecordReader {
     private String terminationInput;
 
     /**
-     * The stop reading flag.
-     */
-    private boolean stop;
-
-    /**
      * Create a {@link StandardInputRecordReader} with default termination input equal to 'quit'.
      */
     public StandardInputRecordReader() {
@@ -90,7 +85,7 @@ public class StandardInputRecordReader implements RecordReader {
     @Override
     public Record readRecord() throws Exception {
         String payload = scanner.nextLine();
-        stop = payload != null && !payload.isEmpty() && payload.equalsIgnoreCase(terminationInput);
+        boolean stop = payload != null && !payload.isEmpty() && payload.equalsIgnoreCase(terminationInput);
         if (stop) {
             return null;
         }

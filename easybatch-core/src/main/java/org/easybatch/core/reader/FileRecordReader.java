@@ -51,11 +51,6 @@ public class FileRecordReader implements RecordReader {
     private File directory;
 
     /**
-     * The array of files in the directory.
-     */
-    private List<File> files;
-
-    /**
      * The data source iterator.
      */
     private Iterator<File> iterator;
@@ -80,8 +75,7 @@ public class FileRecordReader implements RecordReader {
     @Override
     public void open() {
         checkDirectory();
-        files = getFiles(directory);
-        iterator = files.listIterator();
+        iterator = getFiles(directory).listIterator();
         currentRecordNumber = 0;
     }
 
