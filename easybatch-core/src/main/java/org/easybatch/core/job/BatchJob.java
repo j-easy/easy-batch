@@ -14,6 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import static org.easybatch.core.util.Utils.formatErrorThreshold;
+
 /**
  * Implementation of read-process-write job pattern.
  *
@@ -90,7 +92,7 @@ class BatchJob implements Job {
         LOGGER.log(Level.INFO, "Starting job ''{0}''", parameters.getName());
         LOGGER.log(Level.INFO, "Execution id: {0}", parameters.getExecutionId());
         LOGGER.log(Level.INFO, "Batch size: {0}", parameters.getBatchSize());
-        LOGGER.log(Level.INFO, "Error threshold: {0}", parameters.getErrorThreshold());
+        LOGGER.log(Level.INFO, "Error threshold: {0}", formatErrorThreshold(parameters.getErrorThreshold()));
         LOGGER.log(Level.INFO, "Jmx monitoring: {0}", parameters.isJmxMonitoring());
 
         jobListener.beforeJobStart(parameters);

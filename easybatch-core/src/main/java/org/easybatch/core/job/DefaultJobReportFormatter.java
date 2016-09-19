@@ -24,8 +24,7 @@
 
 package org.easybatch.core.job;
 
-import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
-import static org.easybatch.core.util.Utils.formatTime;
+import static org.easybatch.core.util.Utils.*;
 
 /**
  * Default job report formatter.
@@ -52,7 +51,7 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
         sb.append(LINE_SEPARATOR).append("\tName = ").append(parameters.getName());
         sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(parameters.getExecutionId());
         sb.append(LINE_SEPARATOR).append("\tBatch size = ").append(parameters.getBatchSize());
-        sb.append(LINE_SEPARATOR).append("\tError threshold = ").append(parameters.getErrorThreshold());
+        sb.append(LINE_SEPARATOR).append("\tError threshold = ").append(formatErrorThreshold(parameters.getErrorThreshold()));
         sb.append(LINE_SEPARATOR).append("\tJmx monitoring = ").append(parameters.isJmxMonitoring());
 
         /*

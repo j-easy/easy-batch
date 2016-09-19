@@ -24,6 +24,8 @@
 
 package org.easybatch.core.util;
 
+import org.easybatch.core.job.JobParameters;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -35,6 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.String.format;
+import static java.lang.String.valueOf;
 
 /**
  * Utilities class.
@@ -52,6 +55,8 @@ public abstract class Utils {
     public static final String JMX_MBEAN_NAME = "org.easybatch.core.monitor:";
 
     public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+
+    public static final String NOT_APPLICABLE = "N/A";
 
     private Utils() {
 
@@ -82,6 +87,10 @@ public abstract class Utils {
 
     public static String formatTime(long time) {
         return new SimpleDateFormat(DATE_FORMAT).format(new Date(time));
+    }
+
+    public static String formatErrorThreshold(final long errorThreshold) {
+        return errorThreshold == JobParameters.DEFAULT_ERROR_THRESHOLD ? NOT_APPLICABLE : valueOf(errorThreshold);
     }
 
 }
