@@ -22,35 +22,35 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.dispatcher;
+package org.easybatch.core.listener;
 
 import org.easybatch.core.job.JobParameters;
 import org.easybatch.core.job.JobReport;
-import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.BlockingQueueRecordWriter;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
+import static java.util.Collections.singletonList;
+
 /**
- * A utility job listener that broadcasts a {@link PoisonRecord} record at the end of the job.
+ * A job listener that broadcasts a {@link PoisonRecord} record to a list of queues at the end of the job.
  *
- * @param <T> record type
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-@SuppressWarnings("unchecked")
-public class PoisonRecordBroadcaster<T extends Record> implements JobListener {
+public class PoisonRecordBroadcaster implements JobListener {
 
-    private BroadcastRecordDispatcher recordDispatcher;
+    private BlockingQueueRecordWriter blockingQueueRecordWriter;
 
     /**
      * Create a new {@link PoisonRecordBroadcaster}.
      *
-     * @param queues the list of queues to which poison records should be dispatched
+     * @param queues the list of queues to which poison records should be written
      */
-    public PoisonRecordBroadcaster(List<BlockingQueue<T>> queues) {
-        this.recordDispatcher = new BroadcastRecordDispatcher(queues);
+    public PoisonRecordBroadcaster(List<BlockingQueue<Record>> queues) {
+        this.blockingQueueRecordWriter = new BlockingQueueRecordWriter(queues);
     }
 
     @Override
@@ -61,9 +61,9 @@ public class PoisonRecordBroadcaster<T extends Record> implements JobListener {
     @Override
     public void afterJobEnd(final JobReport jobReport) {
         try {
-            recordDispatcher.processRecord(new PoisonRecord());
+            blockingQueueRecordWriter.writeRecords(singletonList(new PoisonRecord()));
         } catch (Exception e) {
-            throw new RuntimeException("Unable to broadcast poison record.", e);
+            throw new RuntimeException("Unable to write poison record.", e);
         }
     }
 

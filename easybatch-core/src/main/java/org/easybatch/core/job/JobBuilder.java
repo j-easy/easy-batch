@@ -24,7 +24,6 @@
 
 package org.easybatch.core.job;
 
-import org.easybatch.core.dispatcher.RecordDispatcher;
 import org.easybatch.core.filter.RecordFilter;
 import org.easybatch.core.listener.*;
 import org.easybatch.core.mapper.RecordMapper;
@@ -161,18 +160,6 @@ public final class JobBuilder {
     public JobBuilder writer(final RecordWriter recordWriter) {
         checkNotNull(recordWriter, "record writer");
         job.setRecordWriter(recordWriter);
-        return this;
-    }
-
-    /**
-     * Register a record dispatcher.
-     *
-     * @param recordDispatcher the record dispatcher to register
-     * @return the job builder
-     */
-    public JobBuilder dispatcher(final RecordDispatcher recordDispatcher) {
-        checkNotNull(recordDispatcher, "record dispatcher");
-        job.addRecordProcessor(recordDispatcher);
         return this;
     }
 

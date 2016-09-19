@@ -22,49 +22,64 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.dispatcher;
+package org.easybatch.core.writer;
 
 import org.easybatch.core.record.Record;
 
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.BlockingQueue;
+
 /**
- * A default predicate used to put records in the default queue when building a {@link org.easybatch.core.dispatcher.ContentBasedRecordDispatcher}.
+ * Write records randomly to a list of {@link BlockingQueue}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class DefaultPredicate<T extends Record> implements Predicate<T> {
+public class RandomBlockingQueueRecordWriter implements RecordWriter {
 
-    /*
-     * needed for equals and hashcode, all instances should be equal to be able to get the default queue
-     * by calling queueMap.get(new DefaultPredicate()).put(record); in ContentBasedRecordDispatcher#dispatchRecord
+    /**
+     * The total number of queues this writer operates on.
      */
-    private String id = "defaultPredicate";
+    private int queuesNumber;
+
+    /**
+     * List of queues to which records should be written.
+     */
+    private List<BlockingQueue<Record>> queues;
+
+    /**
+     * The random generator.
+     */
+    private Random random;
+
+    /**
+     * Create a {@link RandomBlockingQueueRecordWriter} instance.
+     *
+     * @param queues the list of queues to which records should be written
+     */
+    public RandomBlockingQueueRecordWriter(List<BlockingQueue<Record>> queues) {
+        this.queues = queues;
+        this.queuesNumber = queues.size();
+        this.random = new Random();
+    }
+
 
     @Override
-    public boolean matches(T record) {
-        return true;
+    public void open() throws Exception {
+
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+    public void writeRecords(List<Record> records) throws Exception {
+        //dispatch record randomly to one of the queues
+        for (Record record : records) {
+            BlockingQueue<Record> queue = queues.get(random.nextInt(queuesNumber));
+            queue.put(record);
         }
-        if (!(o instanceof DefaultPredicate)) {
-            return false;
-        }
-
-        DefaultPredicate that = (DefaultPredicate) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) {
-            return false;
-        }
-
-        return true;
     }
 
     @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
+    public void close() throws Exception {
 
+    }
 }

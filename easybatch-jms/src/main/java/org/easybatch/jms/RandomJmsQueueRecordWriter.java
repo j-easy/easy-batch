@@ -22,26 +22,65 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.dispatcher;
+package org.easybatch.jms;
 
-import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
+
+import javax.jms.Message;
+import javax.jms.QueueSender;
+import java.util.List;
+import java.util.Random;
 
 /**
- * Dispatch records to workers.
+ * Dispatch records randomly to a list of Jms queues.
  *
- * @param <I> The type of record to dispatch
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public interface RecordDispatcher<I extends Record> extends RecordProcessor<I, I> {
+public class RandomJmsQueueRecordWriter implements RecordWriter {
 
     /**
-     * Dispatch record to a worker.
-     *
-     * @param record the record to dispatch.
-     * @return the dispatched record
-     * @throws Exception if an error occurs when dispatching the record
+     * The total number of queues this writer operates on.
      */
+    private int queuesNumber;
+
+    /**
+     * List of queues to which records should be written.
+     */
+    private List<QueueSender> queues;
+
+    /**
+     * The random generator.
+     */
+    private Random random;
+
+    /**
+     * Create a {@link RandomJmsQueueRecordWriter} instance.
+     *
+     * @param queues the list of queues to which records should be written
+     */
+    public RandomJmsQueueRecordWriter(List<QueueSender> queues) {
+        this.queues = queues;
+        this.queuesNumber = queues.size();
+        this.random = new Random();
+    }
+
     @Override
-    I processRecord(I record) throws Exception;
+    public void open() throws Exception {
+
+    }
+
+    @Override
+    public void writeRecords(List<Record> records) throws Exception {
+        for (Record record : records) {
+            //dispatch record randomly to one of the queues
+            QueueSender queue = queues.get(random.nextInt(queuesNumber));
+            queue.send((Message) record.getPayload());
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+
+    }
 }

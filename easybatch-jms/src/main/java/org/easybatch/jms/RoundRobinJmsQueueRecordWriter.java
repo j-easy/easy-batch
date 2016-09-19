@@ -24,8 +24,10 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.dispatcher.AbstractRecordDispatcher;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
 
+import javax.jms.Message;
 import javax.jms.QueueSender;
 import java.util.List;
 
@@ -34,49 +36,49 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RoundRobinJmsRecordDispatcher extends AbstractRecordDispatcher<JmsRecord> {
+public class RoundRobinJmsQueueRecordWriter implements RecordWriter {
 
     /**
-     * The total number of queues this dispatcher operates on.
+     * The total number of queues this writer operates on.
      */
     private int queuesNumber;
 
     /**
-     * Next queue to which dispatch next incoming record.
+     * Next queue to which write next incoming record.
      */
     private int next;
 
     /**
-     * List of queues to which records should be dispatched.
+     * List of queues to which records should be written.
      */
     private List<QueueSender> queues;
 
     /**
-     * A delegate dispatcher used to broadcast poison records to all queues.
-     */
-    private BroadcastJmsRecordDispatcher broadcastJmsRecordDispatcher;
-
-    /**
-     * Create a {@link RoundRobinJmsRecordDispatcher} dispatcher.
+     * Create a {@link RoundRobinJmsQueueRecordWriter}.
      *
-     * @param queues the list of queues to which records should be dispatched
+     * @param queues the list of queues to which records should be written
      */
-    public RoundRobinJmsRecordDispatcher(List<QueueSender> queues) {
+    public RoundRobinJmsQueueRecordWriter(List<QueueSender> queues) {
         this.queues = queues;
         this.queuesNumber = queues.size();
-        this.broadcastJmsRecordDispatcher = new BroadcastJmsRecordDispatcher(queues);
     }
 
     @Override
-    public void dispatchRecord(JmsRecord record) throws Exception {
-        // when receiving a poising record, broadcast it to all queues
-        if (record instanceof JmsPoisonRecord) {
-            broadcastJmsRecordDispatcher.dispatchRecord(record);
-            return;
-        }
-        //dispatch records to queues in round-robin fashion
-        QueueSender queue = queues.get(next++ % queuesNumber);
-        queue.send(record.getPayload());
+    public void open() throws Exception {
+
     }
 
+    @Override
+    public void writeRecords(List<Record> records) throws Exception {
+        for (Record record : records) {
+            //dispatch records to queues in round-robin fashion
+            QueueSender queue = queues.get(next++ % queuesNumber);
+            queue.send((Message) record.getPayload());
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+
+    }
 }

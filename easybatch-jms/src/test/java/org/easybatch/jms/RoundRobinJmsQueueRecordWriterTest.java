@@ -27,37 +27,46 @@ package org.easybatch.jms;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.jms.QueueSender;
 import java.util.Arrays;
 
-import static org.mockito.Mockito.verify;
+import static java.util.Collections.singletonList;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RandomJmsRecordDispatcherTest {
+public class RoundRobinJmsQueueRecordWriterTest {
 
-    private RandomJmsRecordDispatcher randomJmsRecordDispatcher;
+    private RoundRobinJmsQueueRecordWriter roundRobinJmsQueueRecordWriter;
 
     @Mock
     private QueueSender queue1, queue2;
+
+    @Mock
+    private JmsRecord record1, record2, record3;
+
     @Mock
     private JmsPoisonRecord poisonRecord;
 
     @Before
     public void setUp() throws Exception {
-        randomJmsRecordDispatcher = new RandomJmsRecordDispatcher(Arrays.asList(queue1, queue2));
+        roundRobinJmsQueueRecordWriter = new RoundRobinJmsQueueRecordWriter(Arrays.asList(queue1, queue2));
     }
 
     @Test
-    public void poisonRecordsShouldBeBroadcastToAllQueues() throws Exception {
+    public void regularRecordsShouldBeDispatchedToQueuesInRoundRobinFashion() throws Exception {
 
-        randomJmsRecordDispatcher.dispatchRecord(poisonRecord);
+        roundRobinJmsQueueRecordWriter.writeRecords(singletonList(record1));
+        roundRobinJmsQueueRecordWriter.writeRecords(singletonList((record2)));
+        roundRobinJmsQueueRecordWriter.writeRecords(singletonList((record3)));
 
-        verify(queue1).send(poisonRecord.getPayload());
-        verify(queue2).send(poisonRecord.getPayload());
-
+        InOrder inOrder = Mockito.inOrder(queue1, queue2, record1, record2, record3);
+        inOrder.verify(queue1).send(record1.getPayload());
+        inOrder.verify(queue2).send(record2.getPayload());
+        inOrder.verify(queue1).send(record3.getPayload());
     }
 
 }

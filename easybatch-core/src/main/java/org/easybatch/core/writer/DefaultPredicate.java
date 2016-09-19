@@ -22,7 +22,49 @@
  *  THE SOFTWARE.
  */
 
+package org.easybatch.core.writer;
+
+import org.easybatch.core.record.Record;
+
 /**
- * This package contains built-in implementations of the {@link org.easybatch.core.dispatcher.AbstractRecordDispatcher} class.
+ * A default predicate used to put records in the default queue when building a {@link ContentBasedBlockingQueueRecordWriter}.
+ *
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-package org.easybatch.core.dispatcher;
+public class DefaultPredicate implements Predicate {
+
+    /*
+     * needed for equals and hashcode, all instances should be equal to be able to get the default queue
+     * by calling queueMap.get(new DefaultPredicate()).put(record); in ContentBasedBlockingQueueRecordWriter#writeRecords
+     */
+    private String id = "defaultPredicate";
+
+    @Override
+    public boolean matches(Record record) {
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DefaultPredicate)) {
+            return false;
+        }
+
+        DefaultPredicate that = (DefaultPredicate) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+}

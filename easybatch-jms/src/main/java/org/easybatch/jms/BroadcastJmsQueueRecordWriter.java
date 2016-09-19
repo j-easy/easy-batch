@@ -22,24 +22,52 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.dispatcher;
+package org.easybatch.jms;
 
 import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
+
+import javax.jms.Message;
+import javax.jms.QueueSender;
+import java.util.List;
 
 /**
- * Base class for record dispatchers.
+ * Broadcast records to a list of Jms queues.
  *
- * @param <T> the type of record to dispatch
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public abstract class AbstractRecordDispatcher<T extends Record> implements RecordDispatcher<T> {
+public class BroadcastJmsQueueRecordWriter implements RecordWriter {
 
-    protected abstract void dispatchRecord(final T record) throws Exception;
+    /**
+     * List of queues to which records should be written.
+     */
+    private List<QueueSender> queues;
 
-    @Override
-    public T processRecord(final T record) throws Exception {
-        dispatchRecord(record);
-        return record;
+    /**
+     * Create a {@link BroadcastJmsQueueRecordWriter} instance.
+     *
+     * @param queues the list of queues to which records should be written
+     */
+    public BroadcastJmsQueueRecordWriter(List<QueueSender> queues) {
+        this.queues = queues;
     }
 
+    @Override
+    public void open() throws Exception {
+
+    }
+
+    @Override
+    public void writeRecords(List<Record> records) throws Exception {
+        for (Record record : records) {
+            for (QueueSender queue : queues) {
+                queue.send((Message) record.getPayload());
+            }
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+
+    }
 }

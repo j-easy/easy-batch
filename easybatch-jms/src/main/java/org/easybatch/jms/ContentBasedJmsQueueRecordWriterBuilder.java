@@ -24,54 +24,54 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.dispatcher.DefaultPredicate;
-import org.easybatch.core.dispatcher.Predicate;
+import org.easybatch.core.writer.DefaultPredicate;
+import org.easybatch.core.writer.Predicate;
 
 import javax.jms.QueueSender;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Builder for {@link ContentBasedJmsRecordDispatcher}.
+ * Builder for {@link ContentBasedJmsQueueRecordWriter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class ContentBasedJmsRecordDispatcherBuilder {
+public class ContentBasedJmsQueueRecordWriterBuilder {
 
-    private Predicate<JmsRecord> predicate;
+    private Predicate predicate;
 
-    private Map<Predicate<JmsRecord>, QueueSender> queueMap;
+    private Map<Predicate, QueueSender> queueMap;
 
-    public ContentBasedJmsRecordDispatcherBuilder() {
+    public ContentBasedJmsQueueRecordWriterBuilder() {
         queueMap = new HashMap<>();
     }
 
-    public ContentBasedJmsRecordDispatcherBuilder when(Predicate<JmsRecord> predicate) {
+    public ContentBasedJmsQueueRecordWriterBuilder when(Predicate predicate) {
         this.predicate = predicate;
         return this;
     }
 
-    public ContentBasedJmsRecordDispatcherBuilder dispatchTo(QueueSender queue) {
+    public ContentBasedJmsQueueRecordWriterBuilder writeTo(QueueSender queue) {
         if (predicate == null) {
             throw new IllegalStateException("You should specify a predicate before mapping a queue." +
-                    " Please ensure that you call when() -> dispatchTo() -> otherwise()  methods in that order");
+                    " Please ensure that you call when() -> writeTo() -> otherwise()  methods in that order");
         }
         queueMap.put(predicate, queue);
         predicate = null;
         return this;
     }
 
-    public ContentBasedJmsRecordDispatcherBuilder otherwise(QueueSender queue) {
-        queueMap.put(new DefaultPredicate<JmsRecord>(), queue);
+    public ContentBasedJmsQueueRecordWriterBuilder otherwise(QueueSender queue) {
+        queueMap.put(new DefaultPredicate(), queue);
         predicate = null;
         return this;
     }
 
-    public ContentBasedJmsRecordDispatcher build() {
+    public ContentBasedJmsQueueRecordWriter build() {
         if (queueMap.isEmpty()) {
             throw new IllegalStateException("You can not build a ContentBasedJmsRecordDispatcher with an empty <Predicate, Queue> mapping.");
         }
-        return new ContentBasedJmsRecordDispatcher(queueMap);
+        return new ContentBasedJmsQueueRecordWriter(queueMap);
     }
 
 }

@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.dispatcher;
+package org.easybatch.core.writer;
 
 import org.easybatch.core.record.Record;
 
@@ -31,47 +31,46 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * Builder for {@link ContentBasedRecordDispatcher}.
+ * Builder for {@link ContentBasedBlockingQueueRecordWriter}.
  *
- * @param <T> type of record
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class ContentBasedRecordDispatcherBuilder<T extends Record> {
+public class ContentBasedBlockingQueueRecordWriterBuilder {
 
-    private Predicate<T> predicate;
+    private Predicate predicate;
 
-    private Map<Predicate<T>, BlockingQueue<T>> queueMap;
+    private Map<Predicate, BlockingQueue<Record>> queueMap;
 
-    public ContentBasedRecordDispatcherBuilder() {
+    public ContentBasedBlockingQueueRecordWriterBuilder() {
         queueMap = new HashMap<>();
     }
 
-    public ContentBasedRecordDispatcherBuilder<T> when(Predicate<T> predicate) {
+    public ContentBasedBlockingQueueRecordWriterBuilder when(Predicate predicate) {
         this.predicate = predicate;
         return this;
     }
 
-    public ContentBasedRecordDispatcherBuilder<T> dispatchTo(BlockingQueue<T> queue) {
+    public ContentBasedBlockingQueueRecordWriterBuilder writeTo(BlockingQueue<Record> queue) {
         if (predicate == null) {
             throw new IllegalStateException("You should specify a predicate before mapping a queue." +
-                    " Please ensure that you call when() -> dispatchTo() -> otherwise()  methods in that order");
+                    " Please ensure that you call when() -> writeTo() -> otherwise()  methods in that order");
         }
         queueMap.put(predicate, queue);
         predicate = null;
         return this;
     }
 
-    public ContentBasedRecordDispatcherBuilder<T> otherwise(BlockingQueue<T> queue) {
-        queueMap.put(new DefaultPredicate<T>(), queue);
+    public ContentBasedBlockingQueueRecordWriterBuilder otherwise(BlockingQueue<Record> queue) {
+        queueMap.put(new DefaultPredicate(), queue);
         predicate = null;
         return this;
     }
 
-    public ContentBasedRecordDispatcher<T> build() {
+    public ContentBasedBlockingQueueRecordWriter build() {
         if (queueMap.isEmpty()) {
-            throw new IllegalStateException("You can not build a ContentBasedRecordDispatcher with an empty <Predicate, Queue> mapping.");
+            throw new IllegalStateException("You can not build a ContentBasedQueueRecordWriter with an empty <Predicate, Queue> mapping.");
         }
-        return new ContentBasedRecordDispatcher<>(queueMap);
+        return new ContentBasedBlockingQueueRecordWriter(queueMap);
     }
 
 }

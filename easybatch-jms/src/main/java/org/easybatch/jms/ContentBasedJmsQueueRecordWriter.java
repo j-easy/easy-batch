@@ -22,30 +22,33 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.writer;
+package org.easybatch.jms;
 
 import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.DefaultPredicate;
+import org.easybatch.core.writer.Predicate;
+import org.easybatch.core.writer.RecordWriter;
 
+import javax.jms.Message;
+import javax.jms.QueueSender;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-
-import static java.util.Collections.singletonList;
+import java.util.Map;
 
 /**
- * Write records to a (list of) {@link BlockingQueue}.
+ * Write records to a list of Jms Queues based on their content.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class BlockingQueueRecordWriter implements RecordWriter {
+public class ContentBasedJmsQueueRecordWriter implements RecordWriter {
 
-    private List<BlockingQueue<Record>> blockingQueues;
+    /**
+     * Map a predicate to a queue: when the record content matches the predicate,
+     * then it is written to the mapped queue.
+     */
+    private Map<Predicate, QueueSender> queueMap;
 
-    public BlockingQueueRecordWriter(final BlockingQueue<Record> blockingQueue) {
-        this(singletonList(blockingQueue));
-    }
-
-    public BlockingQueueRecordWriter(final List<BlockingQueue<Record>> blockingQueues) {
-        this.blockingQueues = blockingQueues;
+    ContentBasedJmsQueueRecordWriter(Map<Predicate, QueueSender> queueMap) {
+        this.queueMap = queueMap;
     }
 
     @Override
@@ -56,8 +59,20 @@ public class BlockingQueueRecordWriter implements RecordWriter {
     @Override
     public void writeRecords(List<Record> records) throws Exception {
         for (Record record : records) {
-            for (BlockingQueue<Record> queue : blockingQueues) {
-                queue.put(record);
+            Message payload = (Message) record.getPayload();
+            for (Map.Entry<Predicate, QueueSender> entry : queueMap.entrySet()) {
+                Predicate predicate = entry.getKey();
+                //check if the record meets a given predicate
+                if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
+                    //put it in the mapped queue
+                    queueMap.get(predicate).send(payload);
+                    return;
+                }
+            }
+            //if the record does not match any predicate, then put it in the default queue
+            QueueSender defaultQueue = queueMap.get(new DefaultPredicate());
+            if (defaultQueue != null) {
+                defaultQueue.send(payload);
             }
         }
     }

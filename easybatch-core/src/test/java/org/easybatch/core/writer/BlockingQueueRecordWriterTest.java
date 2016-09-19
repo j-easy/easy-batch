@@ -31,31 +31,34 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.mockito.Mockito.*;
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BlockingQueueRecordWriterTest {
 
     @Mock
     private Record record1, record2;
-    @Mock
-    private BlockingQueue<Record> blockingQueue;
+
+    private BlockingQueue<Record> queue1, queue2;
 
     private BlockingQueueRecordWriter writer;
 
     @Before
     public void setUp() {
-        writer = new BlockingQueueRecordWriter(blockingQueue);
+        queue1 = new LinkedBlockingQueue<>();
+        queue2 = new LinkedBlockingQueue<>();
+        writer = new BlockingQueueRecordWriter(asList(queue1, queue2));
     }
 
     @Test
     public void testWriteRecords() throws Exception {
-        writer.writeRecords(Arrays.asList(record1, record2));
-        verify(blockingQueue).put(record1);
-        verify(blockingQueue).put(record2);
+        writer.writeRecords(asList(record1, record2));
+        assertThat(queue1).containsExactly(record1, record2);
+        assertThat(queue2).containsExactly(record1, record2);
     }
 
 }

@@ -30,25 +30,26 @@ import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.record.Header;
 
 import javax.jms.QueueSender;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 /**
- * A utility job listener that broadcasts a {@link JmsPoisonRecord} at the end of the job.
+ * A job listener that broadcasts a {@link JmsPoisonRecord} at the end of the job.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class JmsPoisonRecordBroadcaster implements JobListener {
 
-    private BroadcastJmsRecordDispatcher recordDispatcher;
+    private BroadcastJmsQueueRecordWriter broadcastJmsQueueRecordWriter;
 
     /**
      * Create a new {@link JmsPoisonRecordBroadcaster}.
      *
-     * @param queues the list of queues to which poison messages should be dispatched
+     * @param queues the list of queues to which poison messages should be written
      */
     public JmsPoisonRecordBroadcaster(List<QueueSender> queues) {
-        this.recordDispatcher = new BroadcastJmsRecordDispatcher(queues);
+        this.broadcastJmsQueueRecordWriter = new BroadcastJmsQueueRecordWriter(queues);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class JmsPoisonRecordBroadcaster implements JobListener {
     @Override
     public void afterJobEnd(final JobReport jobReport) {
         try {
-            recordDispatcher.processRecord(new JmsPoisonRecord(new Header(0L, "Poison record", new Date()), new JmsPoisonMessage()));
+            broadcastJmsQueueRecordWriter.writeRecords(Collections.singletonList(new JmsPoisonRecord(new Header(0L, "Poison record", new Date()), new JmsPoisonMessage())));
         } catch (Exception e) {
             throw new RuntimeException("Unable to broadcast poison record.", e);
         }

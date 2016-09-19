@@ -24,50 +24,35 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.jms.Message;
 import javax.jms.QueueSender;
-import java.util.Arrays;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BroadcastJmsRecordDispatcherTest {
-
-    private BroadcastJmsRecordDispatcher broadcastJmsRecordDispatcher;
+public class ContentBasedJmsQueueRecordWriterBuilderTest {
 
     @Mock
-    private QueueSender queue1, queue2;
+    private QueueSender queue;
 
-    @Mock
-    private JmsRecord jmsRecord;
-    @Mock
-    private Header header;
-    @Mock
-    private Message message;
+    private ContentBasedJmsQueueRecordWriterBuilder builder;
 
     @Before
     public void setUp() throws Exception {
-        when(jmsRecord.getHeader()).thenReturn(header);
-        when(jmsRecord.getPayload()).thenReturn(message);
-
-        broadcastJmsRecordDispatcher = new BroadcastJmsRecordDispatcher(Arrays.asList(queue1, queue2));
+        builder = new ContentBasedJmsQueueRecordWriterBuilder();
     }
 
-    @Test
-    public void testBroadcastJmsRecord() throws Exception {
+    @Test(expected = IllegalStateException.class)
+    public void whenPredicateToQueueMapIsEmpty_ThenShouldThrowIllegalStateException() throws Exception {
+        builder.build();
+    }
 
-        broadcastJmsRecordDispatcher.dispatchRecord(jmsRecord);
-
-        verify(queue1).send(message);
-        verify(queue2).send(message);
+    @Test(expected = IllegalStateException.class)
+    public void whenCallDispatchToWithoutCallingWhen_ThenShouldThrowIllegalStateException() throws Exception {
+        builder.writeTo(queue);
     }
 
 }

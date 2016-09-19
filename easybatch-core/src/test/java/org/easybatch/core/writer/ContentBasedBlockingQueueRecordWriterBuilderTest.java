@@ -22,21 +22,20 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.dispatcher;
+package org.easybatch.core.writer;
 
-import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class ContentBasedRecordDispatcherBuilderTest {
+public class ContentBasedBlockingQueueRecordWriterBuilderTest {
 
-    private ContentBasedRecordDispatcherBuilder<Record> builder;
+    private ContentBasedBlockingQueueRecordWriterBuilder builder;
 
     @Before
     public void setUp() throws Exception {
-        builder = new ContentBasedRecordDispatcherBuilder<>();
+        builder = new ContentBasedBlockingQueueRecordWriterBuilder();
     }
 
     @Test(expected = IllegalStateException.class)
@@ -45,8 +44,8 @@ public class ContentBasedRecordDispatcherBuilderTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void whenCallDispatchToWithoutCallingWhen_ThenShouldThrowIllegalStateException() throws Exception {
-        builder.dispatchTo(new LinkedBlockingQueue<Record>());
+    public void whenCallWriteToWithoutCallingWhen_ThenShouldThrowIllegalStateException() throws Exception {
+        builder.writeTo(new LinkedBlockingQueue<>());
     }
 
 }

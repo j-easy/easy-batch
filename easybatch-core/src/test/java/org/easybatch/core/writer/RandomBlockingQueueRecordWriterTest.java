@@ -22,9 +22,8 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.dispatcher;
+package org.easybatch.core.writer;
 
-import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,50 +31,40 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RoundRobinRecordDispatcherTest {
+public class RandomBlockingQueueRecordWriterTest {
 
-    private RoundRobinRecordDispatcher<Record> roundRobinRecordDispatcher;
+    private RandomBlockingQueueRecordWriter randomQueueRecordWriter;
 
     private BlockingQueue<Record> queue1, queue2;
 
     @Mock
-    private Record record1, record2, record3;
-
-    @Mock
-    private PoisonRecord poisonRecord;
+    private Record record;
 
     @Before
     public void setUp() throws Exception {
         queue1 = new LinkedBlockingQueue<>();
         queue2 = new LinkedBlockingQueue<>();
-        roundRobinRecordDispatcher = new RoundRobinRecordDispatcher<>(Arrays.asList(queue1, queue2));
+        randomQueueRecordWriter = new RandomBlockingQueueRecordWriter(asList(queue1, queue2));
     }
 
     @Test
-    public void regularRecordsShouldBeDispatchedToQueuesInRoundRobinFashion() throws Exception {
+    public void recordsShouldBeWrittenRandomlyToOneOfTheQueues() throws Exception {
+        randomQueueRecordWriter.writeRecords(singletonList(record));
 
-        roundRobinRecordDispatcher.dispatchRecord(record1);
-        roundRobinRecordDispatcher.dispatchRecord(record2);
-        roundRobinRecordDispatcher.dispatchRecord(record3);
-
-        assertThat(queue1).containsExactly(record1, record3);
-        assertThat(queue2).containsOnly(record2);
-    }
-
-    @Test
-    public void poisonRecordsShouldBeBroadcastToAllQueues() throws Exception {
-
-        roundRobinRecordDispatcher.dispatchRecord(poisonRecord);
-
-        assertThat(queue1).containsOnly(poisonRecord);
-        assertThat(queue2).containsOnly(poisonRecord);
+        if (queue1.isEmpty()) {
+            assertThat(queue2).containsOnly(record);
+        } else {
+            assertThat(queue2).isEmpty();
+            assertThat(queue1).containsOnly(record);
+        }
     }
 
 }

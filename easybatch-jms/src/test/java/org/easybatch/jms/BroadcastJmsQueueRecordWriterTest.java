@@ -24,37 +24,45 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.dispatcher.AbstractRecordDispatcher;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.jms.Message;
 import javax.jms.QueueSender;
-import java.util.List;
 
-/**
- * Broadcast records to a list of Jms queues.
- *
- * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
- */
-public class BroadcastJmsRecordDispatcher extends AbstractRecordDispatcher<JmsRecord> {
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-    /**
-     * List of queues to which records should be dispatched.
-     */
-    private List<QueueSender> queues;
+@RunWith(MockitoJUnitRunner.class)
+public class BroadcastJmsQueueRecordWriterTest {
 
-    /**
-     * Create a {@link BroadcastJmsRecordDispatcher} instance.
-     *
-     * @param queues the list of queues to which records should be dispatched
-     */
-    public BroadcastJmsRecordDispatcher(List<QueueSender> queues) {
-        this.queues = queues;
+    private BroadcastJmsQueueRecordWriter broadcastJmsQueueRecordWriter;
+
+    @Mock
+    private QueueSender queue1, queue2;
+    @Mock
+    private JmsRecord jmsRecord;
+    @Mock
+    private Message message;
+
+    @Before
+    public void setUp() throws Exception {
+        when(jmsRecord.getPayload()).thenReturn(message);
+
+        broadcastJmsQueueRecordWriter = new BroadcastJmsQueueRecordWriter(asList(queue1, queue2));
     }
 
-    @Override
-    public void dispatchRecord(final JmsRecord record) throws Exception {
-        for (QueueSender queue : queues) {
-            queue.send(record.getPayload());
-        }
+    @Test
+    public void testBroadcastJmsRecord() throws Exception {
+        broadcastJmsQueueRecordWriter.writeRecords(singletonList(jmsRecord));
+
+        verify(queue1).send(message);
+        verify(queue2).send(message);
     }
 
 }

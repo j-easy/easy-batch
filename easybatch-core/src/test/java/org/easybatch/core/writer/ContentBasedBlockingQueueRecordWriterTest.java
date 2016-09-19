@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.dispatcher;
+package org.easybatch.core.writer;
 
 import org.easybatch.core.record.Record;
 import org.junit.Before;
@@ -31,36 +31,46 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BroadcastRecordDispatcherTest {
+public class ContentBasedBlockingQueueRecordWriterTest {
 
-    private BroadcastRecordDispatcher<Record> broadcastRecordDispatcher;
+    private ContentBasedBlockingQueueRecordWriter contentBasedQueueRecordWriter;
 
-    private BlockingQueue<Record> queue1, queue2;
+    private BlockingQueue<Record> orangeQueue;
+
+    private BlockingQueue<Record> defaultQueue;
 
     @Mock
-    private Record record;
+    private Record orangeRecord, appleRecord;
+
+    @Mock
+    private Predicate orangePredicate;
 
     @Before
     public void setUp() throws Exception {
-        queue1 = new LinkedBlockingQueue<>();
-        queue2 = new LinkedBlockingQueue<>();
-        broadcastRecordDispatcher = new BroadcastRecordDispatcher<>(Arrays.asList(queue1, queue2));
+        orangeQueue = new LinkedBlockingQueue<>();
+        defaultQueue = new LinkedBlockingQueue<>();
+        contentBasedQueueRecordWriter = new ContentBasedBlockingQueueRecordWriterBuilder()
+                .when(orangePredicate).writeTo(orangeQueue)
+                .otherwise(defaultQueue)
+                .build();
+
+        when(orangePredicate.matches(orangeRecord)).thenReturn(true);
+        when(orangePredicate.matches(appleRecord)).thenReturn(false);
     }
 
     @Test
-    public void testBroadcastRecord() throws Exception {
-
-        broadcastRecordDispatcher.dispatchRecord(record);
-
-        assertThat(queue1).containsOnly(record);
-        assertThat(queue2).containsOnly(record);
+    public void orangeRecordShouldBeWrittenToOrangeQueue() throws Exception {
+        contentBasedQueueRecordWriter.writeRecords(asList(orangeRecord, appleRecord));
+        assertThat(orangeQueue).containsOnly(orangeRecord);
+        assertThat(defaultQueue).containsOnly(appleRecord);
     }
 
 }

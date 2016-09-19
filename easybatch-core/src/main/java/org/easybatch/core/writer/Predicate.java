@@ -22,20 +22,19 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.dispatcher;
+package org.easybatch.core.writer;
 
 import org.easybatch.core.record.Record;
 
 /**
- * Predicates are used to check if a record matches a criteria so that it is dispatched to the correct queue.
+ * Predicates are used to check if a record matches a criteria so that it is written to the correct queue.
  *
- * @param <T> type of record
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
- * @see org.easybatch.core.dispatcher.ContentBasedRecordDispatcher
- * @see org.easybatch.core.dispatcher.ContentBasedRecordDispatcherBuilder
+ * @see ContentBasedBlockingQueueRecordWriter
+ * @see ContentBasedBlockingQueueRecordWriterBuilder
  */
-public interface Predicate<T extends Record> {
+public interface Predicate {
 
-    boolean matches(T record);
+    boolean matches(Record record);
 
 }

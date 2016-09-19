@@ -22,66 +22,61 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.core.dispatcher;
+package org.easybatch.core.writer;
 
-import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.core.record.Record;
 
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * Dispatch records randomly to a list of {@link BlockingQueue}.
+ * Write records to a list of {@link BlockingQueue} in round-robin fashion.
  *
- * @param <T> type of record to dispatch
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RandomRecordDispatcher<T extends Record> extends AbstractRecordDispatcher<T> {
+public class RoundRobinBlockingQueueRecordWriter implements RecordWriter {
 
     /**
-     * The total number of queues this dispatcher operates on.
+     * The total number of queues this writer operates on.
      */
     private int queuesNumber;
 
     /**
-     * List of queues to which records should be dispatched.
+     * Next queue to which write records.
      */
-    private List<BlockingQueue<T>> queues;
+    private int nextQueue;
 
     /**
-     * A delegate dispatcher used to broadcast poison records to all queues.
+     * List of queues to which records should be written.
      */
-    private BroadcastRecordDispatcher<T> broadcastRecordDispatcher;
+    private List<BlockingQueue<Record>> queues;
 
     /**
-     * The random generator.
-     */
-    private Random random;
-
-    /**
-     * Create a {@link RandomRecordDispatcher} instance.
+     * Create a {@link RoundRobinBlockingQueueRecordWriter}.
      *
-     * @param queues the list of queues to which records should be dispatched
+     * @param queues the list of queues to which records should be written
      */
-    public RandomRecordDispatcher(List<BlockingQueue<T>> queues) {
+    public RoundRobinBlockingQueueRecordWriter(List<BlockingQueue<Record>> queues) {
         this.queues = queues;
         this.queuesNumber = queues.size();
-        this.random = new Random();
-        this.broadcastRecordDispatcher = new BroadcastRecordDispatcher<>(queues);
     }
 
     @Override
-    public void dispatchRecord(T record) throws Exception {
-        // when receiving a poising record, broadcast it to all queues
-        if (record instanceof PoisonRecord) {
-            broadcastRecordDispatcher.dispatchRecord(record);
-            return;
-        }
-        //dispatch record randomly to one of the queues
-        BlockingQueue<T> queue = null;
-        queue = queues.get(random.nextInt(queuesNumber));
-        queue.put(record);
+    public void open() throws Exception {
+
     }
 
+    @Override
+    public void writeRecords(List<Record> records) throws Exception {
+        //dispatch records to queues in round-robin fashion
+        for (Record record : records) {
+            BlockingQueue<Record> queue = queues.get(nextQueue++ % queuesNumber);
+            queue.put(record);
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+
+    }
 }
