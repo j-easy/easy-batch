@@ -109,7 +109,7 @@ public class JsonRecordReader implements RecordReader {
     public JsonRecordReader(final InputStream inputStream) {
         checkNotNull(inputStream, "input stream");
         this.inputStream = inputStream;
-        this.jsonGeneratorFactory = Json.createGeneratorFactory(new HashMap<String, Object>());
+        this.jsonGeneratorFactory = Json.createGeneratorFactory(new HashMap<>());
     }
 
     @Override
