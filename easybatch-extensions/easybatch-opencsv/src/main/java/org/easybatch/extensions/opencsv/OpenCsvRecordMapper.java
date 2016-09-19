@@ -61,7 +61,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Generi
      */
     public OpenCsvRecordMapper(Class<? extends T> recordClass, String... columns) {
         this.strategy = new ColumnPositionMappingStrategy<>();
-        this.strategy.setType((Class<T>) recordClass);
+        this.strategy.setType(recordClass);
         this.strategy.setColumnMapping(columns);
         this.csvToBean = new CsvToBean();
     }
