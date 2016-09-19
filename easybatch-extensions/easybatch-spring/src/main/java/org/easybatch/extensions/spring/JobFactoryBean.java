@@ -56,7 +56,7 @@ public class JobFactoryBean implements FactoryBean {
     private String executionId;
     private long errorThreshold = JobParameters.DEFAULT_ERROR_THRESHOLD;
     private int batchSize = JobParameters.DEFAULT_BATCH_SIZE;
-    private boolean jmxMode;
+    private boolean jmxMonitoring;
 
     @Override
     public Job getObject() throws Exception {
@@ -80,7 +80,7 @@ public class JobFactoryBean implements FactoryBean {
         }
         jobBuilder.errorThreshold(errorThreshold);
         jobBuilder.batchSize(batchSize);
-        jobBuilder.jmxMode(jmxMode);
+        jobBuilder.enableJmx(jmxMonitoring);
     }
 
     private void registerMainComponents(JobBuilder jobBuilder) {
@@ -178,7 +178,7 @@ public class JobFactoryBean implements FactoryBean {
         this.batchSize = batchSize;
     }
 
-    public void setJmxMode(boolean jmxMode) {
-        this.jmxMode = jmxMode;
+    public void setJmxMonitoring(boolean jmxMonitoring) {
+        this.jmxMonitoring = jmxMonitoring;
     }
 }

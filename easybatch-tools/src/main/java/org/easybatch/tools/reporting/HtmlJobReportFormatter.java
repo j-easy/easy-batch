@@ -81,7 +81,7 @@ public class HtmlJobReportFormatter implements JobReportFormatter<String> {
         context.put("executionId",parameters.getExecutionId());
         context.put("batchSize",parameters.getBatchSize());
         context.put("errorThreshold",parameters.getErrorThreshold());
-        context.put("jmx",parameters.isJmxMode());
+        context.put("jmx",parameters.isJmxMonitoring());
 
         /*
          * Job metrics

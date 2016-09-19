@@ -249,7 +249,7 @@ public class BatchJobTest {
 
     @Test
     public void whenJobNameIsNotSpecified_thenTheJmxMBeanShouldBeRegisteredWithDefaultJobName() throws Exception {
-        job = new JobBuilder().jmxMode(true).build();
+        job = new JobBuilder().enableJmx(true).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         assertThat(mbs.isRegistered(new ObjectName(JMX_MBEAN_NAME + "name=" + JobParameters.DEFAULT_JOB_NAME + ",id=" + job.getExecutionId()))).isTrue();
@@ -258,7 +258,7 @@ public class BatchJobTest {
     @Test
     public void whenJobNameIsSpecified_thenTheJmxMBeanShouldBeRegisteredWithTheGivenJobName() throws Exception {
         String name = "master";
-        job = new JobBuilder().jmxMode(true).named(name).build();
+        job = new JobBuilder().enableJmx(true).named(name).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         assertThat(mbs.isRegistered(new ObjectName(JMX_MBEAN_NAME + "name=" + name + ",id=" + job.getExecutionId()))).isTrue();

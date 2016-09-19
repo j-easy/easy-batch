@@ -46,7 +46,7 @@ public class JobParameters implements Serializable {
 
     private long errorThreshold;
 
-    private boolean jmxMode;
+    private boolean jmxMonitoring;
 
     private int batchSize;
 
@@ -81,12 +81,12 @@ public class JobParameters implements Serializable {
         this.errorThreshold = errorThreshold;
     }
 
-    public boolean isJmxMode() {
-        return jmxMode;
+    public boolean isJmxMonitoring() {
+        return jmxMonitoring;
     }
 
-    public void setJmxMode(boolean jmxMode) {
-        this.jmxMode = jmxMode;
+    public void setJmxMonitoring(boolean jmxMonitoring) {
+        this.jmxMonitoring = jmxMonitoring;
     }
 
     public int getBatchSize() {

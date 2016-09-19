@@ -65,7 +65,7 @@ public class HtmlJobReportFormatterTest {
         jobReport.getParameters().setName("end-of-day job");
         jobReport.getParameters().setErrorThreshold(5);
         jobReport.getParameters().setExecutionId("c8d6a5fc-b2b4-4ee0-9dda-f9ec042d5864");
-        jobReport.getParameters().setJmxMode(true);
+        jobReport.getParameters().setJmxMonitoring(true);
 
         jobReport.getMetrics().setStartTime(START_TIME);
         jobReport.getMetrics().setEndTime(END_TIME);

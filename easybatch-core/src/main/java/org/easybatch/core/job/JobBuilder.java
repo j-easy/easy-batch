@@ -180,8 +180,8 @@ public final class JobBuilder {
      * @param jmx true to enable jmx monitoring
      * @return the job builder
      */
-    public JobBuilder jmxMode(final boolean jmx) {
-        parameters.setJmxMode(jmx);
+    public JobBuilder enableJmx(final boolean jmx) {
+        parameters.setJmxMonitoring(jmx);
         return this;
     }
 

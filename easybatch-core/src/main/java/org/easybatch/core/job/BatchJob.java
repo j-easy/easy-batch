@@ -91,10 +91,10 @@ class BatchJob implements Job {
         LOGGER.log(Level.INFO, "Execution id: {0}", parameters.getExecutionId());
         LOGGER.log(Level.INFO, "Batch size: {0}", parameters.getBatchSize());
         LOGGER.log(Level.INFO, "Error threshold: {0}", parameters.getErrorThreshold());
-        LOGGER.log(Level.INFO, "Jmx mode: {0}", parameters.isJmxMode());
+        LOGGER.log(Level.INFO, "Jmx monitoring: {0}", parameters.isJmxMonitoring());
 
         jobListener.beforeJobStart(parameters);
-        if (parameters.isJmxMode()) {
+        if (parameters.isJmxMonitoring()) {
             monitor.registerJmxMBeanFor(this);
         }
 
@@ -173,7 +173,7 @@ class BatchJob implements Job {
                 Record processedRecord;
                 try {
                     pipelineListener.beforeRecordProcessing(record);
-                    if (parameters.isJmxMode()) {
+                    if (parameters.isJmxMonitoring()) {
                         monitor.notifyJobReportUpdate();
                     }
                     processedRecord = recordProcessor.processRecord(record);
@@ -249,7 +249,7 @@ class BatchJob implements Job {
         metrics.setEndTime(System.currentTimeMillis());
         executed = true;
         LOGGER.log(Level.INFO, "Job ''{0}'' finished with exit status: {1}", new Object[]{parameters.getName(), report.getStatus()});
-        if (parameters.isJmxMode()) {
+        if (parameters.isJmxMonitoring()) {
             monitor.notifyJobReportUpdate();
         }
         jobListener.afterJobEnd(report);

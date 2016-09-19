@@ -53,7 +53,7 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
         sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(parameters.getExecutionId());
         sb.append(LINE_SEPARATOR).append("\tBatch size = ").append(parameters.getBatchSize());
         sb.append(LINE_SEPARATOR).append("\tError threshold = ").append(parameters.getErrorThreshold());
-        sb.append(LINE_SEPARATOR).append("\tJmx mode = ").append(parameters.isJmxMode());
+        sb.append(LINE_SEPARATOR).append("\tJmx monitoring = ").append(parameters.isJmxMonitoring());
 
         /*
          * Job metrics
