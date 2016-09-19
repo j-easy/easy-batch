@@ -2,7 +2,7 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
-Changes in version 4.0.0 (2016-07-30)
+Changes in version 4.1.0 (2016-07-30)
 -------------------------------------
 
 Features
