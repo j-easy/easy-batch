@@ -63,7 +63,7 @@ public class JobFactoryBean implements FactoryBean {
 
     private boolean silentMode;
 
-    private boolean jmxMode;
+    private boolean jmxMonitoring;
 
     private boolean keepAlive;
 
@@ -103,7 +103,7 @@ public class JobFactoryBean implements FactoryBean {
         }
         jobBuilder.silentMode(silentMode);
         jobBuilder.strictMode(strictMode);
-        jobBuilder.jmxMode(jmxMode);
+        jobBuilder.jmxMode(jmxMonitoring);
     }
 
     private void registerMainComponents(JobBuilder jobBuilder) {
@@ -170,8 +170,8 @@ public class JobFactoryBean implements FactoryBean {
         this.pipelineListeners = pipelineListeners;
     }
 
-    public void setJmxMode(boolean jmxMode) {
-        this.jmxMode = jmxMode;
+    public void setJmxMonitoring(boolean jmxMonitoring) {
+        this.jmxMonitoring = jmxMonitoring;
     }
 
     public void setKeepAlive(boolean keepAlive) {

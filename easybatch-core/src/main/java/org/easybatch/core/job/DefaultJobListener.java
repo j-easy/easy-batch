@@ -76,7 +76,7 @@ class DefaultJobListener implements JobListener {
         LOGGER.log(Level.INFO, "Timeout: {0}", timeout != DEFAULT_TIMEOUT ? toMinutes(timeout) + "m" : "N/A");
         LOGGER.log(Level.INFO, "Error threshold: {0}", errorThreshold != DEFAULT_ERROR_THRESHOLD ? errorThreshold : "N/A");
         LOGGER.log(Level.INFO, "Silent mode: {0}", jobParameters.isSilentMode());
-        LOGGER.log(Level.INFO, "Jmx mode: {0}", jobParameters.isJmxMode());
+        LOGGER.log(Level.INFO, "Jmx monitoring: {0}", jobParameters.isJmxMonitoring());
         LOGGER.log(Level.INFO, "Job ''{0}'' started", jobName);
 
         job.getJobReport().getMetrics().setStartTime(System.currentTimeMillis()); //System.nanoTime() does not allow to have start time (see Javadoc)
@@ -97,7 +97,7 @@ class DefaultJobListener implements JobListener {
             Object jobResult = computationalRecordProcessor.getComputationResult();
             jobReport.setJobResult(new JobResult(jobResult));
         }
-        if (job.getJobReport().getParameters().isJmxMode()) {
+        if (job.getJobReport().getParameters().isJmxMonitoring()) {
             job.getJobMonitor().notifyJobReportUpdate();
         }
         LOGGER.log(Level.INFO, "Job ''{0}'' finished with exit status: {1}", new Object[]{jobReport.getParameters().getName(), jobReport.getStatus()});

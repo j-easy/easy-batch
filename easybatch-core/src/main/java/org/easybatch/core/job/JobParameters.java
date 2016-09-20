@@ -69,7 +69,7 @@ public class JobParameters implements Serializable {
 
     private boolean silentMode;
 
-    private boolean jmxMode;
+    private boolean jmxMonitoring;
 
     private boolean keepAlive;
 
@@ -153,12 +153,12 @@ public class JobParameters implements Serializable {
         this.silentMode = silentMode;
     }
 
-    public boolean isJmxMode() {
-        return jmxMode;
+    public boolean isJmxMonitoring() {
+        return jmxMonitoring;
     }
 
-    public void setJmxMode(boolean jmxMode) {
-        this.jmxMode = jmxMode;
+    public void setJmxMonitoring(boolean jmxMonitoring) {
+        this.jmxMonitoring = jmxMonitoring;
     }
 
     public boolean isKeepAlive() {

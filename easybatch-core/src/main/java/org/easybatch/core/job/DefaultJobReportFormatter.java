@@ -61,7 +61,7 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
         long errorThreshold = parameters.getErrorThreshold();
         sb.append(LINE_SEPARATOR).append("\tError threshold = ").append(errorThreshold != DEFAULT_ERROR_THRESHOLD ? errorThreshold : "N/A");
         sb.append(LINE_SEPARATOR).append("\tSilent mode = ").append(parameters.isSilentMode());
-        sb.append(LINE_SEPARATOR).append("\tJmx mode = ").append(parameters.isJmxMode());
+        sb.append(LINE_SEPARATOR).append("\tJmx monitoring = ").append(parameters.isJmxMonitoring());
 
         /*
          * Job metrics

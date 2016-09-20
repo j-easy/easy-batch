@@ -316,9 +316,22 @@ public final class JobBuilder {
      *
      * @param jmx true to enable jmx monitoring
      * @return the job builder
+     *
+     * @deprecated Use {@link JobBuilder#enableJmx(boolean)} instead
      */
+    @Deprecated
     public JobBuilder jmxMode(final boolean jmx) {
-        job.getJobReport().getParameters().setJmxMode(jmx);
+        return enableJmx(jmx);
+    }
+
+    /**
+     * Activate JMX monitoring.
+     *
+     * @param jmx true to enable jmx monitoring
+     * @return the job builder
+     */
+    public JobBuilder enableJmx(final boolean jmx) {
+        job.getJobReport().getParameters().setJmxMonitoring(jmx);
         return this;
     }
 
