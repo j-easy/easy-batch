@@ -99,6 +99,7 @@ public final class JobBuilder {
      * @param number the limit number of records to process
      * @return the job builder
      */
+    @Deprecated
     public JobBuilder limit(final long number) {
         checkArgument(number >= 1, "The limit number of records should be >= 1");
         job.getJobReport().getParameters().setLimit(number);
