@@ -112,6 +112,7 @@ public final class JobBuilder {
      * @param timeout the timeout value in milliseconds
      * @return the job builder
      */
+    @Deprecated
     public JobBuilder timeout(final long timeout) {
         return timeout(timeout, TimeUnit.MILLISECONDS);
     }
@@ -123,6 +124,7 @@ public final class JobBuilder {
      * @param unit    the time unit
      * @return the job builder
      */
+    @Deprecated
     public JobBuilder timeout(final long timeout, final TimeUnit unit) {
         checkArgument(timeout >= 1, "The timeout should be >= 1");
         checkNotNull(unit, "time unit");
