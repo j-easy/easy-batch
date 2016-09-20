@@ -301,6 +301,7 @@ public final class JobBuilder {
      * @param silentMode true to enable silent mode
      * @return the job builder
      */
+    @Deprecated
     public JobBuilder silentMode(final boolean silentMode) {
         job.getJobReport().getParameters().setSilentMode(silentMode);
         return this;
