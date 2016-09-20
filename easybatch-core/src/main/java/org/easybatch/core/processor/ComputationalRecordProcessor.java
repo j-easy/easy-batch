@@ -36,6 +36,7 @@ import org.easybatch.core.record.Record;
  * @param <R> The computed result type.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
+@Deprecated
 public interface ComputationalRecordProcessor<I extends Record, O extends Record, R> extends RecordProcessor<I, O> {
 
     /**

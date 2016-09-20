@@ -49,4 +49,8 @@ public class RecordCollector implements ComputationalRecordProcessor<Record, Rec
         return items;
     }
 
+    public List<Record> getRecords() {
+        return items;
+    }
+
 }

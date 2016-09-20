@@ -65,6 +65,7 @@ public class JobReport implements Serializable {
         return metrics;
     }
 
+    @Deprecated
     public Object getResult() {
         return result == null ? null : result.get();
     }
