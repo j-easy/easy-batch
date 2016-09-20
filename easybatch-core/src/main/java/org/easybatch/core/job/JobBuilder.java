@@ -374,7 +374,10 @@ public final class JobBuilder {
      * Build and call the job.
      *
      * @return job execution report
+     *
+     * @deprecated Use {@link JobExecutor#execute(Job)} instead
      */
+    @Deprecated
     public JobReport call() {
         return job.call();
     }
