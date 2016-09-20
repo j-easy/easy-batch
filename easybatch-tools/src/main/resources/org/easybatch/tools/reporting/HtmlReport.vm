@@ -23,7 +23,7 @@
         <br/>
         <h4><span class="label label-info">Name:</span> $report.parameters.name</h4>
         <h4><span class="label label-info">Execution id:</span> $report.parameters.executionId</h4>
-        <h4><span class="label label-info">Host name id:</span> $report.parameters.hostname</h4>
+        <h4><span class="label label-info">Host name:</span> $report.parameters.hostname</h4>
         <h4><span class="label label-info">Data source:</span> $report.parameters.dataSource</h4>
         <br/>
     </div>
@@ -88,7 +88,7 @@
             <tr> <td>Limit</td> <td>$report.formattedLimit</td> </tr>
             <tr> <td>Skip</td> <td>$report.parameters.skip</td> </tr>
             <tr> <td>Timeout</td> <td>$report.formattedTimeout</td> </tr>
-            <tr> <td>Strict mode</td> <td>$report.parameters.strictMode</td> </tr>
+            <tr> <td>Error threshold</td> <td>$report.parameters.errorThreshold</td> </tr>
             <tr> <td>Silent mode</td> <td>$report.parameters.silentMode</td> </tr>
             <tr> <td>JMX mode</td> <td>$report.parameters.jmxMode</td> </tr>
             <tr> <td>Keep alive</td> <td>$report.parameters.keepAlive</td> </tr>

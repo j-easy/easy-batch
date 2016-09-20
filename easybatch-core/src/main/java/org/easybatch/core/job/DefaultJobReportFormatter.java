@@ -24,6 +24,7 @@
 
 package org.easybatch.core.job;
 
+import static org.easybatch.core.job.JobParameters.DEFAULT_ERROR_THRESHOLD;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
@@ -57,7 +58,8 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
         sb.append(LINE_SEPARATOR).append("\tSkip = ").append(parameters.getSkip());
         sb.append(LINE_SEPARATOR).append("\tLimit = ").append(jobReport.getFormattedLimit());
         sb.append(LINE_SEPARATOR).append("\tTimeout = ").append(jobReport.getFormattedTimeout());
-        sb.append(LINE_SEPARATOR).append("\tStrict mode = ").append(parameters.isStrictMode());
+        long errorThreshold = parameters.getErrorThreshold();
+        sb.append(LINE_SEPARATOR).append("\tError threshold = ").append(errorThreshold != DEFAULT_ERROR_THRESHOLD ? errorThreshold : "N/A");
         sb.append(LINE_SEPARATOR).append("\tSilent mode = ").append(parameters.isSilentMode());
         sb.append(LINE_SEPARATOR).append("\tJmx mode = ").append(parameters.isJmxMode());
 

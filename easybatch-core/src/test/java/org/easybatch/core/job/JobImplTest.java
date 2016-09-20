@@ -231,14 +231,14 @@ public class JobImplTest {
     }
 
     @Test
-    public void whenStrictModeIsEnabled_ThenTheJobShouldBeAbortedOnFirstProcessingExceptionIfAny() throws Exception {
+    public void whenErrorThresholdIsSpecified_thenTheJobShouldBeAbortedWhenThresholdExceeded() throws Exception {
         when(firstProcessor.processRecord(record1)).thenReturn(record1);
         when(secondProcessor.processRecord(record1)).thenThrow(recordProcessingException);
         job = new JobBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
-                .strictMode(true)
+                .errorThreshold(1)
                 .build();
         JobReport jobReport = JobExecutor.execute(job);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);

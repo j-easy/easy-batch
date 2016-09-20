@@ -124,8 +124,8 @@ final class JobImpl implements Job {
                 try {
                     pipeline.process(currentRecord);
                 } catch (RecordProcessingException e) {
-                    if (parameters.isStrictMode()) {
-                        LOGGER.info("Strict mode enabled: aborting execution");
+                    if (metrics.getErrorCount() >= parameters.getErrorThreshold()) {
+                        LOGGER.info("Error threshold exceeded: aborting execution");
                         report.setStatus(JobStatus.ABORTED);
                         report.getMetrics().setLastError(e);
                         break;

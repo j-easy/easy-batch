@@ -33,6 +33,7 @@ import org.easybatch.core.util.Utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.easybatch.core.job.JobParameters.DEFAULT_ERROR_THRESHOLD;
 import static org.easybatch.core.job.JobParameters.DEFAULT_LIMIT;
 import static org.easybatch.core.job.JobParameters.DEFAULT_TIMEOUT;
 import static org.easybatch.core.util.Utils.toMinutes;
@@ -60,6 +61,7 @@ class DefaultJobListener implements JobListener {
         String dataSource = jobParameters.getDataSource();
         long limit = jobParameters.getLimit();
         long timeout = jobParameters.getTimeout();
+        long errorThreshold = jobParameters.getErrorThreshold();
         String jobName = jobParameters.getName();
         RetryPolicy retryPolicy = jobParameters.getRetryPolicy();
 
@@ -72,7 +74,7 @@ class DefaultJobListener implements JobListener {
         LOGGER.log(Level.INFO, "Skip: {0}", jobParameters.getSkip());
         LOGGER.log(Level.INFO, "Limit: {0}", limit != DEFAULT_LIMIT ? limit : "N/A");
         LOGGER.log(Level.INFO, "Timeout: {0}", timeout != DEFAULT_TIMEOUT ? toMinutes(timeout) + "m" : "N/A");
-        LOGGER.log(Level.INFO, "Strict mode: {0}", jobParameters.isStrictMode());
+        LOGGER.log(Level.INFO, "Error threshold: {0}", errorThreshold != DEFAULT_ERROR_THRESHOLD ? errorThreshold : "N/A");
         LOGGER.log(Level.INFO, "Silent mode: {0}", jobParameters.isSilentMode());
         LOGGER.log(Level.INFO, "Jmx mode: {0}", jobParameters.isJmxMode());
         LOGGER.log(Level.INFO, "Job ''{0}'' started", jobName);

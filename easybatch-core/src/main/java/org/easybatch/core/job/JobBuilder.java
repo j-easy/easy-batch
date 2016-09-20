@@ -273,9 +273,25 @@ public final class JobBuilder {
      *
      * @param strictMode true if strict mode should be enabled
      * @return the job builder
+     *
+     * @deprecated Use {@link JobBuilder#errorThreshold(long)} instead
      */
+    @Deprecated
     public JobBuilder strictMode(final boolean strictMode) {
-        job.getJobReport().getParameters().setStrictMode(strictMode);
+        if (strictMode) {
+            return errorThreshold(1);
+        }
+        return this;
+    }
+
+    /**
+     * Set a limit for errors. When the threshold is exceeded, the job will be aborted
+     *
+     * @param errorThreshold the errors limit
+     * @return the job builder
+     */
+    public JobBuilder errorThreshold(final long errorThreshold) {
+        job.getJobReport().getParameters().setErrorThreshold(errorThreshold);
         return this;
     }
 
