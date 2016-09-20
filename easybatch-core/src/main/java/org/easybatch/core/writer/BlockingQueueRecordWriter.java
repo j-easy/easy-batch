@@ -54,11 +54,9 @@ public class BlockingQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(List<Record> records) throws Exception {
-        for (Record record : records) {
-            for (BlockingQueue<Record> queue : blockingQueues) {
-                queue.put(record);
-            }
+    public void writeRecord(Record record) throws Exception {
+        for (BlockingQueue<Record> queue : blockingQueues) {
+            queue.put(record);
         }
     }
 

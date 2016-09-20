@@ -25,11 +25,10 @@
 package org.easybatch.extensions.hibernate;
 
 import org.easybatch.core.listener.BatchListener;
-import org.easybatch.core.record.Record;
+import org.easybatch.core.record.Batch;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,12 +64,12 @@ public class HibernateTransactionListener implements BatchListener {
     }
 
     @Override
-    public void afterBatchProcessing(List<Record> records) {
+    public void afterBatchProcessing(Batch batch) {
         // no op
     }
 
     @Override
-    public void afterBatchWriting(List<Record> records) {
+    public void afterBatchWriting(Batch batch) {
         try {
             session.flush();
             session.clear();
@@ -82,7 +81,7 @@ public class HibernateTransactionListener implements BatchListener {
     }
 
     @Override
-    public void onBatchWritingException(List<Record> records, Throwable throwable) {
+    public void onBatchWritingException(Batch batch, Throwable throwable) {
         try {
             transaction.rollback();
             LOGGER.info("Transaction rolled back");

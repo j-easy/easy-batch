@@ -34,7 +34,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -68,7 +67,8 @@ public class ContentBasedBlockingQueueRecordWriterTest {
 
     @Test
     public void orangeRecordShouldBeWrittenToOrangeQueue() throws Exception {
-        contentBasedQueueRecordWriter.writeRecords(asList(orangeRecord, appleRecord));
+        contentBasedQueueRecordWriter.writeRecord(orangeRecord);
+        contentBasedQueueRecordWriter.writeRecord(appleRecord);
         assertThat(orangeQueue).containsOnly(orangeRecord);
         assertThat(defaultQueue).containsOnly(appleRecord);
     }

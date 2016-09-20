@@ -25,11 +25,10 @@
 package org.easybatch.jdbc;
 
 import org.easybatch.core.listener.BatchListener;
-import org.easybatch.core.record.Record;
+import org.easybatch.core.record.Batch;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,8 +44,6 @@ public class JdbcTransactionListener implements BatchListener {
     private static final Logger LOGGER = Logger.getLogger(JdbcTransactionListener.class.getSimpleName());
 
     private Connection connection;
-
-    private long recordNumber;
 
     /**
      * Create a JDBC transaction listener.
@@ -64,12 +61,12 @@ public class JdbcTransactionListener implements BatchListener {
     }
 
     @Override
-    public void afterBatchProcessing(List<Record> records) {
+    public void afterBatchProcessing(Batch batch) {
         // no op
     }
 
     @Override
-    public void afterBatchWriting(List<Record> records) {
+    public void afterBatchWriting(Batch batch) {
         try {
             connection.commit();
             LOGGER.info("Transaction committed");
@@ -79,7 +76,7 @@ public class JdbcTransactionListener implements BatchListener {
     }
 
     @Override
-    public void onBatchWritingException(List<Record> records, Throwable throwable) {
+    public void onBatchWritingException(Batch batch, Throwable throwable) {
         try {
             connection.rollback();
             LOGGER.info("Transaction rolled back");

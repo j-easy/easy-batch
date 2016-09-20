@@ -1,6 +1,6 @@
 package org.easybatch.core.listener;
 
-import org.easybatch.core.record.Record;
+import org.easybatch.core.record.Batch;
 
 import java.util.List;
 
@@ -28,23 +28,23 @@ public class CompositeBatchListener implements BatchListener {
     }
 
     @Override
-    public void afterBatchProcessing(List<Record> records) {
+    public void afterBatchProcessing(Batch batch) {
         for (BatchListener listener : listeners) {
-            listener.afterBatchProcessing(records);
+            listener.afterBatchProcessing(batch);
         }
     }
 
     @Override
-    public void afterBatchWriting(List<Record> records) {
+    public void afterBatchWriting(Batch batch) {
         for (BatchListener listener : listeners) {
-            listener.afterBatchWriting(records);
+            listener.afterBatchWriting(batch);
         }
     }
 
     @Override
-    public void onBatchWritingException(List<Record> records, Throwable throwable) {
+    public void onBatchWritingException(Batch batch, Throwable throwable) {
         for (BatchListener listener : listeners) {
-            listener.onBatchWritingException(records, throwable);
+            listener.onBatchWritingException(batch, throwable);
         }
     }
 }

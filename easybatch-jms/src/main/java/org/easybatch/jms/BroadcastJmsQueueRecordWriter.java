@@ -58,11 +58,9 @@ public class BroadcastJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(List<Record> records) throws Exception {
-        for (Record record : records) {
-            for (QueueSender queue : queues) {
-                queue.send((Message) record.getPayload());
-            }
+    public void writeRecord(Record record) throws Exception {
+        for (QueueSender queue : queues) {
+            queue.send((Message) record.getPayload());
         }
     }
 

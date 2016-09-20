@@ -26,32 +26,31 @@ package org.easybatch.core.listener;
 
 import org.easybatch.core.record.Record;
 
-import java.util.List;
-
 /**
- * Enables the implementing class to get notified before/after reading a record.
+ * Enables the implementing class to get notified before/after writing a record.
  *
  * @author Mario Mueller (mario@xenji.com)
  */
 public interface RecordWriterListener {
 
     /**
-     * Called before writing each batch of records.
+     * Called before writing each record.
      */
-    void beforeRecordWriting(List<Record> batch);
+    void beforeRecordWriting(final Record record);
 
     /**
-     * Called after writing each batch of records.
+     * Called after writing each record.
      *
-     * @param batch The batch of records written.
+     * @param record written.
      */
-    void afterRecordWriting(List<Record> batch);
+    void afterRecordWriting(final Record record);
 
     /**
-     * Called when an exception occurs during record reading.
+     * Called when an exception occurs during record writing.
      *
-     * @param throwable the throwable thrown during record reading
+     * @param record attempted to be written
+     * @param throwable the throwable thrown during record writing
      */
-    void onRecordWritingException(List<Record> batch, final Throwable throwable);
+    void onRecordWritingException(final Record record, final Throwable throwable);
 
 }

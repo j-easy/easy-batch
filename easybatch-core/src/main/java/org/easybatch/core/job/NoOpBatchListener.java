@@ -1,9 +1,7 @@
 package org.easybatch.core.job;
 
 import org.easybatch.core.listener.BatchListener;
-import org.easybatch.core.record.Record;
-
-import java.util.List;
+import org.easybatch.core.record.Batch;
 
 class NoOpBatchListener implements BatchListener {
 
@@ -14,17 +12,17 @@ class NoOpBatchListener implements BatchListener {
     }
 
     @Override
-    public void afterBatchProcessing(List<Record> records) {
+    public void afterBatchProcessing(final Batch batch) {
 
     }
 
     @Override
-    public void afterBatchWriting(List<Record> records) {
+    public void afterBatchWriting(final Batch batch) {
 
     }
 
     @Override
-    public void onBatchWritingException(List<Record> records, Throwable throwable) {
+    public void onBatchWritingException(final Batch batch, final Throwable throwable) {
 
     }
 }

@@ -33,7 +33,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.jms.QueueSender;
 
-import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -61,14 +60,14 @@ public class ContentBasedJmsQueueRecordWriterTest {
 
     @Test
     public void orangeRecordShouldBeDispatchedToOrangeQueue() throws Exception {
-        recordDispatcher.writeRecords(singletonList(orangeRecord));
+        recordDispatcher.writeRecord(orangeRecord);
         verify(orangeQueue).send(orangeRecord.getPayload());
         verifyZeroInteractions(defaultQueue);
     }
 
     @Test
     public void nonOrangeRecordShouldBeDispatchedToDefaultQueue() throws Exception {
-        recordDispatcher.writeRecords(singletonList(appleRecord));
+        recordDispatcher.writeRecord(appleRecord);
         verify(defaultQueue).send(appleRecord.getPayload());
         verifyZeroInteractions(orangeQueue);
     }

@@ -8,10 +8,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -35,7 +33,7 @@ public class RetryableRecordWriterTest {
         recordWriter = new RetryableRecordWriter(new UnreliableDataSinkWriter(), retryPolicy);
 
         // When
-        recordWriter.writeRecords(singletonList(record));
+        recordWriter.writeRecord(record);
 
         // Then
         // Expecting exception
@@ -48,7 +46,7 @@ public class RetryableRecordWriterTest {
         recordWriter = new RetryableRecordWriter(delegate, retryPolicy);
 
         // When
-        recordWriter.writeRecords(singletonList(record));
+        recordWriter.writeRecord(record);
 
         // Then
         assertThat(delegate.isExecuted()).isTrue();
@@ -60,7 +58,7 @@ public class RetryableRecordWriterTest {
         }
 
         @Override
-        public void writeRecords(List<Record> records) throws Exception {
+        public void writeRecord(Record record) throws Exception {
             throw new Exception("Data source temporarily down");
         }
 
@@ -78,7 +76,7 @@ public class RetryableRecordWriterTest {
         }
 
         @Override
-        public void writeRecords(List<Record> records) throws Exception {
+        public void writeRecord(Record record) throws Exception {
             if (++attempts <= 2) {
                 throw new Exception("Data sink temporarily down");
             }

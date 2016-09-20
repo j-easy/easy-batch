@@ -34,7 +34,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.*;
@@ -67,7 +66,7 @@ public class FileRecordWriterTest {
 
     @Test
     public void testFileWriting() throws Exception {
-        writer.writeRecords(Collections.singletonList(record));
+        writer.writeRecord(record);
 
         assertThat(file).hasContent(PAYLOAD + LINE_SEPARATOR);
     }

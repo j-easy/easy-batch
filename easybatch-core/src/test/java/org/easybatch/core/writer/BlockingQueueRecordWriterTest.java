@@ -56,7 +56,9 @@ public class BlockingQueueRecordWriterTest {
 
     @Test
     public void testWriteRecords() throws Exception {
-        writer.writeRecords(asList(record1, record2));
+        for(Record record : asList(record1, record2)) {
+            writer.writeRecord(record);
+        }
         assertThat(queue1).containsExactly(record1, record2);
         assertThat(queue2).containsExactly(record1, record2);
     }

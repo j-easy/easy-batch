@@ -30,7 +30,6 @@ import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.record.Header;
 
 import javax.jms.QueueSender;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -60,7 +59,7 @@ public class JmsPoisonRecordBroadcaster implements JobListener {
     @Override
     public void afterJobEnd(final JobReport jobReport) {
         try {
-            broadcastJmsQueueRecordWriter.writeRecords(Collections.singletonList(new JmsPoisonRecord(new Header(0L, "Poison record", new Date()), new JmsPoisonMessage())));
+            broadcastJmsQueueRecordWriter.writeRecord(new JmsPoisonRecord(new Header(0L, "Poison record", new Date()), new JmsPoisonMessage()));
         } catch (Exception e) {
             throw new RuntimeException("Unable to broadcast poison record.", e);
         }

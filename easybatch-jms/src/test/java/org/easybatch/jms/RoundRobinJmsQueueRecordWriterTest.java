@@ -35,8 +35,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.jms.QueueSender;
 import java.util.Arrays;
 
-import static java.util.Collections.singletonList;
-
 @RunWith(MockitoJUnitRunner.class)
 public class RoundRobinJmsQueueRecordWriterTest {
 
@@ -59,9 +57,9 @@ public class RoundRobinJmsQueueRecordWriterTest {
     @Test
     public void regularRecordsShouldBeDispatchedToQueuesInRoundRobinFashion() throws Exception {
 
-        roundRobinJmsQueueRecordWriter.writeRecords(singletonList(record1));
-        roundRobinJmsQueueRecordWriter.writeRecords(singletonList((record2)));
-        roundRobinJmsQueueRecordWriter.writeRecords(singletonList((record3)));
+        roundRobinJmsQueueRecordWriter.writeRecord(record1);
+        roundRobinJmsQueueRecordWriter.writeRecord(record2);
+        roundRobinJmsQueueRecordWriter.writeRecord(record3);
 
         InOrder inOrder = Mockito.inOrder(queue1, queue2, record1, record2, record3);
         inOrder.verify(queue1).send(record1.getPayload());

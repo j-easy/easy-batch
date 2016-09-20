@@ -25,11 +25,10 @@
 package org.easybatch.jpa;
 
 import org.easybatch.core.listener.BatchListener;
-import org.easybatch.core.record.Record;
+import org.easybatch.core.record.Batch;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -67,12 +66,12 @@ public class JpaTransactionListener implements BatchListener {
     }
 
     @Override
-    public void afterBatchProcessing(List<Record> records) {
+    public void afterBatchProcessing(Batch batch) {
         // no op
     }
 
     @Override
-    public void afterBatchWriting(List<Record> records) {
+    public void afterBatchWriting(Batch batch) {
         try {
             entityManager.flush();
             entityManager.clear();
@@ -84,7 +83,7 @@ public class JpaTransactionListener implements BatchListener {
     }
 
     @Override
-    public void onBatchWritingException(List<Record> records, Throwable throwable) {
+    public void onBatchWritingException(Batch batch, Throwable throwable) {
         try {
             transaction.rollback();
             LOGGER.info("Transaction rolled back");

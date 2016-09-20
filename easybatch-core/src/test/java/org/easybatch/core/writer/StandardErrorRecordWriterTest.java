@@ -33,8 +33,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Collections;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.mockito.Mockito.when;
@@ -65,7 +63,7 @@ public class StandardErrorRecordWriterTest {
 
     @Test
     public void testRecordPayloadWriting() throws Exception {
-        writer.writeRecords(Collections.singletonList(record));
+        writer.writeRecord(record);
 
         assertThat(systemErr.getLog()).isEqualTo(PAYLOAD + LINE_SEPARATOR);
     }

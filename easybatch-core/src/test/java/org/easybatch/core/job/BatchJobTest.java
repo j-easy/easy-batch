@@ -4,6 +4,7 @@ import org.easybatch.core.filter.RecordFilter;
 import org.easybatch.core.listener.*;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.validator.RecordValidator;
 import org.easybatch.core.writer.RecordWriter;
@@ -18,9 +19,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
-import java.util.List;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.JMX_MBEAN_NAME;
@@ -105,8 +104,8 @@ public class BatchJobTest {
         inOrder.verify(firstProcessor).processRecord(record2);
         inOrder.verify(secondProcessor).processRecord(record2);
 
-        inOrder.verify(writer).writeRecords(asList(record1, record2));
-
+        inOrder.verify(writer).writeRecord(record1);
+        inOrder.verify(writer).writeRecord(record2);
     }
 
     @Test
@@ -187,7 +186,7 @@ public class BatchJobTest {
 
     @Test
     public void whenNotAbleToWriteRecords_ThenTheJobShouldFail() throws Exception {
-        doThrow(exception).when(writer).writeRecords(asList(record1, record2));
+        doThrow(exception).when(writer).writeRecord(record1);
 
         JobReport jobReport = JobExecutor.execute(job);
 
@@ -301,30 +300,33 @@ public class BatchJobTest {
 
         job.call();
 
-        List<Record> batch1 = singletonList(record1);
-        List<Record> batch2 = singletonList(record2);
-        verify(batchListener, times(3)).beforeBatchReading();
-        verify(batchListener).afterBatchProcessing(batch1);
-        verify(batchListener).afterBatchProcessing(batch2);
-        verify(batchListener).afterBatchWriting(batch1);
-        verify(batchListener).afterBatchWriting(batch2);
+        Batch batch1 = new Batch(singletonList(record1));
+        Batch batch2 = new Batch(singletonList(record2));
+
+        InOrder inOrder = Mockito.inOrder(batchListener);
+        inOrder.verify(batchListener).beforeBatchReading();
+        inOrder.verify(batchListener).afterBatchProcessing(batch1);
+        inOrder.verify(batchListener).afterBatchWriting(batch1);
+        inOrder.verify(batchListener).beforeBatchReading();
+        inOrder.verify(batchListener).afterBatchProcessing(batch2);
+        inOrder.verify(batchListener).afterBatchWriting(batch2);
+        inOrder.verify(batchListener).beforeBatchReading();
     }
 
     @Test
     public void whenWriterThrowsException_thenBatchListenerShouldBeInvoked() throws Exception {
-        when(reader.readRecord()).thenReturn(record1, record2, null);
-        doThrow(exception).when(writer).writeRecords(asList(record1, record2));
+        when(reader.readRecord()).thenReturn(record1, null);
+        doThrow(exception).when(writer).writeRecord(record1);
 
         job = new JobBuilder()
                 .reader(reader)
                 .writer(writer)
                 .batchListener(batchListener)
-                .batchSize(2)
                 .build();
 
         job.call();
 
-        List<Record> batch = asList(record1, record2);
+        Batch batch = new Batch(singletonList(record1));
         verify(batchListener, times(1)).beforeBatchReading();
         verify(batchListener).onBatchWritingException(batch, exception);
     }
@@ -364,7 +366,7 @@ public class BatchJobTest {
      * Writer listener
      */
     @Test
-    public void recordWriterListenerShouldBeInvokedForEachBatch() throws Exception {
+    public void recordWriterListenerShouldBeInvokedForEachRecord() throws Exception {
         when(reader.readRecord()).thenReturn(record1, record2, null);
         job = new JobBuilder()
                 .reader(reader)
@@ -375,15 +377,15 @@ public class BatchJobTest {
 
         job.call();
 
-        List<Record> batch = asList(record1, record2);
-        verify(recordWriterListener).beforeRecordWriting(batch);
-        verify(recordWriterListener).afterRecordWriting(batch);
+        verify(recordWriterListener).beforeRecordWriting(record1);
+        verify(recordWriterListener).afterRecordWriting(record1);
+        verify(recordWriterListener).beforeRecordWriting(record2);
+        verify(recordWriterListener).afterRecordWriting(record2);
     }
 
     @Test
     public void whenRecordWriterThrowException_thenWriterListenerShouldBeInvoked() throws Exception {
-        List<Record> records = asList(record1, record2);
-        doThrow(exception).when(writer).writeRecords(records);
+        doThrow(exception).when(writer).writeRecord(record1);
         job = new JobBuilder()
                 .reader(reader)
                 .writer(writer)
@@ -392,7 +394,7 @@ public class BatchJobTest {
 
         job.call();
 
-        verify(recordWriterListener).onRecordWritingException(records, exception);
+        verify(recordWriterListener).onRecordWritingException(record1, exception);
     }
 
     /*

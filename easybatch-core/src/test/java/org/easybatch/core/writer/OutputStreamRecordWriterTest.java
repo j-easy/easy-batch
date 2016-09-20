@@ -26,7 +26,6 @@ package org.easybatch.core.writer;
 
 import org.easybatch.core.reader.StringRecordReader;
 import org.easybatch.core.record.Record;
-import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,10 +34,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.OutputStreamWriter;
-import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
@@ -74,7 +70,7 @@ public class OutputStreamRecordWriterTest {
 
     @Test
     public void testWriteRecords() throws Exception {
-        outputStreamRecordWriter.writeRecords(Collections.singletonList(stringRecord));
+        outputStreamRecordWriter.writeRecord(stringRecord);
 
         verify(outputStreamWriter).write(PAYLOAD);
         verify(outputStreamWriter).write(LINE_SEPARATOR);

@@ -31,7 +31,6 @@ import org.easybatch.core.writer.RecordWriter;
 
 import javax.jms.Message;
 import javax.jms.QueueSender;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,23 +56,21 @@ public class ContentBasedJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(List<Record> records) throws Exception {
-        for (Record record : records) {
-            Message payload = (Message) record.getPayload();
-            for (Map.Entry<Predicate, QueueSender> entry : queueMap.entrySet()) {
-                Predicate predicate = entry.getKey();
-                //check if the record meets a given predicate
-                if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
-                    //put it in the mapped queue
-                    queueMap.get(predicate).send(payload);
-                    return;
-                }
+    public void writeRecord(Record record) throws Exception {
+        Message payload = (Message) record.getPayload();
+        for (Map.Entry<Predicate, QueueSender> entry : queueMap.entrySet()) {
+            Predicate predicate = entry.getKey();
+            //check if the record meets a given predicate
+            if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
+                //put it in the mapped queue
+                queueMap.get(predicate).send(payload);
+                return;
             }
-            //if the record does not match any predicate, then put it in the default queue
-            QueueSender defaultQueue = queueMap.get(new DefaultPredicate());
-            if (defaultQueue != null) {
-                defaultQueue.send(payload);
-            }
+        }
+        //if the record does not match any predicate, then put it in the default queue
+        QueueSender defaultQueue = queueMap.get(new DefaultPredicate());
+        if (defaultQueue != null) {
+            defaultQueue.send(payload);
         }
     }
 

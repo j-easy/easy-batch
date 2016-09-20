@@ -35,7 +35,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -57,7 +56,7 @@ public class RandomBlockingQueueRecordWriterTest {
 
     @Test
     public void recordsShouldBeWrittenRandomlyToOneOfTheQueues() throws Exception {
-        randomQueueRecordWriter.writeRecords(singletonList(record));
+        randomQueueRecordWriter.writeRecord(record);
 
         if (queue1.isEmpty()) {
             assertThat(queue2).containsOnly(record);

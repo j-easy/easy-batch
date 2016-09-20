@@ -26,8 +26,6 @@ package org.easybatch.core.writer;
 
 import org.easybatch.core.record.Record;
 
-import java.util.List;
-
 /**
  * Interface for all record writers.
  *
@@ -42,12 +40,12 @@ public interface RecordWriter {
     void open() throws Exception;
 
     /**
-     * Write records to a data sink.
+     * Write record to a data sink.
      *
-     * @param records the records to write.
+     * @param record the record to write.
      * @throws Exception if an error occurs during record writing
      */
-    void writeRecords(List<Record> records) throws Exception;
+    void writeRecord(Record record) throws Exception;
 
     /**
      * Close the writer

@@ -4,12 +4,11 @@ import org.easybatch.core.listener.*;
 import org.easybatch.core.processor.CompositeRecordProcessor;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.writer.RecordWriter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -141,7 +140,7 @@ class BatchJob implements Job {
              */
             batchListener.beforeBatchReading();
 
-            List<Record> batch = new ArrayList<>();
+            Batch batch = new Batch();
             for (int i = 0; i < parameters.getBatchSize(); i++) {
 
                 /*
@@ -184,7 +183,7 @@ class BatchJob implements Job {
                         LOGGER.log(Level.INFO, "{0} has been filtered", record);
                         metrics.incrementFilteredCount();
                     } else {
-                        batch.add(processedRecord);
+                        batch.addRecord(processedRecord);
                     }
                 } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "Unable to process " + record, e);
@@ -208,17 +207,19 @@ class BatchJob implements Job {
             /*
              * Write records
              */
+            Record recordToWrite = null;
             try {
-                if (!batch.isEmpty()) {
-                    recordWriterListener.beforeRecordWriting(batch);
-                    recordWriter.writeRecords(batch);
-                    recordWriterListener.afterRecordWriting(batch);
-                    batchListener.afterBatchWriting(batch);
-                    metrics.incrementWriteCount(batch.size());
+                for (Record record : batch.getRecords()) {
+                    recordToWrite = record;
+                    recordWriterListener.beforeRecordWriting(record);
+                    recordWriter.writeRecord(record);
+                    recordWriterListener.afterRecordWriting(record);
                 }
+                batchListener.afterBatchWriting(batch);
+                metrics.incrementWriteCount(batch.size());
             } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "Unable to write records", e);
-                recordWriterListener.onRecordWritingException(batch, e);
+                recordWriterListener.onRecordWritingException(recordToWrite, e);
                 batchListener.onBatchWritingException(batch, e);
                 executed = true;
                 report.setStatus(JobStatus.FAILED);

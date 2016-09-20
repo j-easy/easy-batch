@@ -56,7 +56,9 @@ public class RoundRobinBlockingQueueRecordWriterTest {
 
     @Test
     public void recordsShouldBeWrittenToQueuesInRoundRobinFashion() throws Exception {
-        roundRobinQueueRecordWriter.writeRecords(asList(record1, record2, record3, record4));
+        for (Record record : asList(record1, record2, record3, record4)) {
+            roundRobinQueueRecordWriter.writeRecord(record);
+        }
 
         assertThat(queue1).containsExactly(record1, record3);
         assertThat(queue2).containsExactly(record2, record4);

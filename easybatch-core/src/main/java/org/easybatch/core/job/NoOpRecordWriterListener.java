@@ -3,22 +3,20 @@ package org.easybatch.core.job;
 import org.easybatch.core.listener.RecordWriterListener;
 import org.easybatch.core.record.Record;
 
-import java.util.List;
-
 class NoOpRecordWriterListener implements RecordWriterListener {
 
     @Override
-    public void beforeRecordWriting(List<Record> batch) {
+    public void beforeRecordWriting(Record record) {
 
     }
 
     @Override
-    public void afterRecordWriting(List<Record> batch) {
+    public void afterRecordWriting(Record record) {
 
     }
 
     @Override
-    public void onRecordWritingException(List<Record> batch, Throwable throwable) {
+    public void onRecordWritingException(Record record, Throwable throwable) {
 
     }
 }

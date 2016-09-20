@@ -34,7 +34,6 @@ import javax.jms.Message;
 import javax.jms.QueueSender;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -59,7 +58,7 @@ public class BroadcastJmsQueueRecordWriterTest {
 
     @Test
     public void testBroadcastJmsRecord() throws Exception {
-        broadcastJmsQueueRecordWriter.writeRecords(singletonList(jmsRecord));
+        broadcastJmsQueueRecordWriter.writeRecord(jmsRecord);
 
         verify(queue1).send(message);
         verify(queue2).send(message);

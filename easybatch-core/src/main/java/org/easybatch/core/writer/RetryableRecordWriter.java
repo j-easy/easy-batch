@@ -4,7 +4,6 @@ import org.easybatch.core.record.Record;
 import org.easybatch.core.retry.RetryPolicy;
 import org.easybatch.core.retry.RetryTemplate;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,8 +35,8 @@ public class RetryableRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(List<Record> records) throws Exception {
-        recordWritingTemplate.execute(new RecordWritingCallable(delegate, records));
+    public void writeRecord(Record record) throws Exception {
+        recordWritingTemplate.execute(new RecordWritingCallable(delegate, record));
     }
 
     @Override
@@ -49,16 +48,16 @@ public class RetryableRecordWriter implements RecordWriter {
 
         private RecordWriter recordWriter;
 
-        private List<Record> records;
+        private Record record;
 
-        RecordWritingCallable(RecordWriter recordWriter, List<Record> records) {
+        RecordWritingCallable(RecordWriter recordWriter, Record record) {
             this.recordWriter = recordWriter;
-            this.records = records;
+            this.record = record;
         }
 
         @Override
         public Void call() throws Exception {
-            recordWriter.writeRecords(records);
+            recordWriter.writeRecord(record);
             return null;
         }
 

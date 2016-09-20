@@ -23,23 +23,23 @@ public class CompositeRecordWriterListener implements RecordWriterListener {
     }
 
     @Override
-    public void beforeRecordWriting(List<Record> batch) {
+    public void beforeRecordWriting(Record record) {
         for (RecordWriterListener listener : listeners) {
-            listener.beforeRecordWriting(batch);
+            listener.beforeRecordWriting(record);
         }
     }
 
     @Override
-    public void afterRecordWriting(List<Record> batch) {
+    public void afterRecordWriting(Record record) {
         for (RecordWriterListener listener : listeners) {
-            listener.afterRecordWriting(batch);
+            listener.afterRecordWriting(record);
         }
     }
 
     @Override
-    public void onRecordWritingException(List<Record> batch, Throwable throwable) {
+    public void onRecordWritingException(Record record, Throwable throwable) {
         for (RecordWriterListener listener : listeners) {
-            listener.onRecordWritingException(batch, throwable);
+            listener.onRecordWritingException(record, throwable);
         }
     }
 }

@@ -70,12 +70,10 @@ public class RandomBlockingQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(List<Record> records) throws Exception {
+    public void writeRecord(Record record) throws Exception {
         //dispatch record randomly to one of the queues
-        for (Record record : records) {
-            BlockingQueue<Record> queue = queues.get(random.nextInt(queuesNumber));
-            queue.put(record);
-        }
+        BlockingQueue<Record> queue = queues.get(random.nextInt(queuesNumber));
+        queue.put(record);
     }
 
     @Override

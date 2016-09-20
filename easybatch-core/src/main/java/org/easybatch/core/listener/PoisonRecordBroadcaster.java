@@ -33,8 +33,6 @@ import org.easybatch.core.writer.BlockingQueueRecordWriter;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-import static java.util.Collections.singletonList;
-
 /**
  * A job listener that broadcasts a {@link PoisonRecord} record to a list of queues at the end of the job.
  *
@@ -61,7 +59,7 @@ public class PoisonRecordBroadcaster implements JobListener {
     @Override
     public void afterJobEnd(final JobReport jobReport) {
         try {
-            blockingQueueRecordWriter.writeRecords(singletonList(new PoisonRecord()));
+            blockingQueueRecordWriter.writeRecord(new PoisonRecord());
         } catch (Exception e) {
             throw new RuntimeException("Unable to write poison record.", e);
         }
