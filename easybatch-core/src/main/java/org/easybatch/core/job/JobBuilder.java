@@ -86,6 +86,7 @@ public final class JobBuilder {
      * @param number the number of records to skip
      * @return the job builder
      */
+    @Deprecated
     public JobBuilder skip(final long number) {
         checkArgument(number >= 1, "The number of records to skip should be >= 1");
         job.getJobReport().getParameters().setSkip(number);
