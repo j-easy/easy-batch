@@ -84,7 +84,7 @@ public class JmsQueueRecordReader implements RecordReader {
 
     @Override
     public JmsRecord readRecord() throws Exception {
-        if (!stop) {
+        if (hasNextRecord()) {
             Message message = queueReceiver.receive();
             String type = message.getJMSType();
             stop = message instanceof JmsPoisonMessage || (type != null && JmsPoisonMessage.TYPE.equals(type));
