@@ -44,6 +44,8 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 @SuppressWarnings(value = "unchecked") // argh hibernate APIs that return raw types ..
 public class HibernateRecordReader<T> implements RecordReader {
 
+    private SessionFactory sessionFactory;
+
     private Session session;
 
     private String query;
@@ -65,12 +67,13 @@ public class HibernateRecordReader<T> implements RecordReader {
     public HibernateRecordReader(final SessionFactory sessionFactory, final String query) {
         checkNotNull(sessionFactory, "session factory");
         checkNotNull(query, "query");
-        this.session = sessionFactory.openSession();
+        this.sessionFactory = sessionFactory;
         this.query = query;
     }
 
     @Override
     public void open() {
+        session = sessionFactory.openSession();
         currentRecordNumber = 0;
         Query hibernateQuery = session.createQuery(query);
         hibernateQuery.setReadOnly(true);

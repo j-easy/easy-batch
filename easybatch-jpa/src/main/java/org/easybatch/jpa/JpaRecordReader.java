@@ -50,6 +50,8 @@ public class JpaRecordReader<T> implements RecordReader {
 
     public static final int DEFAULT_FETCH_SIZE = 1000;
 
+    private EntityManagerFactory entityManagerFactory;
+
     private EntityManager entityManager;
 
     private String query;
@@ -81,7 +83,7 @@ public class JpaRecordReader<T> implements RecordReader {
         checkNotNull(entityManagerFactory, "entity manager factory");
         checkNotNull(query, "query");
         checkNotNull(type, "target type");
-        this.entityManager = entityManagerFactory.createEntityManager();
+        this.entityManagerFactory = entityManagerFactory;
         this.query = query;
         this.type = type;
         this.fetchSize = DEFAULT_FETCH_SIZE;
@@ -91,6 +93,7 @@ public class JpaRecordReader<T> implements RecordReader {
     public void open() {
         currentRecordNumber = 0;
         offset = 0;
+        entityManager = entityManagerFactory.createEntityManager();
         typedQuery = entityManager.createQuery(query, type);
         typedQuery.setFirstResult(offset);
         typedQuery.setMaxResults(fetchSize);

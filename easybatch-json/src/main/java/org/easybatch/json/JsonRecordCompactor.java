@@ -63,7 +63,11 @@ public class JsonRecordCompactor extends RecordCompactor {
             return EMPTY_STRING;
         } finally {
             if (jsonRecordReader != null) {
-                jsonRecordReader.close();
+                try {
+                    jsonRecordReader.close();
+                } catch (Exception e) {
+                    throw new RuntimeException("Unable to close json reader");
+                }
             }
         }
     }

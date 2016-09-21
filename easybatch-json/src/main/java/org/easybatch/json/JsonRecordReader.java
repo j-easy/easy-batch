@@ -177,8 +177,11 @@ public class JsonRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() {
+    public void close() throws Exception {
         parser.close();
+        if (inputStream != null) {
+            inputStream.close();
+        }
     }
 
     private boolean isEndRootObject() {
