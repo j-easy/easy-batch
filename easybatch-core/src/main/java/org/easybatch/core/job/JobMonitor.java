@@ -68,14 +68,6 @@ class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBe
      * {@inheritDoc}
      */
     @Override
-    public String getJobExecutionId() {
-        return jobReport.getParameters().getExecutionId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public long getReadCount() {
         return jobReport.getMetrics().getReadCount();
     }
@@ -143,13 +135,13 @@ class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBe
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
         try {
-            name = new ObjectName(JMX_MBEAN_NAME + "name=" + job.getName() + ",id=" + job.getExecutionId());
+            name = new ObjectName(JMX_MBEAN_NAME + "name=" + job.getName());
             if (!mbs.isRegistered(name)) {
                 mbs.registerMBean(this, name);
                 LOGGER.log(Level.INFO, "JMX MBean registered successfully as: {0}", name.getCanonicalName());
             }
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, String.format("Unable to register MBean for job %s with execution id %s", job.getName(), job.getExecutionId()), e);
+            LOGGER.log(Level.WARNING, String.format("Unable to register MBean for job %s", job.getName()), e);
         }
     }
 }

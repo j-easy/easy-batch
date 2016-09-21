@@ -40,7 +40,6 @@ class BatchJob implements Job {
     private JobMetrics metrics;
     private JobReport report;
     private JobMonitor monitor;
-    private boolean executed;
 
     static {
         try {
@@ -56,11 +55,6 @@ class BatchJob implements Job {
     @Override
     public String getName() {
         return parameters.getName();
-    }
-
-    @Override
-    public String getExecutionId() {
-        return parameters.getExecutionId();
     }
 
     BatchJob(JobParameters parameters) {
@@ -82,14 +76,9 @@ class BatchJob implements Job {
 
     @Override
     public JobReport call() {
-        if (executed) {
-            throw new IllegalStateException("Job already executed with execution id = " + parameters.getExecutionId());
-        }
-
         report.setStatus(JobStatus.STARTING);
         metrics.setStartTime(System.currentTimeMillis());
         LOGGER.log(Level.INFO, "Starting job ''{0}''", parameters.getName());
-        LOGGER.log(Level.INFO, "Execution id: {0}", parameters.getExecutionId());
         LOGGER.log(Level.INFO, "Batch size: {0}", parameters.getBatchSize());
         LOGGER.log(Level.INFO, "Error threshold: {0}", formatErrorThreshold(parameters.getErrorThreshold()));
         LOGGER.log(Level.INFO, "Jmx monitoring: {0}", parameters.isJmxMonitoring());
@@ -106,7 +95,6 @@ class BatchJob implements Job {
             recordReader.open();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unable to open record reader", e);
-            executed = true;
             report.setStatus(JobStatus.FAILED);
             metrics.setEndTime(System.currentTimeMillis());
             report.setLastError(e);
@@ -121,7 +109,6 @@ class BatchJob implements Job {
             recordWriter.open();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unable to open record writer", e);
-            executed = true;
             report.setStatus(JobStatus.FAILED);
             metrics.setEndTime(System.currentTimeMillis());
             report.setLastError(e);
@@ -160,7 +147,6 @@ class BatchJob implements Job {
                 } catch (Exception e) {
                     e.printStackTrace();
                     recordReaderListener.onRecordReadingException(e);
-                    executed = true;
                     report.setStatus(JobStatus.FAILED);
                     metrics.setEndTime(System.currentTimeMillis());
                     report.setLastError(e);
@@ -192,7 +178,6 @@ class BatchJob implements Job {
                     report.setLastError(e);
                     if (metrics.getErrorCount() > parameters.getErrorThreshold()) {
                         LOGGER.log(Level.SEVERE, "Error threshold exceeded. Aborting execution");
-                        executed = true;
                         report.setStatus(JobStatus.FAILED);
                         metrics.setEndTime(System.currentTimeMillis());
                         jobListener.afterJobEnd(report);
@@ -221,7 +206,6 @@ class BatchJob implements Job {
                 LOGGER.log(Level.SEVERE, "Unable to write records", e);
                 recordWriterListener.onRecordWritingException(recordToWrite, e);
                 batchListener.onBatchWritingException(batch, e);
-                executed = true;
                 report.setStatus(JobStatus.FAILED);
                 metrics.setEndTime(System.currentTimeMillis());
                 report.setLastError(e);
@@ -250,7 +234,6 @@ class BatchJob implements Job {
 
         report.setStatus(JobStatus.COMPLETED);
         metrics.setEndTime(System.currentTimeMillis());
-        executed = true;
         LOGGER.log(Level.INFO, "Job ''{0}'' finished with exit status: {1}", new Object[]{parameters.getName(), report.getStatus()});
         if (parameters.isJmxMonitoring()) {
             monitor.notifyJobReportUpdate();

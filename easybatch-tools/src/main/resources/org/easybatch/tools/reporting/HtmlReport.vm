@@ -22,7 +22,6 @@
         <h1 class="text-center">Job Report</h1>
         <br/>
         <h4><span class="label label-info">Name:</span> $name</h4>
-        <h4><span class="label label-info">Execution id:</span> $executionId</h4>
         <br/>
     </div>
 

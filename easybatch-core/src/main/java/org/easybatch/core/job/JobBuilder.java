@@ -186,17 +186,6 @@ public final class JobBuilder {
     }
 
     /**
-     * Set the execution id for this job.
-     *
-     * @param executionId the execution id
-     * @return the job builder
-     */
-    public JobBuilder executionId(final String executionId) {
-        parameters.setExecutionId(executionId);
-        return this;
-    }
-
-    /**
      * Set the batch size.
      *
      * @param batchSize the batch size

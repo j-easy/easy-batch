@@ -49,7 +49,6 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
         JobParameters parameters = jobReport.getParameters();
         sb.append(LINE_SEPARATOR).append("Parameters:");
         sb.append(LINE_SEPARATOR).append("\tName = ").append(parameters.getName());
-        sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(parameters.getExecutionId());
         sb.append(LINE_SEPARATOR).append("\tBatch size = ").append(parameters.getBatchSize());
         sb.append(LINE_SEPARATOR).append("\tError threshold = ").append(formatErrorThreshold(parameters.getErrorThreshold()));
         sb.append(LINE_SEPARATOR).append("\tJmx monitoring = ").append(parameters.isJmxMonitoring());

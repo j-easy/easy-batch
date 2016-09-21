@@ -83,12 +83,6 @@ public class BatchJobTest {
      * Core batch job implementation tests
      */
 
-    @Test(expected = IllegalStateException.class)
-    public void jobInstanceShouldBeUsedOnlyOnce() throws Exception {
-        JobExecutor.execute(job);
-        JobExecutor.execute(job);
-    }
-
     @Test
     public void allComponentsShouldBeInvokedForEachRecordInOrder() throws Exception {
 
@@ -251,7 +245,7 @@ public class BatchJobTest {
         job = new JobBuilder().enableJmx(true).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(JMX_MBEAN_NAME + "name=" + JobParameters.DEFAULT_JOB_NAME + ",id=" + job.getExecutionId()))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(JMX_MBEAN_NAME + "name=" + JobParameters.DEFAULT_JOB_NAME))).isTrue();
     }
 
     @Test
@@ -260,7 +254,7 @@ public class BatchJobTest {
         job = new JobBuilder().enableJmx(true).named(name).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(JMX_MBEAN_NAME + "name=" + name + ",id=" + job.getExecutionId()))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(JMX_MBEAN_NAME + "name=" + name))).isTrue();
     }
 
     /*

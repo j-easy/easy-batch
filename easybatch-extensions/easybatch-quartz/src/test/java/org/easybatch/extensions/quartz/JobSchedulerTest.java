@@ -50,11 +50,8 @@ public class JobSchedulerTest {
     public void setUp() throws Exception {
         jobScheduler = JobScheduler.getInstance();
 
-        when(job1.getExecutionId()).thenReturn("job1");
-        when(job1.getExecutionId()).thenReturn("123");
-
-        when(job2.getExecutionId()).thenReturn("job2");
-        when(job2.getExecutionId()).thenReturn("456");
+        when(job1.getName()).thenReturn("job1");
+        when(job2.getName()).thenReturn("job2");
     }
 
     @Test
@@ -79,8 +76,8 @@ public class JobSchedulerTest {
         jobScheduler.unschedule(job2);
         assertThat(jobScheduler.isScheduled(job2)).isFalse();
 
-        verify(job1, times(4)).getExecutionId();
-        verify(job2, times(4)).getExecutionId();
+        verify(job1, times(4)).getName();
+        verify(job2, times(4)).getName();
 
         jobScheduler.stop();
         assertThat(jobScheduler.isStopped()).isTrue();

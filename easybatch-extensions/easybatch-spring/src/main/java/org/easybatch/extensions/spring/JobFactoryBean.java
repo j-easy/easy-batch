@@ -53,7 +53,6 @@ public class JobFactoryBean implements FactoryBean {
     private PipelineListener pipelineListener;
 
     private String name = JobParameters.DEFAULT_JOB_NAME;
-    private String executionId;
     private long errorThreshold = JobParameters.DEFAULT_ERROR_THRESHOLD;
     private int batchSize = JobParameters.DEFAULT_BATCH_SIZE;
     private boolean jmxMonitoring;
@@ -74,9 +73,6 @@ public class JobFactoryBean implements FactoryBean {
     private void registerJobParameters(JobBuilder jobBuilder) {
         if (name != null) {
             jobBuilder.named(name);
-        }
-        if (executionId != null) {
-            jobBuilder.executionId(executionId);
         }
         jobBuilder.errorThreshold(errorThreshold);
         jobBuilder.batchSize(batchSize);
@@ -164,10 +160,6 @@ public class JobFactoryBean implements FactoryBean {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setExecutionId(String executionId) {
-        this.executionId = executionId;
     }
 
     public void setErrorThreshold(long errorThreshold) {

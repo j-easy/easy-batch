@@ -25,7 +25,6 @@
 package org.easybatch.core.job;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * Parameters of a job.
@@ -42,8 +41,6 @@ public class JobParameters implements Serializable {
 
     private String name;
 
-    private String executionId;
-
     private long errorThreshold;
 
     private boolean jmxMonitoring;
@@ -51,7 +48,6 @@ public class JobParameters implements Serializable {
     private int batchSize;
 
     public JobParameters() {
-        this.executionId = UUID.randomUUID().toString();
         this.name = DEFAULT_JOB_NAME;
         this.errorThreshold = DEFAULT_ERROR_THRESHOLD;
         this.batchSize = DEFAULT_BATCH_SIZE;
@@ -63,14 +59,6 @@ public class JobParameters implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getExecutionId() {
-        return executionId;
-    }
-
-    public void setExecutionId(String executionId) {
-        this.executionId = executionId;
     }
 
     public long getErrorThreshold() {

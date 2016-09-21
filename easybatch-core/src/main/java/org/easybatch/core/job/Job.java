@@ -41,13 +41,6 @@ public interface Job extends Callable<JobReport> {
     String getName();
 
     /**
-     * Get the job execution id.
-     *
-     * @return the job execution id
-     */
-    String getExecutionId();
-
-    /**
      * Execute the job.
      *
      * @return execution report

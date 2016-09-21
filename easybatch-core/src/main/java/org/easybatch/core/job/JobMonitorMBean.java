@@ -39,13 +39,6 @@ public interface JobMonitorMBean {
     String getJobName();
 
     /**
-     * Get the job execution id.
-     *
-     * @return the job execution id
-     */
-    String getJobExecutionId();
-
-    /**
      * Get read records count.
      *
      * @return read records count

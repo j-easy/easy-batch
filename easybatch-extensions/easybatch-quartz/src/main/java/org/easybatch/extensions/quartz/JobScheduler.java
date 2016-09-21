@@ -88,9 +88,9 @@ public class JobScheduler {
         checkNotNull(job, "job");
         checkNotNull(startTime, "startTime");
 
-        String executionId = job.getExecutionId();
-        String jobName = JOB_NAME_PREFIX + executionId;
-        String triggerName = TRIGGER_NAME_PREFIX + executionId;
+        String name = job.getName();
+        String jobName = JOB_NAME_PREFIX + name;
+        String triggerName = TRIGGER_NAME_PREFIX + name;
 
         Trigger trigger = newTrigger()
                 .withIdentity(triggerName)
@@ -119,9 +119,9 @@ public class JobScheduler {
         checkNotNull(job, "job");
         checkNotNull(startTime, "startTime");
 
-        String executionId = job.getExecutionId();
-        String jobName = JOB_NAME_PREFIX + executionId;
-        String triggerName = TRIGGER_NAME_PREFIX + executionId;
+        String name = job.getName();
+        String jobName = JOB_NAME_PREFIX + name;
+        String triggerName = TRIGGER_NAME_PREFIX + name;
 
         ScheduleBuilder scheduleBuilder = simpleSchedule()
                 .withIntervalInSeconds(interval)
@@ -156,9 +156,9 @@ public class JobScheduler {
         checkNotNull(job, "job");
         checkNotNull(cronExpression, "cronExpression");
 
-        String executionId = job.getExecutionId();
-        String jobName = JOB_NAME_PREFIX + executionId;
-        String triggerName = TRIGGER_NAME_PREFIX + executionId;
+        String name = job.getName();
+        String jobName = JOB_NAME_PREFIX + name;
+        String triggerName = TRIGGER_NAME_PREFIX + name;
 
         Trigger trigger = newTrigger()
                 .withIdentity(triggerName)
@@ -185,7 +185,7 @@ public class JobScheduler {
     public void unschedule(final org.easybatch.core.job.Job job) throws JobSchedulerException {
         LOGGER.log(Level.INFO, "Unscheduling job {0} ", job);
         try {
-            scheduler.unscheduleJob(TriggerKey.triggerKey(TRIGGER_NAME_PREFIX + job.getExecutionId()));
+            scheduler.unscheduleJob(TriggerKey.triggerKey(TRIGGER_NAME_PREFIX + job.getName()));
         } catch (SchedulerException e) {
             throw new JobSchedulerException("Unable to unschedule job " + job, e);
         }
@@ -200,7 +200,7 @@ public class JobScheduler {
      */
     public boolean isScheduled(final org.easybatch.core.job.Job job) throws JobSchedulerException {
         try {
-            return scheduler.checkExists(TriggerKey.triggerKey(TRIGGER_NAME_PREFIX + job.getExecutionId()));
+            return scheduler.checkExists(TriggerKey.triggerKey(TRIGGER_NAME_PREFIX + job.getName()));
         } catch (SchedulerException e) {
             throw new JobSchedulerException("Unable to check if the job " + job + " is scheduled", e);
         }
