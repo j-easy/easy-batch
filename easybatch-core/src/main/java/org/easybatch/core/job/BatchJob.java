@@ -80,14 +80,14 @@ class BatchJob implements Job {
 
     @Override
     public JobReport call() {
+        jobListener.beforeJobStart(parameters);
+
         report.setStatus(JobStatus.STARTING);
         metrics.setStartTime(System.currentTimeMillis());
         LOGGER.log(Level.INFO, "Starting job ''{0}''", name);
         LOGGER.log(Level.INFO, "Batch size: {0}", parameters.getBatchSize());
         LOGGER.log(Level.INFO, "Error threshold: {0}", formatErrorThreshold(parameters.getErrorThreshold()));
         LOGGER.log(Level.INFO, "Jmx monitoring: {0}", parameters.isJmxMonitoring());
-
-        jobListener.beforeJobStart(parameters);
         if (parameters.isJmxMonitoring()) {
             monitor.registerJmxMBeanFor(this);
         }
