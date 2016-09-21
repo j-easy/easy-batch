@@ -1,6 +1,6 @@
 package org.easybatch.core.listener;
 
-import org.easybatch.core.record.Record;
+import org.easybatch.core.record.Batch;
 
 import java.util.List;
 
@@ -23,23 +23,23 @@ public class CompositeRecordWriterListener implements RecordWriterListener {
     }
 
     @Override
-    public void beforeRecordWriting(Record record) {
+    public void beforeRecordWriting(Batch batch) {
         for (RecordWriterListener listener : listeners) {
-            listener.beforeRecordWriting(record);
+            listener.beforeRecordWriting(batch);
         }
     }
 
     @Override
-    public void afterRecordWriting(Record record) {
+    public void afterRecordWriting(Batch batch) {
         for (RecordWriterListener listener : listeners) {
-            listener.afterRecordWriting(record);
+            listener.afterRecordWriting(batch);
         }
     }
 
     @Override
-    public void onRecordWritingException(Record record, Throwable throwable) {
+    public void onRecordWritingException(Batch batch, Throwable throwable) {
         for (RecordWriterListener listener : listeners) {
-            listener.onRecordWritingException(record, throwable);
+            listener.onRecordWritingException(batch, throwable);
         }
     }
 }

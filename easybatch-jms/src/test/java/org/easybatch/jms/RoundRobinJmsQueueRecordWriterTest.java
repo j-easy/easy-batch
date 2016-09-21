@@ -24,6 +24,7 @@
 
 package org.easybatch.jms;
 
+import org.easybatch.core.record.Batch;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,9 +58,7 @@ public class RoundRobinJmsQueueRecordWriterTest {
     @Test
     public void regularRecordsShouldBeDispatchedToQueuesInRoundRobinFashion() throws Exception {
 
-        roundRobinJmsQueueRecordWriter.writeRecord(record1);
-        roundRobinJmsQueueRecordWriter.writeRecord(record2);
-        roundRobinJmsQueueRecordWriter.writeRecord(record3);
+        roundRobinJmsQueueRecordWriter.writeRecords(new Batch(record1, record2, record3));
 
         InOrder inOrder = Mockito.inOrder(queue1, queue2, record1, record2, record3);
         inOrder.verify(queue1).send(record1.getPayload());

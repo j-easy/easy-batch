@@ -24,6 +24,7 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,9 +57,7 @@ public class RoundRobinBlockingQueueRecordWriterTest {
 
     @Test
     public void recordsShouldBeWrittenToQueuesInRoundRobinFashion() throws Exception {
-        for (Record record : asList(record1, record2, record3, record4)) {
-            roundRobinQueueRecordWriter.writeRecord(record);
-        }
+        roundRobinQueueRecordWriter.writeRecords(new Batch(record1, record2, record3, record4));
 
         assertThat(queue1).containsExactly(record1, record3);
         assertThat(queue2).containsExactly(record2, record4);

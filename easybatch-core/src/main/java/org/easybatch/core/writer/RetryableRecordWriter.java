@@ -1,6 +1,6 @@
 package org.easybatch.core.writer;
 
-import org.easybatch.core.record.Record;
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.retry.RetryPolicy;
 import org.easybatch.core.retry.RetryTemplate;
 
@@ -35,8 +35,8 @@ public class RetryableRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecord(Record record) throws Exception {
-        recordWritingTemplate.execute(new RecordWritingCallable(delegate, record));
+    public void writeRecords(Batch batch) throws Exception {
+        recordWritingTemplate.execute(new RecordWritingCallable(delegate, batch));
     }
 
     @Override
@@ -48,16 +48,16 @@ public class RetryableRecordWriter implements RecordWriter {
 
         private RecordWriter recordWriter;
 
-        private Record record;
+        private Batch batch;
 
-        RecordWritingCallable(RecordWriter recordWriter, Record record) {
+        RecordWritingCallable(RecordWriter recordWriter, Batch batch) {
             this.recordWriter = recordWriter;
-            this.record = record;
+            this.batch = batch;
         }
 
         @Override
         public Void call() throws Exception {
-            recordWriter.writeRecord(record);
+            recordWriter.writeRecords(batch);
             return null;
         }
 

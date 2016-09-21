@@ -24,6 +24,7 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 
 import java.util.List;
@@ -67,10 +68,12 @@ public class RoundRobinBlockingQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecord(Record record) throws Exception {
+    public void writeRecords(Batch batch) throws Exception {
         //dispatch records to queues in round-robin fashion
-        BlockingQueue<Record> queue = queues.get(nextQueue++ % queuesNumber);
-        queue.put(record);
+        for (Record record : batch.getRecords()) {
+            BlockingQueue<Record> queue = queues.get(nextQueue++ % queuesNumber);
+            queue.put(record);
+        }
     }
 
     @Override

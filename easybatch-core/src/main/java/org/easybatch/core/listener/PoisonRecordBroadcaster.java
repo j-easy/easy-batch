@@ -26,6 +26,7 @@ package org.easybatch.core.listener;
 
 import org.easybatch.core.job.JobParameters;
 import org.easybatch.core.job.JobReport;
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.writer.BlockingQueueRecordWriter;
@@ -59,7 +60,7 @@ public class PoisonRecordBroadcaster implements JobListener {
     @Override
     public void afterJobEnd(final JobReport jobReport) {
         try {
-            blockingQueueRecordWriter.writeRecord(new PoisonRecord());
+            blockingQueueRecordWriter.writeRecords(new Batch(new PoisonRecord()));
         } catch (Exception e) {
             throw new RuntimeException("Unable to write poison record.", e);
         }

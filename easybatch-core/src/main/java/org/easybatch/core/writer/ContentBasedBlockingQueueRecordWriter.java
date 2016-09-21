@@ -24,6 +24,7 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 
 import java.util.Map;
@@ -57,23 +58,25 @@ public class ContentBasedBlockingQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecord(Record record) throws Exception {
+    public void writeRecords(Batch batch) throws Exception {
         DefaultPredicate defaultPredicate = new DefaultPredicate();
         BlockingQueue<Record> defaultQueue = queueMap.get(defaultPredicate);
-        boolean matched = false;
-        for (Map.Entry<Predicate, BlockingQueue<Record>> entry : queueMap.entrySet()) {
-            Predicate predicate = entry.getKey();
-            //check if the record meets a given predicate
-            if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
-                //if so, put it in the mapped queue
-                queueMap.get(predicate).put(record);
-                matched = true;
-                break;
+        for (Record record : batch.getRecords()) {
+            boolean matched = false;
+            for (Map.Entry<Predicate, BlockingQueue<Record>> entry : queueMap.entrySet()) {
+                Predicate predicate = entry.getKey();
+                //check if the record meets a given predicate
+                if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
+                    //if so, put it in the mapped queue
+                    queueMap.get(predicate).put(record);
+                    matched = true;
+                    break;
+                }
             }
-        }
-        //if the record does not match any predicate, then put it in the default queue
-        if (!matched && defaultQueue != null) {
-            defaultQueue.put(record);
+            //if the record does not match any predicate, then put it in the default queue
+            if (!matched && defaultQueue != null) {
+                defaultQueue.put(record);
+            }
         }
     }
 

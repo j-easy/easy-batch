@@ -24,6 +24,7 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Rule;
@@ -63,7 +64,7 @@ public class StandardErrorRecordWriterTest {
 
     @Test
     public void testRecordPayloadWriting() throws Exception {
-        writer.writeRecord(record);
+        writer.writeRecords(new Batch(record));
 
         assertThat(systemErr.getLog()).isEqualTo(PAYLOAD + LINE_SEPARATOR);
     }

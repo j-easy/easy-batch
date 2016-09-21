@@ -24,6 +24,7 @@
 
 package org.easybatch.jms;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.writer.RecordWriter;
 
@@ -69,10 +70,12 @@ public class RoundRobinJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecord(Record record) throws Exception {
-        //dispatch records to queues in round-robin fashion
-        QueueSender queue = queues.get(next++ % queuesNumber);
-        queue.send((Message) record.getPayload());
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch.getRecords()) {
+            //dispatch records to queues in round-robin fashion
+            QueueSender queue = queues.get(next++ % queuesNumber);
+            queue.send((Message) record.getPayload());
+        }
     }
 
     @Override

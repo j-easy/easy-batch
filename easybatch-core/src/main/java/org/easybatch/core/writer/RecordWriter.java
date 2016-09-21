@@ -24,7 +24,7 @@
 
 package org.easybatch.core.writer;
 
-import org.easybatch.core.record.Record;
+import org.easybatch.core.record.Batch;
 
 /**
  * Interface for all record writers.
@@ -40,12 +40,12 @@ public interface RecordWriter {
     void open() throws Exception;
 
     /**
-     * Write record to a data sink.
+     * Write a batch of records to a data sink.
      *
-     * @param record the record to write.
+     * @param batch of records to write.
      * @throws Exception if an error occurs during record writing
      */
-    void writeRecord(Record record) throws Exception;
+    void writeRecords(Batch batch) throws Exception;
 
     /**
      * Close the writer

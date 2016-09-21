@@ -24,6 +24,7 @@
 
 package org.easybatch.jms;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.writer.RecordWriter;
 
@@ -71,10 +72,12 @@ public class RandomJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecord(Record record) throws Exception {
-        //dispatch record randomly to one of the queues
-        QueueSender queue = queues.get(random.nextInt(queuesNumber));
-        queue.send((Message) record.getPayload());
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch.getRecords()) {
+            //dispatch record randomly to one of the queues
+            QueueSender queue = queues.get(random.nextInt(queuesNumber));
+            queue.send((Message) record.getPayload());
+        }
     }
 
     @Override

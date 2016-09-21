@@ -24,6 +24,7 @@
 
 package org.easybatch.jms;
 
+import org.easybatch.core.record.Batch;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,7 +59,7 @@ public class BroadcastJmsQueueRecordWriterTest {
 
     @Test
     public void testBroadcastJmsRecord() throws Exception {
-        broadcastJmsQueueRecordWriter.writeRecord(jmsRecord);
+        broadcastJmsQueueRecordWriter.writeRecords(new Batch(jmsRecord));
 
         verify(queue1).send(message);
         verify(queue2).send(message);

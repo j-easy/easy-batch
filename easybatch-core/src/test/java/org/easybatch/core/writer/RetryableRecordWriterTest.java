@@ -1,5 +1,6 @@
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.retry.RetryPolicy;
 import org.junit.Before;
@@ -33,7 +34,7 @@ public class RetryableRecordWriterTest {
         recordWriter = new RetryableRecordWriter(new UnreliableDataSinkWriter(), retryPolicy);
 
         // When
-        recordWriter.writeRecord(record);
+        recordWriter.writeRecords(new Batch(record));
 
         // Then
         // Expecting exception
@@ -46,7 +47,7 @@ public class RetryableRecordWriterTest {
         recordWriter = new RetryableRecordWriter(delegate, retryPolicy);
 
         // When
-        recordWriter.writeRecord(record);
+        recordWriter.writeRecords(new Batch(record));
 
         // Then
         assertThat(delegate.isExecuted()).isTrue();
@@ -58,7 +59,7 @@ public class RetryableRecordWriterTest {
         }
 
         @Override
-        public void writeRecord(Record record) throws Exception {
+        public void writeRecords(Batch batch) throws Exception {
             throw new Exception("Data source temporarily down");
         }
 
@@ -76,7 +77,7 @@ public class RetryableRecordWriterTest {
         }
 
         @Override
-        public void writeRecord(Record record) throws Exception {
+        public void writeRecords(Batch batch) throws Exception {
             if (++attempts <= 2) {
                 throw new Exception("Data sink temporarily down");
             }

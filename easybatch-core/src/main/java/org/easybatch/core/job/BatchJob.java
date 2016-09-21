@@ -212,19 +212,17 @@ class BatchJob implements Job {
             /*
              * Write records
              */
-            Record recordToWrite = null;
             try {
-                for (Record record : batch.getRecords()) {
-                    recordToWrite = record;
-                    recordWriterListener.beforeRecordWriting(record);
-                    recordWriter.writeRecord(record);
-                    recordWriterListener.afterRecordWriting(record);
+                if (!batch.isEmpty()) {
+                    recordWriterListener.beforeRecordWriting(batch);
+                    recordWriter.writeRecords(batch);
+                    recordWriterListener.afterRecordWriting(batch);
+                    batchListener.afterBatchWriting(batch);
+                    metrics.incrementWriteCount(batch.size());
                 }
-                batchListener.afterBatchWriting(batch);
-                metrics.incrementWriteCount(batch.size());
             } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "Unable to write records", e);
-                recordWriterListener.onRecordWritingException(recordToWrite, e);
+                recordWriterListener.onRecordWritingException(batch, e);
                 batchListener.onBatchWritingException(batch, e);
                 report.setStatus(JobStatus.FAILED);
                 report.setLastError(e);

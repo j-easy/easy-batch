@@ -24,6 +24,7 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 
 import java.util.List;
@@ -54,9 +55,11 @@ public class BlockingQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecord(Record record) throws Exception {
-        for (BlockingQueue<Record> queue : blockingQueues) {
-            queue.put(record);
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch.getRecords()) {
+            for (BlockingQueue<Record> queue : blockingQueues) {
+                queue.put(record);
+            }
         }
     }
 

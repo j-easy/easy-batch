@@ -24,6 +24,7 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,9 +57,7 @@ public class BlockingQueueRecordWriterTest {
 
     @Test
     public void testWriteRecords() throws Exception {
-        for(Record record : asList(record1, record2)) {
-            writer.writeRecord(record);
-        }
+        writer.writeRecords(new Batch(record1, record2));
         assertThat(queue1).containsExactly(record1, record2);
         assertThat(queue2).containsExactly(record1, record2);
     }

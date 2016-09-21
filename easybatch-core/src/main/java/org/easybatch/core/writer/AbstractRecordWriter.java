@@ -24,6 +24,7 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 
 /**
@@ -39,8 +40,10 @@ public abstract class AbstractRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecord(Record record) throws Exception {
-        writePayload(record.getPayload());
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch.getRecords()) {
+            writePayload(record.getPayload());
+        }
     }
 
     @Override

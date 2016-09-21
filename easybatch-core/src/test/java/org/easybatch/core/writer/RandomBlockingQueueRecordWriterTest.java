@@ -24,6 +24,7 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +57,7 @@ public class RandomBlockingQueueRecordWriterTest {
 
     @Test
     public void recordsShouldBeWrittenRandomlyToOneOfTheQueues() throws Exception {
-        randomQueueRecordWriter.writeRecord(record);
+        randomQueueRecordWriter.writeRecords(new Batch(record));
 
         if (queue1.isEmpty()) {
             assertThat(queue2).containsOnly(record);

@@ -24,6 +24,7 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.junit.After;
 import org.junit.Before;
@@ -66,7 +67,7 @@ public class FileRecordWriterTest {
 
     @Test
     public void testFileWriting() throws Exception {
-        writer.writeRecord(record);
+        writer.writeRecords(new Batch(record));
 
         assertThat(file).hasContent(PAYLOAD + LINE_SEPARATOR);
     }

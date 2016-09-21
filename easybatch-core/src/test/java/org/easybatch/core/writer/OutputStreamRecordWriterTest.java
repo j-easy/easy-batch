@@ -25,6 +25,7 @@
 package org.easybatch.core.writer;
 
 import org.easybatch.core.reader.StringRecordReader;
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Rule;
@@ -70,7 +71,7 @@ public class OutputStreamRecordWriterTest {
 
     @Test
     public void testWriteRecords() throws Exception {
-        outputStreamRecordWriter.writeRecord(stringRecord);
+        outputStreamRecordWriter.writeRecords(new Batch(stringRecord));
 
         verify(outputStreamWriter).write(PAYLOAD);
         verify(outputStreamWriter).write(LINE_SEPARATOR);

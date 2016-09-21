@@ -1,6 +1,6 @@
 package org.easybatch.core.writer;
 
-import org.easybatch.core.record.Record;
+import org.easybatch.core.record.Batch;
 
 import java.util.List;
 
@@ -41,9 +41,9 @@ public class CompositeRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecord(Record record) throws Exception {
+    public void writeRecords(Batch batch) throws Exception {
         for (RecordWriter writer : writers) {
-            writer.writeRecord(record);
+            writer.writeRecords(batch);
         }
     }
 

@@ -24,6 +24,7 @@
 
 package org.easybatch.jms;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.writer.Predicate;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,14 +61,14 @@ public class ContentBasedJmsQueueRecordWriterTest {
 
     @Test
     public void orangeRecordShouldBeDispatchedToOrangeQueue() throws Exception {
-        recordDispatcher.writeRecord(orangeRecord);
+        recordDispatcher.writeRecords(new Batch(orangeRecord));
         verify(orangeQueue).send(orangeRecord.getPayload());
         verifyZeroInteractions(defaultQueue);
     }
 
     @Test
     public void nonOrangeRecordShouldBeDispatchedToDefaultQueue() throws Exception {
-        recordDispatcher.writeRecord(appleRecord);
+        recordDispatcher.writeRecords(new Batch(appleRecord));
         verify(defaultQueue).send(appleRecord.getPayload());
         verifyZeroInteractions(orangeQueue);
     }

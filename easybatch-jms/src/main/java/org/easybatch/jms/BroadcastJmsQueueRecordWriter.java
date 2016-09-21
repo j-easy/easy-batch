@@ -24,6 +24,7 @@
 
 package org.easybatch.jms;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.writer.RecordWriter;
 
@@ -58,9 +59,11 @@ public class BroadcastJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecord(Record record) throws Exception {
-        for (QueueSender queue : queues) {
-            queue.send((Message) record.getPayload());
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch.getRecords()) {
+            for (QueueSender queue : queues) {
+                queue.send((Message) record.getPayload());
+            }
         }
     }
 

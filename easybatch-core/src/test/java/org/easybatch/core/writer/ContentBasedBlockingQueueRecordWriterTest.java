@@ -24,6 +24,7 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,8 +68,7 @@ public class ContentBasedBlockingQueueRecordWriterTest {
 
     @Test
     public void orangeRecordShouldBeWrittenToOrangeQueue() throws Exception {
-        contentBasedQueueRecordWriter.writeRecord(orangeRecord);
-        contentBasedQueueRecordWriter.writeRecord(appleRecord);
+        contentBasedQueueRecordWriter.writeRecords(new Batch(orangeRecord, appleRecord));
         assertThat(orangeQueue).containsOnly(orangeRecord);
         assertThat(defaultQueue).containsOnly(appleRecord);
     }

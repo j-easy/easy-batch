@@ -24,6 +24,7 @@
 
 package org.easybatch.jms;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.writer.DefaultPredicate;
 import org.easybatch.core.writer.Predicate;
@@ -56,21 +57,25 @@ public class ContentBasedJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecord(Record record) throws Exception {
-        Message payload = (Message) record.getPayload();
-        for (Map.Entry<Predicate, QueueSender> entry : queueMap.entrySet()) {
-            Predicate predicate = entry.getKey();
-            //check if the record meets a given predicate
-            if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
-                //put it in the mapped queue
-                queueMap.get(predicate).send(payload);
-                return;
-            }
-        }
-        //if the record does not match any predicate, then put it in the default queue
+    public void writeRecords(Batch batch) throws Exception {
         QueueSender defaultQueue = queueMap.get(new DefaultPredicate());
-        if (defaultQueue != null) {
-            defaultQueue.send(payload);
+        for (Record record : batch.getRecords()) {
+            boolean matched = false;
+            Message payload = (Message) record.getPayload();
+            for (Map.Entry<Predicate, QueueSender> entry : queueMap.entrySet()) {
+                Predicate predicate = entry.getKey();
+                //check if the record meets a given predicate
+                if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
+                    //put it in the mapped queue
+                    queueMap.get(predicate).send(payload);
+                    matched = true;
+                    break;
+                }
+            }
+            //if the record does not match any predicate, then put it in the default queue
+            if (!matched && defaultQueue != null) {
+                defaultQueue.send(payload);
+            }
         }
     }
 
