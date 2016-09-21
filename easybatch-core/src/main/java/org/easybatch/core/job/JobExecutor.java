@@ -24,6 +24,9 @@
 
 package org.easybatch.core.job;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -57,10 +60,10 @@ public class JobExecutor {
     }
 
     /**
-     * Execute a job.
+     * Execute a job synchronously.
      *
      * @param job the job to execute
-     * @return the job execution report
+     * @return the job report
      */
     public JobReport execute(Job job) {
         try {
@@ -71,13 +74,29 @@ public class JobExecutor {
     }
 
     /**
-     * Submit a job for execution.
+     * Submit a job for asynchronous execution.
      *
      * @param job to execute
      * @return the job report
      */
     public Future<JobReport> submit(Job job) {
         return executorService.submit(job);
+    }
+
+    /**
+     * Submit jobs for execution.
+     *
+     * @param jobs to execute
+     * @return the list of job reports
+     */
+    public List<Future<JobReport>> submitAll(Job... jobs) {
+        List<Job> jobList = new ArrayList<>();
+        Collections.addAll(jobList, jobs);
+        try {
+            return executorService.invokeAll(jobList);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Unable to execute jobs");
+        }
     }
 
     /**
