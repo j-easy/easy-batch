@@ -26,6 +26,7 @@ package org.easybatch.extensions.mongodb;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +62,7 @@ public class MongoDBRecordWriterTest {
 
     @Test
     public void testProcessRecord() throws Exception {
-        mongoDBRecordWriter.writePayload(dbObject);
+        mongoDBRecordWriter.writeRecords(new Batch(mongoDBRecord));
 
         verify(collection).save(dbObject);
     }
@@ -70,6 +71,6 @@ public class MongoDBRecordWriterTest {
     public void testRecordProcessingWithError() throws Exception {
         when(collection.save(dbObject)).thenThrow(exception);
 
-        mongoDBRecordWriter.writePayload(mongoDBRecord);
+        mongoDBRecordWriter.writeRecords(new Batch(mongoDBRecord));
     }
 }

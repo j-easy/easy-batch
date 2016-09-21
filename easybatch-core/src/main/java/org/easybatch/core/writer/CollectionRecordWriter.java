@@ -24,8 +24,12 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+
 import java.util.Collection;
 
+import static java.util.stream.Collectors.toList;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
@@ -33,7 +37,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class CollectionRecordWriter extends AbstractRecordWriter {
+public class CollectionRecordWriter implements RecordWriter {
 
     private Collection collection;
 
@@ -48,8 +52,17 @@ public class CollectionRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    protected void writePayload(final Object payload) throws Exception {
-        collection.add(payload);
+    public void open() throws Exception {
+
+    }
+
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        collection.addAll(batch.getRecords().stream().map(Record::getPayload).collect(toList()));
+    }
+
+    @Override
+    public void close() throws Exception {
+
     }
 }

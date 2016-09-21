@@ -26,7 +26,9 @@ package org.easybatch.extensions.mongodb;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import org.easybatch.core.writer.AbstractRecordWriter;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -35,7 +37,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MongoDBRecordWriter extends AbstractRecordWriter {
+public class MongoDBRecordWriter implements RecordWriter {
 
     private DBCollection collection;
 
@@ -50,8 +52,19 @@ public class MongoDBRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    protected void writePayload(final Object record) throws Exception {
-        collection.save((DBObject) record);
+    public void open() throws Exception {
+        // no op
     }
 
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch.getRecords()) {
+            collection.save((DBObject) record.getPayload());
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        // no op
+    }
 }

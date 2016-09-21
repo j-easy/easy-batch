@@ -24,7 +24,9 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.writer.AbstractRecordWriter;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
 
 import javax.jms.*;
 
@@ -35,9 +37,17 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JmsQueueRecordWriter extends AbstractRecordWriter {
+public class JmsQueueRecordWriter implements RecordWriter {
+
+    private QueueConnectionFactory queueConnectionFactory;
+
+    private QueueConnection queueConnection;
+
+    private QueueSession queueSession;
 
     private QueueSender queueSender;
+
+    private Queue queue;
 
     /**
      * Create a Jms queue record writer.
@@ -49,14 +59,28 @@ public class JmsQueueRecordWriter extends AbstractRecordWriter {
     public JmsQueueRecordWriter(final QueueConnectionFactory queueConnectionFactory, final Queue queue) throws JMSException {
         checkNotNull(queueConnectionFactory, "queue connection factory");
         checkNotNull(queue, "queue");
-        QueueConnection queueConnection = queueConnectionFactory.createQueueConnection();
-        QueueSession queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+        this.queueConnectionFactory = queueConnectionFactory;
+        this.queue = queue;
+    }
+
+    @Override
+    public void open() throws Exception {
+        queueConnection = queueConnectionFactory.createQueueConnection();
+        queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
         queueSender = queueSession.createSender(queue);
     }
 
     @Override
-    public void writePayload(final Object message) throws Exception {
-        queueSender.send((Message) message);
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch.getRecords()) {
+            queueSender.send((Message) record.getPayload());
+        }
     }
 
+    @Override
+    public void close() throws Exception {
+        queueConnection.close();
+        queueSession.close();
+        queueSender.close();
+    }
 }

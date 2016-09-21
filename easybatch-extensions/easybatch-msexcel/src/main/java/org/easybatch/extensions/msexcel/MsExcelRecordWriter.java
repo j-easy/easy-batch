@@ -30,7 +30,9 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.easybatch.core.writer.AbstractRecordWriter;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,7 +43,7 @@ import java.io.IOException;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MsExcelRecordWriter extends AbstractRecordWriter {
+public class MsExcelRecordWriter implements RecordWriter {
 
     private File file;
 
@@ -84,16 +86,28 @@ public class MsExcelRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    protected void writePayload(Object payload) throws Exception {
-        XSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
-        int i = 0;
-        int lastCellNum = ((Row) payload).getLastCellNum();
-        for (int index = 0; index < lastCellNum; index++) {
-            Cell nextCell = ((Row) payload).getCell(index);
-            XSSFCell cell = row.createCell(i++);
-            setValue(cell, nextCell);
+    public void open() throws Exception {
+
+    }
+
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch.getRecords()) {
+            XSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
+            int i = 0;
+            int lastCellNum = ((Row) record.getPayload()).getLastCellNum();
+            for (int index = 0; index < lastCellNum; index++) {
+                Cell nextCell = ((Row) record.getPayload()).getCell(index);
+                XSSFCell cell = row.createCell(i++);
+                setValue(cell, nextCell);
+            }
         }
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         workbook.write(fileOutputStream);
+    }
+
+    @Override
+    public void close() throws Exception {
+        workbook.close();
     }
 }

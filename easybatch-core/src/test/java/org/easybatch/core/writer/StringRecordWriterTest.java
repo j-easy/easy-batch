@@ -25,6 +25,8 @@
 package org.easybatch.core.writer;
 
 import org.easybatch.core.reader.IterableRecordReader;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,7 +63,7 @@ public class StringRecordWriterTest {
 
     @Test
     public void testWriteRecord() throws Exception {
-        stringRecordWriter.writePayload(PAYLOAD);
+        stringRecordWriter.writeRecords(new Batch(new StringRecord(null, PAYLOAD)));
 
         assertThat(stringWriter.toString()).isEqualTo(PAYLOAD + LINE_SEPARATOR);
     }

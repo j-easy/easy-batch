@@ -25,6 +25,7 @@
 package org.easybatch.core.writer;
 
 import org.easybatch.core.listener.JobListener;
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 
 import java.io.OutputStreamWriter;
@@ -40,7 +41,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class OutputStreamRecordWriter extends AbstractRecordWriter {
+public class OutputStreamRecordWriter implements RecordWriter {
 
     private String lineSeparator;
 
@@ -75,10 +76,22 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    public void writePayload(final Object payload) throws Exception {
-        outputStreamWriter.write(payload.toString());
-        outputStreamWriter.write(lineSeparator);
-        outputStreamWriter.flush();
+    public void open() throws Exception {
+        // no op
     }
 
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch.getRecords()) {
+            outputStreamWriter.write(record.getPayload().toString());
+            outputStreamWriter.write(lineSeparator);
+        }
+        outputStreamWriter.flush();
+
+    }
+
+    @Override
+    public void close() throws Exception {
+        outputStreamWriter.close();
+    }
 }

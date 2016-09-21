@@ -24,6 +24,8 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
 
 import java.io.StringWriter;
@@ -35,7 +37,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class StringRecordWriter extends AbstractRecordWriter {
+public class StringRecordWriter implements RecordWriter {
 
     private StringWriter stringWriter;
 
@@ -50,8 +52,21 @@ public class StringRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    protected void writePayload(final Object payload) throws Exception {
-        stringWriter.write(payload.toString());
-        stringWriter.write(Utils.LINE_SEPARATOR);
+    public void open() throws Exception {
+        // no op
+    }
+
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch.getRecords()) {
+            stringWriter.write(record.getPayload().toString());
+            stringWriter.write(Utils.LINE_SEPARATOR);
+        }
+        stringWriter.flush();
+    }
+
+    @Override
+    public void close() throws Exception {
+        stringWriter.close();
     }
 }
