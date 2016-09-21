@@ -51,4 +51,8 @@ public class StandardOutputRecordWriter extends OutputStreamRecordWriter {
         super(new OutputStreamWriter(System.out), lineSeparator);
     }
 
+    @Override
+    public void close() throws Exception {
+        // no op: don't close standard output
+    }
 }
