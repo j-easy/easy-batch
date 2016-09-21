@@ -128,6 +128,8 @@ public class BatchJobTest {
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
         assertThat(jobReport.getLastError()).isEqualTo(exception);
+        verify(reader).close();
+        verify(writer).close();
     }
 
     @Test
@@ -143,6 +145,8 @@ public class BatchJobTest {
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
         assertThat(jobReport.getLastError()).isEqualTo(exception);
+        verify(reader).close();
+        verify(writer).close();
     }
 
     @Test
@@ -152,6 +156,8 @@ public class BatchJobTest {
         JobReport jobReport = JobExecutor.execute(job);
 
         verify(jobListener).afterJobEnd(jobReport);
+        verify(reader).close();
+        verify(writer).close();
     }
 
     @Test
@@ -161,6 +167,8 @@ public class BatchJobTest {
         JobReport jobReport = JobExecutor.execute(job);
 
         verify(jobListener).afterJobEnd(jobReport);
+        verify(reader).close();
+        verify(writer).close();
     }
 
     @Test
@@ -175,6 +183,8 @@ public class BatchJobTest {
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
         assertThat(jobReport.getLastError()).isEqualTo(exception);
+        verify(reader).close();
+        verify(writer).close();
     }
 
     @Test
@@ -189,6 +199,8 @@ public class BatchJobTest {
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
         assertThat(jobReport.getLastError()).isEqualTo(exception);
+        verify(reader).close();
+        verify(writer).close();
     }
 
     @Test
@@ -208,6 +220,7 @@ public class BatchJobTest {
         when(firstProcessor.processRecord(record2)).thenThrow(exception);
         job = new JobBuilder()
                 .reader(reader)
+                .writer(writer)
                 .processor(firstProcessor)
                 .errorThreshold(1)
                 .build();
@@ -219,6 +232,8 @@ public class BatchJobTest {
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        verify(reader).close();
+        verify(writer).close();
     }
 
     @Test
