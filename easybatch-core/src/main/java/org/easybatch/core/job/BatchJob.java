@@ -62,12 +62,13 @@ class BatchJob implements Job {
 
     BatchJob(JobParameters parameters) {
         this.parameters = parameters;
+        this.name = DEFAULT_JOB_NAME;
         metrics = new JobMetrics();
         report = new JobReport();
         report.setParameters(parameters);
         report.setMetrics(metrics);
+        report.setJobName(name);
         monitor = new JobMonitor(report);
-        setName(DEFAULT_JOB_NAME);
         setRecordReader(new NoOpRecordReader());
         setRecordReaderListener(new NoOpRecordReaderListener());
         setRecordProcessor(new CompositeRecordProcessor());
@@ -309,5 +310,6 @@ class BatchJob implements Job {
 
     public void setName(String name) {
         this.name = name;
+        this.report.setJobName(name);
     }
 }
