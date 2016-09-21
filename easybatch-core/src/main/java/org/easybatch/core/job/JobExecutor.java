@@ -24,15 +24,36 @@
 
 package org.easybatch.core.job;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
+import static java.lang.Runtime.getRuntime;
+import static java.util.concurrent.Executors.newFixedThreadPool;
+
 /**
- * Helper class to execute a {@link Job}.
+ * Main class to execute {@link Job}s.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class JobExecutor {
 
-    JobExecutor() {
-        // private constructor
+    private ExecutorService executorService;
+
+    /**
+     * Create a job executor. The number of workers will be set to the number of available processors.
+     */
+    public JobExecutor() {
+        executorService = newFixedThreadPool(getRuntime().availableProcessors());
+    }
+
+    /**
+     * Create a job executor.
+     *
+     * @param nbWorkers number of worker threads
+     */
+    public JobExecutor(int nbWorkers) {
+        executorService = newFixedThreadPool(nbWorkers);
     }
 
     /**
@@ -41,7 +62,29 @@ public class JobExecutor {
      * @param job the job to execute
      * @return the job execution report
      */
-    public static JobReport execute(Job job) {
-        return job.call();
+    public JobReport execute(Job job) {
+        try {
+            return executorService.submit(job).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Unable to execute job " + job.getName());
+        }
     }
+
+    /**
+     * Submit a job for execution.
+     *
+     * @param job to execute
+     * @return the job report
+     */
+    public Future<JobReport> submit(Job job) {
+        return executorService.submit(job);
+    }
+
+    /**
+     * Shutdown the job executor.
+     */
+    public void shutdown() {
+        executorService.shutdown();
+    }
+
 }

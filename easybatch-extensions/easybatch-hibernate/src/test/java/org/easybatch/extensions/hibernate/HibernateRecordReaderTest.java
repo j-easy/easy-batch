@@ -72,7 +72,7 @@ public class HibernateRecordReaderTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(3);
 
         List<Record<Tweet>> tweets = recordCollector.getRecords();

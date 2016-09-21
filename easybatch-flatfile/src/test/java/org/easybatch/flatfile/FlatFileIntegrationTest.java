@@ -33,7 +33,7 @@ public class FlatFileIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
@@ -59,7 +59,7 @@ public class FlatFileIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
@@ -90,7 +90,7 @@ public class FlatFileIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(1);
@@ -116,7 +116,7 @@ public class FlatFileIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(1);
@@ -155,7 +155,7 @@ public class FlatFileIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
 
@@ -197,7 +197,7 @@ public class FlatFileIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);

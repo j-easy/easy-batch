@@ -100,7 +100,7 @@ public class JpaRecordWriterTest {
                 .writer(new JpaRecordWriter(entityManagerFactory))
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(valueOf(nbTweetsToInsert));

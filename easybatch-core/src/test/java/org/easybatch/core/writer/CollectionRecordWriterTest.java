@@ -24,6 +24,8 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
@@ -39,7 +41,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
-import static org.easybatch.core.job.JobExecutor.execute;
 import static org.mockito.Mockito.when;
 
 /**
@@ -78,10 +79,12 @@ public class CollectionRecordWriterTest {
         List<Object> input = Arrays.asList(payload1, payload2);
         List<Object> output = new ArrayList<>();
 
-        execute(aNewJob()
+        Job job = aNewJob()
                 .reader(new IterableRecordReader(input))
                 .writer(new CollectionRecordWriter(output))
-                .build());
+                .build();
+
+        new JobExecutor().execute(job);
 
         assertThat(output).containsExactly(payload1, payload2);
     }

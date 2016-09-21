@@ -27,6 +27,7 @@ package org.easybatch.jms;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.io.FileUtils;
 import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.reader.StringRecordReader;
@@ -47,7 +48,6 @@ import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
-import static org.easybatch.core.job.JobExecutor.execute;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 @SuppressWarnings("unchecked")
@@ -93,7 +93,7 @@ public class JmsIntegrationTest {
                 .jobListener(new JmsQueueConnectionListener(queueConnection))
                 .build();
 
-        JobReport jobReport = execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
@@ -129,11 +129,13 @@ public class JmsIntegrationTest {
 
         String dataSource = "foo" + LINE_SEPARATOR + "bar";
 
-        execute(aNewJob()
+        Job job = aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .processor(new JmsMessageTransformer(queueSession))
                 .writer(new JmsQueueRecordWriter(queueConnectionFactory, queue))
-                .build());
+                .build();
+
+        new JobExecutor().execute(job);
 
         // Assert that queue contains 2 messages: "foo" and "bar"
         QueueBrowser queueBrowser = queueSession.createBrowser(queue);

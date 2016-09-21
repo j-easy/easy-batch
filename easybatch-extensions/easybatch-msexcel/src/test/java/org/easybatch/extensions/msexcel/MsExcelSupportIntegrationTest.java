@@ -52,7 +52,7 @@ public class MsExcelSupportIntegrationTest {
                 .writer(new MsExcelRecordWriter(outputTweets, SHEET_NAME))
                 .build();
 
-        JobReport report = JobExecutor.execute(job);
+        JobReport report = new JobExecutor().execute(job);
 
         assertThat(report).isNotNull();
         assertThat(report.getMetrics().getReadCount()).isEqualTo(2);

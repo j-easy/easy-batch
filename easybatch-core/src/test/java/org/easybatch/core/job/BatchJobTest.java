@@ -86,7 +86,7 @@ public class BatchJobTest {
     @Test
     public void allComponentsShouldBeInvokedForEachRecordInOrder() throws Exception {
 
-        JobExecutor.execute(job);
+        new JobExecutor().execute(job);
 
         InOrder inOrder = Mockito.inOrder(reader, record1, record2, firstProcessor, secondProcessor, writer);
 
@@ -103,14 +103,14 @@ public class BatchJobTest {
 
     @Test
     public void readerShouldBeClosedAtTheEndOfExecution() throws Exception {
-        JobExecutor.execute(job);
+        job.call();
 
         verify(reader).close();
     }
 
     @Test
     public void writerShouldBeClosedAtTheEndOfExecution() throws Exception {
-        JobExecutor.execute(job);
+        job.call();
 
         verify(writer).close();
     }
@@ -119,7 +119,7 @@ public class BatchJobTest {
     public void whenNotAbleToOpenReader_ThenTheJobShouldFail() throws Exception {
         doThrow(exception).when(reader).open();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = job.call();
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
@@ -136,7 +136,7 @@ public class BatchJobTest {
     public void whenNotAbleToOpenWriter_ThenTheJobShouldFail() throws Exception {
         doThrow(exception).when(writer).open();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = job.call();
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
@@ -153,7 +153,7 @@ public class BatchJobTest {
     public void whenNotAbleToOpenReader_thenTheJobListenerShouldBeInvoked() throws Exception {
         doThrow(exception).when(reader).open();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = job.call();
 
         verify(jobListener).afterJobEnd(jobReport);
         verify(reader).close();
@@ -164,7 +164,7 @@ public class BatchJobTest {
     public void whenNotAbleToOpenWriter_thenTheJobListenerShouldBeInvoked() throws Exception {
         doThrow(exception).when(writer).open();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = job.call();
 
         verify(jobListener).afterJobEnd(jobReport);
         verify(reader).close();
@@ -175,7 +175,7 @@ public class BatchJobTest {
     public void whenNotAbleToReadNextRecord_ThenTheJobShouldFail() throws Exception {
         when(reader.readRecord()).thenThrow(exception);
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = job.call();
 
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
@@ -191,7 +191,7 @@ public class BatchJobTest {
     public void whenNotAbleToWriteRecords_ThenTheJobShouldFail() throws Exception {
         doThrow(exception).when(writer).writeRecords(new Batch(record1, record2));
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = job.call();
 
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
@@ -205,7 +205,7 @@ public class BatchJobTest {
 
     @Test
     public void reportShouldBeCorrect() throws Exception {
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = job.call();
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
@@ -225,7 +225,7 @@ public class BatchJobTest {
                 .errorThreshold(1)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = job.call();
 
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(2);
@@ -241,7 +241,7 @@ public class BatchJobTest {
         when(reader.readRecord()).thenReturn(record1, null);
         when(firstProcessor.processRecord(record1)).thenReturn(null);
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = job.call();
 
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);

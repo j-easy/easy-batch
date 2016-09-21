@@ -39,7 +39,7 @@ public class JobExecutorTest {
 
     @Test
     public void execute() {
-        JobExecutor.execute(job);
+        new JobExecutor().execute(job);
         verify(job).call();
     }
 }

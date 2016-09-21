@@ -107,7 +107,7 @@ public class JobFactoryBeanTest {
     public void integrationTest() {
         ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
         Job job = context.getBean("job", Job.class);
-        JobReport report = JobExecutor.execute(job);
+        JobReport report = new JobExecutor().execute(job);
 
         assertThat(report).isNotNull();
         assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);

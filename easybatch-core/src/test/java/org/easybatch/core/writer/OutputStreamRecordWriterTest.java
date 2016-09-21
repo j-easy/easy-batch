@@ -24,6 +24,8 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.reader.StringRecordReader;
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
@@ -39,7 +41,6 @@ import java.io.OutputStreamWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
-import static org.easybatch.core.job.JobExecutor.execute;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -82,10 +83,12 @@ public class OutputStreamRecordWriterTest {
     public void outputStreamRecordWriterIntegrationTest() throws Exception {
         String dataSource = "1,foo" + LINE_SEPARATOR + "2,bar";
 
-        execute(aNewJob()
+        Job job = aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .writer(new OutputStreamRecordWriter(new OutputStreamWriter(System.out)))
-                .build());
+                .build();
+
+        new JobExecutor().execute(job);
 
         // Assert that records have been written to System.out
         assertThat(systemOut.getLog()).isEqualTo(dataSource + LINE_SEPARATOR);

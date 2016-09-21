@@ -114,7 +114,7 @@ public class JdbcRecordWriterTest {
                 .writer(jdbcRecordWriter)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(nbTweetsToInsert);

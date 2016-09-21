@@ -48,7 +48,7 @@ public class XmlIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobExecutor.execute(job);
+        new JobExecutor().execute(job);
 
         List<Record<Website>> records = recordCollector.getRecords();
         List<Website> websites = extractPayloads(records);
@@ -80,7 +80,7 @@ public class XmlIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThatReportIsCorrect(jobReport);
 
@@ -115,7 +115,7 @@ public class XmlIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThatReportIsCorrect(jobReport);
 
@@ -169,7 +169,7 @@ public class XmlIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);

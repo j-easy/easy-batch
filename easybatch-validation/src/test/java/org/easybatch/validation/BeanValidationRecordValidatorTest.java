@@ -77,7 +77,7 @@ public class BeanValidationRecordValidatorTest {
                 .validator(new BeanValidationRecordValidator())
                 .build();
 
-        JobReport report = JobExecutor.execute(job);
+        JobReport report = new JobExecutor().execute(job);
 
         assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(report.getMetrics().getReadCount()).isEqualTo(2);

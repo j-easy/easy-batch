@@ -79,7 +79,7 @@ public class JdbcIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
