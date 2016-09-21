@@ -29,11 +29,9 @@ import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.io.File;
@@ -52,8 +50,6 @@ public class JpaRecordWriterTest {
     private static Connection connection;
 
     private static EntityManagerFactory entityManagerFactory;
-
-    private EntityManager entityManager;
 
     @BeforeClass
     public static void initDatabase() throws Exception {
@@ -91,11 +87,6 @@ public class JpaRecordWriterTest {
         statement.close();
     }
 
-    @Before
-    public void setUp() throws Exception {
-        entityManager = entityManagerFactory.createEntityManager();
-    }
-
     @Test
     public void testSingleRecordWriting() throws Exception {
 
@@ -104,10 +95,9 @@ public class JpaRecordWriterTest {
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
         Job job = aNewJob()
+                .batchSize(2)
                 .reader(new IterableRecordReader(tweets))
-                .writer(new JpaRecordWriter(entityManager))
-                .batchListener(new JpaTransactionListener(entityManager))
-                .jobListener(new JpaEntityManagerListener(entityManager))
+                .writer(new JpaRecordWriter(entityManagerFactory))
                 .build();
 
         JobReport jobReport = JobExecutor.execute(job);

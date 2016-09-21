@@ -28,6 +28,7 @@ import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
+import org.hsqldb.jdbc.JDBCDataSource;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -93,7 +94,11 @@ public class JdbcRecordWriterTest {
     @Before
     public void setUp() throws Exception {
         String query = "INSERT INTO tweet VALUES (?,?,?);";
-        jdbcRecordWriter = new JdbcRecordWriter(connection, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, "id", "user", "message"));
+        JDBCDataSource dataSource = new JDBCDataSource();
+        dataSource.setUser("sa");
+        dataSource.setPassword("pwd");
+        dataSource.setUrl("jdbc:hsqldb:mem");
+        jdbcRecordWriter = new JdbcRecordWriter(dataSource, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, "id", "user", "message"));
     }
 
     @Test
@@ -104,10 +109,9 @@ public class JdbcRecordWriterTest {
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
         Job job = aNewJob()
+                .batchSize(2)
                 .reader(new IterableRecordReader(tweets))
                 .writer(jdbcRecordWriter)
-                .batchListener(new JdbcTransactionListener(connection))
-                .jobListener(new JdbcConnectionListener(connection))
                 .build();
 
         JobReport jobReport = JobExecutor.execute(job);

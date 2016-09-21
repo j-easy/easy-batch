@@ -65,8 +65,7 @@ public class HibernateRecordWriterTest {
 
     @Before
     public void setUp() throws Exception {
-        session = DatabaseUtil.getSessionFactory().openSession();
-        hibernateRecordWriter = new HibernateRecordWriter(session);
+        hibernateRecordWriter = new HibernateRecordWriter(DatabaseUtil.getSessionFactory());
     }
 
     @Test
@@ -77,10 +76,9 @@ public class HibernateRecordWriterTest {
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
         Job job = aNewJob()
+                .batchSize(2)
                 .reader(new IterableRecordReader(tweets))
                 .writer(hibernateRecordWriter)
-                .batchListener(new HibernateTransactionListener(session))
-                .jobListener(new HibernateSessionListener(session))
                 .build();
 
         JobReport jobReport = JobExecutor.execute(job);

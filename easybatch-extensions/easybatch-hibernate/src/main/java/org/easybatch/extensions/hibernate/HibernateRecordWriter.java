@@ -24,35 +24,75 @@
 
 package org.easybatch.extensions.hibernate;
 
-import org.easybatch.core.writer.AbstractRecordWriter;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Writes entities to a database using Hibernate.
- * <p/>
- * This writer does not commit a transaction after writing entities.
- * You can use a {@link HibernateTransactionListener} for this purpose.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class HibernateRecordWriter extends AbstractRecordWriter {
+public class HibernateRecordWriter implements RecordWriter {
+
+    private static final Logger LOGGER = Logger.getLogger(HibernateRecordWriter.class.getSimpleName());
+
+    private SessionFactory sessionFactory;
 
     private Session session;
 
     /**
      * Create a Hibernate record writer.
      *
-     * @param session the hibernate session to use to write entities.
+     * @param sessionFactory to create sessions.
      */
-    public HibernateRecordWriter(final Session session) {
-        checkNotNull(session, "session");
-        this.session = session;
+    public HibernateRecordWriter(final SessionFactory sessionFactory) {
+        checkNotNull(sessionFactory, "session factory");
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public void writePayload(final Object payload) throws Exception {
-        session.saveOrUpdate(payload);
+    public void open() throws Exception {
+        session = sessionFactory.openSession();
+    }
+
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        try {
+            for (Record record : batch.getRecords()) {
+                session.saveOrUpdate(record.getPayload());
+            }
+            session.flush();
+            session.clear();
+            transaction.commit();
+            LOGGER.info("Transaction committed");
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Unable to commit transaction", e);
+            transaction.rollback();
+            LOGGER.info("Transaction rolled back");
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (session != null) {
+                LOGGER.info("Closing session");
+                session.close();
+            }
+        } catch (HibernateException e) {
+            LOGGER.log(Level.SEVERE, "Unable to close session", e);
+        }
     }
 }

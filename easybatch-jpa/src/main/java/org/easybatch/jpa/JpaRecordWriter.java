@@ -24,9 +24,16 @@
 
 package org.easybatch.jpa;
 
-import org.easybatch.core.writer.AbstractRecordWriter;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -38,22 +45,53 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JpaRecordWriter extends AbstractRecordWriter {
+public class JpaRecordWriter implements RecordWriter {
+
+    private static final Logger LOGGER = Logger.getLogger(JpaRecordWriter.class.getSimpleName());
+
+    private EntityManagerFactory entityManagerFactory;
 
     private EntityManager entityManager;
 
     /**
      * Create a JPA record writer.
      *
-     * @param entityManager the entity manager to write records.
+     * @param entityManagerFactory the entity manager factory.
      */
-    public JpaRecordWriter(final EntityManager entityManager) {
-        checkNotNull(entityManager, "entity manager");
-        this.entityManager = entityManager;
+    public JpaRecordWriter(final EntityManagerFactory entityManagerFactory) {
+        checkNotNull(entityManagerFactory, "entity manager factory");
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
-    protected void writePayload(Object payload) throws Exception {
-        entityManager.persist(payload);
+    public void open() throws Exception {
+        entityManager = entityManagerFactory.createEntityManager();
+    }
+
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        try {
+            for (Record record : batch.getRecords()) {
+                entityManager.persist(record.getPayload());
+            }
+            entityManager.flush();
+            entityManager.clear();
+            transaction.commit();
+            LOGGER.info("Transaction committed");
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Unable to commit transaction", e);
+            transaction.rollback();
+            LOGGER.info("Transaction rolled back");
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (entityManager != null ) {
+            LOGGER.info("Closing entity manager");
+            entityManager.close();
+        }
     }
 }
