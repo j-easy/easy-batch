@@ -101,6 +101,7 @@ class BatchJob implements Job {
             LOGGER.log(Level.SEVERE, "Unable to open record reader", e);
             report.setStatus(JobStatus.FAILED);
             metrics.setEndTime(System.currentTimeMillis());
+            LOGGER.log(Level.INFO, "Job ''{0}'' finished with status: {1}", new Object[]{name, report.getStatus()});
             report.setLastError(e);
             jobListener.afterJobEnd(report);
             return report;
@@ -115,6 +116,7 @@ class BatchJob implements Job {
             LOGGER.log(Level.SEVERE, "Unable to open record writer", e);
             report.setStatus(JobStatus.FAILED);
             metrics.setEndTime(System.currentTimeMillis());
+            LOGGER.log(Level.INFO, "Job ''{0}'' finished with status: {1}", new Object[]{name, report.getStatus()});
             report.setLastError(e);
             jobListener.afterJobEnd(report);
             return report;
@@ -149,10 +151,11 @@ class BatchJob implements Job {
                         metrics.incrementReadCount();
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOGGER.log(Level.SEVERE, "Unable to read next record", e);
                     recordReaderListener.onRecordReadingException(e);
                     report.setStatus(JobStatus.FAILED);
                     metrics.setEndTime(System.currentTimeMillis());
+                    LOGGER.log(Level.INFO, "Job ''{0}'' finished with status: {1}", new Object[]{name, report.getStatus()});
                     report.setLastError(e);
                     jobListener.afterJobEnd(report);
                     return report;
@@ -184,6 +187,7 @@ class BatchJob implements Job {
                         LOGGER.log(Level.SEVERE, "Error threshold exceeded. Aborting execution");
                         report.setStatus(JobStatus.FAILED);
                         metrics.setEndTime(System.currentTimeMillis());
+                        LOGGER.log(Level.INFO, "Job ''{0}'' finished with status: {1}", new Object[]{name, report.getStatus()});
                         jobListener.afterJobEnd(report);
                         return report;
                     }
@@ -212,6 +216,7 @@ class BatchJob implements Job {
                 batchListener.onBatchWritingException(batch, e);
                 report.setStatus(JobStatus.FAILED);
                 metrics.setEndTime(System.currentTimeMillis());
+                LOGGER.log(Level.INFO, "Job ''{0}'' finished with status: {1}", new Object[]{name, report.getStatus()});
                 report.setLastError(e);
                 jobListener.afterJobEnd(report);
                 return report;
@@ -238,7 +243,7 @@ class BatchJob implements Job {
 
         report.setStatus(JobStatus.COMPLETED);
         metrics.setEndTime(System.currentTimeMillis());
-        LOGGER.log(Level.INFO, "Job ''{0}'' finished with exit status: {1}", new Object[]{name, report.getStatus()});
+        LOGGER.log(Level.INFO, "Job ''{0}'' finished with status: {1}", new Object[]{name, report.getStatus()});
         if (parameters.isJmxMonitoring()) {
             monitor.notifyJobReportUpdate();
         }
