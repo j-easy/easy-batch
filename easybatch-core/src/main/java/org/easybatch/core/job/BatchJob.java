@@ -25,6 +25,9 @@ import static org.easybatch.core.util.Utils.formatErrorThreshold;
 class BatchJob implements Job {
 
     private static final Logger LOGGER = Logger.getLogger(BatchJob.class.getName());
+    private static final String DEFAULT_JOB_NAME = "job";
+
+    private String name;
 
     private RecordReader recordReader;
     private RecordWriter recordWriter;
@@ -54,7 +57,7 @@ class BatchJob implements Job {
 
     @Override
     public String getName() {
-        return parameters.getName();
+        return name;
     }
 
     BatchJob(JobParameters parameters) {
@@ -64,6 +67,7 @@ class BatchJob implements Job {
         report.setParameters(parameters);
         report.setMetrics(metrics);
         monitor = new JobMonitor(report);
+        setName(DEFAULT_JOB_NAME);
         setRecordReader(new NoOpRecordReader());
         setRecordReaderListener(new NoOpRecordReaderListener());
         setRecordProcessor(new CompositeRecordProcessor());
@@ -78,7 +82,7 @@ class BatchJob implements Job {
     public JobReport call() {
         report.setStatus(JobStatus.STARTING);
         metrics.setStartTime(System.currentTimeMillis());
-        LOGGER.log(Level.INFO, "Starting job ''{0}''", parameters.getName());
+        LOGGER.log(Level.INFO, "Starting job ''{0}''", name);
         LOGGER.log(Level.INFO, "Batch size: {0}", parameters.getBatchSize());
         LOGGER.log(Level.INFO, "Error threshold: {0}", formatErrorThreshold(parameters.getErrorThreshold()));
         LOGGER.log(Level.INFO, "Jmx monitoring: {0}", parameters.isJmxMonitoring());
@@ -116,7 +120,7 @@ class BatchJob implements Job {
             return report;
         }
 
-        LOGGER.log(Level.INFO, "Job ''{0}'' started", parameters.getName());
+        LOGGER.log(Level.INFO, "Job ''{0}'' started", name);
         report.setStatus(JobStatus.STARTED);
         boolean moreRecords = true;
 
@@ -234,7 +238,7 @@ class BatchJob implements Job {
 
         report.setStatus(JobStatus.COMPLETED);
         metrics.setEndTime(System.currentTimeMillis());
-        LOGGER.log(Level.INFO, "Job ''{0}'' finished with exit status: {1}", new Object[]{parameters.getName(), report.getStatus()});
+        LOGGER.log(Level.INFO, "Job ''{0}'' finished with exit status: {1}", new Object[]{name, report.getStatus()});
         if (parameters.isJmxMonitoring()) {
             monitor.notifyJobReportUpdate();
         }
@@ -280,5 +284,9 @@ class BatchJob implements Job {
 
     public void setPipelineListener(PipelineListener pipelineListener) {
         this.pipelineListener = pipelineListener;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

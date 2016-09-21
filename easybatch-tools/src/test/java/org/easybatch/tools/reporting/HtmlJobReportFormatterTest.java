@@ -59,10 +59,10 @@ public class HtmlJobReportFormatterTest {
         jobReport.setParameters(parameters);
         jobReport.setMetrics(metrics);
 
+        jobReport.setJobName("end-of-day job");
         jobReport.setStatus(JobStatus.COMPLETED);
 
         jobReport.getParameters().setBatchSize(10);
-        jobReport.getParameters().setName("end-of-day job");
         jobReport.getParameters().setErrorThreshold(5);
         jobReport.getParameters().setJmxMonitoring(true);
 

@@ -69,15 +69,15 @@ public class HtmlJobReportFormatter implements JobReportFormatter<String> {
         context.put("report", jobReport);
 
         /*
-         * Job status
+         * Job name and status
          */
+        context.put("name",jobReport.getJobName());
         context.put("status",jobReport.getStatus());
 
         /*
          * Job parameters
          */
         JobParameters parameters = jobReport.getParameters();
-        context.put("name",parameters.getName());
         context.put("batchSize",parameters.getBatchSize());
         context.put("errorThreshold",parameters.getErrorThreshold());
         context.put("jmx",parameters.isJmxMonitoring());

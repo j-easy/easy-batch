@@ -75,7 +75,7 @@ public final class JobBuilder {
      */
     public JobBuilder named(final String name) {
         checkNotNull(name, "job name");
-        parameters.setName(name);
+        job.setName(name);
         return this;
     }
 

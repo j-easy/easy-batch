@@ -61,7 +61,7 @@ class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBe
      */
     @Override
     public String getJobName() {
-        return jobReport.getParameters().getName();
+        return jobReport.getJobName();
     }
 
     /**

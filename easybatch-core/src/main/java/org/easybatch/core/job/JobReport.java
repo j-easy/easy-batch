@@ -33,6 +33,8 @@ import java.io.Serializable;
  */
 public class JobReport implements Serializable {
 
+    private String jobName;
+
     private JobParameters parameters;
 
     private JobMetrics metrics;
@@ -40,6 +42,10 @@ public class JobReport implements Serializable {
     private JobStatus status;
 
     private Throwable lastError;
+
+    public String getJobName() {
+        return jobName;
+    }
 
     public JobParameters getParameters() {
         return parameters;
@@ -55,6 +61,10 @@ public class JobReport implements Serializable {
 
     public Throwable getLastError() {
         return lastError;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
     }
 
     public void setParameters(JobParameters parameters) {

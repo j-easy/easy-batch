@@ -39,8 +39,6 @@ public class JobParameters implements Serializable {
 
     public static final int DEFAULT_BATCH_SIZE = 100;
 
-    private String name;
-
     private long errorThreshold;
 
     private boolean jmxMonitoring;
@@ -48,17 +46,8 @@ public class JobParameters implements Serializable {
     private int batchSize;
 
     public JobParameters() {
-        this.name = DEFAULT_JOB_NAME;
         this.errorThreshold = DEFAULT_ERROR_THRESHOLD;
         this.batchSize = DEFAULT_BATCH_SIZE;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public long getErrorThreshold() {
