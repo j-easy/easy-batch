@@ -82,7 +82,7 @@ public class OutputStreamRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch.getRecords()) {
+        for (Record record : batch) {
             outputStreamWriter.write(record.getPayload().toString());
             outputStreamWriter.write(lineSeparator);
         }

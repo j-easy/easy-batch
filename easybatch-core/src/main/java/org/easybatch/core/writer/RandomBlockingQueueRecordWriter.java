@@ -73,7 +73,7 @@ public class RandomBlockingQueueRecordWriter implements RecordWriter {
     @Override
     public void writeRecords(Batch batch) throws Exception {
         //dispatch record randomly to one of the queues
-        for (Record record : batch.getRecords()) {
+        for (Record record : batch) {
             BlockingQueue<Record> queue = queues.get(random.nextInt(queuesNumber));
             queue.put(record);
         }

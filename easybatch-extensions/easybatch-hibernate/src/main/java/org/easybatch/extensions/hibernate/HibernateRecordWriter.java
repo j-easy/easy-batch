@@ -70,7 +70,7 @@ public class HibernateRecordWriter implements RecordWriter {
         Transaction transaction = session.getTransaction();
         transaction.begin();
         try {
-            for (Record record : batch.getRecords()) {
+            for (Record record : batch) {
                 session.saveOrUpdate(record.getPayload());
             }
             session.flush();

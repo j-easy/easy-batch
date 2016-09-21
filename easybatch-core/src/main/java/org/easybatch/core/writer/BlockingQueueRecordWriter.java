@@ -56,7 +56,7 @@ public class BlockingQueueRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch.getRecords()) {
+        for (Record record : batch) {
             for (BlockingQueue<Record> queue : blockingQueues) {
                 queue.put(record);
             }

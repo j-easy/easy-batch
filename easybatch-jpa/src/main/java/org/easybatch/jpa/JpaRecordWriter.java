@@ -73,7 +73,7 @@ public class JpaRecordWriter implements RecordWriter {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
         try {
-            for (Record record : batch.getRecords()) {
+            for (Record record : batch) {
                 entityManager.persist(record.getPayload());
             }
             entityManager.flush();

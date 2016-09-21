@@ -71,7 +71,7 @@ public class RoundRobinJmsQueueRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch.getRecords()) {
+        for (Record record : batch) {
             //dispatch records to queues in round-robin fashion
             QueueSender queue = queues.get(next++ % queuesNumber);
             queue.send((Message) record.getPayload());

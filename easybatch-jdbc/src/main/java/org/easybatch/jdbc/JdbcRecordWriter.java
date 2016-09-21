@@ -81,7 +81,7 @@ public class JdbcRecordWriter implements RecordWriter {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(query);
-            for (Record record : batch.getRecords()) {
+            for (Record record : batch) {
                 preparedStatementProvider.prepareStatement(preparedStatement, record.getPayload());
                 preparedStatement.addBatch();
             }

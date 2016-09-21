@@ -70,7 +70,7 @@ public class RoundRobinBlockingQueueRecordWriter implements RecordWriter {
     @Override
     public void writeRecords(Batch batch) throws Exception {
         //dispatch records to queues in round-robin fashion
-        for (Record record : batch.getRecords()) {
+        for (Record record : batch) {
             BlockingQueue<Record> queue = queues.get(nextQueue++ % queuesNumber);
             queue.put(record);
         }

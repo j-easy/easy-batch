@@ -60,7 +60,7 @@ public class BroadcastJmsQueueRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch.getRecords()) {
+        for (Record record : batch) {
             for (QueueSender queue : queues) {
                 queue.send((Message) record.getPayload());
             }

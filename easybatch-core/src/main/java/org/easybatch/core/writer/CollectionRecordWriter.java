@@ -29,7 +29,6 @@ import org.easybatch.core.record.Record;
 
 import java.util.Collection;
 
-import static java.util.stream.Collectors.toList;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
@@ -58,7 +57,9 @@ public class CollectionRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        collection.addAll(batch.getRecords().stream().map(Record::getPayload).collect(toList()));
+        for (Record record : batch) {
+            collection.add(record.getPayload());
+        }
     }
 
     @Override

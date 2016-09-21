@@ -1,34 +1,29 @@
 package org.easybatch.core.record;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+
+import static java.util.Collections.addAll;
 
 /**
  * Class representing a batch of records.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class Batch {
+public class Batch implements Iterable<Record> {
 
-    private List<Record> records;
+    private List<Record> records = new ArrayList<>();
 
     public Batch() {
-        this(new ArrayList<>());
     }
 
     public Batch(Record... records) {
-        List<Record> recordList = new ArrayList<>();
-        Collections.addAll(recordList, records);
-        this.records = recordList;
+        addAll(this.records, records);
     }
 
     public Batch(List<Record> records) {
         this.records = records;
-    }
-
-    public List<Record> getRecords() {
-        return records;
     }
 
     public void addRecord(final Record record) {
@@ -38,7 +33,6 @@ public class Batch {
     public void removeRecord(final Record record) {
         records.remove(record);
     }
-
 
     public boolean isEmpty() {
         return records.isEmpty();
@@ -66,4 +60,8 @@ public class Batch {
     }
 
 
+    @Override
+    public Iterator<Record> iterator() {
+        return records.iterator();
+    }
 }

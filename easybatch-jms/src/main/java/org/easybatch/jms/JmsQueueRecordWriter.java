@@ -72,7 +72,7 @@ public class JmsQueueRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch.getRecords()) {
+        for (Record record : batch) {
             queueSender.send((Message) record.getPayload());
         }
     }

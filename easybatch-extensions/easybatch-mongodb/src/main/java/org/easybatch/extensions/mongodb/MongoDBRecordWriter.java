@@ -58,7 +58,7 @@ public class MongoDBRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch.getRecords()) {
+        for (Record record : batch) {
             collection.save((DBObject) record.getPayload());
         }
     }

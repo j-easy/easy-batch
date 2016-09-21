@@ -61,7 +61,7 @@ public class ContentBasedBlockingQueueRecordWriter implements RecordWriter {
     public void writeRecords(Batch batch) throws Exception {
         DefaultPredicate defaultPredicate = new DefaultPredicate();
         BlockingQueue<Record> defaultQueue = queueMap.get(defaultPredicate);
-        for (Record record : batch.getRecords()) {
+        for (Record record : batch) {
             boolean matched = false;
             for (Map.Entry<Predicate, BlockingQueue<Record>> entry : queueMap.entrySet()) {
                 Predicate predicate = entry.getKey();

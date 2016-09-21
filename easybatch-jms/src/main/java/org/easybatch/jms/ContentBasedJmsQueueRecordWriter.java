@@ -59,7 +59,7 @@ public class ContentBasedJmsQueueRecordWriter implements RecordWriter {
     @Override
     public void writeRecords(Batch batch) throws Exception {
         QueueSender defaultQueue = queueMap.get(new DefaultPredicate());
-        for (Record record : batch.getRecords()) {
+        for (Record record : batch) {
             boolean matched = false;
             Message payload = (Message) record.getPayload();
             for (Map.Entry<Predicate, QueueSender> entry : queueMap.entrySet()) {

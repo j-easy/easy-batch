@@ -92,7 +92,7 @@ public class MsExcelRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch.getRecords()) {
+        for (Record record : batch) {
             XSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
             int i = 0;
             int lastCellNum = ((Row) record.getPayload()).getLastCellNum();

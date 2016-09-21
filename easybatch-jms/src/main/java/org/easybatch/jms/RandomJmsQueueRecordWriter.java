@@ -73,7 +73,7 @@ public class RandomJmsQueueRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch.getRecords()) {
+        for (Record record : batch) {
             //dispatch record randomly to one of the queues
             QueueSender queue = queues.get(random.nextInt(queuesNumber));
             queue.send((Message) record.getPayload());

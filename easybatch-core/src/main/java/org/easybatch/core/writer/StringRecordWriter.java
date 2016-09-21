@@ -58,7 +58,7 @@ public class StringRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch.getRecords()) {
+        for (Record record : batch) {
             stringWriter.write(record.getPayload().toString());
             stringWriter.write(Utils.LINE_SEPARATOR);
         }
