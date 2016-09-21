@@ -48,7 +48,7 @@ public class MsExcelSupportIntegrationTest {
         Job job = JobBuilder.aNewJob()
                 .reader(new MsExcelRecordReader(inputTweets))
                 .mapper(new MsExcelRecordMapper(Tweet.class, "id", "user", "message"))
-                .marshaller(new MsExcelRecordMarshaller<>(Tweet.class, "id", "user", "message"))
+                .marshaller(new MsExcelRecordMarshaller(Tweet.class, "id", "user", "message"))
                 .writer(new MsExcelRecordWriter(outputTweets, SHEET_NAME))
                 .build();
 

@@ -48,7 +48,7 @@ public class ApacheCommonCsvRecordMapper extends AbstractRecordMapper implements
     @Override
     public GenericRecord processRecord(final ApacheCommonCsvRecord record) throws Exception {
         CSVRecord csvRecord = record.getPayload();
-        return new GenericRecord(record.getHeader(), objectMapper.mapObject(csvRecord.toMap()));
+        return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(csvRecord.toMap()));
     }
 
 }

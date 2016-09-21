@@ -51,7 +51,7 @@ public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapp
      *
      * @param recordClass the target domain object class
      */
-    public JdbcRecordMapper(final Class recordClass) {
+    public JdbcRecordMapper(final Class<?> recordClass) {
         super(recordClass);
     }
 
@@ -61,7 +61,7 @@ public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapp
      * @param recordClass the target domain object class
      * @param fields      the list of fields names
      */
-    public JdbcRecordMapper(final Class recordClass, final String... fields) {
+    public JdbcRecordMapper(final Class<?> recordClass, final String... fields) {
         this(recordClass);
         this.fields = fields;
     }
@@ -75,7 +75,7 @@ public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapp
         for (int i = 0; i < fields.length; i++) {
             values.put(fields[i], resultSet.getString(i + 1));
         }
-        return new GenericRecord(record.getHeader(), objectMapper.mapObject(values));
+        return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(values));
 
     }
 

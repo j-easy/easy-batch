@@ -166,9 +166,9 @@ public class XmlRecordReader implements RecordReader {
     private void escapeStartElementAttributes(StringBuilder stringBuilder, XMLEvent xmlEvent) {
         StartElement startElement = xmlEvent.asStartElement();
         stringBuilder.append("<").append(startElement.getName().getLocalPart());
-        Iterator<Attribute> iterator = startElement.getAttributes();
+        Iterator iterator = startElement.getAttributes();
         while (iterator.hasNext()) {
-            Attribute attribute = iterator.next();
+            Attribute attribute = (Attribute) iterator.next();
             stringBuilder.append(" ")
                     .append(attribute.getName())
                     .append("='")

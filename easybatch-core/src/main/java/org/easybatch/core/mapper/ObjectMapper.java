@@ -69,7 +69,7 @@ public class ObjectMapper {
     /**
      * Type converters map.
      */
-    private Map<Class, TypeConverter> typeConverters;
+    private Map<Class, TypeConverter<String, ?>> typeConverters;
 
     /**
      * Construct an object mapper.
@@ -107,7 +107,7 @@ public class ObjectMapper {
             }
 
             Class<?> type = setter.getParameterTypes()[0];
-            TypeConverter typeConverter = typeConverters.get(type);
+            TypeConverter<String, ?> typeConverter = typeConverters.get(type);
             if (typeConverter == null) {
                 LOGGER.log(Level.WARNING,
                         "Type conversion not supported for type {0}, field {1} will be set to null (if object type) or default value (if primitive type)",
@@ -159,7 +159,7 @@ public class ObjectMapper {
         }
     }
 
-    private void convertValue(Object result, String field, String value, Method setter, Class<?> type, TypeConverter typeConverter) throws Exception {
+    private void convertValue(Object result, String field, String value, Method setter, Class<?> type, TypeConverter<String, ?> typeConverter) throws Exception {
         try {
             Object typedValue = typeConverter.convert(value);
             setter.invoke(result, typedValue);
@@ -199,7 +199,7 @@ public class ObjectMapper {
         typeConverters.put(String.class, new StringTypeConverter());
     }
 
-    public void registerTypeConverter(final TypeConverter typeConverter) {
+    public void registerTypeConverter(final TypeConverter<String, ?> typeConverter) {
         //retrieve the target class name of the converter
         Class<? extends TypeConverter> typeConverterClass = typeConverter.getClass();
         Type[] genericInterfaces = typeConverterClass.getGenericInterfaces();

@@ -29,7 +29,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CharacterTypeConverterTest extends BaseConverterTest {
+public class CharacterTypeConverterTest extends BaseConverterTest<Character> {
 
     @Before
     public void setUp() throws Exception {
