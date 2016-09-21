@@ -27,6 +27,7 @@ package org.easybatch.jdbc;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.record.Header;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,6 +52,8 @@ public class JdbcRecordReader implements RecordReader {
      * The logger to use.
      */
     private static final Logger LOGGER = Logger.getLogger(JdbcRecordReader.class.getSimpleName());
+
+    private DataSource dataSource;
 
     /**
      * The database connection to use to read data.
@@ -95,19 +98,20 @@ public class JdbcRecordReader implements RecordReader {
     /**
      * Create a JdbcRecordReader instance.
      *
-     * @param connection the connection to use to read data
-     * @param query      the jdbc query to use to fetch data
+     * @param dataSource to read data
+     * @param query      to fetch data
      */
-    public JdbcRecordReader(final Connection connection, final String query) {
-        checkNotNull(connection, "connection");
+    public JdbcRecordReader(final DataSource dataSource, final String query) {
+        checkNotNull(dataSource, "data source");
         checkNotNull(query, "query");
-        this.connection = connection;
+        this.dataSource = dataSource;
         this.query = query;
     }
 
     @Override
     public void open() throws Exception {
         currentRecordNumber = 0;
+        connection = dataSource.getConnection();
         statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         if (maxRows >= 1) {
             statement.setMaxRows(maxRows);

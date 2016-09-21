@@ -27,6 +27,7 @@ package org.easybatch.jdbc;
 import org.easybatch.core.job.*;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.GenericRecord;
+import org.hsqldb.jdbc.JDBCDataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -66,10 +67,14 @@ public class JdbcIntegrationTest {
 
     @Test
     public void testDatabaseProcessing() throws Exception {
+        JDBCDataSource dataSource = new JDBCDataSource();
+        dataSource.setUser("sa");
+        dataSource.setPassword("pwd");
+        dataSource.setUrl("jdbc:hsqldb:mem");
 
         RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
-                .reader(new JdbcRecordReader(connection, query))
+                .reader(new JdbcRecordReader(dataSource, query))
                 .mapper(new JdbcRecordMapper(Person.class, "id", "name"))
                 .processor(recordCollector)
                 .build();
