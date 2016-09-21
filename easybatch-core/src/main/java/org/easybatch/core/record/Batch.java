@@ -1,6 +1,7 @@
 package org.easybatch.core.record;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,6 +15,12 @@ public class Batch {
 
     public Batch() {
         this(new ArrayList<>());
+    }
+
+    public Batch(Record... records) {
+        List<Record> recordList = new ArrayList<>();
+        Collections.addAll(recordList, records);
+        this.records = recordList;
     }
 
     public Batch(List<Record> records) {
