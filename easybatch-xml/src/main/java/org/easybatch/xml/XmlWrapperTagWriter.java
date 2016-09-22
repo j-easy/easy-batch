@@ -28,9 +28,9 @@ import org.easybatch.core.job.JobParameters;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.listener.JobListener;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.lang.String.format;
@@ -54,29 +54,29 @@ public class XmlWrapperTagWriter implements JobListener {
 
     private String wrapperTag;
 
-    private OutputStreamWriter outputStreamWriter;
+    private File file;
 
     /**
      * Create a xml wrapper element writer.
      *
-     * @param outputStreamWriter the output stream writer
-     * @param wrapperTag         the wrapper tag to write around xml content
+     * @param file       target file
+     * @param wrapperTag the wrapper tag to write around xml content
      */
-    public XmlWrapperTagWriter(final OutputStreamWriter outputStreamWriter, final String wrapperTag) {
-        checkNotNull(outputStreamWriter, "output stream writer");
+    public XmlWrapperTagWriter(final File file, final String wrapperTag) {
+        checkNotNull(file, "file");
         this.wrapperTag = wrapperTag;
-        this.outputStreamWriter = outputStreamWriter;
+        this.file = file;
     }
 
     /**
      * Create a xml wrapper element writer.
      *
-     * @param outputStreamWriter the output stream writer
-     * @param wrapperTag         the wrapper tag to write around xml content
-     * @param version            the xml version
+     * @param file       target file
+     * @param wrapperTag the wrapper tag to write around xml content
+     * @param version    the xml version
      */
-    public XmlWrapperTagWriter(final OutputStreamWriter outputStreamWriter, final String wrapperTag, final String version) {
-        this(outputStreamWriter, wrapperTag);
+    public XmlWrapperTagWriter(final File file, final String wrapperTag, final String version) {
+        this(file, wrapperTag);
         checkNotNull(version, "version");
         this.version = version;
     }
@@ -84,13 +84,13 @@ public class XmlWrapperTagWriter implements JobListener {
     /**
      * Create a xml wrapper element writer.
      *
-     * @param outputStreamWriter the output stream writer
-     * @param wrapperTag         the wrapper tag to write around xml content
-     * @param version            the xml version
-     * @param encoding           the xml encoding
+     * @param file       target file
+     * @param wrapperTag the wrapper tag to write around xml content
+     * @param version    the xml version
+     * @param encoding   the xml encoding
      */
-    public XmlWrapperTagWriter(final OutputStreamWriter outputStreamWriter, final String wrapperTag, final String version, final String encoding) {
-        this(outputStreamWriter, wrapperTag, version);
+    public XmlWrapperTagWriter(final File file, final String wrapperTag, final String version, final String encoding) {
+        this(file, wrapperTag, version);
         checkNotNull(encoding, "encoding");
         this.encoding = encoding;
     }
@@ -98,42 +98,56 @@ public class XmlWrapperTagWriter implements JobListener {
     /**
      * Create a xml wrapper element writer.
      *
-     * @param outputStreamWriter the output stream writer
-     * @param wrapperTag         the wrapper tag to write around xml content
-     * @param version            the xml version
-     * @param encoding           the xml encoding
-     * @param standalone         true if the xml is standalone
+     * @param file       target file
+     * @param wrapperTag the wrapper tag to write around xml content
+     * @param version    the xml version
+     * @param encoding   the xml encoding
+     * @param standalone true if the xml is standalone
      */
-    public XmlWrapperTagWriter(final OutputStreamWriter outputStreamWriter, final String wrapperTag, final String version, final String encoding, final boolean standalone) {
-        this(outputStreamWriter, wrapperTag, version, encoding);
+    public XmlWrapperTagWriter(final File file, final String wrapperTag, final String version, final String encoding, final boolean standalone) {
+        this(file, wrapperTag, version, encoding);
         this.standalone = standalone;
     }
 
     @Override
     public void beforeJobStart(final JobParameters jobParameters) {
+        FileWriter fileWriter = null;
         try {
-            outputStreamWriter.write(format("<?xml version=\"%s\" encoding=\"%s\" standalone=\"%s\"?>", version, encoding, standalone ? "yes" : "no"));
-            outputStreamWriter.write(LINE_SEPARATOR);
-            outputStreamWriter.write("<" + wrapperTag + ">");
-            outputStreamWriter.write(LINE_SEPARATOR);
-            outputStreamWriter.flush();
+            fileWriter = new FileWriter(file);
+            fileWriter.write(format("<?xml version=\"%s\" encoding=\"%s\" standalone=\"%s\"?>", version, encoding, standalone ? "yes" : "no"));
+            fileWriter.write(LINE_SEPARATOR);
+            fileWriter.write("<" + wrapperTag + ">");
+            fileWriter.write(LINE_SEPARATOR);
+            fileWriter.flush();
         } catch (IOException e) {
-            LOGGER.warning("Unable to write XML declaration and wrapper opening tag to the output stream writer");
+            LOGGER.warning("Unable to write XML declaration and wrapper opening tag to file " + file.getAbsolutePath());
+        } finally {
+            if (fileWriter != null) {
+                try {
+                    fileWriter.close();
+                } catch (IOException e) {
+                    LOGGER.warning("Unable to close file writer");
+                }
+            }
         }
     }
 
     @Override
     public void afterJobEnd(final JobReport jobReport) {
+        FileWriter fileWriter = null;
         try {
-            outputStreamWriter.write("</" + wrapperTag + ">");
-            outputStreamWriter.flush();
+            fileWriter = new FileWriter(file, true);
+            fileWriter.write("</" + wrapperTag + ">");
+            fileWriter.flush();
         } catch (IOException e) {
-            LOGGER.warning("Unable to write closing wrapper tag to the output stream writer");
+            LOGGER.warning("Unable to write closing wrapper tag to file " + file.getAbsolutePath());
         } finally {
-            try {
-                outputStreamWriter.close();
-            } catch (IOException e) {
-                LOGGER.log(Level.WARNING, "Unable to close the output stream writer", e);
+            if (fileWriter != null) {
+                try {
+                    fileWriter.close();
+                } catch (IOException e) {
+                    LOGGER.warning("Unable to close file writer");
+                }
             }
         }
     }

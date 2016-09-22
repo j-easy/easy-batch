@@ -26,15 +26,14 @@ package org.easybatch.xml;
 
 import org.easybatch.core.job.JobParameters;
 import org.easybatch.core.job.JobReport;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.OutputStreamWriter;
+import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
@@ -44,8 +43,7 @@ public class XmlWrapperTagWriterTest {
 
     private static final String DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
 
-    @Rule
-    public final SystemOutRule systemOut = new SystemOutRule().enableLog();
+    private File file;
 
     @Mock
     private JobReport jobReport;
@@ -59,19 +57,32 @@ public class XmlWrapperTagWriterTest {
     @Before
     public void setUp() throws Exception {
         wrapperTag = "tweets";
-        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(System.out);
-        xmlWrapperTagWriter = new XmlWrapperTagWriter(outputStreamWriter, wrapperTag);
+        file = new File("target/tweets.xml");
+        xmlWrapperTagWriter = new XmlWrapperTagWriter(file, wrapperTag);
     }
 
     @Test
     public void testBeforeJobStart() throws Exception {
         xmlWrapperTagWriter.beforeJobStart(jobParameters);
-        assertThat(systemOut.getLog()).isEqualTo(DECLARATION + LINE_SEPARATOR + "<" + wrapperTag + ">" + LINE_SEPARATOR);
+        assertThat(file).hasContent(DECLARATION + LINE_SEPARATOR + "<" + wrapperTag + ">" + LINE_SEPARATOR);
     }
 
     @Test
     public void testAfterJobEnd() throws Exception {
         xmlWrapperTagWriter.afterJobEnd(jobReport);
-        assertThat(systemOut.getLog()).isEqualTo("</" + wrapperTag + ">");
+        assertThat(file).hasContent("</" + wrapperTag + ">");
+    }
+
+    @Test
+    public void integrationTest() throws Exception {
+        xmlWrapperTagWriter.beforeJobStart(jobParameters);
+        xmlWrapperTagWriter.afterJobEnd(jobReport);
+
+        assertThat(file).hasContent(DECLARATION + LINE_SEPARATOR + "<" + wrapperTag + ">" + LINE_SEPARATOR + "</" + wrapperTag + ">");
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        file.delete();
     }
 }
