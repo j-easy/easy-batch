@@ -60,7 +60,7 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
         sb.append(LINE_SEPARATOR).append("Metrics:");
         sb.append(LINE_SEPARATOR).append("\tStart time = ").append(formatTime(metrics.getStartTime()));
         sb.append(LINE_SEPARATOR).append("\tEnd time = ").append(formatTime(metrics.getEndTime()));
-        sb.append(LINE_SEPARATOR).append("\tDuration = ").append(metrics.getDuration()).append("ms");
+        sb.append(LINE_SEPARATOR).append("\tDuration = ").append(formatDuration(metrics.getDuration()));
         sb.append(LINE_SEPARATOR).append("\tRead count = ").append(metrics.getReadCount());
         sb.append(LINE_SEPARATOR).append("\tWrite count = ").append(metrics.getWriteCount());
         sb.append(LINE_SEPARATOR).append("\tFiltered count = ").append(metrics.getFilteredCount());

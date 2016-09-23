@@ -36,6 +36,8 @@ import org.easybatch.core.job.JobReportFormatter;
 import java.io.StringWriter;
 import java.util.Properties;
 
+import static org.easybatch.core.util.Utils.formatDuration;
+import static org.easybatch.core.util.Utils.formatErrorThreshold;
 import static org.easybatch.core.util.Utils.formatTime;
 
 /**
@@ -79,7 +81,7 @@ public class HtmlJobReportFormatter implements JobReportFormatter<String> {
          */
         JobParameters parameters = jobReport.getParameters();
         context.put("batchSize",parameters.getBatchSize());
-        context.put("errorThreshold",parameters.getErrorThreshold());
+        context.put("errorThreshold", formatErrorThreshold(parameters.getErrorThreshold()));
         context.put("jmx",parameters.isJmxMonitoring());
 
         /*
@@ -88,7 +90,7 @@ public class HtmlJobReportFormatter implements JobReportFormatter<String> {
         JobMetrics metrics = jobReport.getMetrics();
         context.put("startTime",formatTime(metrics.getStartTime()));
         context.put("endTime",formatTime(metrics.getEndTime()));
-        context.put("duration",metrics.getDuration() + "ms");
+        context.put("duration",formatDuration(metrics.getDuration()));
         context.put("readCount",metrics.getReadCount());
         context.put("writeCount",metrics.getWriteCount());
         context.put("filteredCount",metrics.getFilteredCount());
