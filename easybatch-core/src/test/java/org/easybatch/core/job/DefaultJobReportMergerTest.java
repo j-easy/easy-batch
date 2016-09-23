@@ -27,6 +27,7 @@ package org.easybatch.core.job;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 public class DefaultJobReportMergerTest {
@@ -47,12 +48,16 @@ public class DefaultJobReportMergerTest {
         long startTime1 = 1L;
         long endTime1 = 10L;
         jobReport1.getMetrics().incrementReadCount();
+        jobReport1.getMetrics().incrementReadCount();
+        jobReport1.getMetrics().incrementReadCount();
+        jobReport1.getMetrics().incrementReadCount();
         jobReport1.getMetrics().incrementErrorCount();
         jobReport1.getMetrics().incrementFilteredCount();
-        jobReport1.getMetrics().incrementWriteCount(1);
+        jobReport1.getMetrics().incrementWriteCount(2);
         jobReport1.getMetrics().setStartTime(startTime1);
         jobReport1.getMetrics().setEndTime(endTime1);
         jobReport1.setStatus(JobStatus.FAILED);
+        jobReport1.setJobName("job1");
 
         JobMetrics metrics2 = new JobMetrics();
         JobReport jobReport2 = new JobReport();
@@ -60,17 +65,21 @@ public class DefaultJobReportMergerTest {
         long startTime2 = 2L;
         long endTime2 = 11L;
         jobReport2.getMetrics().incrementReadCount();
+        jobReport2.getMetrics().incrementReadCount();
+        jobReport2.getMetrics().incrementReadCount();
+        jobReport2.getMetrics().incrementReadCount();
         jobReport2.getMetrics().incrementErrorCount();
         jobReport2.getMetrics().incrementFilteredCount();
-        jobReport2.getMetrics().incrementWriteCount(1);
+        jobReport2.getMetrics().incrementWriteCount(2);
         jobReport2.getMetrics().setStartTime(startTime2);
         jobReport2.getMetrics().setEndTime(endTime2);
         jobReport2.setStatus(JobStatus.COMPLETED);
+        jobReport2.setJobName("job2");
 
         JobReport finalJobReport = jobReportMerger.mergerReports(jobReport1, jobReport2);
 
-        assertEquals(2, finalJobReport.getMetrics().getReadCount()); // sum of read records
-        assertEquals(2, finalJobReport.getMetrics().getWriteCount());// sum of written records
+        assertEquals(8, finalJobReport.getMetrics().getReadCount()); // sum of read records
+        assertEquals(4, finalJobReport.getMetrics().getWriteCount());// sum of written records
         assertEquals(2, finalJobReport.getMetrics().getFilteredCount());// sum of filtered records
         assertEquals(2, finalJobReport.getMetrics().getErrorCount());// sum of error records
         assertEquals(1, finalJobReport.getMetrics().getStartTime());// min of start times
@@ -78,6 +87,9 @@ public class DefaultJobReportMergerTest {
 
         //if one partial report has aborted, the final result should be also aborted
         assertEquals(JobStatus.FAILED, finalJobReport.getStatus());
+
+        // job name is the concatenation of partial job names
+        assertThat(finalJobReport.getJobName()).isEqualTo("job1|job2");
 
     }
 }

@@ -26,6 +26,7 @@ package org.easybatch.core.job;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -38,6 +39,7 @@ import java.util.List;
  * <li>The total filtered records is the sum of total filtered records</li>
  * <li>The total error records is the sum of total error records</li>
  * <li>The final status is {@link JobStatus#COMPLETED} (if all partials are completed) or {@link JobStatus#FAILED} (if one of partials has failed).</li>
+ * <li>The final name is the concatenation of partial job names.</li>
  * </ul>
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
@@ -55,9 +57,12 @@ public class DefaultJobReportMerger implements JobReportMerger {
 
         List<Long> startTimes = new ArrayList<>();
         List<Long> endTimes = new ArrayList<>();
+        List<String> jobNames = new ArrayList<>();
 
+        JobParameters parameters = new JobParameters();
         JobMetrics metrics = new JobMetrics();
         JobReport finalJobReport = new JobReport();
+        finalJobReport.setParameters(parameters);
         finalJobReport.setMetrics(metrics);
         finalJobReport.setStatus(JobStatus.COMPLETED);
 
@@ -69,11 +74,15 @@ public class DefaultJobReportMerger implements JobReportMerger {
             calculateFilteredRecords(finalJobReport, jobReport);
             calculateErrorRecords(finalJobReport, jobReport);
             setStatus(finalJobReport, jobReport);
+            jobNames.add(jobReport.getJobName());
         }
 
         //merge results
         finalJobReport.getMetrics().setStartTime(Collections.min(startTimes));
         finalJobReport.getMetrics().setEndTime(Collections.max(endTimes));
+
+        // set name
+        finalJobReport.setJobName(concatenate(jobNames));
 
         return finalJobReport;
     }
@@ -91,9 +100,7 @@ public class DefaultJobReportMerger implements JobReportMerger {
     }
 
     private void calculateWrittenRecords(JobReport finalJobReport, JobReport jobReport) {
-        for (int i = 0; i < jobReport.getMetrics().getWriteCount(); i++) {
-            finalJobReport.getMetrics().incrementWriteCount(jobReport.getMetrics().getWriteCount());
-        }
+        finalJobReport.getMetrics().incrementWriteCount(jobReport.getMetrics().getWriteCount());
     }
 
     private void calculateErrorRecords(JobReport finalJobReport, JobReport jobReport) {
@@ -106,6 +113,18 @@ public class DefaultJobReportMerger implements JobReportMerger {
         for (int i = 0; i < jobReport.getMetrics().getFilteredCount(); i++) {
             finalJobReport.getMetrics().incrementFilteredCount();
         }
+    }
+
+    private String concatenate(List<String> names) {
+        StringBuilder stringBuilder = new StringBuilder();
+        Iterator<String> iterator = names.iterator();
+        while (iterator.hasNext()) {
+            stringBuilder.append(iterator.next());
+            if (iterator.hasNext()) {
+                stringBuilder.append("|");
+            }
+        }
+        return stringBuilder.toString();
     }
 
 }
