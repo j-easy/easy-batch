@@ -48,13 +48,10 @@ public class MsExcelRecord extends GenericRecord<Row> {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("MsExcelRecord{");
-        sb.append("Header: ");
-        sb.append(getHeader());
-        sb.append(", Payload: ");
-        sb.append(dump(getPayload()));
-        sb.append('}');
-        return sb.toString();
+        return "Record: {" +
+                "header=" + header +
+                ", payload=" + dump(payload) +
+                '}';
     }
     
     private String dump(Row row) {

@@ -86,6 +86,7 @@ public final class JobBuilder {
      * @param number the number of records to skip
      * @return the job builder
      */
+    @Deprecated
     public JobBuilder skip(final long number) {
         checkArgument(number >= 1, "The number of records to skip should be >= 1");
         job.getJobReport().getParameters().setSkip(number);
@@ -98,6 +99,7 @@ public final class JobBuilder {
      * @param number the limit number of records to process
      * @return the job builder
      */
+    @Deprecated
     public JobBuilder limit(final long number) {
         checkArgument(number >= 1, "The limit number of records should be >= 1");
         job.getJobReport().getParameters().setLimit(number);
@@ -110,6 +112,7 @@ public final class JobBuilder {
      * @param timeout the timeout value in milliseconds
      * @return the job builder
      */
+    @Deprecated
     public JobBuilder timeout(final long timeout) {
         return timeout(timeout, TimeUnit.MILLISECONDS);
     }
@@ -121,6 +124,7 @@ public final class JobBuilder {
      * @param unit    the time unit
      * @return the job builder
      */
+    @Deprecated
     public JobBuilder timeout(final long timeout, final TimeUnit unit) {
         checkArgument(timeout >= 1, "The timeout should be >= 1");
         checkNotNull(unit, "time unit");
@@ -273,9 +277,25 @@ public final class JobBuilder {
      *
      * @param strictMode true if strict mode should be enabled
      * @return the job builder
+     *
+     * @deprecated Use {@link JobBuilder#errorThreshold(long)} instead
      */
+    @Deprecated
     public JobBuilder strictMode(final boolean strictMode) {
-        job.getJobReport().getParameters().setStrictMode(strictMode);
+        if (strictMode) {
+            return errorThreshold(1);
+        }
+        return this;
+    }
+
+    /**
+     * Set a limit for errors. When the threshold is exceeded, the job will be aborted
+     *
+     * @param errorThreshold the errors limit
+     * @return the job builder
+     */
+    public JobBuilder errorThreshold(final long errorThreshold) {
+        job.getJobReport().getParameters().setErrorThreshold(errorThreshold);
         return this;
     }
 
@@ -285,6 +305,7 @@ public final class JobBuilder {
      * @param silentMode true to enable silent mode
      * @return the job builder
      */
+    @Deprecated
     public JobBuilder silentMode(final boolean silentMode) {
         job.getJobReport().getParameters().setSilentMode(silentMode);
         return this;
@@ -295,9 +316,22 @@ public final class JobBuilder {
      *
      * @param jmx true to enable jmx monitoring
      * @return the job builder
+     *
+     * @deprecated Use {@link JobBuilder#enableJmx(boolean)} instead
      */
+    @Deprecated
     public JobBuilder jmxMode(final boolean jmx) {
-        job.getJobReport().getParameters().setJmxMode(jmx);
+        return enableJmx(jmx);
+    }
+
+    /**
+     * Activate JMX monitoring.
+     *
+     * @param jmx true to enable jmx monitoring
+     * @return the job builder
+     */
+    public JobBuilder enableJmx(final boolean jmx) {
+        job.getJobReport().getParameters().setJmxMonitoring(jmx);
         return this;
     }
 
@@ -353,7 +387,10 @@ public final class JobBuilder {
      * Build and call the job.
      *
      * @return job execution report
+     *
+     * @deprecated Use {@link JobExecutor#execute(Job)} instead
      */
+    @Deprecated
     public JobReport call() {
         return job.call();
     }

@@ -65,6 +65,7 @@ public class JobReport implements Serializable {
         return metrics;
     }
 
+    @Deprecated
     public Object getResult() {
         return result == null ? null : result.get();
     }
@@ -119,6 +120,11 @@ public class JobReport implements Serializable {
         final StringBuilder sb = new StringBuilder();
         sb.append(metrics.getDuration()).append("ms");
         return sb.toString();
+    }
+
+    public String getFormattedDataSource() {
+        String dataSource = parameters.getDataSource();
+        return valueOf(dataSource == null ? NOT_APPLICABLE : dataSource);
     }
 
     public String getFormattedFilteredCount() {

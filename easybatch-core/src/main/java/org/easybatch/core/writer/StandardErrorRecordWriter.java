@@ -22,42 +22,33 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.record;
+package org.easybatch.core.writer;
 
-import java.util.List;
+import org.easybatch.core.record.Record;
 
-import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import java.io.OutputStreamWriter;
 
 /**
- * A batch contains a list of records.
+ * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to the standard error.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class Batch extends GenericRecord<List<Record>> {
+public class StandardErrorRecordWriter extends OutputStreamRecordWriter {
 
     /**
-     * Create a {@link Batch}.
-     *
-     * @param header  the batch header
-     * @param payload the batch payload
+     * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to the standard error.
      */
-    public Batch(Header header, List<Record> payload) {
-        super(header, payload);
+    public StandardErrorRecordWriter() {
+        super(new OutputStreamWriter(System.err));
     }
 
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder("Batch: {");
-        stringBuilder.append(LINE_SEPARATOR);
-        stringBuilder.append("header=[").append(header).append("],");
-        stringBuilder.append(LINE_SEPARATOR);
-        stringBuilder.append("payload=[").append(LINE_SEPARATOR);
-        for (Record record : payload) {
-            stringBuilder.append("\t");
-            stringBuilder.append(record);
-            stringBuilder.append(LINE_SEPARATOR);
-        }
-        stringBuilder.append("]}");
-        return stringBuilder.toString();
+    /**
+     * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to the standard error.
+     *
+     * @param lineSeparator line separator.
+     */
+    public StandardErrorRecordWriter(final String lineSeparator) {
+        super(new OutputStreamWriter(System.err), lineSeparator);
     }
+
 }

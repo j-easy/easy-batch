@@ -24,6 +24,7 @@
 
 package org.easybatch.core.job;
 
+import static org.easybatch.core.job.JobParameters.DEFAULT_ERROR_THRESHOLD;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
@@ -51,15 +52,16 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
         sb.append(LINE_SEPARATOR).append("\tName = ").append(parameters.getName());
         sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(parameters.getExecutionId());
         sb.append(LINE_SEPARATOR).append("\tHost name = ").append(parameters.getHostname());
-        sb.append(LINE_SEPARATOR).append("\tData source = ").append(parameters.getDataSource());
+        sb.append(LINE_SEPARATOR).append("\tData source = ").append(jobReport.getFormattedDataSource());
         sb.append(LINE_SEPARATOR).append("\tReader retry policy = ").append(parameters.getRetryPolicy());
         sb.append(LINE_SEPARATOR).append("\tReader keep alive = ").append(parameters.isKeepAlive());
         sb.append(LINE_SEPARATOR).append("\tSkip = ").append(parameters.getSkip());
         sb.append(LINE_SEPARATOR).append("\tLimit = ").append(jobReport.getFormattedLimit());
         sb.append(LINE_SEPARATOR).append("\tTimeout = ").append(jobReport.getFormattedTimeout());
-        sb.append(LINE_SEPARATOR).append("\tStrict mode = ").append(parameters.isStrictMode());
+        long errorThreshold = parameters.getErrorThreshold();
+        sb.append(LINE_SEPARATOR).append("\tError threshold = ").append(errorThreshold != DEFAULT_ERROR_THRESHOLD ? errorThreshold : "N/A");
         sb.append(LINE_SEPARATOR).append("\tSilent mode = ").append(parameters.isSilentMode());
-        sb.append(LINE_SEPARATOR).append("\tJmx mode = ").append(parameters.isJmxMode());
+        sb.append(LINE_SEPARATOR).append("\tJmx monitoring = ").append(parameters.isJmxMonitoring());
 
         /*
          * Job metrics

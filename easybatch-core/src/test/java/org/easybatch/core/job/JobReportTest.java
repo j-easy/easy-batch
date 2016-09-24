@@ -133,6 +133,12 @@ public class JobReportTest {
     }
 
     @Test
+    public void whenDataSourceIsNull_ThenItShouldBeNA() {
+        jobReport.getParameters().setDataSource(null);
+        assertThat(jobReport.getFormattedDataSource()).isEqualTo("N/A");
+    }
+
+    @Test
     public void jobTimeoutShouldBeCorrectlyFormatted() throws Exception {
         long oneMinute = TimeUnit.MILLISECONDS.convert(1, TimeUnit.MINUTES);
         jobReport.getParameters().setTimeout(oneMinute);

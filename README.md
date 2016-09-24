@@ -74,6 +74,7 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 |Continuous integration| [Build job @ Travis CI](https://travis-ci.org/EasyBatch/easybatch-framework) |
 |Agile Board           | [Backlog items @ waffle.io](https://waffle.io/easybatch/easybatch-framework) |
 |Code coverage         | [![Coverage](https://coveralls.io/repos/EasyBatch/easybatch-framework/badge.svg?style=flat&branch=master&service=github)](https://coveralls.io/github/EasyBatch/easybatch-framework?branch=master) |
+|Sonar analysis        | [![Quality Gate](https://sonarqube.com/api/badges/gate?key=org.easybatch:easybatch)](https://sonarqube.com/overview?id=org.easybatch%3Aeasybatch) |
 |Dependencies          | [![Dependencies](https://www.versioneye.com/user/projects/5589cb2e3133630061000022/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5589cb2e3133630061000022) |
 
 ## Presentations, articles & blog posts
@@ -87,9 +88,9 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 ## Current version
 
-* Stable: 4.1.0 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.1.0|)
+* Stable: 4.2.0 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.2.0|)
 
-* Development: 4.2.0-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)</td>
+* Development: 5.0.0-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)</td>
 
 If you want to import the snapshot version, you need to use the following repository:
 

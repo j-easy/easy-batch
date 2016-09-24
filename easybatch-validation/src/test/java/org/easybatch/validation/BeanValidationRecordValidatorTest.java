@@ -24,8 +24,8 @@
 
 package org.easybatch.validation;
 
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.validator.RecordValidationException;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 public class BeanValidationRecordValidatorTest {
 
     @Mock
-    private GenericRecord<Foo> record;
+    private Record<Foo> record;
     @Mock
     private Header header;
 
@@ -63,7 +63,7 @@ public class BeanValidationRecordValidatorTest {
     public void validBeanShouldBeAccepted() throws Exception {
         Foo foo = new Foo(1, "bar");
         when(record.getPayload()).thenReturn(foo);
-        GenericRecord<Foo> actual = validator.processRecord(record);
+        Record<Foo> actual = validator.processRecord(record);
 
         assertThat(actual).isEqualTo(record);
     }

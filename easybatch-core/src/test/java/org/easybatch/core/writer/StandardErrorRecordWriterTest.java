@@ -22,42 +22,49 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.core.record;
+package org.easybatch.core.writer;
 
-import java.util.List;
+import org.easybatch.core.record.Record;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.contrib.java.lang.system.SystemErrRule;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import static org.mockito.Mockito.when;
 
 /**
- * A batch contains a list of records.
+ * Test class for {@link StandardErrorRecordWriter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class Batch extends GenericRecord<List<Record>> {
+@RunWith(MockitoJUnitRunner.class)
+public class StandardErrorRecordWriterTest {
 
-    /**
-     * Create a {@link Batch}.
-     *
-     * @param header  the batch header
-     * @param payload the batch payload
-     */
-    public Batch(Header header, List<Record> payload) {
-        super(header, payload);
+    public static final String PAYLOAD = "Foo";
+
+    @Rule
+    public final SystemErrRule systemErr = new SystemErrRule().enableLog();
+
+    @Mock
+    private Record record;
+
+    private StandardErrorRecordWriter writer;
+
+    @Before
+    public void setUp() throws Exception {
+        when(record.getPayload()).thenReturn(PAYLOAD);
+        writer = new StandardErrorRecordWriter();
     }
 
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder("Batch: {");
-        stringBuilder.append(LINE_SEPARATOR);
-        stringBuilder.append("header=[").append(header).append("],");
-        stringBuilder.append(LINE_SEPARATOR);
-        stringBuilder.append("payload=[").append(LINE_SEPARATOR);
-        for (Record record : payload) {
-            stringBuilder.append("\t");
-            stringBuilder.append(record);
-            stringBuilder.append(LINE_SEPARATOR);
-        }
-        stringBuilder.append("]}");
-        return stringBuilder.toString();
+    @Test
+    public void testRecordPayloadWriting() throws Exception {
+        writer.processRecord(record);
+
+        assertThat(systemErr.getLog()).isEqualTo(PAYLOAD + LINE_SEPARATOR);
     }
 }

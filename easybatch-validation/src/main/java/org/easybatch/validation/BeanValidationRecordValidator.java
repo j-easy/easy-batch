@@ -24,7 +24,7 @@
 
 package org.easybatch.validation;
 
-import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
 import org.easybatch.core.validator.RecordValidationException;
 import org.easybatch.core.validator.RecordValidator;
@@ -41,7 +41,7 @@ import java.util.Set;
  * @param <P> the object type this validator can validate.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class BeanValidationRecordValidator<P> implements RecordValidator<GenericRecord<P>> {
+public class BeanValidationRecordValidator<P> implements RecordValidator<Record<P>> {
 
     /**
      * The validator instance to use to validate objects.
@@ -54,7 +54,7 @@ public class BeanValidationRecordValidator<P> implements RecordValidator<Generic
     }
 
     @Override
-    public GenericRecord<P> processRecord(GenericRecord<P> record) throws RecordValidationException {
+    public Record<P> processRecord(Record<P> record) throws RecordValidationException {
         Set<ConstraintViolation<P>> constraintViolationSet = validator.validate(record.getPayload());
         if (!constraintViolationSet.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();

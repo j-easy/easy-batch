@@ -51,7 +51,7 @@ class MonitoringSetupListener implements JobListener {
 
     @Override
     public void beforeJobStart(JobParameters jobParameters) {
-        if (jobParameters.isJmxMode()) {
+        if (jobParameters.isJmxMonitoring()) {
             registerJmxMBean(job);
             LOGGER.log(Level.INFO, "Calculating the total number of records");
             Long totalRecords = job.getRecordReader().getTotalRecords();

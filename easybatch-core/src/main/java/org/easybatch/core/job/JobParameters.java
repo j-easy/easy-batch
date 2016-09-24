@@ -43,6 +43,8 @@ public class JobParameters implements Serializable {
 
     public static final Long DEFAULT_LIMIT = Long.MAX_VALUE;
 
+    public static final Long DEFAULT_ERROR_THRESHOLD = Long.MAX_VALUE;
+
     public static final Long DEFAULT_SKIP = 0L;
 
     public static final long DEFAULT_TIMEOUT = TimeUnit.MILLISECONDS.convert(31, TimeUnit.DAYS);
@@ -63,11 +65,11 @@ public class JobParameters implements Serializable {
 
     private long timeout;
 
-    private boolean strictMode;
+    private long errorThreshold;
 
     private boolean silentMode;
 
-    private boolean jmxMode;
+    private boolean jmxMonitoring;
 
     private boolean keepAlive;
 
@@ -81,6 +83,7 @@ public class JobParameters implements Serializable {
         this.skip = DEFAULT_SKIP;
         this.limit = DEFAULT_LIMIT;
         this.timeout = DEFAULT_TIMEOUT;
+        this.errorThreshold = DEFAULT_ERROR_THRESHOLD;
         this.systemProperties = System.getProperties();
         this.hostname = Utils.getHostName();
         this.retryPolicy = DEFAULT_RETRY_POLICY;
@@ -134,12 +137,12 @@ public class JobParameters implements Serializable {
         this.timeout = timeout;
     }
 
-    public boolean isStrictMode() {
-        return strictMode;
+    public long getErrorThreshold() {
+        return errorThreshold;
     }
 
-    public void setStrictMode(boolean strictMode) {
-        this.strictMode = strictMode;
+    public void setErrorThreshold(long errorThreshold) {
+        this.errorThreshold = errorThreshold;
     }
 
     public boolean isSilentMode() {
@@ -150,12 +153,12 @@ public class JobParameters implements Serializable {
         this.silentMode = silentMode;
     }
 
-    public boolean isJmxMode() {
-        return jmxMode;
+    public boolean isJmxMonitoring() {
+        return jmxMonitoring;
     }
 
-    public void setJmxMode(boolean jmxMode) {
-        this.jmxMode = jmxMode;
+    public void setJmxMonitoring(boolean jmxMonitoring) {
+        this.jmxMonitoring = jmxMonitoring;
     }
 
     public boolean isKeepAlive() {

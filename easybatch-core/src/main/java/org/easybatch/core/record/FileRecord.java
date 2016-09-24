@@ -45,7 +45,10 @@ public class FileRecord extends GenericRecord<File> {
 
     @Override
     public String toString() {
-        return payload.getAbsolutePath();
+        return "Record: {" +
+                "header=" + header +
+                ", payload=" + payload.getAbsolutePath() +
+                '}';
     }
 
 }

@@ -53,7 +53,7 @@ class DefaultPipelineListener implements PipelineListener {
      */
     @Override
     public Record beforeRecordProcessing(Record record) {
-        if (job.getJobReport().getParameters().isJmxMode()) {
+        if (job.getJobReport().getParameters().isJmxMonitoring()) {
             job.getJobMonitor().notifyJobReportUpdate();
         }
         return record;
@@ -68,7 +68,7 @@ class DefaultPipelineListener implements PipelineListener {
     @Override
     public void afterRecordProcessing(Record inputRecord, Record outputRecord) {
         if (outputRecord == null) {
-            LOGGER.log(Level.INFO, "Record {0} has been filtered", inputRecord);
+            LOGGER.log(Level.INFO, "{0} has been filtered", inputRecord);
             job.getJobReport().getMetrics().incrementFilteredCount();
         } else {
             job.getJobReport().getMetrics().incrementSuccessCount();
@@ -83,7 +83,7 @@ class DefaultPipelineListener implements PipelineListener {
      */
     @Override
     public void onRecordProcessingException(Record record, Throwable throwable) {
-        LOGGER.log(Level.SEVERE, "An exception occurred while processing record " + record, throwable);
+        LOGGER.log(Level.SEVERE, "An exception occurred while processing " + record, throwable);
         job.getJobReport().getMetrics().incrementErrorCount();
     }
 }

@@ -31,8 +31,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.Calendar;
-import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -80,18 +80,11 @@ public class HtmlJobReportFormatterTest {
         jobReport.getMetrics().incrementSuccessCount();
     }
 
-    @Ignore("TODO: Contents are identical but assertion fails due to different whitespaces")
+    @Ignore("TODO: Contents are identical but assertion fails due to different system properties")
     @Test
     public void testReportFormatting() {
-        String result = jobReportFormatter.formatReport(jobReport);
-        Scanner scanner = new Scanner(HtmlJobReportFormatterTest.class.getResourceAsStream("expectedReport.html"));
-        StringBuilder stringBuilder = new StringBuilder();
-        while (scanner.hasNextLine()) {
-            stringBuilder.append(scanner.nextLine());
-        }
-
-        String expectedResult = stringBuilder.toString();
-        assertThat(result).isXmlEqualTo(expectedResult);
+        String actual = jobReportFormatter.formatReport(jobReport);
+        assertThat(actual).isXmlEqualToContentOf(new File("src/test/resources/org/easybatch/tools/reporting/expectedReport.html"));
     }
 
 }

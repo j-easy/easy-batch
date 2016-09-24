@@ -43,7 +43,7 @@
         <property name="name" value="hello world"/>
         <property name="skip" value="1"/>
         <property name="limit" value="2"/>
-        <property name="jmxMode" value="false"/>
+        <property name="jmxMonitoring" value="false"/>
         <property name="keepAlive" value="false"/>
         <property name="strictMode" value="false"/>
         <property name="silentMode" value="false"/>

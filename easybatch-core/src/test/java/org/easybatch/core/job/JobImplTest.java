@@ -170,12 +170,14 @@ public class JobImplTest {
         JobReport jobReport = JobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getTotalCount()).isNull();
-        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        assertThat(jobReport.getMetrics().getDuration()).isGreaterThanOrEqualTo(0);
         assertThat(jobReport.getMetrics().getLastError()).isEqualTo(recordReaderOpeningException);
+        assertThat(jobReport.getParameters().getDataSource()).isNull();
     }
 
     @Test
@@ -229,14 +231,14 @@ public class JobImplTest {
     }
 
     @Test
-    public void whenStrictModeIsEnabled_ThenTheJobShouldBeAbortedOnFirstProcessingExceptionIfAny() throws Exception {
+    public void whenErrorThresholdIsSpecified_thenTheJobShouldBeAbortedWhenThresholdExceeded() throws Exception {
         when(firstProcessor.processRecord(record1)).thenReturn(record1);
         when(secondProcessor.processRecord(record1)).thenThrow(recordProcessingException);
         job = new JobBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
-                .strictMode(true)
+                .errorThreshold(1)
                 .build();
         JobReport jobReport = JobExecutor.execute(job);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
