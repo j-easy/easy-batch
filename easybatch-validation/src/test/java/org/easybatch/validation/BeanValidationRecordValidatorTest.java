@@ -24,8 +24,6 @@
 
 package org.easybatch.validation;
 
-import org.easybatch.core.job.*;
-import org.easybatch.core.reader.IterableRecordReader;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.validator.RecordValidationException;
@@ -35,7 +33,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -43,16 +40,16 @@ import static org.mockito.Mockito.when;
 public class BeanValidationRecordValidatorTest {
 
     @Mock
-    private Record record;
+    private Record<Foo> record;
     @Mock
     private Header header;
 
-    private BeanValidationRecordValidator validator;
+    private BeanValidationRecordValidator<Foo> validator;
 
     @Before
     public void setUp() throws Exception {
         when(record.getHeader()).thenReturn(header);
-        validator = new BeanValidationRecordValidator();
+        validator = new BeanValidationRecordValidator<>();
     }
 
     @Test(expected = RecordValidationException.class)
@@ -66,25 +63,9 @@ public class BeanValidationRecordValidatorTest {
     public void validBeanShouldBeAccepted() throws Exception {
         Foo foo = new Foo(1, "bar");
         when(record.getPayload()).thenReturn(foo);
-        Record actual = validator.processRecord(record);
+        Record<Foo> actual = validator.processRecord(record);
 
         assertThat(actual).isEqualTo(record);
-    }
-
-    @Test
-    public void integrationTest() throws Exception {
-        Job job = new JobBuilder()
-                .reader(new IterableRecordReader(asList(new Foo(1, "foo1"), new Foo(-2, "foo2"))))
-                .validator(new BeanValidationRecordValidator())
-                .build();
-
-        JobReport report = JobExecutor.execute(job);
-
-        assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);
-        assertThat(report.getMetrics().getTotalCount()).isEqualTo(2);
-        assertThat(report.getMetrics().getErrorCount()).isEqualTo(1);
-        assertThat(report.getMetrics().getSuccessCount()).isEqualTo(1);
-
     }
 
 }

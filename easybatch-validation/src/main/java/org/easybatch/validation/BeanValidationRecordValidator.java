@@ -38,9 +38,10 @@ import java.util.Set;
 /**
  * An implementation of {@link RecordValidator} using JSR 303 API.
  *
+ * @param <P> the object type this validator can validate.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class BeanValidationRecordValidator implements RecordValidator {
+public class BeanValidationRecordValidator<P> implements RecordValidator<Record<P>> {
 
     /**
      * The validator instance to use to validate objects.
@@ -53,11 +54,11 @@ public class BeanValidationRecordValidator implements RecordValidator {
     }
 
     @Override
-    public Record processRecord(Record record) throws RecordValidationException {
-        Set<ConstraintViolation<Object>> constraintViolationSet = validator.validate(record.getPayload());
+    public Record<P> processRecord(Record<P> record) throws RecordValidationException {
+        Set<ConstraintViolation<P>> constraintViolationSet = validator.validate(record.getPayload());
         if (!constraintViolationSet.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
-            for (ConstraintViolation<Object> constraintViolation : constraintViolationSet) {
+            for (ConstraintViolation<P> constraintViolation : constraintViolationSet) {
                 stringBuilder
                         .append("Invalid value '").append(constraintViolation.getInvalidValue()).append("' ")
                         .append("for property '").append(constraintViolation.getPropertyPath()).append("' : ")
