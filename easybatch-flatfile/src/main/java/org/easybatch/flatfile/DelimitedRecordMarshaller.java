@@ -27,7 +27,6 @@ package org.easybatch.flatfile;
 import org.easybatch.core.field.BeanRecordFieldExtractor;
 import org.easybatch.core.field.RecordFieldExtractor;
 import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.marshaller.RecordMarshallingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.StringRecord;
 
@@ -104,7 +103,7 @@ public class DelimitedRecordMarshaller implements RecordMarshaller<GenericRecord
     }
 
     @Override
-    public StringRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
+    public StringRecord processRecord(final GenericRecord record) throws Exception {
         Iterable<Object> values = fieldExtractor.extractFields(record.getPayload());
         try {
             StringBuilder stringBuilder = new StringBuilder();
@@ -120,7 +119,7 @@ public class DelimitedRecordMarshaller implements RecordMarshaller<GenericRecord
             }
             return new StringRecord(record.getHeader(), stringBuilder.toString());
         } catch (Exception e) {
-            throw new RecordMarshallingException(e);
+            throw new Exception(e);
         }
     }
 }

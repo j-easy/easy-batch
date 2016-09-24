@@ -27,7 +27,6 @@ package org.easybatch.flatfile;
 import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.ObjectMapper;
 import org.easybatch.core.mapper.RecordMapper;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.StringRecord;
 
@@ -90,7 +89,7 @@ public class FixedLengthRecordMapper extends AbstractRecordMapper implements Rec
     }
 
     @Override
-    public GenericRecord processRecord(final StringRecord record) throws RecordMappingException {
+    public GenericRecord processRecord(final StringRecord record) throws Exception {
 
         FlatFileRecord flatFileRecord = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<>();
@@ -102,13 +101,13 @@ public class FixedLengthRecordMapper extends AbstractRecordMapper implements Rec
         return new GenericRecord(record.getHeader(), objectMapper.mapObject(fieldsContents));
     }
 
-    FlatFileRecord parseRecord(final StringRecord record) throws RecordMappingException {
+    FlatFileRecord parseRecord(final StringRecord record) throws Exception {
 
         String payload = record.getPayload();
         int recordLength = payload.length();
 
         if (recordLength != recordExpectedLength) {
-            throw new RecordMappingException("record length " + recordLength + " not equal to expected length of " + recordExpectedLength);
+            throw new Exception("record length " + recordLength + " not equal to expected length of " + recordExpectedLength);
         }
 
         FlatFileRecord flatFileRecord = new FlatFileRecord(record.getHeader(), payload);

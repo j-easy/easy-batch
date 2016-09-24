@@ -41,8 +41,8 @@ public interface RecordValidator<R extends Record> extends RecordProcessor<R, R>
      *
      * @param record the record to validate.
      * @return the record if it should continue in the pipeline
-     * @throws RecordValidationException thrown if the record is not valid and should be rejected
+     * @throws Exception thrown if the record is not valid and should be rejected
      */
     @Override
-    R processRecord(R record) throws RecordValidationException;
+    R processRecord(R record) throws Exception;
 }

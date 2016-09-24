@@ -53,7 +53,7 @@ public class ApacheCommonCsvSupportIntegrationTest {
                 .mapper(new ApacheCommonCsvRecordMapper(Tweet.class))
                 .marshaller(new ApacheCommonCsvRecordMarshaller(Tweet.class, new String[]{"id", "user", "message"}, ';', '\''))
                 .writer(new StandardOutputRecordWriter())
-                .call();
+                .build().call();
 
         assertThat(systemOut.getLog()).isEqualTo("'1';'foo';'hello'" + LINE_SEPARATOR +
                 "'2';'bar';'hey'" + LINE_SEPARATOR +

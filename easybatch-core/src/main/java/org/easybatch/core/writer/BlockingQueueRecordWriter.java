@@ -24,35 +24,47 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-import static java.lang.String.format;
-import static org.easybatch.core.util.Utils.checkNotNull;
+import static java.util.Collections.singletonList;
 
 /**
- * Write records to a {@link BlockingQueue}.
+ * Write records to a (list of) {@link BlockingQueue}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class BlockingQueueRecordWriter<R extends Record> implements RecordWriter<R> {
+public class BlockingQueueRecordWriter implements RecordWriter {
 
-    private BlockingQueue<R> blockingQueue;
+    private List<BlockingQueue<Record>> blockingQueues;
 
-    public BlockingQueueRecordWriter(final BlockingQueue<R> blockingQueue) {
-        checkNotNull(blockingQueue, "queue");
-        this.blockingQueue = blockingQueue;
+    public BlockingQueueRecordWriter(final BlockingQueue<Record> blockingQueue) {
+        this(singletonList(blockingQueue));
+    }
+
+    public BlockingQueueRecordWriter(final List<BlockingQueue<Record>> blockingQueues) {
+        this.blockingQueues = blockingQueues;
     }
 
     @Override
-    public R processRecord(R record) throws RecordWritingException {
-        try {
-            blockingQueue.put(record);
-            return record;
-        } catch (InterruptedException exception) {
-            String message = format("Unable to write record %s ", record);
-            throw new RecordWritingException(message, exception);
+    public void open() throws Exception {
+
+    }
+
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch) {
+            for (BlockingQueue<Record> queue : blockingQueues) {
+                queue.put(record);
+            }
         }
+    }
+
+    @Override
+    public void close() throws Exception {
+
     }
 }

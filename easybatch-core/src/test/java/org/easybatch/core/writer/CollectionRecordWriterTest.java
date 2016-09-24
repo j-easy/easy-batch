@@ -24,9 +24,16 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.reader.IterableRecordReader;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,43 +41,51 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.mockito.Mockito.when;
 
 /**
  * Test class for {@link CollectionRecordWriter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
+@RunWith(MockitoJUnitRunner.class)
 public class CollectionRecordWriterTest {
 
-    private static final String FOO = "foo";
-    private static final String BAR = "bar";
+    @Mock
+    private Record record1, record2;
+    @Mock
+    private Object payload1, payload2;
 
-    private List<String> items;
+    private List<Object> items;
 
     private CollectionRecordWriter writer;
 
     @Before
     public void setUp() throws Exception {
+        when(record1.getPayload()).thenReturn(payload1);
+        when(record2.getPayload()).thenReturn(payload2);
         items = new ArrayList<>();
         writer = new CollectionRecordWriter(items);
     }
 
     @Test
     public void testWriteRecord() throws Exception {
-        writer.writePayload(FOO);
-        assertThat(items).containsExactly(FOO);
+        writer.writeRecords(new Batch(record1));
+        assertThat(items).containsExactly(payload1);
     }
 
     @Test
     public void integrationTest() throws Exception {
-        List<String> input = Arrays.asList(FOO, BAR);
-        List<String> output = new ArrayList<>();
+        List<Object> input = Arrays.asList(payload1, payload2);
+        List<Object> output = new ArrayList<>();
 
-        aNewJob()
+        Job job = aNewJob()
                 .reader(new IterableRecordReader(input))
                 .writer(new CollectionRecordWriter(output))
-                .call();
+                .build();
 
-        assertThat(output).containsExactly(FOO, BAR);
+        new JobExecutor().execute(job);
+
+        assertThat(output).containsExactly(payload1, payload2);
     }
 }

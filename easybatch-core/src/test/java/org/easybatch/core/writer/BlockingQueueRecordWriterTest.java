@@ -24,6 +24,7 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,35 +33,33 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.mockito.Mockito.*;
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BlockingQueueRecordWriterTest {
 
     @Mock
-    private Record record;
-    @Mock
-    private InterruptedException interruptedException;
-    @Mock
-    private BlockingQueue<Record> blockingQueue;
+    private Record record1, record2;
 
-    private BlockingQueueRecordWriter<Record> writer;
+    private BlockingQueue<Record> queue1, queue2;
+
+    private BlockingQueueRecordWriter writer;
 
     @Before
     public void setUp() {
-        writer = new BlockingQueueRecordWriter<>(blockingQueue);
+        queue1 = new LinkedBlockingQueue<>();
+        queue2 = new LinkedBlockingQueue<>();
+        writer = new BlockingQueueRecordWriter(asList(queue1, queue2));
     }
 
     @Test
-    public void writeRecord_whenNoException() throws Exception {
-        writer.processRecord(record);
-        verify(blockingQueue).put(record);
+    public void testWriteRecords() throws Exception {
+        writer.writeRecords(new Batch(record1, record2));
+        assertThat(queue1).containsExactly(record1, record2);
+        assertThat(queue2).containsExactly(record1, record2);
     }
 
-    @Test(expected = RecordWritingException.class)
-    public void writeRecord_whenException() throws Exception {
-        doThrow(interruptedException).when(blockingQueue).put(record);
-        writer.processRecord(record);
-    }
 }

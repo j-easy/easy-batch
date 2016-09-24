@@ -26,7 +26,6 @@ package org.easybatch.validation;
 
 import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
-import org.easybatch.core.validator.RecordValidationException;
 import org.easybatch.core.validator.RecordValidator;
 
 import javax.validation.ConstraintViolation;
@@ -38,10 +37,9 @@ import java.util.Set;
 /**
  * An implementation of {@link RecordValidator} using JSR 303 API.
  *
- * @param <P> the object type this validator can validate.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class BeanValidationRecordValidator<P> implements RecordValidator<Record<P>> {
+public class BeanValidationRecordValidator implements RecordValidator {
 
     /**
      * The validator instance to use to validate objects.
@@ -54,18 +52,18 @@ public class BeanValidationRecordValidator<P> implements RecordValidator<Record<
     }
 
     @Override
-    public Record<P> processRecord(Record<P> record) throws RecordValidationException {
-        Set<ConstraintViolation<P>> constraintViolationSet = validator.validate(record.getPayload());
+    public Record processRecord(Record record) throws Exception {
+        Set<ConstraintViolation<Object>> constraintViolationSet = validator.validate(record.getPayload());
         if (!constraintViolationSet.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
-            for (ConstraintViolation<P> constraintViolation : constraintViolationSet) {
+            for (ConstraintViolation<Object> constraintViolation : constraintViolationSet) {
                 stringBuilder
                         .append("Invalid value '").append(constraintViolation.getInvalidValue()).append("' ")
                         .append("for property '").append(constraintViolation.getPropertyPath()).append("' : ")
                         .append(constraintViolation.getMessage())
                         .append(Utils.LINE_SEPARATOR);
             }
-            throw new RecordValidationException(stringBuilder.toString());
+            throw new Exception(stringBuilder.toString());
         }
         return record;
     }

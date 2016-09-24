@@ -26,7 +26,6 @@ package org.easybatch.extensions.xstream;
 
 import com.thoughtworks.xstream.XStream;
 import org.easybatch.core.mapper.RecordMapper;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.xml.XmlRecord;
 
@@ -56,13 +55,9 @@ public class XstreamRecordMapper<P> implements RecordMapper<XmlRecord, GenericRe
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public GenericRecord<P> processRecord(final XmlRecord record) throws RecordMappingException {
-        try {
-            P unmarshalledObject = (P) xStream.fromXML(record.getPayload());
-            return new GenericRecord<>(record.getHeader(), unmarshalledObject);
-        } catch (Exception e) {
-            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
-        }
+    public GenericRecord<P> processRecord(final XmlRecord record) throws Exception {
+        P unmarshalledObject = (P) xStream.fromXML(record.getPayload());
+        return new GenericRecord<>(record.getHeader(), unmarshalledObject);
     }
 
 }

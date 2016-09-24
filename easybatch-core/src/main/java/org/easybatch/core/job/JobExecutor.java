@@ -24,24 +24,86 @@
 
 package org.easybatch.core.job;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
+import static java.lang.Runtime.getRuntime;
+import static java.util.concurrent.Executors.newFixedThreadPool;
+
 /**
- * Helper class to execute a {@link Job}.
+ * Main class to execute {@link Job}s.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class JobExecutor {
 
-    JobExecutor() {
-        // private constructor
+    private ExecutorService executorService;
+
+    /**
+     * Create a job executor. The number of workers will be set to the number of available processors.
+     */
+    public JobExecutor() {
+        executorService = newFixedThreadPool(getRuntime().availableProcessors());
     }
 
     /**
-     * Execute a job.
+     * Create a job executor.
+     *
+     * @param nbWorkers number of worker threads
+     */
+    public JobExecutor(int nbWorkers) {
+        executorService = newFixedThreadPool(nbWorkers);
+    }
+
+    /**
+     * Execute a job synchronously.
      *
      * @param job the job to execute
-     * @return the job execution report
+     * @return the job report
      */
-    public static JobReport execute(Job job) {
-        return job.call();
+    public JobReport execute(Job job) {
+        try {
+            return executorService.submit(job).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Unable to execute job " + job.getName());
+        }
     }
+
+    /**
+     * Submit a job for asynchronous execution.
+     *
+     * @param job to execute
+     * @return the job report
+     */
+    public Future<JobReport> submit(Job job) {
+        return executorService.submit(job);
+    }
+
+    /**
+     * Submit jobs for execution.
+     *
+     * @param jobs to execute
+     * @return the list of job reports
+     */
+    public List<Future<JobReport>> submitAll(Job... jobs) {
+        List<Job> jobList = new ArrayList<>();
+        Collections.addAll(jobList, jobs);
+        try {
+            return executorService.invokeAll(jobList);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Unable to execute jobs");
+        }
+    }
+
+    /**
+     * Shutdown the job executor.
+     */
+    public void shutdown() {
+        executorService.shutdown();
+    }
+
 }

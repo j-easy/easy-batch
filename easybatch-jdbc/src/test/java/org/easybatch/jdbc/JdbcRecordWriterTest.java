@@ -24,8 +24,11 @@
 
 package org.easybatch.jdbc;
 
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
+import org.hsqldb.jdbc.JDBCDataSource;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -36,7 +39,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Long.valueOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
 
@@ -54,6 +56,7 @@ public class JdbcRecordWriterTest {
     public static void initDatabase() throws Exception {
         System.setProperty("hsqldb.reconfig_logging", "false");
         connection = getConnection();
+        connection.setAutoCommit(false);
         createTweetTable(connection);
     }
 
@@ -91,25 +94,31 @@ public class JdbcRecordWriterTest {
     @Before
     public void setUp() throws Exception {
         String query = "INSERT INTO tweet VALUES (?,?,?);";
-        jdbcRecordWriter = new JdbcRecordWriter(connection, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, "id", "user", "message"));
+        JDBCDataSource dataSource = new JDBCDataSource();
+        dataSource.setUser("sa");
+        dataSource.setPassword("pwd");
+        dataSource.setUrl("jdbc:hsqldb:mem");
+        jdbcRecordWriter = new JdbcRecordWriter(dataSource, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, "id", "user", "message"));
     }
 
     @Test
-    public void testSingleRecordWriting() throws Exception {
+    public void testRecordWriting() throws Exception {
 
-        Integer nbTweetsToInsert = 5;
+        int nbTweetsToInsert = 5;
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        JobReport jobReport = aNewJob()
+        Job job = aNewJob()
+                .batchSize(2)
                 .reader(new IterableRecordReader(tweets))
-                .writer(jdbcRecordWriter) // No need for JdbcTransactionPipelineListener, the connection is in auto-commit mode
-                .jobListener(new JdbcConnectionListener(connection))
-                .call();
+                .writer(jdbcRecordWriter)
+                .build();
+
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(valueOf(nbTweetsToInsert));
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(nbTweetsToInsert);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(nbTweetsToInsert);
 
         int nbTweetsInDatabase = countTweetsInDatabase();
 

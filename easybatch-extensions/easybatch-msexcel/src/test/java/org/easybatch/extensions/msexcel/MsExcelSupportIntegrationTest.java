@@ -48,15 +48,15 @@ public class MsExcelSupportIntegrationTest {
         Job job = JobBuilder.aNewJob()
                 .reader(new MsExcelRecordReader(inputTweets))
                 .mapper(new MsExcelRecordMapper(Tweet.class, "id", "user", "message"))
-                .marshaller(new MsExcelRecordMarshaller<>(Tweet.class, "id", "user", "message"))
+                .marshaller(new MsExcelRecordMarshaller(Tweet.class, "id", "user", "message"))
                 .writer(new MsExcelRecordWriter(outputTweets, SHEET_NAME))
                 .build();
 
-        JobReport report = JobExecutor.execute(job);
+        JobReport report = new JobExecutor().execute(job);
 
         assertThat(report).isNotNull();
-        assertThat(report.getMetrics().getTotalCount()).isEqualTo(2);
-        assertThat(report.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(report.getMetrics().getReadCount()).isEqualTo(2);
+        assertThat(report.getMetrics().getWriteCount()).isEqualTo(2);
         assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);
 
         XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(outputTweets));

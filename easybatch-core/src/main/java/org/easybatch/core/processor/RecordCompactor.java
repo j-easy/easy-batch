@@ -38,7 +38,7 @@ public abstract class RecordCompactor implements RecordProcessor<StringRecord, S
     protected abstract String compact(final String payload);
 
     @Override
-    public StringRecord processRecord(final StringRecord record) throws RecordProcessingException {
+    public StringRecord processRecord(final StringRecord record) throws Exception {
         return new StringRecord(record.getHeader(), compact(record.getPayload()));
     }
 

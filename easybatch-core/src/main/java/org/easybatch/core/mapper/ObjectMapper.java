@@ -69,7 +69,7 @@ public class ObjectMapper {
     /**
      * Type converters map.
      */
-    private Map<Class, TypeConverter> typeConverters;
+    private Map<Class, TypeConverter<String, ?>> typeConverters;
 
     /**
      * Construct an object mapper.
@@ -87,9 +87,9 @@ public class ObjectMapper {
      *
      * @param values fields values
      * @return A populated instance of the target type.
-     * @throws RecordMappingException thrown if values cannot be mapped to target object fields
+     * @throws Exception thrown if values cannot be mapped to target object fields
      */
-    public Object mapObject(final Map<String, String> values) throws RecordMappingException {
+    public Object mapObject(final Map<String, String> values) throws Exception {
 
         Object result = createInstance();
 
@@ -107,7 +107,7 @@ public class ObjectMapper {
             }
 
             Class<?> type = setter.getParameterTypes()[0];
-            TypeConverter typeConverter = typeConverters.get(type);
+            TypeConverter<String, ?> typeConverter = typeConverters.get(type);
             if (typeConverter == null) {
                 LOGGER.log(Level.WARNING,
                         "Type conversion not supported for type {0}, field {1} will be set to null (if object type) or default value (if primitive type)",
@@ -151,20 +151,20 @@ public class ObjectMapper {
         setters.remove("class");
     }
 
-    private Object createInstance() throws RecordMappingException {
+    private Object createInstance() throws Exception {
         try {
             return recordClass.newInstance();
         } catch (Exception e) {
-            throw new RecordMappingException(format("Unable to create a new instance of target type %s", recordClass.getName()), e);
+            throw new Exception(format("Unable to create a new instance of target type %s", recordClass.getName()), e);
         }
     }
 
-    private void convertValue(Object result, String field, String value, Method setter, Class<?> type, TypeConverter typeConverter) throws RecordMappingException {
+    private void convertValue(Object result, String field, String value, Method setter, Class<?> type, TypeConverter<String, ?> typeConverter) throws Exception {
         try {
             Object typedValue = typeConverter.convert(value);
             setter.invoke(result, typedValue);
         } catch (Exception e) {
-            throw new RecordMappingException(format("Unable to convert %s to type %s for field %s", value, type, field), e);
+            throw new Exception(format("Unable to convert %s to type %s for field %s", value, type, field), e);
         }
     }
 
@@ -199,7 +199,7 @@ public class ObjectMapper {
         typeConverters.put(String.class, new StringTypeConverter());
     }
 
-    public void registerTypeConverter(final TypeConverter typeConverter) {
+    public void registerTypeConverter(final TypeConverter<String, ?> typeConverter) {
         //retrieve the target class name of the converter
         Class<? extends TypeConverter> typeConverterClass = typeConverter.getClass();
         Type[] genericInterfaces = typeConverterClass.getGenericInterfaces();

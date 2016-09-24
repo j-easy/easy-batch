@@ -32,7 +32,7 @@ package org.easybatch.core.job;
 public enum JobStatus {
 
     /**
-     * The job is starting (opening the data source reader).
+     * The job is starting (opening record reader/writer).
      */
     STARTING,
 
@@ -42,17 +42,17 @@ public enum JobStatus {
     STARTED,
 
     /**
-     * The job has ended due to an unresolved exception.
+     * The job is stopping
+     */
+    STOPPING,
+
+    /**
+     * The job has failed (due to read/write errors or errorThreshold exceeded).
      */
     FAILED,
 
     /**
-     * The job has been aborted (due to timeout or strict mode).
-     */
-    ABORTED,
-
-    /**
-     * The job has ended normally.
+     * The job has completed normally.
      */
     COMPLETED
 }

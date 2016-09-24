@@ -50,14 +50,8 @@ public class ApacheCommonCsvRecordReaderTest {
     }
 
     @Test
-    public void testHasNextRecord() throws Exception {
-      assertThat(recordReader.hasNextRecord()).isTrue();
-    }
-
-    @Test
     public void testReadNextRecord() throws Exception {
-        recordReader.hasNextRecord();
-        Record record = recordReader.readNextRecord();
+        Record record = recordReader.readRecord();
         assertThat(record).isInstanceOf(ApacheCommonCsvRecord.class);
 
         ApacheCommonCsvRecord apacheCommonCsvRecord = (ApacheCommonCsvRecord) record;

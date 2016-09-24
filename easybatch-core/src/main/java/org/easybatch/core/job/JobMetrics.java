@@ -37,21 +37,13 @@ public class JobMetrics implements Serializable {
 
     private long endTime;
 
-    private Long totalCount;
+    private long readCount;
 
-    private long skippedCount;
+    private long writeCount;
 
     private long filteredCount;
 
     private long errorCount;
-
-    private long successCount;
-
-    private Throwable lastError;
-
-    public void incrementSkippedCount() {
-        skippedCount++;
-    }
 
     public void incrementFilteredCount() {
         filteredCount++;
@@ -61,8 +53,12 @@ public class JobMetrics implements Serializable {
         errorCount++;
     }
 
-    public void incrementSuccessCount() {
-        successCount++;
+    public void incrementReadCount() {
+        readCount++;
+    }
+
+    public void incrementWriteCount(long count) {
+        writeCount += count;
     }
 
     public long getStartTime() {
@@ -85,18 +81,6 @@ public class JobMetrics implements Serializable {
         return getEndTime() - getStartTime();
     }
 
-    public Long getTotalCount() {
-        return totalCount;
-    }
-
-    public void setTotalCount(Long totalCount) {
-        this.totalCount = totalCount;
-    }
-
-    public long getSkippedCount() {
-        return skippedCount;
-    }
-
     public long getFilteredCount() {
         return filteredCount;
     }
@@ -105,15 +89,12 @@ public class JobMetrics implements Serializable {
         return errorCount;
     }
 
-    public long getSuccessCount() {
-        return successCount;
+    public long getReadCount() {
+        return readCount;
     }
 
-    public Throwable getLastError() {
-        return lastError;
+    public long getWriteCount() {
+        return writeCount;
     }
 
-    public void setLastError(Throwable lastError) {
-        this.lastError = lastError;
-    }
 }

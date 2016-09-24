@@ -28,7 +28,7 @@ import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
-import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.hibernate.SessionFactory;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -66,15 +66,16 @@ public class HibernateRecordReaderTest {
     @Test
     public void testRecordReading() throws Exception {
 
+        RecordCollector<Tweet> recordCollector = new RecordCollector<>();
         Job job = aNewJob()
                 .reader(hibernateRecordReader)
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
+        JobReport jobReport = new JobExecutor().execute(job);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(3);
 
-        List<GenericRecord<Tweet>> tweets = (List<GenericRecord<Tweet>>) jobReport.getResult();
+        List<Record<Tweet>> tweets = recordCollector.getRecords();
 
         assertThat(tweets).hasSize(3);
 

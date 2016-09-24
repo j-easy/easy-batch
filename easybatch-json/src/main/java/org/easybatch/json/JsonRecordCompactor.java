@@ -54,15 +54,20 @@ public class JsonRecordCompactor extends RecordCompactor {
         try {
             jsonRecordReader = new JsonRecordReader(new ByteArrayInputStream(dataSource.getBytes()));
             jsonRecordReader.open();
-            if (jsonRecordReader.hasNextRecord()) {
-                flatJson = jsonRecordReader.readNextRecord().getPayload();
+            JsonRecord jsonRecord = jsonRecordReader.readRecord();
+            if (jsonRecord != null) {
+                flatJson = jsonRecord.getPayload();
             }
             return flatJson;
         } catch (Exception exception) {
             return EMPTY_STRING;
         } finally {
             if (jsonRecordReader != null) {
-                jsonRecordReader.close();
+                try {
+                    jsonRecordReader.close();
+                } catch (Exception e) {
+                    throw new RuntimeException("Unable to close json reader");
+                }
             }
         }
     }

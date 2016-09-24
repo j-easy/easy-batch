@@ -25,7 +25,6 @@
 package org.easybatch.json;
 
 import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RecordReadingException;
 import org.easybatch.core.record.Header;
 
 import javax.json.Json;
@@ -43,18 +42,18 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Record reader that reads Json records from an array of Json objects:
- *
- *<p>
+ * <p>
+ * <p>
  * [
- *  {
- *      // JSON object
- *  },
- *  {
- *      // JSON object
- *  }
+ * {
+ * // JSON object
+ * },
+ * {
+ * // JSON object
+ * }
  * ]
  * </p>
- *
+ * <p>
  * <p>This reader produces {@link JsonRecord} instances.</p>
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
@@ -93,24 +92,24 @@ public class JsonRecordReader implements RecordReader {
 
     /**
      * Record reader that reads Json records from an array of Json objects:
-     *
-     *<p>
+     * <p>
+     * <p>
      * [
-     *  {
-     *      // JSON object
-     *  },
-     *  {
-     *      // JSON object
-     *  }
+     * {
+     * // JSON object
+     * },
+     * {
+     * // JSON object
+     * }
      * ]
      * </p>
-     *
+     * <p>
      * <p>This reader produces {@link JsonRecord} instances.</p>
      */
     public JsonRecordReader(final InputStream inputStream) {
         checkNotNull(inputStream, "input stream");
         this.inputStream = inputStream;
-        this.jsonGeneratorFactory = Json.createGeneratorFactory(new HashMap<String, Object>());
+        this.jsonGeneratorFactory = Json.createGeneratorFactory(new HashMap<>());
     }
 
     @Override
@@ -118,8 +117,7 @@ public class JsonRecordReader implements RecordReader {
         parser = Json.createParser(inputStream);
     }
 
-    @Override
-    public boolean hasNextRecord() {
+    private boolean hasNextRecord() {
         if (parser.hasNext()) {
             currentEvent = parser.next();
             if (JsonParser.Event.START_ARRAY.equals(currentEvent)) {
@@ -155,10 +153,10 @@ public class JsonRecordReader implements RecordReader {
     }
 
     @Override
-    public JsonRecord readNextRecord() throws RecordReadingException {
-        StringWriter stringWriter = new StringWriter();
-        JsonGenerator jsonGenerator = jsonGeneratorFactory.createGenerator(stringWriter);
-        try {
+    public JsonRecord readRecord() throws Exception {
+        if (hasNextRecord()) {
+            StringWriter stringWriter = new StringWriter();
+            JsonGenerator jsonGenerator = jsonGeneratorFactory.createGenerator(stringWriter);
             writeRecordStart(jsonGenerator);
             do {
                 moveToNextElement(jsonGenerator);
@@ -169,24 +167,21 @@ public class JsonRecordReader implements RecordReader {
             jsonGenerator.close();
             Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
             return new JsonRecord(header, stringWriter.toString());
-        } catch (javax.json.stream.JsonParsingException e) {
-            throw new RecordReadingException(e);
+        } else {
+            return null;
         }
     }
 
-    @Override
-    public Long getTotalRecords() {
-        return null;
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return "Json stream";
     }
 
     @Override
-    public void close() {
+    public void close() throws Exception {
         parser.close();
+        if (inputStream != null) {
+            inputStream.close();
+        }
     }
 
     private boolean isEndRootObject() {

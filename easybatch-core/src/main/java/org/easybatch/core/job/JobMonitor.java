@@ -24,10 +24,14 @@
 
 package org.easybatch.core.job;
 
-import javax.management.AttributeChangeNotification;
-import javax.management.Notification;
-import javax.management.NotificationBroadcasterSupport;
+import javax.management.*;
+import java.lang.management.ManagementFactory;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.easybatch.core.util.Utils.JMX_MBEAN_NAME;
+import static org.easybatch.core.util.Utils.formatTime;
 
 /**
  * JMX MBean implementation of {@link JobMonitorMBean}.
@@ -35,6 +39,8 @@ import java.util.Date;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBean {
+
+    private static final Logger LOGGER = Logger.getLogger(JobMonitor.class.getName());
 
     /**
      * JMX notification sequence number.
@@ -55,79 +61,39 @@ class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBe
      */
     @Override
     public String getJobName() {
-        return jobReport.getParameters().getName();
+        return jobReport.getJobName();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getJobExecutionId() {
-        return jobReport.getParameters().getExecutionId();
+    public long getReadCount() {
+        return jobReport.getMetrics().getReadCount();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getDataSource() {
-        return jobReport.getParameters().getDataSource();
+    public long getFilteredCount() {
+        return jobReport.getMetrics().getFilteredCount();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getTotalCount() {
-        return jobReport.getFormattedTotalCount();
+    public long getErrorCount() {
+        return jobReport.getMetrics().getErrorCount();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getRecordsLimit() {
-        return jobReport.getFormattedLimit();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getTimeout() {
-        return jobReport.getFormattedTimeout();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getSkippedCount() {
-        return jobReport.getFormattedSkippedCount();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getFilteredCount() {
-        return jobReport.getFormattedFilteredCount();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getErrorCount() {
-        return jobReport.getFormattedErrorCount();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getSuccessCount() {
-        return jobReport.getFormattedSuccessCount();
+    public long getWriteCount() {
+        return jobReport.getMetrics().getWriteCount();
     }
 
     /**
@@ -135,7 +101,7 @@ class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBe
      */
     @Override
     public String getStartTime() {
-        return jobReport.getFormattedStartTime();
+        return formatTime(jobReport.getMetrics().getStartTime());
     }
 
     /**
@@ -143,20 +109,12 @@ class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBe
      */
     @Override
     public String getEndTime() {
-        return (jobReport.getMetrics().getEndTime() == 0) ? "" : jobReport.getFormattedEndTime();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getProgress() {
-        return jobReport.getFormattedProgress();
+        return (jobReport.getMetrics().getEndTime() == 0) ? "" : formatTime(jobReport.getMetrics().getEndTime());
     }
 
     @Override
     public String getJobStatus() {
-        return jobReport.getStatus().toString();
+        return jobReport.getStatus().name();
     }
 
     void notifyJobReportUpdate() {
@@ -170,5 +128,20 @@ class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBe
                 null, //no need for old value
                 jobReport);
         sendNotification(notification);
+    }
+
+    void registerJmxMBeanFor(Job job) {
+        LOGGER.log(Level.INFO, "Registering JMX MBean for job {0}", job.getName());
+        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+        ObjectName name;
+        try {
+            name = new ObjectName(JMX_MBEAN_NAME + "name=" + job.getName());
+            if (!mbs.isRegistered(name)) {
+                mbs.registerMBean(this, name);
+                LOGGER.log(Level.INFO, "JMX MBean registered successfully as: {0}", name.getCanonicalName());
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, String.format("Unable to register MBean for job %s", job.getName()), e);
+        }
     }
 }

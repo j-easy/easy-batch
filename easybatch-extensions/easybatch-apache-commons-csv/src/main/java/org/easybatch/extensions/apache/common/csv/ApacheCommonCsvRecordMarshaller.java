@@ -30,7 +30,6 @@ import org.apache.commons.csv.QuoteMode;
 import org.easybatch.core.field.BeanRecordFieldExtractor;
 import org.easybatch.core.field.RecordFieldExtractor;
 import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.marshaller.RecordMarshallingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.StringRecord;
 
@@ -105,17 +104,13 @@ public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller<Generic
     }
 
     @Override
-    public StringRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
-        try {
-            StringWriter stringWriter = new StringWriter();
-            CSVPrinter csvPrinter = new CSVPrinter(stringWriter, csvFormat);
-            Iterable<Object> iterable = fieldExtractor.extractFields(record.getPayload());
-            csvPrinter.printRecord(iterable);
-            csvPrinter.flush();
-            return new StringRecord(record.getHeader(), stringWriter.toString());
-        } catch (Exception e) {
-            throw new RecordMarshallingException(e);
-        }
+    public StringRecord processRecord(final GenericRecord record) throws Exception {
+        StringWriter stringWriter = new StringWriter();
+        CSVPrinter csvPrinter = new CSVPrinter(stringWriter, csvFormat);
+        Iterable<Object> iterable = fieldExtractor.extractFields(record.getPayload());
+        csvPrinter.printRecord(iterable);
+        csvPrinter.flush();
+        return new StringRecord(record.getHeader(), stringWriter.toString());
     }
 
 }

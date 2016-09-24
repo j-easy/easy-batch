@@ -27,7 +27,6 @@ package org.easybatch.extensions.apache.common.csv;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.RecordMapper;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
 
 /**
@@ -47,9 +46,9 @@ public class ApacheCommonCsvRecordMapper extends AbstractRecordMapper implements
     }
 
     @Override
-    public GenericRecord processRecord(final ApacheCommonCsvRecord record) throws RecordMappingException {
+    public GenericRecord processRecord(final ApacheCommonCsvRecord record) throws Exception {
         CSVRecord csvRecord = record.getPayload();
-        return new GenericRecord(record.getHeader(), objectMapper.mapObject(csvRecord.toMap()));
+        return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(csvRecord.toMap()));
     }
 
 }

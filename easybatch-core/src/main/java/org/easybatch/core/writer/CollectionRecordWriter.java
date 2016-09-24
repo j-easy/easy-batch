@@ -24,6 +24,9 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+
 import java.util.Collection;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
@@ -33,7 +36,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class CollectionRecordWriter extends AbstractRecordWriter {
+public class CollectionRecordWriter implements RecordWriter {
 
     private Collection collection;
 
@@ -48,8 +51,19 @@ public class CollectionRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    protected void writePayload(final Object payload) throws RecordWritingException {
-        collection.add(payload);
+    public void open() throws Exception {
+
+    }
+
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch) {
+            collection.add(record.getPayload());
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+
     }
 }

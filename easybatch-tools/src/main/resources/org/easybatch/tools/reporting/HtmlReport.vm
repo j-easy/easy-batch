@@ -21,10 +21,7 @@
     <div class="row">
         <h1 class="text-center">Job Report</h1>
         <br/>
-        <h4><span class="label label-info">Name:</span> $report.parameters.name</h4>
-        <h4><span class="label label-info">Execution id:</span> $report.parameters.executionId</h4>
-        <h4><span class="label label-info">Host name:</span> $report.parameters.hostname</h4>
-        <h4><span class="label label-info">Data source:</span> $report.parameters.dataSource</h4>
+        <h4><span class="label label-info">Name:</span> $name</h4>
         <br/>
     </div>
 
@@ -35,43 +32,35 @@
                 <tbody>
                 <tr>
                     <td>Start Time</td>
-                    <td>$report.formattedStartTime</td>
+                    <td>$startTime</td>
                 </tr>
                 <tr>
                     <td>End Time</td>
-                    <td>$report.formattedEndTime</td>
+                    <td>$endTime</td>
                 </tr>
                 <tr>
                     <td>Duration</td>
-                    <td>$report.formattedDuration</td>
+                    <td>$duration</td>
                 </tr>
                 <tr>
                     <td>Status</td>
-                    <td><span class="label label-status">$report.status</span></td>
+                    <td><span class="label label-status">$status</span></td>
                 </tr>
                 <tr>
-                    <td>Record processing time average</td>
-                    <td>$report.formattedRecordProcessingTimeAverage</td>
-                </tr>
-                <tr>
-                    <td>Skipped records</td>
-                    <td><span class="label label-default skipped-records" data-total="$report.metrics.skippedCount">$report.formattedSkippedCount</span></td>
+                    <td>Read count</td>
+                    <td><span class="label label-primary read-count" data-total="$readCount">$readCount</span></td>
                 </tr>
                 <tr>
                     <td>Filtered records</td>
-                    <td><span class="label label-warning filtered-records" data-total="$report.metrics.filteredCount">$report.formattedFilteredCount</span></td>
+                    <td><span class="label label-warning filtered-count" data-total="$filteredCount">$filteredCount</span></td>
                 </tr>
                 <tr>
                     <td>Error records</td>
-                    <td><span class="label label-danger error-records" data-total="$report.metrics.errorCount">$report.formattedErrorCount</span></td>
+                    <td><span class="label label-danger error-count" data-total="$errorCount">$errorCount</span></td>
                 </tr>
                 <tr>
-                    <td>Success records</td>
-                    <td><span class="label label-success success-records" data-total="$report.metrics.successCount">$report.formattedSuccessCount</span></td>
-                </tr>
-                <tr>
-                    <td>Total records</td>
-                    <td><span class="label label-primary total-records" data-total="$report.metrics.totalCount">$report.formattedTotalCount (100%)</span></td>
+                    <td>Write count</td>
+                    <td><span class="label label-default write-count" data-total="$writeCount">$writeCount</span></td>
                 </tr>
                 </tbody>
             </table>
@@ -82,30 +71,12 @@
     </div>
 
     <div class="row">
-        <h3>Job properties</h3>
+        <h3>Job parameters</h3>
         <table class="table table-bordered table-striped table-hover table-condensed">
             <tbody>
-            <tr> <td>Limit</td> <td>$report.formattedLimit</td> </tr>
-            <tr> <td>Skip</td> <td>$report.parameters.skip</td> </tr>
-            <tr> <td>Timeout</td> <td>$report.formattedTimeout</td> </tr>
-            <tr> <td>Error threshold</td> <td>$report.parameters.errorThreshold</td> </tr>
-            <tr> <td>Silent mode</td> <td>$report.parameters.silentMode</td> </tr>
-            <tr> <td>JMX mode</td> <td>$report.parameters.jmxMode</td> </tr>
-            <tr> <td>Keep alive</td> <td>$report.parameters.keepAlive</td> </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="row">
-        <h3>System properties</h3>
-        <table class="table table-bordered table-striped table-hover table-condensed table-fixed">
-            <tbody>
-            #foreach( $entry in $properties )
-            <tr>
-                <td>$entry.key</td>
-                <td>$entry.value</td>
-            </tr>
-            #end
+            <tr> <td>Error threshold</td> <td>$errorThreshold</td> </tr>
+            <tr> <td>Batch size</td> <td>$batchSize</td> </tr>
+            <tr> <td>JMX monitoring</td> <td>$jmx</td> </tr>
             </tbody>
         </table>
     </div>
@@ -152,24 +123,24 @@
                 type: 'pie',
                 data: [
                     {
-                        name: 'Skipped',
-                        color: '#777',
-                        y: jQuery(".skipped-records").data("total")
+                        name: 'Read count',
+                        color: '#337ab7',
+                        y: jQuery(".read-count").data("total")
                     },
                     {
-                        name: 'Filtered',
+                        name: 'Filtered count',
                         color: '#f0ad4e',
-                        y: jQuery(".filtered-records").data("total")
+                        y: jQuery(".filtered-count").data("total")
                     },
                     {
-                        name: 'Errors',
+                        name: 'Error count',
                         color: '#d9534f',
-                        y: jQuery(".error-records").data("total")
+                        y: jQuery(".error-count").data("total")
                     },
                     {
-                        name: 'Success',
+                        name: 'Write count',
                         color: '#5cb85c',
-                        y: jQuery(".success-records").data("total")
+                        y: jQuery(".write-count").data("total")
                     }
                 ]
             }]

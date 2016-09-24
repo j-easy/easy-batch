@@ -24,9 +24,11 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.reader.StringRecordReader;
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
-import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,8 +37,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,9 +59,8 @@ public class OutputStreamRecordWriterTest {
     public final SystemOutRule systemOut = new SystemOutRule().enableLog();
     @Mock
     private OutputStreamWriter outputStreamWriter;
-
     @Mock
-    private StringRecord stringRecord;
+    private Record stringRecord;
 
     private OutputStreamRecordWriter outputStreamRecordWriter;
 
@@ -72,10 +71,9 @@ public class OutputStreamRecordWriterTest {
     }
 
     @Test
-    public void testProcessRecord() throws Exception {
-        Record actual = outputStreamRecordWriter.processRecord(stringRecord);
+    public void testWriteRecords() throws Exception {
+        outputStreamRecordWriter.writeRecords(new Batch(stringRecord));
 
-        assertThat(actual).isEqualTo(stringRecord);
         verify(outputStreamWriter).write(PAYLOAD);
         verify(outputStreamWriter).write(LINE_SEPARATOR);
         verify(outputStreamWriter).flush();
@@ -83,21 +81,16 @@ public class OutputStreamRecordWriterTest {
 
     @Test
     public void outputStreamRecordWriterIntegrationTest() throws Exception {
-        String outputFile = "test.txt";
         String dataSource = "1,foo" + LINE_SEPARATOR + "2,bar";
 
-        aNewJob()
+        Job job = aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .writer(new OutputStreamRecordWriter(new OutputStreamWriter(System.out)))
-                .writer(new OutputStreamRecordWriter(new FileWriter(outputFile)))
-                .call();
+                .build();
+
+        new JobExecutor().execute(job);
 
         // Assert that records have been written to System.out
         assertThat(systemOut.getLog()).isEqualTo(dataSource + LINE_SEPARATOR);
-
-        // Assert that records have been written to the Output file
-        File file = new File(outputFile);
-        assertThat(file).hasContent(dataSource + LINE_SEPARATOR);
-        file.delete();
     }
 }

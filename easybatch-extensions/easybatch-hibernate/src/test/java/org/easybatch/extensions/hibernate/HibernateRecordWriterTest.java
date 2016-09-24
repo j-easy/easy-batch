@@ -24,6 +24,8 @@
 
 package org.easybatch.extensions.hibernate;
 
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.hibernate.Session;
@@ -63,8 +65,7 @@ public class HibernateRecordWriterTest {
 
     @Before
     public void setUp() throws Exception {
-        session = DatabaseUtil.getSessionFactory().openSession();
-        hibernateRecordWriter = new HibernateRecordWriter(session);
+        hibernateRecordWriter = new HibernateRecordWriter(DatabaseUtil.getSessionFactory());
     }
 
     @Test
@@ -74,16 +75,17 @@ public class HibernateRecordWriterTest {
 
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        JobReport jobReport = aNewJob()
+        Job job = aNewJob()
+                .batchSize(2)
                 .reader(new IterableRecordReader(tweets))
                 .writer(hibernateRecordWriter)
-                .pipelineListener(new HibernateTransactionListener(session))
-                .jobListener(new HibernateSessionListener(session))
-                .call();
+                .build();
+
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(valueOf(nbTweetsToInsert));
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(valueOf(nbTweetsToInsert));
 
         int nbTweetsInDatabase = countTweetsInDatabase();
 

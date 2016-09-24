@@ -46,19 +46,8 @@ public class XmlRecordReaderTest {
     }
 
     @Test
-    public void testGetTotalRecords() throws Exception {
-        assertThat(xmlRecordReader.getTotalRecords()).isNull();
-    }
-
-    @Test
-    public void testHasNextRecord() throws Exception {
-        assertThat(xmlRecordReader.hasNextRecord()).isTrue();
-    }
-
-    @Test
-    public void testReadNextRecord() throws Exception {
-        xmlRecordReader.hasNextRecord(); //should call this method to move the cursor forward to the first tag
-        XmlRecord xmlRecord = xmlRecordReader.readNextRecord();
+    public void testReadRecord() throws Exception {
+        XmlRecord xmlRecord = xmlRecordReader.readRecord();
         String expectedPayload = getXmlFromFile("/person.xml");
         String actualPayload = xmlRecord.getPayload();
 
@@ -74,19 +63,17 @@ public class XmlRecordReaderTest {
         xmlRecordReader.close();
         xmlRecordReader = new XmlRecordReader("website", getDataSource("/websites.xml"));
         xmlRecordReader.open();
-        assertThat(xmlRecordReader.hasNextRecord()).isTrue();
-        XmlRecord record = xmlRecordReader.readNextRecord();
+        XmlRecord record = xmlRecordReader.readRecord();
         assertThat(record.getPayload()).isXmlEqualTo("<website name=\"google\" url=\"http://www.google.com?query=test&amp;sort=asc\"/>");
 
-        assertThat(xmlRecordReader.hasNextRecord()).isTrue();
-        record = xmlRecordReader.readNextRecord();
+        record = xmlRecordReader.readRecord();
         assertThat(record.getPayload()).isXmlEqualTo("<website name=\"l&apos;equipe\" url=\"http://www.lequipe.fr\"/>");
 
-        assertThat(xmlRecordReader.hasNextRecord()).isTrue();
-        record = xmlRecordReader.readNextRecord();
+        record = xmlRecordReader.readRecord();
         assertThat(record.getPayload()).isXmlEqualTo("<website name=\"l&quot;internaute.com\" url=\"http://www.linternaute.com\"/>");
 
-        assertThat(xmlRecordReader.hasNextRecord()).isFalse();
+        record = xmlRecordReader.readRecord();
+        assertThat(record).isNull();
 
     }
 
@@ -96,15 +83,14 @@ public class XmlRecordReaderTest {
         xmlRecordReader = new XmlRecordReader("bean", getDataSource("/beans.xml"));
         xmlRecordReader.open();
 
-        assertThat(xmlRecordReader.hasNextRecord()).isTrue();
-        XmlRecord record = xmlRecordReader.readNextRecord();
+        XmlRecord record = xmlRecordReader.readRecord();
         assertThat(record.getPayload()).isXmlEqualTo("<bean id=\"foo\" class=\"java.lang.String\"><description>foo bean</description></bean>");
 
-        assertThat(xmlRecordReader.hasNextRecord()).isTrue();
-        record = xmlRecordReader.readNextRecord();
+        record = xmlRecordReader.readRecord();
         assertThat(record.getPayload()).isXmlEqualTo("<bean id=\"bar\" class=\"java.lang.String\"/>");
 
-        assertThat(xmlRecordReader.hasNextRecord()).isFalse();
+        record = xmlRecordReader.readRecord();
+        assertThat(record).isNull();
 
     }
 
@@ -113,27 +99,11 @@ public class XmlRecordReaderTest {
      */
 
     @Test
-    public void testGetTotalRecordsForEmptyPersonsFile() throws Exception {
-        xmlRecordReader.close();
-        xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons-empty.xml"));
-        xmlRecordReader.open();
-        assertThat(xmlRecordReader.getTotalRecords()).isNull();
-    }
-
-    @Test
     public void testHasNextRecordForEmptyPersonsFile() throws Exception {
         xmlRecordReader.close();
         xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons-empty.xml"));
         xmlRecordReader.open();
-        assertThat(xmlRecordReader.hasNextRecord()).isFalse();
-    }
-
-    @Test
-    public void testGetTotalRecordsForEmptyFile() throws Exception {
-        xmlRecordReader.close();
-        xmlRecordReader = new XmlRecordReader("person", getDataSource("/empty-file.xml"));
-        xmlRecordReader.open();
-        assertThat(xmlRecordReader.getTotalRecords()).isNull();
+        assertThat(xmlRecordReader.readRecord()).isNull();
     }
 
     @Test
@@ -141,7 +111,7 @@ public class XmlRecordReaderTest {
         xmlRecordReader.close();
         xmlRecordReader = new XmlRecordReader("person", getDataSource("/empty-file.xml"));
         xmlRecordReader.open();
-        assertThat(xmlRecordReader.hasNextRecord()).isFalse();
+        assertThat(xmlRecordReader.readRecord()).isNull();
     }
 
      /*
@@ -153,8 +123,7 @@ public class XmlRecordReaderTest {
         xmlRecordReader.close();
         xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons-nested.xml"));
         xmlRecordReader.open();
-        xmlRecordReader.hasNextRecord(); //should call this method to move the cursor forward to the first tag
-        XmlRecord xmlRecord = xmlRecordReader.readNextRecord();
+        XmlRecord xmlRecord = xmlRecordReader.readRecord();
         String expectedPayload = getXmlFromFile("/person.xml");
         String actualPayload = xmlRecord.getPayload();
 

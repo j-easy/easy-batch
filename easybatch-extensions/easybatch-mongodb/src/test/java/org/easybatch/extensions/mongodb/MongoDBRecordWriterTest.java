@@ -26,7 +26,7 @@ package org.easybatch.extensions.mongodb;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import org.easybatch.core.processor.RecordProcessingException;
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -63,16 +62,15 @@ public class MongoDBRecordWriterTest {
 
     @Test
     public void testProcessRecord() throws Exception {
-        MongoDBRecord actual = mongoDBRecordWriter.processRecord(this.mongoDBRecord);
+        mongoDBRecordWriter.writeRecords(new Batch(mongoDBRecord));
 
         verify(collection).save(dbObject);
-        assertThat(actual).isEqualTo(mongoDBRecord);
     }
 
-    @Test(expected = RecordProcessingException.class)
+    @Test(expected = Exception.class)
     public void testRecordProcessingWithError() throws Exception {
         when(collection.save(dbObject)).thenThrow(exception);
 
-        mongoDBRecordWriter.processRecord(mongoDBRecord);
+        mongoDBRecordWriter.writeRecords(new Batch(mongoDBRecord));
     }
 }

@@ -24,11 +24,9 @@
 
 package org.easybatch.jms;
 
-import org.easybatch.core.processor.RecordProcessingException;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.record.StringRecord;
 
-import javax.jms.JMSException;
 import javax.jms.QueueSession;
 import javax.jms.TextMessage;
 
@@ -54,14 +52,10 @@ public class JmsMessageTransformer implements RecordProcessor<StringRecord, JmsR
     }
 
     @Override
-    public JmsRecord processRecord(final StringRecord record) throws RecordProcessingException {
+    public JmsRecord processRecord(final StringRecord record) throws Exception {
         TextMessage message;
-        try {
-            message = queueSession.createTextMessage();
-            message.setText(record.getPayload());
-            return new JmsRecord(record.getHeader(), message);
-        } catch (JMSException e) {
-            throw new RecordProcessingException("Unable to create text message from record " + record, e);
-        }
+        message = queueSession.createTextMessage();
+        message.setText(record.getPayload());
+        return new JmsRecord(record.getHeader(), message);
     }
 }

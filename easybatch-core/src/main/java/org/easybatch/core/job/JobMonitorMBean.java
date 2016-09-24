@@ -39,67 +39,32 @@ public interface JobMonitorMBean {
     String getJobName();
 
     /**
-     * Get the job execution id.
+     * Get read records count.
      *
-     * @return the job execution id
+     * @return read records count
      */
-    String getJobExecutionId();
+    long getReadCount();
 
     /**
-     * Get the data source name.
+     * Get written records count.
      *
-     * @return the data source name
+     * @return written records count
      */
-    String getDataSource();
-
-    /**
-     * Get total input records count.
-     *
-     * @return total input records count
-     */
-    String getTotalCount();
-
-    /**
-     * Get records limit.
-     *
-     * @return records limit
-     */
-    String getRecordsLimit();
-
-    /**
-     * Get timeout.
-     *
-     * @return timeout
-     */
-    String getTimeout();
-
-    /**
-     * Get skipped records count.
-     *
-     * @return skipped records count
-     */
-    String getSkippedCount();
+    long getWriteCount();
 
     /**
      * Get filtered records count.
      *
      * @return filtered records count
      */
-    String getFilteredCount();
+    long getFilteredCount();
 
     /**
      * Get error records count.
      *
      * @return error records count
      */
-    String getErrorCount();
-
-    /**
-     * Get success records count.
-     *
-     * @return success records count
-     */
-    String getSuccessCount();
+    long getErrorCount();
 
     /**
      * Get batch execution start time.
@@ -114,13 +79,6 @@ public interface JobMonitorMBean {
      * @return batch execution end time
      */
     String getEndTime();
-
-    /**
-     * Get a human readable batch execution progress.
-     *
-     * @return a human readable batch execution progress
-     */
-    String getProgress();
 
     /**
      * Get the job {@link JobStatus}.

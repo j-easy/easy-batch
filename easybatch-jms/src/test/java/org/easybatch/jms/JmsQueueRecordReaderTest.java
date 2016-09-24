@@ -41,8 +41,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class JmsQueueRecordReaderTest {
 
-    public static final String EXPECTED_DATA_SOURCE_NAME = "JMS queue: queue";
-
     private JmsQueueRecordReader jmsQueueRecordReader;
 
     @Mock
@@ -83,21 +81,11 @@ public class JmsQueueRecordReaderTest {
     public void testReadNextRecord() throws Exception {
         jmsQueueRecordReader.open();
 
-        Record record = jmsQueueRecordReader.readNextRecord();
+        Record record = jmsQueueRecordReader.readRecord();
 
         verify(queueReceiver).receive();
         assertThat(record).isNotNull().isInstanceOf(JmsRecord.class);
         assertThat(record.getPayload()).isEqualTo(message);
-    }
-
-    @Test
-    public void testGetTotalRecords() throws Exception {
-        assertThat(jmsQueueRecordReader.getTotalRecords()).isNull();
-    }
-
-    @Test
-    public void testGetDataSourceName() throws Exception {
-        assertThat(jmsQueueRecordReader.getDataSourceName()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
     }
 
     @After

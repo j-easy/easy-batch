@@ -87,23 +87,16 @@ public class MongoDBRecordReader implements RecordReader {
     }
 
     @Override
-    public boolean hasNextRecord() {
-        return cursor.hasNext();
+    public MongoDBRecord readRecord() {
+        if (cursor.hasNext()) {
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            return new MongoDBRecord(header, cursor.next());
+        } else {
+            return null;
+        }
     }
 
-    @Override
-    public MongoDBRecord readNextRecord() {
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new MongoDBRecord(header, cursor.next());
-    }
-
-    @Override
-    public Long getTotalRecords() {
-        return (long) cursor.count();
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return "MongoDB collection: " + collection.getName();
     }
 

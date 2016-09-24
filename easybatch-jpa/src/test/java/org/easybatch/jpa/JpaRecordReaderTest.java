@@ -41,7 +41,7 @@ public class JpaRecordReaderTest {
 
     private static final String DATABASE_URL = "jdbc:hsqldb:mem";
 
-    private static final int FETCH_SIZE = 2;
+    private static final int FETCH_SIZE = 10;
 
     private static Connection connection;
 
@@ -104,18 +104,8 @@ public class JpaRecordReaderTest {
     }
 
     @Test
-    public void testHasNextRecord() throws Exception {
-        assertThat(jpaRecordReader.hasNextRecord()).isTrue();
-    }
-
-    @Test
-    public void testTotalRecords() throws Exception {
-        assertThat(jpaRecordReader.getTotalRecords()).isNull();
-    }
-
-    @Test
-    public void testReadNextRecord() throws Exception {
-        GenericRecord<Tweet> record = jpaRecordReader.readNextRecord();
+    public void testReadRecord() throws Exception {
+        GenericRecord<Tweet> record = jpaRecordReader.readRecord();
         long recordNumber = record.getHeader().getNumber();
         Tweet tweet = record.getPayload();
 
@@ -129,8 +119,7 @@ public class JpaRecordReaderTest {
     @Test
     public void testPaging() {
         int nbRecords = 0;
-        while (jpaRecordReader.hasNextRecord()) {
-            jpaRecordReader.readNextRecord();
+        while (jpaRecordReader.readRecord() != null) {
             nbRecords++;
         }
         assertThat(nbRecords).isEqualTo(4);

@@ -53,14 +53,10 @@ public class BeanRecordFieldExtractor implements RecordFieldExtractor {
     }
 
     @Override
-    public Iterable<Object> extractFields(final Object record) throws RecordFieldExtractionException {
+    public Iterable<Object> extractFields(final Object record) throws Exception {
         Object[] values = new Object[fields.length];
         for (int i = 0; i < fields.length; i++) {
-            try {
                 values[i] = getValue(fields[i], record);
-            } catch (Exception e) {
-                throw new RecordFieldExtractionException("Unable to extract fields from record " + record, e);
-            }
         }
         return Arrays.asList(values);
     }

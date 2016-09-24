@@ -24,15 +24,15 @@
 
 package org.easybatch.extensions.msexcel;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.easybatch.core.mapper.ObjectMapper;
 import org.easybatch.core.mapper.RecordMapper;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Mapper that unmarshal MS Excel records to Java objects.
@@ -57,7 +57,7 @@ public class MsExcelRecordMapper implements RecordMapper<MsExcelRecord, GenericR
     }
 
     @SuppressWarnings("unchecked")
-    public GenericRecord processRecord(MsExcelRecord msExcelRecord) throws RecordMappingException {
+    public GenericRecord processRecord(MsExcelRecord msExcelRecord) throws Exception {
         Object unmarshalledObject = objectMapper.mapObject(toMap(msExcelRecord.getPayload()));
         return new GenericRecord(msExcelRecord.getHeader(), unmarshalledObject);
     }

@@ -50,13 +50,6 @@ public class StringRecordReader implements RecordReader {
     private Scanner scanner;
 
     /**
-     * A second scanner used to calculate the number of records in the input file.
-     * The main scanner may be used instead but since the {@link Scanner} class does not have a method to rewind it to the
-     * beginning of the file ( {@link java.util.Scanner#reset()} does not rewind the scanner), another scanner instance is needed.
-     */
-    private Scanner recordCounterScanner;
-
-    /**
      * The content of the String data source.
      */
     private String dataSource;
@@ -72,35 +65,18 @@ public class StringRecordReader implements RecordReader {
 
     @Override
     public void open() {
-        currentRecordNumber = 0;
+        currentRecordNumber = 1;
         scanner = new Scanner(dataSource);
-        recordCounterScanner = new Scanner(dataSource);
     }
 
     @Override
-    public boolean hasNextRecord() {
-        return scanner.hasNextLine();
+    public StringRecord readRecord() {
+        Header header = new Header(currentRecordNumber++, getDataSourceName(), new Date());
+        String payload = scanner.hasNextLine() ? scanner.nextLine() : null;
+        return payload == null ? null : new StringRecord(header, payload);
     }
 
-    @Override
-    public StringRecord readNextRecord() {
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new StringRecord(header, scanner.nextLine());
-    }
-
-    @Override
-    public Long getTotalRecords() {
-        long totalRecords = 0;
-        while (recordCounterScanner.hasNextLine()) {
-            totalRecords++;
-            recordCounterScanner.nextLine();
-        }
-        recordCounterScanner.close();
-        return totalRecords;
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return "In-Memory String";
     }
 

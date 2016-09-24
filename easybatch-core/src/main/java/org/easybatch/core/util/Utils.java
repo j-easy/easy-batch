@@ -24,33 +24,28 @@
 
 package org.easybatch.core.util;
 
+import org.easybatch.core.job.JobParameters;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Enumeration;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
+import static java.lang.String.valueOf;
 
 /**
- * Easy Batch's utilities class.
+ * Utilities class.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public abstract class Utils {
-
-    private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
 
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
@@ -60,58 +55,14 @@ public abstract class Utils {
 
     public static final String JMX_MBEAN_NAME = "org.easybatch.core.monitor:";
 
+    public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+
+    public static final String DURATION_FORMAT = "%shr %smin %ssec %sms";
+
+    public static final String NOT_APPLICABLE = "N/A";
+
     private Utils() {
 
-    }
-
-    static {
-        try {
-            if (System.getProperty("java.util.logging.config.file") == null &&
-                    System.getProperty("java.util.logging.config.class") == null) {
-                LogManager.getLogManager().readConfiguration(Utils.class.getResourceAsStream("/logging.properties"));
-            }
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Unable to load logging configuration file", e);
-        }
-    }
-
-    /**
-     * Return the localhost name
-     * @return get host name
-     */
-    public static String getHostName() {
-        String hostName = "N/A";
-        try {
-            hostName = InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            LOGGER.log(Level.WARNING, "Unable to get host name", e);
-        }
-        return hostName;
-    }
-
-    /**
-     * Mute easy batch loggers when silent mode is enabled.
-     */
-    public static void muteLoggers() {
-        Enumeration<String> loggerNames = LogManager.getLogManager().getLoggerNames();
-        while (loggerNames.hasMoreElements()) {
-            String loggerName = loggerNames.nextElement();
-            if (loggerName.startsWith("org.easybatch")) {
-                muteLogger(loggerName);
-            }
-        }
-    }
-
-    private static void muteLogger(String logger) {
-        Logger.getLogger(logger).setUseParentHandlers(false);
-        Handler[] handlers = Logger.getLogger(logger).getHandlers();
-        for (Handler handler : handlers) {
-            Logger.getLogger(logger).removeHandler(handler);
-        }
-    }
-
-    public static long toMinutes(long milliseconds) {
-        return TimeUnit.MILLISECONDS.toMinutes(milliseconds);
     }
 
     public static void checkNotNull(Object argument, String argumentName) {
@@ -135,6 +86,19 @@ public abstract class Utils {
         }
         getters.remove("class"); //exclude property "class"
         return getters;
+    }
+
+    public static String formatTime(long time) {
+        return new SimpleDateFormat(DATE_FORMAT).format(new Date(time));
+    }
+
+    public static String formatDuration(long duration) {
+        Duration d = Duration.ofMillis(duration);
+        return String.format(DURATION_FORMAT, d.toHours() % 24, d.toMinutes() % 60, d.getSeconds() % 60, d.toMillis() % 1000);
+    }
+
+    public static String formatErrorThreshold(final long errorThreshold) {
+        return errorThreshold == JobParameters.DEFAULT_ERROR_THRESHOLD ? NOT_APPLICABLE : valueOf(errorThreshold);
     }
 
 }

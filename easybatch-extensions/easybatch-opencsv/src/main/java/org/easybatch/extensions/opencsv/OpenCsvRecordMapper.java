@@ -41,8 +41,6 @@ import java.util.List;
  */
 public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, GenericRecord<T>> {
 
-    private CSVReader openCsvReader;
-
     private char delimiter = ',';
 
     private char qualifier;
@@ -61,7 +59,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Generi
      */
     public OpenCsvRecordMapper(Class<? extends T> recordClass, String... columns) {
         this.strategy = new ColumnPositionMappingStrategy<>();
-        this.strategy.setType((Class<T>) recordClass);
+        this.strategy.setType(recordClass);
         this.strategy.setColumnMapping(columns);
         this.csvToBean = new CsvToBean();
     }
@@ -69,7 +67,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Generi
     @Override
     public GenericRecord<T> processRecord(final StringRecord record) {
         String payload = record.getPayload();
-        openCsvReader = new CSVReader(
+        CSVReader openCsvReader = new CSVReader(
                 new StringReader(payload),
                 delimiter,
                 qualifier,

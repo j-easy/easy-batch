@@ -27,10 +27,8 @@ package org.easybatch.extensions.apache.common.csv;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RecordReaderClosingException;
 import org.easybatch.core.record.Header;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -67,33 +65,22 @@ public class ApacheCommonCsvRecordReader implements RecordReader {
     }
 
     @Override
-    public boolean hasNextRecord() {
-        return iterator.hasNext();
+    public ApacheCommonCsvRecord readRecord() {
+        if (iterator.hasNext()) {
+            Header header = new Header(parser.getRecordNumber(), getDataSourceName(), new Date());
+            return new ApacheCommonCsvRecord(header, iterator.next());
+        } else {
+            return null;
+        }
     }
 
-    @Override
-    public ApacheCommonCsvRecord readNextRecord() {
-        Header header = new Header(parser.getRecordNumber(), getDataSourceName(), new Date());
-        return new ApacheCommonCsvRecord(header, iterator.next());
-    }
-
-    @Override
-    public Long getTotalRecords() {
-        return null;
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return parser.toString();
     }
 
     @Override
-    public void close() throws RecordReaderClosingException {
-        try {
+    public void close() throws Exception {
             parser.close();
-        } catch (IOException e) {
-            throw new RecordReaderClosingException("Unable to close record reader", e);
-        }
     }
 
 }

@@ -27,7 +27,7 @@ package org.easybatch.core.job;
 import java.util.concurrent.Callable;
 
 /**
- * Interface that represent an Easy Batch job.
+ * Interface that represent an batch job.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -39,13 +39,6 @@ public interface Job extends Callable<JobReport> {
      * @return the job name
      */
     String getName();
-
-    /**
-     * Get the job execution id.
-     *
-     * @return the job execution id
-     */
-    String getExecutionId();
 
     /**
      * Execute the job.

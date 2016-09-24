@@ -24,39 +24,38 @@
 
 package org.easybatch.core.job;
 
-import org.easybatch.core.dispatcher.RecordDispatcher;
 import org.easybatch.core.filter.RecordFilter;
-import org.easybatch.core.listener.JobListener;
-import org.easybatch.core.listener.PipelineListener;
-import org.easybatch.core.listener.RecordReaderListener;
+import org.easybatch.core.listener.*;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.marshaller.RecordMarshaller;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.retry.RetryPolicy;
 import org.easybatch.core.validator.RecordValidator;
 import org.easybatch.core.writer.RecordWriter;
 
-import java.util.concurrent.TimeUnit;
-
-import static org.easybatch.core.util.Utils.checkArgument;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
+/*
+ * TODO since job instances cannot be reused, (see executed flag), this JobBuilder should be reusable to create multiple job instances
+ */
 /**
- * Job instance builder.
- * This is the main entry point to configure a job.
+ * Batch job instance builder.
+ * This is the main entry point to configure a batch job.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public final class JobBuilder {
 
-    /**
-     * The job to build.
-     */
-    private JobImpl job;
+    private BatchJob job;
 
+    private JobParameters parameters;
+
+    /**
+     * Create a new {@link JobBuilder}.
+     */
     public JobBuilder() {
-        job = new JobImpl();
+        parameters = new JobParameters();
+        job = new BatchJob(parameters);
     }
 
     /**
@@ -76,59 +75,7 @@ public final class JobBuilder {
      */
     public JobBuilder named(final String name) {
         checkNotNull(name, "job name");
-        job.getJobReport().getParameters().setName(name);
-        return this;
-    }
-
-    /**
-     * Set the number of records to skip.
-     *
-     * @param number the number of records to skip
-     * @return the job builder
-     */
-    @Deprecated
-    public JobBuilder skip(final long number) {
-        checkArgument(number >= 1, "The number of records to skip should be >= 1");
-        job.getJobReport().getParameters().setSkip(number);
-        return this;
-    }
-
-    /**
-     * Set the limit number of records to process.
-     *
-     * @param number the limit number of records to process
-     * @return the job builder
-     */
-    @Deprecated
-    public JobBuilder limit(final long number) {
-        checkArgument(number >= 1, "The limit number of records should be >= 1");
-        job.getJobReport().getParameters().setLimit(number);
-        return this;
-    }
-
-    /**
-     * Set the timeout after which the job should be aborted.
-     *
-     * @param timeout the timeout value in milliseconds
-     * @return the job builder
-     */
-    @Deprecated
-    public JobBuilder timeout(final long timeout) {
-        return timeout(timeout, TimeUnit.MILLISECONDS);
-    }
-
-    /**
-     * Set the timeout after which the job should be aborted.
-     *
-     * @param timeout the timeout value
-     * @param unit    the time unit
-     * @return the job builder
-     */
-    @Deprecated
-    public JobBuilder timeout(final long timeout, final TimeUnit unit) {
-        checkArgument(timeout >= 1, "The timeout should be >= 1");
-        checkNotNull(unit, "time unit");
-        job.getJobReport().getParameters().setTimeout(TimeUnit.MILLISECONDS.convert(timeout, unit));
+        job.setName(name);
         return this;
     }
 
@@ -139,51 +86,7 @@ public final class JobBuilder {
      * @return the job builder
      */
     public JobBuilder reader(final RecordReader recordReader) {
-        return reader(recordReader, false);
-    }
-
-    /**
-     * Register a record reader.
-     *
-     * @param recordReader the record reader to register
-     * @param keepAlive    true if the reader should <strong>NOT</strong> be closed
-     * @return the job builder
-     */
-    public JobBuilder reader(final RecordReader recordReader, final boolean keepAlive) {
         checkNotNull(recordReader, "record reader");
-        job.getJobReport().getParameters().setKeepAlive(keepAlive);
-        job.setRecordReader(recordReader);
-        return this;
-    }
-
-    /**
-     * Register a record reader.
-     *
-     * @param recordReader the record reader to register
-     * @param retryPolicy  the retry policy of the reader
-     * @return the job builder
-     */
-    public JobBuilder reader(final RecordReader recordReader, final RetryPolicy retryPolicy) {
-        checkNotNull(recordReader, "record reader");
-        checkNotNull(retryPolicy, "retry policy");
-        job.getJobReport().getParameters().setRetryPolicy(retryPolicy);
-        job.setRecordReader(recordReader);
-        return this;
-    }
-
-    /**
-     * Register a record reader.
-     *
-     * @param recordReader the record reader to register
-     * @param keepAlive    true if the reader should <strong>NOT</strong> be closed
-     * @param retryPolicy  the retry policy of the reader
-     * @return the job builder
-     */
-    public JobBuilder reader(final RecordReader recordReader, final boolean keepAlive, final RetryPolicy retryPolicy) {
-        checkNotNull(recordReader, "record reader");
-        checkNotNull(retryPolicy, "retry policy");
-        job.getJobReport().getParameters().setKeepAlive(keepAlive);
-        job.getJobReport().getParameters().setRetryPolicy(retryPolicy);
         job.setRecordReader(recordReader);
         return this;
     }
@@ -256,72 +159,19 @@ public final class JobBuilder {
      */
     public JobBuilder writer(final RecordWriter recordWriter) {
         checkNotNull(recordWriter, "record writer");
-        job.addRecordProcessor(recordWriter);
+        job.setRecordWriter(recordWriter);
         return this;
     }
 
     /**
-     * Register a record dispatcher.
+     * Set a threshold for errors. The job will be aborted if the threshold is exceeded.
      *
-     * @param recordDispatcher the record dispatcher to register
-     * @return the job builder
-     */
-    public JobBuilder dispatcher(final RecordDispatcher recordDispatcher) {
-        checkNotNull(recordDispatcher, "record dispatcher");
-        job.addRecordProcessor(recordDispatcher);
-        return this;
-    }
-
-    /**
-     * Enable strict mode : if true, then the execution will be aborted on first processing error.
-     *
-     * @param strictMode true if strict mode should be enabled
-     * @return the job builder
-     *
-     * @deprecated Use {@link JobBuilder#errorThreshold(long)} instead
-     */
-    @Deprecated
-    public JobBuilder strictMode(final boolean strictMode) {
-        if (strictMode) {
-            return errorThreshold(1);
-        }
-        return this;
-    }
-
-    /**
-     * Set a limit for errors. When the threshold is exceeded, the job will be aborted
-     *
-     * @param errorThreshold the errors limit
+     * @param errorThreshold the error threshold
      * @return the job builder
      */
     public JobBuilder errorThreshold(final long errorThreshold) {
-        job.getJobReport().getParameters().setErrorThreshold(errorThreshold);
+        parameters.setErrorThreshold(errorThreshold);
         return this;
-    }
-
-    /**
-     * Parameter to mute all loggers.
-     *
-     * @param silentMode true to enable silent mode
-     * @return the job builder
-     */
-    @Deprecated
-    public JobBuilder silentMode(final boolean silentMode) {
-        job.getJobReport().getParameters().setSilentMode(silentMode);
-        return this;
-    }
-
-    /**
-     * Activate JMX monitoring.
-     *
-     * @param jmx true to enable jmx monitoring
-     * @return the job builder
-     *
-     * @deprecated Use {@link JobBuilder#enableJmx(boolean)} instead
-     */
-    @Deprecated
-    public JobBuilder jmxMode(final boolean jmx) {
-        return enableJmx(jmx);
     }
 
     /**
@@ -331,7 +181,21 @@ public final class JobBuilder {
      * @return the job builder
      */
     public JobBuilder enableJmx(final boolean jmx) {
-        job.getJobReport().getParameters().setJmxMonitoring(jmx);
+        parameters.setJmxMonitoring(jmx);
+        return this;
+    }
+
+    /**
+     * Set the batch size.
+     *
+     * @param batchSize the batch size
+     * @return the job builder
+     */
+    public JobBuilder batchSize(final int batchSize) {
+        if (batchSize < 1) {
+            throw new IllegalArgumentException("Batch size must be >= 1");
+        }
+        parameters.setBatchSize(batchSize);
         return this;
     }
 
@@ -344,7 +208,20 @@ public final class JobBuilder {
      */
     public JobBuilder jobListener(final JobListener jobListener) {
         checkNotNull(jobListener, "job listener");
-        job.addJobListener(jobListener);
+        job.setJobListener(jobListener);
+        return this;
+    }
+
+    /**
+     * Register a batch listener.
+     * See {@link BatchListener} for available callback methods.
+     *
+     * @param batchListener The batch listener to add.
+     * @return the job builder
+     */
+    public JobBuilder batchListener(final BatchListener batchListener) {
+        checkNotNull(batchListener, "batch listener");
+        job.setBatchListener(batchListener);
         return this;
     }
 
@@ -357,7 +234,7 @@ public final class JobBuilder {
      */
     public JobBuilder readerListener(final RecordReaderListener recordReaderListener) {
         checkNotNull(recordReaderListener, "record reader listener");
-        job.addRecordReaderListener(recordReaderListener);
+        job.setRecordReaderListener(recordReaderListener);
         return this;
     }
 
@@ -370,29 +247,30 @@ public final class JobBuilder {
      */
     public JobBuilder pipelineListener(final PipelineListener pipelineListener) {
         checkNotNull(pipelineListener, "pipeline listener");
-        job.addPipelineListener(pipelineListener);
+        job.setPipelineListener(pipelineListener);
         return this;
     }
 
     /**
-     * Build an Easy Batch job instance.
+     * Register a record writer listener.
+     * See {@link RecordWriterListener} for available callback methods.
      *
-     * @return an Easy Batch job instance
+     * @param recordWriterListener The record writer listener to register.
+     * @return the job builder
      */
-    public Job build() {
-        return job;
+    public JobBuilder writerListener(final RecordWriterListener recordWriterListener) {
+        checkNotNull(recordWriterListener, "record writer listener");
+        job.setRecordWriterListener(recordWriterListener);
+        return this;
     }
 
     /**
-     * Build and call the job.
+     * Build a batch job instance.
      *
-     * @return job execution report
-     *
-     * @deprecated Use {@link JobExecutor#execute(Job)} instead
+     * @return a batch job instance
      */
-    @Deprecated
-    public JobReport call() {
-        return job.call();
+    public Job build() {
+        return job;
     }
 
 }

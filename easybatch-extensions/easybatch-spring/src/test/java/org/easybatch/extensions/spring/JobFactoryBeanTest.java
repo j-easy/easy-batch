@@ -28,12 +28,11 @@ import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.job.JobStatus;
-import org.easybatch.core.listener.JobListener;
-import org.easybatch.core.listener.PipelineListener;
-import org.easybatch.core.listener.RecordReaderListener;
+import org.easybatch.core.listener.*;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.util.Utils;
+import org.easybatch.core.writer.RecordWriter;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -58,11 +57,17 @@ public class JobFactoryBeanTest {
     @Mock
     private RecordProcessor recordProcessor;
     @Mock
+    private RecordWriter recordWriter;
+    @Mock
     private JobListener jobListener;
+    @Mock
+    private BatchListener batchListener;
     @Mock
     private RecordReaderListener recordReaderListener;
     @Mock
     private PipelineListener pipelineListener;
+    @Mock
+    private RecordWriterListener recordWriterListener;
 
     private JobFactoryBean jobFactoryBean;
 
@@ -71,11 +76,14 @@ public class JobFactoryBeanTest {
         jobFactoryBean = new JobFactoryBean();
 
         jobFactoryBean.setRecordReader(recordReader);
-        jobFactoryBean.setProcessingPipeline(singletonList(recordProcessor));
+        jobFactoryBean.setRecordProcessors(singletonList(recordProcessor));
+        jobFactoryBean.setRecordWriter(recordWriter);
 
-        jobFactoryBean.setJobListeners(singletonList(jobListener));
-        jobFactoryBean.setRecordReaderListeners(singletonList(recordReaderListener));
-        jobFactoryBean.setPipelineListeners(singletonList(pipelineListener));
+        jobFactoryBean.setJobListener(jobListener);
+        jobFactoryBean.setBatchListener(batchListener);
+        jobFactoryBean.setRecordReaderListener(recordReaderListener);
+        jobFactoryBean.setPipelineListener(pipelineListener);
+        jobFactoryBean.setRecordWriterListener(recordWriterListener);
     }
 
     @Test
@@ -99,14 +107,13 @@ public class JobFactoryBeanTest {
     public void integrationTest() {
         ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
         Job job = context.getBean("job", Job.class);
-        JobReport report = JobExecutor.execute(job);
+        JobReport report = new JobExecutor().execute(job);
 
         assertThat(report).isNotNull();
         assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);
         assertThat(report.getMetrics()).isNotNull();
-        assertThat(report.getMetrics().getTotalCount()).isEqualTo(2);
-        assertThat(report.getMetrics().getSkippedCount()).isEqualTo(1);
-        assertThat(report.getMetrics().getSuccessCount()).isEqualTo(1);
-        assertThat(systemOut.getLog()).isEqualTo("world" + Utils.LINE_SEPARATOR);
+        assertThat(report.getMetrics().getReadCount()).isEqualTo(2);
+        assertThat(report.getMetrics().getWriteCount()).isEqualTo(2);
+        assertThat(systemOut.getLog()).isEqualTo("hello" + Utils.LINE_SEPARATOR + "world" + Utils.LINE_SEPARATOR);
     }
 }

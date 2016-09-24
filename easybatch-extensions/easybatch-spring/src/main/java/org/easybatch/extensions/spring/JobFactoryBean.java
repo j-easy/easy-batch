@@ -26,15 +26,14 @@ package org.easybatch.extensions.spring;
 
 import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobBuilder;
-import org.easybatch.core.listener.JobListener;
-import org.easybatch.core.listener.PipelineListener;
-import org.easybatch.core.listener.RecordReaderListener;
+import org.easybatch.core.job.JobParameters;
+import org.easybatch.core.listener.*;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
+import org.easybatch.core.writer.RecordWriter;
 import org.springframework.beans.factory.FactoryBean;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Spring Factory Bean that creates job instances.
@@ -44,32 +43,19 @@ import java.util.concurrent.TimeUnit;
 public class JobFactoryBean implements FactoryBean {
 
     private RecordReader recordReader;
+    private RecordWriter recordWriter;
+    private List<RecordProcessor> recordProcessors;
 
-    private List<RecordProcessor> processingPipeline;
+    private JobListener jobListener;
+    private BatchListener batchListener;
+    private RecordReaderListener recordReaderListener;
+    private RecordWriterListener recordWriterListener;
+    private PipelineListener pipelineListener;
 
-    private List<JobListener> jobListeners;
-
-    private List<RecordReaderListener> recordReaderListeners;
-
-    private List<PipelineListener> pipelineListeners;
-
-    private String name;
-
-    private Long skip;
-
-    private Long limit;
-
-    private boolean strictMode;
-
-    private boolean silentMode;
-
+    private String name = JobParameters.DEFAULT_JOB_NAME;
+    private long errorThreshold = JobParameters.DEFAULT_ERROR_THRESHOLD;
+    private int batchSize = JobParameters.DEFAULT_BATCH_SIZE;
     private boolean jmxMonitoring;
-
-    private boolean keepAlive;
-
-    private Long timeoutValue;
-
-    private TimeUnit timeoutUnit;
 
     @Override
     public Job getObject() throws Exception {
@@ -88,52 +74,42 @@ public class JobFactoryBean implements FactoryBean {
         if (name != null) {
             jobBuilder.named(name);
         }
-        if (skip != null) {
-            jobBuilder.skip(skip);
-        }
-        if (limit != null) {
-            jobBuilder.limit(limit);
-        }
-        if (timeoutValue != null) {
-            if (timeoutUnit != null) {
-                jobBuilder.timeout(timeoutValue, timeoutUnit);
-            } else {
-                jobBuilder.timeout(timeoutValue);
-            }
-        }
-        jobBuilder.silentMode(silentMode);
-        jobBuilder.strictMode(strictMode);
-        jobBuilder.jmxMode(jmxMonitoring);
+        jobBuilder.errorThreshold(errorThreshold);
+        jobBuilder.batchSize(batchSize);
+        jobBuilder.enableJmx(jmxMonitoring);
     }
 
     private void registerMainComponents(JobBuilder jobBuilder) {
         if (recordReader != null) {
-            jobBuilder.reader(recordReader, keepAlive);
+            jobBuilder.reader(recordReader);
         }
-        if (processingPipeline != null) {
-            for (RecordProcessor recordProcessor : processingPipeline) {
-                jobBuilder.processor(recordProcessor);
-            }
+        if (recordWriter != null) {
+            jobBuilder.writer(recordWriter);
+        }
+        if (recordProcessors != null) {
+            recordProcessors.forEach(jobBuilder::processor);
         }
     }
 
     private void registerCustomListeners(JobBuilder jobBuilder) {
-        if (jobListeners != null) {
-            for (JobListener jobListener : jobListeners) {
-                jobBuilder.jobListener(jobListener);
-            }
+        if (jobListener != null) {
+            jobBuilder.jobListener(jobListener);
         }
 
-        if (recordReaderListeners != null) {
-            for (RecordReaderListener recordReaderListener : recordReaderListeners) {
-                jobBuilder.readerListener(recordReaderListener);
-            }
+        if (batchListener != null) {
+            jobBuilder.batchListener(batchListener);
         }
 
-        if (pipelineListeners != null) {
-            for (PipelineListener pipelineListener : pipelineListeners) {
-                jobBuilder.pipelineListener(pipelineListener);
-            }
+        if (recordReaderListener != null) {
+            jobBuilder.readerListener(recordReaderListener);
+        }
+
+        if (recordWriterListener != null) {
+            jobBuilder.writerListener(recordWriterListener);
+        }
+
+        if (pipelineListener != null) {
+            jobBuilder.pipelineListener(pipelineListener);
         }
 
     }
@@ -154,55 +130,47 @@ public class JobFactoryBean implements FactoryBean {
         this.recordReader = recordReader;
     }
 
-    public void setProcessingPipeline(List<RecordProcessor> processingPipeline) {
-        this.processingPipeline = processingPipeline;
+    public void setRecordWriter(RecordWriter recordWriter) {
+        this.recordWriter = recordWriter;
     }
 
-    public void setJobListeners(List<JobListener> jobListeners) {
-        this.jobListeners = jobListeners;
+    public void setRecordProcessors(List<RecordProcessor> recordProcessors) {
+        this.recordProcessors = recordProcessors;
     }
 
-    public void setRecordReaderListeners(List<RecordReaderListener> recordReaderListeners) {
-        this.recordReaderListeners = recordReaderListeners;
+    public void setJobListener(JobListener jobListener) {
+        this.jobListener = jobListener;
     }
 
-    public void setPipelineListeners(List<PipelineListener> pipelineListeners) {
-        this.pipelineListeners = pipelineListeners;
+    public void setBatchListener(BatchListener batchListener) {
+        this.batchListener = batchListener;
     }
 
-    public void setJmxMonitoring(boolean jmxMonitoring) {
-        this.jmxMonitoring = jmxMonitoring;
+    public void setRecordReaderListener(RecordReaderListener recordReaderListener) {
+        this.recordReaderListener = recordReaderListener;
     }
 
-    public void setKeepAlive(boolean keepAlive) {
-        this.keepAlive = keepAlive;
+    public void setRecordWriterListener(RecordWriterListener recordWriterListener) {
+        this.recordWriterListener = recordWriterListener;
     }
 
-    public void setLimit(long limit) {
-        this.limit = limit;
+    public void setPipelineListener(PipelineListener pipelineListener) {
+        this.pipelineListener = pipelineListener;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setSilentMode(boolean silentMode) {
-        this.silentMode = silentMode;
+    public void setErrorThreshold(long errorThreshold) {
+        this.errorThreshold = errorThreshold;
     }
 
-    public void setSkip(long skip) {
-        this.skip = skip;
+    public void setBatchSize(int batchSize) {
+        this.batchSize = batchSize;
     }
 
-    public void setStrictMode(boolean strictMode) {
-        this.strictMode = strictMode;
-    }
-
-    public void setTimeoutUnit(TimeUnit timeoutUnit) {
-        this.timeoutUnit = timeoutUnit;
-    }
-
-    public void setTimeoutValue(long timeoutValue) {
-        this.timeoutValue = timeoutValue;
+    public void setJmxMonitoring(boolean jmxMonitoring) {
+        this.jmxMonitoring = jmxMonitoring;
     }
 }

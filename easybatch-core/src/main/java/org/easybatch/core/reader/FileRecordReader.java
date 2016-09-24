@@ -51,11 +51,6 @@ public class FileRecordReader implements RecordReader {
     private File directory;
 
     /**
-     * The array of files in the directory.
-     */
-    private List<File> files;
-
-    /**
      * The data source iterator.
      */
     private Iterator<File> iterator;
@@ -80,8 +75,7 @@ public class FileRecordReader implements RecordReader {
     @Override
     public void open() {
         checkDirectory();
-        files = getFiles(directory);
-        iterator = files.listIterator();
+        iterator = getFiles(directory).listIterator();
         currentRecordNumber = 0;
     }
 
@@ -107,35 +101,18 @@ public class FileRecordReader implements RecordReader {
     }
 
     /**
-     * Check if the directory has a next file.
-     *
-     * @return true if the reader has a next record, false else.
-     */
-    @Override
-    public boolean hasNextRecord() {
-        return iterator.hasNext();
-    }
-
-    /**
      * Read next record from the data source.
      *
      * @return the next record from the data source.
      */
     @Override
-    public FileRecord readNextRecord() {
+    public FileRecord readRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new FileRecord(header, iterator.next());
-    }
-
-    /**
-     * Get the total record number in the data source. This is useful to calculate execution progress.
-     *
-     * @return the total record number in the data source or null if the total records number cannot be
-     * calculated in advance
-     */
-    @Override
-    public Long getTotalRecords() {
-        return (long) files.size();
+        if (iterator.hasNext()) {
+            return new FileRecord(header, iterator.next());
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -143,8 +120,7 @@ public class FileRecordReader implements RecordReader {
      *
      * @return the data source name this reader is reading data from
      */
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return directory.getAbsolutePath();
     }
 

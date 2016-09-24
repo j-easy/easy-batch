@@ -25,9 +25,7 @@
 package org.easybatch.extensions.gson;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import org.easybatch.core.mapper.RecordMapper;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.json.JsonRecord;
 
@@ -62,12 +60,8 @@ public class GsonRecordMapper<T> implements RecordMapper<JsonRecord, GenericReco
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public GenericRecord<T> processRecord(final JsonRecord record) throws RecordMappingException {
-        try {
-            return new GenericRecord<>(record.getHeader(), mapper.fromJson(record.getPayload(), type));
-        } catch (JsonSyntaxException e) {
-            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
-        }
+    public GenericRecord<T> processRecord(final JsonRecord record) throws Exception {
+        return new GenericRecord<>(record.getHeader(), mapper.fromJson(record.getPayload(), type));
     }
 
 }

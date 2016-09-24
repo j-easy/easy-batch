@@ -24,7 +24,12 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
+import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,7 +65,7 @@ public class StringRecordWriterTest {
 
     @Test
     public void testWriteRecord() throws Exception {
-        stringRecordWriter.writePayload(PAYLOAD);
+        stringRecordWriter.writeRecords(new Batch(new StringRecord(null, PAYLOAD)));
 
         assertThat(stringWriter.toString()).isEqualTo(PAYLOAD + LINE_SEPARATOR);
     }
@@ -69,10 +74,12 @@ public class StringRecordWriterTest {
     public void integrationTest() throws Exception {
         List<String> dataSource = Arrays.asList("foo", "bar");
 
-        aNewJob()
+        Job job = aNewJob()
                 .reader(new IterableRecordReader(dataSource))
                 .writer(stringRecordWriter)
-                .call();
+                .build();
+
+        new JobExecutor().execute(job);
 
         assertThat(stringWriter.toString()).isEqualTo("foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR);
     }

@@ -25,7 +25,6 @@
 package org.easybatch.xml;
 
 import org.easybatch.core.mapper.RecordMapper;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
 import org.xml.sax.SAXException;
 
@@ -93,13 +92,9 @@ public class XmlRecordMapper<P> implements RecordMapper<XmlRecord, GenericRecord
     }
 
     @Override
-    public GenericRecord<P> processRecord(final XmlRecord record) throws RecordMappingException {
-        try {
-            P unmarshalledObject = (P) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(record.getPayload().getBytes()));
-            return new GenericRecord<>(record.getHeader(), unmarshalledObject);
-        } catch (JAXBException e) {
-            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
-        }
+    public GenericRecord<P> processRecord(final XmlRecord record) throws Exception {
+        P unmarshalledObject = (P) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(record.getPayload().getBytes()));
+        return new GenericRecord<>(record.getHeader(), unmarshalledObject);
     }
 
 }

@@ -24,7 +24,6 @@
 
 package org.easybatch.extensions.apache.common.csv;
 
-import org.easybatch.core.marshaller.RecordMarshallingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.junit.Before;
@@ -49,7 +48,7 @@ public class ApacheCommonCsvRecordMarshallerTest {
     }
 
     @Test
-    public void marshal() throws RecordMarshallingException {
+    public void marshal() throws Exception {
         Foo foo = new Foo();
         foo.setFirstName("foo");
         foo.setLastName("bar");

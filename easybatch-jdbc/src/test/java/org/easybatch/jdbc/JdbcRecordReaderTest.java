@@ -24,6 +24,7 @@
 
 package org.easybatch.jdbc;
 
+import org.hsqldb.jdbc.JDBCDataSource;
 import org.junit.*;
 
 import java.io.File;
@@ -33,15 +34,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class JdbcRecordReaderTest {
 
-    private static final String DATABASE_URL = "jdbc:hsqldb:mem";
-    private static final String DATA_SOURCE_NAME = "Connection URL: jdbc:hsqldb:mem | Query string: select * from tweet";
+    static JDBCDataSource dataSource;
     private static Connection connection;
     private static String query;
     private JdbcRecordReader jdbcRecordReader;
 
     @BeforeClass
     public static void initDatabase() throws Exception {
-        connection = DriverManager.getConnection(DATABASE_URL, "sa", "pwd");
+        dataSource = new JDBCDataSource();
+        dataSource.setUser("sa");
+        dataSource.setPassword("pwd");
+        dataSource.setUrl("jdbc:hsqldb:mem");
+        connection = dataSource.getConnection();
         createTweetTable(connection);
         populateTweetTable(connection);
         query = "select * from tweet";
@@ -85,19 +89,13 @@ public class JdbcRecordReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        jdbcRecordReader = new JdbcRecordReader(connection, query);
+        jdbcRecordReader = new JdbcRecordReader(dataSource, query);
         jdbcRecordReader.open();
     }
 
     @Test
-    public void whenThereIsNextRecord_thenShouldHaveNextRecord() throws Exception {
-        assertThat(jdbcRecordReader.hasNextRecord()).isTrue();
-    }
-
-    @Test
-    public void testReadNextRecord() throws Exception {
-        jdbcRecordReader.hasNextRecord(); //should call this method to move the cursor forward to the first row
-        JdbcRecord actual = jdbcRecordReader.readNextRecord();
+    public void testReadRecord() throws Exception {
+        JdbcRecord actual = jdbcRecordReader.readRecord();
 
         assertThat(actual).isNotNull();
         assertThat(actual.getHeader().getNumber()).isEqualTo(1);
@@ -109,24 +107,12 @@ public class JdbcRecordReaderTest {
     }
 
     @Test
-    public void testTotalRecordsNumber() throws Exception {
-        assertThat(jdbcRecordReader.getTotalRecords()).isNull();// dropped in issue #60
-    }
-
-    @Test
     public void testMaxRowsParameter() throws Exception {
-        jdbcRecordReader = new JdbcRecordReader(connection, query);
+        jdbcRecordReader = new JdbcRecordReader(dataSource, query);
         jdbcRecordReader.setMaxRows(1);
         jdbcRecordReader.open();
-        assertThat(jdbcRecordReader.hasNextRecord()).isTrue();
-        jdbcRecordReader.readNextRecord();
-        assertThat(jdbcRecordReader.hasNextRecord()).isFalse();
-    }
-
-    @Test
-    public void testGetDataSourceName() throws Exception {
-        System.out.println(jdbcRecordReader.getDataSourceName());
-        assertThat(jdbcRecordReader.getDataSourceName()).isEqualTo(DATA_SOURCE_NAME);
+        assertThat(jdbcRecordReader.readRecord()).isNotNull();
+        assertThat(jdbcRecordReader.readRecord()).isNull();
     }
 
     @After

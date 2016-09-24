@@ -25,13 +25,11 @@
 package org.easybatch.extensions.spring;
 
 import org.easybatch.core.mapper.RecordMapper;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.jdbc.JdbcRecord;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * A record mapper that uses
@@ -55,14 +53,10 @@ public class SpringJdbcRecordMapper<P> implements RecordMapper<JdbcRecord, Gener
     }
 
     @Override
-    public GenericRecord<P> processRecord(JdbcRecord record) throws RecordMappingException {
+    public GenericRecord<P> processRecord(JdbcRecord record) throws Exception {
         ResultSet resultSet = record.getPayload();
         BeanPropertyRowMapper<P> beanPropertyRowMapper = new BeanPropertyRowMapper<>(type);
-        try {
-            return new GenericRecord<>(record.getHeader(), beanPropertyRowMapper.mapRow(resultSet, record.getHeader().getNumber().intValue()));
-        } catch (SQLException e) {
-            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
-        }
+        return new GenericRecord<>(record.getHeader(), beanPropertyRowMapper.mapRow(resultSet, record.getHeader().getNumber().intValue()));
     }
 
 }

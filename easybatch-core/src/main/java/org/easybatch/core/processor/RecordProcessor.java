@@ -41,8 +41,8 @@ public interface RecordProcessor<I extends Record, O extends Record> {
      *
      * @param record the record to process.
      * @return the processed record, may be of another type of the input record
-     * @throws RecordProcessingException thrown if an exception occurs during record processing
+     * @throws Exception thrown if an exception occurs during record processing
      */
-    O processRecord(I record) throws RecordProcessingException;
+    O processRecord(I record) throws Exception;
 
 }

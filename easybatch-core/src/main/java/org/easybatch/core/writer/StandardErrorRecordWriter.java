@@ -51,4 +51,8 @@ public class StandardErrorRecordWriter extends OutputStreamRecordWriter {
         super(new OutputStreamWriter(System.err), lineSeparator);
     }
 
+    @Override
+    public void close() throws Exception {
+        // no op: don't close standard error
+    }
 }

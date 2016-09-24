@@ -31,19 +31,22 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RecordCollectorTest {
 
     @Mock
-    private Record record1, record2;
+    private Record<Object> record1, record2;
 
-    private RecordCollector recordCollector;
+    private RecordCollector<Object> recordCollector;
 
     @Before
     public void setUp() {
-        recordCollector = new RecordCollector();
+        recordCollector = new RecordCollector<>();
     }
 
     @Test
@@ -56,6 +59,7 @@ public class RecordCollectorTest {
         recordCollector.processRecord(record1);
         recordCollector.processRecord(record2);
 
-        assertThat(recordCollector.getComputationResult()).containsExactly(record1, record2);
+        List<Record<Object>> records = recordCollector.getRecords();
+        assertThat(records).containsAll(asList(record1, record2));
     }
 }

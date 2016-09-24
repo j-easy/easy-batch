@@ -26,7 +26,6 @@ package org.easybatch.extensions.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.easybatch.core.mapper.RecordMapper;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.json.JsonRecord;
 
@@ -60,11 +59,7 @@ public class JacksonRecordMapper<T> implements RecordMapper<JsonRecord, GenericR
     }
 
     @Override
-    public GenericRecord<T> processRecord(final JsonRecord record) throws RecordMappingException {
-        try {
-            return new GenericRecord<>(record.getHeader(), mapper.readValue(record.getPayload().getBytes(), type));
-        } catch (Exception e) {
-            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
-        }
+    public GenericRecord<T> processRecord(final JsonRecord record) throws Exception {
+        return new GenericRecord<>(record.getHeader(), mapper.readValue(record.getPayload().getBytes(), type));
     }
 }

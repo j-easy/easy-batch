@@ -24,25 +24,23 @@
 
 package org.easybatch.extensions.msexcel;
 
-import java.beans.IntrospectionException;
-import java.util.Calendar;
-import java.util.Date;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.easybatch.core.field.BeanRecordFieldExtractor;
 import org.easybatch.core.field.RecordFieldExtractor;
 import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.marshaller.RecordMarshallingException;
 import org.easybatch.core.record.GenericRecord;
+
+import java.beans.IntrospectionException;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Marshaller of Java objects to {@link MsExcelRecord}s.
- * @param <P> the POJO type
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MsExcelRecordMarshaller<P> implements RecordMarshaller<GenericRecord<P>, MsExcelRecord> {
+public class MsExcelRecordMarshaller implements RecordMarshaller<GenericRecord, MsExcelRecord> {
 
     private RecordFieldExtractor fieldExtractor;
 
@@ -53,16 +51,16 @@ public class MsExcelRecordMarshaller<P> implements RecordMarshaller<GenericRecor
      * @param fields the fields to marshal
      * @throws IntrospectionException when an error occurs during bean introspection
      */
-    public MsExcelRecordMarshaller(Class<? extends P> type, String... fields) throws IntrospectionException {
+    public MsExcelRecordMarshaller(Class<?> type, String... fields) throws IntrospectionException {
         this.fieldExtractor = new BeanRecordFieldExtractor(type, fields);
     }
 
     /**
      * {@inheritDoc}
      */
-    public MsExcelRecord processRecord(GenericRecord<P> genericRecord) throws RecordMarshallingException {
+    public MsExcelRecord processRecord(GenericRecord genericRecord) throws Exception {
         Row row = new MsExcelRow();
-        Iterable<?> values = fieldExtractor.extractFields(genericRecord.getPayload());
+        Iterable<Object> values = fieldExtractor.extractFields(genericRecord.getPayload());
         int i = 0;
         for (Object value : values) {
             Cell cell = row.createCell(i++);

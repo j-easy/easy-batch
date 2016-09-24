@@ -24,7 +24,6 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.junit.Before;
@@ -115,20 +114,20 @@ public class XmlRecordMapperTest {
 
     }
 
-    @Test(expected = RecordMappingException.class)
+    @Test(expected = Exception.class)
     public void testMappingWithUnescapedXmlSpecialCharacter() throws Exception {
         xmlRecord = new XmlRecord(header, "<website name='google' url='http://www.google.com?query=test&sort=asc'/>");
         XmlRecordMapper<Website> xmlRecordMapper = new XmlRecordMapper<>(Website.class);
         xmlRecordMapper.processRecord(xmlRecord);
     }
 
-    @Test(expected = RecordMappingException.class)
+    @Test(expected = Exception.class)
     public void testInvalidXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-invalid.xml"));
         xmlRecordMapper.processRecord(xmlRecord);
     }
 
-    @Test(expected = RecordMappingException.class)
+    @Test(expected = Exception.class)
     public void testMappingOfInvalidXmlAccordingToXsd() throws Exception {
         xmlRecordMapper = new XmlRecordMapper<>(Person.class, getFile("/person.xsd"));
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-invalid-xsd.xml"));

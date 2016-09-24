@@ -47,7 +47,7 @@ public abstract class AbstractRecordMapper {
      *
      * @param typeConverter the type converter to user
      */
-    public void registerTypeConverter(final TypeConverter typeConverter) {
+    public void registerTypeConverter(final TypeConverter<String, ?> typeConverter) {
         objectMapper.registerTypeConverter(typeConverter);
     }
 }

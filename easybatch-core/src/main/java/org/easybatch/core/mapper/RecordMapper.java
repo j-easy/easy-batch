@@ -42,9 +42,9 @@ public interface RecordMapper<I extends Record, O extends Record> extends Record
      *
      * @param record the record to map.
      * @return a {@link GenericRecord} having a domain object as payload
-     * @throws RecordMappingException if an error occurs during record mapping
+     * @throws Exception if an error occurs during record mapping
      */
     @Override
-    O processRecord(I record) throws RecordMappingException;
+    O processRecord(I record) throws Exception;
 
 }

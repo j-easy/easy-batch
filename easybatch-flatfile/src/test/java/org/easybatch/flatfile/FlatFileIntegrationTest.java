@@ -26,23 +26,23 @@ public class FlatFileIntegrationTest {
 
         File dataSource = new File(getFileUri("/persons.csv"));
 
+        RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class, "firstName", "lastName", "age", "birthDate", "married"))
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(2);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
 
-        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
-
+        List<GenericRecord<Person>> records = recordCollector.getRecords();
         assertPersons(extractPayloads(records));
 
     }
@@ -52,22 +52,23 @@ public class FlatFileIntegrationTest {
 
         File dataSource = new File(getFileUri("/persons.csv"));
 
+        RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class, new Integer[]{2, 4}, new String[]{"age", "married"}))
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(2);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
 
-        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
+        List<GenericRecord<Person>> records = recordCollector.getRecords();
 
         assertPersonsFieldSubsetMapping(extractPayloads(records));
 
@@ -82,23 +83,23 @@ public class FlatFileIntegrationTest {
 
         File dataSource = new File(getFileUri("/persons_with_header.csv"));
 
+        RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class))
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(2);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(3);
 
-        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
-
+        List<GenericRecord<Person>> records = recordCollector.getRecords();
         assertPersons(extractPayloads(records));
 
     }
@@ -108,23 +109,23 @@ public class FlatFileIntegrationTest {
 
         File dataSource = new File(getFileUri("/persons_with_header.csv"));
 
+        RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper(Person.class, 2, 4))
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(2);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(3);
 
-        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
-
+        List<GenericRecord<Person>> records = recordCollector.getRecords();
         assertPersonsFieldSubsetMapping(extractPayloads(records));
 
     }
@@ -146,18 +147,19 @@ public class FlatFileIntegrationTest {
         });
         recordMapper.registerTypeConverter(new DateTypeConverter("MM/dd/yyyy"));
 
+        RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .filter(new HeaderRecordFilter())
                 .mapper(recordMapper)
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
 
-        List<GenericRecord<Complaint>> records = (List<GenericRecord<Complaint>>) jobReport.getResult();
+        List<GenericRecord<Complaint>> records = recordCollector.getRecords();
         List<Complaint> complaints = extractPayloads(records);
 
         assertThat(complaints).isNotEmpty().hasSize(10);
@@ -187,23 +189,24 @@ public class FlatFileIntegrationTest {
 
         File dataSource = new File(getFileUri("/persons.flr"));
 
+        RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new FixedLengthRecordMapper(Person.class, new int[]{4, 4, 2, 10, 1},
                         new String[]{"firstName", "lastName", "age", "birthDate", "married"}))
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(2);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
 
-        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
+        List<GenericRecord<Person>> records = recordCollector.getRecords();
         List<Person> persons = extractPayloads(records);
 
         assertThat(persons).hasSize(2);
