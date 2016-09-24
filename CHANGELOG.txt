@@ -2,6 +2,33 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
+Changes in version 4.2.0 (2016-09-25)
+-------------------------------------
+
+Features
+
+* issue #205 : Add BeanPropertiesPreparedStatementProvider
+* issue #208 : add StandardErrorRecordWriter
+* issue #214 : Replace "strict mode" parameter with "error threshold"
+
+Bug Fixes
+
+* issue #202 : Incorrect duration when unable to open the record reader
+* issue #203 : Incorrect data source when unable to open the record reader
+* issue #206 : Incoherent log message when filtering a batch of records
+* issue #207 : Incorrect log message when unable to process a batch of records
+* issue #210 : java.rmi.UnmarshalException when using the JobMonitorProxy
+
+Deprecations
+
+* issue #212 : "skip" parameter is redundant
+* issue #213 : "silent mode" parameter is redundant
+* issue #215 : "limit" parameter is redundant
+* issue #216 : Job timeout should be handled by the executor
+* issue #217 : Inappropriate "call" method in JobBuilder API
+* issue #218 : Rename "jmx mode" parameter into "jmx monitoring" deprecation
+* issue #219 : deprecate the ComputationalRecordProcessor API
+
 Changes in version 4.1.0 (2016-07-30)
 -------------------------------------
 
