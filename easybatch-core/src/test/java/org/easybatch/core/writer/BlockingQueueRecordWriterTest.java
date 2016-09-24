@@ -45,11 +45,11 @@ public class BlockingQueueRecordWriterTest {
     @Mock
     private BlockingQueue<Record> blockingQueue;
 
-    private BlockingQueueRecordWriter writer;
+    private BlockingQueueRecordWriter<Record> writer;
 
     @Before
     public void setUp() {
-        writer = new BlockingQueueRecordWriter(blockingQueue);
+        writer = new BlockingQueueRecordWriter<>(blockingQueue);
     }
 
     @Test

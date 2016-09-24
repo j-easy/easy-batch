@@ -36,22 +36,22 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class BlockingQueueRecordWriter implements RecordWriter {
+public class BlockingQueueRecordWriter<R extends Record> implements RecordWriter<R> {
 
-    private BlockingQueue<Record> blockingQueue;
+    private BlockingQueue<R> blockingQueue;
 
-    public BlockingQueueRecordWriter(final BlockingQueue<Record> blockingQueue) {
+    public BlockingQueueRecordWriter(final BlockingQueue<R> blockingQueue) {
         checkNotNull(blockingQueue, "queue");
         this.blockingQueue = blockingQueue;
     }
 
     @Override
-    public Record processRecord(Record record) throws RecordWritingException {
+    public R processRecord(R record) throws RecordWritingException {
         try {
             blockingQueue.put(record);
             return record;
         } catch (InterruptedException exception) {
-            String message = format("Unable to write record %s", record);
+            String message = format("Unable to write record %s ", record);
             throw new RecordWritingException(message, exception);
         }
     }

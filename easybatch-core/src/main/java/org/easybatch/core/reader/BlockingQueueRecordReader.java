@@ -32,9 +32,10 @@ import java.util.concurrent.BlockingQueue;
 /**
  * A convenient {@link RecordReader} that reads record from a {@link BlockingQueue}.
  *
+ * @param <T> the type of elements in the queue
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class BlockingQueueRecordReader implements RecordReader {
+public class BlockingQueueRecordReader<T extends Record> implements RecordReader {
 
     /**
      * The stop reading flag.
@@ -54,14 +55,14 @@ public class BlockingQueueRecordReader implements RecordReader {
     /**
      * The source queue.
      */
-    private BlockingQueue<Record> queue;
+    private BlockingQueue<T> queue;
 
     /**
      * Create a {@link BlockingQueueRecordReader}.
      *
      * @param queue the queue to read records from
      */
-    public BlockingQueueRecordReader(final BlockingQueue<Record> queue) {
+    public BlockingQueueRecordReader(final BlockingQueue<T> queue) {
         this(queue, 1);
     }
 
@@ -71,7 +72,7 @@ public class BlockingQueueRecordReader implements RecordReader {
      * @param queue the queue to read records from
      * @param totalPoisonRecords number of poison records to receive to stop reading from the queue
      */
-    public BlockingQueueRecordReader(final BlockingQueue<Record> queue, int totalPoisonRecords) {
+    public BlockingQueueRecordReader(final BlockingQueue<T> queue, int totalPoisonRecords) {
         this.queue = queue;
         this.totalPoisonRecords = totalPoisonRecords;
     }
@@ -87,9 +88,9 @@ public class BlockingQueueRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readNextRecord() throws RecordReadingException {
+    public T readNextRecord() throws RecordReadingException {
         try {
-            Record record = queue.take();
+            T record = queue.take();
             if (record instanceof PoisonRecord) {
                 poisonRecords++;
             }
