@@ -49,8 +49,4 @@ public class RecordCollector<P> implements RecordProcessor<Record<P>, Record<P>>
         return records;
     }
 
-    public List<Record> getRecords() {
-        return items;
-    }
-
 }
