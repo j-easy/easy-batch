@@ -1,11 +1,5 @@
 # What is Easy Batch?
 
-To better understand what Easy Batch is, let's see a quick definition of batch processing:
-
-> "Batch processing is the execution of a series of **jobs** on a computer without manual intervention.
-> All input **parameters** are predefined through **job control language**.
-> This operating environment is termed as **'batch processing'** because the input data are collected into **batches** or sets of **records** and each batch is processed **as a unit**." - [Wikipedia](https://en.wikipedia.org/wiki/Batch_processing)
-
 Easy Batch is a Java framework that provides abstractions for key concepts of batch processing:
 
 * `Job`: a program executed without manual intervention
@@ -16,15 +10,11 @@ Easy Batch is a Java framework that provides abstractions for key concepts of ba
 * `Record`: one item in the data source (line in a flat file, row in database table, tag in a Xml file, etc)
 * `Batch`: a set of records processed as a unit
 
-Easy Batch jobs are simple processing pipelines. You can process data one record at a time:
+Easy Batch jobs are simple processing pipelines. Records are read in sequence from a data source, processed in pipeline and written in batches to a data sink:
 
-![Record processing](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/eb/record-processing.jpg)
+![batch processing](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/eb/batch-processing.png)
 
-Or in batches where each batch is processed as a unit:
-
-![Batch processing](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/eb/batch-processing.jpg)
-
-Easy Batch provides APIs to process data in both modes.
+The framework provides `Record` and `Batch` APIs to abstract data format and process records in a consistent way regardless the data source type.
  
 # Why Easy Batch?
 
@@ -48,9 +38,10 @@ Job job = new JobBuilder()
          .mapper(new DelimitedRecordMapper(Tweet.class, "id", "user", "message"))
          .processor(new XmlRecordMarshaller(Tweet.class))
          .writer(new FileRecordWriter("tweets.xml"))
+         .batchSize(10)
          .build();
 
-JobReport report = JobExecutor.execute(job);
+JobReport report = new JobExecutor().execute(job);
 ```
 
 This example creates a job that:
@@ -59,7 +50,7 @@ This example creates a job that:
 * filter the header record
 * map each record to an instance of the `Tweet` bean
 * marshal the tweet to XML format
-* and finally write this XML to an output file `tweets.xml`
+* and finally write XML records in batches of 10 to the output file `tweets.xml`
 
 At the end of execution, you get a report with statistics and metrics about the job run (Execution time, number of errors, etc).
 
