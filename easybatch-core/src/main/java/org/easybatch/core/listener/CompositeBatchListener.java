@@ -2,16 +2,24 @@ package org.easybatch.core.listener;
 
 import org.easybatch.core.record.Batch;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Composite listener that delegate processing to other listeners.
+ * Composite listener that delegates processing to other listeners.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class CompositeBatchListener implements BatchListener {
 
     private List<BatchListener> listeners;
+
+    /**
+     * Create a new {@link CompositeBatchListener}.
+     */
+    public CompositeBatchListener() {
+        this(new ArrayList<BatchListener>());
+    }
 
     /**
      * Create a new {@link CompositeBatchListener}.
@@ -48,5 +56,9 @@ public class CompositeBatchListener implements BatchListener {
         for (BatchListener listener : listeners) {
             listener.onBatchWritingException(batch, throwable);
         }
+    }
+
+    public void addBatchListener(final BatchListener batchListener) {
+        listeners.add(batchListener);
     }
 }

@@ -69,14 +69,14 @@ class BatchJob implements Job {
         report.setMetrics(metrics);
         report.setJobName(name);
         monitor = new JobMonitor(report);
-        setRecordReader(new NoOpRecordReader());
-        setRecordReaderListener(new NoOpRecordReaderListener());
-        setRecordProcessor(new CompositeRecordProcessor());
-        setPipelineListener(new NoOpPipelineListener());
-        setRecordWriter(new NoOpRecordWriter());
-        setRecordWriterListener(new NoOpRecordWriterListener());
-        setBatchListener(new NoOpBatchListener());
-        setJobListener(new NoOpJobListener());
+        recordReader = new NoOpRecordReader();
+        recordProcessor = new CompositeRecordProcessor();
+        recordWriter = new NoOpRecordWriter();
+        recordReaderListener = new CompositeRecordReaderListener();
+        pipelineListener = new CompositePipelineListener();
+        recordWriterListener = new CompositeRecordWriterListener();
+        batchListener = new CompositeBatchListener();
+        jobListener = new CompositeJobListener();
     }
 
     @Override
@@ -280,32 +280,28 @@ class BatchJob implements Job {
         this.recordWriter = recordWriter;
     }
 
-    private void setRecordProcessor(RecordProcessor recordProcessor) {
-        this.recordProcessor = recordProcessor;
-    }
-
     public void addRecordProcessor(RecordProcessor recordProcessor) {
-        ((CompositeRecordProcessor)this.recordProcessor).addRecordProcessor(recordProcessor);
+        ((CompositeRecordProcessor) this.recordProcessor).addRecordProcessor(recordProcessor);
     }
 
-    public void setBatchListener(BatchListener batchListener) {
-        this.batchListener = batchListener;
+    public void addBatchListener(BatchListener batchListener) {
+        ((CompositeBatchListener) this.batchListener).addBatchListener(batchListener);
     }
 
-    public void setJobListener(JobListener jobListener) {
-        this.jobListener = jobListener;
+    public void addJobListener(JobListener jobListener) {
+        ((CompositeJobListener) this.jobListener).addJobListener(jobListener);
     }
 
-    public void setRecordReaderListener(RecordReaderListener recordReaderListener) {
-        this.recordReaderListener = recordReaderListener;
+    public void addRecordReaderListener(RecordReaderListener recordReaderListener) {
+        ((CompositeRecordReaderListener) this.recordReaderListener).addRecordReaderListener(recordReaderListener);
     }
 
-    public void setRecordWriterListener(RecordWriterListener recordWriterListener) {
-        this.recordWriterListener = recordWriterListener;
+    public void addRecordWriterListener(RecordWriterListener recordWriterListener) {
+        ((CompositeRecordWriterListener) this.recordWriterListener).addRecordWriterListener(recordWriterListener);
     }
 
-    public void setPipelineListener(PipelineListener pipelineListener) {
-        this.pipelineListener = pipelineListener;
+    public void addPipelineListener(PipelineListener pipelineListener) {
+        ((CompositePipelineListener) this.pipelineListener).addPipelineListener(pipelineListener);
     }
 
     public void setName(String name) {

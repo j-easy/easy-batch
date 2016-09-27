@@ -35,9 +35,6 @@ import org.easybatch.core.writer.RecordWriter;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
-/*
- * TODO since job instances cannot be reused, (see executed flag), this JobBuilder should be reusable to create multiple job instances
- */
 /**
  * Batch job instance builder.
  * This is the main entry point to configure a batch job.
@@ -208,7 +205,7 @@ public final class JobBuilder {
      */
     public JobBuilder jobListener(final JobListener jobListener) {
         checkNotNull(jobListener, "job listener");
-        job.setJobListener(jobListener);
+        job.addJobListener(jobListener);
         return this;
     }
 
@@ -221,7 +218,7 @@ public final class JobBuilder {
      */
     public JobBuilder batchListener(final BatchListener batchListener) {
         checkNotNull(batchListener, "batch listener");
-        job.setBatchListener(batchListener);
+        job.addBatchListener(batchListener);
         return this;
     }
 
@@ -234,7 +231,7 @@ public final class JobBuilder {
      */
     public JobBuilder readerListener(final RecordReaderListener recordReaderListener) {
         checkNotNull(recordReaderListener, "record reader listener");
-        job.setRecordReaderListener(recordReaderListener);
+        job.addRecordReaderListener(recordReaderListener);
         return this;
     }
 
@@ -247,7 +244,7 @@ public final class JobBuilder {
      */
     public JobBuilder pipelineListener(final PipelineListener pipelineListener) {
         checkNotNull(pipelineListener, "pipeline listener");
-        job.setPipelineListener(pipelineListener);
+        job.addPipelineListener(pipelineListener);
         return this;
     }
 
@@ -260,7 +257,7 @@ public final class JobBuilder {
      */
     public JobBuilder writerListener(final RecordWriterListener recordWriterListener) {
         checkNotNull(recordWriterListener, "record writer listener");
-        job.setRecordWriterListener(recordWriterListener);
+        job.addRecordWriterListener(recordWriterListener);
         return this;
     }
 
