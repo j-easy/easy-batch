@@ -1,25 +1,16 @@
 # What is Easy Batch?
 
-Easy Batch is a Java framework that provides abstractions for key concepts of batch processing:
+Easy Batch is a framework that aims to simplify batch processing with Java.
+Writing batch applications requires a **lot** of boilerplate code: reading, writing, filtering, parsing and validating data, logging, reporting to name a few..
+The idea is to free you from these tedious tasks and let you focus on your application's logic.
 
-* `Job`: a program executed without manual intervention
-* `JobParameters`: set of parameters to configure a job
-* `JobBuilder`: main entry point to configure jobs
-* `JobExecutor`: main entry point to execute jobs
-* `JobReport`: execution report with metrics and statistics about the job run
-* `Record`: one item in the data source (line in a flat file, row in database table, tag in a Xml file, etc)
-* `Batch`: a set of records processed as a unit
+# How does it work?
 
 Easy Batch jobs are simple processing pipelines. Records are read in sequence from a data source, processed in pipeline and written in batches to a data sink:
 
 ![batch processing](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/eb/batch-processing.png)
 
-The framework provides `Record` and `Batch` APIs to abstract data format and process records in a consistent way regardless the data source type.
- 
-# Why Easy Batch?
-
-Because writing batch applications requires a **lot** of boilerplate code: reading, writing, filtering, parsing and validating data, logging, reporting to name a few..
-The idea is to free you from these tedious tasks and let you focus on your application's logic.
+The framework provides `Record` and `Batch` APIs to abstract data format and process records in a consistent way regardless of the data source type.
 
 Let's see a quick example. Suppose you have the following `tweets.csv` file:
 
