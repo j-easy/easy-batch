@@ -32,13 +32,13 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
  * Utilities class.
@@ -93,8 +93,7 @@ public abstract class Utils {
     }
 
     public static String formatDuration(long duration) {
-        Duration d = Duration.ofMillis(duration);
-        return String.format(DURATION_FORMAT, d.toHours() % 24, d.toMinutes() % 60, d.getSeconds() % 60, d.toMillis() % 1000);
+        return String.format(DURATION_FORMAT, MILLISECONDS.toHours(duration) % 24, MILLISECONDS.toMinutes(duration) % 60, MILLISECONDS.toSeconds(duration) % 60, duration % 1000);
     }
 
     public static String formatErrorThreshold(final long errorThreshold) {

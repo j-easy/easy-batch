@@ -24,6 +24,7 @@
 
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,7 +46,7 @@ public class ContentBasedBlockingQueueRecordWriterBuilderTest {
 
     @Test(expected = IllegalStateException.class)
     public void whenCallWriteToWithoutCallingWhen_ThenShouldThrowIllegalStateException() throws Exception {
-        builder.writeTo(new LinkedBlockingQueue<>());
+        builder.writeTo(new LinkedBlockingQueue<Record>());
     }
 
 }
