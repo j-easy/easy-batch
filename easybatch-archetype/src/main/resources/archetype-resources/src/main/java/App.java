@@ -24,7 +24,9 @@ public class App {
                 .build();
 
         // Execute the job
-        JobReport jobReport = new JobExecutor().execute(job);
+        JobExecutor jobExecutor = new JobExecutor();
+        JobReport jobReport = jobExecutor.execute(job);
+        jobExecutor.shutdown();
 
         // Print the job execution report
         System.out.println(jobReport);
