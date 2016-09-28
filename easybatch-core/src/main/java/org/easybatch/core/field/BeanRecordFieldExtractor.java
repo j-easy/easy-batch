@@ -37,13 +37,13 @@ import java.util.Map;
  *
  * @author Rémi Alvergnat (toilal.dev@gmail.com)
  */
-public class BeanRecordFieldExtractor implements RecordFieldExtractor {
+public class BeanRecordFieldExtractor<P> implements RecordFieldExtractor<P> {
 
     private final String[] fields;
 
     private final Map<String, Method> getters;
 
-    public BeanRecordFieldExtractor(final Class type, final String... fields) throws IntrospectionException {
+    public BeanRecordFieldExtractor(final Class<P> type, final String... fields) throws IntrospectionException {
         this.getters = Utils.getGetters(type);
         if (fields.length == 0) {
             this.fields = this.getters.keySet().toArray(new String[this.getters.size()]);
@@ -53,7 +53,7 @@ public class BeanRecordFieldExtractor implements RecordFieldExtractor {
     }
 
     @Override
-    public Iterable<Object> extractFields(final Object record) throws Exception {
+    public Iterable<Object> extractFields(final P record) throws Exception {
         Object[] values = new Object[fields.length];
         for (int i = 0; i < fields.length; i++) {
                 values[i] = getValue(fields[i], record);
@@ -61,7 +61,7 @@ public class BeanRecordFieldExtractor implements RecordFieldExtractor {
         return Arrays.asList(values);
     }
 
-    protected Object getValue(final String field, final Object object) throws InvocationTargetException, IllegalAccessException {
+    protected Object getValue(final String field, final P object) throws InvocationTargetException, IllegalAccessException {
         return getters.get(field).invoke(object);
     }
 }

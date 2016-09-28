@@ -35,36 +35,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class BeanRecordFieldExtractorTest {
 
-    private Person record;
+    private Person person;
 
-    private BeanRecordFieldExtractor fieldExtractor;
+    private BeanRecordFieldExtractor<Person> fieldExtractor;
 
     @Before
     public void setUp() throws Exception {
-        record = new Person();
-        record.setFirstName("myFirstName");
-        record.setLastName("myLastName");
-        record.setBirthDate(new Date());
-        record.setAge(33);
-        record.setGender(Gender.FEMALE);
-        record.setMarried(true);
+        person = new Person();
+        person.setFirstName("myFirstName");
+        person.setLastName("myLastName");
+        person.setBirthDate(new Date());
+        person.setAge(33);
+        person.setGender(Gender.FEMALE);
+        person.setMarried(true);
     }
 
     @Test
     public void whenFieldsIsEmpty_ThenItShouldExtractAllPropertiesValues() throws Exception {
-        fieldExtractor = new BeanRecordFieldExtractor(Person.class);
-        Iterable<Object> values = fieldExtractor.extractFields(record);
+        fieldExtractor = new BeanRecordFieldExtractor<>(Person.class);
+        Iterable<Object> values = fieldExtractor.extractFields(person);
         assertThat(values).hasSize(6);
         assertThat(values).containsOnlyOnce(
-                record.getFirstName(), record.getLastName(), record.getBirthDate(),
-                record.getAge(), record.getGender(), record.isMarried());
+                person.getFirstName(), person.getLastName(), person.getBirthDate(),
+                person.getAge(), person.getGender(), person.isMarried());
     }
 
     @Test
     public void whenFieldsIsNotEmpty_ThenItShouldExtractAllPropertiesValuesInRightOrder() throws Exception {
-        fieldExtractor = new BeanRecordFieldExtractor(Person.class, "lastName", "age", "married");
-        Iterable<Object> values = fieldExtractor.extractFields(record);
-        assertThat(values).containsExactly(record.getLastName(), record.getAge(), record.isMarried());
+        fieldExtractor = new BeanRecordFieldExtractor<>(Person.class, "lastName", "age", "married");
+        Iterable<Object> values = fieldExtractor.extractFields(person);
+        assertThat(values).containsExactly(person.getLastName(), person.getAge(), person.isMarried());
     }
 
 }
