@@ -49,7 +49,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Generi
 
     private ColumnPositionMappingStrategy<T> strategy;
 
-    private CsvToBean csvToBean;
+    private CsvToBean<T> csvToBean;
 
     /**
      * Create a {@link OpenCsvRecordMapper}.
@@ -57,11 +57,11 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Generi
      * @param recordClass The target type
      * @param columns     Fields name in the same order as in the delimited record
      */
-    public OpenCsvRecordMapper(Class<? extends T> recordClass, String... columns) {
+    public OpenCsvRecordMapper(Class<T> recordClass, String... columns) {
         this.strategy = new ColumnPositionMappingStrategy<>();
         this.strategy.setType(recordClass);
         this.strategy.setColumnMapping(columns);
-        this.csvToBean = new CsvToBean();
+        this.csvToBean = new CsvToBean<>();
     }
 
     @Override
@@ -72,8 +72,8 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Generi
                 delimiter,
                 qualifier,
                 strictQualifiers);
-        List list = csvToBean.parse(strategy, openCsvReader);
-        T mappedObject = (T) list.get(0);
+        List<T> list = csvToBean.parse(strategy, openCsvReader);
+        T mappedObject = list.get(0);
         return new GenericRecord<>(record.getHeader(), mappedObject);
     }
 

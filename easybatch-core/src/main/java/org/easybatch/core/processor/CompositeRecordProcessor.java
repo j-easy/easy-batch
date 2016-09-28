@@ -19,6 +19,7 @@ public class CompositeRecordProcessor implements RecordProcessor {
     }
 
     @Override
+    @SuppressWarnings(value = "unchecked")
     public Record processRecord(Record record) throws Exception {
         Record processedRecord = record;
         for (RecordProcessor processor : processors) {

@@ -180,7 +180,7 @@ public class DelimitedRecordMapper extends AbstractRecordMapper implements Recor
             String fieldValue = flatFileField.getRawContent();
             fieldsContents.put(fieldName, fieldValue);
         }
-        return new GenericRecord(record.getHeader(), objectMapper.mapObject(fieldsContents));
+        return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(fieldsContents));
     }
 
     FlatFileRecord parseRecord(final StringRecord record) throws Exception {

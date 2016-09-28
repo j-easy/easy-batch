@@ -40,7 +40,7 @@ public class BatchJobTest {
     @Mock
     private RecordValidator validator;
     @Mock
-    private RecordProcessor firstProcessor, secondProcessor;
+    private RecordProcessor<Record, Record> firstProcessor, secondProcessor;
     @Mock
     private RecordWriter writer;
     @Mock
@@ -238,7 +238,7 @@ public class BatchJobTest {
 
     @Test
     public void whenARecordProcessorReturnsNull_thenTheRecordShouldBeFiltered() throws Exception {
-        when(reader.readRecord()).thenReturn(record1, null);
+        when(reader.readRecord()).thenReturn(record1).thenReturn(null);
         when(firstProcessor.processRecord(record1)).thenReturn(null);
 
         JobReport jobReport = job.call();

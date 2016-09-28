@@ -98,7 +98,7 @@ public class FixedLengthRecordMapper extends AbstractRecordMapper implements Rec
             String fieldValue = flatFileField.getRawContent();
             fieldsContents.put(fieldName, fieldValue);
         }
-        return new GenericRecord(record.getHeader(), objectMapper.mapObject(fieldsContents));
+        return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(fieldsContents));
     }
 
     FlatFileRecord parseRecord(final StringRecord record) throws Exception {

@@ -160,6 +160,7 @@ class BatchJob implements Job {
         }
     }
 
+    @SuppressWarnings(value = "unchecked")
     private void processRecord(Record record, Batch batch) throws ErrorThresholdExceededException {
         Record processedRecord;
         try {

@@ -124,7 +124,7 @@ public class JobScheduler {
         String jobName = JOB_NAME_PREFIX + name;
         String triggerName = TRIGGER_NAME_PREFIX + name;
 
-        ScheduleBuilder scheduleBuilder = simpleSchedule()
+        SimpleScheduleBuilder scheduleBuilder = simpleSchedule()
                 .withIntervalInSeconds(interval)
                 .repeatForever();
 

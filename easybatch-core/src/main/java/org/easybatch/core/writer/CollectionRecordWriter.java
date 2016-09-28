@@ -56,6 +56,7 @@ public class CollectionRecordWriter implements RecordWriter {
     }
 
     @Override
+    @SuppressWarnings(value = "unchecked")
     public void writeRecords(Batch batch) throws Exception {
         for (Record record : batch) {
             collection.add(record.getPayload());
