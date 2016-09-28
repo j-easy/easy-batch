@@ -24,8 +24,8 @@
 
 package org.easybatch.extensions.spring;
 
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.easybatch.jdbc.JdbcRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,7 +76,7 @@ public class SpringJdbcRecordMapperTest {
         when(payload.getString(2)).thenReturn("foo");
         when(payload.getString(3)).thenReturn("message");
 
-        GenericRecord<Tweet> actual = mapper.processRecord(jdbcRecord);
+        Record<Tweet> actual = mapper.processRecord(jdbcRecord);
         Tweet tweet = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);

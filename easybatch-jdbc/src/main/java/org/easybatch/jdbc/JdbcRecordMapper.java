@@ -27,6 +27,7 @@ package org.easybatch.jdbc;
 import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,7 +39,7 @@ import java.util.Map;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapper<JdbcRecord, GenericRecord> {
+public class JdbcRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<JdbcRecord, Record<P>> {
 
     /**
      * Field names used for custom column mapping.
@@ -51,7 +52,7 @@ public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapp
      *
      * @param recordClass the target domain object class
      */
-    public JdbcRecordMapper(final Class<?> recordClass) {
+    public JdbcRecordMapper(final Class<P> recordClass) {
         super(recordClass);
     }
 
@@ -61,13 +62,13 @@ public class JdbcRecordMapper extends AbstractRecordMapper implements RecordMapp
      * @param recordClass the target domain object class
      * @param fields      the list of fields names
      */
-    public JdbcRecordMapper(final Class<?> recordClass, final String... fields) {
+    public JdbcRecordMapper(final Class<P> recordClass, final String... fields) {
         this(recordClass);
         this.fields = fields;
     }
 
     @Override
-    public GenericRecord processRecord(final JdbcRecord record) throws Exception {
+    public Record<P> processRecord(final JdbcRecord record) throws Exception {
 
         ResultSet resultSet = record.getPayload();
         initFieldNames(resultSet);

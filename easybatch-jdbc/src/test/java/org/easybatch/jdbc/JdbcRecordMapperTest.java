@@ -24,8 +24,8 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +41,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class JdbcRecordMapperTest {
 
-    private JdbcRecordMapper tweetMapper;
+    private JdbcRecordMapper<Tweet> tweetMapper;
 
     private JdbcRecord jdbcRecord;
 
@@ -54,7 +54,7 @@ public class JdbcRecordMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        tweetMapper = new JdbcRecordMapper(Tweet.class);
+        tweetMapper = new JdbcRecordMapper<>(Tweet.class);
         jdbcRecord = new JdbcRecord(header, payload);
     }
 
@@ -69,7 +69,7 @@ public class JdbcRecordMapperTest {
         when(payload.getString(2)).thenReturn("foo");
         when(payload.getString(3)).thenReturn("Hello!");
 
-        GenericRecord<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
+        Record<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
         Tweet tweet = actual.getPayload();
 
         assertThat(tweet).isNotNull();
@@ -81,7 +81,7 @@ public class JdbcRecordMapperTest {
     @Test
     public void testMapRecordWithCustomMapping() throws Exception {
 
-        tweetMapper = new JdbcRecordMapper(Tweet.class, "id", "user", "message");
+        tweetMapper = new JdbcRecordMapper<>(Tweet.class, "id", "user", "message");
 
         when(payload.getMetaData()).thenReturn(metadata);
         when(metadata.getColumnCount()).thenReturn(3);
@@ -92,7 +92,7 @@ public class JdbcRecordMapperTest {
         when(payload.getString(2)).thenReturn("foo");
         when(payload.getString(3)).thenReturn("Hello!");
 
-        GenericRecord<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
+        Record<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
         Tweet tweet = actual.getPayload();
 
         assertThat(tweet).isNotNull();

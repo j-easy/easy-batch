@@ -24,8 +24,8 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +56,7 @@ public class XmlRecordMapperTest {
     @Test
     public void testValidXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person.xml"));
-        GenericRecord<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
         Person person = mappedRecord.getPayload();
 
         assertThat(person).isNotNull();
@@ -70,7 +70,7 @@ public class XmlRecordMapperTest {
     @Test
     public void testEmptyXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(header, "<person/>");
-        GenericRecord<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
         Person person = mappedRecord.getPayload();
 
         assertThat(person.getId()).isEqualTo(0);
@@ -83,7 +83,7 @@ public class XmlRecordMapperTest {
     @Test
     public void testPartialXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-partial.xml"));
-        GenericRecord<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
         Person person = mappedRecord.getPayload();
 
         assertThat(person).isNotNull();
@@ -99,7 +99,7 @@ public class XmlRecordMapperTest {
         XmlRecordMapper<Website> xmlRecordMapper = new XmlRecordMapper<>(Website.class);
 
         xmlRecord = new XmlRecord(header, "<website name='google' url='http://www.google.com?query=test&amp;sort=asc'/>");
-        GenericRecord<Website> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Website> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
         Website website = mappedRecord.getPayload();
         assertThat(website).isNotNull();
         assertThat(website.getName()).isEqualTo("google");

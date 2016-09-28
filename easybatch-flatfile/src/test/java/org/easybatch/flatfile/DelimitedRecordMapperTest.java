@@ -24,7 +24,7 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,14 +40,14 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DelimitedRecordMapperTest {
 
-    private DelimitedRecordMapper delimitedRecordMapper;
+    private DelimitedRecordMapper<Person> delimitedRecordMapper;
 
     @Mock
     private StringRecord record, headerRecord;
 
     @Before
     public void setUp() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper(Person.class, "firstName", "lastName", "age", "birthDate", "married");
+        delimitedRecordMapper = new DelimitedRecordMapper<>(Person.class, "firstName", "lastName", "age", "birthDate", "married");
 
         when(record.getPayload()).thenReturn("foo,bar,30,1990-12-12,true");
         when(headerRecord.getPayload()).thenReturn("firstName,lastName,age,birthDate,married");
@@ -134,7 +134,7 @@ public class DelimitedRecordMapperTest {
 
     @Test
     public void testFieldSubsetMapping() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper(Person.class,
+        delimitedRecordMapper = new DelimitedRecordMapper<>(Person.class,
                 new Integer[]{0, 4},
                 new String[]{"firstName", "married"}
         );
@@ -161,10 +161,10 @@ public class DelimitedRecordMapperTest {
 
     @Test
     public void testFieldNamesConventionOverConfiguration() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper(Person.class);
+        delimitedRecordMapper = new DelimitedRecordMapper<>(Person.class);
 
         delimitedRecordMapper.parseRecord(headerRecord);
-        GenericRecord<Person> actual = delimitedRecordMapper.processRecord(record);
+        Record<Person> actual = delimitedRecordMapper.processRecord(record);
         Person person = actual.getPayload();
 
         assertThat(person).isNotNull();
@@ -177,9 +177,9 @@ public class DelimitedRecordMapperTest {
 
     @Test
     public void testFieldSubsetMappingWithConventionOverConfiguration() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper(Person.class, 0, 4);
+        delimitedRecordMapper = new DelimitedRecordMapper<>(Person.class, 0, 4);
         delimitedRecordMapper.parseRecord(headerRecord);
-        GenericRecord<Person> actual = delimitedRecordMapper.processRecord(record);
+        Record<Person> actual = delimitedRecordMapper.processRecord(record);
         Person person = actual.getPayload();
 
         assertThat(person).isNotNull();

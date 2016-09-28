@@ -27,6 +27,7 @@ package org.easybatch.extensions.xstream;
 import com.thoughtworks.xstream.XStream;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.xml.XmlRecord;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
@@ -38,7 +39,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * @param <P> Target domain object class.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class XstreamRecordMapper<P> implements RecordMapper<XmlRecord, GenericRecord<P>> {
+public class XstreamRecordMapper<P> implements RecordMapper<XmlRecord, Record<P>> {
 
     private XStream xStream;
 
@@ -55,7 +56,7 @@ public class XstreamRecordMapper<P> implements RecordMapper<XmlRecord, GenericRe
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public GenericRecord<P> processRecord(final XmlRecord record) throws Exception {
+    public Record<P> processRecord(final XmlRecord record) throws Exception {
         P unmarshalledObject = (P) xStream.fromXML(record.getPayload());
         return new GenericRecord<>(record.getHeader(), unmarshalledObject);
     }

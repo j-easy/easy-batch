@@ -28,6 +28,7 @@ import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.ObjectMapper;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 
 import java.util.HashMap;
@@ -38,7 +39,7 @@ import java.util.Map;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class FixedLengthRecordMapper extends AbstractRecordMapper implements RecordMapper<StringRecord, GenericRecord> {
+public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<StringRecord, Record<P>> {
 
     /**
      * Fields length array.
@@ -77,11 +78,11 @@ public class FixedLengthRecordMapper extends AbstractRecordMapper implements Rec
      * @param fieldsLength an array of fields length in the same order in the FLR flat file.
      * @param fieldNames   a String array representing fields name in the same order in the FLR flat file.
      */
-    public FixedLengthRecordMapper(Class recordClass, int[] fieldsLength, String[] fieldNames) {
+    public FixedLengthRecordMapper(Class<P> recordClass, int[] fieldsLength, String[] fieldNames) {
         super(recordClass);
         this.fieldsLength = fieldsLength.clone();
         this.fieldNames = fieldNames.clone();
-        objectMapper = new ObjectMapper(recordClass);
+        objectMapper = new ObjectMapper<>(recordClass);
         for (int fieldLength : fieldsLength) {
             recordExpectedLength += fieldLength;
         }
@@ -89,7 +90,7 @@ public class FixedLengthRecordMapper extends AbstractRecordMapper implements Rec
     }
 
     @Override
-    public GenericRecord processRecord(final StringRecord record) throws Exception {
+    public Record<P> processRecord(final StringRecord record) throws Exception {
 
         FlatFileRecord flatFileRecord = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<>();

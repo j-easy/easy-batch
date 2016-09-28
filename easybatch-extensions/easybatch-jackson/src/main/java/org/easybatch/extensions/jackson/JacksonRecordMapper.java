@@ -27,6 +27,7 @@ package org.easybatch.extensions.jackson;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.json.JsonRecord;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
@@ -38,7 +39,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * @param <T> Target domain object class.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JacksonRecordMapper<T> implements RecordMapper<JsonRecord, GenericRecord<T>> {
+public class JacksonRecordMapper<T> implements RecordMapper<JsonRecord, Record<T>> {
 
     private ObjectMapper mapper;
 
@@ -59,7 +60,7 @@ public class JacksonRecordMapper<T> implements RecordMapper<JsonRecord, GenericR
     }
 
     @Override
-    public GenericRecord<T> processRecord(final JsonRecord record) throws Exception {
+    public Record<T> processRecord(final JsonRecord record) throws Exception {
         return new GenericRecord<>(record.getHeader(), mapper.readValue(record.getPayload().getBytes(), type));
     }
 }

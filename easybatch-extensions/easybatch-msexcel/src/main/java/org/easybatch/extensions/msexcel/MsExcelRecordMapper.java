@@ -29,6 +29,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.easybatch.core.mapper.ObjectMapper;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,11 +40,11 @@ import java.util.Map;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MsExcelRecordMapper implements RecordMapper<MsExcelRecord, GenericRecord> {
+public class MsExcelRecordMapper<P> implements RecordMapper<MsExcelRecord, Record<P>> {
 
     private String[] fields;
     
-    private ObjectMapper objectMapper;
+    private ObjectMapper<P> objectMapper;
 
     /**
      * Create a new {@link MsExcelRecordMapper}.
@@ -51,15 +52,14 @@ public class MsExcelRecordMapper implements RecordMapper<MsExcelRecord, GenericR
      * @param type the target object type
      * @param fields the fields to unmarshal
      */
-    public MsExcelRecordMapper(final Class type, final String... fields) {
+    public MsExcelRecordMapper(final Class<P> type, final String... fields) {
         this.fields = fields;
-        objectMapper = new ObjectMapper(type);
+        objectMapper = new ObjectMapper<>(type);
     }
 
-    @SuppressWarnings("unchecked")
-    public GenericRecord processRecord(MsExcelRecord msExcelRecord) throws Exception {
-        Object unmarshalledObject = objectMapper.mapObject(toMap(msExcelRecord.getPayload()));
-        return new GenericRecord(msExcelRecord.getHeader(), unmarshalledObject);
+    public Record<P> processRecord(MsExcelRecord msExcelRecord) throws Exception {
+        P unmarshalledObject = objectMapper.mapObject(toMap(msExcelRecord.getPayload()));
+        return new GenericRecord<>(msExcelRecord.getHeader(), unmarshalledObject);
     }
 
     private Map<String, String> toMap(final Row row) {

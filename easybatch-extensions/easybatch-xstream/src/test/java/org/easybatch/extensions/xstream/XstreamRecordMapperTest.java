@@ -27,6 +27,7 @@ package org.easybatch.extensions.xstream;
 import com.thoughtworks.xstream.XStream;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.easybatch.xml.XmlRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +62,7 @@ public class XstreamRecordMapperTest {
     public void testValidXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person.xml"));
 
-        GenericRecord<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
         Person person = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);
@@ -76,7 +77,7 @@ public class XstreamRecordMapperTest {
     public void testEmptyXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn("<person/>");
 
-        GenericRecord<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
         Person person = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);
@@ -90,7 +91,7 @@ public class XstreamRecordMapperTest {
     public void testPartialXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person-partial.xml"));
 
-        GenericRecord<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
         Person person = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);

@@ -24,8 +24,8 @@
 
 package org.easybatch.extensions.opencsv.test;
 
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 import org.easybatch.extensions.opencsv.OpenCsvRecordMapper;
 import org.junit.Before;
@@ -56,7 +56,7 @@ public class OpenCsvRecordMapperTest {
     @Test
     public void testOpenCsvMapping() throws Exception {
         StringRecord fooRecord = new StringRecord(header, "foo,bar,15,true");
-        GenericRecord<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
+        Record<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
 
         Foo foo = actual.getPayload();
@@ -71,7 +71,7 @@ public class OpenCsvRecordMapperTest {
     public void testOpenCsvDelimiter() throws Exception {
         openCsvRecordMapper.setDelimiter(';');
         StringRecord fooRecord = new StringRecord(header, "foo;bar");
-        GenericRecord<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
+        Record<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
 
         Foo foo = actual.getPayload();
@@ -84,7 +84,7 @@ public class OpenCsvRecordMapperTest {
     public void testOpenCsvQualifier() throws Exception {
         openCsvRecordMapper.setQualifier('\'');
         StringRecord fooRecord = new StringRecord(header, "'foo,s','bar'");
-        GenericRecord<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
+        Record<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
 
         Foo foo = actual.getPayload();
@@ -98,7 +98,7 @@ public class OpenCsvRecordMapperTest {
     public void testOpenCsvCarriageReturn() throws Exception {
         openCsvRecordMapper.setQualifier('\'');
         StringRecord fooRecord = new StringRecord(header, "'foo" + LINE_SEPARATOR + "','bar" + LINE_SEPARATOR + "'");
-        GenericRecord<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
+        Record<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
 
         Foo foo = actual.getPayload();

@@ -25,8 +25,8 @@
 package org.easybatch.extensions.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.easybatch.json.JsonRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,7 +58,7 @@ public class JacksonRecordMapperTest {
     public void testMapRecord() throws Exception {
         String jsonTweet = "{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}";
         when(record.getPayload()).thenReturn(jsonTweet);
-        GenericRecord<Tweet> actual = mapper.processRecord(record);
+        Record<Tweet> actual = mapper.processRecord(record);
         Tweet tweet = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);
@@ -71,7 +71,7 @@ public class JacksonRecordMapperTest {
     public void testMapIncompleteRecord() throws Exception {
         String jsonTweet = "{\"id\":1,\"user\":\"foo\"}";
         when(record.getPayload()).thenReturn(jsonTweet);
-        GenericRecord<Tweet> actual = mapper.processRecord(record);
+        Record<Tweet> actual = mapper.processRecord(record);
         Tweet tweet = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);
@@ -84,7 +84,7 @@ public class JacksonRecordMapperTest {
     public void testMapEmptyRecord() throws Exception {
         String jsonTweet = "{}";
         when(record.getPayload()).thenReturn(jsonTweet);
-        GenericRecord<Tweet> actual = mapper.processRecord(record);
+        Record<Tweet> actual = mapper.processRecord(record);
         Tweet tweet = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);

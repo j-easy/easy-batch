@@ -29,6 +29,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,14 +45,14 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 @RunWith(MockitoJUnitRunner.class)
 public class ApacheCommonCsvRecordMapperTest {
 
-    private ApacheCommonCsvRecordMapper mapper;
+    private ApacheCommonCsvRecordMapper<Foo> mapper;
 
     @Mock
     private Header header;
 
     @Before
     public void setUp() throws Exception {
-        mapper = new ApacheCommonCsvRecordMapper(Foo.class);
+        mapper = new ApacheCommonCsvRecordMapper<>(Foo.class);
     }
 
     @Test
@@ -60,7 +61,7 @@ public class ApacheCommonCsvRecordMapperTest {
         CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        GenericRecord<Foo> actual = mapper.processRecord(record);
+        Record<Foo> actual = mapper.processRecord(record);
         Foo foo = actual.getPayload();
 
         assertThat(foo).isNotNull();
@@ -78,7 +79,7 @@ public class ApacheCommonCsvRecordMapperTest {
                 .withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        GenericRecord<Foo> actual = mapper.processRecord(record);
+        Record<Foo> actual = mapper.processRecord(record);
         Foo foo = actual.getPayload();
 
         assertThat(foo).isNotNull();
@@ -96,7 +97,7 @@ public class ApacheCommonCsvRecordMapperTest {
                 .withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        GenericRecord<Foo> actual = mapper.processRecord(record);
+        Record<Foo> actual = mapper.processRecord(record);
         Foo foo = actual.getPayload();
 
         assertThat(foo).isNotNull();
@@ -114,7 +115,7 @@ public class ApacheCommonCsvRecordMapperTest {
                 .withHeader("firstName", "lastName", "age", "married");
         ApacheCommonCsvRecord record = getApacheCommonCsvRecord(stringReader, csvFormat);
 
-        GenericRecord<Foo> actual = mapper.processRecord(record);
+        Record<Foo> actual = mapper.processRecord(record);
         Foo foo = actual.getPayload();
 
         assertThat(foo).isNotNull();

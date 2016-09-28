@@ -26,6 +26,7 @@ package org.easybatch.extensions.spring;
 
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.jdbc.JdbcRecord;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
@@ -39,7 +40,7 @@ import java.sql.ResultSet;
  * @param <P> Target domain object type
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class SpringJdbcRecordMapper<P> implements RecordMapper<JdbcRecord, GenericRecord<P>> {
+public class SpringJdbcRecordMapper<P> implements RecordMapper<JdbcRecord, Record<P>> {
 
     private final Class<P> type;
 
@@ -53,7 +54,7 @@ public class SpringJdbcRecordMapper<P> implements RecordMapper<JdbcRecord, Gener
     }
 
     @Override
-    public GenericRecord<P> processRecord(JdbcRecord record) throws Exception {
+    public Record<P> processRecord(JdbcRecord record) throws Exception {
         ResultSet resultSet = record.getPayload();
         BeanPropertyRowMapper<P> beanPropertyRowMapper = new BeanPropertyRowMapper<>(type);
         return new GenericRecord<>(record.getHeader(), beanPropertyRowMapper.mapRow(resultSet, record.getHeader().getNumber().intValue()));

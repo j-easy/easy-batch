@@ -26,6 +26,7 @@ package org.easybatch.xml;
 
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -43,7 +44,7 @@ import java.io.File;
  * @param <P> the target domain object type
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class XmlRecordMapper<P> implements RecordMapper<XmlRecord, GenericRecord<P>> {
+public class XmlRecordMapper<P> implements RecordMapper<XmlRecord, Record<P>> {
 
     /**
      * JAXB context.
@@ -61,7 +62,7 @@ public class XmlRecordMapper<P> implements RecordMapper<XmlRecord, GenericRecord
      * @param type the target domain object type.
      * @throws JAXBException thrown if an error occurs during the creation of Jaxb context.
      */
-    public XmlRecordMapper(final Class<? extends P> type) throws JAXBException {
+    public XmlRecordMapper(final Class<P> type) throws JAXBException {
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
     }
@@ -74,7 +75,7 @@ public class XmlRecordMapper<P> implements RecordMapper<XmlRecord, GenericRecord
      * @throws JAXBException thrown if an error occurs during the creation of Jaxb context.
      * @throws SAXException  thrown if an error occurs during the schema parsing.
      */
-    public XmlRecordMapper(final Class<? extends P> type, final File xsd) throws JAXBException, SAXException {
+    public XmlRecordMapper(final Class<P> type, final File xsd) throws JAXBException, SAXException {
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -92,7 +93,8 @@ public class XmlRecordMapper<P> implements RecordMapper<XmlRecord, GenericRecord
     }
 
     @Override
-    public GenericRecord<P> processRecord(final XmlRecord record) throws Exception {
+    @SuppressWarnings(value = "unchecked")
+    public Record<P> processRecord(final XmlRecord record) throws Exception {
         P unmarshalledObject = (P) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(record.getPayload().getBytes()));
         return new GenericRecord<>(record.getHeader(), unmarshalledObject);
     }

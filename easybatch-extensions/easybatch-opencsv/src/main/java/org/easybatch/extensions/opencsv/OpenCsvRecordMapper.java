@@ -29,6 +29,7 @@ import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 
 import java.io.StringReader;
@@ -39,7 +40,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, GenericRecord<T>> {
+public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Record<T>> {
 
     private char delimiter = ',';
 
@@ -65,7 +66,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Generi
     }
 
     @Override
-    public GenericRecord<T> processRecord(final StringRecord record) {
+    public Record<T> processRecord(final StringRecord record) {
         String payload = record.getPayload();
         CSVReader openCsvReader = new CSVReader(
                 new StringReader(payload),

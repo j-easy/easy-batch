@@ -39,14 +39,14 @@ import java.util.List;
 @RunWith(MockitoJUnitRunner.class)
 public class FixedLengthRecordMapperTest {
 
-    private FixedLengthRecordMapper fixedLengthRecordMapper;
+    private FixedLengthRecordMapper<Bean> fixedLengthRecordMapper;
 
     @Mock
     private StringRecord record;
 
     @Before
     public void setUp() throws Exception {
-        fixedLengthRecordMapper = new FixedLengthRecordMapper(Bean.class,
+        fixedLengthRecordMapper = new FixedLengthRecordMapper<>(Bean.class,
                 new int[]{4, 2, 3},
                 new String[]{"field1", "field2", "field3"});
         when(record.getPayload()).thenReturn("aaaabbccc");
