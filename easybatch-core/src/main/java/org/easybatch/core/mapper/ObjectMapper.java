@@ -45,21 +45,15 @@ import java.util.logging.Logger;
 import static java.lang.String.format;
 
 /**
- * A helper class that maps a record to a domain object instance.
+ * A helper class that maps the payload of a record to a domain object instance.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class ObjectMapper {
+public class ObjectMapper<T> {
 
-    /**
-     * The logger.
-     */
     private static final Logger LOGGER = Logger.getLogger(ObjectMapper.class.getName());
 
-    /**
-     * The target domain object class.
-     */
-    private Class recordClass;
+    private Class<T> objectType;
 
     /**
      * A map holding setter methods for each field.
@@ -69,15 +63,15 @@ public class ObjectMapper {
     /**
      * Type converters map.
      */
-    private Map<Class, TypeConverter<String, ?>> typeConverters;
+    private Map<Class<?>, TypeConverter<String, ?>> typeConverters;
 
     /**
      * Construct an object mapper.
      *
-     * @param recordClass the target object type
+     * @param objectType the target object type
      */
-    public ObjectMapper(final Class recordClass) {
-        this.recordClass = recordClass;
+    public ObjectMapper(final Class<T> objectType) {
+        this.objectType = objectType;
         initializeTypeConverters();
         initializeSetters();
     }
@@ -89,9 +83,9 @@ public class ObjectMapper {
      * @return A populated instance of the target type.
      * @throws Exception thrown if values cannot be mapped to target object fields
      */
-    public Object mapObject(final Map<String, String> values) throws Exception {
+    public T mapObject(final Map<String, String> values) throws Exception {
 
-        Object result = createInstance();
+        T result = createInstance();
 
         // for each field
         for (Map.Entry<String, String> entry : values.entrySet()) {
@@ -135,11 +129,11 @@ public class ObjectMapper {
     private void initializeSetters() {
         setters = new HashMap<>();
         try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(recordClass);
+            BeanInfo beanInfo = Introspector.getBeanInfo(objectType);
             PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
             getSetters(propertyDescriptors);
         } catch (IntrospectionException e) {
-            throw new BeanIntrospectionException("Unable to introspect target type " + recordClass.getName(), e);
+            throw new BeanIntrospectionException("Unable to introspect target type " + objectType.getName(), e);
         }
     }
 
@@ -151,11 +145,11 @@ public class ObjectMapper {
         setters.remove("class");
     }
 
-    private Object createInstance() throws Exception {
+    private T createInstance() throws Exception {
         try {
-            return recordClass.newInstance();
+            return objectType.newInstance();
         } catch (Exception e) {
-            throw new Exception(format("Unable to create a new instance of target type %s", recordClass.getName()), e);
+            throw new Exception(format("Unable to create a new instance of target type %s", objectType.getName()), e);
         }
     }
 
