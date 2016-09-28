@@ -50,8 +50,8 @@ public class ApacheCommonCsvSupportIntegrationTest {
 
         aNewJob()
                 .reader(new ApacheCommonCsvRecordReader(parser))
-                .mapper(new ApacheCommonCsvRecordMapper(Tweet.class))
-                .marshaller(new ApacheCommonCsvRecordMarshaller(Tweet.class, new String[]{"id", "user", "message"}, ';', '\''))
+                .mapper(new ApacheCommonCsvRecordMapper<>(Tweet.class))
+                .marshaller(new ApacheCommonCsvRecordMarshaller<>(Tweet.class, new String[]{"id", "user", "message"}, ';', '\''))
                 .writer(new StandardOutputRecordWriter())
                 .build().call();
 

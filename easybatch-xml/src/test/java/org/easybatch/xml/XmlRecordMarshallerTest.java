@@ -24,8 +24,8 @@
 
 package org.easybatch.xml;
 
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,18 +39,18 @@ import static org.mockito.Mockito.when;
 public class XmlRecordMarshallerTest {
 
     @Mock
-    private GenericRecord record;
+    private Record<Person> record;
     @Mock
     private Header header;
 
-    private XmlRecordMarshaller xmlRecordMarshaller;
+    private XmlRecordMarshaller<Person> xmlRecordMarshaller;
 
     @Before
     public void setUp() throws Exception {
         Person person = new Person(1, "foo", "bar", null, false);
         when(record.getHeader()).thenReturn(header);
         when(record.getPayload()).thenReturn(person);
-        xmlRecordMarshaller = new XmlRecordMarshaller(Person.class);
+        xmlRecordMarshaller = new XmlRecordMarshaller<>(Person.class);
     }
 
     @Test

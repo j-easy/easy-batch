@@ -24,8 +24,8 @@
 
 package org.easybatch.extensions.xstream;
 
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.easybatch.xml.XmlRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,18 +40,18 @@ import static org.mockito.Mockito.when;
 public class XstreamRecordMarshallerTest {
 
     @Mock
-    private GenericRecord record;
+    private Record<Person> record;
     @Mock
     private Header header;
 
-    private XstreamRecordMarshaller xstreamRecordMarshaller;
+    private XstreamRecordMarshaller<Person> xstreamRecordMarshaller;
 
     @Before
     public void setUp() {
         Person person = new Person(1, "foo", "bar", false);
         when(record.getHeader()).thenReturn(header);
         when(record.getPayload()).thenReturn(person);
-        xstreamRecordMarshaller = new XstreamRecordMarshaller("person", Person.class);
+        xstreamRecordMarshaller = new XstreamRecordMarshaller<>("person", Person.class);
     }
 
     @Test

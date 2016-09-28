@@ -26,6 +26,7 @@ package org.easybatch.flatfile;
 
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +45,9 @@ public class FixedLengthRecordMarshallerTest {
     @Mock
     private Bean payload;
     @Mock
-    private GenericRecord<Bean> record;
+    private Record<Bean> record;
 
-    private FixedLengthRecordMarshaller marshaller;
+    private FixedLengthRecordMarshaller<Bean> marshaller;
 
     @Before
     public void setUp() throws Exception {
@@ -55,7 +56,7 @@ public class FixedLengthRecordMarshallerTest {
         when(payload.getField1()).thenReturn("aaa");
         when(payload.getField2()).thenReturn("bb");
         when(payload.getField3()).thenReturn("cccc");
-        marshaller = new FixedLengthRecordMarshaller(Bean.class, "field1", "field2", "field3");
+        marshaller = new FixedLengthRecordMarshaller<>(Bean.class, "field1", "field2", "field3");
     }
 
     @Test

@@ -26,6 +26,7 @@ package org.easybatch.extensions.apache.common.csv;
 
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,11 +41,11 @@ public class ApacheCommonCsvRecordMarshallerTest {
     @Mock
     private Header header;
 
-    private ApacheCommonCsvRecordMarshaller marshaller;
+    private ApacheCommonCsvRecordMarshaller<Foo> marshaller;
 
     @Before
     public void setUp() throws Exception {
-        marshaller = new ApacheCommonCsvRecordMarshaller(Foo.class, new String[]{"firstName", "lastName", "married"}, ';', '\'');
+        marshaller = new ApacheCommonCsvRecordMarshaller<>(Foo.class, new String[]{"firstName", "lastName", "married"}, ';', '\'');
     }
 
     @Test
@@ -52,7 +53,7 @@ public class ApacheCommonCsvRecordMarshallerTest {
         Foo foo = new Foo();
         foo.setFirstName("foo");
         foo.setLastName("bar");
-        GenericRecord<Foo> record = new GenericRecord<>(header, foo);
+        Record<Foo> record = new GenericRecord<>(header, foo);
 
         String expected = "'foo';'bar';'false'";
         String actual = marshaller.processRecord(record).getPayload();

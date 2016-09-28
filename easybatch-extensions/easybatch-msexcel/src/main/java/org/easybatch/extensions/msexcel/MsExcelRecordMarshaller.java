@@ -29,7 +29,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.easybatch.core.field.BeanRecordFieldExtractor;
 import org.easybatch.core.field.RecordFieldExtractor;
 import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 
 import java.beans.IntrospectionException;
 import java.util.Calendar;
@@ -40,9 +40,9 @@ import java.util.Date;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MsExcelRecordMarshaller implements RecordMarshaller<GenericRecord, MsExcelRecord> {
+public class MsExcelRecordMarshaller<P> implements RecordMarshaller<Record<P>, MsExcelRecord> {
 
-    private RecordFieldExtractor fieldExtractor;
+    private RecordFieldExtractor<P> fieldExtractor;
 
     /**
      * Create a new {@link MsExcelRecordMarshaller}.
@@ -51,22 +51,22 @@ public class MsExcelRecordMarshaller implements RecordMarshaller<GenericRecord, 
      * @param fields the fields to marshal
      * @throws IntrospectionException when an error occurs during bean introspection
      */
-    public MsExcelRecordMarshaller(Class<?> type, String... fields) throws IntrospectionException {
-        this.fieldExtractor = new BeanRecordFieldExtractor(type, fields);
+    public MsExcelRecordMarshaller(Class<P> type, String... fields) throws IntrospectionException {
+        this.fieldExtractor = new BeanRecordFieldExtractor<>(type, fields);
     }
 
     /**
      * {@inheritDoc}
      */
-    public MsExcelRecord processRecord(GenericRecord genericRecord) throws Exception {
+    public MsExcelRecord processRecord(Record<P> record) throws Exception {
         Row row = new MsExcelRow();
-        Iterable<Object> values = fieldExtractor.extractFields(genericRecord.getPayload());
+        Iterable<Object> values = fieldExtractor.extractFields(record.getPayload());
         int i = 0;
         for (Object value : values) {
             Cell cell = row.createCell(i++);
             setValue(cell, value);
         }
-        return new MsExcelRecord(genericRecord.getHeader(), row);
+        return new MsExcelRecord(record.getHeader(), row);
     }
 
     private void setValue(Cell cell, Object value) {

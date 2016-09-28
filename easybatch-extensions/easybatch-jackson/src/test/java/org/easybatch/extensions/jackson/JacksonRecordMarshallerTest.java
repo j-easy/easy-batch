@@ -26,6 +26,7 @@ package org.easybatch.extensions.jackson;
 
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.easybatch.json.JsonRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,17 +42,17 @@ public class JacksonRecordMarshallerTest {
     @Mock
     private Header header;
 
-    private JacksonRecordMarshaller marshaller;
+    private JacksonRecordMarshaller<Tweet> marshaller;
 
     @Before
     public void setUp() {
-        marshaller = new JacksonRecordMarshaller();
+        marshaller = new JacksonRecordMarshaller<>();
     }
 
     @Test
     public void marshal() throws Exception {
         Tweet tweet = new Tweet(1, "foo", "hi");
-        GenericRecord<Tweet> record = new GenericRecord<>(header, tweet);
+        Record<Tweet> record = new GenericRecord<>(header, tweet);
 
         String expected = "{\"id\":1,\"user\":\"foo\",\"message\":\"hi\"}";
         JsonRecord actual = marshaller.processRecord(record);

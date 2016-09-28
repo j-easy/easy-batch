@@ -24,8 +24,8 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +44,9 @@ public class DelimitedRecordMarshallerTest {
     @Mock
     private Person payload;
     @Mock
-    private GenericRecord<Person> record;
+    private Record<Person> record;
 
-    private DelimitedRecordMarshaller marshaller;
+    private DelimitedRecordMarshaller<Person> marshaller;
 
     @Before
     public void setUp() throws Exception {
@@ -54,7 +54,7 @@ public class DelimitedRecordMarshallerTest {
         when(record.getPayload()).thenReturn(payload);
         when(payload.getFirstName()).thenReturn("foo");
         when(payload.getLastName()).thenReturn("bar");
-        marshaller = new DelimitedRecordMarshaller(Person.class, "firstName", "lastName", "married");
+        marshaller = new DelimitedRecordMarshaller<>(Person.class, "firstName", "lastName", "married");
     }
 
     @Test

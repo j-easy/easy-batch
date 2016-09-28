@@ -26,7 +26,7 @@ package org.easybatch.extensions.xstream;
 
 import com.thoughtworks.xstream.XStream;
 import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.xml.XmlRecord;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
@@ -36,7 +36,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class XstreamRecordMarshaller implements RecordMarshaller<GenericRecord, XmlRecord> {
+public class XstreamRecordMarshaller<P> implements RecordMarshaller<Record<P>, XmlRecord> {
 
     private XStream xStream;
 
@@ -71,7 +71,7 @@ public class XstreamRecordMarshaller implements RecordMarshaller<GenericRecord, 
     }
 
     @Override
-    public XmlRecord processRecord(final GenericRecord record) {
+    public XmlRecord processRecord(final Record<P> record) {
         return new XmlRecord(record.getHeader(), xStream.toXML(record.getPayload()));
     }
 }

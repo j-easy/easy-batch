@@ -25,7 +25,7 @@
 package org.easybatch.xml;
 
 import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -40,7 +40,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class XmlRecordMarshaller implements RecordMarshaller<GenericRecord, XmlRecord> {
+public class XmlRecordMarshaller<P> implements RecordMarshaller<Record<P>, XmlRecord> {
 
     private Marshaller marshaller;
 
@@ -50,7 +50,7 @@ public class XmlRecordMarshaller implements RecordMarshaller<GenericRecord, XmlR
      * @param type the type of object to marshal
      * @throws JAXBException if an exception occurs during JAXB context setup
      */
-    public XmlRecordMarshaller(final Class type) throws JAXBException {
+    public XmlRecordMarshaller(final Class<P> type) throws JAXBException {
         checkNotNull(type, "target type");
         JAXBContext jaxbContext = JAXBContext.newInstance(type);
         marshaller = jaxbContext.createMarshaller();
@@ -74,7 +74,7 @@ public class XmlRecordMarshaller implements RecordMarshaller<GenericRecord, XmlR
     }
 
     @Override
-    public XmlRecord processRecord(final GenericRecord record) throws Exception {
+    public XmlRecord processRecord(final Record<P> record) throws Exception {
         StringWriter stringWriter = new StringWriter();
         marshaller.marshal(record.getPayload(), stringWriter);
         return new XmlRecord(record.getHeader(), stringWriter.toString());

@@ -26,6 +26,7 @@ package org.easybatch.extensions.gson;
 
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,17 +41,17 @@ public class GsonRecordMarshallerTest {
     @Mock
     private Header header;
 
-    private GsonRecordMarshaller marshaller;
+    private GsonRecordMarshaller<Tweet> marshaller;
 
     @Before
     public void setUp() {
-        marshaller = new GsonRecordMarshaller();
+        marshaller = new GsonRecordMarshaller<>();
     }
 
     @Test
     public void marshal() throws Exception {
         Tweet tweet = new Tweet(1, "foo", "hi");
-        GenericRecord<Tweet> record = new GenericRecord<>(header, tweet);
+        Record<Tweet> record = new GenericRecord<>(header, tweet);
 
         String expected = "{\"id\":1,\"user\":\"foo\",\"message\":\"hi\"}";
         String actual = marshaller.processRecord(record).getPayload();
