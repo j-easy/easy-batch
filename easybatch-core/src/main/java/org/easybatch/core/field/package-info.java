@@ -23,6 +23,6 @@
  */
 
 /**
- * This package contains built-in implementations of the {@link org.easybatch.core.field.RecordFieldExtractor} interface.
+ * This package contains built-in implementations of the {@link org.easybatch.core.field.FieldExtractor} interface.
  */
 package org.easybatch.core.field;

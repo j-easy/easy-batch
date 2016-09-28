@@ -33,17 +33,17 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- * Use JavaBean convention with {@link java.beans.Introspector} to extract properties values from records of a specified class.
+ * Use JavaBean convention with {@link java.beans.Introspector} to extract properties values from the payload of a record.
  *
  * @author Rémi Alvergnat (toilal.dev@gmail.com)
  */
-public class BeanRecordFieldExtractor<P> implements RecordFieldExtractor<P> {
+public class BeanFieldExtractor<P> implements FieldExtractor<P> {
 
     private final String[] fields;
 
     private final Map<String, Method> getters;
 
-    public BeanRecordFieldExtractor(final Class<P> type, final String... fields) throws IntrospectionException {
+    public BeanFieldExtractor(final Class<P> type, final String... fields) throws IntrospectionException {
         this.getters = Utils.getGetters(type);
         if (fields.length == 0) {
             this.fields = this.getters.keySet().toArray(new String[this.getters.size()]);
@@ -53,10 +53,10 @@ public class BeanRecordFieldExtractor<P> implements RecordFieldExtractor<P> {
     }
 
     @Override
-    public Iterable<Object> extractFields(final P record) throws Exception {
+    public Iterable<Object> extractFields(final P payload) throws Exception {
         Object[] values = new Object[fields.length];
         for (int i = 0; i < fields.length; i++) {
-                values[i] = getValue(fields[i], record);
+                values[i] = getValue(fields[i], payload);
         }
         return Arrays.asList(values);
     }

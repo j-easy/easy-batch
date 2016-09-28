@@ -26,8 +26,8 @@ package org.easybatch.extensions.msexcel;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.easybatch.core.field.BeanRecordFieldExtractor;
-import org.easybatch.core.field.RecordFieldExtractor;
+import org.easybatch.core.field.BeanFieldExtractor;
+import org.easybatch.core.field.FieldExtractor;
 import org.easybatch.core.marshaller.RecordMarshaller;
 import org.easybatch.core.record.Record;
 
@@ -42,7 +42,7 @@ import java.util.Date;
  */
 public class MsExcelRecordMarshaller<P> implements RecordMarshaller<Record<P>, MsExcelRecord> {
 
-    private RecordFieldExtractor<P> fieldExtractor;
+    private FieldExtractor<P> fieldExtractor;
 
     /**
      * Create a new {@link MsExcelRecordMarshaller}.
@@ -52,7 +52,7 @@ public class MsExcelRecordMarshaller<P> implements RecordMarshaller<Record<P>, M
      * @throws IntrospectionException when an error occurs during bean introspection
      */
     public MsExcelRecordMarshaller(Class<P> type, String... fields) throws IntrospectionException {
-        this.fieldExtractor = new BeanRecordFieldExtractor<>(type, fields);
+        this.fieldExtractor = new BeanFieldExtractor<>(type, fields);
     }
 
     /**

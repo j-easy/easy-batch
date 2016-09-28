@@ -24,7 +24,7 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.core.field.RecordFieldExtractor;
+import org.easybatch.core.field.FieldExtractor;
 import org.easybatch.core.marshaller.RecordMarshaller;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
@@ -57,7 +57,7 @@ public class FixedLengthRecordMarshaller<P> implements RecordMarshaller<Record<P
      * @param fieldExtractor the field extractor
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public FixedLengthRecordMarshaller(RecordFieldExtractor<P> fieldExtractor) throws IntrospectionException {
+    public FixedLengthRecordMarshaller(FieldExtractor<P> fieldExtractor) throws IntrospectionException {
         delimitedRecordMarshaller = new DelimitedRecordMarshaller<>(fieldExtractor, "", "");
     }
 

@@ -33,11 +33,11 @@ import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BeanRecordFieldExtractorTest {
+public class BeanFieldExtractorTest {
 
     private Person person;
 
-    private BeanRecordFieldExtractor<Person> fieldExtractor;
+    private BeanFieldExtractor<Person> fieldExtractor;
 
     @Before
     public void setUp() throws Exception {
@@ -52,7 +52,7 @@ public class BeanRecordFieldExtractorTest {
 
     @Test
     public void whenFieldsIsEmpty_ThenItShouldExtractAllPropertiesValues() throws Exception {
-        fieldExtractor = new BeanRecordFieldExtractor<>(Person.class);
+        fieldExtractor = new BeanFieldExtractor<>(Person.class);
         Iterable<Object> values = fieldExtractor.extractFields(person);
         assertThat(values).hasSize(6);
         assertThat(values).containsOnlyOnce(
@@ -62,7 +62,7 @@ public class BeanRecordFieldExtractorTest {
 
     @Test
     public void whenFieldsIsNotEmpty_ThenItShouldExtractAllPropertiesValuesInRightOrder() throws Exception {
-        fieldExtractor = new BeanRecordFieldExtractor<>(Person.class, "lastName", "age", "married");
+        fieldExtractor = new BeanFieldExtractor<>(Person.class, "lastName", "age", "married");
         Iterable<Object> values = fieldExtractor.extractFields(person);
         assertThat(values).containsExactly(person.getLastName(), person.getAge(), person.isMarried());
     }

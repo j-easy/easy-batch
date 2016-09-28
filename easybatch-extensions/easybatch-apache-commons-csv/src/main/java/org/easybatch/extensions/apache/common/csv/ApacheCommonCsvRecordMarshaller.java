@@ -27,8 +27,8 @@ package org.easybatch.extensions.apache.common.csv;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;
-import org.easybatch.core.field.BeanRecordFieldExtractor;
-import org.easybatch.core.field.RecordFieldExtractor;
+import org.easybatch.core.field.BeanFieldExtractor;
+import org.easybatch.core.field.FieldExtractor;
 import org.easybatch.core.marshaller.RecordMarshaller;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
@@ -47,7 +47,7 @@ public class ApacheCommonCsvRecordMarshaller<P> implements RecordMarshaller<Reco
 
     public static final char DEFAULT_QUALIFIER = '\"';
 
-    private final RecordFieldExtractor<P> fieldExtractor;
+    private final FieldExtractor<P> fieldExtractor;
 
     private CSVFormat csvFormat;
 
@@ -84,7 +84,7 @@ public class ApacheCommonCsvRecordMarshaller<P> implements RecordMarshaller<Reco
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
     public ApacheCommonCsvRecordMarshaller(final Class<P> type, final String[] fields, final char delimiter, final char qualifier) throws IntrospectionException {
-        this(new BeanRecordFieldExtractor<>(type, fields), delimiter, qualifier);
+        this(new BeanFieldExtractor<>(type, fields), delimiter, qualifier);
     }
 
     /**
@@ -95,7 +95,7 @@ public class ApacheCommonCsvRecordMarshaller<P> implements RecordMarshaller<Reco
      * @param qualifier      the field qualifier
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(RecordFieldExtractor<P> fieldExtractor, final char delimiter, final char qualifier) throws IntrospectionException {
+    public ApacheCommonCsvRecordMarshaller(FieldExtractor<P> fieldExtractor, final char delimiter, final char qualifier) throws IntrospectionException {
         this.fieldExtractor = fieldExtractor;
         this.csvFormat = CSVFormat.newFormat(delimiter)
                 .withQuote(qualifier)

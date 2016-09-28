@@ -28,17 +28,17 @@ import org.easybatch.core.marshaller.RecordMarshaller;
 
 /**
  * Interface for field extractor.
- * This will be used by {@link RecordMarshaller} to convert a record to an iterable of its fields.
+ * This will be used by {@link RecordMarshaller} to extract fields from the payload of a record.
  *
  * @author Rémi Alvergnat (toilal.dev@gmail.com)
  */
-public interface RecordFieldExtractor<T> {
+public interface FieldExtractor<T> {
 
     /**
-     * Extract fields from the record.
+     * Extract fields from the payload of a record.
      *
-     * @param record the record
-     * @return a iterable containing record's fields
+     * @param payload of the record
+     * @return a iterable containing fields of the record's payload
      */
-    Iterable<Object> extractFields(T record) throws Exception;
+    Iterable<Object> extractFields(T payload) throws Exception;
 }
