@@ -27,7 +27,7 @@ Job job = new JobBuilder()
          .reader(new FlatFileRecordReader("tweets.csv"))
          .filter(new HeaderRecordFilter())
          .mapper(new DelimitedRecordMapper(Tweet.class, "id", "user", "message"))
-         .processor(new XmlRecordMarshaller(Tweet.class))
+         .marshaller(new XmlRecordMarshaller(Tweet.class))
          .writer(new FileRecordWriter("tweets.xml"))
          .batchSize(10)
          .build();
