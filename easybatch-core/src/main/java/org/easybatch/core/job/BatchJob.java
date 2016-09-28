@@ -8,9 +8,7 @@ import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.writer.RecordWriter;
 
-import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import static org.easybatch.core.job.JobStatus.*;
@@ -43,22 +41,6 @@ class BatchJob implements Job {
     private JobReport report;
     private JobMonitor monitor;
 
-    static {
-        try {
-            if (System.getProperty("java.util.logging.config.file") == null &&
-                    System.getProperty("java.util.logging.config.class") == null) {
-                LogManager.getLogManager().readConfiguration(BatchJob.class.getResourceAsStream("/logging.properties"));
-            }
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Unable to load logging configuration file", e);
-        }
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
     BatchJob(JobParameters parameters) {
         this.parameters = parameters;
         this.name = DEFAULT_JOB_NAME;
@@ -76,6 +58,11 @@ class BatchJob implements Job {
         recordWriterListener = new CompositeRecordWriterListener();
         batchListener = new CompositeBatchListener();
         jobListener = new CompositeJobListener();
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override
