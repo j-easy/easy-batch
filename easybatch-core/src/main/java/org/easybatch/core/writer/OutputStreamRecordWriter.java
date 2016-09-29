@@ -35,9 +35,6 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
- * <p/>
- * Users of this class are responsible for opening/closing the output stream, maybe using
- * a {@link JobListener}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -49,9 +46,6 @@ public class OutputStreamRecordWriter implements RecordWriter {
 
     /**
      * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
-     * <p/>
-     * The user of this class is responsible for opening/closing the output stream, maybe using
-     * a {@link JobListener}.
      *
      * @param outputStreamWriter the output stream to write records to.
      */

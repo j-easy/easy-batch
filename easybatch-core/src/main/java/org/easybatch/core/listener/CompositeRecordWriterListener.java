@@ -51,6 +51,11 @@ public class CompositeRecordWriterListener implements RecordWriterListener {
         }
     }
 
+    /**
+     * Add a delegate listener.
+     *
+     * @param recordWriterListener to add
+     */
     public void addRecordWriterListener(RecordWriterListener recordWriterListener) {
         listeners.add(recordWriterListener);
     }

@@ -58,6 +58,11 @@ public class CompositeBatchListener implements BatchListener {
         }
     }
 
+    /**
+     * Add a delegate listener.
+     *
+     * @param batchListener to add
+     */
     public void addBatchListener(final BatchListener batchListener) {
         listeners.add(batchListener);
     }

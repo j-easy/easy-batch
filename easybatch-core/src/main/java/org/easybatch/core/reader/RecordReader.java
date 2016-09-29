@@ -28,6 +28,7 @@ import org.easybatch.core.record.Record;
 
 /**
  * Interface for record reader.
+ *
  * This will be used to read records <strong>sequentially</strong> from a data source.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
@@ -37,22 +38,22 @@ public interface RecordReader {
     /**
      * Open the reader.
      *
-     * @throws Exception thrown if an exception occurs during reader opening
+     * @throws Exception if an error occurs during reader opening
      */
     void open() throws Exception;
 
     /**
      * Read next record from the data source.
      *
-     * @return the next record from the data source.
-     * @throws Exception thrown if an exception occurs during reading next record
+     * @return the next record from the data source or null if the end of the data source is reached
+     * @throws Exception if an error occurs during reading next record
      */
     Record readRecord() throws Exception;
 
     /**
      * Close the reader.
      *
-     * @throws Exception thrown if an exception occurs during reader closing
+     * @throws Exception if an error occurs during reader closing
      */
     void close() throws Exception;
 

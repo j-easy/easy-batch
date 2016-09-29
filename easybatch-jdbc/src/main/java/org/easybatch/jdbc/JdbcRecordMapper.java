@@ -47,7 +47,7 @@ public class JdbcRecordMapper<P> extends AbstractRecordMapper<P> implements Reco
     private String[] fields;
 
     /**
-     * Constructs a default JdbcRecordMapper instance. Column names will be fetched from the jdbc result set meta data
+     * Create a new {@link }JdbcRecordMapper}. Column names will be fetched from the jdbc result set meta data
      * and set to fields with the same name of the target object.
      *
      * @param recordClass the target domain object class
@@ -57,7 +57,7 @@ public class JdbcRecordMapper<P> extends AbstractRecordMapper<P> implements Reco
     }
 
     /**
-     * Constructs a JdbcRecordMapper. The supplied field names will be used to map columns to the target object fields.
+     * Create a new {@link }JdbcRecordMapper}. The supplied field names will be used to map columns to the target object fields.
      *
      * @param recordClass the target domain object class
      * @param fields      the list of fields names
@@ -69,7 +69,6 @@ public class JdbcRecordMapper<P> extends AbstractRecordMapper<P> implements Reco
 
     @Override
     public Record<P> processRecord(final JdbcRecord record) throws Exception {
-
         ResultSet resultSet = record.getPayload();
         initFieldNames(resultSet);
         Map<String, String> values = new HashMap<>();
@@ -77,15 +76,8 @@ public class JdbcRecordMapper<P> extends AbstractRecordMapper<P> implements Reco
             values.put(fields[i], resultSet.getString(i + 1));
         }
         return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(values));
-
     }
 
-    /**
-     * When no field names are supplied, fetch column names from the ResultSet meta data.
-     *
-     * @param resultSet the result set to fetch column names.
-     * @throws SQLException thrown if not able to get ResultSet meta data
-     */
     private void initFieldNames(final ResultSet resultSet) throws SQLException {
         int columnCount = resultSet.getMetaData().getColumnCount();
         if (fields == null) {

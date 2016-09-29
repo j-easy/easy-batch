@@ -38,6 +38,11 @@ public abstract class AbstractRecordMapper<T> {
      */
     protected ObjectMapper<T> objectMapper;
 
+    /**
+     * Create an {@link AbstractRecordMapper}.
+     *
+     * @param recordClass the target type
+     */
     public AbstractRecordMapper(Class<T> recordClass) {
         this.objectMapper = new ObjectMapper<>(recordClass);
     }

@@ -37,7 +37,7 @@ public enum JobStatus {
     STARTING,
 
     /**
-     * The job is started.
+     * The job has started.
      */
     STARTED,
 

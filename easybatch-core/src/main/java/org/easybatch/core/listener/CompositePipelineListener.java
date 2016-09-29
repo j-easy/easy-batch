@@ -53,6 +53,11 @@ public class CompositePipelineListener implements PipelineListener {
         }
     }
 
+    /**
+     * Add a delegate listener.
+     *
+     * @param pipelineListener to add
+     */
     public void addPipelineListener(PipelineListener pipelineListener) {
         listeners.add(pipelineListener);
     }

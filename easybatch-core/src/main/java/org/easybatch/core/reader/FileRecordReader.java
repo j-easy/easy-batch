@@ -38,7 +38,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
 
 /**
  * A convenient {@link RecordReader} that recursively reads files in a directory.
- * <p/>
+ *
  * This reader produces {@link FileRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)

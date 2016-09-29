@@ -41,17 +41,33 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
 
     private Map<Predicate, BlockingQueue<Record>> queueMap;
 
+    /**
+     * Create a {@link ContentBasedBlockingQueueRecordWriterBuilder}.
+     */
     public ContentBasedBlockingQueueRecordWriterBuilder() {
         queueMap = new HashMap<>();
     }
 
+    /**
+     * Register a predicate.
+     *
+     * @param predicate to register
+     * @return the builder instance
+     */
     public ContentBasedBlockingQueueRecordWriterBuilder when(Predicate predicate) {
         this.predicate = predicate;
         return this;
     }
 
+    /**
+     * Register a queue.
+     *
+     * @param queue to register
+     * @return the builder instance
+     */
     public ContentBasedBlockingQueueRecordWriterBuilder writeTo(BlockingQueue<Record> queue) {
         if (predicate == null) {
+            // TODO use step builder pattern to assist user in calling methods in the right order
             throw new IllegalStateException("You should specify a predicate before mapping a queue." +
                     " Please ensure that you call when() -> writeTo() -> otherwise()  methods in that order");
         }
@@ -60,12 +76,23 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
         return this;
     }
 
+    /**
+     * Register a default queue.
+     *
+     * @param queue default queue
+     * @return the builder instance
+     */
     public ContentBasedBlockingQueueRecordWriterBuilder otherwise(BlockingQueue<Record> queue) {
         queueMap.put(new DefaultPredicate(), queue);
         predicate = null;
         return this;
     }
 
+    /**
+     * Create a {@link ContentBasedBlockingQueueRecordWriter}.
+     *
+     * @return a new {@link ContentBasedBlockingQueueRecordWriter}
+     */
     public ContentBasedBlockingQueueRecordWriter build() {
         if (queueMap.isEmpty()) {
             throw new IllegalStateException("You can not build a ContentBasedQueueRecordWriter with an empty <Predicate, Queue> mapping.");

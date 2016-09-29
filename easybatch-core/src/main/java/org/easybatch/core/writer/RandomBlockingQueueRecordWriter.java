@@ -32,7 +32,7 @@ import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * Write records randomly to a list of {@link BlockingQueue}.
+ * Write records randomly to a list of {@link BlockingQueue}s.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -72,7 +72,7 @@ public class RandomBlockingQueueRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        //dispatch record randomly to one of the queues
+        //write record randomly to one of the queues
         for (Record record : batch) {
             BlockingQueue<Record> queue = queues.get(random.nextInt(queuesNumber));
             queue.put(record);

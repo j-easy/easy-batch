@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * Write records to a list of {@link BlockingQueue} in round-robin fashion.
+ * Write records to a list of {@link BlockingQueue}s in round-robin fashion.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -69,7 +69,7 @@ public class RoundRobinBlockingQueueRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        //dispatch records to queues in round-robin fashion
+        //write records to queues in round-robin fashion
         for (Record record : batch) {
             BlockingQueue<Record> queue = queues.get(nextQueue++ % queuesNumber);
             queue.put(record);

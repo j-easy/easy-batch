@@ -27,7 +27,7 @@ package org.easybatch.core.writer;
 import org.easybatch.core.record.Record;
 
 /**
- * Predicates are used to check if a record matches a criteria so that it is written to the correct queue.
+ * Predicates are used to check if a record matches a given criteria.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  * @see ContentBasedBlockingQueueRecordWriter

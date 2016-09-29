@@ -40,6 +40,8 @@ import java.util.Iterator;
  * Reader that read data from a MS Excel sheet.
  * <strong>Only MS Excel XLSX format is supported</strong>
  *
+ * This reader produces {@link MsExcelRecord} instances.
+ *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class MsExcelRecordReader implements RecordReader {

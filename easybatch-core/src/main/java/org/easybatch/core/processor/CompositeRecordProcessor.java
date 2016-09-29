@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Composite record processor delegating processing to a pipeline of processors.
+ * Record processor that delegates processing to a pipeline of processors.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -14,6 +14,9 @@ public class CompositeRecordProcessor implements RecordProcessor {
 
     private List<RecordProcessor> processors;
 
+    /**
+     * Create a new {@link CompositeRecordProcessor}.
+     */
     public CompositeRecordProcessor() {
         this.processors = new ArrayList<>();
     }
@@ -31,6 +34,11 @@ public class CompositeRecordProcessor implements RecordProcessor {
         return processedRecord;
     }
 
+    /**
+     * Add a delegate record processor.
+     *
+     * @param recordProcessor to add
+     */
     public void addRecordProcessor(RecordProcessor recordProcessor) {
         processors.add(recordProcessor);
     }

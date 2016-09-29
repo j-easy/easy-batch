@@ -33,7 +33,7 @@ import javax.jms.QueueSender;
 import java.util.List;
 
 /**
- * Dispatch records to a list of Jms queues in round-robin fashion.
+ * Write records to a list of Jms queues in round-robin fashion.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

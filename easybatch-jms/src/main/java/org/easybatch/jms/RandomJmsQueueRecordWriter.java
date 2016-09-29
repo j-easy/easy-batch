@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Dispatch records randomly to a list of Jms queues.
+ * Write records randomly to a list of Jms queues.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

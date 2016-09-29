@@ -37,6 +37,8 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
 /**
  * Main class to execute {@link Job}s.
  *
+ * <strong>Job executors must be explicitly shutdown using {@link JobExecutor#shutdown()}</strong>
+ *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class JobExecutor {
@@ -62,7 +64,7 @@ public class JobExecutor {
     /**
      * Execute a job synchronously.
      *
-     * @param job the job to execute
+     * @param job to execute
      * @return the job report
      */
     public JobReport execute(Job job) {
@@ -77,7 +79,7 @@ public class JobExecutor {
      * Submit a job for asynchronous execution.
      *
      * @param job to execute
-     * @return the job report
+     * @return a future of the job report
      */
     public Future<JobReport> submit(Job job) {
         return executorService.submit(job);
@@ -87,7 +89,7 @@ public class JobExecutor {
      * Submit jobs for execution.
      *
      * @param jobs to execute
-     * @return the list of job reports
+     * @return the list of job reports in the same order of submission
      */
     public List<Future<JobReport>> submitAll(Job... jobs) {
         List<Job> jobList = new ArrayList<>();

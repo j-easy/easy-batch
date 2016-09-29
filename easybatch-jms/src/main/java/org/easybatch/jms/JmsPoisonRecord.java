@@ -27,7 +27,7 @@ package org.easybatch.jms;
 import org.easybatch.core.record.Header;
 
 /**
- * End-Od-Stream Jms record.
+ * End-Of-Stream Jms record.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

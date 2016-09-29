@@ -32,7 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Filter {@link JmsPoisonRecord}.
+ * Filter for {@link JmsPoisonRecord}s.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

@@ -51,6 +51,11 @@ public class CompositeRecordReaderListener implements RecordReaderListener {
         }
     }
 
+    /**
+     * Add a delegate listener.
+     *
+     * @param recordReaderListener to add
+     */
     public void addRecordReaderListener(RecordReaderListener recordReaderListener) {
         listeners.add(recordReaderListener);
     }

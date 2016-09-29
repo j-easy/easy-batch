@@ -41,8 +41,8 @@ import java.util.logging.Logger;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Batch job instance builder.
- * This is the main entry point to configure a batch job.
+ * Batch job builder.
+ * This is the main entry point to configure batch jobs.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

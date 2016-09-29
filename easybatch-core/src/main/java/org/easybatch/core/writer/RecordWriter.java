@@ -36,6 +36,7 @@ public interface RecordWriter {
     /**
      * Open the writer.
      *
+     * @throws Exception if an error occurs during opening the writer
      */
     void open() throws Exception;
 
@@ -49,6 +50,8 @@ public interface RecordWriter {
 
     /**
      * Close the writer
+     *
+     * @throws Exception if an error occurs during closing the writer
      */
     void close() throws Exception;
 }

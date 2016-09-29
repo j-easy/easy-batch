@@ -42,17 +42,33 @@ public class ContentBasedJmsQueueRecordWriterBuilder {
 
     private Map<Predicate, QueueSender> queueMap;
 
+    /**
+     * Create a new {@link ContentBasedJmsQueueRecordWriterBuilder}.
+     */
     public ContentBasedJmsQueueRecordWriterBuilder() {
         queueMap = new HashMap<>();
     }
 
+    /**
+     * Register a predicate.
+     *
+     * @param predicate to register
+     * @return the builder instance
+     */
     public ContentBasedJmsQueueRecordWriterBuilder when(Predicate predicate) {
         this.predicate = predicate;
         return this;
     }
 
+    /**
+     * Register a queue.
+     *
+     * @param queue to register
+     * @return the builder instance
+     */
     public ContentBasedJmsQueueRecordWriterBuilder writeTo(QueueSender queue) {
         if (predicate == null) {
+            // TODO use step builder pattern to assist user in calling methods in the right order
             throw new IllegalStateException("You should specify a predicate before mapping a queue." +
                     " Please ensure that you call when() -> writeTo() -> otherwise()  methods in that order");
         }
@@ -61,15 +77,26 @@ public class ContentBasedJmsQueueRecordWriterBuilder {
         return this;
     }
 
+    /**
+     * Register a default queue.
+     *
+     * @param queue default queue to register
+     * @return the builder instance
+     */
     public ContentBasedJmsQueueRecordWriterBuilder otherwise(QueueSender queue) {
         queueMap.put(new DefaultPredicate(), queue);
         predicate = null;
         return this;
     }
 
+    /**
+     * Create a new {@link ContentBasedJmsQueueRecordWriter}.
+     *
+     * @return a new {@link ContentBasedJmsQueueRecordWriter}
+     */
     public ContentBasedJmsQueueRecordWriter build() {
         if (queueMap.isEmpty()) {
-            throw new IllegalStateException("You can not build a ContentBasedJmsRecordDispatcher with an empty <Predicate, Queue> mapping.");
+            throw new IllegalStateException("You can not build a ContentBasedJmsQueueRecordWriter with an empty <Predicate, Queue> mapping.");
         }
         return new ContentBasedJmsQueueRecordWriter(queueMap);
     }

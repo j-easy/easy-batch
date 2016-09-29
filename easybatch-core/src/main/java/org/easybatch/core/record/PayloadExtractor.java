@@ -41,7 +41,7 @@ public abstract class PayloadExtractor {
     /**
      * Extract the payload form each record.
      *
-     * @param records the list fo records
+     * @param records the list of records
      * @param <P>     the type of payload
      * @return the list of payloads
      */

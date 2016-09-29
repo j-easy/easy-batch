@@ -25,11 +25,10 @@
 package org.easybatch.core.mapper;
 
 import org.easybatch.core.processor.RecordProcessor;
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Record;
 
 /**
- * A record mapper maps a {@link Record} to a {@link GenericRecord} having a domain object as payload.
+ * A record mapper maps the payload of a {@link Record} to domain object.
  *
  * @param <I> The input record type.
  * @param <O> The output record type.
@@ -38,10 +37,10 @@ import org.easybatch.core.record.Record;
 public interface RecordMapper<I extends Record, O extends Record> extends RecordProcessor<I, O> {
 
     /**
-     * Map the record to a {@link GenericRecord} having a domain object as payload.
+     * Map the payload of a {@link Record} to domain object.
      *
      * @param record the record to map.
-     * @return a {@link GenericRecord} having a domain object as payload
+     * @return a {@link Record} having a domain object as payload
      * @throws Exception if an error occurs during record mapping
      */
     @Override

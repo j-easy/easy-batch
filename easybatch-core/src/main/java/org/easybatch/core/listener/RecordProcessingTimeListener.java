@@ -30,7 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Pipeline listener that calculates each record processing time.
+ * Pipeline listener that calculates the processing time of a record.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

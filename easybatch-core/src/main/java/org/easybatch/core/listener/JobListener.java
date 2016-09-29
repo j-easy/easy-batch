@@ -35,14 +35,14 @@ import org.easybatch.core.job.JobReport;
 public interface JobListener {
 
     /**
-     * Called after initializing the record reader and before starting the job.
+     * Called before starting the job.
      *
      * @param jobParameters the job parameters
      */
     void beforeJobStart(final JobParameters jobParameters);
 
     /**
-     * Called after closing the record reader.
+     * Called after job end.
      *
      * @param jobReport The job execution report
      */

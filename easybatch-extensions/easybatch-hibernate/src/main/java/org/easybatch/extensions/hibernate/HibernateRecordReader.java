@@ -37,6 +37,8 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 /**
  * Read records using Hibernate API.
  *
+ * This reader produces {@link GenericRecord} instances with domain objects as payload.
+ *
  * @param <T> the type of objects this reader will read.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

@@ -48,9 +48,6 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  */
 public class JdbcRecordReader implements RecordReader {
 
-    /**
-     * The logger to use.
-     */
     private static final Logger LOGGER = Logger.getLogger(JdbcRecordReader.class.getSimpleName());
 
     private DataSource dataSource;

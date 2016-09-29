@@ -35,7 +35,7 @@ public interface JobReportFormatter<T> {
     /**
      * Format a job report.
      *
-     * @param jobReport the report to format
+     * @param jobReport to format
      * @return the formatted report
      */
     T formatReport(JobReport jobReport);

@@ -33,7 +33,7 @@ import java.util.concurrent.BlockingQueue;
 import static java.util.Collections.singletonList;
 
 /**
- * Write records to a (list of) {@link BlockingQueue}.
+ * Write records to a (list of) {@link BlockingQueue}(s).
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -41,10 +41,20 @@ public class BlockingQueueRecordWriter implements RecordWriter {
 
     private List<BlockingQueue<Record>> blockingQueues;
 
+    /**
+     * Create a new {@link BlockingQueueRecordWriter}.
+     *
+     * @param blockingQueue to write records to
+     */
     public BlockingQueueRecordWriter(final BlockingQueue<Record> blockingQueue) {
         this(singletonList(blockingQueue));
     }
 
+    /**
+     * Create a new {@link BlockingQueueRecordWriter}.
+     *
+     * @param blockingQueues to write records to
+     */
     public BlockingQueueRecordWriter(final List<BlockingQueue<Record>> blockingQueues) {
         this.blockingQueues = blockingQueues;
     }

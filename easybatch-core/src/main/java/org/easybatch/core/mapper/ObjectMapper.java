@@ -66,7 +66,7 @@ public class ObjectMapper<T> {
     private Map<Class<?>, TypeConverter<String, ?>> typeConverters;
 
     /**
-     * Construct an object mapper.
+     * Create a new object mapper.
      *
      * @param objectType the target object type
      */
@@ -81,7 +81,7 @@ public class ObjectMapper<T> {
      *
      * @param values fields values
      * @return A populated instance of the target type.
-     * @throws Exception thrown if values cannot be mapped to target object fields
+     * @throws Exception if values cannot be mapped to target object fields
      */
     public T mapObject(final Map<String, String> values) throws Exception {
 
@@ -215,6 +215,7 @@ public class ObjectMapper<T> {
     }
 
     private String getClassName(Type actualTypeArgument) {
+        // FIXME : find a clean way for this
         return actualTypeArgument.toString().substring(6);
     }
 

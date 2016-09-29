@@ -55,7 +55,7 @@ public class JdbcRecordWriter implements RecordWriter {
     private PreparedStatementProvider preparedStatementProvider;
 
     /**
-     * Create a new JDBC writer.
+     * Create a new {@link JdbcRecordWriter}.
      *
      * @param dataSource                the JDBC data source
      * @param query                     the query to insert data

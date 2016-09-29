@@ -44,7 +44,7 @@ public class StringRecordWriter implements RecordWriter {
     /**
      * Write records to a {@link StringWriter}.
      *
-     * @param stringWriter the String writer to write strings to
+     * @param stringWriter to write strings to
      */
     public StringRecordWriter(final StringWriter stringWriter) {
         checkNotNull(stringWriter, "string writer");

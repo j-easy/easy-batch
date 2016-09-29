@@ -45,6 +45,11 @@ public class CompositeJobListener implements JobListener {
         }
     }
 
+    /**
+     * Add a delegate listener.
+     *
+     * @param jobListener to add
+     */
     public void addJobListener(JobListener jobListener) {
         listeners.add(jobListener);
     }
