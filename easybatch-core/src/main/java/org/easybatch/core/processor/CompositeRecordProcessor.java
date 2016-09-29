@@ -18,7 +18,16 @@ public class CompositeRecordProcessor implements RecordProcessor {
      * Create a new {@link CompositeRecordProcessor}.
      */
     public CompositeRecordProcessor() {
-        this.processors = new ArrayList<>();
+        this(new ArrayList<RecordProcessor>());
+    }
+
+    /**
+     * Create a new {@link CompositeRecordProcessor}.
+     *
+     * @param processors delegates
+     */
+    public CompositeRecordProcessor(List<RecordProcessor> processors) {
+        this.processors = processors;
     }
 
     @Override
