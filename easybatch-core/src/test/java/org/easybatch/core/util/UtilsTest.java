@@ -4,12 +4,21 @@ import org.easybatch.core.beans.Person;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
+import java.util.Calendar;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobParameters.DEFAULT_ERROR_THRESHOLD;
 
 public class UtilsTest {
+
+    private static long TIME;
+
+    static {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2015, Calendar.JANUARY, 1, 1, 0, 0);
+        TIME = calendar.getTime().getTime();
+    }
 
     @Test
     public void testGetGetters() throws Exception {
@@ -22,7 +31,7 @@ public class UtilsTest {
 
     @Test
     public void testFormatTime() throws Exception {
-        assertThat(Utils.formatTime(1475149183447L)).isEqualTo("2016-09-29 01:39:43");
+        assertThat(Utils.formatTime(TIME)).isEqualTo("2015-01-01 01:00:00");
     }
 
     @Test
