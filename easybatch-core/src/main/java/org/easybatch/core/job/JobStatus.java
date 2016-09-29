@@ -42,7 +42,7 @@ public enum JobStatus {
     STARTED,
 
     /**
-     * The job is stopping
+     * The job is stopping (closing record reader/writer)
      */
     STOPPING,
 
