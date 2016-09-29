@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 /**
- * Reader that read data from a MS Excel sheet.
+ * Reader that reads data from a MS Excel sheet.
  * <strong>Only MS Excel XLSX format is supported</strong>
  *
  * This reader produces {@link MsExcelRecord} instances.
@@ -49,6 +49,8 @@ public class MsExcelRecordReader implements RecordReader {
     private File file;
     
     private XSSFSheet sheet;
+
+    private XSSFWorkbook workbook;
 
     private Iterator<Row> rowIterator;
 
@@ -73,7 +75,6 @@ public class MsExcelRecordReader implements RecordReader {
      */
     public MsExcelRecordReader(final File file, final int sheetIndex) throws IOException {
         this.file = file;
-        XSSFWorkbook workbook;
         try {
             workbook = new XSSFWorkbook(file);
             sheet = workbook.getSheetAt(sheetIndex);
@@ -105,6 +106,6 @@ public class MsExcelRecordReader implements RecordReader {
 
     @Override
     public void close() throws Exception {
-        // no op
+        workbook.close();
     }
 }
