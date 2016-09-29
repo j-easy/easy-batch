@@ -16,6 +16,8 @@ public class DefaultJobReportFormatterTest {
     public void setUp() throws Exception {
         JobParameters parameters = new JobParameters();
         JobMetrics metrics = new JobMetrics();
+        metrics.setStartTime(1475149183447L);
+        metrics.setEndTime(1475152215457L);
         report = new JobReport();
         report.setParameters(parameters);
         report.setMetrics(metrics);
@@ -36,9 +38,9 @@ public class DefaultJobReportFormatterTest {
                 "\tError threshold = N/A" + LINE_SEPARATOR +
                 "\tJmx monitoring = false" + LINE_SEPARATOR +
                 "Metrics:" + LINE_SEPARATOR +
-                "\tStart time = 1970-01-01 01:00:00" + LINE_SEPARATOR +
-                "\tEnd time = 1970-01-01 01:00:00" + LINE_SEPARATOR +
-                "\tDuration = 0hr 0min 0sec 0ms" + LINE_SEPARATOR +
+                "\tStart time = 2016-09-29 01:39:43" + LINE_SEPARATOR +
+                "\tEnd time = 2016-09-29 02:30:15" + LINE_SEPARATOR +
+                "\tDuration = 0hr 50min 32sec 10ms" + LINE_SEPARATOR +
                 "\tRead count = 0" + LINE_SEPARATOR +
                 "\tWrite count = 0" + LINE_SEPARATOR +
                 "\tFiltered count = 0" + LINE_SEPARATOR +
