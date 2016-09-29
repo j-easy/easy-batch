@@ -47,7 +47,7 @@ public class JdbcRecordMapper<P> extends AbstractRecordMapper<P> implements Reco
     private String[] fields;
 
     /**
-     * Create a new {@link }JdbcRecordMapper}. Column names will be fetched from the jdbc result set meta data
+     * Create a new {@link JdbcRecordMapper}. Column names will be fetched from the jdbc result set meta data
      * and set to fields with the same name of the target object.
      *
      * @param recordClass the target domain object class
@@ -57,7 +57,7 @@ public class JdbcRecordMapper<P> extends AbstractRecordMapper<P> implements Reco
     }
 
     /**
-     * Create a new {@link }JdbcRecordMapper}. The supplied field names will be used to map columns to the target object fields.
+     * Create a new {@link JdbcRecordMapper}. The supplied field names will be used to map columns to the target object fields.
      *
      * @param recordClass the target domain object class
      * @param fields      the list of fields names
