@@ -24,6 +24,8 @@
 
 package org.easybatch.core.job;
 
+import org.easybatch.core.util.Utils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -59,6 +61,16 @@ public class JobExecutor {
      */
     public JobExecutor(int nbWorkers) {
         executorService = newFixedThreadPool(nbWorkers);
+    }
+
+    /**
+     * Create a job executor.
+     *
+     * @param executorService to use to execute jobs
+     */
+    public JobExecutor(ExecutorService executorService) {
+        Utils.checkNotNull(executorService, "executor service");
+        this.executorService = executorService;
     }
 
     /**
