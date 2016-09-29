@@ -4,8 +4,6 @@ import org.easybatch.core.record.Batch;
 
 import java.util.List;
 
-import static java.util.Arrays.asList;
-
 /**
  * Composite writer that delegates record writing to a list of writers.
  *
@@ -22,15 +20,6 @@ public class CompositeRecordWriter implements RecordWriter {
      */
     public CompositeRecordWriter(List<RecordWriter> writers) {
         this.writers = writers;
-    }
-
-    /**
-     * Create a {@link CompositeRecordWriter}.
-     *
-     * @param writers delegates
-     */
-    public CompositeRecordWriter(RecordWriter... writers) {
-        this.writers = asList(writers);
     }
 
     @Override
