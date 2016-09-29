@@ -28,84 +28,46 @@ import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
-import org.hsqldb.jdbc.JDBCDataSource;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import java.io.File;
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
 public class JdbcRecordWriterTest {
 
-    private static final String DATABASE_URL = "jdbc:hsqldb:mem";
-    private static final String USER = "sa";
-    private static final String PASSWORD = "pwd";
-
-    private static Connection connection;
-
+    private EmbeddedDatabase embeddedDatabase;
     private JdbcRecordWriter jdbcRecordWriter;
-
-    @BeforeClass
-    public static void initDatabase() throws Exception {
-        System.setProperty("hsqldb.reconfig_logging", "false");
-        connection = getConnection();
-        connection.setAutoCommit(false);
-        createTweetTable(connection);
-    }
-
-    @AfterClass
-    public static void shutdownDatabase() throws Exception {
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
-        }
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
-        new File("mem.tmp").delete();
-        new File("mem.lck").delete();
-    }
-
-    private static void createTweetTable(Connection connection) throws Exception {
-        Statement statement = connection.createStatement();
-        String query = "DROP TABLE IF EXISTS tweet";
-        statement.executeUpdate(query);
-        query = "CREATE TABLE tweet (\n" +
-                "  id integer NOT NULL PRIMARY KEY,\n" +
-                "  user varchar(32) NOT NULL,\n" +
-                "  message varchar(140) NOT NULL,\n" +
-                ");";
-        statement.executeUpdate(query);
-        statement.close();
-        connection.commit();
-    }
-
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
-    }
+    private JobExecutor jobExecutor;
+    private JdbcTemplate jdbcTemplate;
 
     @Before
     public void setUp() throws Exception {
+        embeddedDatabase = new EmbeddedDatabaseBuilder()
+                .setType(HSQL)
+                .addScript("schema.sql")
+                .build();
+        jdbcTemplate = new JdbcTemplate(embeddedDatabase);
         String query = "INSERT INTO tweet VALUES (?,?,?);";
-        JDBCDataSource dataSource = new JDBCDataSource();
-        dataSource.setUser("sa");
-        dataSource.setPassword("pwd");
-        dataSource.setUrl("jdbc:hsqldb:mem");
-        jdbcRecordWriter = new JdbcRecordWriter(dataSource, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, "id", "user", "message"));
+        jdbcRecordWriter = new JdbcRecordWriter(embeddedDatabase, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, "id", "user", "message"));
+        jobExecutor = new JobExecutor();
     }
 
     @Test
     public void testRecordWriting() throws Exception {
 
         int nbTweetsToInsert = 5;
-
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
         Job job = aNewJob()
@@ -114,7 +76,7 @@ public class JdbcRecordWriterTest {
                 .writer(jdbcRecordWriter)
                 .build();
 
-        JobReport jobReport = new JobExecutor().execute(job);
+        JobReport jobReport = jobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(nbTweetsToInsert);
@@ -126,20 +88,10 @@ public class JdbcRecordWriterTest {
     }
 
     private int countTweetsInDatabase() throws SQLException {
-        Connection connection = getConnection();
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from tweet");
-        int nbTweets = 0;
-        while (resultSet.next()) {
-            nbTweets++;
-        }
-        resultSet.close();
-        statement.close();
-        connection.close();
-        return nbTweets;
+        return jdbcTemplate.queryForObject("select count(*) from tweet", Integer.class);
     }
 
-    private List<Tweet> createTweets(Integer nbTweetsToInsert) {
+    private List<Tweet> createTweets(int nbTweetsToInsert) {
         List<Tweet> tweets = new ArrayList<>();
         for (int i = 1; i <= nbTweetsToInsert; i++) {
             tweets.add(new Tweet(i, "user " + i, "hello " + i));
@@ -147,4 +99,17 @@ public class JdbcRecordWriterTest {
         return tweets;
     }
 
+    @After
+    public void tearDown() throws Exception {
+        jobExecutor.shutdown();
+        embeddedDatabase.shutdown();
+    }
+
+    @AfterClass
+    public static void cleanup() throws Exception {
+        //delete hsqldb tmp files
+        new File("mem.log").delete();
+        new File("mem.properties").delete();
+        new File("mem.script").delete();
+    }
 }

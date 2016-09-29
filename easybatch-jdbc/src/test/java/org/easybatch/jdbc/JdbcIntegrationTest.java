@@ -26,60 +26,49 @@ package org.easybatch.jdbc;
 
 import org.easybatch.core.job.*;
 import org.easybatch.core.processor.RecordCollector;
-import org.easybatch.core.record.GenericRecord;
-import org.hsqldb.jdbc.JDBCDataSource;
+import org.easybatch.core.record.Record;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.record.PayloadExtractor.extractPayloads;
+import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
-@SuppressWarnings("unchecked")
 public class JdbcIntegrationTest {
 
-    private static final String DATABASE_URL = "jdbc:hsqldb:mem";
-
-    private Connection connection;
-
+    private EmbeddedDatabase embeddedDatabase;
     private String query;
-
-    @BeforeClass
-    public static void init() {
-        System.setProperty("hsqldb.reconfig_logging", "false");
-    }
+    private JobExecutor jobExecutor;
 
     @Before
     public void setUp() throws Exception {
-        connection = DriverManager.getConnection(DATABASE_URL, "sa", "pwd");
-        createPersonTable(connection);
-        populatePersonTable(connection);
-        query = "select id, name from person";
+        embeddedDatabase = new EmbeddedDatabaseBuilder()
+                .setType(HSQL)
+                .addScript("schema.sql")
+                .addScript("data.sql")
+                .build();
+        query = "select * from tweet";
+        jobExecutor = new JobExecutor();
     }
 
     @Test
     public void testDatabaseProcessing() throws Exception {
-        JDBCDataSource dataSource = new JDBCDataSource();
-        dataSource.setUser("sa");
-        dataSource.setPassword("pwd");
-        dataSource.setUrl("jdbc:hsqldb:mem");
 
-        RecordCollector recordCollector = new RecordCollector();
+        RecordCollector<Tweet> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
-                .reader(new JdbcRecordReader(dataSource, query))
-                .mapper(new JdbcRecordMapper(Person.class, "id", "name"))
+                .reader(new JdbcRecordReader(embeddedDatabase, query))
+                .mapper(new JdbcRecordMapper<>(Tweet.class, "id", "user", "message"))
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = new JobExecutor().execute(job);
+        JobReport jobReport = jobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
@@ -88,53 +77,34 @@ public class JdbcIntegrationTest {
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(2);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
 
-        List<GenericRecord<Person>> records = recordCollector.getRecords();
-        List<Person> persons = extractPayloads(records);
+        List<Record<Tweet>> records = recordCollector.getRecords();
+        List<Tweet> tweets = extractPayloads(records);
 
-        assertThat(persons).hasSize(2);
+        assertThat(tweets).hasSize(2);
 
-        final Person person1 = persons.get(0);
-        assertThat(person1.getId()).isEqualTo(1);
-        assertThat(person1.getName()).isEqualTo("foo");
+        Tweet tweet = tweets.get(0);
+        assertThat(tweet.getId()).isEqualTo(1);
+        assertThat(tweet.getUser()).isEqualTo("foo");
+        assertThat(tweet.getMessage()).isEqualTo("easy batch rocks! #EasyBatch");
 
-        final Person person2 = persons.get(1);
-        assertThat(person2.getId()).isEqualTo(2);
-        assertThat(person2.getName()).isEqualTo("bar");
+        tweet = tweets.get(1);
+        assertThat(tweet.getId()).isEqualTo(2);
+        assertThat(tweet.getUser()).isEqualTo("bar");
+        assertThat(tweet.getMessage()).isEqualTo("@foo I do confirm :-)");
     }
 
     @After
     public void tearDown() throws Exception {
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
-        }
+        jobExecutor.shutdown();
+        embeddedDatabase.shutdown();
+    }
+
+    @AfterClass
+    public static void cleanup() throws Exception {
         //delete hsqldb tmp files
         new File("mem.log").delete();
         new File("mem.properties").delete();
         new File("mem.script").delete();
-        new File("mem.tmp").delete();
-    }
-
-    private void createPersonTable(Connection connection) throws Exception {
-        Statement statement = connection.createStatement();
-        String query = "DROP TABLE IF EXISTS person";
-        statement.executeUpdate(query);
-        query = "CREATE TABLE person (\n" +
-                "  id integer NOT NULL PRIMARY KEY,\n" +
-                "  name varchar(32) NOT NULL,\n" +
-                ");";
-        statement.executeUpdate(query);
-        statement.close();
-    }
-
-    private void populatePersonTable(Connection connection) throws Exception {
-        executeQuery(connection, "INSERT INTO person VALUES (1,'foo');");
-        executeQuery(connection, "INSERT INTO person VALUES (2,'bar');");
-    }
-
-    private void executeQuery(Connection connection, String query) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(query);
-        statement.close();
     }
 
 }

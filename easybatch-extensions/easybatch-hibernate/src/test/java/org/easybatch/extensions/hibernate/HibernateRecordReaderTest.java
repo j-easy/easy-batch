@@ -30,36 +30,38 @@ import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.Record;
 import org.hibernate.SessionFactory;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.junit.*;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
+import java.io.File;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
 public class HibernateRecordReaderTest {
 
+    private EmbeddedDatabase embeddedDatabase;
     private HibernateRecordReader<Tweet> hibernateRecordReader;
-
-    @BeforeClass
-    public static void init() throws Exception {
-        DatabaseUtil.startEmbeddedDatabase();
-        DatabaseUtil.populateTweetTable();
-        DatabaseUtil.initializeSessionFactory();
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        DatabaseUtil.closeSessionFactory();
-        DatabaseUtil.cleanUpWorkingDirectory();
-    }
 
     @Before
     public void setUp() {
-        SessionFactory sessionFactory = DatabaseUtil.getSessionFactory();
+        embeddedDatabase = new EmbeddedDatabaseBuilder()
+                .setType(HSQL)
+                .addScript("schema.sql")
+                .addScript("data.sql")
+                .build();
+        Configuration configuration = new Configuration();
+        configuration.configure("/org/easybatch/extensions/hibernate/hibernate.cfg.xml");
+
+        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                .applySettings(configuration.getProperties()).build();
+        SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         hibernateRecordReader = new HibernateRecordReader<>(sessionFactory, "from Tweet");
     }
 
@@ -73,11 +75,11 @@ public class HibernateRecordReaderTest {
                 .build();
 
         JobReport jobReport = new JobExecutor().execute(job);
-        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(3);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
 
         List<Record<Tweet>> tweets = recordCollector.getRecords();
 
-        assertThat(tweets).hasSize(3);
+        assertThat(tweets).hasSize(2);
 
         Tweet tweet = tweets.get(0).getPayload();
         assertThat(tweet).isNotNull();
@@ -90,11 +92,18 @@ public class HibernateRecordReaderTest {
         assertThat(tweet.getId()).isEqualTo(2);
         assertThat(tweet.getUser()).isEqualTo("bar");
         assertThat(tweet.getMessage()).isEqualTo("@foo I do confirm :-)");
+    }
 
-        tweet = tweets.get(2).getPayload();
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.getId()).isEqualTo(3);
-        assertThat(tweet.getUser()).isEqualTo("baz");
-        assertThat(tweet.getMessage()).isEqualTo("yep");
+    @After
+    public void tearDown() throws Exception {
+        embeddedDatabase.shutdown();
+    }
+
+    @AfterClass
+    public static void cleanup() throws Exception {
+        //delete hsqldb tmp files
+        new File("mem.log").delete();
+        new File("mem.properties").delete();
+        new File("mem.script").delete();
     }
 }

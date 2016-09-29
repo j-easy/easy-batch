@@ -24,77 +24,38 @@
 
 package org.easybatch.jdbc;
 
-import org.hsqldb.jdbc.JDBCDataSource;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import java.io.File;
-import java.sql.*;
+import java.sql.ResultSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
 public class JdbcRecordReaderTest {
 
-    static JDBCDataSource dataSource;
-    private static Connection connection;
-    private static String query;
+    private EmbeddedDatabase embeddedDatabase;
+    private String sqlQuery = "select * from tweet";
     private JdbcRecordReader jdbcRecordReader;
-
-    @BeforeClass
-    public static void initDatabase() throws Exception {
-        dataSource = new JDBCDataSource();
-        dataSource.setUser("sa");
-        dataSource.setPassword("pwd");
-        dataSource.setUrl("jdbc:hsqldb:mem");
-        connection = dataSource.getConnection();
-        createTweetTable(connection);
-        populateTweetTable(connection);
-        query = "select * from tweet";
-    }
-
-    @AfterClass
-    public static void shutdownDatabase() throws Exception {
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
-        }
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
-        new File("mem.tmp").delete();
-    }
-
-    private static void createTweetTable(Connection connection) throws Exception {
-        Statement statement = connection.createStatement();
-        String query = "DROP TABLE IF EXISTS tweet";
-        statement.executeUpdate(query);
-        query = "CREATE TABLE tweet (\n" +
-                "  id integer NOT NULL PRIMARY KEY,\n" +
-                "  user varchar(32) NOT NULL,\n" +
-                "  message varchar(140) NOT NULL,\n" +
-                ");";
-        statement.executeUpdate(query);
-        statement.close();
-    }
-
-    private static void populateTweetTable(Connection connection) throws Exception {
-        executeQuery(connection, "INSERT INTO tweet VALUES (1,'foo','easy batch rocks! #EasyBatch');");
-        executeQuery(connection, "INSERT INTO tweet VALUES (2,'bar','@foo I do confirm :-)');");
-    }
-
-    private static void executeQuery(Connection connection, String query) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(query);
-        statement.close();
-    }
 
     @Before
     public void setUp() throws Exception {
-        jdbcRecordReader = new JdbcRecordReader(dataSource, query);
-        jdbcRecordReader.open();
+        embeddedDatabase = new EmbeddedDatabaseBuilder()
+                .setType(HSQL)
+                .addScript("schema.sql")
+                .addScript("data.sql")
+                .build();
+        jdbcRecordReader = new JdbcRecordReader(embeddedDatabase, sqlQuery);
     }
 
     @Test
     public void testReadRecord() throws Exception {
+        jdbcRecordReader.open();
         JdbcRecord actual = jdbcRecordReader.readRecord();
 
         assertThat(actual).isNotNull();
@@ -108,7 +69,7 @@ public class JdbcRecordReaderTest {
 
     @Test
     public void testMaxRowsParameter() throws Exception {
-        jdbcRecordReader = new JdbcRecordReader(dataSource, query);
+        jdbcRecordReader = new JdbcRecordReader(embeddedDatabase, sqlQuery);
         jdbcRecordReader.setMaxRows(1);
         jdbcRecordReader.open();
         assertThat(jdbcRecordReader.readRecord()).isNotNull();
@@ -117,11 +78,15 @@ public class JdbcRecordReaderTest {
 
     @After
     public void tearDown() throws Exception {
-        /*
-         * The connection will be closed in @AfterClass method.
-         * If done here, subsequent tests do not find the connection
-         */
-        //jdbcRecordReader.close();
+        jdbcRecordReader.close();
+        embeddedDatabase.shutdown();
     }
 
+    @AfterClass
+    public static void cleanup() throws Exception {
+        //delete hsqldb tmp files
+        new File("mem.log").delete();
+        new File("mem.properties").delete();
+        new File("mem.script").delete();
+    }
 }

@@ -13,10 +13,6 @@
     <description>Extension to support Spring</description>
     <url>http://www.easybatch.org</url>
 
-    <properties>
-        <spring.version>4.3.3.RELEASE</spring.version>
-    </properties>
-
     <developers>
         <developer>
             <id>benas</id>

@@ -28,51 +28,54 @@ import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
-import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
+import java.io.File;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Long.valueOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
 public class HibernateRecordWriterTest {
 
-    private Session session;
-
+    private JobExecutor jobExecutor;
+    private JdbcTemplate jdbcTemplate;
+    private EmbeddedDatabase embeddedDatabase;
     private HibernateRecordWriter hibernateRecordWriter;
-
-    @BeforeClass
-    public static void initDatabase() throws Exception {
-        DatabaseUtil.startEmbeddedDatabase();
-        DatabaseUtil.initializeSessionFactory();
-    }
-
-    @AfterClass
-    public static void shutdownDatabase() throws Exception {
-        DatabaseUtil.closeSessionFactory();
-        DatabaseUtil.cleanUpWorkingDirectory();
-    }
 
     @Before
     public void setUp() throws Exception {
-        hibernateRecordWriter = new HibernateRecordWriter(DatabaseUtil.getSessionFactory());
+        embeddedDatabase = new EmbeddedDatabaseBuilder()
+                .setType(HSQL)
+                .addScript("schema.sql")
+                .addScript("data.sql")
+                .build();
+        jdbcTemplate = new JdbcTemplate(embeddedDatabase);
+        jobExecutor = new JobExecutor();
+        Configuration configuration = new Configuration();
+        configuration.configure("/org/easybatch/extensions/hibernate/hibernate.cfg.xml");
+        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                .applySettings(configuration.getProperties()).build();
+        SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+        hibernateRecordWriter = new HibernateRecordWriter(sessionFactory);
     }
 
     @Test
-    public void testSingleRecordWriting() throws Exception {
-
-        Integer nbTweetsToInsert = 5;
-
+    public void testRecordWriting() throws Exception {
+        int nbTweetsToInsert = 5;
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
         Job job = aNewJob()
@@ -81,18 +84,17 @@ public class HibernateRecordWriterTest {
                 .writer(hibernateRecordWriter)
                 .build();
 
-        JobReport jobReport = new JobExecutor().execute(job);
+        JobReport jobReport = jobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(valueOf(nbTweetsToInsert));
-        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(nbTweetsToInsert);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(nbTweetsToInsert);
 
         int nbTweetsInDatabase = countTweetsInDatabase();
-
         assertThat(nbTweetsInDatabase).isEqualTo(nbTweetsToInsert);
     }
 
-    private List<Tweet> createTweets(Integer nbTweetsToInsert) {
+    private List<Tweet> createTweets(int nbTweetsToInsert) {
         List<Tweet> tweets = new ArrayList<>();
         for (int i = 1; i <= nbTweetsToInsert; i++) {
             tweets.add(new Tweet(i, "user " + i, "hello " + i));
@@ -101,17 +103,20 @@ public class HibernateRecordWriterTest {
     }
 
     private int countTweetsInDatabase() throws SQLException {
-        Connection connection = DatabaseUtil.getConnection();
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from tweet");
-        int nbTweets = 0;
-        while (resultSet.next()) {
-            nbTweets++;
-        }
-        resultSet.close();
-        statement.close();
-        connection.close();
-        return nbTweets;
+        return jdbcTemplate.queryForObject("select count(*) from tweet", Integer.class);
     }
 
+    @After
+    public void tearDown() throws Exception {
+        jobExecutor.shutdown();
+        embeddedDatabase.shutdown();
+    }
+
+    @AfterClass
+    public static void cleanup() throws Exception {
+        //delete hsqldb tmp files
+        new File("mem.log").delete();
+        new File("mem.properties").delete();
+        new File("mem.script").delete();
+    }
 }
