@@ -55,6 +55,8 @@ public class MsExcelRecordReader implements RecordReader {
 
     private long recordNumber;
 
+    private XSSFWorkbook workbook;
+
     /**
      * Create a new {@link MsExcelRecordReader}.
      *
@@ -74,7 +76,6 @@ public class MsExcelRecordReader implements RecordReader {
      */
     public MsExcelRecordReader(final File file, final int sheetIndex) throws IOException {
         this.file = file;
-        XSSFWorkbook workbook;
         try {
             workbook = new XSSFWorkbook(file);
             sheet = workbook.getSheetAt(sheetIndex);
@@ -105,6 +106,10 @@ public class MsExcelRecordReader implements RecordReader {
     }
 
     public void close() throws RecordReaderClosingException {
-        // no op
+        try {
+            workbook.close();
+        } catch (IOException e) {
+            throw new RecordReaderClosingException("Unable to close MsExcel workbook", e);
+        }
     }
 }
