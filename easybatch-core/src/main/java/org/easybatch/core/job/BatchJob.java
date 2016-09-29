@@ -29,6 +29,7 @@ class BatchJob implements Job {
     private RecordReader recordReader;
     private RecordWriter recordWriter;
     private RecordProcessor recordProcessor;
+    private RecordTracker recordTracker;
 
     private JobListener jobListener;
     private BatchListener batchListener;
@@ -58,6 +59,7 @@ class BatchJob implements Job {
         recordWriterListener = new CompositeRecordWriterListener();
         batchListener = new CompositeBatchListener();
         jobListener = new CompositeJobListener();
+        recordTracker = new RecordTracker();
     }
 
     @Override
@@ -68,21 +70,17 @@ class BatchJob implements Job {
     @Override
     public JobReport call() {
         start();
-        Batch batch = new Batch();
         try {
             openReader();
             openWriter();
             setStatus(STARTED);
-            RecordTracker recordTracker = new RecordTracker();
-            while (recordTracker.moreRecords()) {
-                batch = new Batch();
-                processBatch(batch, recordTracker);
+            while (moreRecords()) {
+                Batch batch = readAndProcessBatch();
                 writeBatch(batch);
             }
             setStatus(STOPPING);
         } catch (Exception exception) {
             fail(exception);
-            handleSpecificException(exception, batch);
             return report;
         } finally {
             closeReader();
@@ -133,7 +131,12 @@ class BatchJob implements Job {
         report.setStatus(status);
     }
 
-    private void processBatch(Batch batch, RecordTracker recordTracker) throws RecordReadingException, ErrorThresholdExceededException {
+    private boolean moreRecords() {
+        return recordTracker.moreRecords();
+    }
+
+    private Batch readAndProcessBatch() throws RecordReadingException, ErrorThresholdExceededException {
+        Batch batch = new Batch();
         batchListener.beforeBatchReading();
         for (int i = 0; i < parameters.getBatchSize(); i++) {
             Record record = readRecord();
@@ -146,6 +149,7 @@ class BatchJob implements Job {
             processRecord(record, batch);
         }
         batchListener.afterBatchProcessing(batch);
+        return batch;
     }
 
     private Record readRecord() throws RecordReadingException {
@@ -156,6 +160,7 @@ class BatchJob implements Job {
             recordReaderListener.afterRecordReading(record);
             return record;
         } catch (Exception e) {
+            recordReaderListener.onRecordReadingException(e);
             throw new RecordReadingException("Unable to read next record", e);
         }
     }
@@ -195,17 +200,9 @@ class BatchJob implements Job {
                 metrics.incrementWriteCount(batch.size());
             }
         } catch (Exception e) {
+            recordWriterListener.onRecordWritingException(batch, e);
+            batchListener.onBatchWritingException(batch, e);
             throw new BatchWritingException("Unable to write records", e);
-        }
-    }
-
-    private void handleSpecificException(Exception exception, Batch batch) {
-        if (exception instanceof BatchWritingException) {
-            recordWriterListener.onRecordWritingException(batch, exception.getCause());
-            batchListener.onBatchWritingException(batch, exception.getCause());
-        }
-        if (exception instanceof RecordReadingException) {
-            recordReaderListener.onRecordReadingException(exception.getCause());
         }
     }
 
