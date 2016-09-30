@@ -68,13 +68,19 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 - :memo: [Easy Batch vs Spring Batch : a Hello World comparison](http://benas.github.io/2014/03/03/spring-batch-vs-easy-batch-a-hello-world-comparison.html)
 - :memo: [Easy Batch vs Spring Batch : a performance comparison](http://benas.github.io/2015/02/15/spring-batch-vs-easy-batch-a-performance-comparison.html)
 
-## Current version
+## Current versions
 
-* Stable: 4.2.0 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.2.0|)
+#### Stable:
 
-* Development: 5.0.0-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)</td>
+* v5: The best, greatest and recommended one: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.0.0-RC1|)
+* v4: Production ready, in maintenance mode: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.2.0|)
+* v3, v2, v1 : archived versions
 
-If you want to import the snapshot version, you need to use the following repository:
+#### Development:
+
+Current development version is 5.0.0-RC2-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)
+
+If you want to import a snapshot version, you need to use the following repository:
 
 ```xml
 <repository>
@@ -87,9 +93,9 @@ If you want to import the snapshot version, you need to use the following reposi
 
 You are welcome to contribute to the project with pull requests on GitHub.
 
-If you found a bug or want to request a feature, please use the [issue tracker](https://github.com/easybatch/easybatch-framework/issues).
+If you find a bug or want to request a feature, please use the [issue tracker](https://github.com/easybatch/easybatch-framework/issues).
 
-For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or chat with the team on [Gitter](https://gitter.im/EasyBatch/easybatch-framework).
+For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or the [gitter channel](https://gitter.im/EasyBatch/easybatch-framework).
 
 ## Awesome contributors
 
