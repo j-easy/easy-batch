@@ -2,6 +2,41 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
+Changes in version 5.0.0-RC1 (2016-10-01)
+-----------------------------------------
+
+Major changes
+
+* issue #211 : Inconsistent Batch API
+* issue #233 : Inconsistent RecordReader API
+* issue #223 : Inconsistent RecordWriter API
+* issue #227 : Inconsistent RecordDispatcher API
+* issue #221 : Resource management should be handled by the framework
+* issue #222 : Transaction management should be handled by the framework
+* issue #230 : JobExecutor should use an ExecutorService
+* issue #220 : Adapt listeners to batch processing workflow
+
+New features
+
+* issue #224 : Add `RetryableRecordReader`
+* issue #225 : Add `RetryableRecordWriter`
+* issue #226 : Add `CompositeRecordWriter`
+
+Enhancements
+
+* issue #234 : `RecordFieldExtractor` is poorly named
+* issue #235 : `BeanRecordFieldExtractor` is poorly named
+
+Fixed bugs
+
+* issue #170 : Unable to determine number of filtered record from batch
+* issue #204 : Unnecessary generic type in `BeanValidationRecordValidator`
+* issue #209 : Unnecessary generic type in `BlockingQueueRecordReader` / `BlockingQueueRecordWriter`
+* issue #228 : Job executionId is not coherent
+* issue #229 : Job name is not a parameter
+* issue #231 : `JobStatus.ABORTED` is redundant
+* issue #232 : Possible resource leak in `XmlWrapperTagWriter`
+
 Changes in version 4.2.0 (2016-09-25)
 -------------------------------------
 
