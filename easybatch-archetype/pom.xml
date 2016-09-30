@@ -2,7 +2,7 @@
     <parent>
         <artifactId>easybatch</artifactId>
         <groupId>org.easybatch</groupId>
-        <version>5.0.0-RC1</version>
+        <version>5.0.0-RC2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,7 +27,7 @@
         <url>git@github.com:easybatch/easybatch-framework.git</url>
         <connection>scm:git:git@github.com:easybatch/easybatch-framework.git</connection>
         <developerConnection>scm:git:git@github.com:easybatch/easybatch-framework.git</developerConnection>
-        <tag>easybatch-5.0.0-RC1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
