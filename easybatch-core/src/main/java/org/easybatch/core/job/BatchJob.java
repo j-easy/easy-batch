@@ -97,6 +97,7 @@ class BatchJob implements Job {
     private void start() {
         setStatus(STARTING);
         jobListener.beforeJobStart(parameters);
+        recordTracker = new RecordTracker();
         metrics.setStartTime(System.currentTimeMillis());
         LOGGER.log(Level.INFO, "Batch size: {0}", parameters.getBatchSize());
         LOGGER.log(Level.INFO, "Error threshold: {0}", formatErrorThreshold(parameters.getErrorThreshold()));
