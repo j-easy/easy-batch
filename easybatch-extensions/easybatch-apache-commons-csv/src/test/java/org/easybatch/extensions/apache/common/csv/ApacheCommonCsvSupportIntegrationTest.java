@@ -27,6 +27,7 @@ package org.easybatch.extensions.apache.common.csv;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.easybatch.core.writer.StandardOutputRecordWriter;
+import org.easybatch.test.common.Tweet;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;

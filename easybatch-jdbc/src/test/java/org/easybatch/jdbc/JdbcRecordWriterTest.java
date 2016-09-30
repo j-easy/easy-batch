@@ -28,37 +28,26 @@ import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
+import org.easybatch.test.common.AbstractDatabaseTest;
+import org.easybatch.test.common.Tweet;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
-import java.io.File;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
-import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
-public class JdbcRecordWriterTest {
+public class JdbcRecordWriterTest extends AbstractDatabaseTest {
 
-    private EmbeddedDatabase embeddedDatabase;
     private JdbcRecordWriter jdbcRecordWriter;
     private JobExecutor jobExecutor;
-    private JdbcTemplate jdbcTemplate;
 
     @Before
     public void setUp() throws Exception {
-        embeddedDatabase = new EmbeddedDatabaseBuilder()
-                .setType(HSQL)
-                .addScript("schema.sql")
-                .build();
-        jdbcTemplate = new JdbcTemplate(embeddedDatabase);
+        super.setUp();
         String query = "INSERT INTO tweet VALUES (?,?,?);";
         jdbcRecordWriter = new JdbcRecordWriter(embeddedDatabase, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, "id", "user", "message"));
         jobExecutor = new JobExecutor();
@@ -66,7 +55,6 @@ public class JdbcRecordWriterTest {
 
     @Test
     public void testRecordWriting() throws Exception {
-
         int nbTweetsToInsert = 5;
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
@@ -82,13 +70,8 @@ public class JdbcRecordWriterTest {
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(nbTweetsToInsert);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(nbTweetsToInsert);
 
-        int nbTweetsInDatabase = countTweetsInDatabase();
-
+        int nbTweetsInDatabase = countRowsIn("tweet");
         assertThat(nbTweetsInDatabase).isEqualTo(nbTweetsToInsert);
-    }
-
-    private int countTweetsInDatabase() throws SQLException {
-        return jdbcTemplate.queryForObject("select count(*) from tweet", Integer.class);
     }
 
     private List<Tweet> createTweets(int nbTweetsToInsert) {
@@ -102,14 +85,7 @@ public class JdbcRecordWriterTest {
     @After
     public void tearDown() throws Exception {
         jobExecutor.shutdown();
-        embeddedDatabase.shutdown();
+        super.tearDown();
     }
 
-    @AfterClass
-    public static void cleanup() throws Exception {
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
-    }
 }

@@ -28,6 +28,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.easybatch.core.job.*;
+import org.easybatch.test.common.Tweet;
 import org.junit.Test;
 
 import java.io.File;
@@ -45,10 +46,11 @@ public class MsExcelSupportIntegrationTest {
         File inputTweets = new File(this.getClass().getResource("/tweets-in.xlsx").toURI());
         File outputTweets = new File(this.getClass().getResource("/tweets-out.xlsx").toURI());
 
+        String[] fields = {"id", "user", "message"};
         Job job = JobBuilder.aNewJob()
                 .reader(new MsExcelRecordReader(inputTweets))
-                .mapper(new MsExcelRecordMapper<>(Tweet.class, "id", "user", "message"))
-                .marshaller(new MsExcelRecordMarshaller<>(Tweet.class, "id", "user", "message"))
+                .mapper(new MsExcelRecordMapper<>(Tweet.class, fields))
+                .marshaller(new MsExcelRecordMarshaller<>(Tweet.class, fields))
                 .writer(new MsExcelRecordWriter(outputTweets, SHEET_NAME))
                 .build();
 

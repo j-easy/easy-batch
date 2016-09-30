@@ -4,7 +4,7 @@
 
 <hibernate-mapping>
 
-    <class name="org.easybatch.extensions.hibernate.Tweet" table="tweet">
+    <class name="org.easybatch.test.common.Tweet" table="tweet">
         <id column="id" name="id">
             <generator class="assigned"/>
         </id>

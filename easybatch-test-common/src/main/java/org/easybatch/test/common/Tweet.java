@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  *
- *   Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,24 @@
  *   THE SOFTWARE.
  */
 
-package org.easybatch.extensions.msexcel;
+package org.easybatch.test.common;
 
 public class Tweet {
-    
+
     private int id;
-    
-    private String user, message;
+
+    private String user;
+
+    private String message;
+
+    public Tweet() {
+    }
+
+    public Tweet(int id, String user, String message) {
+        this.id = id;
+        this.user = user;
+        this.message = message;
+    }
 
     public int getId() {
         return id;
@@ -36,14 +47,6 @@ public class Tweet {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public String getUser() {
@@ -54,6 +57,14 @@ public class Tweet {
         this.user = user;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Tweet{");
@@ -62,5 +73,26 @@ public class Tweet {
         sb.append(", message='").append(message).append('\'');
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tweet tweet = (Tweet) o;
+
+        if (id != tweet.id) return false;
+        if (user != null ? !user.equals(tweet.user) : tweet.user != null) return false;
+        return message != null ? message.equals(tweet.message) : tweet.message == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (message != null ? message.hashCode() : 0);
+        return result;
     }
 }

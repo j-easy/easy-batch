@@ -25,35 +25,26 @@
 package org.easybatch.jpa;
 
 import org.easybatch.core.record.Record;
+import org.easybatch.test.common.AbstractDatabaseTest;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import java.io.File;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
-public class JpaRecordReaderTest {
+public class JpaRecordReaderTest extends AbstractDatabaseTest {
 
     private static final int FETCH_SIZE = 10;
 
-    private EmbeddedDatabase embeddedDatabase;
     private JpaRecordReader<Tweet> jpaRecordReader;
 
     @Before
     public void setUp() throws Exception {
-        embeddedDatabase = new EmbeddedDatabaseBuilder()
-                .setType(HSQL)
-                .addScript("schema.sql")
-                .addScript("data.sql")
-                .build();
+        addScript("data.sql");
+        super.setUp();
         String query = "from Tweet";
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tweet");
         jpaRecordReader = new JpaRecordReader<>(entityManagerFactory, query, Tweet.class);
@@ -68,10 +59,7 @@ public class JpaRecordReaderTest {
         Tweet tweet = record.getPayload();
 
         assertThat(recordNumber).isEqualTo(1);
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.getId()).isEqualTo(1);
-        assertThat(tweet.getUser()).isEqualTo("foo");
-        assertThat(tweet.getMessage()).isEqualTo("easy batch rocks! #EasyBatch");
+        assertThat(tweet).isEqualTo(new Tweet(1, "foo", "easy batch rocks! #EasyBatch"));
     }
 
     @Test
@@ -89,17 +77,9 @@ public class JpaRecordReaderTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws Exception {
         jpaRecordReader.close();
-        embeddedDatabase.shutdown();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
+        super.tearDown();
     }
 
 }

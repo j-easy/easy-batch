@@ -54,7 +54,11 @@
             <groupId>org.easybatch</groupId>
             <artifactId>easybatch-jdbc</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.easybatch</groupId>
+            <artifactId>easybatch-test-common</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>

@@ -82,4 +82,24 @@ public class Tweet {
         return sb.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tweet tweet = (Tweet) o;
+
+        if (id != tweet.id) return false;
+        if (user != null ? !user.equals(tweet.user) : tweet.user != null) return false;
+        return message != null ? message.equals(tweet.message) : tweet.message == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (message != null ? message.hashCode() : 0);
+        return result;
+    }
 }

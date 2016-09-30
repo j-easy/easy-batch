@@ -24,32 +24,24 @@
 
 package org.easybatch.jdbc;
 
+import org.easybatch.test.common.AbstractDatabaseTest;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
-import java.io.File;
 import java.sql.ResultSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
-public class JdbcRecordReaderTest {
+public class JdbcRecordReaderTest extends AbstractDatabaseTest {
 
-    private EmbeddedDatabase embeddedDatabase;
     private String sqlQuery = "select * from tweet";
     private JdbcRecordReader jdbcRecordReader;
 
     @Before
     public void setUp() throws Exception {
-        embeddedDatabase = new EmbeddedDatabaseBuilder()
-                .setType(HSQL)
-                .addScript("schema.sql")
-                .addScript("data.sql")
-                .build();
+        addScript("data.sql");
+        super.setUp();
         jdbcRecordReader = new JdbcRecordReader(embeddedDatabase, sqlQuery);
     }
 
@@ -79,14 +71,7 @@ public class JdbcRecordReaderTest {
     @After
     public void tearDown() throws Exception {
         jdbcRecordReader.close();
-        embeddedDatabase.shutdown();
+        super.tearDown();
     }
 
-    @AfterClass
-    public static void cleanup() throws Exception {
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
-    }
 }

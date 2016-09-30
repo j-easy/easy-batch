@@ -26,6 +26,7 @@ package org.easybatch.jdbc;
 
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
+import org.easybatch.test.common.Tweet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,10 +73,7 @@ public class JdbcRecordMapperTest {
         Record<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
         Tweet tweet = actual.getPayload();
 
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.getId()).isEqualTo(1);
-        assertThat(tweet.getUser()).isEqualTo("foo");
-        assertThat(tweet.getMessage()).isEqualTo("Hello!");
+        assertThat(tweet).isEqualTo(new Tweet(1, "foo", "Hello!"));
     }
 
     @Test
@@ -95,9 +93,6 @@ public class JdbcRecordMapperTest {
         Record<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
         Tweet tweet = actual.getPayload();
 
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.getId()).isEqualTo(1);
-        assertThat(tweet.getUser()).isEqualTo("foo");
-        assertThat(tweet.getMessage()).isEqualTo("Hello!");
+        assertThat(tweet).isEqualTo(new Tweet(1, "foo", "Hello!"));
     }
 }

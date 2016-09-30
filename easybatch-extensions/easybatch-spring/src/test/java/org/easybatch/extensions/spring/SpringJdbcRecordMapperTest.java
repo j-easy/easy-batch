@@ -27,6 +27,7 @@ package org.easybatch.extensions.spring;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.easybatch.jdbc.JdbcRecord;
+import org.easybatch.test.common.Tweet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

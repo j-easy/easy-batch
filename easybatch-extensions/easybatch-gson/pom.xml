@@ -55,7 +55,11 @@
             <groupId>org.easybatch</groupId>
             <artifactId>easybatch-json</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.easybatch</groupId>
+            <artifactId>easybatch-test-common</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>

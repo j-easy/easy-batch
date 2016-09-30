@@ -27,40 +27,32 @@ package org.easybatch.jdbc;
 import org.easybatch.core.job.*;
 import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.record.Record;
+import org.easybatch.test.common.AbstractDatabaseTest;
+import org.easybatch.test.common.Tweet;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
-import java.io.File;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.record.PayloadExtractor.extractPayloads;
-import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
-public class JdbcIntegrationTest {
+public class JdbcIntegrationTest extends AbstractDatabaseTest {
 
-    private EmbeddedDatabase embeddedDatabase;
     private String query;
     private JobExecutor jobExecutor;
 
     @Before
     public void setUp() throws Exception {
-        embeddedDatabase = new EmbeddedDatabaseBuilder()
-                .setType(HSQL)
-                .addScript("schema.sql")
-                .addScript("data.sql")
-                .build();
         query = "select * from tweet";
         jobExecutor = new JobExecutor();
+        addScript("data.sql");
+        super.setUp();
     }
 
     @Test
-    public void testDatabaseProcessing() throws Exception {
-
+    public void testDatabaseProcessingWithJdbc() {
         RecordCollector<Tweet> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
                 .reader(new JdbcRecordReader(embeddedDatabase, query))
@@ -71,40 +63,27 @@ public class JdbcIntegrationTest {
         JobReport jobReport = jobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
-        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(2);
+        JobMetrics metrics = jobReport.getMetrics();
+        assertThat(metrics.getReadCount()).isEqualTo(2);
+        assertThat(metrics.getErrorCount()).isEqualTo(0);
+        assertThat(metrics.getFilteredCount()).isEqualTo(0);
+        assertThat(metrics.getWriteCount()).isEqualTo(2);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
 
         List<Record<Tweet>> records = recordCollector.getRecords();
         List<Tweet> tweets = extractPayloads(records);
 
         assertThat(tweets).hasSize(2);
-
         Tweet tweet = tweets.get(0);
-        assertThat(tweet.getId()).isEqualTo(1);
-        assertThat(tweet.getUser()).isEqualTo("foo");
-        assertThat(tweet.getMessage()).isEqualTo("easy batch rocks! #EasyBatch");
-
+        assertThat(tweet).isEqualTo(new Tweet(1, "foo", "easy batch rocks! #EasyBatch"));
         tweet = tweets.get(1);
-        assertThat(tweet.getId()).isEqualTo(2);
-        assertThat(tweet.getUser()).isEqualTo("bar");
-        assertThat(tweet.getMessage()).isEqualTo("@foo I do confirm :-)");
+        assertThat(tweet).isEqualTo(new Tweet(2, "bar", "@foo I do confirm :-)"));
     }
 
     @After
     public void tearDown() throws Exception {
         jobExecutor.shutdown();
-        embeddedDatabase.shutdown();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
+        super.tearDown();
     }
 
 }

@@ -56,7 +56,11 @@
             <groupId>org.easybatch</groupId>
             <artifactId>easybatch-core</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.easybatch</groupId>
+            <artifactId>easybatch-test-common</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

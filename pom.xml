@@ -48,6 +48,7 @@
         <module>easybatch-json</module>
         <module>easybatch-extensions</module>
         <module>easybatch-archetype</module>
+        <module>easybatch-test-common</module>
     </modules>
 
     <developers>
@@ -159,6 +160,13 @@
                 <groupId>org.easybatch</groupId>
                 <artifactId>easybatch-quartz</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.easybatch</groupId>
+                <artifactId>easybatch-test-common</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>

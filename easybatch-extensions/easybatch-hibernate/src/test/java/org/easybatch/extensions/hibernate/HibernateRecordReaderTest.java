@@ -28,34 +28,30 @@ import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.processor.RecordCollector;
-import org.easybatch.core.record.Record;
+import org.easybatch.test.common.AbstractDatabaseTest;
+import org.easybatch.test.common.Tweet;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import org.junit.*;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.io.File;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
-import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
+import static org.easybatch.core.record.PayloadExtractor.extractPayloads;
 
-public class HibernateRecordReaderTest {
+public class HibernateRecordReaderTest extends AbstractDatabaseTest {
 
-    private EmbeddedDatabase embeddedDatabase;
     private HibernateRecordReader<Tweet> hibernateRecordReader;
 
     @Before
-    public void setUp() {
-        embeddedDatabase = new EmbeddedDatabaseBuilder()
-                .setType(HSQL)
-                .addScript("schema.sql")
-                .addScript("data.sql")
-                .build();
+    public void setUp() throws Exception {
+        addScript("data.sql");
+        super.setUp();
         Configuration configuration = new Configuration();
         configuration.configure("/org/easybatch/extensions/hibernate/hibernate.cfg.xml");
 
@@ -67,7 +63,6 @@ public class HibernateRecordReaderTest {
 
     @Test
     public void testRecordReading() throws Exception {
-
         RecordCollector<Tweet> recordCollector = new RecordCollector<>();
         Job job = aNewJob()
                 .reader(hibernateRecordReader)
@@ -77,33 +72,18 @@ public class HibernateRecordReaderTest {
         JobReport jobReport = new JobExecutor().execute(job);
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
 
-        List<Record<Tweet>> tweets = recordCollector.getRecords();
-
+        List<Tweet> tweets = extractPayloads(recordCollector.getRecords());
         assertThat(tweets).hasSize(2);
 
-        Tweet tweet = tweets.get(0).getPayload();
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.getId()).isEqualTo(1);
-        assertThat(tweet.getUser()).isEqualTo("foo");
-        assertThat(tweet.getMessage()).isEqualTo("easy batch rocks! #EasyBatch");
-
-        tweet = tweets.get(1).getPayload();
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.getId()).isEqualTo(2);
-        assertThat(tweet.getUser()).isEqualTo("bar");
-        assertThat(tweet.getMessage()).isEqualTo("@foo I do confirm :-)");
+        Tweet tweet = tweets.get(0);
+        assertThat(tweet).isEqualTo(new Tweet(1, "foo", "easy batch rocks! #EasyBatch"));
+        tweet = tweets.get(1);
+        assertThat(tweet).isEqualTo(new Tweet(2, "bar", "@foo I do confirm :-)"));
     }
 
     @After
     public void tearDown() throws Exception {
-        embeddedDatabase.shutdown();
+        super.tearDown();
     }
 
-    @AfterClass
-    public static void cleanup() throws Exception {
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
-    }
 }

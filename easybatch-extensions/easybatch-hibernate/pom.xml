@@ -56,6 +56,12 @@
             <artifactId>easybatch-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.easybatch</groupId>
+            <artifactId>easybatch-test-common</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
