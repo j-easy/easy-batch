@@ -35,7 +35,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.record.PayloadExtractor.extractPayloads;
 
-@SuppressWarnings("unchecked")
 public class XmlIntegrationTest {
 
     @Test
@@ -44,7 +43,7 @@ public class XmlIntegrationTest {
         RecordCollector<Website> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("website", xmlDataSource))
-                .mapper(new XmlRecordMapper(Website.class))
+                .mapper(new XmlRecordMapper<>(Website.class))
                 .processor(recordCollector)
                 .build();
 
@@ -76,7 +75,7 @@ public class XmlIntegrationTest {
         RecordCollector<Person> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("person", xmlDataSource))
-                .mapper(new XmlRecordMapper(Person.class))
+                .mapper(new XmlRecordMapper<>(Person.class))
                 .processor(recordCollector)
                 .build();
 
@@ -111,7 +110,7 @@ public class XmlIntegrationTest {
         RecordCollector<Dependency> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("dependency", xmlDataSource))
-                .mapper(new XmlRecordMapper(Dependency.class))
+                .mapper(new XmlRecordMapper<>(Dependency.class))
                 .processor(recordCollector)
                 .build();
 
@@ -165,7 +164,7 @@ public class XmlIntegrationTest {
         RecordCollector<Bean> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("bean", xmlDataSource))
-                .mapper(new XmlRecordMapper(Bean.class))
+                .mapper(new XmlRecordMapper<>(Bean.class))
                 .processor(recordCollector)
                 .build();
 
