@@ -28,7 +28,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
-import java.io.File;
 import java.sql.SQLException;
 
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
@@ -47,18 +46,10 @@ public abstract class AbstractDatabaseTest {
 
     protected void tearDown() throws Exception {
         embeddedDatabase.shutdown();
-        cleanup();
     }
 
     protected void addScript(String script) {
         embeddedDatabaseBuilder.addScript(script);
-    }
-
-    private void cleanup() {
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
     }
 
     protected int countRowsIn(String table) throws SQLException {
