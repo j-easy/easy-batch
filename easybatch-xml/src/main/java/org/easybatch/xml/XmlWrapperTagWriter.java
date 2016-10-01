@@ -31,6 +31,7 @@ import org.easybatch.core.listener.JobListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.lang.String.format;
@@ -120,13 +121,13 @@ public class XmlWrapperTagWriter implements JobListener {
             fileWriter.write(LINE_SEPARATOR);
             fileWriter.flush();
         } catch (IOException e) {
-            LOGGER.warning("Unable to write XML declaration and wrapper opening tag to file " + file.getAbsolutePath());
+            LOGGER.log(Level.WARNING, "Unable to write XML declaration and wrapper opening tag to file " + file.getAbsolutePath(), e);
         } finally {
             if (fileWriter != null) {
                 try {
                     fileWriter.close();
                 } catch (IOException e) {
-                    LOGGER.warning("Unable to close file writer");
+                    LOGGER.log(Level.WARNING, "Unable to close file writer", e);
                 }
             }
         }
@@ -140,13 +141,13 @@ public class XmlWrapperTagWriter implements JobListener {
             fileWriter.write("</" + wrapperTag + ">");
             fileWriter.flush();
         } catch (IOException e) {
-            LOGGER.warning("Unable to write closing wrapper tag to file " + file.getAbsolutePath());
+            LOGGER.log(Level.WARNING, "Unable to write closing wrapper tag to file " + file.getAbsolutePath(), e);
         } finally {
             if (fileWriter != null) {
                 try {
                     fileWriter.close();
                 } catch (IOException e) {
-                    LOGGER.warning("Unable to close file writer");
+                    LOGGER.log(Level.WARNING, "Unable to close file writer", e);
                 }
             }
         }

@@ -83,7 +83,7 @@ public class JobExecutor {
         try {
             return executorService.submit(job).get();
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException("Unable to execute job " + job.getName());
+            throw new RuntimeException("Unable to execute job " + job.getName(), e);
         }
     }
 
@@ -109,7 +109,7 @@ public class JobExecutor {
         try {
             return executorService.invokeAll(jobList);
         } catch (InterruptedException e) {
-            throw new RuntimeException("Unable to execute jobs");
+            throw new RuntimeException("Unable to execute jobs", e);
         }
     }
 
