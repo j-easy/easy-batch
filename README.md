@@ -71,7 +71,7 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 #### Stable:
 
 * v5: The best, greatest and recommended one: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.0.0-RC1|)
-* v4: Production ready, in maintenance mode: [4.2.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.2.0|)
+* v4: Production ready, in maintenance mode: [v4.2.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.2.0|) | [documentation](http://www.easybatch.org/v4.2.0/)
 * v3, v2, v1 : archived versions
 
 #### Development:
