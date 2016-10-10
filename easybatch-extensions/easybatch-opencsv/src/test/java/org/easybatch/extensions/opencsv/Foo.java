@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.extensions.opencsv.test;
+package org.easybatch.extensions.opencsv;
 
 public class Foo {
 

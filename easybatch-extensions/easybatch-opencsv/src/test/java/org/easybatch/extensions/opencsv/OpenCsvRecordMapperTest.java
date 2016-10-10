@@ -22,12 +22,11 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.extensions.opencsv.test;
+package org.easybatch.extensions.opencsv;
 
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
-import org.easybatch.extensions.opencsv.OpenCsvRecordMapper;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
