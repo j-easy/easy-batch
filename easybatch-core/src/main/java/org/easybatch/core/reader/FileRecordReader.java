@@ -95,9 +95,9 @@ public class FileRecordReader implements RecordReader {
     }
 
     private void checkDirectory() {
-        checkArgument(directory.exists(), format("Directory %s does not exist.", directory.getAbsolutePath()));
-        checkArgument(directory.isDirectory(), format("%s is not a directory.", directory.getAbsolutePath()));
-        checkArgument(directory.canRead(), format("Unable to read files from directory %s. Permission denied.", directory.getAbsolutePath()));
+        checkArgument(directory.exists(), format("Directory %s does not exist.", getDataSourceName()));
+        checkArgument(directory.isDirectory(), format("%s is not a directory.", getDataSourceName()));
+        checkArgument(directory.canRead(), format("Unable to read files from directory %s. Permission denied.", getDataSourceName()));
     }
 
     /**
