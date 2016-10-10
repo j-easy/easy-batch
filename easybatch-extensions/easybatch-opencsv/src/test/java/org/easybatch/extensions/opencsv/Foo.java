@@ -37,6 +37,13 @@ public class Foo {
     public Foo() {
     }
 
+    public Foo(String firstName, String lastName, int age, boolean married) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.married = married;
+    }
+
     public boolean isMarried() {
         return married;
     }
