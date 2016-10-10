@@ -257,6 +257,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.write(JsonValue.NULL);
                 } catch (Exception e) {
+                    LOGGER.log(Level.FINE, "Invalid json generator state", e); // JUL does not have DEBUG level ..
                     jsonGenerator.write(key, JsonValue.NULL);
                 }
                 break;

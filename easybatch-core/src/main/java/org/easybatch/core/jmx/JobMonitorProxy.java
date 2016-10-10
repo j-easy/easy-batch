@@ -104,7 +104,7 @@ public class JobMonitorProxy implements Runnable {
                 try {
                     jmxConnector.close();
                 } catch (IOException e) {
-                    LOGGER.warning("Unable to close JMX connector");
+                    LOGGER.log(Level.WARNING, "Unable to close JMX connector", e);
                 }
             }
         }
