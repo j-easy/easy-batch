@@ -25,6 +25,7 @@
 package org.easybatch.core.writer;
 
 import java.io.*;
+import java.nio.file.Path;
 
 /**
  * Record writer that writes records to a file.
@@ -100,6 +101,36 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
      */
     public FileRecordWriter(final FileWriter fileWriter) throws IOException {
         super(fileWriter);
+    }
+
+    /**
+     * Record writer that writes records to a file.
+     *
+     * @param path the output file.
+     */
+    public FileRecordWriter(final Path path) throws IOException {
+        super(new FileWriter(path.toFile()));
+    }
+
+    /**
+     * Record writer that writes records to a file.
+     *
+     * @param path          the output file.
+     * @param lineSeparator the line separator.
+     */
+    public FileRecordWriter(final Path path, final String lineSeparator) throws IOException {
+        this(path.toFile(), lineSeparator);
+    }
+
+    /**
+     * Record writer that writes records to a file.
+     *
+     * @param path          the output file.
+     * @param lineSeparator the line separator.
+     * @param charsetName   the charset name
+     */
+    public FileRecordWriter(final Path path, final String lineSeparator, final String charsetName) throws IOException {
+        this(path.toFile(), lineSeparator, charsetName);
     }
 
     /**
