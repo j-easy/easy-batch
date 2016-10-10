@@ -27,9 +27,11 @@ package org.easybatch.flatfile;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.StringRecord;
+import org.easybatch.core.util.Utils;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -83,6 +85,31 @@ public class FlatFileRecordReader implements RecordReader {
      */
     public FlatFileRecordReader(final File input, final String charsetName) {
         this.input = input;
+        this.charsetName = charsetName;
+    }
+
+
+    /**
+     * Create a new flat file record reader.
+     *
+     * @param path the input file path
+     */
+    public FlatFileRecordReader(final Path path) {
+        Utils.checkNotNull(path, "path");
+        this.input = path.toFile();
+        this.charsetName = Charset.defaultCharset().name();
+    }
+
+
+    /**
+     * Create a new flat file record reader.
+     *
+     * @param path the input file path
+     * @param charsetName the encoding to use to read the file
+     */
+    public FlatFileRecordReader(final Path path, final String charsetName) {
+        Utils.checkNotNull(path, "path");
+        this.input = path.toFile();
         this.charsetName = charsetName;
     }
 

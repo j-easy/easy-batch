@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,13 +16,15 @@ public class FlatFileRecordReaderTest {
 
     private FlatFileRecordReader flatFileRecordReader;
 
-    private File dataSource, emptyDataSource, nonExistingDataSource;
+    private File dataSource;
+    private Path emptyDataSource;
+    private String nonExistingDataSource;
 
     @Before
     public void setUp() throws Exception {
         dataSource = new File("src/test/resources/tweets.csv");
-        emptyDataSource = new File("src/test/resources/empty-file.txt");
-        nonExistingDataSource = new File("src/test/resources/foo.bar");
+        emptyDataSource = Paths.get("src/test/resources/empty-file.txt");
+        nonExistingDataSource = "src/test/resources/foo.bar";
     }
 
     @Test
