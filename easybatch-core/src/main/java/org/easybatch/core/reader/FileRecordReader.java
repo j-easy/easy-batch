@@ -39,7 +39,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * A convenient {@link RecordReader} that recursively reads files in a directory.
+ * A convenient {@link RecordReader} that reads files in a directory.
  *
  * This reader produces {@link FileRecord} instances.
  *
@@ -47,38 +47,53 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  */
 public class FileRecordReader implements RecordReader {
 
-    /**
-     * The directory to read files from.
-     */
     private File directory;
-
-    /**
-     * The data source iterator.
-     */
     private Iterator<File> iterator;
-
-    /**
-     * The current record number.
-     */
     private long currentRecordNumber;
+    private boolean recursive;
 
     /**
-     * Create a {@link FileRecordReader} to read files recursively from a given directory.
+     * Create a {@link FileRecordReader} to read files from a given directory.
      *
-     * @param directory the directory to read files from.
+     * @param directory to read files from
      */
-    public FileRecordReader(File directory) {
+    public FileRecordReader(final File directory) {
+        checkNotNull(directory, "directory");
         this.directory = directory;
     }
 
     /**
-     * Create a {@link FileRecordReader} to read files recursively from a given directory.
+     * Create a {@link FileRecordReader} to read files from a given directory.
      *
-     * @param path the directory to read files from.
+     * @param directory to read files from
+     * @param recursive if the reader should be recursive
      */
-    public FileRecordReader(Path path) {
+    public FileRecordReader(final File directory, final boolean recursive) {
+        checkNotNull(directory, "directory");
+        this.directory = directory;
+        this.recursive = recursive;
+    }
+
+    /**
+     * Create a {@link FileRecordReader} to read files from a given directory.
+     *
+     * @param path to read files from
+     */
+    public FileRecordReader(final Path path) {
         checkNotNull(path, "path");
         this.directory = path.toFile();
+    }
+
+    /**
+     * Create a {@link FileRecordReader} to read files from a given directory.
+     *
+     * @param path to read files from
+     *  @param recursive if the reader should be recursive
+     */
+    public FileRecordReader(final Path path, final boolean recursive) {
+        checkNotNull(path, "path");
+        this.directory = path.toFile();
+        this.recursive = recursive;
     }
 
     /**
@@ -99,7 +114,9 @@ public class FileRecordReader implements RecordReader {
                 if (file.isFile()) {
                     files.add(file);
                 } else {
-                    files.addAll(getFiles(file));
+                    if (recursive) {
+                        files.addAll(getFiles(file));
+                    }
                 }
             }
         }
