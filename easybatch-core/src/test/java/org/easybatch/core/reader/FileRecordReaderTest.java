@@ -29,62 +29,48 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.easybatch.core.util.Utils.FILE_SEPARATOR;
-import static org.easybatch.core.util.Utils.JAVA_IO_TMPDIR;
 
 public class FileRecordReaderTest {
 
     private FileRecordReader fileRecordReader;
 
-    private File dataSource;
-
-    private File emptyDataSource;
-
-    private File nonExistingDataSource;
+    private Path emptyDirectory;
 
     @Before
     public void setUp() throws Exception {
-        dataSource = new File(JAVA_IO_TMPDIR);
-        fileRecordReader = new FileRecordReader(dataSource);
+        emptyDirectory = Paths.get("target/foo");
+        Files.createDirectory(emptyDirectory);
+    }
+
+    @Test
+    public void whenDirectoryIsNotEmpty_thenThereShouldBeANextRecordToRead() throws Exception {
+        fileRecordReader = new FileRecordReader(new File("src/main/java/org/easybatch/core/reader"));
         fileRecordReader.open();
+        assertThat(fileRecordReader.readRecord()).isNotNull(); // there is at least the FileRecordReader.java file
+    }
 
-        nonExistingDataSource = new File(JAVA_IO_TMPDIR + FILE_SEPARATOR + "ImSureThisDirectoryDoesNotExist");
+    @Test
+    public void whenDirectoryIsEmpty_thenThereShouldBeNoNextRecordToRead() throws Exception {
+        fileRecordReader = new FileRecordReader(emptyDirectory);
+        fileRecordReader.open();
+        assertThat(fileRecordReader.readRecord()).isNull();
+    }
 
-        //create empty directory
-        emptyDataSource = new File("easyBatchTestEmptyDirectory");
-        emptyDataSource.mkdir();
+    @Test(expected = IllegalArgumentException.class)
+    public void whenDirectoryDoesNotExist_thenShouldThrowAnIllegalArgumentException() throws Exception {
+        fileRecordReader = new FileRecordReader(Paths.get("src/main/java/ImSureThisDirectoryDoesNotExist"));
+        fileRecordReader.open();
     }
 
     @After
     public void tearDown() throws Exception {
-        emptyDataSource.delete();
         fileRecordReader.close();
-    }
-
-    @Test
-    public void whenTheDataSourceIsNotEmpty_ThenThereShouldBeANextRecordToRead() throws Exception {
-        assertThat(fileRecordReader.readRecord()).isNotNull();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void whenTheDirectoryDoesNotExist_ThenShouldThrowAnIllegalArgumentException() throws Exception {
-        fileRecordReader.close();
-        fileRecordReader = new FileRecordReader(nonExistingDataSource);
-        fileRecordReader.open();
-    }
-
-    /*
-     * Empty directory tests
-     */
-
-    @Test
-    public void whenTheDataSourceIsEmpty_ThenThereShouldBeNoNextRecordToRead() throws Exception {
-        fileRecordReader.close();
-        fileRecordReader = new FileRecordReader(emptyDataSource);
-        fileRecordReader.open();
-        assertThat(fileRecordReader.readRecord()).isNull();
+        Files.delete(emptyDirectory);
     }
 
 }

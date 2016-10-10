@@ -28,6 +28,7 @@ import org.easybatch.core.record.FileRecord;
 import org.easybatch.core.record.Header;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -35,6 +36,7 @@ import java.util.List;
 
 import static java.lang.String.format;
 import static org.easybatch.core.util.Utils.checkArgument;
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * A convenient {@link RecordReader} that recursively reads files in a directory.
@@ -67,6 +69,16 @@ public class FileRecordReader implements RecordReader {
      */
     public FileRecordReader(File directory) {
         this.directory = directory;
+    }
+
+    /**
+     * Create a {@link FileRecordReader} to read files recursively from a given directory.
+     *
+     * @param path the directory to read files from.
+     */
+    public FileRecordReader(Path path) {
+        checkNotNull(path, "path");
+        this.directory = path.toFile();
     }
 
     /**
