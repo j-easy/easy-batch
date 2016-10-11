@@ -44,7 +44,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Record
 
     private char delimiter = ',';
 
-    private char qualifier;
+    private char qualifier = '\'';
 
     private boolean strictQualifiers;
 

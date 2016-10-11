@@ -41,8 +41,6 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 public class OpenCsvRecordMapperTest {
 
     @Mock
-    private StringRecord record;
-    @Mock
     private Header header;
 
     private OpenCsvRecordMapper<Foo> openCsvRecordMapper;
@@ -81,14 +79,27 @@ public class OpenCsvRecordMapperTest {
 
     @Test
     public void testOpenCsvQualifier() throws Exception {
-        openCsvRecordMapper.setQualifier('\'');
-        StringRecord fooRecord = new StringRecord(header, "'foo,s','bar'");
+        openCsvRecordMapper.setQualifier('\"');
+        StringRecord fooRecord = new StringRecord(header, "\"foo,s\",\"bar\"");
         Record<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
 
         Foo foo = actual.getPayload();
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo,s");
+        assertThat(foo.getLastName()).isEqualTo("bar");
+    }
+
+    @Test
+    public void testOpenCsvStrictQualifier() throws Exception {
+        openCsvRecordMapper.setStrictQualifiers(true);
+        StringRecord fooRecord = new StringRecord(header, "\'foo\'x,\'bar\'"); // characters outside quotes (x) should be ignored
+        Record<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
+        assertThat(actual.getHeader()).isEqualTo(header);
+
+        Foo foo = actual.getPayload();
+        assertThat(foo).isNotNull();
+        assertThat(foo.getFirstName()).isEqualTo("foo");
         assertThat(foo.getLastName()).isEqualTo("bar");
     }
 
