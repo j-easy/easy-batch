@@ -42,6 +42,19 @@ public class OpenCsvRecordMarshaller<P> implements RecordMarshaller<Record<P>, S
         this.fieldExtractor = new BeanFieldExtractor<>(type, fields);
     }
 
+    /**
+     * Create a open CSV record marshaller.
+     *
+     * @param fieldExtractor to use to extract fields
+     * @throws IntrospectionException If the object to marshal cannot be introspected
+     */
+    public OpenCsvRecordMarshaller(final FieldExtractor<P> fieldExtractor) throws IntrospectionException {
+        Utils.checkNotNull(fieldExtractor, "field extractor");
+        this.fieldExtractor = fieldExtractor;
+        this.delimiter = DEFAULT_DELIMITER;
+        this.qualifier = DEFAULT_QUALIFIER;
+    }
+
     @Override
     public StringRecord processRecord(Record<P> record) throws Exception {
         StringWriter stringWriter = null;
@@ -90,15 +103,5 @@ public class OpenCsvRecordMarshaller<P> implements RecordMarshaller<Record<P>, S
      */
     public void setQualifier(char qualifier) {
         this.qualifier = qualifier;
-    }
-
-    /**
-     * Set field extractor.
-     *
-     * @param fieldExtractor to use
-     */
-    public void setFieldExtractor(final FieldExtractor<P> fieldExtractor) {
-        Utils.checkNotNull(fieldExtractor, "field extractor");
-        this.fieldExtractor = fieldExtractor;
     }
 }
