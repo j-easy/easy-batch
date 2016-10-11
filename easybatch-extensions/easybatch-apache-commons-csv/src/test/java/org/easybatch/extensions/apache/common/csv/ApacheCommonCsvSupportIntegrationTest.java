@@ -24,40 +24,35 @@
 
 package org.easybatch.extensions.apache.common.csv;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.easybatch.core.writer.StandardOutputRecordWriter;
+import org.easybatch.core.processor.RecordCollector;
+import org.easybatch.core.reader.StringRecordReader;
 import org.easybatch.test.common.Tweet;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.contrib.java.lang.system.SystemOutRule;
 
-import java.io.FileReader;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.easybatch.core.record.PayloadExtractor.extractPayloads;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 public class ApacheCommonCsvSupportIntegrationTest {
 
-    @Rule
-    public final SystemOutRule systemOut = new SystemOutRule().enableLog();
-
     @Test
     public void testAllComponentsTogether() throws Exception {
+        String dataSource = "1,foo,hello" + LINE_SEPARATOR + "2,bar,hey" + LINE_SEPARATOR + "3,baz,hi";
 
-        CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader("id", "user", "message");
-        CSVParser parser = new CSVParser(new FileReader(this.getClass().getResource("/tweets.csv").getFile()), csvFormat);
-
+        RecordCollector<String> recordCollector = new RecordCollector<>();
         aNewJob()
-                .reader(new ApacheCommonCsvRecordReader(parser))
-                .mapper(new ApacheCommonCsvRecordMapper<>(Tweet.class))
+                .reader(new StringRecordReader(dataSource))
+                .mapper(new ApacheCommonCsvRecordMapper<>(Tweet.class, "id", "user", "message"))
                 .marshaller(new ApacheCommonCsvRecordMarshaller<>(Tweet.class, new String[]{"id", "user", "message"}, ';', '\''))
-                .writer(new StandardOutputRecordWriter())
+                .processor(recordCollector)
                 .build().call();
 
-        assertThat(systemOut.getLog()).isEqualTo("'1';'foo';'hello'" + LINE_SEPARATOR +
-                "'2';'bar';'hey'" + LINE_SEPARATOR +
-                "'3';'baz';'hi'" + LINE_SEPARATOR);
+
+        List<String> records = extractPayloads(recordCollector.getRecords());
+
+        assertThat(records).containsExactly("'1';'foo';'hello'", "'2';'bar';'hey'", "'3';'baz';'hi'");
     }
 }
