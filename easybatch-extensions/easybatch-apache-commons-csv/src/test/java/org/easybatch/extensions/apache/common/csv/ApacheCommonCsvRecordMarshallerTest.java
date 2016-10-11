@@ -24,8 +24,6 @@
 
 package org.easybatch.extensions.apache.common.csv;
 
-import org.easybatch.core.record.GenericRecord;
-import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,12 +32,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ApacheCommonCsvRecordMarshallerTest {
 
     @Mock
-    private Header header;
+    private Record<Foo> record;
 
     private ApacheCommonCsvRecordMarshaller<Foo> marshaller;
 
@@ -53,7 +52,7 @@ public class ApacheCommonCsvRecordMarshallerTest {
         Foo foo = new Foo();
         foo.setFirstName("foo");
         foo.setLastName("bar");
-        Record<Foo> record = new GenericRecord<>(header, foo);
+        when(record.getPayload()).thenReturn(foo);
 
         String expected = "'foo';'bar';'false'";
         String actual = marshaller.processRecord(record).getPayload();
