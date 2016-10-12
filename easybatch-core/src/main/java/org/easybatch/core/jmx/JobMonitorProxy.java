@@ -57,8 +57,6 @@ public class JobMonitorProxy implements Runnable {
 
     private String jobName;
 
-    private String jobExecutionId;
-
     private List<JobMonitoringListener> notificationListeners;
 
     /**
@@ -67,13 +65,11 @@ public class JobMonitorProxy implements Runnable {
      * @param host           the host on which the job is running
      * @param port           the port on which JMX notification are sent
      * @param jobName        the job name
-     * @param jobExecutionId the job execution id
      */
-    public JobMonitorProxy(final String host, final int port, final String jobName, final String jobExecutionId) {
+    public JobMonitorProxy(final String host, final int port, final String jobName) {
         this.host = host;
         this.port = port;
         this.jobName = jobName;
-        this.jobExecutionId = jobExecutionId;
         notificationListeners = new ArrayList<>();
     }
 
@@ -92,7 +88,7 @@ public class JobMonitorProxy implements Runnable {
         try {
             String serviceURL = format(JMX_SERVICE_URL, host, port);
             JMXServiceURL url = new JMXServiceURL(serviceURL);
-            ObjectName objectName = new ObjectName(JMX_MBEAN_NAME + "id=" + jobExecutionId + ",name=" + jobName);
+            ObjectName objectName = new ObjectName(JMX_MBEAN_NAME + "name=" + jobName);
             jmxConnector = JMXConnectorFactory.connect(url, new HashMap<String, Object>());
             MBeanServerConnection mBeanServerConnection = jmxConnector.getMBeanServerConnection();
             registerNotificationListeners(objectName, mBeanServerConnection, jmxConnector);
