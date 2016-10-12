@@ -38,8 +38,6 @@ import javax.management.remote.JMXConnectionNotification;
  */
 public abstract class JobMonitoringListener implements NotificationListener {
 
-    private JobReport jobReport;
-
     /**
      * Method invoked when a new job report update is received.
      *
@@ -49,10 +47,8 @@ public abstract class JobMonitoringListener implements NotificationListener {
 
     /**
      * Method invoked when the JMX connection is closed.
-     *
-     * @param jobReport the last job report
      */
-    public abstract void onConnectionClosed(final JobReport jobReport);
+    public abstract void onConnectionClosed();
 
     /**
      * {@inheritDoc}
@@ -60,12 +56,12 @@ public abstract class JobMonitoringListener implements NotificationListener {
     public void handleNotification(Notification notification, Object handback) {
         if (notification instanceof AttributeChangeNotification) {
             AttributeChangeNotification attributeChangeNotification = (AttributeChangeNotification) notification;
-            jobReport = (JobReport)attributeChangeNotification.getNewValue();
+            JobReport jobReport = (JobReport)attributeChangeNotification.getNewValue();
             onJobReportUpdate(jobReport);
         }
 
         if (notification instanceof JMXConnectionNotification) {
-            onConnectionClosed(jobReport);
+            onConnectionClosed();
         }
 
     }
