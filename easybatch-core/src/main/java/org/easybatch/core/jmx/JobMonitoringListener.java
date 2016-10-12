@@ -46,6 +46,11 @@ public abstract class JobMonitoringListener implements NotificationListener {
     public abstract void onJobReportUpdate(final JobReport jobReport);
 
     /**
+     * Method invoked when the JMX connection is opened.
+     */
+    public abstract void onConnectionOpened();
+
+    /**
      * Method invoked when the JMX connection is closed.
      */
     public abstract void onConnectionClosed();
@@ -61,7 +66,13 @@ public abstract class JobMonitoringListener implements NotificationListener {
         }
 
         if (notification instanceof JMXConnectionNotification) {
-            onConnectionClosed();
+            JMXConnectionNotification jmxConnectionNotification = (JMXConnectionNotification) notification;
+            String type = jmxConnectionNotification.getType();
+            switch (type) {
+                case JMXConnectionNotification.OPENED: onConnectionOpened(); break;
+                case JMXConnectionNotification.CLOSED: onConnectionClosed(); break;
+                default: break;
+            }
         }
 
     }

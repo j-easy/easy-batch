@@ -43,7 +43,14 @@ public class CliJobMonitoringListener extends JobMonitoringListener {
     }
 
     @Override
+    public void onConnectionOpened() {
+        System.out.println();
+        System.out.println("JMX connection opened");
+    }
+
+    @Override
     public void onConnectionClosed() {
+        System.out.println();
         System.out.println("JMX connection closed");
     }
 
