@@ -10,7 +10,7 @@
 
     <groupId>org.easybatch</groupId>
     <artifactId>easybatch</artifactId>
-    <version>5.0.0-RC2-SNAPSHOT</version>
+    <version>5.0.0-RC3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Easy Batch</name>
     <description>Easy Batch parent module</description>
