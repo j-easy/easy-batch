@@ -4,6 +4,7 @@ import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.job.Job;
 import org.easybatch.core.reader.StringRecordReader;
+import org.easybatch.core.writer.StandardOutputRecordWriter;
 
 import static org.easybatch.core.job.JobBuilder.aNewJob;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
@@ -21,6 +22,7 @@ public class App {
         Job job = aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .processor(new TweetProcessor())
+                .writer(new StandardOutputRecordWriter())
                 .build();
 
         // Execute the job
