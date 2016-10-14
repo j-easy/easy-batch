@@ -257,6 +257,7 @@
                     <version>${maven-javadoc-plugin.version}</version>
                     <configuration>
                         <additionalparam>-Xdoclint:none</additionalparam>
+                        <excludePackageNames>org.easybatch.test.common</excludePackageNames>
                     </configuration>
                     <executions>
                         <execution>
