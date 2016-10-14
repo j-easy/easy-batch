@@ -22,12 +22,11 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.extensions.opencsv.test;
+package org.easybatch.extensions.opencsv;
 
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
-import org.easybatch.extensions.opencsv.OpenCsvRecordMapper;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -41,8 +40,6 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 @RunWith(MockitoJUnitRunner.class)
 public class OpenCsvRecordMapperTest {
 
-    @Mock
-    private StringRecord record;
     @Mock
     private Header header;
 
@@ -82,14 +79,27 @@ public class OpenCsvRecordMapperTest {
 
     @Test
     public void testOpenCsvQualifier() throws Exception {
-        openCsvRecordMapper.setQualifier('\'');
-        StringRecord fooRecord = new StringRecord(header, "'foo,s','bar'");
+        openCsvRecordMapper.setQualifier('\"');
+        StringRecord fooRecord = new StringRecord(header, "\"foo,s\",\"bar\"");
         Record<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
 
         Foo foo = actual.getPayload();
         assertThat(foo).isNotNull();
         assertThat(foo.getFirstName()).isEqualTo("foo,s");
+        assertThat(foo.getLastName()).isEqualTo("bar");
+    }
+
+    @Test
+    public void testOpenCsvStrictQualifier() throws Exception {
+        openCsvRecordMapper.setStrictQualifiers(true);
+        StringRecord fooRecord = new StringRecord(header, "\'foo\'x,\'bar\'"); // characters outside quotes (x) should be ignored
+        Record<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
+        assertThat(actual.getHeader()).isEqualTo(header);
+
+        Foo foo = actual.getPayload();
+        assertThat(foo).isNotNull();
+        assertThat(foo.getFirstName()).isEqualTo("foo");
         assertThat(foo.getLastName()).isEqualTo("bar");
     }
 

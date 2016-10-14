@@ -24,32 +24,59 @@
 
 package org.easybatch.extensions.apache.common.csv;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.easybatch.core.mapper.AbstractRecordMapper;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Record;
+import org.easybatch.core.record.StringRecord;
+
+import java.io.StringReader;
 
 /**
- * Mapper that maps {@link ApacheCommonCsvRecord} instances to domain objects.
+ * Mapper that maps {@link StringRecord} instances to domain objects using <a href="http://commons.apache.org/proper/commons-csv/">Apache Common CSV</a>.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class ApacheCommonCsvRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<ApacheCommonCsvRecord, Record<P>> {
+public class ApacheCommonCsvRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<StringRecord, Record<P>> {
+
+    private CSVFormat csvFormat = CSVFormat.newFormat(',');
 
     /**
      * Create a {@link ApacheCommonCsvRecordMapper}.
      *
      * @param recordClass the target type class
+     * @param columns     field names in order
      */
-    public ApacheCommonCsvRecordMapper(Class<P> recordClass) {
+    public ApacheCommonCsvRecordMapper(Class<P> recordClass, String... columns) {
         super(recordClass);
+        csvFormat = csvFormat.withHeader(columns);
     }
 
     @Override
-    public Record<P> processRecord(final ApacheCommonCsvRecord record) throws Exception {
-        CSVRecord csvRecord = record.getPayload();
+    public Record<P> processRecord(final StringRecord record) throws Exception {
+        String payload = record.getPayload();
+        CSVParser csvParser = csvFormat.parse(new StringReader(payload));
+        CSVRecord csvRecord = csvParser.iterator().next();
+        csvParser.close();
         return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(csvRecord.toMap()));
     }
 
+    /*
+     * Setter for parameters
+     */
+
+    public void setTrim(boolean trim) {
+        csvFormat = csvFormat.withTrim(trim);
+    }
+
+    public void setDelimiter(char delimiter) {
+        csvFormat = csvFormat.withDelimiter(delimiter);
+    }
+
+    public void setQuote(char quote) {
+        csvFormat = csvFormat.withQuote(quote);
+    }
 }

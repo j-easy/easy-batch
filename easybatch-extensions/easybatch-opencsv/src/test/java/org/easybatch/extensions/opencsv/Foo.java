@@ -22,27 +22,58 @@
  *  THE SOFTWARE.
  */
 
-package org.easybatch.extensions.apache.common.csv;
+package org.easybatch.extensions.opencsv;
 
-import org.apache.commons.csv.CSVRecord;
-import org.easybatch.core.record.GenericRecord;
-import org.easybatch.core.record.Header;
+public class Foo {
 
-/**
- * Record having a {@link CSVRecord} as payload.
- *
- * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
- */
-public class ApacheCommonCsvRecord extends GenericRecord<CSVRecord> {
+    private String firstName;
 
-    /**
-     * Create a {@link ApacheCommonCsvRecord}.
-     *
-     * @param header  the record header
-     * @param payload the record payload
-     */
-    public ApacheCommonCsvRecord(final Header header, final CSVRecord payload) {
-        super(header, payload);
+    private String lastName;
+
+    private int age;
+
+    private boolean married;
+
+    public Foo() {
+    }
+
+    public Foo(String firstName, String lastName, int age, boolean married) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.married = married;
+    }
+
+    public boolean isMarried() {
+        return married;
+    }
+
+    public void setMarried(boolean married) {
+        this.married = married;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
 }

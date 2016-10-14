@@ -34,6 +34,8 @@ import javax.xml.stream.events.*;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A record reader that reads xml records from an xml stream.
@@ -43,6 +45,8 @@ import java.util.Iterator;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class XmlRecordReader implements RecordReader {
+
+    private static final Logger LOGGER = Logger.getLogger(XmlRecordReader.class.getName());
 
     /**
      * The root element name.
@@ -118,6 +122,7 @@ public class XmlRecordReader implements RecordReader {
             }
             return true;
         } catch (Exception e) {
+            LOGGER.log(Level.FINE, "Unable to peek next xml record", e); // JUL does not have DEBUG level ..
             return false;
         }
     }

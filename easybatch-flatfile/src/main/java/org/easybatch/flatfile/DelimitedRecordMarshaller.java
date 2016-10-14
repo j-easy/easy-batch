@@ -105,21 +105,17 @@ public class DelimitedRecordMarshaller<P> implements RecordMarshaller<Record<P>,
     @Override
     public StringRecord processRecord(final Record<P> record) throws Exception {
         Iterable<Object> values = fieldExtractor.extractFields(record.getPayload());
-        try {
-            StringBuilder stringBuilder = new StringBuilder();
-            Iterator<?> iterator = values.iterator();
-            while (iterator.hasNext()) {
-                Object value = iterator.next();
-                stringBuilder.append(qualifier);
-                stringBuilder.append(value);
-                stringBuilder.append(qualifier);
-                if (iterator.hasNext()) {
-                    stringBuilder.append(delimiter);
-                }
+        StringBuilder stringBuilder = new StringBuilder();
+        Iterator<?> iterator = values.iterator();
+        while (iterator.hasNext()) {
+            Object value = iterator.next();
+            stringBuilder.append(qualifier);
+            stringBuilder.append(value);
+            stringBuilder.append(qualifier);
+            if (iterator.hasNext()) {
+                stringBuilder.append(delimiter);
             }
-            return new StringRecord(record.getHeader(), stringBuilder.toString());
-        } catch (Exception e) {
-            throw new Exception(e);
         }
+        return new StringRecord(record.getHeader(), stringBuilder.toString());
     }
 }

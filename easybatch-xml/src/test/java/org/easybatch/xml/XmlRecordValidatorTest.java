@@ -21,56 +21,48 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  */
+package org.easybatch.xml;
 
-package org.easybatch.core.reader;
-
-import org.junit.After;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.xml.sax.SAXParseException;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-public class FileRecordReaderTest {
+@RunWith(MockitoJUnitRunner.class)
+public class XmlRecordValidatorTest {
 
-    private FileRecordReader fileRecordReader;
+    @Mock
+    private Record<Foo> record;
 
-    private Path emptyDirectory;
+    private XmlRecordValidator<Foo> xmlRecordValidator;
 
     @Before
     public void setUp() throws Exception {
-        emptyDirectory = Paths.get("target/foo");
-        Files.createDirectory(emptyDirectory);
+        xmlRecordValidator = new XmlRecordValidator<>(new File("src/test/resources/foo.xsd"));
     }
 
     @Test
-    public void whenDirectoryIsNotEmpty_thenThereShouldBeANextRecordToRead() throws Exception {
-        fileRecordReader = new FileRecordReader(new File("src/main/java/org/easybatch/core/reader"));
-        fileRecordReader.open();
-        assertThat(fileRecordReader.readRecord()).isNotNull(); // there is at least the FileRecordReader.java file
+    public void whenRecordIsValid_thenShouldReturnTheSameRecord() throws Exception {
+        Foo Foo = new Foo("foo"); // valid name: length = 3 chars <= expected max 5 chars
+        when(record.getPayload()).thenReturn(Foo);
+
+        Record<Foo> fooRecord = xmlRecordValidator.processRecord(record);
+        assertThat(fooRecord).isEqualTo(record);
     }
 
-    @Test
-    public void whenDirectoryIsEmpty_thenThereShouldBeNoNextRecordToRead() throws Exception {
-        fileRecordReader = new FileRecordReader(emptyDirectory);
-        fileRecordReader.open();
-        assertThat(fileRecordReader.readRecord()).isNull();
-    }
+    @Test(expected = SAXParseException.class)
+    public void whenRecordIsNotValid_thenShouldReturnThrowAnException() throws Exception {
+        Foo Foo = new Foo("foobar"); // invalid name: length = 6 chars > expected max 5 chars
+        when(record.getPayload()).thenReturn(Foo);
 
-    @Test(expected = IllegalArgumentException.class)
-    public void whenDirectoryDoesNotExist_thenShouldThrowAnIllegalArgumentException() throws Exception {
-        fileRecordReader = new FileRecordReader(Paths.get("src/main/java/ImSureThisDirectoryDoesNotExist"));
-        fileRecordReader.open();
+        xmlRecordValidator.processRecord(record);
     }
-
-    @After
-    public void tearDown() throws Exception {
-        fileRecordReader.close();
-        Files.delete(emptyDirectory);
-    }
-
 }

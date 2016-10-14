@@ -2,6 +2,28 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
+Changes in version 5.0.0-RC2 (2016-10-12)
+-----------------------------------------
+
+New features
+
+* issue #243 : add OpenCsvRecordMarshaller
+* issue #242 : add XmlRecordValidator
+* issue #241 : add option to activate/deactivate recursivity in FileRecordReader
+
+Bug fixes
+
+* issue #238 : FlatFileRecordReader should not throw a FileNotFoundException at construction time
+
+Enhancements and API changes
+
+* issue #236 : add constructor with java.nio.file.Path in FileRecordReader
+* issue #239 : add constructor with java.nio.file.Path in FileRecordWriter
+* issue #240 : add constructor with java.nio.file.Path in FlatFileRecordReader
+* issue #244 : ApacheCommonCsvRecord is redundant
+* issue #245 : ApacheCommonCsvRecordReader is redundant
+* issue #246 : ApacheCommonCsvRecordMapper should be configurable with field names
+
 Changes in version 5.0.0-RC1 (2016-10-01)
 -----------------------------------------
 

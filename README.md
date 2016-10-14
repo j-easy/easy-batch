@@ -55,8 +55,6 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 |Project Home          | [http://www.easybatch.org](http://www.easybatch.org)                         |
 |Continuous integration| [Build job @ Travis CI](https://travis-ci.org/EasyBatch/easybatch-framework) |
 |Agile Board           | [Backlog items @ waffle.io](https://waffle.io/easybatch/easybatch-framework) |
-|Code coverage         | [![Coverage](https://coveralls.io/repos/EasyBatch/easybatch-framework/badge.svg?style=flat&branch=master&service=github)](https://coveralls.io/github/EasyBatch/easybatch-framework?branch=master) |
-|Sonar analysis        | [![Quality Gate](https://sonarqube.com/api/badges/gate?key=org.easybatch:easybatch)](https://sonarqube.com/overview?id=org.easybatch%3Aeasybatch) |
 |Dependencies          | [![Dependencies](https://www.versioneye.com/user/projects/5589cb2e3133630061000022/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5589cb2e3133630061000022) |
 
 ## Presentations, articles & blog posts
@@ -72,13 +70,13 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 #### Stable:
 
-* v5: The best, greatest and recommended one: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.0.0-RC1|)
-* v4: Production ready, in maintenance mode: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.2.0|)
+* v5: The best, greatest and recommended one: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.0.0-RC2|)
+* v4: Production ready, in maintenance mode: [v4.2.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.2.0|) | [documentation](http://www.easybatch.org/v4.2.0/) | [tutorials](https://github.com/EasyBatch/easybatch-tutorials/releases/tag/v4.2.0) | [javadoc](http://www.easybatch.org/v4.2.0/api/)
 * v3, v2, v1 : archived versions
 
 #### Development:
 
-Current development version is 5.0.0-RC2-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)
+Current development version is 5.0.0-RC3-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)
 
 If you want to import a snapshot version, you need to use the following repository:
 

@@ -44,7 +44,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Record
 
     private char delimiter = ',';
 
-    private char qualifier;
+    private char qualifier = '\'';
 
     private boolean strictQualifiers;
 
@@ -66,7 +66,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Record
     }
 
     @Override
-    public Record<T> processRecord(final StringRecord record) {
+    public Record<T> processRecord(final StringRecord record) throws Exception {
         String payload = record.getPayload();
         CSVReader openCsvReader = new CSVReader(
                 new StringReader(payload),
@@ -75,6 +75,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Record
                 strictQualifiers);
         List<T> list = csvToBean.parse(strategy, openCsvReader);
         T mappedObject = list.get(0);
+        openCsvReader.close();
         return new GenericRecord<>(record.getHeader(), mappedObject);
     }
 

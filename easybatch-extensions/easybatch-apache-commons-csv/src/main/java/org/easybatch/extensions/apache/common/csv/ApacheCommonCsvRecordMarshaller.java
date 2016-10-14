@@ -110,6 +110,7 @@ public class ApacheCommonCsvRecordMarshaller<P> implements RecordMarshaller<Reco
         Iterable<Object> iterable = fieldExtractor.extractFields(record.getPayload());
         csvPrinter.printRecord(iterable);
         csvPrinter.flush();
+        csvPrinter.close();
         return new StringRecord(record.getHeader(), stringWriter.toString());
     }
 

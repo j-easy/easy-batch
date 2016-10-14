@@ -70,11 +70,10 @@ public class EmptyRecordFilterTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void integrationTest() throws Exception {
         String dataSource = "foo" + LINE_SEPARATOR + "" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR + "" + LINE_SEPARATOR;
 
-        RecordCollector recordCollector = new RecordCollector();
+        RecordCollector<String> recordCollector = new RecordCollector<>();
         Job job = aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .filter(new EmptyRecordFilter())
@@ -88,7 +87,7 @@ public class EmptyRecordFilterTest {
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(2);
 
-        List<Record> records = recordCollector.getRecords();
+        List<Record<String>> records = recordCollector.getRecords();
         assertThat(records).extracting("payload").containsExactly("foo", "bar");
     }
 }

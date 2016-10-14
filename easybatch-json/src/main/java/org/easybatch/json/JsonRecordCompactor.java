@@ -27,6 +27,8 @@ package org.easybatch.json;
 import org.easybatch.core.processor.RecordCompactor;
 
 import java.io.ByteArrayInputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Compacts a Json record payload.
@@ -34,6 +36,8 @@ import java.io.ByteArrayInputStream;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class JsonRecordCompactor extends RecordCompactor {
+
+    private static final Logger LOGGER = Logger.getLogger(JsonRecordCompactor.class.getName());
 
     @Override
     protected String compact(final String payload) {
@@ -60,13 +64,14 @@ public class JsonRecordCompactor extends RecordCompactor {
             }
             return flatJson;
         } catch (Exception exception) {
+            LOGGER.log(Level.WARNING, "Unable to compact record paylaod", exception);
             return EMPTY_STRING;
         } finally {
             if (jsonRecordReader != null) {
                 try {
                     jsonRecordReader.close();
                 } catch (Exception e) {
-                    throw new RuntimeException("Unable to close json reader");
+                    LOGGER.log(Level.WARNING, "Unable to close json reader", e);
                 }
             }
         }
