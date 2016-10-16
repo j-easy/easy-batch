@@ -24,7 +24,6 @@
 
 package org.easybatch.jdbc;
 
-import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.easybatch.test.common.Tweet;
 import org.junit.Before;
@@ -44,10 +43,8 @@ public class JdbcRecordMapperTest {
 
     private JdbcRecordMapper<Tweet> tweetMapper;
 
-    private JdbcRecord jdbcRecord;
-
     @Mock
-    private Header header;
+    private JdbcRecord jdbcRecord;
     @Mock
     private ResultSet payload;
     @Mock
@@ -55,20 +52,22 @@ public class JdbcRecordMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        tweetMapper = new JdbcRecordMapper<>(Tweet.class);
-        jdbcRecord = new JdbcRecord(header, payload);
+        when(payload.getString(1)).thenReturn("1");
+        when(payload.getString(2)).thenReturn("foo");
+        when(payload.getString(3)).thenReturn("Hello!");
+        when(payload.getMetaData()).thenReturn(metadata);
+        when(metadata.getColumnCount()).thenReturn(3);
+        when(jdbcRecord.getPayload()).thenReturn(payload);
     }
 
     @Test
     public void testMapRecordWithDefaultMapping() throws Exception {
-        when(payload.getMetaData()).thenReturn(metadata);
-        when(metadata.getColumnCount()).thenReturn(3);
+
+        tweetMapper = new JdbcRecordMapper<>(Tweet.class);
+
         when(metadata.getColumnLabel(1)).thenReturn("id");
         when(metadata.getColumnLabel(2)).thenReturn("user");
         when(metadata.getColumnLabel(3)).thenReturn("message");
-        when(payload.getString(1)).thenReturn("1");
-        when(payload.getString(2)).thenReturn("foo");
-        when(payload.getString(3)).thenReturn("Hello!");
 
         Record<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
         Tweet tweet = actual.getPayload();
@@ -80,15 +79,6 @@ public class JdbcRecordMapperTest {
     public void testMapRecordWithCustomMapping() throws Exception {
 
         tweetMapper = new JdbcRecordMapper<>(Tweet.class, "id", "user", "message");
-
-        when(payload.getMetaData()).thenReturn(metadata);
-        when(metadata.getColumnCount()).thenReturn(3);
-        when(metadata.getColumnLabel(1)).thenReturn("t_id");
-        when(metadata.getColumnLabel(2)).thenReturn("t_user");
-        when(metadata.getColumnLabel(3)).thenReturn("t_message");
-        when(payload.getString(1)).thenReturn("1");
-        when(payload.getString(2)).thenReturn("foo");
-        when(payload.getString(3)).thenReturn("Hello!");
 
         Record<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
         Tweet tweet = actual.getPayload();

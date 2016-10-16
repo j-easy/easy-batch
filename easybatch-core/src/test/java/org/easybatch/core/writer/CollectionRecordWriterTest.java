@@ -70,8 +70,8 @@ public class CollectionRecordWriterTest {
 
     @Test
     public void testWriteRecord() throws Exception {
-        writer.writeRecords(new Batch(record1));
-        assertThat(items).containsExactly(payload1);
+        writer.writeRecords(new Batch(record1, record2));
+        assertThat(items).containsExactly(payload1, payload2);
     }
 
     @Test

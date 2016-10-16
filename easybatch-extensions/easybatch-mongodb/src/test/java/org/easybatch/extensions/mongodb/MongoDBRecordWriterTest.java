@@ -27,7 +27,6 @@ package org.easybatch.extensions.mongodb;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import org.easybatch.core.record.Batch;
-import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,8 +44,6 @@ public class MongoDBRecordWriterTest {
     @Mock
     private DBObject dbObject;
     @Mock
-    private Header header;
-    @Mock
     private MongoDBRecord mongoDBRecord;
     @Mock
     private RuntimeException exception;
@@ -55,7 +52,6 @@ public class MongoDBRecordWriterTest {
 
     @Before
     public void setUp() throws Exception {
-        when(mongoDBRecord.getHeader()).thenReturn(header);
         when(mongoDBRecord.getPayload()).thenReturn(dbObject);
         mongoDBRecordWriter = new MongoDBRecordWriter(collection);
     }

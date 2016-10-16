@@ -42,21 +42,16 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class MongoDBRecordReaderTest {
 
-    public static final int TOTAL_RECORDS = 10;
-
-    public static final String DATA_SOURCE_NAME = "things";
+    private static final String DATA_SOURCE_NAME = "things";
 
     private MongoDBRecordReader reader;
 
     @Mock
     private DBCollection collection;
-
     @Mock
     private DBObject query;
-
     @Mock
     private DBCursor cursor;
-
     @Mock
     private DBObject dbObject;
 
@@ -67,7 +62,6 @@ public class MongoDBRecordReaderTest {
         when(collection.find(query)).thenReturn(cursor);
         when(cursor.hasNext()).thenReturn(true);
         when(cursor.next()).thenReturn(dbObject);
-        when(cursor.count()).thenReturn(TOTAL_RECORDS);
         when(collection.getName()).thenReturn(DATA_SOURCE_NAME);
 
         reader.open();
@@ -78,6 +72,7 @@ public class MongoDBRecordReaderTest {
         Record record = reader.readRecord();
 
         assertThat(record.getHeader().getNumber()).isEqualTo(1);
+        assertThat(record.getHeader().getSource()).isEqualTo("MongoDB collection: " + DATA_SOURCE_NAME);
         assertThat(record.getPayload()).isEqualTo(dbObject);
         verify(cursor).next();
     }

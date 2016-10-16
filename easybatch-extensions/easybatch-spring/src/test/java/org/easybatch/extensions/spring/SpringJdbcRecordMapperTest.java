@@ -36,7 +36,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.Types;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -58,7 +57,6 @@ public class SpringJdbcRecordMapperTest {
     @Before
     public void setUp() throws Exception {
         mapper = new SpringJdbcRecordMapper<>(Tweet.class);
-        when(header.getNumber()).thenReturn(1L);
         when(jdbcRecord.getHeader()).thenReturn(header);
         when(jdbcRecord.getPayload()).thenReturn(payload);
     }
@@ -68,22 +66,15 @@ public class SpringJdbcRecordMapperTest {
         when(payload.getMetaData()).thenReturn(metadata);
         when(metadata.getColumnCount()).thenReturn(3);
         when(metadata.getColumnLabel(1)).thenReturn("id");
-        when(metadata.getColumnType(1)).thenReturn(Types.INTEGER);
         when(metadata.getColumnLabel(2)).thenReturn("user");
-        when(metadata.getColumnType(2)).thenReturn(Types.VARCHAR);
         when(metadata.getColumnLabel(3)).thenReturn("message");
-        when(metadata.getColumnType(3)).thenReturn(Types.VARCHAR);
         when(payload.getInt(1)).thenReturn(1);
         when(payload.getString(2)).thenReturn("foo");
         when(payload.getString(3)).thenReturn("message");
 
         Record<Tweet> actual = mapper.processRecord(jdbcRecord);
-        Tweet tweet = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.getId()).isEqualTo(1);
-        assertThat(tweet.getUser()).isEqualTo("foo");
-        assertThat(tweet.getMessage()).isEqualTo("message");
+        assertThat(actual.getPayload()).isEqualTo(new Tweet(1, "foo", "message"));
     }
 }
