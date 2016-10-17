@@ -61,6 +61,7 @@
         <module>easybatch-mongodb</module>
         <module>easybatch-hibernate</module>
         <module>easybatch-msexcel</module>
+        <module>easybatch-stream</module>
     </modules>
 
 
