@@ -30,6 +30,7 @@ public class DefaultJobReportFormatterTest {
         JobMetrics metrics = new JobMetrics();
         metrics.setStartTime(START_TIME);
         metrics.setEndTime(END_TIME);
+        metrics.addMetric("nbFoos", 1);
         report = new JobReport();
         report.setParameters(parameters);
         report.setMetrics(metrics);
@@ -56,7 +57,8 @@ public class DefaultJobReportFormatterTest {
                 "\tRead count = 0" + LINE_SEPARATOR +
                 "\tWrite count = 0" + LINE_SEPARATOR +
                 "\tFiltered count = 0" + LINE_SEPARATOR +
-                "\tError count = 0";
+                "\tError count = 0" + LINE_SEPARATOR +
+                "\tnbFoos = 1";
 
         String formattedReport = reportFormatter.formatReport(report);
 

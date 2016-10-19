@@ -74,6 +74,8 @@ public class HtmlJobReportFormatterTest {
         jobReport.getMetrics().incrementReadCount();
         jobReport.getMetrics().incrementReadCount();
         jobReport.getMetrics().incrementWriteCount(1);
+        jobReport.getMetrics().addMetric("nbFoos", 1);
+        jobReport.getMetrics().addMetric("nbBars", 2);
     }
 
     @Test
