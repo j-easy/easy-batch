@@ -84,6 +84,6 @@ public class StreamRecordReader<T> implements RecordReader {
      */
     @Override
     public void close() throws Exception {
-        // no op
+        stream.close();
     }
 }
