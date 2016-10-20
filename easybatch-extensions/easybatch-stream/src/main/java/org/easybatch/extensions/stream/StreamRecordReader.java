@@ -26,6 +26,15 @@ public class StreamRecordReader<T> implements RecordReader {
    * Create a {@link StreamRecordReader} to read record from java 8 stream.
    *
    * @param stream to read record from
+   */
+  public StreamRecordReader(final Stream<T> stream) {
+    this(stream, DEFAULT_DATASOURCE_NAME);
+  }
+
+  /**
+   * Create a {@link StreamRecordReader} to read record from java 8 stream.
+   *
+   * @param stream to read record from
    *  @param datasource name (default to DEFAULT_DATASOURCE_NAME)
    */
   public StreamRecordReader(final Stream<T> stream, final String datasource) {
