@@ -20,31 +20,17 @@ import java.util.stream.Stream;
  */
 public class StreamRecordReader<T> implements RecordReader {
 
-    private static final String DEFAULT_DATASOURCE_NAME = "In-Memory Stream";
-
-    protected String datasource;
-    protected Stream<T> stream;
+    protected Stream<T> dataSource;
     protected Iterator<T> iterator;
     protected long currentRecordNumber;
 
     /**
-     * Create a {@link StreamRecordReader} to read record from a {@link Stream}.
+     * Create a {@link StreamRecordReader} to read records from a {@link Stream}.
      *
-     * @param stream to read record from
+     * @param dataSource to read records from
      */
-    public StreamRecordReader(final Stream<T> stream) {
-        this(stream, DEFAULT_DATASOURCE_NAME);
-    }
-
-    /**
-     * Create a {@link StreamRecordReader} to read record from a {@link Stream}.
-     *
-     * @param stream     to read record from
-     * @param datasource name (default to DEFAULT_DATASOURCE_NAME)
-     */
-    public StreamRecordReader(final Stream<T> stream, final String datasource) {
-        this.stream = stream;
-        this.datasource = datasource;
+    public StreamRecordReader(final Stream<T> dataSource) {
+        this.dataSource = dataSource;
     }
 
     /**
@@ -52,16 +38,11 @@ public class StreamRecordReader<T> implements RecordReader {
      */
     @Override
     public void open() throws Exception {
-        if (stream == null) {
-            throw new IllegalArgumentException("stream must not be null");
+        if (dataSource == null) {
+            throw new IllegalArgumentException("The stream must not be null");
         }
-
-        if (datasource == null || datasource.isEmpty()) {
-            datasource = DEFAULT_DATASOURCE_NAME;
-        }
-
         currentRecordNumber = 0;
-        iterator = stream.iterator();
+        iterator = dataSource.iterator();
     }
 
     /**
@@ -72,11 +53,15 @@ public class StreamRecordReader<T> implements RecordReader {
     @Override
     public Record<T> readRecord() throws Exception {
         if (iterator.hasNext()) {
-            Header header = new Header(++currentRecordNumber, datasource, new Date());
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
             return new GenericRecord<>(header, iterator.next());
         } else {
             return null;
         }
+    }
+
+    private String getDataSourceName() {
+        return "In-Memory Stream";
     }
 
     /**
@@ -84,6 +69,6 @@ public class StreamRecordReader<T> implements RecordReader {
      */
     @Override
     public void close() throws Exception {
-        stream.close();
+        dataSource.close();
     }
 }
