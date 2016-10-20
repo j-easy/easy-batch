@@ -100,6 +100,7 @@ For any further question, you can use the [forum](https://groups.google.com/d/fo
 * [ammachado](https://github.com/ammachado)
 * [anandhi](https://github.com/anandhi)
 * [AymanDF](https://github.com/AymanDF)
+* [chsfleury](https://github.com/chsfleury)
 * [chellan](https://github.com/chellan)
 * [gs-spadmanabhan](https://github.com/gs-spadmanabhan)
 * [imranrajjad](https://github.com/imranrajjad)
