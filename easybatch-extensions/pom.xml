@@ -63,5 +63,17 @@
         <module>easybatch-msexcel</module>
     </modules>
 
+    <!--This will build the module only if the detected jdk start with "1.8"-->
+    <profiles>
+        <profile>
+            <id>java8</id>
+            <activation>
+                <jdk>1.8</jdk>
+            </activation>
+            <modules>
+                <module>easybatch-stream</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>
