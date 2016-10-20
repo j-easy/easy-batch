@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  */
 public class StreamRecordReader<T> implements RecordReader {
 
-    private static final String DEFAULT_DATASOURCE_NAME = "DATASOURCE";
+    private static final String DEFAULT_DATASOURCE_NAME = "In-Memory Stream";
 
     protected String datasource;
     protected Stream<T> stream;
