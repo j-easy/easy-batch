@@ -48,10 +48,23 @@ public class FileRecordReaderTest {
     }
 
     @Test
-    public void whenDirectoryIsNotEmpty_thenThereShouldBeANextRecordToRead() throws Exception {
-        fileRecordReader = new FileRecordReader(new File("src/main/java/org/easybatch/core/reader"));
+    public void whenDirectoryIsNotEmptyAndRecursiveIsInactive_thenShouldOnlyReadFirstLevelFiles() throws Exception {
+        fileRecordReader = new FileRecordReader(new File("src/test/resources"));
         fileRecordReader.open();
-        assertThat(fileRecordReader.readRecord()).isNotNull(); // there is at least the FileRecordReader.java file
+
+        assertThat(fileRecordReader.readRecord()).isNotNull(); // foo.txt
+        assertThat(fileRecordReader.readRecord()).isNull();
+    }
+
+    @Test
+    public void whenDirectoryIsNotEmptyAndRecursiveIsActive_thenShouldReadAllFilesInHierarchy() throws Exception {
+        fileRecordReader = new FileRecordReader(new File("src/test/resources"), true);
+        fileRecordReader.open();
+
+        // should read foo.txt and bars/bar.txt
+        assertThat(fileRecordReader.readRecord()).isNotNull();
+        assertThat(fileRecordReader.readRecord()).isNotNull();
+        assertThat(fileRecordReader.readRecord()).isNull();
     }
 
     @Test
@@ -63,7 +76,7 @@ public class FileRecordReaderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void whenDirectoryDoesNotExist_thenShouldThrowAnIllegalArgumentException() throws Exception {
-        fileRecordReader = new FileRecordReader(Paths.get("src/main/java/ImSureThisDirectoryDoesNotExist"));
+        fileRecordReader = new FileRecordReader(Paths.get("src/test/resources/ImSureThisDirectoryDoesNotExist"));
         fileRecordReader.open();
     }
 
