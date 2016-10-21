@@ -68,7 +68,7 @@ public class DelimitedRecordMapperTest {
     public void testRecordSizeWithEmptyField() throws Exception {
         when(record.getPayload()).thenReturn("foo,bar,30,1990-12-12,");
         FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(record);
-        assertThat(flatFileRecord.getFlatFileFields().get(4).getRawContent()).isEmpty();
+        assertThat(flatFileRecord.getFlatFileRecordFields().get(4).getRawContent()).isEmpty();
     }
 
     @Test
@@ -140,18 +140,18 @@ public class DelimitedRecordMapperTest {
         );
         FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(record);
         assertThat(flatFileRecord).isNotNull();
-        List<FlatFileField> flatFileFields = flatFileRecord.getFlatFileFields();
-        assertThat(flatFileFields).hasSize(2);
-        assertThat(flatFileFields).extracting("rawContent")
+        List<FlatFileRecordField> flatFileRecordFields = flatFileRecord.getFlatFileRecordFields();
+        assertThat(flatFileRecordFields).hasSize(2);
+        assertThat(flatFileRecordFields).extracting("rawContent")
           .containsExactly("foo", "true");
     }
 
     private void validateRecord(final StringRecord stringRecord) throws Exception {
         FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(stringRecord);
         assertThat(flatFileRecord).isNotNull();
-        List<FlatFileField> flatFileFields = flatFileRecord.getFlatFileFields();
-        assertThat(flatFileFields).hasSize(5);
-        assertThat(flatFileFields).extracting("rawContent")
+        List<FlatFileRecordField> flatFileRecordFields = flatFileRecord.getFlatFileRecordFields();
+        assertThat(flatFileRecordFields).hasSize(5);
+        assertThat(flatFileRecordFields).extracting("rawContent")
           .containsExactly("foo", "bar", "30", "1990-12-12", "true");
     }
 

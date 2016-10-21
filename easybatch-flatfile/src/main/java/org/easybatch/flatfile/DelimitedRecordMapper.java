@@ -171,14 +171,14 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
         FlatFileRecord flatFileRecord = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<>();
         int index = 0;
-        for (FlatFileField flatFileField : flatFileRecord.getFlatFileFields()) {
+        for (FlatFileRecordField flatFileRecordField : flatFileRecord.getFlatFileRecordFields()) {
             String fieldName;
             if (fieldNamesRetrievedFromHeader) {
-                fieldName = fieldNames[flatFileField.getIndex()];
+                fieldName = fieldNames[flatFileRecordField.getIndex()];
             } else {
                 fieldName = fieldNames[index++];
             }
-            String fieldValue = flatFileField.getRawContent();
+            String fieldValue = flatFileRecordField.getRawContent();
             fieldsContents.put(fieldName, fieldValue);
         }
         return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(fieldsContents));
@@ -197,19 +197,19 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
 
         checkQualifier(tokens);
 
-        List<FlatFileField> fields = new ArrayList<>();
+        List<FlatFileRecordField> fields = new ArrayList<>();
         int index = 0;
         for (String token : tokens) {
             token = trimWhitespaces(token);
             token = removeQualifier(token);
-            fields.add(new FlatFileField(index++, token));
+            fields.add(new FlatFileRecordField(index++, token));
         }
 
         FlatFileRecord flatFileRecord = new FlatFileRecord(record.getHeader(), payload);
         if (fieldsPositions != null) {
             filterFields(fields);
         }
-        flatFileRecord.getFlatFileFields().addAll(fields);
+        flatFileRecord.getFlatFileRecordFields().addAll(fields);
         return flatFileRecord;
     }
 
@@ -251,8 +251,8 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
         }
     }
 
-    private void filterFields(List<FlatFileField> fields) {
-        Iterator<FlatFileField> iterator = fields.iterator();
+    private void filterFields(List<FlatFileRecordField> fields) {
+        Iterator<FlatFileRecordField> iterator = fields.iterator();
         while (iterator.hasNext()) {
             int index = iterator.next().getIndex();
             if (!fieldsPositions.contains(index)) {

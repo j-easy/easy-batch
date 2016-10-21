@@ -40,15 +40,15 @@ class FlatFileRecord extends StringRecord {
     /**
      * The record fields.
      */
-    private List<FlatFileField> flatFileFields;
+    private List<FlatFileRecordField> flatFileRecordFields;
 
     public FlatFileRecord(final Header header, final String payload) {
         super(header, payload);
-        flatFileFields = new ArrayList<>();
+        flatFileRecordFields = new ArrayList<>();
     }
 
-    public List<FlatFileField> getFlatFileFields() {
-        return flatFileFields;
+    public List<FlatFileRecordField> getFlatFileRecordFields() {
+        return flatFileRecordFields;
     }
 
 }

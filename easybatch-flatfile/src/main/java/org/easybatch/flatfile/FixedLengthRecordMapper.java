@@ -94,9 +94,9 @@ public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implemen
 
         FlatFileRecord flatFileRecord = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<>();
-        for (FlatFileField flatFileField : flatFileRecord.getFlatFileFields()) {
-            String fieldName = fieldNames[flatFileField.getIndex()];
-            String fieldValue = flatFileField.getRawContent();
+        for (FlatFileRecordField flatFileRecordField : flatFileRecord.getFlatFileRecordFields()) {
+            String fieldName = fieldNames[flatFileRecordField.getIndex()];
+            String fieldValue = flatFileRecordField.getRawContent();
             fieldsContents.put(fieldName, fieldValue);
         }
         return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(fieldsContents));
@@ -115,8 +115,8 @@ public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implemen
         for (int i = 0; i < fieldsLength.length; i++) {
             String token = payload.substring(fieldsOffsets[i], fieldsOffsets[i + 1]);
             token = trimWhitespaces(token);
-            FlatFileField flatFileField = new FlatFileField(i, token);
-            flatFileRecord.getFlatFileFields().add(flatFileField);
+            FlatFileRecordField flatFileRecordField = new FlatFileRecordField(i, token);
+            flatFileRecord.getFlatFileRecordFields().add(flatFileRecordField);
         }
 
         return flatFileRecord;

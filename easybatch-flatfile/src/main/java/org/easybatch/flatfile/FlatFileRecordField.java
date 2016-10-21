@@ -29,7 +29,7 @@ package org.easybatch.flatfile;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-class FlatFileField {
+class FlatFileRecordField {
 
     /**
      * Field index in the record (starting at 1).
@@ -41,7 +41,7 @@ class FlatFileField {
      */
     private String rawContent;
 
-    public FlatFileField(final int index, final String rawContent) {
+    public FlatFileRecordField(final int index, final String rawContent) {
         this.index = index;
         this.rawContent = rawContent;
     }
