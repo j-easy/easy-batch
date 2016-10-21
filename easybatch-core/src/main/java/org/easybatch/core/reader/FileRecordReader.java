@@ -58,8 +58,7 @@ public class FileRecordReader implements RecordReader {
      * @param directory to read files from
      */
     public FileRecordReader(final File directory) {
-        checkNotNull(directory, "directory");
-        this.directory = directory;
+        this(directory, false);
     }
 
     /**
@@ -80,8 +79,7 @@ public class FileRecordReader implements RecordReader {
      * @param path to read files from
      */
     public FileRecordReader(final Path path) {
-        checkNotNull(path, "path");
-        this.directory = path.toFile();
+        this(path, false);
     }
 
     /**
