@@ -113,6 +113,7 @@ class BatchJob implements Job {
 
     private void openReader() throws RecordReaderOpeningException {
         try {
+            LOGGER.log(Level.FINE, "Opening record reader");
             recordReader.open();
         } catch (Exception e) {
             throw new RecordReaderOpeningException("Unable to open record reader", e);
@@ -121,6 +122,7 @@ class BatchJob implements Job {
 
     private void openWriter() throws RecordWriterOpeningException {
         try {
+            LOGGER.log(Level.FINE, "Opening record writer");
             recordWriter.open();
         } catch (Exception e) {
             throw new RecordWriterOpeningException("Unable to open record writer", e);
@@ -156,6 +158,7 @@ class BatchJob implements Job {
     private Record readRecord() throws RecordReadingException {
         Record record;
         try {
+            LOGGER.log(Level.FINE, "Reading next record");
             recordReaderListener.beforeRecordReading();
             record = recordReader.readRecord();
             recordReaderListener.afterRecordReading(record);
@@ -170,12 +173,13 @@ class BatchJob implements Job {
     private void processRecord(Record record, Batch batch) throws ErrorThresholdExceededException {
         Record processedRecord;
         try {
+            LOGGER.log(Level.FINE, "Processing {0}", record);
             notifyJobUpdate();
             pipelineListener.beforeRecordProcessing(record);
             processedRecord = recordProcessor.processRecord(record);
             pipelineListener.afterRecordProcessing(record, processedRecord);
             if (processedRecord == null) {
-                LOGGER.log(Level.INFO, "{0} has been filtered", record);
+                LOGGER.log(Level.FINE, "{0} has been filtered", record);
                 metrics.incrementFilteredCount();
             } else {
                 batch.addRecord(processedRecord);
@@ -192,6 +196,7 @@ class BatchJob implements Job {
     }
 
     private void writeBatch(Batch batch) throws BatchWritingException {
+        LOGGER.log(Level.FINE, "Writing {0}", batch);
         try {
             if (!batch.isEmpty()) {
                 recordWriterListener.beforeRecordWriting(batch);
@@ -229,6 +234,7 @@ class BatchJob implements Job {
 
     private void closeReader() {
         try {
+            LOGGER.log(Level.FINE, "Closing record reader");
             recordReader.close();
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Unable to close record reader", e);
@@ -238,6 +244,7 @@ class BatchJob implements Job {
 
     private void closeWriter() {
         try {
+            LOGGER.log(Level.FINE, "Closing record writer");
             recordWriter.close();
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Unable to close record writer", e);
