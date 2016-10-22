@@ -29,28 +29,21 @@ package org.easybatch.flatfile;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-class FlatFileRecordField {
+class Field {
 
-    /**
-     * Field index in the record (starting at 1).
-     */
     private int index;
-
-    /**
-     * The field raw content.
-     */
     private String rawContent;
 
-    public FlatFileRecordField(final int index, final String rawContent) {
+    Field(final int index, final String rawContent) {
         this.index = index;
         this.rawContent = rawContent;
     }
 
-    public int getIndex() {
+    int getIndex() {
         return index;
     }
 
-    public String getRawContent() {
+    String getRawContent() {
         return rawContent;
     }
 
