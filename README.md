@@ -70,7 +70,7 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 #### Stable:
 
-* v5: The best, greatest and recommended one: [v5.0.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.0.0|) | [documentation](http://www.easybatch.org/v5.0.0/) | [tutorials](https://github.com/EasyBatch/easybatch-tutorials/releases/tag/v5.0.0) | [javadoc](http://www.easybatch.org/v5.0.0/api/)
+* v5: The best, greatest and recommended one: [v5.0.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.0.0|) | [documentation](http://www.easybatch.org/v5.0.0/) | [tutorials](https://github.com/EasyBatch/easybatch-tutorials) | [javadoc](http://www.easybatch.org/v5.0.0/api/)
 * v4: Production ready, in maintenance mode: [v4.2.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.2.0|) | [documentation](http://www.easybatch.org/v4.2.0/) | [tutorials](https://github.com/EasyBatch/easybatch-tutorials/releases/tag/v4.2.0) | [javadoc](http://www.easybatch.org/v4.2.0/api/)
 * v3, v2, v1 : archived versions
 
