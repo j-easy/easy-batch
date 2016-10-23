@@ -70,13 +70,13 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 #### Stable:
 
-* v5: The best, greatest and recommended one: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.0.0-RC2|)
+* v5: The best, greatest and recommended one: [v5.0.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.0.0|) | [documentation](http://www.easybatch.org/v5.0.0/) | [tutorials](https://github.com/EasyBatch/easybatch-tutorials/releases/tag/v5.0.0) | [javadoc](http://www.easybatch.org/v5.0.0/api/)
 * v4: Production ready, in maintenance mode: [v4.2.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.2.0|) | [documentation](http://www.easybatch.org/v4.2.0/) | [tutorials](https://github.com/EasyBatch/easybatch-tutorials/releases/tag/v4.2.0) | [javadoc](http://www.easybatch.org/v4.2.0/api/)
 * v3, v2, v1 : archived versions
 
 #### Development:
 
-Current development version is 5.0.0-RC3-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)
+Current development version is 5.0.1-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)
 
 If you want to import a snapshot version, you need to use the following repository:
 
@@ -94,6 +94,20 @@ You are welcome to contribute to the project with pull requests on GitHub.
 If you find a bug or want to request a feature, please use the [issue tracker](https://github.com/easybatch/easybatch-framework/issues).
 
 For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or the [gitter channel](https://gitter.im/EasyBatch/easybatch-framework).
+
+## Bug bounty program
+
+> "Software bugs are impossible to detect by anybody except the end user", [_Murphy's law_](http://www.murphys-laws.com/murphy/murphy-computer.html)
+
+<table>
+  <tr>
+    <td>You are end users of Easy Batch, and you can easily find bugs :smile:
+        <br/>File a bug and claim your bounty!</td>
+    <td>
+        <img src="https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/misc/bounty.jpg" height="100" width="100"/>
+    </td>
+  </tr>
+</table>
 
 ## Awesome contributors
 

@@ -2,6 +2,25 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
+Changes in version 5.0.0 (2016-10-23)
+-------------------------------------
+
+New features
+
+* issue #253 : Add MongoDBRecordMarshaller
+* issue #251 : Add support for custom metrics
+* issue #250 : Add java 8 stream support
+* issue #248 : Add onConnectionOpened method in JobMonitoringListener
+
+Bug fixes
+
+* issue #247 : onConnectionClosed in JobMonitoringListener is inconsistent
+
+Enhancements
+
+* issue #252 : MongoDBRecordWriter should use bulk writes
+* issue #249 : Update example in maven quick start archetype
+
 Changes in version 5.0.0-RC2 (2016-10-12)
 -----------------------------------------
 
