@@ -43,7 +43,7 @@
         <property name="name" value="hello world"/>
         <property name="batchSize" value="2"/>
         <property name="errorThreshold" value="100"/>
-        <property name="jmxMonitoring" value="false"/>
+        <property name="enableJmx" value="false"/>
 
         <!-- job components -->
         <property name="recordReader" ref="reader"/>

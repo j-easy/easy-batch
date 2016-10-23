@@ -24,10 +24,10 @@
 
 package org.easybatch.extensions.mongodb;
 
+import com.mongodb.BulkWriteOperation;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import org.easybatch.core.record.Batch;
-import org.easybatch.core.record.Header;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,31 +45,31 @@ public class MongoDBRecordWriterTest {
     @Mock
     private DBObject dbObject;
     @Mock
-    private Header header;
-    @Mock
     private MongoDBRecord mongoDBRecord;
     @Mock
     private RuntimeException exception;
+    @Mock
+    private BulkWriteOperation bulkWriteOperation;
 
     private MongoDBRecordWriter mongoDBRecordWriter;
 
     @Before
     public void setUp() throws Exception {
-        when(mongoDBRecord.getHeader()).thenReturn(header);
         when(mongoDBRecord.getPayload()).thenReturn(dbObject);
+        when(collection.initializeOrderedBulkOperation()).thenReturn(bulkWriteOperation);
         mongoDBRecordWriter = new MongoDBRecordWriter(collection);
     }
 
     @Test
-    public void testProcessRecord() throws Exception {
+    public void testWriteRecords() throws Exception {
         mongoDBRecordWriter.writeRecords(new Batch(mongoDBRecord));
 
-        verify(collection).save(dbObject);
+        verify(bulkWriteOperation).insert(dbObject);
     }
 
     @Test(expected = Exception.class)
-    public void testRecordProcessingWithError() throws Exception {
-        when(collection.save(dbObject)).thenThrow(exception);
+    public void testRecordWritingWithError() throws Exception {
+        when(bulkWriteOperation.execute()).thenThrow(exception);
 
         mongoDBRecordWriter.writeRecords(new Batch(mongoDBRecord));
     }

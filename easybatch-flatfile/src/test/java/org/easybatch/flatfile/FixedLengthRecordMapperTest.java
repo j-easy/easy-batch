@@ -60,10 +60,9 @@ public class FixedLengthRecordMapperTest {
 
     @Test
     public void testRecordParsing() throws Exception {
-        FlatFileRecord flatFileRecord = fixedLengthRecordMapper.parseRecord(record);
-        List<FlatFileField> flatFileFields = flatFileRecord.getFlatFileFields();
-        assertThat(flatFileFields).hasSize(3);
-        assertThat(flatFileFields).extracting("rawContent")
+        List<Field> fields = fixedLengthRecordMapper.parseRecord(record);
+        assertThat(fields).hasSize(3);
+        assertThat(fields).extracting("rawContent")
             .containsExactly("aaaa", "bb", "ccc");
     }
 
@@ -71,10 +70,9 @@ public class FixedLengthRecordMapperTest {
     public void testRecordParsingWithTrimmedWhitespaces() throws Exception {
         fixedLengthRecordMapper.setTrimWhitespaces(true);
         when(record.getPayload()).thenReturn(" aa bbcc ");
-        FlatFileRecord flatFileRecord = fixedLengthRecordMapper.parseRecord(record);
-        List<FlatFileField> flatFileFields = flatFileRecord.getFlatFileFields();
-        assertThat(flatFileFields).hasSize(3);
-        assertThat(flatFileFields).extracting("rawContent")
+        List<Field> fields = fixedLengthRecordMapper.parseRecord(record);
+        assertThat(fields).hasSize(3);
+        assertThat(fields).extracting("rawContent")
             .containsExactly("aa", "bb", "cc");
     }
 

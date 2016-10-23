@@ -31,7 +31,9 @@ import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -92,17 +94,17 @@ public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implemen
     @Override
     public Record<P> processRecord(final StringRecord record) throws Exception {
 
-        FlatFileRecord flatFileRecord = parseRecord(record);
+        List<Field> fields = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<>();
-        for (FlatFileField flatFileField : flatFileRecord.getFlatFileFields()) {
-            String fieldName = fieldNames[flatFileField.getIndex()];
-            String fieldValue = flatFileField.getRawContent();
+        for (Field field : fields) {
+            String fieldName = fieldNames[field.getIndex()];
+            String fieldValue = field.getRawContent();
             fieldsContents.put(fieldName, fieldValue);
         }
         return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(fieldsContents));
     }
 
-    FlatFileRecord parseRecord(final StringRecord record) throws Exception {
+    protected List<Field> parseRecord(final StringRecord record) throws Exception {
 
         String payload = record.getPayload();
         int recordLength = payload.length();
@@ -111,15 +113,15 @@ public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implemen
             throw new Exception("record length " + recordLength + " not equal to expected length of " + recordExpectedLength);
         }
 
-        FlatFileRecord flatFileRecord = new FlatFileRecord(record.getHeader(), payload);
+        List<Field> fields = new ArrayList<>();
         for (int i = 0; i < fieldsLength.length; i++) {
             String token = payload.substring(fieldsOffsets[i], fieldsOffsets[i + 1]);
             token = trimWhitespaces(token);
-            FlatFileField flatFileField = new FlatFileField(i, token);
-            flatFileRecord.getFlatFileFields().add(flatFileField);
+            Field field = new Field(i, token);
+            fields.add(field);
         }
 
-        return flatFileRecord;
+        return fields;
     }
 
 

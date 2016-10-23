@@ -24,6 +24,7 @@
 
 package org.easybatch.extensions.mongodb;
 
+import com.mongodb.BulkWriteOperation;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import org.easybatch.core.record.Batch;
@@ -58,9 +59,11 @@ public class MongoDBRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
+        BulkWriteOperation bulkWriteOperation = collection.initializeOrderedBulkOperation();
         for (Record record : batch) {
-            collection.save((DBObject) record.getPayload());
+            bulkWriteOperation.insert((DBObject) record.getPayload());
         }
+        bulkWriteOperation.execute();
     }
 
     @Override

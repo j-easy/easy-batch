@@ -26,7 +26,6 @@ package org.easybatch.validation;
 
 import org.easybatch.core.job.*;
 import org.easybatch.core.reader.IterableRecordReader;
-import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,14 +42,11 @@ public class BeanValidationRecordValidatorTest {
 
     @Mock
     private Record record;
-    @Mock
-    private Header header;
 
     private BeanValidationRecordValidator validator;
 
     @Before
     public void setUp() throws Exception {
-        when(record.getHeader()).thenReturn(header);
         validator = new BeanValidationRecordValidator();
     }
 

@@ -24,31 +24,50 @@
 
 package org.easybatch.flatfile;
 
-import org.easybatch.core.record.Header;
-import org.easybatch.core.record.StringRecord;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Flat file record containing textual data.
+ * A field in a flat file record.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-class FlatFileRecord extends StringRecord {
+public class Field {
+
+    private int index;
+    private String rawContent;
 
     /**
-     * The record fields.
+     * Create a new field
+     *
+     * @param index      of the field
+     * @param rawContent read from the record
      */
-    private List<FlatFileField> flatFileFields;
-
-    public FlatFileRecord(final Header header, final String payload) {
-        super(header, payload);
-        flatFileFields = new ArrayList<>();
+    public Field(final int index, final String rawContent) {
+        this.index = index;
+        this.rawContent = rawContent;
     }
 
-    public List<FlatFileField> getFlatFileFields() {
-        return flatFileFields;
+    /**
+     * Get field index.
+     *
+     * @return field index
+     */
+    public int getIndex() {
+        return index;
     }
 
+    /**
+     * Get raw content.
+     *
+     * @return raw content
+     */
+    public String getRawContent() {
+        return rawContent;
+    }
+
+    @Override
+    public String toString() {
+        return "Field: {" +
+                "index=" + index +
+                ", rawContent='" + rawContent + '\'' +
+                '}';
+    }
 }

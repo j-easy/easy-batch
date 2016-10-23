@@ -101,6 +101,7 @@ public class JobMonitorProxy implements Runnable {
         for (JobMonitoringListener notificationListener : notificationListeners) {
             mBeanServerConnection.addNotificationListener(objectName, notificationListener, null, null);
             jmxConnector.addConnectionNotificationListener(notificationListener, new ConnectionClosedNotificationFilter(), null);
+            jmxConnector.addConnectionNotificationListener(notificationListener, new ConnectionOpenedNotificationFilter(), null);
         }
     }
 
@@ -109,5 +110,12 @@ public class JobMonitorProxy implements Runnable {
             return notification.getType().equals(JMXConnectionNotification.CLOSED);
         }
     }
+
+    private class ConnectionOpenedNotificationFilter implements NotificationFilter {
+        public boolean isNotificationEnabled(Notification notification) {
+            return notification.getType().equals(JMXConnectionNotification.OPENED);
+        }
+    }
+
 
 }

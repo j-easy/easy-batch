@@ -10,7 +10,7 @@
 
     <groupId>org.easybatch</groupId>
     <artifactId>easybatch</artifactId>
-    <version>5.0.0-RC3-SNAPSHOT</version>
+    <version>5.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Easy Batch</name>
     <description>Easy Batch parent module</description>
@@ -22,7 +22,7 @@
         <junit.version>4.12</junit.version>
         <assertj.version>2.5.0</assertj.version>
         <spring.version>4.3.3.RELEASE</spring.version>
-        <mockito.version>1.10.19</mockito.version>
+        <mockito.version>2.2.5</mockito.version>
         <system-rules.version>1.16.1</system-rules.version>
         <hsqldb.version>2.3.4</hsqldb.version>
         <hibernate.version>4.3.11.Final</hibernate.version>
@@ -257,6 +257,7 @@
                     <version>${maven-javadoc-plugin.version}</version>
                     <configuration>
                         <additionalparam>-Xdoclint:none</additionalparam>
+                        <excludePackageNames>org.easybatch.test.common</excludePackageNames>
                     </configuration>
                     <executions>
                         <execution>

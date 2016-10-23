@@ -28,13 +28,13 @@ import org.easybatch.core.record.FileRecord;
 import org.easybatch.core.record.Header;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.*;
 
 import static java.lang.String.format;
+import static java.nio.file.Files.isRegularFile;
 import static org.easybatch.core.util.Utils.checkArgument;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -58,8 +58,7 @@ public class FileRecordReader implements RecordReader {
      * @param directory to read files from
      */
     public FileRecordReader(final File directory) {
-        checkNotNull(directory, "directory");
-        this.directory = directory;
+        this(directory, false);
     }
 
     /**
@@ -80,8 +79,7 @@ public class FileRecordReader implements RecordReader {
      * @param path to read files from
      */
     public FileRecordReader(final Path path) {
-        checkNotNull(path, "path");
-        this.directory = path.toFile();
+        this(path, false);
     }
 
     /**
@@ -100,27 +98,18 @@ public class FileRecordReader implements RecordReader {
      * Open the reader.
      */
     @Override
-    public void open() {
+    public void open() throws Exception {
         checkDirectory();
         iterator = getFiles(directory).listIterator();
         currentRecordNumber = 0;
     }
 
-    private List<File> getFiles(final File directory) {
-        List<File> files = new ArrayList<>();
-        File[] filesList = directory.listFiles();
-        if (filesList != null) {
-            for (File file : filesList) {
-                if (file.isFile()) {
-                    files.add(file);
-                } else {
-                    if (recursive) {
-                        files.addAll(getFiles(file));
-                    }
-                }
-            }
-        }
-        return files;
+    private List<File> getFiles(final File directory) throws IOException {
+        int maxDepth = recursive ? Integer.MAX_VALUE : 1;
+        FilesCollector filesCollector = new FilesCollector();
+        EnumSet<FileVisitOption> fileVisitOptions = EnumSet.noneOf(FileVisitOption.class);
+        Files.walkFileTree(directory.toPath(), fileVisitOptions, maxDepth, filesCollector);
+        return filesCollector.getFiles();
     }
 
     private void checkDirectory() {
@@ -159,5 +148,46 @@ public class FileRecordReader implements RecordReader {
     @Override
     public void close() {
         // no op
+    }
+
+    private class FilesCollector implements FileVisitor<Path> {
+
+        private List<File> files = new ArrayList<>();
+
+        FilesCollector() {
+        }
+
+        @Override
+        public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            if (isRegularFile(file)) {
+                files.add(file.toFile());
+            }
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult visitFileFailed(Path file, IOException exception) throws IOException {
+            if (exception != null) {
+                throw exception;
+            }
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult postVisitDirectory(Path dir, IOException exception) throws IOException {
+            if (exception != null) {
+                throw exception;
+            }
+            return FileVisitResult.CONTINUE;
+        }
+
+        public List<File> getFiles() {
+            return files;
+        }
     }
 }

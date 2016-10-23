@@ -1,5 +1,7 @@
 package org.easybatch.core.record;
 
+import org.easybatch.core.util.Utils;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -96,5 +98,19 @@ public class Batch implements Iterable<Record> {
     @Override
     public Iterator<Record> iterator() {
         return records.iterator();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Batch: {");
+        stringBuilder.append(Utils.LINE_SEPARATOR);
+        for (Record record : records) {
+            stringBuilder.append('\t');
+            stringBuilder.append(record);
+            stringBuilder.append(Utils.LINE_SEPARATOR);
+        }
+        stringBuilder.append('}');
+        return stringBuilder.toString();
     }
 }

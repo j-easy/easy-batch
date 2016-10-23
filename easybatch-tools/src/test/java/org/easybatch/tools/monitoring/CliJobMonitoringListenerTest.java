@@ -31,7 +31,6 @@ public class CliJobMonitoringListenerTest {
         when(report.getMetrics().getFilteredCount()).thenReturn(1L);
         when(report.getMetrics().getErrorCount()).thenReturn(1L);
         when(report.getMetrics().getWriteCount()).thenReturn(1L);
-        when(report.toString()).thenReturn("report");
     }
 
     @Test

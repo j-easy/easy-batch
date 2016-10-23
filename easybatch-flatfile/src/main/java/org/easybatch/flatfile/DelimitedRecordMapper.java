@@ -168,49 +168,43 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
 
     @Override
     public Record<P> processRecord(final StringRecord record) throws Exception {
-        FlatFileRecord flatFileRecord = parseRecord(record);
+        List<Field> fields = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<>();
         int index = 0;
-        for (FlatFileField flatFileField : flatFileRecord.getFlatFileFields()) {
+        for (Field field : fields) {
             String fieldName;
             if (fieldNamesRetrievedFromHeader) {
-                fieldName = fieldNames[flatFileField.getIndex()];
+                fieldName = fieldNames[field.getIndex()];
             } else {
                 fieldName = fieldNames[index++];
             }
-            String fieldValue = flatFileField.getRawContent();
-            fieldsContents.put(fieldName, fieldValue);
+            String rawContent = field.getRawContent();
+            fieldsContents.put(fieldName, rawContent);
         }
         return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(fieldsContents));
     }
 
-    FlatFileRecord parseRecord(final StringRecord record) throws Exception {
+    protected List<Field> parseRecord(final StringRecord record) throws Exception {
 
         String payload = record.getPayload();
         String[] tokens = payload.split(delimiter, -1);
 
         setRecordExpectedLength(tokens);
-
         setFieldNames(tokens);
-
         checkRecordLength(tokens);
-
         checkQualifier(tokens);
 
-        List<FlatFileField> fields = new ArrayList<>();
+        List<Field> fields = new ArrayList<>();
         int index = 0;
         for (String token : tokens) {
             token = trimWhitespaces(token);
             token = removeQualifier(token);
-            fields.add(new FlatFileField(index++, token));
+            fields.add(new Field(index++, token));
         }
-
-        FlatFileRecord flatFileRecord = new FlatFileRecord(record.getHeader(), payload);
         if (fieldsPositions != null) {
             filterFields(fields);
         }
-        flatFileRecord.getFlatFileFields().addAll(fields);
-        return flatFileRecord;
+        return fields;
     }
 
     private void checkQualifier(String[] tokens) throws Exception {
@@ -251,8 +245,8 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
         }
     }
 
-    private void filterFields(List<FlatFileField> fields) {
-        Iterator<FlatFileField> iterator = fields.iterator();
+    private void filterFields(List<Field> fields) {
+        Iterator<Field> iterator = fields.iterator();
         while (iterator.hasNext()) {
             int index = iterator.next().getIndex();
             if (!fieldsPositions.contains(index)) {

@@ -95,6 +95,7 @@ public class HtmlJobReportFormatter implements JobReportFormatter<String> {
         context.put("writeCount",metrics.getWriteCount());
         context.put("filteredCount",metrics.getFilteredCount());
         context.put("errorCount",metrics.getErrorCount());
+        context.put("customMetrics",metrics.getCustomMetrics());
 
         template.merge(context, stringWriter);
         return stringWriter.toString();

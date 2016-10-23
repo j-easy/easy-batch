@@ -24,6 +24,8 @@
 
 package org.easybatch.core.job;
 
+import java.util.Map;
+
 import static org.easybatch.core.util.Utils.*;
 
 /**
@@ -65,6 +67,10 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
         sb.append(LINE_SEPARATOR).append("\tWrite count = ").append(metrics.getWriteCount());
         sb.append(LINE_SEPARATOR).append("\tFiltered count = ").append(metrics.getFilteredCount());
         sb.append(LINE_SEPARATOR).append("\tError count = ").append(metrics.getErrorCount());
+        Map<String, Object> customMetrics = metrics.getCustomMetrics();
+        for (Map.Entry<String, Object> customMetric : customMetrics.entrySet()) {
+            sb.append(LINE_SEPARATOR).append("\t").append(customMetric.getKey()).append(" = ").append(customMetric.getValue());
+        }
 
         return sb.toString();
     }

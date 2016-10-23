@@ -25,6 +25,8 @@
 package org.easybatch.core.job;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Metrics of a job.
@@ -44,6 +46,8 @@ public class JobMetrics implements Serializable {
     private long filteredCount;
 
     private long errorCount;
+
+    private Map<String, Object> customMetrics = new HashMap<>();
 
     public void incrementFilteredCount() {
         filteredCount++;
@@ -97,4 +101,11 @@ public class JobMetrics implements Serializable {
         return writeCount;
     }
 
+    public void addMetric(String name, Object value) {
+        customMetrics.put(name, value);
+    }
+
+    public Map<String, Object> getCustomMetrics() {
+        return customMetrics;
+    }
 }
