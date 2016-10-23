@@ -104,7 +104,7 @@ public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implemen
         return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(fieldsContents));
     }
 
-    List<Field> parseRecord(final StringRecord record) throws Exception {
+    protected List<Field> parseRecord(final StringRecord record) throws Exception {
 
         String payload = record.getPayload();
         int recordLength = payload.length();

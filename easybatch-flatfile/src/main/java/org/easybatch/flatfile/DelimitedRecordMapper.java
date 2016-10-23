@@ -184,7 +184,7 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
         return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(fieldsContents));
     }
 
-    List<Field> parseRecord(final StringRecord record) throws Exception {
+    protected List<Field> parseRecord(final StringRecord record) throws Exception {
 
         String payload = record.getPayload();
         String[] tokens = payload.split(delimiter, -1);
