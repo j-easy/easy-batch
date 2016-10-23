@@ -10,7 +10,7 @@
 
     <groupId>org.easybatch</groupId>
     <artifactId>easybatch</artifactId>
-    <version>5.0.0</version>
+    <version>5.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Easy Batch</name>
     <description>Easy Batch parent module</description>
@@ -67,7 +67,7 @@
         <url>git@github.com:easybatch/easybatch-framework.git</url>
         <connection>scm:git:git@github.com:easybatch/easybatch-framework.git</connection>
         <developerConnection>scm:git:git@github.com:easybatch/easybatch-framework.git</developerConnection>
-        <tag>easybatch-5.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
