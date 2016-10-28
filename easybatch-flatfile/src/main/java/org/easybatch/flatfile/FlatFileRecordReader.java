@@ -24,10 +24,10 @@
 
 package org.easybatch.flatfile;
 
+import org.easybatch.core.reader.AbstractFileRecordReader;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.StringRecord;
-import org.easybatch.core.util.Utils;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -42,9 +42,8 @@ import java.util.Scanner;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class FlatFileRecordReader implements RecordReader {
+public class FlatFileRecordReader extends AbstractFileRecordReader {
 
-    private File input;
     private Scanner scanner;
     private String charsetName;
     private long currentRecordNumber;
@@ -84,7 +83,7 @@ public class FlatFileRecordReader implements RecordReader {
      * @param charsetName the encoding to use to read the file
      */
     public FlatFileRecordReader(final File input, final String charsetName) {
-        this.input = input;
+        super(input);
         this.charsetName = charsetName;
     }
 
@@ -95,8 +94,7 @@ public class FlatFileRecordReader implements RecordReader {
      * @param path the input file path
      */
     public FlatFileRecordReader(final Path path) {
-        Utils.checkNotNull(path, "path");
-        this.input = path.toFile();
+        super(path.toFile());
         this.charsetName = Charset.defaultCharset().name();
     }
 
@@ -108,8 +106,7 @@ public class FlatFileRecordReader implements RecordReader {
      * @param charsetName the encoding to use to read the file
      */
     public FlatFileRecordReader(final Path path, final String charsetName) {
-        Utils.checkNotNull(path, "path");
-        this.input = path.toFile();
+        super(path.toFile());
         this.charsetName = charsetName;
     }
 
@@ -126,7 +123,7 @@ public class FlatFileRecordReader implements RecordReader {
     @Override
     public void open() throws Exception {
         currentRecordNumber = 0;
-        scanner = new Scanner(input, charsetName);
+        scanner = new Scanner(file, charsetName);
     }
 
     @Override
@@ -137,7 +134,7 @@ public class FlatFileRecordReader implements RecordReader {
     }
 
     private String getDataSourceName() {
-        return input.getAbsolutePath();
+        return file.getAbsolutePath();
     }
 
 }

@@ -24,6 +24,9 @@
 
 package org.easybatch.json;
 
+import org.easybatch.core.reader.AbstractFileRecordReader;
+import org.easybatch.core.record.Record;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -46,7 +49,9 @@ import java.io.FileNotFoundException;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JsonFileRecordReader extends JsonRecordReader {
+public class JsonFileRecordReader extends AbstractFileRecordReader {
+
+    private JsonRecordReader jsonRecordReader;
 
     /**
      * Create a new {@link JsonFileRecordReader}.
@@ -54,7 +59,22 @@ public class JsonFileRecordReader extends JsonRecordReader {
      * <p>This reader produces {@link JsonRecord} instances.</p>
      */
     public JsonFileRecordReader(final File jsonFile) throws FileNotFoundException {
-        super(new FileInputStream(jsonFile));
+        super(jsonFile);
+        jsonRecordReader = new JsonRecordReader(new FileInputStream(jsonFile));
     }
 
+    @Override
+    public void open() throws Exception {
+        jsonRecordReader.open();
+    }
+
+    @Override
+    public Record readRecord() throws Exception {
+        return jsonRecordReader.readRecord();
+    }
+
+    @Override
+    public void close() throws Exception {
+        jsonRecordReader.close();
+    }
 }
