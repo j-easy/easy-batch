@@ -25,7 +25,6 @@
 package org.easybatch.xml;
 
 import org.easybatch.core.reader.AbstractFileRecordReader;
-import org.easybatch.core.record.Record;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,7 +52,7 @@ public class XmlFileRecordReader extends AbstractFileRecordReader {
     }
 
     @Override
-    public Record readRecord() throws Exception {
+    public XmlRecord readRecord() throws Exception {
         return xmlRecordReader.readRecord();
     }
 

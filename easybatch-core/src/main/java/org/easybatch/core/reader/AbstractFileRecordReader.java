@@ -11,7 +11,7 @@ public abstract class AbstractFileRecordReader implements RecordReader {
 
     protected File file;
 
-    public AbstractFileRecordReader(File file) {
+    protected AbstractFileRecordReader(File file) {
         this.file = file;
     }
 

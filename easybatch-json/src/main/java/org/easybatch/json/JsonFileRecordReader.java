@@ -25,7 +25,6 @@
 package org.easybatch.json;
 
 import org.easybatch.core.reader.AbstractFileRecordReader;
-import org.easybatch.core.record.Record;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,7 +68,7 @@ public class JsonFileRecordReader extends AbstractFileRecordReader {
     }
 
     @Override
-    public Record readRecord() throws Exception {
+    public JsonRecord readRecord() throws Exception {
         return jsonRecordReader.readRecord();
     }
 
