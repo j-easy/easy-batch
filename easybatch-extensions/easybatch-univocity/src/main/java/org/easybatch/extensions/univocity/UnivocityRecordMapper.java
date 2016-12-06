@@ -15,27 +15,32 @@ import java.io.StringReader;
  */
 public class UnivocityRecordMapper<T> implements RecordMapper<StringRecord, Record<T>> {
 
-    private char delimiter;
-    private char qualifier;
+    private char delimiter = ',';
     private boolean strictQualifiers;
     private boolean headerExtraction;
     private Class<T> recordClass;
+    private char quote = '\"';
 
     public UnivocityRecordMapper(Class<T> recordClass)  {
         this.recordClass = recordClass;
     }
 
+
     @Override
     public Record<T> processRecord(StringRecord record) throws Exception {
-        String payload = record.getPayload();
         CsvParserSettings settings = new CsvParserSettings();
+        settings.getFormat().setDelimiter(delimiter);
+        settings.getFormat().setQuote(quote);
+
         BeanListProcessor<T> beanListProcessor = new BeanListProcessor<>(recordClass);
         settings.setProcessor(beanListProcessor);
+
         CsvParser parser = new CsvParser(settings);
 
+        String payload = record.getPayload();
         parser.parse(new StringReader(payload));
 
-        T result =  beanListProcessor.getBeans().get(0);
+        T result = beanListProcessor.getBeans().get(0);
         return new GenericRecord<>(record.getHeader(), result);
     }
 
@@ -43,15 +48,11 @@ public class UnivocityRecordMapper<T> implements RecordMapper<StringRecord, Reco
         this.delimiter = delimiter;
     }
 
-    public void setQualifier(char qualifier) {
-        this.qualifier = qualifier;
-    }
-
     public void setStrictQualifiers(boolean strictQualifiers) {
         this.strictQualifiers = strictQualifiers;
     }
 
-    public void setHeaderExtractionEnabled(boolean headerExtraction) {
-        this.headerExtraction = headerExtraction;
+    public void setQuote(char quote) {
+        this.quote = quote;
     }
 }

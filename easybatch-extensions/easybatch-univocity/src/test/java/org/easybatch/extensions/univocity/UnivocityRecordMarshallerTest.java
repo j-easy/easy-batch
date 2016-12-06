@@ -24,7 +24,7 @@ public class UnivocityRecordMarshallerTest {
 
     @Before
     public void setUp() throws Exception {
-        univocityRecordMarshaller = new UnivocityRecordMarshaller<>(TestBean.class);
+        univocityRecordMarshaller = new UnivocityRecordMarshaller<>(TestBean.class, "firstName", "lastName", "age", "married");
         TestBean foo = new TestBean();
         foo.setFirstName("foo");
         foo.setLastName("bar");

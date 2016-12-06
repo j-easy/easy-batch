@@ -77,8 +77,8 @@ public class UnivocityRecordMapperTest {
     }
 
     @Test
-    public void testUnivocityQualifier() throws Exception {
-        univocityRecordMapper.setQualifier('\"');
+    public void testUnivocityQuote() throws Exception {
+        univocityRecordMapper.setQuote('\"');
         StringRecord fooRecord = new StringRecord(header, "\"foo,s\",\"bar\"");
         Record<TestBean> actual = univocityRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
@@ -90,7 +90,7 @@ public class UnivocityRecordMapperTest {
     }
 
     @Test
-    public void testUnivocityStrictQualifier() throws Exception {
+    public void testUnivocityStrictQuote() throws Exception {
         univocityRecordMapper.setStrictQualifiers(true);
         StringRecord fooRecord = new StringRecord(header, "\'foo\'x,\'bar\'"); // characters outside quotes (x) should be ignored
         Record<TestBean> actual = univocityRecordMapper.processRecord(fooRecord);
@@ -104,7 +104,7 @@ public class UnivocityRecordMapperTest {
 
     @Test
     public void testUnivocityCarriageReturn() throws Exception {
-        univocityRecordMapper.setQualifier('\'');
+        univocityRecordMapper.setQuote('\'');
         StringRecord fooRecord = new StringRecord(header, "'foo" + LINE_SEPARATOR + "','bar" + LINE_SEPARATOR + "'");
         Record<TestBean> actual = univocityRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
