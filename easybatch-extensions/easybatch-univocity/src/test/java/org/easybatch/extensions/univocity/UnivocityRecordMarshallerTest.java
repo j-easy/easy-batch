@@ -1,5 +1,6 @@
 package org.easybatch.extensions.univocity;
 
+import com.univocity.parsers.csv.CsvWriterSettings;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
@@ -24,7 +25,9 @@ public class UnivocityRecordMarshallerTest {
 
     @Before
     public void setUp() throws Exception {
-        univocityRecordMarshaller = new UnivocityRecordMarshaller<>(TestBean.class, "firstName", "lastName", "age", "married");
+        CsvWriterSettings settings = new CsvWriterSettings();
+        settings.setQuoteAllFields(true);
+        univocityRecordMarshaller = new UnivocityRecordMarshaller<>(TestBean.class, settings,  "firstName", "lastName", "age", "married");
         TestBean foo = new TestBean();
         foo.setFirstName("foo");
         foo.setLastName("bar");
@@ -36,7 +39,7 @@ public class UnivocityRecordMarshallerTest {
 
     @Test
     public void processRecord() throws Exception {
-        String expectedPayload = "\"foo\",\"bar\",\"30\",\"true\"";
+        String expectedPayload = "\"foo\",\"bar\",\"30\",\"true\"\n";
         StringRecord actual = univocityRecordMarshaller.processRecord(record);
 
         assertThat(actual.getHeader()).isEqualTo(header);

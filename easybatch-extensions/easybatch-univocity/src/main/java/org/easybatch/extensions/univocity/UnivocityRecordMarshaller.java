@@ -20,19 +20,17 @@ public class UnivocityRecordMarshaller<P> implements RecordMarshaller<Record<P>,
 
     private final Class<P> recordClass;
     private final FieldExtractor<P> fieldExtractor;
+    private final CsvWriterSettings settings;
 
-    public UnivocityRecordMarshaller(Class<P> recordClass, String... fields) throws IntrospectionException {
+    public UnivocityRecordMarshaller(Class<P> recordClass, CsvWriterSettings settings, String... fields) throws IntrospectionException {
         this.recordClass = recordClass;
         this.fieldExtractor = new BeanFieldExtractor<>(recordClass, fields);
+        this.settings = settings;
     }
 
     @Override
     public StringRecord processRecord(Record<P> record) throws Exception {
         StringWriter stringWriter = new StringWriter();
-        CsvWriterSettings settings = new CsvWriterSettings();
-        settings.setQuoteAllFields(true);
-        settings.getFormat().setLineSeparator(" "); //TODO: Fix this
-
         CsvWriter csvWriter = new CsvWriter(stringWriter,settings);
         String[] rowToWrite = extractFields(record.getPayload());
         csvWriter.writeRow(rowToWrite);

@@ -11,32 +11,27 @@ import org.easybatch.core.record.StringRecord;
 import java.io.StringReader;
 
 /**
- * Created by anthony on 4/12/16.
+ * A record mapper that uses <a href="http://www.univocity.com/">uniVocity parsers</a> to map a delimited record to domain object.
+ *
+ * @author Anthony Bruno (anthony.bruno196@gmail.com)
  */
 public class UnivocityRecordMapper<T> implements RecordMapper<StringRecord, Record<T>> {
 
-    private char delimiter = ',';
-    private boolean strictQualifiers;
-    private boolean headerExtraction;
+    private CsvParserSettings settings;
     private Class<T> recordClass;
-    private char quote = '\"';
 
-    public UnivocityRecordMapper(Class<T> recordClass)  {
+    public UnivocityRecordMapper(Class<T> recordClass, CsvParserSettings settings)  {
         this.recordClass = recordClass;
+        this.settings = settings;
     }
 
 
     @Override
     public Record<T> processRecord(StringRecord record) throws Exception {
-        CsvParserSettings settings = new CsvParserSettings();
-        settings.getFormat().setDelimiter(delimiter);
-        settings.getFormat().setQuote(quote);
-
         BeanListProcessor<T> beanListProcessor = new BeanListProcessor<>(recordClass);
         settings.setProcessor(beanListProcessor);
 
         CsvParser parser = new CsvParser(settings);
-
         String payload = record.getPayload();
         parser.parse(new StringReader(payload));
 
@@ -44,15 +39,4 @@ public class UnivocityRecordMapper<T> implements RecordMapper<StringRecord, Reco
         return new GenericRecord<>(record.getHeader(), result);
     }
 
-    public void setDelimiter(char delimiter) {
-        this.delimiter = delimiter;
-    }
-
-    public void setStrictQualifiers(boolean strictQualifiers) {
-        this.strictQualifiers = strictQualifiers;
-    }
-
-    public void setQuote(char quote) {
-        this.quote = quote;
-    }
 }
