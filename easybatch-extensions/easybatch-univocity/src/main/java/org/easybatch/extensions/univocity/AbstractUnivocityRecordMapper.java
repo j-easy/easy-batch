@@ -1,8 +1,15 @@
 package org.easybatch.extensions.univocity;
 
+import com.univocity.parsers.common.AbstractParser;
+import com.univocity.parsers.common.CommonParserSettings;
+import com.univocity.parsers.common.Format;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
+import com.univocity.parsers.fixed.FixedWidthParser;
+import com.univocity.parsers.fixed.FixedWidthParserSettings;
+import com.univocity.parsers.tsv.TsvParser;
+import com.univocity.parsers.tsv.TsvParserSettings;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Record;
@@ -15,12 +22,12 @@ import java.io.StringReader;
  *
  * @author Anthony Bruno (anthony.bruno196@gmail.com)
  */
-public class UnivocityRecordMapper<T> implements RecordMapper<StringRecord, Record<T>> {
+public abstract class AbstractUnivocityRecordMapper<T, S extends CommonParserSettings<?>> implements RecordMapper<StringRecord, Record<T>> {
 
-    private CsvParserSettings settings;
+    protected S settings;
     private Class<T> recordClass;
 
-    public UnivocityRecordMapper(Class<T> recordClass, CsvParserSettings settings)  {
+    public AbstractUnivocityRecordMapper(Class<T> recordClass, S settings)  {
         this.recordClass = recordClass;
         this.settings = settings;
     }
@@ -31,12 +38,14 @@ public class UnivocityRecordMapper<T> implements RecordMapper<StringRecord, Reco
         BeanListProcessor<T> beanListProcessor = new BeanListProcessor<>(recordClass);
         settings.setProcessor(beanListProcessor);
 
-        CsvParser parser = new CsvParser(settings);
+        AbstractParser<S> parser = getParser();
         String payload = record.getPayload();
         parser.parse(new StringReader(payload));
 
         T result = beanListProcessor.getBeans().get(0);
         return new GenericRecord<>(record.getHeader(), result);
     }
+
+    protected abstract AbstractParser<S> getParser();
 
 }

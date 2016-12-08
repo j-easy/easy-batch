@@ -14,7 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by anthony on 4/12/16.
+ * Marshals a POJO to CSV format using <a href="http://opencsv.sourceforge.net">Open CSV</a>.
+ * <p/>
+ * <strong>This marshaller does not support recursive marshalling.</strong>
+ *
+ * @author Anthony Bruno (anthony.bruno196@gmail.com)
  */
 public class UnivocityRecordMarshaller<P> implements RecordMarshaller<Record<P>, StringRecord> {
 
