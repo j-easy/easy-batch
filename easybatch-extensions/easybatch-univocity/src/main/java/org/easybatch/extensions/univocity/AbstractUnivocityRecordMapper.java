@@ -2,14 +2,7 @@ package org.easybatch.extensions.univocity;
 
 import com.univocity.parsers.common.AbstractParser;
 import com.univocity.parsers.common.CommonParserSettings;
-import com.univocity.parsers.common.Format;
 import com.univocity.parsers.common.processor.BeanListProcessor;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
-import com.univocity.parsers.fixed.FixedWidthParser;
-import com.univocity.parsers.fixed.FixedWidthParserSettings;
-import com.univocity.parsers.tsv.TsvParser;
-import com.univocity.parsers.tsv.TsvParserSettings;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Record;
@@ -18,16 +11,25 @@ import org.easybatch.core.record.StringRecord;
 import java.io.StringReader;
 
 /**
- * A record mapper that uses <a href="http://www.univocity.com/">uniVocity parsers</a> to map a delimited record to domain object.
+ * A record mapper that uses <a href="http://www.univocity.com/">uniVocity parsers</a> to map delimited records to
+ * domain objects.
  *
+ * @param <S> The settings type that is used to configure the parser.
  * @author Anthony Bruno (anthony.bruno196@gmail.com)
  */
-public abstract class AbstractUnivocityRecordMapper<T, S extends CommonParserSettings<?>> implements RecordMapper<StringRecord, Record<T>> {
+abstract class AbstractUnivocityRecordMapper<T, S extends CommonParserSettings<?>> implements RecordMapper<StringRecord, Record<T>> {
 
-    protected S settings;
+    S settings;
     private Class<T> recordClass;
 
-    public AbstractUnivocityRecordMapper(Class<T> recordClass, S settings)  {
+    /**
+     * Creates a new mapper that uses <a href="http://www.univocity.com/">uniVocity parsers</a> to map delimited records
+     * to domain objects.
+     *
+     * @param recordClass the target type
+     * @param settings    the settings that is is used to configure the parser
+     */
+    AbstractUnivocityRecordMapper(Class<T> recordClass, S settings) {
         this.recordClass = recordClass;
         this.settings = settings;
     }
