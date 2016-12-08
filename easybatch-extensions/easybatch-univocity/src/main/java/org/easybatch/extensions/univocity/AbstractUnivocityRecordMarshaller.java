@@ -1,7 +1,7 @@
 package org.easybatch.extensions.univocity;
 
-import com.univocity.parsers.csv.CsvWriter;
-import com.univocity.parsers.csv.CsvWriterSettings;
+import com.univocity.parsers.common.AbstractWriter;
+import com.univocity.parsers.common.CommonWriterSettings;
 import org.easybatch.core.field.BeanFieldExtractor;
 import org.easybatch.core.field.FieldExtractor;
 import org.easybatch.core.marshaller.RecordMarshaller;
@@ -20,25 +20,25 @@ import java.util.List;
  *
  * @author Anthony Bruno (anthony.bruno196@gmail.com)
  */
-public class UnivocityRecordMarshaller<P> implements RecordMarshaller<Record<P>, StringRecord> {
+public abstract class AbstractUnivocityRecordMarshaller<P, S extends CommonWriterSettings<?>> implements RecordMarshaller<Record<P>, StringRecord> {
 
-    private final Class<P> recordClass;
     private final FieldExtractor<P> fieldExtractor;
-    private final CsvWriterSettings settings;
+    protected final S settings;
+    protected StringWriter stringWriter;
 
-    public UnivocityRecordMarshaller(Class<P> recordClass, CsvWriterSettings settings, String... fields) throws IntrospectionException {
-        this.recordClass = recordClass;
+    public AbstractUnivocityRecordMarshaller(Class<P> recordClass, S settings, String... fields) throws IntrospectionException {
         this.fieldExtractor = new BeanFieldExtractor<>(recordClass, fields);
         this.settings = settings;
     }
 
     @Override
     public StringRecord processRecord(Record<P> record) throws Exception {
-        StringWriter stringWriter = new StringWriter();
-        CsvWriter csvWriter = new CsvWriter(stringWriter,settings);
+        stringWriter = new StringWriter();
+        AbstractWriter<S> writer =  getWriter();
         String[] rowToWrite = extractFields(record.getPayload());
-        csvWriter.writeRow(rowToWrite);
-        csvWriter.close();
+
+        writer.writeRow(rowToWrite);
+        writer.close();
 
         return new StringRecord(record.getHeader(), stringWriter.toString());
     }
@@ -52,4 +52,6 @@ public class UnivocityRecordMarshaller<P> implements RecordMarshaller<Record<P>,
         }
         return resultList.toArray(new String[0]);
     }
+
+    abstract AbstractWriter<S> getWriter();
 }

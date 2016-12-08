@@ -25,6 +25,9 @@
 package org.easybatch.extensions.univocity;
 
 import com.univocity.parsers.csv.CsvParserSettings;
+import com.univocity.parsers.fixed.FixedWidthFields;
+import com.univocity.parsers.fixed.FixedWidthParserSettings;
+import com.univocity.parsers.tsv.TsvParserSettings;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
@@ -42,14 +45,16 @@ public class UnivocityRecordMapperTest {
     @Mock
     private Header header;
 
-    private AbstractUnivocityRecordMapper<TestBean, CsvParserSettings> univocityRecordMapper;
+    private UnivocityCsvRecordMapper<TestBean> csvRecordMapper;
+    private UnivocityTsvRecordMapper<TestBean> tsvRecordMapper;
+    private UnivocityFixedWidthRecordMapper<TestBean> fixedWidthRecordMapper;
 
 
     @Test
-    public void testUnivocityMapping() throws Exception {
-        univocityRecordMapper = new UnivocityCsvRecordMapper<>(TestBean.class, new CsvParserSettings());
+    public void testUnivocityCsvMapping() throws Exception {
+        csvRecordMapper = new UnivocityCsvRecordMapper<>(TestBean.class, new CsvParserSettings());
         StringRecord fooRecord = new StringRecord(header, "foo,bar,15,true");
-        Record<TestBean> actual = univocityRecordMapper.processRecord(fooRecord);
+        Record<TestBean> actual = csvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
 
         TestBean foo = actual.getPayload();
@@ -61,12 +66,12 @@ public class UnivocityRecordMapperTest {
     }
 
     @Test
-    public void testUnivocityDelimiter() throws Exception {
+    public void testUnivocityCsvDelimiter() throws Exception {
         CsvParserSettings csvParserSettings = new CsvParserSettings();
         csvParserSettings.getFormat().setDelimiter(';');
-        univocityRecordMapper = new UnivocityCsvRecordMapper<>(TestBean.class, csvParserSettings);
+        csvRecordMapper = new UnivocityCsvRecordMapper<>(TestBean.class, csvParserSettings);
         StringRecord fooRecord = new StringRecord(header, "foo;bar");
-        Record<TestBean> actual = univocityRecordMapper.processRecord(fooRecord);
+        Record<TestBean> actual = csvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
 
         TestBean foo = actual.getPayload();
@@ -76,10 +81,10 @@ public class UnivocityRecordMapperTest {
     }
 
     @Test
-    public void testUnivocityQuote() throws Exception {
-        univocityRecordMapper = new UnivocityCsvRecordMapper<>(TestBean.class, new CsvParserSettings());
+    public void testUnivocityCsvQuote() throws Exception {
+        csvRecordMapper = new UnivocityCsvRecordMapper<>(TestBean.class, new CsvParserSettings());
         StringRecord fooRecord = new StringRecord(header, "\"foo,s\",\"bar\"");
-        Record<TestBean> actual = univocityRecordMapper.processRecord(fooRecord);
+        Record<TestBean> actual = csvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
 
         TestBean foo = actual.getPayload();
@@ -89,12 +94,12 @@ public class UnivocityRecordMapperTest {
     }
 
     @Test
-    public void testUnivocityCarriageReturn() throws Exception {
+    public void testUnivocityCsvCarriageReturn() throws Exception {
         CsvParserSettings csvParserSettings = new CsvParserSettings();
         csvParserSettings.getFormat().setQuote('\'');
-        univocityRecordMapper = new UnivocityCsvRecordMapper<>(TestBean.class, csvParserSettings);
+        csvRecordMapper = new UnivocityCsvRecordMapper<>(TestBean.class, csvParserSettings);
         StringRecord fooRecord = new StringRecord(header, "'foo" + LINE_SEPARATOR + "','bar" + LINE_SEPARATOR + "'");
-        Record<TestBean> actual = univocityRecordMapper.processRecord(fooRecord);
+        Record<TestBean> actual = csvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
 
         TestBean foo = actual.getPayload();
@@ -103,4 +108,33 @@ public class UnivocityRecordMapperTest {
         assertThat(foo.getLastName()).isEqualTo("bar" + LINE_SEPARATOR);
     }
 
+    @Test
+    public void testUnivocityTsvMapping() throws Exception {
+        tsvRecordMapper = new UnivocityTsvRecordMapper<>(TestBean.class, new TsvParserSettings());
+        StringRecord fooRecord = new StringRecord(header, "foo\tbar\t15\ttrue");
+        Record<TestBean> actual = tsvRecordMapper.processRecord(fooRecord);
+        assertThat(actual.getHeader()).isEqualTo(header);
+
+        TestBean foo = actual.getPayload();
+        assertThat(foo).isNotNull();
+        assertThat(foo.getFirstName()).isEqualTo("foo");
+        assertThat(foo.getLastName()).isEqualTo("bar");
+        assertThat(foo.getAge()).isEqualTo(15);
+        assertThat(foo.isMarried()).isTrue();
+    }
+
+    @Test
+    public void testUnivocityFixedWidthMapping() throws Exception {
+        fixedWidthRecordMapper = new UnivocityFixedWidthRecordMapper<>(TestBean.class, new FixedWidthParserSettings(new FixedWidthFields(4,4,3,4)));
+        StringRecord fooRecord = new StringRecord(header, "foo bar 15 true");
+        Record<TestBean> actual = fixedWidthRecordMapper.processRecord(fooRecord);
+        assertThat(actual.getHeader()).isEqualTo(header);
+
+        TestBean foo = actual.getPayload();
+        assertThat(foo).isNotNull();
+        assertThat(foo.getFirstName()).isEqualTo("foo");
+        assertThat(foo.getLastName()).isEqualTo("bar");
+        assertThat(foo.getAge()).isEqualTo(15);
+        assertThat(foo.isMarried()).isTrue();
+    }
 }
