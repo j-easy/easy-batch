@@ -43,7 +43,7 @@ public class JobReport implements Serializable {
 
     private Throwable lastError;
     
-    private JobReportFormatter<String> formatter;
+    private transient JobReportFormatter<String> formatter;
 
     public String getJobName() {
         return jobName;
@@ -67,7 +67,7 @@ public class JobReport implements Serializable {
     
     public JobReportFormatter<String> getFormatter(){
     	if(this.formatter == null){
-    		synchronized (formatter) {
+    		synchronized (this) {
     			if(this.formatter == null){
     				this.formatter = new DefaultJobReportFormatter();
     			}
