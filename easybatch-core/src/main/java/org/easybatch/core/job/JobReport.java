@@ -42,6 +42,8 @@ public class JobReport implements Serializable {
     private JobStatus status;
 
     private Throwable lastError;
+    
+    private JobReportFormatter<String> formatter;
 
     public String getJobName() {
         return jobName;
@@ -61,6 +63,17 @@ public class JobReport implements Serializable {
 
     public Throwable getLastError() {
         return lastError;
+    }
+    
+    public JobReportFormatter<String> getFormatter(){
+    	if(this.formatter == null){
+    		synchronized (formatter) {
+    			if(this.formatter == null){
+    				this.formatter = new DefaultJobReportFormatter();
+    			}
+			}
+    	}
+    	return this.formatter;
     }
 
     public void setJobName(String jobName) {
@@ -82,9 +95,13 @@ public class JobReport implements Serializable {
     public void setLastError(Throwable lastError) {
         this.lastError = lastError;
     }
+    
+    public void setFormatter(JobReportFormatter<String> formatter){
+    	this.formatter = formatter;
+    }
 
     @Override
     public String toString() {
-        return new DefaultJobReportFormatter().formatReport(this);
+        return getFormatter().formatReport(this);
     }
 }
