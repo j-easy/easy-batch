@@ -76,7 +76,7 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 #### Development:
 
-Current development version is 5.0.1-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)
+Current development version is 5.1.0-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)
 
 If you want to import a snapshot version, you need to use the following repository:
 
