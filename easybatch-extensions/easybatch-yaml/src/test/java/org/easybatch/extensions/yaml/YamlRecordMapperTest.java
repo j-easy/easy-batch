@@ -21,7 +21,7 @@ public class YamlRecordMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        recordMapper = new YamlRecordMapper<>();
+        recordMapper = new YamlRecordMapper<>(Contact.class);
         when(record.getPayload()).thenReturn("name: Foo" + LINE_SEPARATOR + "age: 28");
     }
 
