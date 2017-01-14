@@ -110,6 +110,60 @@ public class JobScheduler {
     }
 
     /**
+     * Schedule a job to start at a fixed point of time.
+     *
+     * @param job       the job to schedule
+     * @param startTime the start time
+     */
+    public void scheduleAt(final org.easybatch.core.job.Job job, final Date startTime, JobSchedulerMisfireHandlingInstructionStrategy strategy, int repeatCount) throws JobSchedulerException {
+        checkNotNull(job, "job");
+        checkNotNull(startTime, "startTime");
+
+        String name = job.getName();
+        String jobName = JOB_NAME_PREFIX + name;
+        String triggerName = TRIGGER_NAME_PREFIX + name;
+
+
+        SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule();
+        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.FIRE_NOW)) {
+            simpleScheduleBuilder.withMisfireHandlingInstructionFireNow();
+        }
+        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.IGNORE_MISFIRES)) {
+            simpleScheduleBuilder.withMisfireHandlingInstructionIgnoreMisfires();
+        }
+        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NEXT_WITH_EXISTING_COUNT)) {
+            simpleScheduleBuilder.withMisfireHandlingInstructionNextWithExistingCount();
+        }
+        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NEXT_WITH_REMAINING_COUNT)) {
+            simpleScheduleBuilder.withMisfireHandlingInstructionNextWithRemainingCount();
+        }
+        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NOW_WITH_EXISTING_COUNT)) {
+            simpleScheduleBuilder.withMisfireHandlingInstructionNowWithExistingCount();
+        }
+        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NOW_WITH_REMAINING_COUNT)) {
+            simpleScheduleBuilder.withMisfireHandlingInstructionNowWithRemainingCount();
+        }
+
+        simpleScheduleBuilder.withRepeatCount(repeatCount);
+
+        Trigger trigger = newTrigger()
+                .withIdentity(triggerName)
+                .startAt(startTime)
+                .forJob(jobName)
+                .withSchedule(simpleScheduleBuilder)
+                .build();
+
+        JobDetail jobDetail = getJobDetail(job, jobName);
+
+        try {
+            LOGGER.log(Level.INFO, "Scheduling job ''{0}'' to start at {1}", new Object[]{name, startTime});
+            scheduler.scheduleJob(jobDetail, trigger);
+        } catch (SchedulerException e) {
+            throw new JobSchedulerException(format("Unable to schedule job '%s'", name), e);
+        }
+    }
+
+    /**
      * Schedule a job to start at a fixed point of time and repeat with interval period.
      *
      * @param job       the job to schedule
@@ -127,6 +181,65 @@ public class JobScheduler {
         SimpleScheduleBuilder scheduleBuilder = simpleSchedule()
                 .withIntervalInSeconds(interval)
                 .repeatForever();
+
+        Trigger trigger = newTrigger()
+                .withIdentity(triggerName)
+                .startAt(startTime)
+                .withSchedule(scheduleBuilder)
+                .forJob(jobName)
+                .build();
+
+        JobDetail jobDetail = getJobDetail(job, jobName);
+
+        try {
+            LOGGER.log(Level.INFO, "Scheduling job ''{0}'' to start at {1} and every {2} second(s)", new Object[]{name, startTime, interval});
+            scheduler.scheduleJob(jobDetail, trigger);
+        } catch (SchedulerException e) {
+            throw new JobSchedulerException(format("Unable to schedule job '%s'", name), e);
+        }
+    }
+
+    /**
+     * Schedule a job to start at a fixed point of time and repeat with interval period.
+     *
+     * @param job       the job to schedule
+     * @param startTime the start time
+     * @param interval  the repeat interval in seconds
+     */
+    public void scheduleAtWithInterval(final org.easybatch.core.job.Job job, final Date startTime, final int interval, JobSchedulerMisfireHandlingInstructionStrategy strategy, int repeatCount) throws JobSchedulerException {
+        checkNotNull(job, "job");
+        checkNotNull(startTime, "startTime");
+
+        String name = job.getName();
+        String jobName = JOB_NAME_PREFIX + name;
+        String triggerName = TRIGGER_NAME_PREFIX + name;
+
+        SimpleScheduleBuilder scheduleBuilder = simpleSchedule()
+                .withIntervalInSeconds(interval)
+                .withRepeatCount(repeatCount);
+
+
+        SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule();
+        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.FIRE_NOW)) {
+            simpleScheduleBuilder.withMisfireHandlingInstructionFireNow();
+        }
+        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.IGNORE_MISFIRES)) {
+            simpleScheduleBuilder.withMisfireHandlingInstructionIgnoreMisfires();
+        }
+        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NEXT_WITH_EXISTING_COUNT)) {
+            simpleScheduleBuilder.withMisfireHandlingInstructionNextWithExistingCount();
+        }
+        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NEXT_WITH_REMAINING_COUNT)) {
+            simpleScheduleBuilder.withMisfireHandlingInstructionNextWithRemainingCount();
+        }
+        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NOW_WITH_EXISTING_COUNT)) {
+            simpleScheduleBuilder.withMisfireHandlingInstructionNowWithExistingCount();
+        }
+        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NOW_WITH_REMAINING_COUNT)) {
+            simpleScheduleBuilder.withMisfireHandlingInstructionNowWithRemainingCount();
+        }
+
+        simpleScheduleBuilder.withRepeatCount(repeatCount);
 
         Trigger trigger = newTrigger()
                 .withIdentity(triggerName)
@@ -164,6 +277,49 @@ public class JobScheduler {
         Trigger trigger = newTrigger()
                 .withIdentity(triggerName)
                 .withSchedule(cronSchedule(cronExpression))
+                .forJob(jobName)
+                .build();
+
+        JobDetail jobDetail = getJobDetail(job, jobName);
+
+        try {
+            LOGGER.log(Level.INFO, "Scheduling job ''{0}'' with cron expression {1}", new Object[]{name, cronExpression});
+            scheduler.scheduleJob(jobDetail, trigger);
+        } catch (SchedulerException e) {
+            throw new JobSchedulerException(format("Unable to schedule job '%s'", name), e);
+        }
+    }
+
+    /**
+     * Schedule a job with a unix-like cron expression.
+     *
+     * @param job            the job to schedule
+     * @param cronExpression the cron expression to use.
+     *                       For a complete tutorial about cron expressions, please refer to
+     *                       <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/crontrigger">quartz reference documentation</a>.
+     */
+    public void scheduleCron(final org.easybatch.core.job.Job job, final String cronExpression, JobCronSchedulerMisfireHandlingInstructionStrategy strategy) throws JobSchedulerException {
+        checkNotNull(job, "job");
+        checkNotNull(cronExpression, "cronExpression");
+
+        String name = job.getName();
+        String jobName = JOB_NAME_PREFIX + name;
+        String triggerName = TRIGGER_NAME_PREFIX + name;
+
+        CronScheduleBuilder cronScheduleBuilder = cronSchedule(cronExpression);
+        if( strategy.equals(JobCronSchedulerMisfireHandlingInstructionStrategy.DO_NOTHING)) {
+            cronScheduleBuilder.withMisfireHandlingInstructionDoNothing();
+        }
+        if( strategy.equals(JobCronSchedulerMisfireHandlingInstructionStrategy.IGNORE_MISFIRES)) {
+            cronScheduleBuilder.withMisfireHandlingInstructionIgnoreMisfires();
+        }
+        if( strategy.equals(JobCronSchedulerMisfireHandlingInstructionStrategy.FIRE_AND_PROCEED)) {
+            cronScheduleBuilder.withMisfireHandlingInstructionFireAndProceed();
+        }
+
+        Trigger trigger = newTrigger()
+                .withIdentity(triggerName)
+                .withSchedule(cronScheduleBuilder)
                 .forJob(jobName)
                 .build();
 
