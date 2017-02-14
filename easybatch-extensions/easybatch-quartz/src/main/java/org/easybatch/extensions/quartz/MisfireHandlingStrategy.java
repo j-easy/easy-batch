@@ -1,6 +1,11 @@
 package org.easybatch.extensions.quartz;
 
-public enum JobSchedulerMisfireHandlingInstructionStrategy {
+/**
+ * Enumeration of strategies to apply when a quartz scheduler misfires a job.
+ *
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
+public enum MisfireHandlingStrategy {
     FIRE_NOW,
     IGNORE_MISFIRES,
     NEXT_WITH_EXISTING_COUNT,

@@ -114,8 +114,10 @@ public class JobScheduler {
      *
      * @param job       the job to schedule
      * @param startTime the start time
+     * @param strategy    to apply when a misfire occurs
+     * @param repeatCount number of times the trigger will repeat
      */
-    public void scheduleAt(final org.easybatch.core.job.Job job, final Date startTime, JobSchedulerMisfireHandlingInstructionStrategy strategy, int repeatCount) throws JobSchedulerException {
+    public void scheduleAt(final org.easybatch.core.job.Job job, final Date startTime, MisfireHandlingStrategy strategy, int repeatCount) throws JobSchedulerException {
         checkNotNull(job, "job");
         checkNotNull(startTime, "startTime");
 
@@ -123,24 +125,24 @@ public class JobScheduler {
         String jobName = JOB_NAME_PREFIX + name;
         String triggerName = TRIGGER_NAME_PREFIX + name;
 
-
         SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule();
-        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.FIRE_NOW)) {
+        // Quartz should have provided a strategy interface for this..
+        if (strategy.equals(MisfireHandlingStrategy.FIRE_NOW)) {
             simpleScheduleBuilder.withMisfireHandlingInstructionFireNow();
         }
-        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.IGNORE_MISFIRES)) {
+        if (strategy.equals(MisfireHandlingStrategy.IGNORE_MISFIRES)) {
             simpleScheduleBuilder.withMisfireHandlingInstructionIgnoreMisfires();
         }
-        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NEXT_WITH_EXISTING_COUNT)) {
+        if (strategy.equals(MisfireHandlingStrategy.NEXT_WITH_EXISTING_COUNT)) {
             simpleScheduleBuilder.withMisfireHandlingInstructionNextWithExistingCount();
         }
-        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NEXT_WITH_REMAINING_COUNT)) {
+        if (strategy.equals(MisfireHandlingStrategy.NEXT_WITH_REMAINING_COUNT)) {
             simpleScheduleBuilder.withMisfireHandlingInstructionNextWithRemainingCount();
         }
-        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NOW_WITH_EXISTING_COUNT)) {
+        if (strategy.equals(MisfireHandlingStrategy.NOW_WITH_EXISTING_COUNT)) {
             simpleScheduleBuilder.withMisfireHandlingInstructionNowWithExistingCount();
         }
-        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NOW_WITH_REMAINING_COUNT)) {
+        if (strategy.equals(MisfireHandlingStrategy.NOW_WITH_REMAINING_COUNT)) {
             simpleScheduleBuilder.withMisfireHandlingInstructionNowWithRemainingCount();
         }
 
@@ -202,11 +204,13 @@ public class JobScheduler {
     /**
      * Schedule a job to start at a fixed point of time and repeat with interval period.
      *
-     * @param job       the job to schedule
-     * @param startTime the start time
-     * @param interval  the repeat interval in seconds
+     * @param job         the job to schedule
+     * @param startTime   the start time
+     * @param interval    the repeat interval in seconds
+     * @param strategy    to apply when a misfire occurs
+     * @param repeatCount number of times the trigger will repeat
      */
-    public void scheduleAtWithInterval(final org.easybatch.core.job.Job job, final Date startTime, final int interval, JobSchedulerMisfireHandlingInstructionStrategy strategy, int repeatCount) throws JobSchedulerException {
+    public void scheduleAtWithInterval(final org.easybatch.core.job.Job job, final Date startTime, final int interval, MisfireHandlingStrategy strategy, int repeatCount) throws JobSchedulerException {
         checkNotNull(job, "job");
         checkNotNull(startTime, "startTime");
 
@@ -220,22 +224,23 @@ public class JobScheduler {
 
 
         SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule();
-        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.FIRE_NOW)) {
+        // Quartz should have provided a strategy interface for this..
+        if (strategy.equals(MisfireHandlingStrategy.FIRE_NOW)) {
             simpleScheduleBuilder.withMisfireHandlingInstructionFireNow();
         }
-        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.IGNORE_MISFIRES)) {
+        if (strategy.equals(MisfireHandlingStrategy.IGNORE_MISFIRES)) {
             simpleScheduleBuilder.withMisfireHandlingInstructionIgnoreMisfires();
         }
-        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NEXT_WITH_EXISTING_COUNT)) {
+        if (strategy.equals(MisfireHandlingStrategy.NEXT_WITH_EXISTING_COUNT)) {
             simpleScheduleBuilder.withMisfireHandlingInstructionNextWithExistingCount();
         }
-        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NEXT_WITH_REMAINING_COUNT)) {
+        if (strategy.equals(MisfireHandlingStrategy.NEXT_WITH_REMAINING_COUNT)) {
             simpleScheduleBuilder.withMisfireHandlingInstructionNextWithRemainingCount();
         }
-        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NOW_WITH_EXISTING_COUNT)) {
+        if (strategy.equals(MisfireHandlingStrategy.NOW_WITH_EXISTING_COUNT)) {
             simpleScheduleBuilder.withMisfireHandlingInstructionNowWithExistingCount();
         }
-        if (strategy.equals(JobSchedulerMisfireHandlingInstructionStrategy.NOW_WITH_REMAINING_COUNT)) {
+        if (strategy.equals(MisfireHandlingStrategy.NOW_WITH_REMAINING_COUNT)) {
             simpleScheduleBuilder.withMisfireHandlingInstructionNowWithRemainingCount();
         }
 
@@ -297,8 +302,9 @@ public class JobScheduler {
      * @param cronExpression the cron expression to use.
      *                       For a complete tutorial about cron expressions, please refer to
      *                       <a href="http://quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/crontrigger">quartz reference documentation</a>.
+     * @param strategy       to apply when a misfire occurs
      */
-    public void scheduleCron(final org.easybatch.core.job.Job job, final String cronExpression, JobCronSchedulerMisfireHandlingInstructionStrategy strategy) throws JobSchedulerException {
+    public void scheduleCron(final org.easybatch.core.job.Job job, final String cronExpression, MisfireCronHandlingStrategy strategy) throws JobSchedulerException {
         checkNotNull(job, "job");
         checkNotNull(cronExpression, "cronExpression");
 
@@ -307,13 +313,14 @@ public class JobScheduler {
         String triggerName = TRIGGER_NAME_PREFIX + name;
 
         CronScheduleBuilder cronScheduleBuilder = cronSchedule(cronExpression);
-        if( strategy.equals(JobCronSchedulerMisfireHandlingInstructionStrategy.DO_NOTHING)) {
+        // Quartz should have provided a strategy interface for this..
+        if (strategy.equals(MisfireCronHandlingStrategy.DO_NOTHING)) {
             cronScheduleBuilder.withMisfireHandlingInstructionDoNothing();
         }
-        if( strategy.equals(JobCronSchedulerMisfireHandlingInstructionStrategy.IGNORE_MISFIRES)) {
+        if (strategy.equals(MisfireCronHandlingStrategy.IGNORE_MISFIRES)) {
             cronScheduleBuilder.withMisfireHandlingInstructionIgnoreMisfires();
         }
-        if( strategy.equals(JobCronSchedulerMisfireHandlingInstructionStrategy.FIRE_AND_PROCEED)) {
+        if (strategy.equals(MisfireCronHandlingStrategy.FIRE_AND_PROCEED)) {
             cronScheduleBuilder.withMisfireHandlingInstructionFireAndProceed();
         }
 
