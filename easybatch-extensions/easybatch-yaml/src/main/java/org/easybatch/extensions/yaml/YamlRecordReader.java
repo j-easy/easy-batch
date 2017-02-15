@@ -28,7 +28,7 @@ public class YamlRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readRecord() throws Exception {
+    public YamlRecord readRecord() throws Exception {
         if (!scanner.hasNextLine()) {
             return null;
         }
