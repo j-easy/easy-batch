@@ -4,12 +4,12 @@ import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobBuilder;
 import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.processor.RecordCollector;
-import org.easybatch.core.reader.MultiFileRecordReader;
 import org.easybatch.core.record.Record;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,10 +18,10 @@ public class MultiFlatFileRecordReaderTest {
 
     @Test
     public void allResourcesShouldBeReadInOneShot() throws Exception {
-        MultiFileRecordReader multiFileRecordReader = new MultiFileRecordReader(
-                new File("src/test/resources"),
-                new TxtFileFilter(),
-                FlatFileRecordReader.class);
+        // given
+        File dir = new File("src/test/resources");
+        File[] files = dir.listFiles(new TxtFileFilter());
+        MultiFlatFileRecordReader multiFileRecordReader = new MultiFlatFileRecordReader(Arrays.asList(files));
 
         RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
@@ -29,10 +29,12 @@ public class MultiFlatFileRecordReaderTest {
                 .processor(recordCollector)
                 .build();
 
+        // when
         JobExecutor jobExecutor = new JobExecutor();
         jobExecutor.execute(job);
         jobExecutor.shutdown();
 
+        // then
         List<Record> records = recordCollector.getRecords();
 
         // there are 6 records in foo.txt, bar.txt and empty.txt
