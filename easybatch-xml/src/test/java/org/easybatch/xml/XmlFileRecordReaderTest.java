@@ -20,7 +20,7 @@ public class XmlFileRecordReaderTest {
     }
 
     @Test
-    public void testJsonRecordReading() throws Exception {
+    public void testXmlRecordReading() throws Exception {
         XmlRecord xmlRecord = xmlFileRecordReader.readRecord();
         assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(1L);
         assertThat(xmlRecord.getPayload()).isEqualTo("<data>1</data>");
