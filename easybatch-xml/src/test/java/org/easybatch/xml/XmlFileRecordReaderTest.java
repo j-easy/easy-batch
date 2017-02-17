@@ -15,7 +15,7 @@ public class XmlFileRecordReaderTest {
     @Before
     public void setUp() throws Exception {
         File data = new File("src/test/resources/data.xml");
-        xmlFileRecordReader = new XmlFileRecordReader("data", data);
+        xmlFileRecordReader = new XmlFileRecordReader(data, "data");
         xmlFileRecordReader.open();
     }
 

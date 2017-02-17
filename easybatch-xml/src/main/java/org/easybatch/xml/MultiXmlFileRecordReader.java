@@ -27,6 +27,6 @@ public class MultiXmlFileRecordReader extends AbstractMultiFileRecordReader {
 
     @Override
     protected AbstractFileRecordReader createReader() throws Exception {
-        return new XmlFileRecordReader(rootElementName, currentFile);
+        return new XmlFileRecordReader(currentFile, rootElementName);
     }
 }
