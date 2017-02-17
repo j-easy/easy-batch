@@ -28,7 +28,6 @@ import org.easybatch.core.reader.AbstractFileRecordReader;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 /**
  * A record reader that reads xml records from an xml file.
@@ -40,14 +39,16 @@ import java.io.FileNotFoundException;
 public class XmlFileRecordReader extends AbstractFileRecordReader {
 
     private XmlRecordReader xmlRecordReader;
+    private String rootElementName;
 
-    public XmlFileRecordReader(final String rootElementName, final File xmlFile) throws FileNotFoundException {
+    public XmlFileRecordReader(final String rootElementName, final File xmlFile) {
         super(xmlFile);
-        xmlRecordReader = new XmlRecordReader(rootElementName, new FileInputStream(xmlFile));
+        this.rootElementName = rootElementName;
     }
 
     @Override
     public void open() throws Exception {
+        xmlRecordReader = new XmlRecordReader(rootElementName, new FileInputStream(file));
         xmlRecordReader.open();
     }
 
