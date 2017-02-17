@@ -28,19 +28,18 @@ import org.easybatch.core.reader.AbstractFileRecordReader;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class YamlFileRecordReader extends AbstractFileRecordReader {
 
     private YamlRecordReader yamlRecordReader;
 
-    public YamlFileRecordReader(final File yamlFile) throws FileNotFoundException {
+    public YamlFileRecordReader(final File yamlFile) {
         super(yamlFile);
-        yamlRecordReader = new YamlRecordReader(new FileInputStream(yamlFile));
     }
 
     @Override
     public void open() throws Exception {
+        yamlRecordReader = new YamlRecordReader(new FileInputStream(file));
         yamlRecordReader.open();
     }
 
