@@ -24,6 +24,7 @@
 package org.easybatch.core.reader;
 
 import java.io.File;
+import java.nio.charset.Charset;
 
 /**
  * Abstract class for all file readers.
@@ -33,9 +34,14 @@ import java.io.File;
 public abstract class AbstractFileRecordReader implements RecordReader {
 
     protected File file;
+    protected Charset charset;
 
     protected AbstractFileRecordReader(File file) {
         this.file = file;
     }
 
+    public AbstractFileRecordReader(File file, Charset charset) {
+        this.file = file;
+        this.charset = charset;
+    }
 }

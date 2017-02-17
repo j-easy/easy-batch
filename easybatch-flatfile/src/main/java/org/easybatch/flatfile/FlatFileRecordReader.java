@@ -44,7 +44,6 @@ import java.util.Scanner;
 public class FlatFileRecordReader extends AbstractFileRecordReader {
 
     private Scanner scanner;
-    private String charsetName;
     private long currentRecordNumber;
 
     /**
@@ -82,8 +81,7 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
      * @param charsetName the encoding to use to read the file
      */
     public FlatFileRecordReader(final File input, final String charsetName) {
-        super(input);
-        this.charsetName = charsetName;
+        super(input, Charset.forName(charsetName));
     }
 
 
@@ -93,8 +91,7 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
      * @param path the input file path
      */
     public FlatFileRecordReader(final Path path) {
-        super(path.toFile());
-        this.charsetName = Charset.defaultCharset().name();
+        super(path.toFile(), Charset.defaultCharset());
     }
 
 
@@ -105,8 +102,7 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
      * @param charsetName the encoding to use to read the file
      */
     public FlatFileRecordReader(final Path path, final String charsetName) {
-        super(path.toFile());
-        this.charsetName = charsetName;
+        super(path.toFile(), Charset.forName(charsetName));
     }
 
     @Override
@@ -122,7 +118,7 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
     @Override
     public void open() throws Exception {
         currentRecordNumber = 0;
-        scanner = new Scanner(file, charsetName);
+        scanner = new Scanner(file, charset.name());
     }
 
     @Override
