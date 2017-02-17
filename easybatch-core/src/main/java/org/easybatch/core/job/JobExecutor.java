@@ -26,8 +26,7 @@ package org.easybatch.core.job;
 
 import org.easybatch.core.util.Utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -104,10 +103,18 @@ public class JobExecutor {
      * @return the list of job reports in the same order of submission
      */
     public List<Future<JobReport>> submitAll(Job... jobs) {
-        List<Job> jobList = new ArrayList<>();
-        Collections.addAll(jobList, jobs);
+        return submitAll(Arrays.asList(jobs));
+    }
+
+    /**
+     * Submit jobs for execution.
+     *
+     * @param jobs to execute
+     * @return the list of job reports in the same order of submission
+     */
+    public List<Future<JobReport>> submitAll(List<Job> jobs) {
         try {
-            return executorService.invokeAll(jobList);
+            return executorService.invokeAll(jobs);
         } catch (InterruptedException e) {
             throw new RuntimeException("Unable to execute jobs", e);
         }
