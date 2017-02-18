@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +21,8 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.json;
 
-import org.easybatch.core.processor.RecordProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +44,7 @@ public class JsonRecordCompactorTest {
     }
 
     @Test
-    public void testCompactSimpleJsonRecord() throws RecordProcessingException {
+    public void testCompactSimpleJsonRecord() throws Exception {
         expectedPayload = "{\"name\":\"foo\",\"age\":30,\"married\":false}";
         payload = "{" + LINE_SEPARATOR + "  \"name\": \"foo\"," + LINE_SEPARATOR + "  \"age\": 30," + LINE_SEPARATOR + "  \"married\": false" + LINE_SEPARATOR + "}";
 
@@ -55,7 +53,7 @@ public class JsonRecordCompactorTest {
     }
 
     @Test
-    public void testCompactComplexJsonRecord() throws RecordProcessingException {
+    public void testCompactComplexJsonRecord() throws Exception {
         expectedPayload = "{\"datasetid\":\"arbresalignementparis2010\",\"recordid\":\"0e6cfe03082224225c54690e5a700987ffb1310f\",\"fields\":{\"adresse\":\"AVENUE GAMBETTA\",\"hauteurenm\":0.0,\"espece\":\"Tilia tomentosa\",\"circonfere\":78.0,\"geom_x_y\":[48.8691944661,2.40210336054],\"dateplanta\":\"1971-02-27\"},\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.40210336054,48.8691944661]},\"record_timestamp\":\"2014-09-11T14:39:16.131843\"}";
         payload = "{" + LINE_SEPARATOR + "  \"datasetid\": \"arbresalignementparis2010\"," + LINE_SEPARATOR + "  \"recordid\": \"0e6cfe03082224225c54690e5a700987ffb1310f\"," + LINE_SEPARATOR + "  \"fields\": {" + LINE_SEPARATOR + "    \"adresse\": \"AVENUE GAMBETTA\"," + LINE_SEPARATOR + "    \"hauteurenm\": 0.0," + LINE_SEPARATOR + "    \"espece\": \"Tilia tomentosa\"," + LINE_SEPARATOR + "    \"circonfere\": 78.0," + LINE_SEPARATOR + "    \"geom_x_y\": [" + LINE_SEPARATOR + "      48.8691944661," + LINE_SEPARATOR + "      2.40210336054" + LINE_SEPARATOR + "    ]," + LINE_SEPARATOR + "    \"dateplanta\": \"1971-02-27\"" + LINE_SEPARATOR + "  }," + LINE_SEPARATOR + "  \"geometry\": {" + LINE_SEPARATOR + "    \"type\": \"Point\"," + LINE_SEPARATOR + "    \"coordinates\": [" + LINE_SEPARATOR + "      2.40210336054," + LINE_SEPARATOR + "      48.8691944661" + LINE_SEPARATOR + "    ]" + LINE_SEPARATOR + "  }," + LINE_SEPARATOR + "  \"record_timestamp\": \"2014-09-11T14:39:16.131843\"" + LINE_SEPARATOR + "}";
 

@@ -1,33 +1,32 @@
-/*
+/**
  * The MIT License
  *
- *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.easybatch.core.mapper.RecordMapper;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.json.JsonRecord;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
@@ -39,7 +38,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * @param <T> Target domain object class.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JacksonRecordMapper<T> implements RecordMapper<JsonRecord, GenericRecord<T>> {
+public class JacksonRecordMapper<T> implements RecordMapper<JsonRecord, Record<T>> {
 
     private ObjectMapper mapper;
 
@@ -60,11 +59,7 @@ public class JacksonRecordMapper<T> implements RecordMapper<JsonRecord, GenericR
     }
 
     @Override
-    public GenericRecord<T> processRecord(final JsonRecord record) throws RecordMappingException {
-        try {
-            return new GenericRecord<>(record.getHeader(), mapper.readValue(record.getPayload().getBytes(), type));
-        } catch (Exception e) {
-            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
-        }
+    public Record<T> processRecord(final JsonRecord record) throws Exception {
+        return new GenericRecord<>(record.getHeader(), mapper.readValue(record.getPayload().getBytes(), type));
     }
 }

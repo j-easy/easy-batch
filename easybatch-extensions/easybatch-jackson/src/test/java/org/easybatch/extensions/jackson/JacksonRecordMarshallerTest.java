@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +21,13 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.jackson;
 
-import org.easybatch.core.marshaller.RecordMarshallingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.easybatch.json.JsonRecord;
+import org.easybatch.test.common.Tweet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,17 +42,17 @@ public class JacksonRecordMarshallerTest {
     @Mock
     private Header header;
 
-    private JacksonRecordMarshaller marshaller;
+    private JacksonRecordMarshaller<Tweet> marshaller;
 
     @Before
     public void setUp() {
-        marshaller = new JacksonRecordMarshaller();
+        marshaller = new JacksonRecordMarshaller<>();
     }
 
     @Test
-    public void marshal() throws RecordMarshallingException {
+    public void marshal() throws Exception {
         Tweet tweet = new Tweet(1, "foo", "hi");
-        GenericRecord<Tweet> record = new GenericRecord<>(header, tweet);
+        Record<Tweet> record = new GenericRecord<>(header, tweet);
 
         String expected = "{\"id\":1,\"user\":\"foo\",\"message\":\"hi\"}";
         JsonRecord actual = marshaller.processRecord(record);

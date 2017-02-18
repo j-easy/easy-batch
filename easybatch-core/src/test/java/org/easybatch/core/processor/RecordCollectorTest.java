@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.processor;
 
 import org.easybatch.core.record.Record;
@@ -31,19 +30,22 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RecordCollectorTest {
 
     @Mock
-    private Record record1, record2;
+    private Record<Object> record1, record2;
 
-    private RecordCollector recordCollector;
+    private RecordCollector<Object> recordCollector;
 
     @Before
     public void setUp() {
-        recordCollector = new RecordCollector();
+        recordCollector = new RecordCollector<>();
     }
 
     @Test
@@ -56,6 +58,7 @@ public class RecordCollectorTest {
         recordCollector.processRecord(record1);
         recordCollector.processRecord(record2);
 
-        assertThat(recordCollector.getComputationResult()).containsExactly(record1, record2);
+        List<Record<Object>> records = recordCollector.getRecords();
+        assertThat(records).containsAll(asList(record1, record2));
     }
 }

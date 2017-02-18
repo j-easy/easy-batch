@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.mongodb;
 
 import com.mongodb.DBCollection;
@@ -42,21 +41,16 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class MongoDBRecordReaderTest {
 
-    public static final int TOTAL_RECORDS = 10;
-
-    public static final String DATA_SOURCE_NAME = "things";
+    private static final String DATA_SOURCE_NAME = "things";
 
     private MongoDBRecordReader reader;
 
     @Mock
     private DBCollection collection;
-
     @Mock
     private DBObject query;
-
     @Mock
     private DBCursor cursor;
-
     @Mock
     private DBObject dbObject;
 
@@ -67,43 +61,19 @@ public class MongoDBRecordReaderTest {
         when(collection.find(query)).thenReturn(cursor);
         when(cursor.hasNext()).thenReturn(true);
         when(cursor.next()).thenReturn(dbObject);
-        when(cursor.count()).thenReturn(TOTAL_RECORDS);
         when(collection.getName()).thenReturn(DATA_SOURCE_NAME);
 
         reader.open();
     }
 
     @Test
-    public void testHasNextRecord() throws Exception {
-        boolean actual = reader.hasNextRecord();
-
-        assertThat(actual).isTrue();
-        verify(cursor).hasNext();
-    }
-
-    @Test
-    public void testGetNextRecord() throws Exception {
-        Record record = reader.readNextRecord();
+    public void testReadRecord() throws Exception {
+        Record record = reader.readRecord();
 
         assertThat(record.getHeader().getNumber()).isEqualTo(1);
+        assertThat(record.getHeader().getSource()).isEqualTo("MongoDB collection: " + DATA_SOURCE_NAME);
         assertThat(record.getPayload()).isEqualTo(dbObject);
         verify(cursor).next();
-    }
-
-    @Test
-    public void testGetTotalRecords() throws Exception {
-        Long totalRecords = reader.getTotalRecords();
-
-        assertThat(totalRecords).isEqualTo(TOTAL_RECORDS);
-        verify(cursor).count();
-    }
-
-    @Test
-    public void testGetDataSourceName() throws Exception {
-        String dataSourceName = reader.getDataSourceName();
-
-        assertThat(dataSourceName).isEqualTo("MongoDB collection: " + DATA_SOURCE_NAME);
-        verify(collection).getName();
     }
 
     @After

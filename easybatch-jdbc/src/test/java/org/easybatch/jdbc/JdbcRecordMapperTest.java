@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,10 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jdbc;
 
-import org.easybatch.core.record.GenericRecord;
-import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
+import org.easybatch.test.common.Tweet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,12 +40,10 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class JdbcRecordMapperTest {
 
-    private JdbcRecordMapper tweetMapper;
-
-    private JdbcRecord jdbcRecord;
+    private JdbcRecordMapper<Tweet> tweetMapper;
 
     @Mock
-    private Header header;
+    private JdbcRecord jdbcRecord;
     @Mock
     private ResultSet payload;
     @Mock
@@ -54,50 +51,37 @@ public class JdbcRecordMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        tweetMapper = new JdbcRecordMapper(Tweet.class);
-        jdbcRecord = new JdbcRecord(header, payload);
+        when(payload.getString(1)).thenReturn("1");
+        when(payload.getString(2)).thenReturn("foo");
+        when(payload.getString(3)).thenReturn("Hello!");
+        when(payload.getMetaData()).thenReturn(metadata);
+        when(metadata.getColumnCount()).thenReturn(3);
+        when(jdbcRecord.getPayload()).thenReturn(payload);
     }
 
     @Test
     public void testMapRecordWithDefaultMapping() throws Exception {
-        when(payload.getMetaData()).thenReturn(metadata);
-        when(metadata.getColumnCount()).thenReturn(3);
+
+        tweetMapper = new JdbcRecordMapper<>(Tweet.class);
+
         when(metadata.getColumnLabel(1)).thenReturn("id");
         when(metadata.getColumnLabel(2)).thenReturn("user");
         when(metadata.getColumnLabel(3)).thenReturn("message");
-        when(payload.getString(1)).thenReturn("1");
-        when(payload.getString(2)).thenReturn("foo");
-        when(payload.getString(3)).thenReturn("Hello!");
 
-        GenericRecord<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
+        Record<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
         Tweet tweet = actual.getPayload();
 
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.getId()).isEqualTo(1);
-        assertThat(tweet.getUser()).isEqualTo("foo");
-        assertThat(tweet.getMessage()).isEqualTo("Hello!");
+        assertThat(tweet).isEqualTo(new Tweet(1, "foo", "Hello!"));
     }
 
     @Test
     public void testMapRecordWithCustomMapping() throws Exception {
 
-        tweetMapper = new JdbcRecordMapper(Tweet.class, "id", "user", "message");
+        tweetMapper = new JdbcRecordMapper<>(Tweet.class, "id", "user", "message");
 
-        when(payload.getMetaData()).thenReturn(metadata);
-        when(metadata.getColumnCount()).thenReturn(3);
-        when(metadata.getColumnLabel(1)).thenReturn("t_id");
-        when(metadata.getColumnLabel(2)).thenReturn("t_user");
-        when(metadata.getColumnLabel(3)).thenReturn("t_message");
-        when(payload.getString(1)).thenReturn("1");
-        when(payload.getString(2)).thenReturn("foo");
-        when(payload.getString(3)).thenReturn("Hello!");
-
-        GenericRecord<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
+        Record<Tweet> actual = tweetMapper.processRecord(jdbcRecord);
         Tweet tweet = actual.getPayload();
 
-        assertThat(tweet).isNotNull();
-        assertThat(tweet.getId()).isEqualTo(1);
-        assertThat(tweet.getUser()).isEqualTo("foo");
-        assertThat(tweet.getMessage()).isEqualTo("Hello!");
+        assertThat(tweet).isEqualTo(new Tweet(1, "foo", "Hello!"));
     }
 }

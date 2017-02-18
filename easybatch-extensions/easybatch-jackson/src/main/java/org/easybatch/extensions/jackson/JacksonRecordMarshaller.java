@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,16 +21,12 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.marshaller.RecordMarshallingException;
-import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.json.JsonRecord;
-
-import java.io.IOException;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -39,7 +35,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JacksonRecordMarshaller implements RecordMarshaller<GenericRecord, JsonRecord> {
+public class JacksonRecordMarshaller<P> implements RecordMarshaller<Record<P>, JsonRecord> {
 
     private ObjectMapper mapper;
 
@@ -58,12 +54,8 @@ public class JacksonRecordMarshaller implements RecordMarshaller<GenericRecord, 
     }
 
     @Override
-    public JsonRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
-        try {
-            return new JsonRecord(record.getHeader(), mapper.writeValueAsString(record.getPayload()));
-        } catch (IOException e) {
-            throw new RecordMarshallingException(e);
-        }
+    public JsonRecord processRecord(final Record<P> record) throws Exception {
+        return new JsonRecord(record.getHeader(), mapper.writeValueAsString(record.getPayload()));
     }
 
 }

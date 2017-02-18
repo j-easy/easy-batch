@@ -2,7 +2,7 @@
     <parent>
         <artifactId>easybatch</artifactId>
         <groupId>org.easybatch</groupId>
-        <version>4.1.0-SNAPSHOT</version>
+        <version>5.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>5.2.2.Final</version>
+            <version>${hibernate-validator.version}</version>
         </dependency>
 
         <dependency>

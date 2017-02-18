@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,40 +21,119 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.record;
 
+import org.easybatch.core.util.Utils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import static java.util.Collections.addAll;
 
 /**
- * A batch contains a list of records.
+ * Class representing a batch of records.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class Batch extends GenericRecord<List<Record>> {
+public class Batch implements Iterable<Record> {
+
+    private List<Record> records = new ArrayList<>();
 
     /**
-     * Create a {@link Batch}.
-     *
-     * @param header  the batch header
-     * @param payload the batch payload
+     * Create a new {@link Batch}.
      */
-    public Batch(Header header, List<Record> payload) {
-        super(header, payload);
+    public Batch() {
+    }
+
+    /**
+     * Create a new {@link Batch}.
+     *
+     * @param records to put in the batch
+     */
+    public Batch(Record... records) {
+        addAll(this.records, records);
+    }
+
+    /**
+     * Create a new {@link Batch}.
+     *
+     * @param records to put in the batch
+     */
+    public Batch(List<Record> records) {
+        this.records = records;
+    }
+
+    /**
+     * Add a record to the batch.
+     *
+     * @param record to add
+     */
+    public void addRecord(final Record record) {
+        records.add(record);
+    }
+
+    /**
+     * Remove a record from the batch.
+     *
+     * @param record to remove
+     */
+    public void removeRecord(final Record record) {
+        records.remove(record);
+    }
+
+    /**
+     * Check if the batch is empty.
+     *
+     * @return true if the batch is empty, false otherwise
+     */
+    public boolean isEmpty() {
+        return records.isEmpty();
+    }
+
+    /**
+     * Get the size of the batch.
+     *
+     * @return the size of the batch
+     */
+    public long size() {
+        return records.size();
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Batch batch = (Batch) o;
+
+        return records.equals(batch.records);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return records.hashCode();
+    }
+
+
+    @Override
+    public Iterator<Record> iterator() {
+        return records.iterator();
     }
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder("Batch: {");
-        stringBuilder.append(LINE_SEPARATOR);
-        for (Record record : payload) {
-            stringBuilder.append("\trecord = ");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Batch: {");
+        stringBuilder.append(Utils.LINE_SEPARATOR);
+        for (Record record : records) {
+            stringBuilder.append('\t');
             stringBuilder.append(record);
-            stringBuilder.append(LINE_SEPARATOR);
+            stringBuilder.append(Utils.LINE_SEPARATOR);
         }
-        stringBuilder.append("}");
+        stringBuilder.append('}');
         return stringBuilder.toString();
     }
 }

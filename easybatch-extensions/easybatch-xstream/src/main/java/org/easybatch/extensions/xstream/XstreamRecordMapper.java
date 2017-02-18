@@ -1,33 +1,32 @@
-/*
+/**
  * The MIT License
  *
- *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.xstream;
 
 import com.thoughtworks.xstream.XStream;
 import org.easybatch.core.mapper.RecordMapper;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.xml.XmlRecord;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
@@ -39,7 +38,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * @param <P> Target domain object class.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class XstreamRecordMapper<P> implements RecordMapper<XmlRecord, GenericRecord<P>> {
+public class XstreamRecordMapper<P> implements RecordMapper<XmlRecord, Record<P>> {
 
     private XStream xStream;
 
@@ -56,13 +55,9 @@ public class XstreamRecordMapper<P> implements RecordMapper<XmlRecord, GenericRe
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public GenericRecord<P> processRecord(final XmlRecord record) throws RecordMappingException {
-        try {
-            P unmarshalledObject = (P) xStream.fromXML(record.getPayload());
-            return new GenericRecord<>(record.getHeader(), unmarshalledObject);
-        } catch (Exception e) {
-            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
-        }
+    public Record<P> processRecord(final XmlRecord record) throws Exception {
+        P unmarshalledObject = (P) xStream.fromXML(record.getPayload());
+        return new GenericRecord<>(record.getHeader(), unmarshalledObject);
     }
 
 }

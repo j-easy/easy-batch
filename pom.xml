@@ -10,9 +10,9 @@
 
     <groupId>org.easybatch</groupId>
     <artifactId>easybatch</artifactId>
-    <version>4.1.0-SNAPSHOT</version>
+    <version>5.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>easybatch</name>
+    <name>Easy Batch</name>
     <description>Easy Batch parent module</description>
     <url>http://www.easybatch.org</url>
 
@@ -20,17 +20,21 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
         <junit.version>4.12</junit.version>
-        <assertj.version>2.4.1</assertj.version>
-        <mockito.version>1.10.19</mockito.version>
-        <system-rules.version>1.16.0</system-rules.version>
+        <assertj.version>2.5.0</assertj.version>
+        <spring.version>4.3.6.RELEASE</spring.version>
+        <mockito.version>2.7.5</mockito.version>
+        <system-rules.version>1.16.1</system-rules.version>
+        <hsqldb.version>2.3.4</hsqldb.version>
+        <hibernate.version>4.3.11.Final</hibernate.version>
+        <hibernate-validator.version>5.4.0.Final</hibernate-validator.version>
 
-        <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
-        <maven-site-plugin.version>3.4</maven-site-plugin.version>
+        <maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
         <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
-        <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
         <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
-        <coveralls-maven-plugin.version>4.0.0</coveralls-maven-plugin.version>
+        <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+        <maven-license-plugin.version>3.0</maven-license-plugin.version>
     </properties>
 
     <modules>
@@ -45,6 +49,7 @@
         <module>easybatch-json</module>
         <module>easybatch-extensions</module>
         <module>easybatch-archetype</module>
+        <module>easybatch-test-common</module>
     </modules>
 
     <developers>
@@ -159,6 +164,13 @@
             </dependency>
 
             <dependency>
+                <groupId>org.easybatch</groupId>
+                <artifactId>easybatch-test-common</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
@@ -232,6 +244,12 @@
                             <include>**/*Test*.java</include>
                         </includes>
                         <reportFormat>html</reportFormat>
+                        <systemProperties>
+                            <property>
+                                <name>java.util.logging.SimpleFormatter.format</name>
+                                <value>%1$tF %tT.%1$tL %4$s [%2$s] - %5$s %6$s%n</value>
+                            </property>
+                        </systemProperties>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -239,7 +257,8 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${maven-javadoc-plugin.version}</version>
                     <configuration>
-                        <stylesheet>maven</stylesheet>
+                        <additionalparam>-Xdoclint:none</additionalparam>
+                        <excludePackageNames>org.easybatch.test.common</excludePackageNames>
                     </configuration>
                     <executions>
                         <execution>
@@ -252,6 +271,31 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${maven-license-plugin.version}</version>
+                <configuration>
+                    <header>licence-header-template.txt</header>
+                    <properties>
+                        <currentYear>2017</currentYear>
+                    </properties>
+                    <strictCheck>true</strictCheck>
+                    <includes>
+                        <include>src/**/*.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

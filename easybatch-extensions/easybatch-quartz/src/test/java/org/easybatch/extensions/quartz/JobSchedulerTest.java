@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.quartz;
 
 import org.easybatch.core.job.Job;
@@ -50,11 +49,8 @@ public class JobSchedulerTest {
     public void setUp() throws Exception {
         jobScheduler = JobScheduler.getInstance();
 
-        when(job1.getExecutionId()).thenReturn("job1");
-        when(job1.getExecutionId()).thenReturn("123");
-
-        when(job2.getExecutionId()).thenReturn("job2");
-        when(job2.getExecutionId()).thenReturn("456");
+        when(job1.getName()).thenReturn("job1");
+        when(job2.getName()).thenReturn("job2");
     }
 
     @Test
@@ -79,8 +75,8 @@ public class JobSchedulerTest {
         jobScheduler.unschedule(job2);
         assertThat(jobScheduler.isScheduled(job2)).isFalse();
 
-        verify(job1, times(4)).getExecutionId();
-        verify(job2, times(4)).getExecutionId();
+        verify(job1, times(4)).getName();
+        verify(job2, times(4)).getName();
 
         jobScheduler.stop();
         assertThat(jobScheduler.isStopped()).isTrue();

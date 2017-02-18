@@ -1,34 +1,32 @@
-/*
+/**
  * The MIT License
  *
- *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
  */
-
 package org.easybatch.jdbc;
 
 import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RecordReaderClosingException;
-import org.easybatch.core.reader.RecordReaderOpeningException;
 import org.easybatch.core.record.Header;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,10 +47,9 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  */
 public class JdbcRecordReader implements RecordReader {
 
-    /**
-     * The logger to use.
-     */
     private static final Logger LOGGER = Logger.getLogger(JdbcRecordReader.class.getSimpleName());
+
+    private DataSource dataSource;
 
     /**
      * The database connection to use to read data.
@@ -97,39 +94,34 @@ public class JdbcRecordReader implements RecordReader {
     /**
      * Create a JdbcRecordReader instance.
      *
-     * @param connection the connection to use to read data
-     * @param query      the jdbc query to use to fetch data
+     * @param dataSource to read data
+     * @param query      to fetch data
      */
-    public JdbcRecordReader(final Connection connection, final String query) {
-        checkNotNull(connection, "connection");
+    public JdbcRecordReader(final DataSource dataSource, final String query) {
+        checkNotNull(dataSource, "data source");
         checkNotNull(query, "query");
-        this.connection = connection;
+        this.dataSource = dataSource;
         this.query = query;
     }
 
     @Override
-    public void open() throws RecordReaderOpeningException {
+    public void open() throws Exception {
         currentRecordNumber = 0;
-        try {
-            statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-            if (maxRows >= 1) {
-                statement.setMaxRows(maxRows);
-            }
-            if (fetchSize >= 1) {
-                statement.setFetchSize(fetchSize);
-            }
-            if (queryTimeout >= 1) {
-                statement.setQueryTimeout(queryTimeout);
-            }
-            resultSet = statement.executeQuery(query);
-
-        } catch (SQLException e) {
-            throw new RecordReaderOpeningException("Unable to open record reader", e);
+        connection = dataSource.getConnection();
+        statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        if (maxRows >= 1) {
+            statement.setMaxRows(maxRows);
         }
+        if (fetchSize >= 1) {
+            statement.setFetchSize(fetchSize);
+        }
+        if (queryTimeout >= 1) {
+            statement.setQueryTimeout(queryTimeout);
+        }
+        resultSet = statement.executeQuery(query);
     }
 
-    @Override
-    public boolean hasNextRecord() {
+    private boolean hasNextRecord() {
         try {
             return resultSet.next();
         } catch (SQLException e) {
@@ -139,18 +131,16 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
-    public JdbcRecord readNextRecord() {
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new JdbcRecord(header, resultSet);
+    public JdbcRecord readRecord() {
+        if (hasNextRecord()) {
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            return new JdbcRecord(header, resultSet);
+        } else {
+            return null;
+        }
     }
 
-    @Override
-    public Long getTotalRecords() {
-        return null;
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         try {
             return "Connection URL: " + connection.getMetaData().getURL() + " | " +
                     "Query string: " + query;
@@ -161,21 +151,16 @@ public class JdbcRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws RecordReaderClosingException {
-        try {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (statement != null) {
-                statement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            throw new RecordReaderClosingException("Unable to close record reader", e);
+    public void close() throws Exception {
+        if (resultSet != null) {
+            resultSet.close();
         }
-
+        if (statement != null) {
+            statement.close();
+        }
+        if (connection != null) {
+            connection.close();
+        }
     }
 
     /**

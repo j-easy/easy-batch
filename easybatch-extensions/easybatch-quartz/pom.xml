@@ -3,7 +3,7 @@
     <parent>
         <artifactId>easybatch-extensions</artifactId>
         <groupId>org.easybatch</groupId>
-        <version>4.1.0-SNAPSHOT</version>
+        <version>5.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
-            <version>2.2.2</version>
+            <version>2.2.3</version>
         </dependency>
 
         <dependency>

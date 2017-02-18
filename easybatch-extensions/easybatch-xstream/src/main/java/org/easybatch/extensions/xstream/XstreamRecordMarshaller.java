@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,12 +21,11 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.xstream;
 
 import com.thoughtworks.xstream.XStream;
 import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.xml.XmlRecord;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
@@ -36,7 +35,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class XstreamRecordMarshaller implements RecordMarshaller<GenericRecord, XmlRecord> {
+public class XstreamRecordMarshaller<P> implements RecordMarshaller<Record<P>, XmlRecord> {
 
     private XStream xStream;
 
@@ -71,7 +70,7 @@ public class XstreamRecordMarshaller implements RecordMarshaller<GenericRecord, 
     }
 
     @Override
-    public XmlRecord processRecord(final GenericRecord record) {
+    public XmlRecord processRecord(final Record<P> record) {
         return new XmlRecord(record.getHeader(), xStream.toXML(record.getPayload()));
     }
 }

@@ -2,6 +2,136 @@ EASY BATCH FRAMEWORK CHANGELOG
 ==============================
 http://www.easybatch.org
 
+Changes in version 5.0.0 (2016-10-23)
+-------------------------------------
+
+New features
+
+* issue #253 : Add MongoDBRecordMarshaller
+* issue #251 : Add support for custom metrics
+* issue #250 : Add java 8 stream support
+* issue #248 : Add onConnectionOpened method in JobMonitoringListener
+
+Bug fixes
+
+* issue #247 : onConnectionClosed in JobMonitoringListener is inconsistent
+
+Enhancements
+
+* issue #252 : MongoDBRecordWriter should use bulk writes
+* issue #249 : Update example in maven quick start archetype
+
+Changes in version 5.0.0-RC2 (2016-10-12)
+-----------------------------------------
+
+New features
+
+* issue #243 : add OpenCsvRecordMarshaller
+* issue #242 : add XmlRecordValidator
+* issue #241 : add option to activate/deactivate recursivity in FileRecordReader
+
+Bug fixes
+
+* issue #238 : FlatFileRecordReader should not throw a FileNotFoundException at construction time
+
+Enhancements and API changes
+
+* issue #236 : add constructor with java.nio.file.Path in FileRecordReader
+* issue #239 : add constructor with java.nio.file.Path in FileRecordWriter
+* issue #240 : add constructor with java.nio.file.Path in FlatFileRecordReader
+* issue #244 : ApacheCommonCsvRecord is redundant
+* issue #245 : ApacheCommonCsvRecordReader is redundant
+* issue #246 : ApacheCommonCsvRecordMapper should be configurable with field names
+
+Changes in version 5.0.0-RC1 (2016-10-01)
+-----------------------------------------
+
+Major changes
+
+* issue #211 : Inconsistent Batch API
+* issue #233 : Inconsistent RecordReader API
+* issue #223 : Inconsistent RecordWriter API
+* issue #227 : Inconsistent RecordDispatcher API
+* issue #221 : Resource management should be handled by the framework
+* issue #222 : Transaction management should be handled by the framework
+* issue #230 : JobExecutor should use an ExecutorService
+* issue #220 : Adapt listeners to batch processing workflow
+
+New features
+
+* issue #224 : Add `RetryableRecordReader`
+* issue #225 : Add `RetryableRecordWriter`
+* issue #226 : Add `CompositeRecordWriter`
+
+Enhancements
+
+* issue #234 : `RecordFieldExtractor` is poorly named
+* issue #235 : `BeanRecordFieldExtractor` is poorly named
+
+Fixed bugs
+
+* issue #170 : Unable to determine number of filtered record from batch
+* issue #204 : Unnecessary generic type in `BeanValidationRecordValidator`
+* issue #209 : Unnecessary generic type in `BlockingQueueRecordReader` / `BlockingQueueRecordWriter`
+* issue #228 : Job executionId is not coherent
+* issue #229 : Job name is not a parameter
+* issue #231 : `JobStatus.ABORTED` is redundant
+* issue #232 : Possible resource leak in `XmlWrapperTagWriter`
+
+Changes in version 4.2.0 (2016-09-25)
+-------------------------------------
+
+Features
+
+* issue #205 : Add BeanPropertiesPreparedStatementProvider
+* issue #208 : add StandardErrorRecordWriter
+* issue #214 : Replace "strict mode" parameter with "error threshold"
+
+Bug Fixes
+
+* issue #202 : Incorrect duration when unable to open the record reader
+* issue #203 : Incorrect data source when unable to open the record reader
+* issue #206 : Incoherent log message when filtering a batch of records
+* issue #207 : Incorrect log message when unable to process a batch of records
+* issue #210 : java.rmi.UnmarshalException when using the JobMonitorProxy
+
+Deprecations
+
+* issue #212 : "skip" parameter is redundant
+* issue #213 : "silent mode" parameter is redundant
+* issue #215 : "limit" parameter is redundant
+* issue #216 : Job timeout should be handled by the executor
+* issue #217 : Inappropriate "call" method in JobBuilder API
+* issue #218 : Rename "jmx mode" parameter into "jmx monitoring" deprecation
+* issue #219 : deprecate the ComputationalRecordProcessor API
+
+Changes in version 4.1.0 (2016-07-30)
+-------------------------------------
+
+Features
+
+* issue #123: Add support for MS Excel format using Apache POI
+* issue #168: Add last error in job report
+* issue #171: Add support to trim whitespace for `FixedLengthRecordMapper`
+* issue #175: Add retry on failure for the record reader
+* issue #187: Add host name to job report
+* issue #196: Add JMX monitoring push notifications
+* issue #198: `BlockingQueueRecordReader` should be configurable with the number of poison records received
+
+Fixed bugs
+
+* Issue #169: When Reader fails Job Listeners are not being invoked
+* Issue #191: `NumberFormatException` in `IntegerTypeConverter`
+
+Enhancements and API changes
+
+* issue #186: inconsistent `BlockingQueue` record reader/writer APIs
+* issue #190: `JobMonitor` should not be public
+* issue #193: Data source name of blocking queue is too long
+* issue #194: Improve JUL log record format
+* issue #195: Not appropriate `JobReportMerger` and `DefaultJobReportMerger` API package
+* issue #199: Add utility method to check if a record is a poison record
+
 Changes in version 4.0.0 (2015-11-07)
 -------------------------------------
 

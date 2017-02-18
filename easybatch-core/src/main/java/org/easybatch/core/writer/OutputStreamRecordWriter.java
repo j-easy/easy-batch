@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +21,10 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.writer;
 
 import org.easybatch.core.listener.JobListener;
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 
 import java.io.OutputStreamWriter;
@@ -34,13 +34,10 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
- * <p/>
- * Users of this class are responsible for opening/closing the output stream, maybe using
- * a {@link JobListener}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class OutputStreamRecordWriter extends AbstractRecordWriter {
+public class OutputStreamRecordWriter implements RecordWriter {
 
     private String lineSeparator;
 
@@ -48,9 +45,6 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter {
 
     /**
      * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
-     * <p/>
-     * The user of this class is responsible for opening/closing the output stream, maybe using
-     * a {@link JobListener}.
      *
      * @param outputStreamWriter the output stream to write records to.
      */
@@ -75,10 +69,22 @@ public class OutputStreamRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    public void writePayload(final Object payload) throws Exception {
-        outputStreamWriter.write(payload.toString());
-        outputStreamWriter.write(lineSeparator);
-        outputStreamWriter.flush();
+    public void open() throws Exception {
+        // no op
     }
 
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch) {
+            outputStreamWriter.write(record.getPayload().toString());
+            outputStreamWriter.write(lineSeparator);
+        }
+        outputStreamWriter.flush();
+
+    }
+
+    @Override
+    public void close() throws Exception {
+        outputStreamWriter.close();
+    }
 }

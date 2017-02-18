@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.hibernate;
 
 import org.easybatch.core.reader.RecordReader;
@@ -37,12 +36,16 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 /**
  * Read records using Hibernate API.
  *
+ * This reader produces {@link GenericRecord} instances with domain objects as payload.
+ *
  * @param <T> the type of objects this reader will read.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 
 @SuppressWarnings(value = "unchecked") // argh hibernate APIs that return raw types ..
 public class HibernateRecordReader<T> implements RecordReader {
+
+    private SessionFactory sessionFactory;
 
     private Session session;
 
@@ -65,12 +68,13 @@ public class HibernateRecordReader<T> implements RecordReader {
     public HibernateRecordReader(final SessionFactory sessionFactory, final String query) {
         checkNotNull(sessionFactory, "session factory");
         checkNotNull(query, "query");
-        this.session = sessionFactory.openSession();
+        this.sessionFactory = sessionFactory;
         this.query = query;
     }
 
     @Override
     public void open() {
+        session = sessionFactory.openSession();
         currentRecordNumber = 0;
         Query hibernateQuery = session.createQuery(query);
         hibernateQuery.setReadOnly(true);
@@ -83,24 +87,21 @@ public class HibernateRecordReader<T> implements RecordReader {
         scrollableResults = hibernateQuery.scroll(ScrollMode.FORWARD_ONLY);
     }
 
-    @Override
-    public boolean hasNextRecord() {
+    private boolean hasNextRecord() {
         return scrollableResults.next();
     }
 
     @Override
-    public GenericRecord<T> readNextRecord() {
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new GenericRecord<>(header, (T) scrollableResults.get()[0]);
+    public GenericRecord<T> readRecord() {
+        if (hasNextRecord()) {
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            return new GenericRecord<>(header, (T) scrollableResults.get()[0]);
+        } else {
+            return null;
+        }
     }
 
-    @Override
-    public Long getTotalRecords() {
-        return null; // Not possible with FORWARD_ONLY scrollable results
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return "Result of HQL query: " + query;
     }
 

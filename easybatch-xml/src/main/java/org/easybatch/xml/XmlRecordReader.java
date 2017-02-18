@@ -1,33 +1,29 @@
-/*
+/**
  * The MIT License
  *
- *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
  */
-
 package org.easybatch.xml;
 
 import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RecordReaderClosingException;
-import org.easybatch.core.reader.RecordReaderOpeningException;
-import org.easybatch.core.reader.RecordReadingException;
 import org.easybatch.core.record.Header;
 
 import javax.xml.stream.XMLEventReader;
@@ -37,6 +33,8 @@ import javax.xml.stream.events.*;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A record reader that reads xml records from an xml stream.
@@ -46,6 +44,8 @@ import java.util.Iterator;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class XmlRecordReader implements RecordReader {
+
+    private static final Logger LOGGER = Logger.getLogger(XmlRecordReader.class.getName());
 
     /**
      * The root element name.
@@ -73,34 +73,15 @@ public class XmlRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws RecordReaderOpeningException {
+    public void open() throws Exception {
         currentRecordNumber = 0;
-        try {
-            xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream);
-        } catch (XMLStreamException e) {
-            throw new RecordReaderOpeningException("Unable to open record reader", e);
-        }
+        xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream);
     }
 
     @Override
-    public boolean hasNextRecord() {
-        try {
-            while (!nextTagIsRootElementStart()) {
-                XMLEvent xmlEvent = xmlEventReader.nextEvent();
-                if (xmlEvent instanceof EndDocument) {
-                    return false;
-                }
-            }
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    @Override
-    public XmlRecord readNextRecord() throws RecordReadingException {
-        StringBuilder stringBuilder = new StringBuilder("");
-        try {
+    public XmlRecord readRecord() throws Exception {
+        if (hasNextRecord()) {
+            StringBuilder stringBuilder = new StringBuilder("");
             while (!nextTagIsRootElementEnd()) {
                 XMLEvent xmlEvent = xmlEventReader.nextEvent();
                 if (xmlEvent.isStartElement()) {
@@ -114,29 +95,34 @@ public class XmlRecordReader implements RecordReader {
             writeEndElement(stringBuilder, xmlEventReader.nextEvent());
             Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
             return new XmlRecord(header, stringBuilder.toString());
-        } catch (XMLStreamException e) {
-            throw new RecordReadingException("Unable to read next record", e);
+        } else {
+            return null;
         }
     }
 
-    @Override
-    public Long getTotalRecords() {
-        return null;
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return "XML stream";
     }
 
     @Override
-    public void close() throws RecordReaderClosingException {
+    public void close() throws Exception {
+        if (xmlEventReader != null) {
+            xmlEventReader.close();
+        }
+    }
+
+    private boolean hasNextRecord() {
         try {
-            if (xmlEventReader != null) {
-                xmlEventReader.close();
+            while (!nextTagIsRootElementStart()) {
+                XMLEvent xmlEvent = xmlEventReader.nextEvent();
+                if (xmlEvent instanceof EndDocument) {
+                    return false;
+                }
             }
-        } catch (XMLStreamException e) {
-            throw new RecordReaderClosingException("Unable to close record reader", e);
+            return true;
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, "Unable to peek next xml record", e); // JUL does not have DEBUG level ..
+            return false;
         }
     }
 
@@ -184,9 +170,9 @@ public class XmlRecordReader implements RecordReader {
     private void escapeStartElementAttributes(StringBuilder stringBuilder, XMLEvent xmlEvent) {
         StartElement startElement = xmlEvent.asStartElement();
         stringBuilder.append("<").append(startElement.getName().getLocalPart());
-        Iterator<Attribute> iterator = startElement.getAttributes();
+        Iterator iterator = startElement.getAttributes();
         while (iterator.hasNext()) {
-            Attribute attribute = iterator.next();
+            Attribute attribute = (Attribute) iterator.next();
             stringBuilder.append(" ")
                     .append(attribute.getName())
                     .append("='")

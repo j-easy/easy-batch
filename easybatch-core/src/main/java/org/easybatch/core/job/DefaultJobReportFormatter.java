@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +21,11 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.job;
 
-import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import java.util.Map;
+
+import static org.easybatch.core.util.Utils.*;
 
 /**
  * Default job report formatter.
@@ -41,6 +42,7 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
         /*
          * Job status
          */
+        sb.append(LINE_SEPARATOR).append("Name: ").append(jobReport.getJobName());
         sb.append(LINE_SEPARATOR).append("Status: ").append(jobReport.getStatus());
 
         /*
@@ -48,35 +50,26 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
          */
         JobParameters parameters = jobReport.getParameters();
         sb.append(LINE_SEPARATOR).append("Parameters:");
-        sb.append(LINE_SEPARATOR).append("\tName = ").append(parameters.getName());
-        sb.append(LINE_SEPARATOR).append("\tExecution Id = ").append(parameters.getExecutionId());
-        sb.append(LINE_SEPARATOR).append("\tData source = ").append(parameters.getDataSource());
-        sb.append(LINE_SEPARATOR).append("\tSkip = ").append(parameters.getSkip());
-        sb.append(LINE_SEPARATOR).append("\tLimit = ").append(jobReport.getFormattedLimit());
-        sb.append(LINE_SEPARATOR).append("\tTimeout = ").append(jobReport.getFormattedTimeout());
-        sb.append(LINE_SEPARATOR).append("\tStrict mode = ").append(parameters.isStrictMode());
-        sb.append(LINE_SEPARATOR).append("\tSilent mode = ").append(parameters.isSilentMode());
-        sb.append(LINE_SEPARATOR).append("\tKeep alive = ").append(parameters.isKeepAlive());
-        sb.append(LINE_SEPARATOR).append("\tJmx mode = ").append(parameters.isJmxMode());
+        sb.append(LINE_SEPARATOR).append("\tBatch size = ").append(parameters.getBatchSize());
+        sb.append(LINE_SEPARATOR).append("\tError threshold = ").append(formatErrorThreshold(parameters.getErrorThreshold()));
+        sb.append(LINE_SEPARATOR).append("\tJmx monitoring = ").append(parameters.isJmxMonitoring());
 
         /*
          * Job metrics
          */
+        JobMetrics metrics = jobReport.getMetrics();
         sb.append(LINE_SEPARATOR).append("Metrics:");
-        sb.append(LINE_SEPARATOR).append("\tStart time = ").append(jobReport.getFormattedStartTime());
-        sb.append(LINE_SEPARATOR).append("\tEnd time = ").append(jobReport.getFormattedEndTime());
-        sb.append(LINE_SEPARATOR).append("\tDuration = ").append(jobReport.getFormattedDuration());
-        sb.append(LINE_SEPARATOR).append("\tTotal count = ").append(jobReport.getFormattedTotalCount());
-        sb.append(LINE_SEPARATOR).append("\tSkipped count = ").append(jobReport.getFormattedSkippedCount());
-        sb.append(LINE_SEPARATOR).append("\tFiltered count = ").append(jobReport.getFormattedFilteredCount());
-        sb.append(LINE_SEPARATOR).append("\tError count = ").append(jobReport.getFormattedErrorCount());
-        sb.append(LINE_SEPARATOR).append("\tSuccess count = ").append(jobReport.getFormattedSuccessCount());
-        sb.append(LINE_SEPARATOR).append("\tRecord processing time average = ").append(jobReport.getFormattedRecordProcessingTimeAverage());
-
-        /*
-         * Job result (if any)
-         */
-        sb.append(LINE_SEPARATOR).append("Result: ").append(jobReport.getFormattedResult());
+        sb.append(LINE_SEPARATOR).append("\tStart time = ").append(formatTime(metrics.getStartTime()));
+        sb.append(LINE_SEPARATOR).append("\tEnd time = ").append(formatTime(metrics.getEndTime()));
+        sb.append(LINE_SEPARATOR).append("\tDuration = ").append(formatDuration(metrics.getDuration()));
+        sb.append(LINE_SEPARATOR).append("\tRead count = ").append(metrics.getReadCount());
+        sb.append(LINE_SEPARATOR).append("\tWrite count = ").append(metrics.getWriteCount());
+        sb.append(LINE_SEPARATOR).append("\tFiltered count = ").append(metrics.getFilteredCount());
+        sb.append(LINE_SEPARATOR).append("\tError count = ").append(metrics.getErrorCount());
+        Map<String, Object> customMetrics = metrics.getCustomMetrics();
+        for (Map.Entry<String, Object> customMetric : customMetrics.entrySet()) {
+            sb.append(LINE_SEPARATOR).append("\t").append(customMetric.getKey()).append(" = ").append(customMetric.getValue());
+        }
 
         return sb.toString();
     }

@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +21,11 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.job;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Metrics of a job.
@@ -37,19 +38,15 @@ public class JobMetrics implements Serializable {
 
     private long endTime;
 
-    private Long totalCount;
+    private long readCount;
 
-    private long skippedCount;
+    private long writeCount;
 
     private long filteredCount;
 
     private long errorCount;
 
-    private long successCount;
-
-    public void incrementSkippedCount() {
-        skippedCount++;
-    }
+    private Map<String, Object> customMetrics = new HashMap<>();
 
     public void incrementFilteredCount() {
         filteredCount++;
@@ -59,8 +56,12 @@ public class JobMetrics implements Serializable {
         errorCount++;
     }
 
-    public void incrementSuccessCount() {
-        successCount++;
+    public void incrementReadCount() {
+        readCount++;
+    }
+
+    public void incrementWriteCount(long count) {
+        writeCount += count;
     }
 
     public long getStartTime() {
@@ -83,18 +84,6 @@ public class JobMetrics implements Serializable {
         return getEndTime() - getStartTime();
     }
 
-    public Long getTotalCount() {
-        return totalCount;
-    }
-
-    public void setTotalCount(Long totalCount) {
-        this.totalCount = totalCount;
-    }
-
-    public long getSkippedCount() {
-        return skippedCount;
-    }
-
     public long getFilteredCount() {
         return filteredCount;
     }
@@ -103,7 +92,19 @@ public class JobMetrics implements Serializable {
         return errorCount;
     }
 
-    public long getSuccessCount() {
-        return successCount;
+    public long getReadCount() {
+        return readCount;
+    }
+
+    public long getWriteCount() {
+        return writeCount;
+    }
+
+    public void addMetric(String name, Object value) {
+        customMetrics.put(name, value);
+    }
+
+    public Map<String, Object> getCustomMetrics() {
+        return customMetrics;
     }
 }

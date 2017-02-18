@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,15 +21,18 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jdbc;
 
-import org.easybatch.core.writer.AbstractRecordWriter;
-import org.easybatch.core.writer.RecordWritingException;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -38,7 +41,11 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JdbcRecordWriter extends AbstractRecordWriter {
+public class JdbcRecordWriter implements RecordWriter {
+
+    private static final Logger LOGGER = Logger.getLogger(JdbcRecordWriter.class.getSimpleName());
+
+    private DataSource dataSource;
 
     private Connection connection;
 
@@ -47,30 +54,55 @@ public class JdbcRecordWriter extends AbstractRecordWriter {
     private PreparedStatementProvider preparedStatementProvider;
 
     /**
-     * Create a new JDBC writer.
+     * Create a new {@link JdbcRecordWriter}.
      *
-     * @param connection                the JDBC connection
+     * @param dataSource                the JDBC data source
      * @param query                     the query to insert data
      * @param preparedStatementProvider the prepared statement provider to map data to the query parameters
      */
-    public JdbcRecordWriter(final Connection connection, final String query, final PreparedStatementProvider preparedStatementProvider) {
-        checkNotNull(connection, "connection");
+    public JdbcRecordWriter(final DataSource dataSource, final String query, final PreparedStatementProvider preparedStatementProvider) {
+        checkNotNull(dataSource, "data source");
         checkNotNull(query, "query");
         checkNotNull(preparedStatementProvider, "prepared statement");
-        this.connection = connection;
+        this.dataSource = dataSource;
         this.query = query;
         this.preparedStatementProvider = preparedStatementProvider;
     }
 
     @Override
-    public void writePayload(final Object record) throws RecordWritingException {
+    public void open() throws Exception {
+        connection = dataSource.getConnection();
+        connection.setAutoCommit(false);
+    }
+
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        PreparedStatement preparedStatement = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatementProvider.prepareStatement(preparedStatement, record);
-            preparedStatement.executeUpdate();
+            preparedStatement = connection.prepareStatement(query);
+            for (Record record : batch) {
+                preparedStatementProvider.prepareStatement(preparedStatement, record.getPayload());
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+            connection.commit();
+            LOGGER.info("Transaction committed");
         } catch (SQLException e) {
-            throw new RecordWritingException("Unable to write record " + record + " to database", e);
+            LOGGER.log(Level.SEVERE, "Unable to commit transaction", e);
+            connection.rollback();
+            LOGGER.info("Transaction rolled back");
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
         }
     }
 
+    @Override
+    public void close() throws Exception {
+        if (connection != null) {
+            LOGGER.info("Closing connection");
+            connection.close();
+        }
+    }
 }

@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,27 +21,36 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.writer;
 
-import org.easybatch.core.processor.RecordProcessor;
-import org.easybatch.core.record.Record;
+import org.easybatch.core.record.Batch;
 
 /**
- * Marker interface for all record writers.
+ * Interface for all record writers.
  *
- * @param <R> the type of record to write
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public interface RecordWriter<R extends Record> extends RecordProcessor<R, R> {
+public interface RecordWriter {
 
     /**
-     * Write a record to a data sink.
+     * Open the writer.
      *
-     * @param record the record to write.
-     * @return the record that has been written
-     * @throws RecordWritingException if an error occurs during record writing
+     * @throws Exception if an error occurs during opening the writer
      */
-    @Override
-    R processRecord(R record) throws RecordWritingException;
+    void open() throws Exception;
+
+    /**
+     * Write a batch of records to a data sink.
+     *
+     * @param batch of records to write.
+     * @throws Exception if an error occurs during record writing
+     */
+    void writeRecords(Batch batch) throws Exception;
+
+    /**
+     * Close the writer
+     *
+     * @throws Exception if an error occurs during closing the writer
+     */
+    void close() throws Exception;
 }

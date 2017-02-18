@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,11 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.json;
 
 import org.easybatch.core.job.*;
 import org.easybatch.core.processor.RecordCollector;
+import org.easybatch.core.record.Record;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -36,27 +36,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SuppressWarnings("unchecked")
 public class JsonIntegrationTest {
 
-    private static final String EXPECTED_DATA_SOURCE_NAME = "Json stream";
-
     @Test
     public void testTweetsJsonStreamProcessing() throws Exception {
 
         final InputStream jsonDataSource = getDataSource("/tweets.json");
 
+        RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThatReportIsValid(jobReport);
 
-        List<JsonRecord> tweets = (List<JsonRecord>) jobReport.getResult();
+        List<JsonRecord> tweets = recordCollector.getRecords();
 
         assertThat(tweets).isNotEmpty().hasSize(3);
 
-        JsonRecord tweet = tweets.get(0);
+        Record tweet = tweets.get(0);
         assertThat(tweet.getHeader()).isNotNull();
         assertThat(tweet.getHeader().getNumber()).isEqualTo(1);
         assertThat(tweet.getPayload()).isEqualTo("{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}");
@@ -79,16 +78,17 @@ public class JsonIntegrationTest {
         //data source : http://opendata.paris.fr/explore/dataset/arbresalignementparis2010/download/?format=csv
         final InputStream jsonDataSource = getDataSource("/trees.json");
 
+        RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThatReportIsValid(jobReport);
 
-        List<JsonRecord> trees = (List<JsonRecord>) jobReport.getResult();
+        List<JsonRecord> trees = recordCollector.getRecords();
         assertThat(trees).hasSize(3);
 
         JsonRecord record = trees.get(0);
@@ -111,16 +111,17 @@ public class JsonIntegrationTest {
         // data source: http://catalog.data.gov/dataset/consumer-complaint-database
         final InputStream jsonDataSource = getDataSource("/complaints.json");
 
+        RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThatReportIsValid(jobReport);
 
-        List<JsonRecord> complaints = (List<JsonRecord>) jobReport.getResult();
+        List<JsonRecord> complaints = recordCollector.getRecords();
         assertThat(complaints).hasSize(3);
 
         JsonRecord record = complaints.get(0);
@@ -141,22 +142,22 @@ public class JsonIntegrationTest {
     public void testEmptyDataSourceProcessing() throws Exception {
         final InputStream jsonDataSource = getDataSource("/empty.json");
 
+        RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
                 .reader(new JsonRecordReader(jsonDataSource))
-                .processor(new RecordCollector())
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
-        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
 
-        List<JsonRecord> records = (List<JsonRecord>) jobReport.getResult();
+        List<JsonRecord> records = recordCollector.getRecords();
         assertThat(records).isNotNull().isEmpty();
 
     }
@@ -167,12 +168,11 @@ public class JsonIntegrationTest {
 
     private void assertThatReportIsValid(JobReport jobReport) {
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(3);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(3);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(3);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(3);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
-        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
     }
 
 }

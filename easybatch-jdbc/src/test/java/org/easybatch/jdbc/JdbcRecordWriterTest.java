@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,130 +21,70 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jdbc;
 
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
-import org.junit.AfterClass;
+import org.easybatch.test.common.AbstractDatabaseTest;
+import org.easybatch.test.common.Tweet;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.File;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Long.valueOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
 
-public class JdbcRecordWriterTest {
-
-    private static final String DATABASE_URL = "jdbc:hsqldb:mem";
-    private static final String USER = "sa";
-    private static final String PASSWORD = "pwd";
-
-    private static Connection connection;
+public class JdbcRecordWriterTest extends AbstractDatabaseTest {
 
     private JdbcRecordWriter jdbcRecordWriter;
-
-    @BeforeClass
-    public static void initDatabase() throws Exception {
-        System.setProperty("hsqldb.reconfig_logging", "false");
-        connection = getConnection();
-        createTweetTable(connection);
-    }
-
-    @AfterClass
-    public static void shutdownDatabase() throws Exception {
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
-        }
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
-        new File("mem.tmp").delete();
-        new File("mem.lck").delete();
-    }
-
-    private static void createTweetTable(Connection connection) throws Exception {
-        Statement statement = connection.createStatement();
-        String query = "DROP TABLE IF EXISTS tweet";
-        statement.executeUpdate(query);
-        query = "CREATE TABLE tweet (\n" +
-                "  id integer NOT NULL PRIMARY KEY,\n" +
-                "  user varchar(32) NOT NULL,\n" +
-                "  message varchar(140) NOT NULL,\n" +
-                ");";
-        statement.executeUpdate(query);
-        statement.close();
-        connection.commit();
-    }
-
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
-    }
+    private JobExecutor jobExecutor;
 
     @Before
     public void setUp() throws Exception {
+        super.setUp();
         String query = "INSERT INTO tweet VALUES (?,?,?);";
-        PreparedStatementProvider preparedStatementProvider = new PreparedStatementProvider() {
-            @Override
-            public void prepareStatement(PreparedStatement statement, Object record) throws SQLException {
-                Tweet tweet = (Tweet) record;
-                statement.setInt(1, tweet.getId());
-                statement.setString(2, tweet.getUser());
-                statement.setString(3, tweet.getMessage());
-            }
-        };
-        jdbcRecordWriter = new JdbcRecordWriter(connection, query, preparedStatementProvider);
+        jdbcRecordWriter = new JdbcRecordWriter(embeddedDatabase, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, "id", "user", "message"));
+        jobExecutor = new JobExecutor();
     }
 
     @Test
-    public void testSingleRecordWriting() throws Exception {
-
-        Integer nbTweetsToInsert = 5;
-
+    public void testRecordWriting() throws Exception {
+        int nbTweetsToInsert = 5;
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        JobReport jobReport = aNewJob()
+        Job job = aNewJob()
+                .batchSize(2)
                 .reader(new IterableRecordReader(tweets))
-                .writer(jdbcRecordWriter) // No need for JdbcTransactionPipelineListener, the connection is in auto-commit mode
-                .jobListener(new JdbcConnectionListener(connection))
-                .call();
+                .writer(jdbcRecordWriter)
+                .build();
+
+        JobReport jobReport = jobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(valueOf(nbTweetsToInsert));
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(nbTweetsToInsert);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(nbTweetsToInsert);
 
-        int nbTweetsInDatabase = countTweetsInDatabase();
-
+        int nbTweetsInDatabase = countRowsIn("tweet");
         assertThat(nbTweetsInDatabase).isEqualTo(nbTweetsToInsert);
     }
 
-    private int countTweetsInDatabase() throws SQLException {
-        Connection connection = getConnection();
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from tweet");
-        int nbTweets = 0;
-        while (resultSet.next()) {
-            nbTweets++;
-        }
-        resultSet.close();
-        statement.close();
-        connection.close();
-        return nbTweets;
-    }
-
-    private List<Tweet> createTweets(Integer nbTweetsToInsert) {
+    private List<Tweet> createTweets(int nbTweetsToInsert) {
         List<Tweet> tweets = new ArrayList<>();
         for (int i = 1; i <= nbTweetsToInsert; i++) {
             tweets.add(new Tweet(i, "user " + i, "hello " + i));
         }
         return tweets;
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        jobExecutor.shutdown();
+        super.tearDown();
     }
 
 }

@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,9 +21,10 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
 
 import java.io.StringWriter;
@@ -35,14 +36,14 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class StringRecordWriter extends AbstractRecordWriter {
+public class StringRecordWriter implements RecordWriter {
 
     private StringWriter stringWriter;
 
     /**
      * Write records to a {@link StringWriter}.
      *
-     * @param stringWriter the String writer to write strings to
+     * @param stringWriter to write strings to
      */
     public StringRecordWriter(final StringWriter stringWriter) {
         checkNotNull(stringWriter, "string writer");
@@ -50,8 +51,21 @@ public class StringRecordWriter extends AbstractRecordWriter {
     }
 
     @Override
-    protected void writePayload(final Object payload) throws RecordWritingException {
-        stringWriter.write(payload.toString());
-        stringWriter.write(Utils.LINE_SEPARATOR);
+    public void open() throws Exception {
+        // no op
+    }
+
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch) {
+            stringWriter.write(record.getPayload().toString());
+            stringWriter.write(Utils.LINE_SEPARATOR);
+        }
+        stringWriter.flush();
+    }
+
+    @Override
+    public void close() throws Exception {
+        stringWriter.close();
     }
 }

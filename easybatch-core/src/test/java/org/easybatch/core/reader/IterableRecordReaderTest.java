@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.reader;
 
 import org.easybatch.core.record.GenericRecord;
@@ -38,8 +37,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(value = MockitoJUnitRunner.class)
 public class IterableRecordReaderTest {
-
-    private static final String EXPECTED_DATA_SOURCE_NAME = "In-Memory Iterable";
 
     private static final String RECORD = "Foo";
 
@@ -65,25 +62,10 @@ public class IterableRecordReaderTest {
     }
 
     @Test
-    public void testHasNextRecord() throws Exception {
-        assertThat(iterableRecordReader.hasNextRecord()).isTrue();
-    }
-
-    @Test
-    public void testReadNextRecord() throws Exception {
-        GenericRecord genericRecord = iterableRecordReader.readNextRecord();
+    public void testReadRecord() throws Exception {
+        GenericRecord genericRecord = iterableRecordReader.readRecord();
         assertThat(genericRecord).isNotNull();
         assertThat(genericRecord.getPayload()).isEqualTo(RECORD);
     }
 
-    @Test
-    public void testGetTotalRecords() throws Exception {
-        assertThat(iterableRecordReader.getTotalRecords()).isNull();
-    }
-
-    @Test
-    public void testGetDataSourceName() throws Exception {
-        assertThat(iterableRecordReader.getDataSourceName()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
-
-    }
 }

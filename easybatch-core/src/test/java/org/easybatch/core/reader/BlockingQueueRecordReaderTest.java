@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.reader;
 
 import org.easybatch.core.record.PoisonRecord;
@@ -41,13 +40,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class BlockingQueueRecordReaderTest {
 
-    private BlockingQueueRecordReader<Record> blockingQueueRecordReader;
+    private BlockingQueueRecordReader blockingQueueRecordReader;
 
     private BlockingQueue<Record> queue;
 
     @Mock
     private Record record;
-
     @Mock
     private PoisonRecord poisonRecord;
 
@@ -57,27 +55,15 @@ public class BlockingQueueRecordReaderTest {
         queue.put(record);
         queue.put(poisonRecord);
 
-        blockingQueueRecordReader = new BlockingQueueRecordReader<>(queue);
+        blockingQueueRecordReader = new BlockingQueueRecordReader(queue);
         blockingQueueRecordReader.open();
     }
 
     @Test
-    public void testTotalRecordsIsNull() throws Exception {
-        assertThat(blockingQueueRecordReader.getTotalRecords()).isNull();
-    }
-
-    @Test
-    public void testHasNextRecord() throws Exception {
-        assertThat(blockingQueueRecordReader.hasNextRecord()).isTrue();
-    }
-
-    @Test
-    public void testReadNextRecord() throws Exception {
-        assertThat(blockingQueueRecordReader.hasNextRecord()).isTrue();
-        assertThat(blockingQueueRecordReader.readNextRecord()).isEqualTo(record);
-        assertThat(blockingQueueRecordReader.hasNextRecord()).isTrue();
-        assertThat(blockingQueueRecordReader.readNextRecord()).isEqualTo(poisonRecord);
-        assertThat(blockingQueueRecordReader.hasNextRecord()).isFalse();
+    public void testReadRecord() throws Exception {
+        assertThat(blockingQueueRecordReader.readRecord()).isEqualTo(record);
+        assertThat(blockingQueueRecordReader.readRecord()).isEqualTo(poisonRecord);
+        assertThat(blockingQueueRecordReader.readRecord()).isNull();
         assertThat(queue).isEmpty();
     }
 

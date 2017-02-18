@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,10 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.xml;
 
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,18 +38,18 @@ import static org.mockito.Mockito.when;
 public class XmlRecordMarshallerTest {
 
     @Mock
-    private GenericRecord record;
+    private Record<Person> record;
     @Mock
     private Header header;
 
-    private XmlRecordMarshaller xmlRecordMarshaller;
+    private XmlRecordMarshaller<Person> xmlRecordMarshaller;
 
     @Before
     public void setUp() throws Exception {
         Person person = new Person(1, "foo", "bar", null, false);
         when(record.getHeader()).thenReturn(header);
         when(record.getPayload()).thenReturn(person);
-        xmlRecordMarshaller = new XmlRecordMarshaller(Person.class);
+        xmlRecordMarshaller = new XmlRecordMarshaller<>(Person.class);
     }
 
     @Test

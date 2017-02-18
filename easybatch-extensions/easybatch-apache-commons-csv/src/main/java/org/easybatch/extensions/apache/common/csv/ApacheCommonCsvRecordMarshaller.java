@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,15 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.apache.common.csv;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;
-import org.easybatch.core.field.BeanRecordFieldExtractor;
-import org.easybatch.core.field.RecordFieldExtractor;
+import org.easybatch.core.field.BeanFieldExtractor;
+import org.easybatch.core.field.FieldExtractor;
 import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.marshaller.RecordMarshallingException;
-import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 
 import java.beans.IntrospectionException;
@@ -42,13 +40,13 @@ import java.io.StringWriter;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller<GenericRecord, StringRecord> {
+public class ApacheCommonCsvRecordMarshaller<P> implements RecordMarshaller<Record<P>, StringRecord> {
 
     public static final char DEFAULT_DELIMITER = ',';
 
     public static final char DEFAULT_QUALIFIER = '\"';
 
-    private final RecordFieldExtractor fieldExtractor;
+    private final FieldExtractor<P> fieldExtractor;
 
     private CSVFormat csvFormat;
 
@@ -59,7 +57,7 @@ public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller<Generic
      * @param fields the list of fields to marshal in order
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(final Class type, final String... fields) throws IntrospectionException {
+    public ApacheCommonCsvRecordMarshaller(final Class<P> type, final String... fields) throws IntrospectionException {
         this(type, fields, DEFAULT_DELIMITER, DEFAULT_QUALIFIER);
     }
 
@@ -71,7 +69,7 @@ public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller<Generic
      * @param delimiter the field delimiter
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(final Class type, final String[] fields, final char delimiter) throws IntrospectionException {
+    public ApacheCommonCsvRecordMarshaller(final Class<P> type, final String[] fields, final char delimiter) throws IntrospectionException {
         this(type, fields, delimiter, DEFAULT_QUALIFIER);
     }
 
@@ -84,8 +82,8 @@ public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller<Generic
      * @param qualifier the field qualifier
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(final Class type, final String[] fields, final char delimiter, final char qualifier) throws IntrospectionException {
-        this(new BeanRecordFieldExtractor(type, fields), delimiter, qualifier);
+    public ApacheCommonCsvRecordMarshaller(final Class<P> type, final String[] fields, final char delimiter, final char qualifier) throws IntrospectionException {
+        this(new BeanFieldExtractor<>(type, fields), delimiter, qualifier);
     }
 
     /**
@@ -96,7 +94,7 @@ public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller<Generic
      * @param qualifier      the field qualifier
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(RecordFieldExtractor fieldExtractor, final char delimiter, final char qualifier) throws IntrospectionException {
+    public ApacheCommonCsvRecordMarshaller(FieldExtractor<P> fieldExtractor, final char delimiter, final char qualifier) throws IntrospectionException {
         this.fieldExtractor = fieldExtractor;
         this.csvFormat = CSVFormat.newFormat(delimiter)
                 .withQuote(qualifier)
@@ -105,17 +103,14 @@ public class ApacheCommonCsvRecordMarshaller implements RecordMarshaller<Generic
     }
 
     @Override
-    public StringRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
-        try {
-            StringWriter stringWriter = new StringWriter();
-            CSVPrinter csvPrinter = new CSVPrinter(stringWriter, csvFormat);
-            Iterable<Object> iterable = fieldExtractor.extractFields(record.getPayload());
-            csvPrinter.printRecord(iterable);
-            csvPrinter.flush();
-            return new StringRecord(record.getHeader(), stringWriter.toString());
-        } catch (Exception e) {
-            throw new RecordMarshallingException(e);
-        }
+    public StringRecord processRecord(final Record<P> record) throws Exception {
+        StringWriter stringWriter = new StringWriter();
+        CSVPrinter csvPrinter = new CSVPrinter(stringWriter, csvFormat);
+        Iterable<Object> iterable = fieldExtractor.extractFields(record.getPayload());
+        csvPrinter.printRecord(iterable);
+        csvPrinter.flush();
+        csvPrinter.close();
+        return new StringRecord(record.getHeader(), stringWriter.toString());
     }
 
 }

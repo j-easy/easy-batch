@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,12 +21,14 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.mongodb;
 
+import com.mongodb.BulkWriteOperation;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import org.easybatch.core.writer.AbstractRecordWriter;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -35,7 +37,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MongoDBRecordWriter extends AbstractRecordWriter<DBObject, MongoDBRecord> {
+public class MongoDBRecordWriter implements RecordWriter {
 
     private DBCollection collection;
 
@@ -50,8 +52,21 @@ public class MongoDBRecordWriter extends AbstractRecordWriter<DBObject, MongoDBR
     }
 
     @Override
-    protected void writePayload(final DBObject record) throws Exception {
-        collection.save(record);
+    public void open() throws Exception {
+        // no op
     }
 
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        BulkWriteOperation bulkWriteOperation = collection.initializeOrderedBulkOperation();
+        for (Record record : batch) {
+            bulkWriteOperation.insert((DBObject) record.getPayload());
+        }
+        bulkWriteOperation.execute();
+    }
+
+    @Override
+    public void close() throws Exception {
+        // no op
+    }
 }

@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,41 +21,73 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jpa;
 
-import org.easybatch.core.record.GenericRecord;
-import org.easybatch.core.writer.AbstractRecordWriter;
+import org.easybatch.core.record.Batch;
+import org.easybatch.core.record.Record;
+import org.easybatch.core.writer.RecordWriter;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Write entities to a database using JPA.
- * <p/>
- * This writer does not commit a transaction after writing records.
- * You can use a {@link JpaTransactionListener} for this purpose.
  *
- * @param <P> the entity type.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JpaRecordWriter<P> extends AbstractRecordWriter<P, GenericRecord<P>> {
+public class JpaRecordWriter implements RecordWriter {
+
+    private static final Logger LOGGER = Logger.getLogger(JpaRecordWriter.class.getSimpleName());
+
+    private EntityManagerFactory entityManagerFactory;
 
     private EntityManager entityManager;
 
     /**
      * Create a JPA record writer.
      *
-     * @param entityManager the entity manager to write records.
+     * @param entityManagerFactory the entity manager factory.
      */
-    public JpaRecordWriter(final EntityManager entityManager) {
-        checkNotNull(entityManager, "entity manager");
-        this.entityManager = entityManager;
+    public JpaRecordWriter(final EntityManagerFactory entityManagerFactory) {
+        checkNotNull(entityManagerFactory, "entity manager factory");
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
-    protected void writePayload(P payload) throws Exception {
-        entityManager.persist(payload);
+    public void open() throws Exception {
+        entityManager = entityManagerFactory.createEntityManager();
+    }
+
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        try {
+            for (Record record : batch) {
+                entityManager.persist(record.getPayload());
+            }
+            entityManager.flush();
+            entityManager.clear();
+            transaction.commit();
+            LOGGER.info("Transaction committed");
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Unable to commit transaction", e);
+            transaction.rollback();
+            LOGGER.info("Transaction rolled back");
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (entityManager != null ) {
+            LOGGER.info("Closing entity manager");
+            entityManager.close();
+        }
     }
 }

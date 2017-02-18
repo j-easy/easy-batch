@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.record;
 
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public abstract class PayloadExtractor {
     /**
      * Extract the payload form each record.
      *
-     * @param records the list fo records
+     * @param records the list of records
      * @param <P>     the type of payload
      * @return the list of payloads
      */
@@ -53,18 +52,4 @@ public abstract class PayloadExtractor {
         return payloads;
     }
 
-    /**
-     * Extract the payload form a batch of records.
-     *
-     * @param batch the batch of records
-     * @return the list of payloads
-     */
-    public static List<Object> extractPayloads(final Batch batch) {
-        List<Record> records = batch.getPayload();
-        List<Object> payloads = new ArrayList<>();
-        for (Record record : records) {
-            payloads.add(record.getPayload());
-        }
-        return payloads;
-    }
 }

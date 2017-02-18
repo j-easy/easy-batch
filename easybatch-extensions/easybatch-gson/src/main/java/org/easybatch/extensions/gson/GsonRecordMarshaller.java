@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +21,11 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.gson;
 
 import com.google.gson.Gson;
 import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.marshaller.RecordMarshallingException;
-import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.json.JsonRecord;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
@@ -37,7 +35,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class GsonRecordMarshaller implements RecordMarshaller<GenericRecord, JsonRecord> {
+public class GsonRecordMarshaller<P> implements RecordMarshaller<Record<P>, JsonRecord> {
 
     private Gson gson;
 
@@ -59,7 +57,7 @@ public class GsonRecordMarshaller implements RecordMarshaller<GenericRecord, Jso
     }
 
     @Override
-    public JsonRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
+    public JsonRecord processRecord(final Record<P> record) throws Exception {
         return new JsonRecord(record.getHeader(), gson.toJson(record.getPayload()));
     }
 

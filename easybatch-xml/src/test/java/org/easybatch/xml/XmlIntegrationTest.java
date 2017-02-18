@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,12 +21,11 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.xml;
 
 import org.easybatch.core.job.*;
 import org.easybatch.core.processor.RecordCollector;
-import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -35,23 +34,21 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.record.PayloadExtractor.extractPayloads;
 
-@SuppressWarnings("unchecked")
 public class XmlIntegrationTest {
-
-    private static final String EXPECTED_DATA_SOURCE_NAME = "XML stream";
 
     @Test
     public void testWebsitesProcessing() throws Exception {
         final InputStream xmlDataSource = getDataSource("/websites.xml");
+        RecordCollector<Website> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("website", xmlDataSource))
-                .mapper(new XmlRecordMapper(Website.class))
-                .processor(new RecordCollector())
+                .mapper(new XmlRecordMapper<>(Website.class))
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        new JobExecutor().execute(job);
 
-        List<GenericRecord<Website>> records = (List<GenericRecord<Website>>) jobReport.getResult();
+        List<Record<Website>> records = recordCollector.getRecords();
         List<Website> websites = extractPayloads(records);
 
         assertThat(websites).hasSize(3);
@@ -74,17 +71,18 @@ public class XmlIntegrationTest {
 
         final InputStream xmlDataSource = getDataSource("/persons.xml");
 
+        RecordCollector<Person> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("person", xmlDataSource))
-                .mapper(new XmlRecordMapper(Person.class))
-                .processor(new RecordCollector())
+                .mapper(new XmlRecordMapper<>(Person.class))
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThatReportIsCorrect(jobReport);
 
-        List<GenericRecord<Person>> records = (List<GenericRecord<Person>>) jobReport.getResult();
+        List<Record<Person>> records = recordCollector.getRecords();
         List<Person> persons = extractPayloads(records);
 
         assertThat(persons).hasSize(2);
@@ -108,17 +106,18 @@ public class XmlIntegrationTest {
 
         final InputStream xmlDataSource = getDataSource("/dependencies.xml");
 
+        RecordCollector<Dependency> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("dependency", xmlDataSource))
-                .mapper(new XmlRecordMapper(Dependency.class))
-                .processor(new RecordCollector())
+                .mapper(new XmlRecordMapper<>(Dependency.class))
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThatReportIsCorrect(jobReport);
 
-        List<GenericRecord<Dependency>> records = (List<GenericRecord<Dependency>>) jobReport.getResult();
+        List<Record<Dependency>> records = recordCollector.getRecords();
         List<Dependency> dependencies = extractPayloads(records);
 
         assertThat(dependencies).hasSize(2);
@@ -161,18 +160,19 @@ public class XmlIntegrationTest {
 
         final InputStream xmlDataSource = getDataSource("/beans.xml");
 
+        RecordCollector<Bean> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
                 .reader(new XmlRecordReader("bean", xmlDataSource))
-                .mapper(new XmlRecordMapper(Bean.class))
-                .processor(new RecordCollector())
+                .mapper(new XmlRecordMapper<>(Bean.class))
+                .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = JobExecutor.execute(job);
+        JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
 
-        List<GenericRecord<Bean>> records = (List<GenericRecord<Bean>>) jobReport.getResult();
+        List<Record<Bean>> records = recordCollector.getRecords();
         List<Bean> beans = extractPayloads(records);
 
         assertThat(beans).isNotEmpty().hasSize(2);
@@ -190,12 +190,11 @@ public class XmlIntegrationTest {
 
     private void assertThatReportIsCorrect(JobReport jobReport) {
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(2);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
-        assertThat(jobReport.getParameters().getDataSource()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
     }
 
     private InputStream getDataSource(String name) {

@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.processor;
 
 import org.easybatch.core.record.Record;
@@ -32,21 +31,21 @@ import java.util.List;
 /**
  * Convenient processor that collects records.
  *
+ * @param <P> The type of the record's payload.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RecordCollector implements ComputationalRecordProcessor<Record, Record, List<Record>> {
+public class RecordCollector<P> implements RecordProcessor<Record<P>, Record<P>> {
 
-    private List<Record> items = new ArrayList<>();
+    private List<Record<P>> records = new ArrayList<>();
 
     @Override
-    public Record processRecord(final Record item) {
-        items.add(item);
-        return item;
+    public Record<P> processRecord(final Record<P> record) {
+        records.add(record);
+        return record;
     }
 
-    @Override
-    public List<Record> getComputationResult() {
-        return items;
+    public List<Record<P>> getRecords() {
+        return records;
     }
 
 }

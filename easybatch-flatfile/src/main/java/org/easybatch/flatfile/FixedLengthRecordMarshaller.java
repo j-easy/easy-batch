@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +21,11 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.flatfile;
 
-import org.easybatch.core.field.RecordFieldExtractor;
+import org.easybatch.core.field.FieldExtractor;
 import org.easybatch.core.marshaller.RecordMarshaller;
-import org.easybatch.core.marshaller.RecordMarshallingException;
-import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 
 import java.beans.IntrospectionException;
@@ -37,9 +35,9 @@ import java.beans.IntrospectionException;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class FixedLengthRecordMarshaller implements RecordMarshaller<GenericRecord, StringRecord> {
+public class FixedLengthRecordMarshaller<P> implements RecordMarshaller<Record<P>, StringRecord> {
 
-    private DelimitedRecordMarshaller delimitedRecordMarshaller;
+    private DelimitedRecordMarshaller<P> delimitedRecordMarshaller;
 
     /**
      * Create a fixed length record marshaller.
@@ -48,8 +46,8 @@ public class FixedLengthRecordMarshaller implements RecordMarshaller<GenericReco
      * @param fields the list of fields to marshal in order
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public FixedLengthRecordMarshaller(final Class type, final String... fields) throws IntrospectionException {
-        delimitedRecordMarshaller = new DelimitedRecordMarshaller(type, fields, "", "");
+    public FixedLengthRecordMarshaller(final Class<P> type, final String... fields) throws IntrospectionException {
+        delimitedRecordMarshaller = new DelimitedRecordMarshaller<>(type, fields, "", "");
     }
 
     /**
@@ -58,12 +56,12 @@ public class FixedLengthRecordMarshaller implements RecordMarshaller<GenericReco
      * @param fieldExtractor the field extractor
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public FixedLengthRecordMarshaller(RecordFieldExtractor fieldExtractor) throws IntrospectionException {
-        delimitedRecordMarshaller = new DelimitedRecordMarshaller(fieldExtractor, "", "");
+    public FixedLengthRecordMarshaller(FieldExtractor<P> fieldExtractor) throws IntrospectionException {
+        delimitedRecordMarshaller = new DelimitedRecordMarshaller<>(fieldExtractor, "", "");
     }
 
     @Override
-    public StringRecord processRecord(final GenericRecord record) throws RecordMarshallingException {
+    public StringRecord processRecord(final Record<P> record) throws Exception {
         return new StringRecord(record.getHeader(), delimitedRecordMarshaller.processRecord(record).getPayload());
     }
 

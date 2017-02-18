@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,12 +21,13 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.json;
 
 import org.easybatch.core.processor.RecordCompactor;
 
 import java.io.ByteArrayInputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Compacts a Json record payload.
@@ -34,6 +35,8 @@ import java.io.ByteArrayInputStream;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class JsonRecordCompactor extends RecordCompactor {
+
+    private static final Logger LOGGER = Logger.getLogger(JsonRecordCompactor.class.getName());
 
     @Override
     protected String compact(final String payload) {
@@ -54,15 +57,21 @@ public class JsonRecordCompactor extends RecordCompactor {
         try {
             jsonRecordReader = new JsonRecordReader(new ByteArrayInputStream(dataSource.getBytes()));
             jsonRecordReader.open();
-            if (jsonRecordReader.hasNextRecord()) {
-                flatJson = jsonRecordReader.readNextRecord().getPayload();
+            JsonRecord jsonRecord = jsonRecordReader.readRecord();
+            if (jsonRecord != null) {
+                flatJson = jsonRecord.getPayload();
             }
             return flatJson;
         } catch (Exception exception) {
+            LOGGER.log(Level.WARNING, "Unable to compact record paylaod", exception);
             return EMPTY_STRING;
         } finally {
             if (jsonRecordReader != null) {
-                jsonRecordReader.close();
+                try {
+                    jsonRecordReader.close();
+                } catch (Exception e) {
+                    LOGGER.log(Level.WARNING, "Unable to close json reader", e);
+                }
             }
         }
     }

@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.mapper;
 
 import org.easybatch.core.converter.TypeConverter;
@@ -31,15 +30,20 @@ import org.easybatch.core.converter.TypeConverter;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public abstract class AbstractRecordMapper {
+public abstract class AbstractRecordMapper<T> {
 
     /**
      * The object mapper.
      */
-    protected ObjectMapper objectMapper;
+    protected ObjectMapper<T> objectMapper;
 
-    public AbstractRecordMapper(Class recordClass) {
-        this.objectMapper = new ObjectMapper(recordClass);
+    /**
+     * Create an {@link AbstractRecordMapper}.
+     *
+     * @param recordClass the target type
+     */
+    public AbstractRecordMapper(Class<T> recordClass) {
+        this.objectMapper = new ObjectMapper<>(recordClass);
     }
 
     /**
@@ -47,7 +51,7 @@ public abstract class AbstractRecordMapper {
      *
      * @param typeConverter the type converter to user
      */
-    public void registerTypeConverter(final TypeConverter typeConverter) {
+    public void registerTypeConverter(final TypeConverter<String, ?> typeConverter) {
         objectMapper.registerTypeConverter(typeConverter);
     }
 }

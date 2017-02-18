@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,10 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.flatfile;
 
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +43,9 @@ public class DelimitedRecordMarshallerTest {
     @Mock
     private Person payload;
     @Mock
-    private GenericRecord<Person> record;
+    private Record<Person> record;
 
-    private DelimitedRecordMarshaller marshaller;
+    private DelimitedRecordMarshaller<Person> marshaller;
 
     @Before
     public void setUp() throws Exception {
@@ -54,7 +53,7 @@ public class DelimitedRecordMarshallerTest {
         when(record.getPayload()).thenReturn(payload);
         when(payload.getFirstName()).thenReturn("foo");
         when(payload.getLastName()).thenReturn("bar");
-        marshaller = new DelimitedRecordMarshaller(Person.class, "firstName", "lastName", "married");
+        marshaller = new DelimitedRecordMarshaller<>(Person.class, "firstName", "lastName", "married");
     }
 
     @Test

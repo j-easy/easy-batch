@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,9 +21,9 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.writer;
 
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Rule;
@@ -63,7 +63,7 @@ public class StandardOutputRecordWriterTest {
 
     @Test
     public void testRecordPayloadWriting() throws Exception {
-        writer.processRecord(record);
+        writer.writeRecords(new Batch(record));
 
         assertThat(systemOut.getLog()).isEqualTo(PAYLOAD + LINE_SEPARATOR);
     }

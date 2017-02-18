@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,76 +21,68 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.hibernate;
 
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
-import org.hibernate.Session;
-import org.junit.AfterClass;
+import org.easybatch.test.common.AbstractDatabaseTest;
+import org.easybatch.test.common.Tweet;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Long.valueOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
 
-public class HibernateRecordWriterTest {
+public class HibernateRecordWriterTest extends AbstractDatabaseTest {
 
-    private Session session;
-
+    private JobExecutor jobExecutor;
     private HibernateRecordWriter hibernateRecordWriter;
-
-    @BeforeClass
-    public static void initDatabase() throws Exception {
-        DatabaseUtil.startEmbeddedDatabase();
-        DatabaseUtil.initializeSessionFactory();
-    }
-
-    @AfterClass
-    public static void shutdownDatabase() throws Exception {
-        DatabaseUtil.closeSessionFactory();
-        DatabaseUtil.cleanUpWorkingDirectory();
-    }
 
     @Before
     public void setUp() throws Exception {
-        session = DatabaseUtil.getSessionFactory().openSession();
-        hibernateRecordWriter = new HibernateRecordWriter(session);
+        addScript("data.sql");
+        super.setUp();
+        jobExecutor = new JobExecutor();
+        Configuration configuration = new Configuration();
+        configuration.configure("/org/easybatch/extensions/hibernate/hibernate.cfg.xml");
+        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                .applySettings(configuration.getProperties()).build();
+        SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+        hibernateRecordWriter = new HibernateRecordWriter(sessionFactory);
     }
 
     @Test
-    public void testSingleRecordWriting() throws Exception {
-
-        Integer nbTweetsToInsert = 5;
-
+    public void testRecordWriting() throws Exception {
+        int nbTweetsToInsert = 5;
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        JobReport jobReport = aNewJob()
+        Job job = aNewJob()
+                .batchSize(2)
                 .reader(new IterableRecordReader(tweets))
                 .writer(hibernateRecordWriter)
-                .pipelineListener(new HibernateTransactionListener(session))
-                .jobListener(new HibernateSessionListener(session))
-                .call();
+                .build();
+
+        JobReport jobReport = jobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(valueOf(nbTweetsToInsert));
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(nbTweetsToInsert);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(nbTweetsToInsert);
 
-        int nbTweetsInDatabase = countTweetsInDatabase();
-
+        int nbTweetsInDatabase = countRowsIn("tweet");
         assertThat(nbTweetsInDatabase).isEqualTo(nbTweetsToInsert);
     }
 
-    private List<Tweet> createTweets(Integer nbTweetsToInsert) {
+    private List<Tweet> createTweets(int nbTweetsToInsert) {
         List<Tweet> tweets = new ArrayList<>();
         for (int i = 1; i <= nbTweetsToInsert; i++) {
             tweets.add(new Tweet(i, "user " + i, "hello " + i));
@@ -98,18 +90,11 @@ public class HibernateRecordWriterTest {
         return tweets;
     }
 
-    private int countTweetsInDatabase() throws SQLException {
-        Connection connection = DatabaseUtil.getConnection();
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from tweet");
-        int nbTweets = 0;
-        while (resultSet.next()) {
-            nbTweets++;
-        }
-        resultSet.close();
-        statement.close();
-        connection.close();
-        return nbTweets;
+
+    @After
+    public void tearDown() throws Exception {
+        jobExecutor.shutdown();
+        super.tearDown();
     }
 
 }

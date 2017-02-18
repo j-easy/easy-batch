@@ -1,33 +1,29 @@
-/*
+/**
  * The MIT License
  *
- *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
  */
-
 package org.easybatch.jms;
 
 import org.easybatch.core.reader.RecordReader;
-import org.easybatch.core.reader.RecordReaderClosingException;
-import org.easybatch.core.reader.RecordReaderOpeningException;
-import org.easybatch.core.reader.RecordReadingException;
 import org.easybatch.core.record.Header;
 
 import javax.jms.*;
@@ -74,44 +70,31 @@ public class JmsQueueRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws RecordReaderOpeningException {
-        try {
-            queueConnection = queueConnectionFactory.createQueueConnection();
-            queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-            queueReceiver = queueSession.createReceiver(queue);
-            queueConnection.start();
-        } catch (JMSException e) {
-            throw new RecordReaderOpeningException("Unable to open record reader", e);
-        }
+    public void open() throws Exception {
+        queueConnection = queueConnectionFactory.createQueueConnection();
+        queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+        queueReceiver = queueSession.createReceiver(queue);
+        queueConnection.start();
     }
 
-    @Override
-    public boolean hasNextRecord() {
+    private boolean hasNextRecord() {
         return !stop;
     }
 
     @Override
-    public JmsRecord readNextRecord() throws RecordReadingException {
-        try {
+    public JmsRecord readRecord() throws Exception {
+        if (hasNextRecord()) {
             Message message = queueReceiver.receive();
             String type = message.getJMSType();
             stop = message instanceof JmsPoisonMessage || (type != null && JmsPoisonMessage.TYPE.equals(type));
             Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
             return new JmsRecord(header, message);
-        } catch (JMSException e) {
-            throw new RecordReadingException("Unable to read next record", e);
+        } else {
+            return null;
         }
-
     }
 
-    @Override
-    public Long getTotalRecords() {
-        //undefined, cannot be calculated upfront
-        return null;
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         try {
             return "JMS queue: " + queue.getQueueName();
         } catch (JMSException e) {
@@ -120,19 +103,15 @@ public class JmsQueueRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws RecordReaderClosingException {
-        try {
-            if (queueConnection != null) {
-                queueConnection.close();
-            }
-            if (queueSession != null) {
-                queueSession.close();
-            }
-            if (queueReceiver != null) {
-                queueReceiver.close();
-            }
-        } catch (JMSException e) {
-            throw new RecordReaderClosingException("Unable to close record reader", e);
+    public void close() throws Exception {
+        if (queueConnection != null) {
+            queueConnection.close();
+        }
+        if (queueSession != null) {
+            queueSession.close();
+        }
+        if (queueReceiver != null) {
+            queueReceiver.close();
         }
     }
 

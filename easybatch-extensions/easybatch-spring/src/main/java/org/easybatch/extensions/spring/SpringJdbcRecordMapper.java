@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,15 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.spring;
 
 import org.easybatch.core.mapper.RecordMapper;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.jdbc.JdbcRecord;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * A record mapper that uses
@@ -41,7 +39,7 @@ import java.sql.SQLException;
  * @param <P> Target domain object type
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class SpringJdbcRecordMapper<P> implements RecordMapper<JdbcRecord, GenericRecord<P>> {
+public class SpringJdbcRecordMapper<P> implements RecordMapper<JdbcRecord, Record<P>> {
 
     private final Class<P> type;
 
@@ -55,14 +53,10 @@ public class SpringJdbcRecordMapper<P> implements RecordMapper<JdbcRecord, Gener
     }
 
     @Override
-    public GenericRecord<P> processRecord(JdbcRecord record) throws RecordMappingException {
+    public Record<P> processRecord(JdbcRecord record) throws Exception {
         ResultSet resultSet = record.getPayload();
         BeanPropertyRowMapper<P> beanPropertyRowMapper = new BeanPropertyRowMapper<>(type);
-        try {
-            return new GenericRecord<>(record.getHeader(), beanPropertyRowMapper.mapRow(resultSet, record.getHeader().getNumber().intValue()));
-        } catch (SQLException e) {
-            throw new RecordMappingException("Unable to map record " + record + " to target type", e);
-        }
+        return new GenericRecord<>(record.getHeader(), beanPropertyRowMapper.mapRow(resultSet, record.getHeader().getNumber().intValue()));
     }
 
 }

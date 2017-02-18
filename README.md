@@ -1,35 +1,16 @@
 # What is Easy Batch?
 
-To better understand what Easy Batch is, let's see a quick definition of batch processing in general:
-
-> "Batch processing is the execution of a series of **jobs** on a computer without manual intervention.
-> All input **parameters** are predefined through **job control language**.
-> This operating environment is termed as **'batch processing'** because the input data are collected into **batches** or sets of **records** and each batch is processed **as a unit**." - [Wikipedia](https://en.wikipedia.org/wiki/Batch_processing)
-
-Easy Batch is a Java framework that provides abstractions for key concepts of batch processing:
-
-* `Job`: a program executed without manual intervention
-* `JobParameters`: set of parameters to configure a job
-* `JobBuilder`: main entry point to configure jobs
-* `JobExecutor`: main entry point to execute jobs
-* `JobReport`: execution report with metrics and statistics about the job run
-* `Record`: one item in the data source (line in a flat file, row in database table, tag in a Xml file, etc)
-* `Batch`: a set of records processed as a unit
-
-Easy Batch jobs are simple processing pipelines. You can process data one record at a time:
-
-![Record processing](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/eb/record-processing.jpg)
-
-Or in batches where each batch is processed as a unit:
-
-![Batch processing](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/eb/batch-processing.jpg)
-
-Easy Batch provides APIs to process data in both modes.
- 
-# Why Easy Batch?
-
-Because writing batch applications requires a **lot** of boilerplate code: reading, writing, filtering, parsing and validating data, logging, reporting to name a few..
+Easy Batch is a framework that aims to simplify batch processing with Java.
+Writing batch applications requires a **lot** of boilerplate code: reading, writing, filtering, parsing and validating data, logging, reporting to name a few..
 The idea is to free you from these tedious tasks and let you focus on your application's logic.
+
+# How does it work?
+
+Easy Batch jobs are simple processing pipelines. Records are read in sequence from a data source, processed in pipeline and written in batches to a data sink:
+
+![batch processing](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/eb/batch-processing.png)
+
+The framework provides `Record` and `Batch` APIs to abstract data format and process records in a consistent way regardless of the data source type.
 
 Let's see a quick example. Suppose you have the following `tweets.csv` file:
 
@@ -46,11 +27,12 @@ Job job = new JobBuilder()
          .reader(new FlatFileRecordReader("tweets.csv"))
          .filter(new HeaderRecordFilter())
          .mapper(new DelimitedRecordMapper(Tweet.class, "id", "user", "message"))
-         .processor(new XmlRecordMarshaller(Tweet.class))
+         .marshaller(new XmlRecordMarshaller(Tweet.class))
          .writer(new FileRecordWriter("tweets.xml"))
+         .batchSize(10)
          .build();
 
-JobReport report = JobExecutor.execute(job);
+JobReport report = new JobExecutor().execute(job);
 ```
 
 This example creates a job that:
@@ -59,7 +41,7 @@ This example creates a job that:
 * filter the header record
 * map each record to an instance of the `Tweet` bean
 * marshal the tweet to XML format
-* and finally write this XML to an output file `tweets.xml`
+* and finally write XML records in batches of 10 to the output file `tweets.xml`
 
 At the end of execution, you get a report with statistics and metrics about the job run (Execution time, number of errors, etc).
 
@@ -73,7 +55,6 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 |Project Home          | [http://www.easybatch.org](http://www.easybatch.org)                         |
 |Continuous integration| [Build job @ Travis CI](https://travis-ci.org/EasyBatch/easybatch-framework) |
 |Agile Board           | [Backlog items @ waffle.io](https://waffle.io/easybatch/easybatch-framework) |
-|Code coverage         | [![Coverage](https://coveralls.io/repos/EasyBatch/easybatch-framework/badge.svg?style=flat&branch=master&service=github)](https://coveralls.io/github/EasyBatch/easybatch-framework?branch=master) |
 |Dependencies          | [![Dependencies](https://www.versioneye.com/user/projects/5589cb2e3133630061000022/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5589cb2e3133630061000022) |
 
 ## Presentations, articles & blog posts
@@ -85,13 +66,19 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 - :memo: [Easy Batch vs Spring Batch : a Hello World comparison](http://benas.github.io/2014/03/03/spring-batch-vs-easy-batch-a-hello-world-comparison.html)
 - :memo: [Easy Batch vs Spring Batch : a performance comparison](http://benas.github.io/2015/02/15/spring-batch-vs-easy-batch-a-performance-comparison.html)
 
-## Current version
+## Current versions
 
-* Stable: 4.0.0 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.0.0|)
+#### Stable:
 
-* Development: 4.1.0-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)</td>
+* v5: The best, greatest and recommended one: [v5.0.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.0.0|) | [documentation](http://www.easybatch.org/v5.0.0/) | [tutorials](https://github.com/EasyBatch/easybatch-tutorials) | [javadoc](http://www.easybatch.org/v5.0.0/api/)
+* v4: Production ready, in maintenance mode: [v4.2.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.2.0|) | [documentation](http://www.easybatch.org/v4.2.0/) | [tutorials](https://github.com/EasyBatch/easybatch-tutorials/releases/tag/v4.2.0) | [javadoc](http://www.easybatch.org/v4.2.0/api/)
+* v3, v2, v1 : archived versions
 
-If you want to import the snapshot version, you need to use the following repository:
+#### Development:
+
+Current development version is 5.1.0-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)
+
+If you want to import a snapshot version, you need to use the following repository:
 
 ```xml
 <repository>
@@ -104,14 +91,30 @@ If you want to import the snapshot version, you need to use the following reposi
 
 You are welcome to contribute to the project with pull requests on GitHub.
 
-If you found a bug or want to request a feature, please use the [issue tracker](https://github.com/easybatch/easybatch-framework/issues).
+If you find a bug or want to request a feature, please use the [issue tracker](https://github.com/easybatch/easybatch-framework/issues).
 
-For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or chat with the team on [Gitter](https://gitter.im/EasyBatch/easybatch-framework).
+For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or the [gitter channel](https://gitter.im/EasyBatch/easybatch-framework).
+
+## Bug bounty program
+
+> "Software bugs are impossible to detect by anybody except the end user", [_Murphy's law_](http://www.murphys-laws.com/murphy/murphy-computer.html)
+
+<table>
+  <tr>
+    <td>You are end users of Easy Batch, and you can easily find bugs :smile:
+        <br/>File a bug and claim your bounty!</td>
+    <td>
+        <img src="https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/misc/bounty.jpg" height="100" width="100"/>
+    </td>
+  </tr>
+</table>
 
 ## Awesome contributors
 
 * [ammachado](https://github.com/ammachado)
 * [anandhi](https://github.com/anandhi)
+* [AymanDF](https://github.com/AymanDF)
+* [chsfleury](https://github.com/chsfleury)
 * [chellan](https://github.com/chellan)
 * [gs-spadmanabhan](https://github.com/gs-spadmanabhan)
 * [imranrajjad](https://github.com/imranrajjad)
@@ -120,6 +123,7 @@ For any further question, you can use the [forum](https://groups.google.com/d/fo
 * [natlantisprog](https://github.com/natlantisprog)
 * [nicopatch](https://github.com/nicopatch)
 * [nihed](https://github.com/nihed)
+* [PascalSchumacher](https://github.com/PascalSchumacher)
 * [Toilal](https://github.com/Toilal)
 * [xenji](https://github.com/xenji)
 
@@ -129,7 +133,7 @@ Thank you all for your contributions!
 
 |JetBrains|YourKit|Travis CI|
 |:-:|:-:|:-:|
-|![IntelliJ IDEA](https://www.jetbrains.com/idea/docs/logo_intellij_idea.png)|![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)|![Travis CI](https://cdn.travis-ci.com/images/logos/TravisCI-Full-Color-4f9bce317a2b82518737a7ee7381c2ec.png)|
+|![IntelliJ IDEA](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/logo/intellijidea-logo.png)|![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)|![Travis CI](https://cdn.travis-ci.com/images/logos/TravisCI-Full-Color-45e242791b7752b745a7ae53f265acd4.png)|
 |Many thanks to [JetBrains](https://www.jetbrains.com/) for providing a free license of [IntelliJ IDEA](https://www.jetbrains.com/idea/) to kindly support the development of Easy Batch|Many thanks to [YourKit, LLC](https://www.yourkit.com/) for providing a free license of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/index.jsp) to kindly support the development of Easy Batch.|Many thanks to [Travis CI](https://travis-ci.org) for providing a free continuous integration service for open source projects.|
 
 ## License
@@ -139,7 +143,7 @@ Easy Batch is released under the [![MIT license](http://img.shields.io/badge/lic
 ```
 The MIT License (MIT)
 
-Copyright (c) 2016 Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+Copyright (c) 2017 Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

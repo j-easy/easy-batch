@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,26 +21,26 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.util;
+
+import org.easybatch.core.job.JobParameters;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-import java.util.Enumeration;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Handler;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
+import static java.lang.String.valueOf;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
- * Easy Batch's utilities class.
+ * Utilities class.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -52,33 +52,16 @@ public abstract class Utils {
 
     public static final String JAVA_IO_TMPDIR = System.getProperty("java.io.tmpdir");
 
+    public static final String JMX_MBEAN_NAME = "org.easybatch.core.monitor:";
+
+    public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+
+    public static final String DURATION_FORMAT = "%shr %smin %ssec %sms";
+
+    public static final String NOT_APPLICABLE = "N/A";
+
     private Utils() {
 
-    }
-
-    /**
-     * Mute easy batch loggers when silent mode is enabled.
-     */
-    public static void muteLoggers() {
-        Enumeration<String> loggerNames = LogManager.getLogManager().getLoggerNames();
-        while (loggerNames.hasMoreElements()) {
-            String loggerName = loggerNames.nextElement();
-            if (loggerName.startsWith("org.easybatch")) {
-                muteLogger(loggerName);
-            }
-        }
-    }
-
-    private static void muteLogger(String logger) {
-        Logger.getLogger(logger).setUseParentHandlers(false);
-        Handler[] handlers = Logger.getLogger(logger).getHandlers();
-        for (Handler handler : handlers) {
-            Logger.getLogger(logger).removeHandler(handler);
-        }
-    }
-
-    public static long toMinutes(long milliseconds) {
-        return TimeUnit.MILLISECONDS.toMinutes(milliseconds);
     }
 
     public static void checkNotNull(Object argument, String argumentName) {
@@ -102,6 +85,18 @@ public abstract class Utils {
         }
         getters.remove("class"); //exclude property "class"
         return getters;
+    }
+
+    public static String formatTime(long time) {
+        return new SimpleDateFormat(DATE_FORMAT).format(new Date(time));
+    }
+
+    public static String formatDuration(long duration) {
+        return String.format(DURATION_FORMAT, MILLISECONDS.toHours(duration) % 24, MILLISECONDS.toMinutes(duration) % 60, MILLISECONDS.toSeconds(duration) % 60, duration % 1000);
+    }
+
+    public static String formatErrorThreshold(final long errorThreshold) {
+        return errorThreshold == JobParameters.DEFAULT_ERROR_THRESHOLD ? NOT_APPLICABLE : valueOf(errorThreshold);
     }
 
 }

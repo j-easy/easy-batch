@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +21,12 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.xstream;
 
 import com.thoughtworks.xstream.XStream;
-import org.easybatch.core.mapper.RecordMappingException;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.easybatch.xml.XmlRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,7 +61,7 @@ public class XstreamRecordMapperTest {
     public void testValidXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person.xml"));
 
-        GenericRecord<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
         Person person = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);
@@ -77,7 +76,7 @@ public class XstreamRecordMapperTest {
     public void testEmptyXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn("<person/>");
 
-        GenericRecord<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
         Person person = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);
@@ -91,7 +90,7 @@ public class XstreamRecordMapperTest {
     public void testPartialXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person-partial.xml"));
 
-        GenericRecord<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Person> actual = xmlRecordMapper.processRecord(xmlRecord);
         Person person = actual.getPayload();
 
         assertThat(actual.getHeader()).isEqualTo(header);
@@ -102,7 +101,7 @@ public class XstreamRecordMapperTest {
         assertThat(person.isMarried()).isFalse();
     }
 
-    @Test(expected = RecordMappingException.class)
+    @Test(expected = Exception.class)
     public void testInvalidXmlPersonMapping() throws Exception {
         when(xmlRecord.getPayload()).thenReturn(getXmlFromFile("/person-invalid.xml"));
 

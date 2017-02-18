@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jms;
 
 import org.easybatch.core.record.Record;
@@ -40,8 +39,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JmsQueueRecordReaderTest {
-
-    public static final String EXPECTED_DATA_SOURCE_NAME = "JMS queue: queue";
 
     private JmsQueueRecordReader jmsQueueRecordReader;
 
@@ -83,21 +80,11 @@ public class JmsQueueRecordReaderTest {
     public void testReadNextRecord() throws Exception {
         jmsQueueRecordReader.open();
 
-        Record record = jmsQueueRecordReader.readNextRecord();
+        Record record = jmsQueueRecordReader.readRecord();
 
         verify(queueReceiver).receive();
         assertThat(record).isNotNull().isInstanceOf(JmsRecord.class);
         assertThat(record.getPayload()).isEqualTo(message);
-    }
-
-    @Test
-    public void testGetTotalRecords() throws Exception {
-        assertThat(jmsQueueRecordReader.getTotalRecords()).isNull();
-    }
-
-    @Test
-    public void testGetDataSourceName() throws Exception {
-        assertThat(jmsQueueRecordReader.getDataSourceName()).isEqualTo(EXPECTED_DATA_SOURCE_NAME);
     }
 
     @After

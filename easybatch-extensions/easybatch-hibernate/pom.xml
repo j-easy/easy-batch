@@ -3,7 +3,7 @@
     <parent>
         <artifactId>easybatch-extensions</artifactId>
         <groupId>org.easybatch</groupId>
-        <version>4.1.0-SNAPSHOT</version>
+        <version>5.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -56,9 +56,15 @@
             <artifactId>easybatch-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.easybatch</groupId>
+            <artifactId>easybatch-test-common</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>4.3.11.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
 
         <dependency>
@@ -77,9 +83,15 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <version>2.3.3</version>
+            <version>${hsqldb.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

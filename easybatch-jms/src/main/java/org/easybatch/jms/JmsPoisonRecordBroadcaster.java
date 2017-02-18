@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +21,12 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jms;
 
-import org.easybatch.core.dispatcher.RecordDispatchingException;
 import org.easybatch.core.job.JobParameters;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.listener.JobListener;
+import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Header;
 
 import javax.jms.QueueSender;
@@ -35,21 +34,21 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * A utility job listener that broadcasts a {@link JmsPoisonRecord} at the end of the job.
+ * A job listener that broadcasts a {@link JmsPoisonRecord} at the end of the job.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class JmsPoisonRecordBroadcaster implements JobListener {
 
-    private BroadcastJmsRecordDispatcher recordDispatcher;
+    private BroadcastJmsQueueRecordWriter broadcastJmsQueueRecordWriter;
 
     /**
      * Create a new {@link JmsPoisonRecordBroadcaster}.
      *
-     * @param queues the list of queues to which poison messages should be dispatched
+     * @param queues the list of queues to which poison messages should be written
      */
     public JmsPoisonRecordBroadcaster(List<QueueSender> queues) {
-        this.recordDispatcher = new BroadcastJmsRecordDispatcher(queues);
+        this.broadcastJmsQueueRecordWriter = new BroadcastJmsQueueRecordWriter(queues);
     }
 
     @Override
@@ -60,8 +59,8 @@ public class JmsPoisonRecordBroadcaster implements JobListener {
     @Override
     public void afterJobEnd(final JobReport jobReport) {
         try {
-            recordDispatcher.processRecord(new JmsPoisonRecord(new Header(0L, "Poison record", new Date()), new JmsPoisonMessage()));
-        } catch (RecordDispatchingException e) {
+            broadcastJmsQueueRecordWriter.writeRecords(new Batch(new JmsPoisonRecord(new Header(0L, "Poison record", new Date()), new JmsPoisonMessage())));
+        } catch (Exception e) {
             throw new RuntimeException("Unable to broadcast poison record.", e);
         }
     }

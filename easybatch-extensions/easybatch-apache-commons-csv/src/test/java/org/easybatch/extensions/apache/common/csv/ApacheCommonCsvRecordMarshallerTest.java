@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,12 +21,9 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.apache.common.csv;
 
-import org.easybatch.core.marshaller.RecordMarshallingException;
-import org.easybatch.core.record.GenericRecord;
-import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,26 +31,27 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ApacheCommonCsvRecordMarshallerTest {
 
     @Mock
-    private Header header;
+    private Record<Foo> record;
 
-    private ApacheCommonCsvRecordMarshaller marshaller;
+    private ApacheCommonCsvRecordMarshaller<Foo> marshaller;
 
     @Before
     public void setUp() throws Exception {
-        marshaller = new ApacheCommonCsvRecordMarshaller(Foo.class, new String[]{"firstName", "lastName", "married"}, ';', '\'');
+        marshaller = new ApacheCommonCsvRecordMarshaller<>(Foo.class, new String[]{"firstName", "lastName", "married"}, ';', '\'');
     }
 
     @Test
-    public void marshal() throws RecordMarshallingException {
+    public void marshal() throws Exception {
         Foo foo = new Foo();
         foo.setFirstName("foo");
         foo.setLastName("bar");
-        GenericRecord<Foo> record = new GenericRecord<>(header, foo);
+        when(record.getPayload()).thenReturn(foo);
 
         String expected = "'foo';'bar';'false'";
         String actual = marshaller.processRecord(record).getPayload();

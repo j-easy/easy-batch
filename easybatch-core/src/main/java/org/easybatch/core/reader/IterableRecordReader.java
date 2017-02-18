@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.reader;
 
 import org.easybatch.core.record.GenericRecord;
@@ -34,8 +33,8 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Reads record from an {@link Iterable} data source.
- * <p/>
- * This reader produces {@link GenericRecord} instances containing original objects from the datasource.
+ *
+ * This reader produces {@link GenericRecord} instances containing original objects from the data source.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -53,8 +52,8 @@ public class IterableRecordReader implements RecordReader {
 
     /**
      * Reads record from an {@link Iterable} data source.
-     * <p/>
-     * This reader produces {@link GenericRecord} instances containing original objects from the datasource.
+     *
+     * This reader produces {@link GenericRecord} instances containing original objects from the data source.
      *
      * @param dataSource the data source to read records from.
      */
@@ -64,28 +63,21 @@ public class IterableRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws RecordReaderOpeningException {
+    public void open() throws Exception {
         currentRecordNumber = 0;
     }
 
     @Override
-    public boolean hasNextRecord() {
-        return iterator.hasNext();
-    }
-
-    @Override
-    public GenericRecord readNextRecord() throws RecordReadingException {
+    public GenericRecord readRecord() throws Exception {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new GenericRecord<>(header, iterator.next());
+        if (iterator.hasNext()) {
+            return new GenericRecord<>(header, iterator.next());
+        } else {
+            return null;
+        }
     }
 
-    @Override
-    public Long getTotalRecords() {
-        return null;
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return "In-Memory Iterable";
     }
 

@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,20 +21,18 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.mongodb;
 
+import com.mongodb.BulkWriteOperation;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import org.easybatch.core.processor.RecordProcessingException;
-import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Batch;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -46,33 +44,32 @@ public class MongoDBRecordWriterTest {
     @Mock
     private DBObject dbObject;
     @Mock
-    private Header header;
-    @Mock
     private MongoDBRecord mongoDBRecord;
     @Mock
     private RuntimeException exception;
+    @Mock
+    private BulkWriteOperation bulkWriteOperation;
 
     private MongoDBRecordWriter mongoDBRecordWriter;
 
     @Before
     public void setUp() throws Exception {
-        when(mongoDBRecord.getHeader()).thenReturn(header);
         when(mongoDBRecord.getPayload()).thenReturn(dbObject);
+        when(collection.initializeOrderedBulkOperation()).thenReturn(bulkWriteOperation);
         mongoDBRecordWriter = new MongoDBRecordWriter(collection);
     }
 
     @Test
-    public void testProcessRecord() throws Exception {
-        MongoDBRecord actual = mongoDBRecordWriter.processRecord(this.mongoDBRecord);
+    public void testWriteRecords() throws Exception {
+        mongoDBRecordWriter.writeRecords(new Batch(mongoDBRecord));
 
-        verify(collection).save(dbObject);
-        assertThat(actual).isEqualTo(mongoDBRecord);
+        verify(bulkWriteOperation).insert(dbObject);
     }
 
-    @Test(expected = RecordProcessingException.class)
-    public void testRecordProcessingWithError() throws Exception {
-        when(collection.save(dbObject)).thenThrow(exception);
+    @Test(expected = Exception.class)
+    public void testRecordWritingWithError() throws Exception {
+        when(bulkWriteOperation.execute()).thenThrow(exception);
 
-        mongoDBRecordWriter.processRecord(mongoDBRecord);
+        mongoDBRecordWriter.writeRecords(new Batch(mongoDBRecord));
     }
 }

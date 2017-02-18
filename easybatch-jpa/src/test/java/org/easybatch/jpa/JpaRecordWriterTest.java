@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,103 +21,58 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jpa;
 
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobExecutor;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
-import org.junit.AfterClass;
+import org.easybatch.test.common.AbstractDatabaseTest;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.io.File;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Long.valueOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
 
-public class JpaRecordWriterTest {
+public class JpaRecordWriterTest extends AbstractDatabaseTest {
 
-    private static final String DATABASE_URL = "jdbc:hsqldb:mem";
-
-    private static Connection connection;
-
-    private static EntityManagerFactory entityManagerFactory;
-
-    private EntityManager entityManager;
-
-    @BeforeClass
-    public static void initDatabase() throws Exception {
-        System.setProperty("hsqldb.reconfig_logging", "false");
-        connection = DriverManager.getConnection(DATABASE_URL, "sa", "pwd");
-        createTweetTable(connection);
-        entityManagerFactory = Persistence.createEntityManagerFactory("tweet");
-    }
-
-    @AfterClass
-    public static void shutdownDatabase() throws Exception {
-        if (connection != null) {
-            connection.close();
-        }
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
-        }
-        //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
-        new File("mem.tmp").delete();
-    }
-
-    private static void createTweetTable(Connection connection) throws Exception {
-        Statement statement = connection.createStatement();
-        String query = "DROP TABLE IF EXISTS tweet";
-        statement.executeUpdate(query);
-        query = "CREATE TABLE tweet (\n" +
-                "  id integer NOT NULL PRIMARY KEY,\n" +
-                "  user varchar(32) NOT NULL,\n" +
-                "  message varchar(140) NOT NULL,\n" +
-                ");";
-        statement.executeUpdate(query);
-        statement.close();
-    }
+    private JobExecutor jobExecutor;
+    private EntityManagerFactory entityManagerFactory;
 
     @Before
     public void setUp() throws Exception {
-        entityManager = entityManagerFactory.createEntityManager();
+        super.setUp();
+        jobExecutor = new JobExecutor();
+        entityManagerFactory = Persistence.createEntityManagerFactory("tweet");
     }
 
     @Test
-    public void testSingleRecordWriting() throws Exception {
-
-        Integer nbTweetsToInsert = 5;
-
+    public void testRecordWriting() throws Exception {
+        int nbTweetsToInsert = 5;
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
-
-        JobReport jobReport = aNewJob()
+        Job job = aNewJob()
+                .batchSize(2)
                 .reader(new IterableRecordReader(tweets))
-                .writer(new JpaRecordWriter<Tweet>(entityManager))
-                .pipelineListener(new JpaTransactionListener(entityManager))
-                .jobListener(new JpaEntityManagerListener(entityManager))
-                .call();
+                .writer(new JpaRecordWriter(entityManagerFactory))
+                .build();
+
+        JobReport jobReport = jobExecutor.execute(job);
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getTotalCount()).isEqualTo(valueOf(nbTweetsToInsert));
-        assertThat(jobReport.getMetrics().getSuccessCount()).isEqualTo(valueOf(nbTweetsToInsert));
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(nbTweetsToInsert);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(nbTweetsToInsert);
 
-        int nbTweetsInDatabase = countTweetsInDatabase();
-
+        int nbTweetsInDatabase = countRowsIn("tweet");
         assertThat(nbTweetsInDatabase).isEqualTo(nbTweetsToInsert);
     }
 
-    private List<Tweet> createTweets(Integer nbTweetsToInsert) {
+    private List<Tweet> createTweets(int nbTweetsToInsert) {
         List<Tweet> tweets = new ArrayList<>();
         for (int i = 1; i <= nbTweetsToInsert; i++) {
             tweets.add(new Tweet(i, "user " + i, "hello " + i));
@@ -125,16 +80,10 @@ public class JpaRecordWriterTest {
         return tweets;
     }
 
-    private int countTweetsInDatabase() throws SQLException {
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from tweet");
-        int nbTweets = 0;
-        while (resultSet.next()) {
-            nbTweets++;
-        }
-        resultSet.close();
-        statement.close();
-        return nbTweets;
+    @After
+    public void tearDown() throws Exception {
+        jobExecutor.shutdown();
+        super.tearDown();
     }
 
 }

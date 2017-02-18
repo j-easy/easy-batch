@@ -1,30 +1,29 @@
-/*
+/**
  * The MIT License
  *
- *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
  */
-
 package org.easybatch.flatfile;
 
-import org.easybatch.core.record.GenericRecord;
+import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,14 +39,14 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DelimitedRecordMapperTest {
 
-    private DelimitedRecordMapper delimitedRecordMapper;
+    private DelimitedRecordMapper<Person> delimitedRecordMapper;
 
     @Mock
     private StringRecord record, headerRecord;
 
     @Before
     public void setUp() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper(Person.class, "firstName", "lastName", "age", "birthDate", "married");
+        delimitedRecordMapper = new DelimitedRecordMapper<>(Person.class, "firstName", "lastName", "age", "birthDate", "married");
 
         when(record.getPayload()).thenReturn("foo,bar,30,1990-12-12,true");
         when(headerRecord.getPayload()).thenReturn("firstName,lastName,age,birthDate,married");
@@ -67,8 +66,8 @@ public class DelimitedRecordMapperTest {
     @Test
     public void testRecordSizeWithEmptyField() throws Exception {
         when(record.getPayload()).thenReturn("foo,bar,30,1990-12-12,");
-        FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(record);
-        assertThat(flatFileRecord.getFlatFileFields().get(4).getRawContent()).isEmpty();
+        List<Field> fields = delimitedRecordMapper.parseRecord(record);
+        assertThat(fields.get(4).getRawContent()).isEmpty();
     }
 
     @Test
@@ -134,24 +133,20 @@ public class DelimitedRecordMapperTest {
 
     @Test
     public void testFieldSubsetMapping() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper(Person.class,
+        delimitedRecordMapper = new DelimitedRecordMapper<>(Person.class,
                 new Integer[]{0, 4},
                 new String[]{"firstName", "married"}
         );
-        FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(record);
-        assertThat(flatFileRecord).isNotNull();
-        List<FlatFileField> flatFileFields = flatFileRecord.getFlatFileFields();
-        assertThat(flatFileFields).hasSize(2);
-        assertThat(flatFileFields).extracting("rawContent")
+        List<Field> fields = delimitedRecordMapper.parseRecord(record);
+        assertThat(fields).hasSize(2);
+        assertThat(fields).extracting("rawContent")
           .containsExactly("foo", "true");
     }
 
     private void validateRecord(final StringRecord stringRecord) throws Exception {
-        FlatFileRecord flatFileRecord = delimitedRecordMapper.parseRecord(stringRecord);
-        assertThat(flatFileRecord).isNotNull();
-        List<FlatFileField> flatFileFields = flatFileRecord.getFlatFileFields();
-        assertThat(flatFileFields).hasSize(5);
-        assertThat(flatFileFields).extracting("rawContent")
+        List<Field> fields = delimitedRecordMapper.parseRecord(stringRecord);
+        assertThat(fields).hasSize(5);
+        assertThat(fields).extracting("rawContent")
           .containsExactly("foo", "bar", "30", "1990-12-12", "true");
     }
 
@@ -161,10 +156,10 @@ public class DelimitedRecordMapperTest {
 
     @Test
     public void testFieldNamesConventionOverConfiguration() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper(Person.class);
+        delimitedRecordMapper = new DelimitedRecordMapper<>(Person.class);
 
         delimitedRecordMapper.parseRecord(headerRecord);
-        GenericRecord<Person> actual = delimitedRecordMapper.processRecord(record);
+        Record<Person> actual = delimitedRecordMapper.processRecord(record);
         Person person = actual.getPayload();
 
         assertThat(person).isNotNull();
@@ -177,9 +172,9 @@ public class DelimitedRecordMapperTest {
 
     @Test
     public void testFieldSubsetMappingWithConventionOverConfiguration() throws Exception {
-        delimitedRecordMapper = new DelimitedRecordMapper(Person.class, 0, 4);
+        delimitedRecordMapper = new DelimitedRecordMapper<>(Person.class, 0, 4);
         delimitedRecordMapper.parseRecord(headerRecord);
-        GenericRecord<Person> actual = delimitedRecordMapper.processRecord(record);
+        Record<Person> actual = delimitedRecordMapper.processRecord(record);
         Person person = actual.getPayload();
 
         assertThat(person).isNotNull();

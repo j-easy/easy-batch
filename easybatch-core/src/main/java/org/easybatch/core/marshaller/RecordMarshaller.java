@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.marshaller;
 
 import org.easybatch.core.processor.RecordProcessor;
@@ -41,8 +40,8 @@ public interface RecordMarshaller<I extends Record, O extends Record> extends Re
      *
      * @param record the record to marshal.
      * @return the marshalled record
-     * @throws RecordMarshallingException if an error occurs during record marshalling
+     * @throws Exception if an error occurs during record marshalling
      */
     @Override
-    O processRecord(I record) throws RecordMarshallingException;
+    O processRecord(I record) throws Exception;
 }

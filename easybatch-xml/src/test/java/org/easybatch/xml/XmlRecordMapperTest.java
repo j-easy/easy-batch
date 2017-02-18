@@ -1,32 +1,30 @@
-/*
+/**
  * The MIT License
  *
- *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
  */
-
 package org.easybatch.xml;
 
-import org.easybatch.core.mapper.RecordMappingException;
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
+import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,7 +55,7 @@ public class XmlRecordMapperTest {
     @Test
     public void testValidXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person.xml"));
-        GenericRecord<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
         Person person = mappedRecord.getPayload();
 
         assertThat(person).isNotNull();
@@ -71,7 +69,7 @@ public class XmlRecordMapperTest {
     @Test
     public void testEmptyXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(header, "<person/>");
-        GenericRecord<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
         Person person = mappedRecord.getPayload();
 
         assertThat(person.getId()).isEqualTo(0);
@@ -84,7 +82,7 @@ public class XmlRecordMapperTest {
     @Test
     public void testPartialXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-partial.xml"));
-        GenericRecord<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
         Person person = mappedRecord.getPayload();
 
         assertThat(person).isNotNull();
@@ -100,7 +98,7 @@ public class XmlRecordMapperTest {
         XmlRecordMapper<Website> xmlRecordMapper = new XmlRecordMapper<>(Website.class);
 
         xmlRecord = new XmlRecord(header, "<website name='google' url='http://www.google.com?query=test&amp;sort=asc'/>");
-        GenericRecord<Website> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
+        Record<Website> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
         Website website = mappedRecord.getPayload();
         assertThat(website).isNotNull();
         assertThat(website.getName()).isEqualTo("google");
@@ -115,20 +113,20 @@ public class XmlRecordMapperTest {
 
     }
 
-    @Test(expected = RecordMappingException.class)
+    @Test(expected = Exception.class)
     public void testMappingWithUnescapedXmlSpecialCharacter() throws Exception {
         xmlRecord = new XmlRecord(header, "<website name='google' url='http://www.google.com?query=test&sort=asc'/>");
         XmlRecordMapper<Website> xmlRecordMapper = new XmlRecordMapper<>(Website.class);
         xmlRecordMapper.processRecord(xmlRecord);
     }
 
-    @Test(expected = RecordMappingException.class)
+    @Test(expected = Exception.class)
     public void testInvalidXmlPersonMapping() throws Exception {
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-invalid.xml"));
         xmlRecordMapper.processRecord(xmlRecord);
     }
 
-    @Test(expected = RecordMappingException.class)
+    @Test(expected = Exception.class)
     public void testMappingOfInvalidXmlAccordingToXsd() throws Exception {
         xmlRecordMapper = new XmlRecordMapper<>(Person.class, getFile("/person.xsd"));
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-invalid-xsd.xml"));

@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.mongodb;
 
 import com.mongodb.DBCollection;
@@ -87,23 +86,16 @@ public class MongoDBRecordReader implements RecordReader {
     }
 
     @Override
-    public boolean hasNextRecord() {
-        return cursor.hasNext();
+    public MongoDBRecord readRecord() {
+        if (cursor.hasNext()) {
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            return new MongoDBRecord(header, cursor.next());
+        } else {
+            return null;
+        }
     }
 
-    @Override
-    public MongoDBRecord readNextRecord() {
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        return new MongoDBRecord(header, cursor.next());
-    }
-
-    @Override
-    public Long getTotalRecords() {
-        return (long) cursor.count();
-    }
-
-    @Override
-    public String getDataSourceName() {
+    private String getDataSourceName() {
         return "MongoDB collection: " + collection.getName();
     }
 

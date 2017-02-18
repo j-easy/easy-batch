@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.record;
 
 import org.junit.Before;
@@ -43,14 +42,11 @@ public class PayloadExtractorTest {
     private Object payload1, payload2;
     @Mock
     private Record<Object> record1, record2;
-    @Mock
-    private Batch batch;
 
     @Before
     public void setUp() throws Exception {
         when(record1.getPayload()).thenReturn(payload1);
         when(record2.getPayload()).thenReturn(payload2);
-        when(batch.getPayload()).thenReturn(Arrays.<Record>asList(record1, record2));
     }
 
     @Test
@@ -59,9 +55,4 @@ public class PayloadExtractorTest {
         assertThat(list).containsExactly(payload1, payload2);
     }
 
-    @Test
-    public void testExtractPayloadsFromBatchOfRecords() throws Exception {
-        List<Object> list = PayloadExtractor.extractPayloads(batch);
-        assertThat(list).containsExactly(payload1, payload2);
-    }
 }

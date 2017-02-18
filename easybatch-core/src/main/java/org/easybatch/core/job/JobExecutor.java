@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,27 +21,109 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.job;
 
+import org.easybatch.core.util.Utils;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
+import static java.lang.Runtime.getRuntime;
+import static java.util.concurrent.Executors.newFixedThreadPool;
+
 /**
- * Helper class to execute a {@link Job}.
+ * Main class to execute {@link Job}s.
+ *
+ * <strong>Job executors must be explicitly shutdown using {@link JobExecutor#shutdown()}</strong>
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class JobExecutor {
 
-    JobExecutor() {
-        // private constructor
+    private ExecutorService executorService;
+
+    /**
+     * Create a job executor. The number of workers will be set to the number of available processors.
+     */
+    public JobExecutor() {
+        executorService = newFixedThreadPool(getRuntime().availableProcessors());
     }
 
     /**
-     * Execute a job.
+     * Create a job executor.
      *
-     * @param job the job to execute
-     * @return the job execution report
+     * @param nbWorkers number of worker threads
      */
-    public static JobReport execute(Job job) {
-        return job.call();
+    public JobExecutor(int nbWorkers) {
+        executorService = newFixedThreadPool(nbWorkers);
     }
+
+    /**
+     * Create a job executor.
+     *
+     * @param executorService to use to execute jobs
+     */
+    public JobExecutor(ExecutorService executorService) {
+        Utils.checkNotNull(executorService, "executor service");
+        this.executorService = executorService;
+    }
+
+    /**
+     * Execute a job synchronously.
+     *
+     * @param job to execute
+     * @return the job report
+     */
+    public JobReport execute(Job job) {
+        try {
+            return executorService.submit(job).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Unable to execute job " + job.getName(), e);
+        }
+    }
+
+    /**
+     * Submit a job for asynchronous execution.
+     *
+     * @param job to execute
+     * @return a future of the job report
+     */
+    public Future<JobReport> submit(Job job) {
+        return executorService.submit(job);
+    }
+
+    /**
+     * Submit jobs for execution.
+     *
+     * @param jobs to execute
+     * @return the list of job reports in the same order of submission
+     */
+    public List<Future<JobReport>> submitAll(Job... jobs) {
+        return submitAll(Arrays.asList(jobs));
+    }
+
+    /**
+     * Submit jobs for execution.
+     *
+     * @param jobs to execute
+     * @return the list of job reports in the same order of submission
+     */
+    public List<Future<JobReport>> submitAll(List<Job> jobs) {
+        try {
+            return executorService.invokeAll(jobs);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Unable to execute jobs", e);
+        }
+    }
+
+    /**
+     * Shutdown the job executor.
+     */
+    public void shutdown() {
+        executorService.shutdown();
+    }
+
 }

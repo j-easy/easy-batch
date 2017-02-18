@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,42 +21,37 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.apache.common.csv;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.easybatch.core.writer.StandardOutputRecordWriter;
-import org.junit.Rule;
+import org.easybatch.core.processor.RecordCollector;
+import org.easybatch.core.reader.StringRecordReader;
+import org.easybatch.test.common.Tweet;
 import org.junit.Test;
-import org.junit.contrib.java.lang.system.SystemOutRule;
 
-import java.io.FileReader;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.easybatch.core.record.PayloadExtractor.extractPayloads;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 public class ApacheCommonCsvSupportIntegrationTest {
 
-    @Rule
-    public final SystemOutRule systemOut = new SystemOutRule().enableLog();
-
     @Test
     public void testAllComponentsTogether() throws Exception {
+        String dataSource = "1,foo,hello" + LINE_SEPARATOR + "2,bar,hey" + LINE_SEPARATOR + "3,baz,hi";
 
-        CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader("id", "user", "message");
-        CSVParser parser = new CSVParser(new FileReader(this.getClass().getResource("/tweets.csv").getFile()), csvFormat);
-
+        RecordCollector<String> recordCollector = new RecordCollector<>();
         aNewJob()
-                .reader(new ApacheCommonCsvRecordReader(parser))
-                .mapper(new ApacheCommonCsvRecordMapper(Tweet.class))
-                .marshaller(new ApacheCommonCsvRecordMarshaller(Tweet.class, new String[]{"id", "user", "message"}, ';', '\''))
-                .writer(new StandardOutputRecordWriter())
-                .call();
+                .reader(new StringRecordReader(dataSource))
+                .mapper(new ApacheCommonCsvRecordMapper<>(Tweet.class, "id", "user", "message"))
+                .marshaller(new ApacheCommonCsvRecordMarshaller<>(Tweet.class, new String[]{"id", "user", "message"}, ';', '\''))
+                .processor(recordCollector)
+                .build().call();
 
-        assertThat(systemOut.getLog()).isEqualTo("'1';'foo';'hello'" + LINE_SEPARATOR +
-                "'2';'bar';'hey'" + LINE_SEPARATOR +
-                "'3';'baz';'hi'" + LINE_SEPARATOR);
+
+        List<String> records = extractPayloads(recordCollector.getRecords());
+
+        assertThat(records).containsExactly("'1';'foo';'hello'", "'2';'bar';'hey'", "'3';'baz';'hi'");
     }
 }
