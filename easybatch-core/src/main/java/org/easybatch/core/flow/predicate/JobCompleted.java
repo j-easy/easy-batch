@@ -26,9 +26,9 @@ package org.easybatch.core.flow.predicate;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.job.JobStatus;
 
-public class JobCompleted implements JobExecutionPredicate {
+public class JobCompleted implements JobPredicate {
 
-        public static JobCompleted jobCompleted() {
+        public static JobCompleted completed() {
             return new JobCompleted();
         }
 

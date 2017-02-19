@@ -26,9 +26,9 @@ package org.easybatch.core.flow.predicate;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.job.JobStatus;
 
-public class JobFailed implements JobExecutionPredicate {
+public class JobFailed implements JobPredicate {
 
-        public static JobFailed jobFailed() {
+        public static JobFailed failed() {
             return new JobFailed();
         }
 
