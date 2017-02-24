@@ -24,28 +24,41 @@
 package org.easybatch.core.writer;
 
 import org.easybatch.core.record.Record;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+@RunWith(MockitoJUnitRunner.class)
 public class ContentBasedBlockingQueueRecordWriterBuilderTest {
 
-    private ContentBasedBlockingQueueRecordWriterBuilder builder;
+    @Mock
+    private BlockingQueue<Record> queue, defaultQueue;
+    @Mock
+    private Predicate predicate;
 
-    @Before
-    public void setUp() throws Exception {
-        builder = new ContentBasedBlockingQueueRecordWriterBuilder();
+    @Test
+    public void recordWriterShouldBeCorrectlyBuilt() throws Exception {
+        ContentBasedBlockingQueueRecordWriter recordWriter = ContentBasedBlockingQueueRecordWriterBuilder.newContentBasedBlockingQueueRecordWriterBuilder()
+                .when(predicate)
+                .writeTo(queue)
+                .otherwise(defaultQueue)
+                .build();
+
+        assertThat(recordWriter).isNotNull();
+        assertThatQueueMappingIsCorrect(recordWriter.getQueueMap());
+
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void whenPredicateToQueueMapIsEmpty_ThenShouldThrowIllegalStateException() throws Exception {
-        builder.build();
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void whenCallWriteToWithoutCallingWhen_ThenShouldThrowIllegalStateException() throws Exception {
-        builder.writeTo(new LinkedBlockingQueue<Record>());
+    private void assertThatQueueMappingIsCorrect(Map<Predicate, BlockingQueue<Record>> queueMap) {
+        assertThat(queueMap).isNotNull();
+        assertThat(queueMap.get(predicate)).isEqualTo(queue);
+        assertThat(queueMap.get(new DefaultPredicate())).isEqualTo(defaultQueue);
     }
 
 }

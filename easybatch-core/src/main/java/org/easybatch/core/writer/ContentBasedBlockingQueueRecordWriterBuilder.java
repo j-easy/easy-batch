@@ -41,8 +41,105 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
     private Map<Predicate, BlockingQueue<Record>> queueMap;
 
     /**
-     * Create a {@link ContentBasedBlockingQueueRecordWriterBuilder}.
+     * Create a new {@link ContentBasedBlockingQueueRecordWriter}.
      */
+    public static WhenStep newContentBasedBlockingQueueRecordWriterBuilder() {
+        return new Steps();
+    }
+
+    public interface WhenStep {
+        /**
+         * Register a predicate.
+         *
+         * @param predicate to register
+         * @return the builder instance
+         */
+        WriteToStep when(Predicate predicate);
+    }
+
+    public interface WriteToStep {
+        /**
+         * Register a queue.
+         *
+         * @param queue to register
+         * @return the builder instance
+         */
+        OtherwiseStep writeTo(BlockingQueue<Record> queue);
+    }
+
+    public interface OtherwiseStep {
+        /**
+         * Register a default queue.
+         *
+         * @param queue default queue to register
+         * @return the builder instance
+         */
+        BuildStep otherwise(BlockingQueue<Record> queue);
+
+        /**
+         * Register a predicate.
+         *
+         * @param predicate to register
+         * @return the builder instance
+         */
+        WriteToStep when(Predicate predicate);
+    }
+
+    public interface BuildStep {
+        /**
+         * Create a new {@link ContentBasedBlockingQueueRecordWriter}.
+         *
+         * @return a new {@link ContentBasedBlockingQueueRecordWriter}
+         */
+        ContentBasedBlockingQueueRecordWriter build();
+    }
+
+    private static class Steps implements WhenStep, WriteToStep, OtherwiseStep, BuildStep {
+
+        private Predicate predicate;
+
+        private Map<Predicate, BlockingQueue<Record>> queueMap;
+
+        public Steps() {
+            queueMap = new HashMap<>();
+        }
+
+        @Override
+        public WriteToStep when(Predicate predicate) {
+            this.predicate = predicate;
+            return this;
+        }
+
+        @Override
+        public OtherwiseStep writeTo(BlockingQueue<Record> queue) {
+            queueMap.put(predicate, queue);
+            return this;
+        }
+
+        @Override
+        public BuildStep otherwise(BlockingQueue<Record> queue) {
+            queueMap.put(new DefaultPredicate(), queue);
+            return this;
+        }
+
+        @Override
+        public ContentBasedBlockingQueueRecordWriter build() {
+            return new ContentBasedBlockingQueueRecordWriter(queueMap);
+        }
+    }
+
+    /*
+     **************************************
+     * Deprecated APIs (to remove in v5.2)
+     **************************************
+     */
+
+    /**
+     * Create a {@link ContentBasedBlockingQueueRecordWriterBuilder}.
+     *
+     * @deprecated use {@link ContentBasedBlockingQueueRecordWriterBuilder#newContentBasedBlockingQueueRecordWriterBuilder()} instead
+     */
+    @Deprecated
     public ContentBasedBlockingQueueRecordWriterBuilder() {
         queueMap = new HashMap<>();
     }
@@ -52,7 +149,10 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
      *
      * @param predicate to register
      * @return the builder instance
+     *
+     * @deprecated use {@link ContentBasedBlockingQueueRecordWriterBuilder#newContentBasedBlockingQueueRecordWriterBuilder()} instead
      */
+    @Deprecated
     public ContentBasedBlockingQueueRecordWriterBuilder when(Predicate predicate) {
         this.predicate = predicate;
         return this;
@@ -63,10 +163,12 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
      *
      * @param queue to register
      * @return the builder instance
+     *
+     * @deprecated use {@link ContentBasedBlockingQueueRecordWriterBuilder#newContentBasedBlockingQueueRecordWriterBuilder()} instead
      */
+    @Deprecated
     public ContentBasedBlockingQueueRecordWriterBuilder writeTo(BlockingQueue<Record> queue) {
         if (predicate == null) {
-            // TODO use step builder pattern to assist user in calling methods in the right order
             throw new IllegalStateException("You should specify a predicate before mapping a queue." +
                     " Please ensure that you call when() -> writeTo() -> otherwise()  methods in that order");
         }
@@ -80,7 +182,10 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
      *
      * @param queue default queue
      * @return the builder instance
+     *
+     * @deprecated use {@link ContentBasedBlockingQueueRecordWriterBuilder#newContentBasedBlockingQueueRecordWriterBuilder()} instead
      */
+    @Deprecated
     public ContentBasedBlockingQueueRecordWriterBuilder otherwise(BlockingQueue<Record> queue) {
         queueMap.put(new DefaultPredicate(), queue);
         predicate = null;
@@ -91,7 +196,10 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
      * Create a {@link ContentBasedBlockingQueueRecordWriter}.
      *
      * @return a new {@link ContentBasedBlockingQueueRecordWriter}
+     *
+     * @deprecated use {@link ContentBasedBlockingQueueRecordWriterBuilder#newContentBasedBlockingQueueRecordWriterBuilder()} instead
      */
+    @Deprecated
     public ContentBasedBlockingQueueRecordWriter build() {
         if (queueMap.isEmpty()) {
             throw new IllegalStateException("You can not build a ContentBasedQueueRecordWriter with an empty <Predicate, Queue> mapping.");

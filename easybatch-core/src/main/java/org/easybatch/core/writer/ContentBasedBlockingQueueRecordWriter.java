@@ -83,4 +83,8 @@ public class ContentBasedBlockingQueueRecordWriter implements RecordWriter {
     public void close() throws Exception {
 
     }
+
+    Map<Predicate, BlockingQueue<Record>> getQueueMap() {
+        return queueMap;
+    }
 }

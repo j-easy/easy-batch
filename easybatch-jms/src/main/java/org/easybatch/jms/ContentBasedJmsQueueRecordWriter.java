@@ -82,4 +82,8 @@ public class ContentBasedJmsQueueRecordWriter implements RecordWriter {
     public void close() throws Exception {
 
     }
+
+    Map<Predicate, QueueSender> getQueueMap() {
+        return queueMap;
+    }
 }

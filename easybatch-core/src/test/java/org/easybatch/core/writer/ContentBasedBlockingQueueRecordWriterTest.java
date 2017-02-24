@@ -29,8 +29,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -40,7 +42,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ContentBasedBlockingQueueRecordWriterTest {
 
-    private ContentBasedBlockingQueueRecordWriter contentBasedQueueRecordWriter;
+    private ContentBasedBlockingQueueRecordWriter recordWriter;
 
     private BlockingQueue<Record> orangeQueue;
 
@@ -56,10 +58,10 @@ public class ContentBasedBlockingQueueRecordWriterTest {
     public void setUp() throws Exception {
         orangeQueue = new LinkedBlockingQueue<>();
         defaultQueue = new LinkedBlockingQueue<>();
-        contentBasedQueueRecordWriter = new ContentBasedBlockingQueueRecordWriterBuilder()
-                .when(orangePredicate).writeTo(orangeQueue)
-                .otherwise(defaultQueue)
-                .build();
+        Map<Predicate, BlockingQueue<Record>> queueMap = new HashMap<>();
+        queueMap.put(orangePredicate, orangeQueue);
+        queueMap.put(new DefaultPredicate(), defaultQueue);
+        recordWriter = new ContentBasedBlockingQueueRecordWriter(queueMap);
 
         when(orangePredicate.matches(orangeRecord)).thenReturn(true);
         when(orangePredicate.matches(appleRecord)).thenReturn(false);
@@ -67,7 +69,7 @@ public class ContentBasedBlockingQueueRecordWriterTest {
 
     @Test
     public void orangeRecordShouldBeWrittenToOrangeQueue() throws Exception {
-        contentBasedQueueRecordWriter.writeRecords(new Batch(orangeRecord, appleRecord));
+        recordWriter.writeRecords(new Batch(orangeRecord, appleRecord));
         assertThat(orangeQueue).containsOnly(orangeRecord);
         assertThat(defaultQueue).containsOnly(appleRecord);
     }
