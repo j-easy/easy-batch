@@ -27,6 +27,7 @@ import org.easybatch.core.reader.AbstractFileRecordReader;
 import org.easybatch.core.reader.AbstractMultiFileRecordReader;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -42,7 +43,11 @@ public class MultiYamlFileRecordReader extends AbstractMultiFileRecordReader {
      * @param files to read
      */
     public MultiYamlFileRecordReader(List<File> files) {
-        super(files);
+        this(files, Charset.defaultCharset());
+    }
+
+    public MultiYamlFileRecordReader(List<File> files, Charset charset) {
+        super(files, charset);
     }
 
     @Override

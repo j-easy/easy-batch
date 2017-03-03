@@ -28,18 +28,23 @@ import org.easybatch.core.reader.AbstractFileRecordReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.nio.charset.Charset;
 
 public class YamlFileRecordReader extends AbstractFileRecordReader {
 
     private YamlRecordReader yamlRecordReader;
 
     public YamlFileRecordReader(final File yamlFile) {
-        super(yamlFile);
+        this(yamlFile, Charset.defaultCharset().name());
+    }
+
+    public YamlFileRecordReader(final File jsonFile, final String charset) {
+        super(jsonFile, Charset.forName(charset));
     }
 
     @Override
     public void open() throws Exception {
-        yamlRecordReader = new Reader(file);
+        yamlRecordReader = new Reader(file, charset.name());
         yamlRecordReader.open();
     }
 
@@ -58,8 +63,8 @@ public class YamlFileRecordReader extends AbstractFileRecordReader {
 
         private File file;
 
-        Reader(File file) throws FileNotFoundException {
-            super(new FileInputStream(file));
+        Reader(File file, String charset) throws FileNotFoundException {
+            super(new FileInputStream(file), charset);
             this.file = file;
         }
 

@@ -25,29 +25,35 @@ package org.easybatch.extensions.yaml;
 
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.record.Header;
-import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
 
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Scanner;
 
 public class YamlRecordReader implements RecordReader {
 
     private Scanner scanner;
+    private String charset;
 
     private InputStream inputStream;
 
     private long currentRecordNumber;
 
     public YamlRecordReader(InputStream inputStream) {
+        this(inputStream, Charset.defaultCharset().name());
+    }
+
+    public YamlRecordReader(InputStream inputStream, String charset) {
         this.inputStream = inputStream;
+        this.charset = charset;
     }
 
     @Override
     public void open() throws Exception {
         this.currentRecordNumber = 0;
-        this.scanner = new Scanner(inputStream);
+        this.scanner = new Scanner(inputStream, charset);
     }
 
     @Override
