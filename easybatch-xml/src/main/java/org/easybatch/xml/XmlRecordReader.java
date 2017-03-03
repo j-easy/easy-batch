@@ -31,6 +31,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.*;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -57,6 +58,8 @@ public class XmlRecordReader implements RecordReader {
      */
     private InputStream xmlInputStream;
 
+    private String charset;
+
     /**
      * The xml reader.
      */
@@ -68,14 +71,19 @@ public class XmlRecordReader implements RecordReader {
     private long currentRecordNumber;
 
     public XmlRecordReader(final String rootElementName, final InputStream xmlInputStream) {
+        this(rootElementName, xmlInputStream, Charset.defaultCharset().name());
+    }
+
+    public XmlRecordReader(final String rootElementName, final InputStream xmlInputStream, final String charset) {
         this.rootElementName = rootElementName;
         this.xmlInputStream = xmlInputStream;
+        this.charset = charset;
     }
 
     @Override
     public void open() throws Exception {
         currentRecordNumber = 0;
-        xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream);
+        xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream, charset);
     }
 
     @Override

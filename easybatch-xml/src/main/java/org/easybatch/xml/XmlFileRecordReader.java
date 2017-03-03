@@ -28,6 +28,7 @@ import org.easybatch.core.reader.AbstractFileRecordReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.nio.charset.Charset;
 
 /**
  * A record reader that reads xml records from an xml file.
@@ -61,13 +62,24 @@ public class XmlFileRecordReader extends AbstractFileRecordReader {
      * @param rootElementName to match records
      */
     public XmlFileRecordReader(final File xmlFile, final String rootElementName) {
-        super(xmlFile);
+        this(xmlFile, rootElementName, Charset.defaultCharset().name());
+    }
+
+    /**
+     * Create a new {@link XmlFileRecordReader}.
+     *
+     * @param xmlFile         to read
+     * @param rootElementName to match records
+     * @param charset to use to read the file
+     */
+    public XmlFileRecordReader(final File xmlFile, final String rootElementName, final String charset) {
+        super(xmlFile, Charset.forName(charset));
         this.rootElementName = rootElementName;
     }
 
     @Override
     public void open() throws Exception {
-        xmlRecordReader = new Reader(rootElementName, file);
+        xmlRecordReader = new Reader(file, rootElementName, charset.name());
         xmlRecordReader.open();
     }
 
@@ -86,8 +98,8 @@ public class XmlFileRecordReader extends AbstractFileRecordReader {
 
         private File file;
 
-        Reader(String rootElementName, File file) throws FileNotFoundException {
-            super(rootElementName, new FileInputStream(file));
+        Reader(File file, String rootElementName, String encoding) throws FileNotFoundException {
+            super(rootElementName, new FileInputStream(file), encoding);
             this.file = file;
         }
 

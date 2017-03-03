@@ -27,6 +27,7 @@ import org.easybatch.core.reader.AbstractFileRecordReader;
 import org.easybatch.core.reader.AbstractMultiFileRecordReader;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -44,12 +45,16 @@ public class MultiXmlFileRecordReader extends AbstractMultiFileRecordReader {
      * @param files to read
      */
     public MultiXmlFileRecordReader(List<File> files, String rootElementName) {
-        super(files);
+        this(files, rootElementName, Charset.defaultCharset());
+    }
+
+    public MultiXmlFileRecordReader(List<File> files, String rootElementName, Charset charset) {
+        super(files, charset);
         this.rootElementName = rootElementName;
     }
 
     @Override
     protected AbstractFileRecordReader createReader() throws Exception {
-        return new XmlFileRecordReader(currentFile, rootElementName);
+        return new XmlFileRecordReader(currentFile, rootElementName, charset.name());
     }
 }
