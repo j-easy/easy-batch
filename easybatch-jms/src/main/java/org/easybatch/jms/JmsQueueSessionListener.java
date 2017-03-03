@@ -46,7 +46,7 @@ public class JmsQueueSessionListener implements JobListener {
     private QueueSession session;
 
     /**
-     * Create a JMS queue session listener.
+     * Create a new {@link JmsQueueSessionListener}.
      *
      * @param session the JMS queue session
      */

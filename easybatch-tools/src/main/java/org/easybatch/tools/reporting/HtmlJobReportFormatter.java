@@ -47,11 +47,11 @@ import static org.easybatch.core.util.Utils.formatTime;
  */
 public class HtmlJobReportFormatter implements JobReportFormatter<String> {
 
-    /**
-     * The template engine to render reports.
-     */
     private VelocityEngine velocityEngine;
 
+    /**
+     * Create a new {@link HtmlJobReportFormatter}.
+     */
     public HtmlJobReportFormatter() {
         Properties properties = new Properties();
         properties.put("resource.loader", "class");

@@ -35,16 +35,17 @@ import java.util.Set;
 
 /**
  * An implementation of {@link RecordValidator} using JSR 303 API.
+ * Records must be annotated with JSR 303 annotations.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class BeanValidationRecordValidator implements RecordValidator {
 
-    /**
-     * The validator instance to use to validate objects.
-     */
     private Validator validator;
 
+    /**
+     * Create a new {@link BeanValidationRecordValidator}.
+     */
     public BeanValidationRecordValidator() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();

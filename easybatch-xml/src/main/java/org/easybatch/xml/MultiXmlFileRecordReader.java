@@ -32,6 +32,7 @@ import java.util.List;
 
 /**
  * Reader for multiple xml files in one shot.
+ * Files must have the same format (schema).
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -43,11 +44,18 @@ public class MultiXmlFileRecordReader extends AbstractMultiFileRecordReader {
      * Create a new {@link MultiXmlFileRecordReader}.
      *
      * @param files to read
+     * @param rootElementName to match records
      */
     public MultiXmlFileRecordReader(List<File> files, String rootElementName) {
         this(files, rootElementName, Charset.defaultCharset());
     }
 
+    /**
+     * Create a new {@link MultiXmlFileRecordReader}.
+     * @param files to read
+     * @param rootElementName to match records
+     * @param charset of files
+     */
     public MultiXmlFileRecordReader(List<File> files, String rootElementName, Charset charset) {
         super(files, charset);
         this.rootElementName = rootElementName;

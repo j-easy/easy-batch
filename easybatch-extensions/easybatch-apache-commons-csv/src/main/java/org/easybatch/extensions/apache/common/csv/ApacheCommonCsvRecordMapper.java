@@ -44,7 +44,7 @@ public class ApacheCommonCsvRecordMapper<P> extends AbstractRecordMapper<P> impl
     private CSVFormat csvFormat = CSVFormat.newFormat(',');
 
     /**
-     * Create a {@link ApacheCommonCsvRecordMapper}.
+     * Create a new {@link ApacheCommonCsvRecordMapper}.
      *
      * @param recordClass the target type class
      * @param columns     field names in order
@@ -67,14 +67,29 @@ public class ApacheCommonCsvRecordMapper<P> extends AbstractRecordMapper<P> impl
      * Setter for parameters
      */
 
+    /**
+     * Set the trim parameter.
+     *
+     * @param trim parameter
+     */
     public void setTrim(boolean trim) {
         csvFormat = csvFormat.withTrim(trim);
     }
 
+    /**
+     * Set the delimiter parameter.
+     *
+     * @param delimiter parameter
+     */
     public void setDelimiter(char delimiter) {
         csvFormat = csvFormat.withDelimiter(delimiter);
     }
 
+    /**
+     * Set the quote parameter.
+     *
+     * @param quote parameter
+     */
     public void setQuote(char quote) {
         csvFormat = csvFormat.withQuote(quote);
     }

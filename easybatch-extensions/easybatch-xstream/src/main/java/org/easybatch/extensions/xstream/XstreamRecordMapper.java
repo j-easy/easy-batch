@@ -43,8 +43,7 @@ public class XstreamRecordMapper<P> implements RecordMapper<XmlRecord, Record<P>
     private XStream xStream;
 
     /**
-     * Mapper that uses <a href="http://xstream.codehaus.org/">XStream</a>
-     * to map XML records to domain objects.
+     * Create a new {@link XstreamRecordMapper}.
      *
      * @param xStream the {@link XStream} mapper.
      */

@@ -38,25 +38,14 @@ import java.util.List;
  */
 public class RoundRobinJmsQueueRecordWriter implements RecordWriter {
 
-    /**
-     * The total number of queues this writer operates on.
-     */
     private int queuesNumber;
-
-    /**
-     * Next queue to which write next incoming record.
-     */
     private int next;
-
-    /**
-     * List of queues to which records should be written.
-     */
     private List<QueueSender> queues;
 
     /**
-     * Create a {@link RoundRobinJmsQueueRecordWriter}.
+     * Create a new {@link RoundRobinJmsQueueRecordWriter}.
      *
-     * @param queues the list of queues to which records should be written
+     * @param queues to which records should be written
      */
     public RoundRobinJmsQueueRecordWriter(List<QueueSender> queues) {
         this.queues = queues;

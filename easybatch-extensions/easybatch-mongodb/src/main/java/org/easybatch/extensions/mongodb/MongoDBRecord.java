@@ -35,7 +35,7 @@ import org.easybatch.core.record.Header;
 public class MongoDBRecord extends GenericRecord<DBObject> {
 
     /**
-     * Create a {@link MongoDBRecord}.
+     * Create a new {@link MongoDBRecord}.
      *
      * @param header  the record header
      * @param payload the record payload

@@ -30,6 +30,12 @@ package org.easybatch.core.mapper;
  */
 public class BeanIntrospectionException extends RuntimeException {
 
+    /**
+     * Create a new {@link BeanIntrospectionException}.
+     *
+     * @param message of the exception
+     * @param cause of the exception
+     */
     public BeanIntrospectionException(String message, Throwable cause) {
         super(message, cause);
     }

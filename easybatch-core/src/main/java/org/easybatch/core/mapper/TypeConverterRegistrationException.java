@@ -30,6 +30,12 @@ package org.easybatch.core.mapper;
  */
 public class TypeConverterRegistrationException extends RuntimeException {
 
+    /**
+     * Create a new {@link TypeConverterRegistrationException}.
+     *
+     * @param message of the exception
+     * @param cause of the exception
+     */
     public TypeConverterRegistrationException(String message, Throwable cause) {
         super(message, cause);
     }

@@ -44,7 +44,7 @@ public class SpringJdbcRecordMapper<P> implements RecordMapper<JdbcRecord, Recor
     private final Class<P> type;
 
     /**
-     * Create a {@link SpringJdbcRecordMapper}.
+     * Create a new {@link SpringJdbcRecordMapper}.
      *
      * @param type the type of target object
      */

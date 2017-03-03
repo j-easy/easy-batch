@@ -34,7 +34,7 @@ import java.nio.file.Path;
 public class FileRecordWriter extends OutputStreamRecordWriter {
 
     /**
-     * Record writer that writes records to a file.
+     * Create a new {@link FileRecordWriter}.
      *
      * @param fileName the output file name.
      */
@@ -43,7 +43,7 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     }
 
     /**
-     * Record writer that writes records to a file.
+     * Create a new {@link FileRecordWriter}.
      *
      * @param fileName      the output file name.
      * @param lineSeparator the line separator.
@@ -53,7 +53,7 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     }
 
     /**
-     * Record writer that writes records to a file.
+     * Create a new {@link FileRecordWriter}.
      *
      * @param fileName      the output file name.
      * @param lineSeparator the line separator.
@@ -64,7 +64,7 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     }
 
     /**
-     * Record writer that writes records to a file.
+     * Create a new {@link FileRecordWriter}.
      *
      * @param file the output file.
      */
@@ -73,7 +73,7 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     }
 
     /**
-     * Record writer that writes records to a file.
+     * Create a new {@link FileRecordWriter}.
      *
      * @param file          the output file.
      * @param lineSeparator the line separator.
@@ -83,7 +83,7 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     }
 
     /**
-     * Record writer that writes records to a file.
+     * Create a new {@link FileRecordWriter}.
      *
      * @param file          the output file.
      * @param lineSeparator the line separator.
@@ -94,7 +94,7 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     }
 
     /**
-     * Record writer that writes records to a file.
+     * Create a new {@link FileRecordWriter}.
      *
      * @param fileWriter the output file writer.
      */
@@ -103,7 +103,7 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     }
 
     /**
-     * Record writer that writes records to a file.
+     * Create a new {@link FileRecordWriter}.
      *
      * @param path the output file.
      */
@@ -112,7 +112,7 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     }
 
     /**
-     * Record writer that writes records to a file.
+     * Create a new {@link FileRecordWriter}.
      *
      * @param path          the output file.
      * @param lineSeparator the line separator.
@@ -122,7 +122,7 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     }
 
     /**
-     * Record writer that writes records to a file.
+     * Create a new {@link FileRecordWriter}.
      *
      * @param path          the output file.
      * @param lineSeparator the line separator.
@@ -133,7 +133,7 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     }
 
     /**
-     * Record writer that writes records to a file.
+     * Create a new {@link FileRecordWriter}.
      *
      * @param fileWriter    the output file writer.
      * @param lineSeparator the line separator.

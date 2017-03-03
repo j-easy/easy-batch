@@ -34,7 +34,7 @@ import org.easybatch.core.record.StringRecord;
 public class XmlRecord extends StringRecord {
 
     /**
-     * Create a {@link XmlRecord}.
+     * Create a new {@link XmlRecord}.
      *
      * @param header  the record header
      * @param payload the record payload

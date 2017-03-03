@@ -42,17 +42,13 @@ import java.util.List;
 public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Record<T>> {
 
     private char delimiter = ',';
-
     private char qualifier = '\'';
-
     private boolean strictQualifiers;
-
     private ColumnPositionMappingStrategy<T> strategy;
-
     private CsvToBean<T> csvToBean;
 
     /**
-     * Create a {@link OpenCsvRecordMapper}.
+     * Create a new {@link OpenCsvRecordMapper}.
      *
      * @param recordClass The target type
      * @param columns     Fields name in the same order as in the delimited record

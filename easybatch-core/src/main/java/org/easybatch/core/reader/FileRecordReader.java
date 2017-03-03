@@ -38,7 +38,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * A convenient {@link RecordReader} that reads files in a directory.
+ * A {@link RecordReader} that reads files in a directory.
  *
  * This reader produces {@link FileRecord} instances.
  *
@@ -52,7 +52,7 @@ public class FileRecordReader implements RecordReader {
     private boolean recursive;
 
     /**
-     * Create a {@link FileRecordReader} to read files from a given directory.
+     * Create a new {@link FileRecordReader}.
      *
      * @param directory to read files from
      */
@@ -61,10 +61,10 @@ public class FileRecordReader implements RecordReader {
     }
 
     /**
-     * Create a {@link FileRecordReader} to read files from a given directory.
+     * Create a new {@link FileRecordReader}.
      *
      * @param directory to read files from
-     * @param recursive if the reader should be recursive
+     * @param recursive if the reader should be recursive or not
      */
     public FileRecordReader(final File directory, final boolean recursive) {
         checkNotNull(directory, "directory");
@@ -73,7 +73,7 @@ public class FileRecordReader implements RecordReader {
     }
 
     /**
-     * Create a {@link FileRecordReader} to read files from a given directory.
+     * Create a new {@link FileRecordReader}.
      *
      * @param path to read files from
      */
@@ -82,10 +82,10 @@ public class FileRecordReader implements RecordReader {
     }
 
     /**
-     * Create a {@link FileRecordReader} to read files from a given directory.
+     * Create a new {@link FileRecordReader}.
      *
      * @param path to read files from
-     *  @param recursive if the reader should be recursive
+     *  @param recursive if the reader should be recursive or not
      */
     public FileRecordReader(final Path path, final boolean recursive) {
         checkNotNull(path, "path");
@@ -93,9 +93,6 @@ public class FileRecordReader implements RecordReader {
         this.recursive = recursive;
     }
 
-    /**
-     * Open the reader.
-     */
     @Override
     public void open() throws Exception {
         checkDirectory();
@@ -117,11 +114,6 @@ public class FileRecordReader implements RecordReader {
         checkArgument(directory.canRead(), format("Unable to read files from directory %s. Permission denied.", getDataSourceName()));
     }
 
-    /**
-     * Read next record from the data source.
-     *
-     * @return the next record from the data source.
-     */
     @Override
     public FileRecord readRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
@@ -132,18 +124,10 @@ public class FileRecordReader implements RecordReader {
         }
     }
 
-    /**
-     * This method returns a human readable data source name to be shown in the batch report.
-     *
-     * @return the data source name this reader is reading data from
-     */
     private String getDataSourceName() {
         return directory.getAbsolutePath();
     }
 
-    /**
-     * Close the reader.
-     */
     @Override
     public void close() {
         // no op

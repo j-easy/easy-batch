@@ -32,19 +32,8 @@ import java.util.Date;
  */
 public class Header {
 
-    /**
-     * The physical record number in the data source (if defined).
-     */
     private Long number;
-
-    /**
-     * The data source name from which this record has been read.
-     */
     private String source;
-
-    /**
-     * The date at which the record has been read.
-     */
     private Date creationDate;
 
     /**

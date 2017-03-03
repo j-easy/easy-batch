@@ -28,23 +28,23 @@ import org.easybatch.core.record.Record;
 import java.io.OutputStreamWriter;
 
 /**
- * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to the standard output.
+ * Record writer that writes the <strong>payload</strong> of a {@link Record} to the standard output.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class StandardOutputRecordWriter extends OutputStreamRecordWriter {
 
     /**
-     * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to the standard output.
+     * Create a new {@link StandardOutputRecordWriter}.
      */
     public StandardOutputRecordWriter() {
         super(new OutputStreamWriter(System.out));
     }
 
     /**
-     * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to the standard output.
+     * Create a new {@link StandardOutputRecordWriter}.
      *
-     * @param lineSeparator line separator.
+     * @param lineSeparator to use to separate records.
      */
     public StandardOutputRecordWriter(final String lineSeparator) {
         super(new OutputStreamWriter(System.out), lineSeparator);

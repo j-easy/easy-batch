@@ -33,13 +33,10 @@ import org.easybatch.core.record.Record;
  */
 public class RecordNumberGreaterThanFilter implements RecordFilter<Record> {
 
-    /**
-     * Record number after which records will be filtered.
-     */
     private long number;
 
     /**
-     * Create a {@link RecordNumberGreaterThanFilter} instance.
+     * Create a new {@link RecordNumberGreaterThanFilter}.
      *
      * @param number record number after which records will be filtered.
      */

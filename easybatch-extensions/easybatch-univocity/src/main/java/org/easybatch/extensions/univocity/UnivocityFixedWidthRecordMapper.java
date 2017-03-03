@@ -36,8 +36,7 @@ import com.univocity.parsers.fixed.FixedWidthParserSettings;
 public class UnivocityFixedWidthRecordMapper<T> extends AbstractUnivocityRecordMapper<T, FixedWidthParserSettings> {
 
     /**
-     * Creates a new mapper that uses <a href="http://www.univocity.com/">uniVocity parsers</a> to map fixed width records
-     * to domain objects.
+     * Create a new {@link UnivocityFixedWidthRecordMapper}.
      *
      * @param recordClass the target type
      * @param settings    the settings that is is used to configure the parser

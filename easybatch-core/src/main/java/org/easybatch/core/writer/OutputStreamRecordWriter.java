@@ -33,18 +33,18 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
+ * Record writer to write the <strong>payload</strong> of a {@link Record} to an output stream.
+ * Users of this class is responsible for opening/closing the output stream, maybe using a {@link JobListener}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class OutputStreamRecordWriter implements RecordWriter {
 
     private String lineSeparator;
-
     private OutputStreamWriter outputStreamWriter;
 
     /**
-     * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
+     * Create a new {@link OutputStreamRecordWriter}.
      *
      * @param outputStreamWriter the output stream to write records to.
      */
@@ -53,10 +53,7 @@ public class OutputStreamRecordWriter implements RecordWriter {
     }
 
     /**
-     * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
-     * <p/>
-     * The user of this class is responsible for opening/closing the output stream, maybe using
-     * a {@link JobListener}.
+     * Create a new {@link OutputStreamRecordWriter}.
      *
      * @param outputStreamWriter the output stream to write records to.
      * @param lineSeparator      the line separator.

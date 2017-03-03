@@ -55,12 +55,18 @@ public class JsonFileRecordReader extends AbstractFileRecordReader {
     /**
      * Create a new {@link JsonFileRecordReader}.
      *
-     * <p>This reader produces {@link JsonRecord} instances.</p>
+     * @param jsonFile to read
      */
     public JsonFileRecordReader(final File jsonFile) {
         this(jsonFile, Charset.defaultCharset().name());
     }
 
+    /**
+     * Create a new {@link JsonFileRecordReader}.
+     *
+     * @param jsonFile to read
+     * @param charset of the file
+     */
     public JsonFileRecordReader(final File jsonFile, final String charset) {
         super(jsonFile, Charset.forName(charset));
     }

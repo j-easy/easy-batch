@@ -39,8 +39,7 @@ import java.beans.IntrospectionException;
 public class UnivocityCsvRecordMarshaller<P> extends AbstractUnivocityRecordMarshaller<P, CsvWriterSettings> {
 
     /**
-     * Create a new univocty record marshaller to marshal a POJO to CSV format using
-     * <a href="http://www.univocity.com/">uniVocity</a>.
+     * Create a new {@link UnivocityCsvRecordMarshaller}.
      *
      * @param recordClass the type of object to marshal
      * @param settings    settings used to configure the writer object

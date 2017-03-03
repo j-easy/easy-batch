@@ -29,6 +29,12 @@ import org.easybatch.core.record.Record;
 
 import java.io.StringWriter;
 
+/**
+ * {@link RecordMarshaller} that marshals java objects to Yaml format using <a href="https://github.com/EsotericSoftware/yamlbeans">yamlbeans</a>.
+ *
+ * @param <P> type of objects to marshal.
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
 public class YamlRecordMarshaller<P> implements RecordMarshaller<Record<P>, YamlRecord> {
 
     @Override

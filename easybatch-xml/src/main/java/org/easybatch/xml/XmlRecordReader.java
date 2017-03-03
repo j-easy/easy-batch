@@ -48,32 +48,29 @@ public class XmlRecordReader implements RecordReader {
 
     private static final Logger LOGGER = Logger.getLogger(XmlRecordReader.class.getName());
 
-    /**
-     * The root element name.
-     */
     private String rootElementName;
-
-    /**
-     * The xml input stream.
-     */
     private InputStream xmlInputStream;
-
     private String charset;
-
-    /**
-     * The xml reader.
-     */
     private XMLEventReader xmlEventReader;
-
-    /**
-     * The current record number.
-     */
     private long currentRecordNumber;
 
+    /**
+     * Create a new {@link XmlRecordReader}.
+     *
+     * @param rootElementName to extract as record
+     * @param xmlInputStream to read
+     */
     public XmlRecordReader(final String rootElementName, final InputStream xmlInputStream) {
         this(rootElementName, xmlInputStream, Charset.defaultCharset().name());
     }
 
+    /**
+     * Create a new {@link XmlRecordReader}.
+     *
+     * @param rootElementName to extract as record
+     * @param xmlInputStream to read
+     * @param charset of the input stream
+     */
     public XmlRecordReader(final String rootElementName, final InputStream xmlInputStream, final String charset) {
         this.rootElementName = rootElementName;
         this.xmlInputStream = xmlInputStream;
@@ -134,34 +131,16 @@ public class XmlRecordReader implements RecordReader {
         }
     }
 
-    /**
-     * Utility method to check if the next tag matches a start tag of the root element.
-     *
-     * @return true if the next tag matches a start element of the root element, false else
-     * @throws XMLStreamException thrown if no able to peek the next xml element
-     */
     private boolean nextTagIsRootElementStart() throws XMLStreamException {
         return xmlEventReader.peek().isStartElement() &&
                 xmlEventReader.peek().asStartElement().getName().getLocalPart().equalsIgnoreCase(rootElementName);
     }
 
-    /**
-     * Utility method to check if the next tag matches an end tag of the root element.
-     *
-     * @return true if the next tag matches an end tag of the root element, false else
-     * @throws XMLStreamException thrown if no able to peek the next xml element
-     */
     private boolean nextTagIsRootElementEnd() throws XMLStreamException {
         return xmlEventReader.peek().isEndElement() &&
                 xmlEventReader.peek().asEndElement().getName().getLocalPart().equalsIgnoreCase(rootElementName);
     }
 
-    /**
-     * Write end element.
-     *
-     * @param stringBuilder the string builder to write element into.
-     * @throws XMLStreamException thrown when an exception occurs during xml streaming
-     */
     private void writeEndElement(StringBuilder stringBuilder, XMLEvent xmlEvent) throws XMLStreamException {
         if (xmlEvent.isEndElement()) {
             EndElement endElement = xmlEvent.asEndElement();
@@ -169,12 +148,6 @@ public class XmlRecordReader implements RecordReader {
         }
     }
 
-    /**
-     * Escape values of start element attributes.
-     *
-     * @param stringBuilder the builder in which writes escaped attributes.
-     * @param xmlEvent      the start element to escape
-     */
     private void escapeStartElementAttributes(StringBuilder stringBuilder, XMLEvent xmlEvent) {
         StartElement startElement = xmlEvent.asStartElement();
         stringBuilder.append("<").append(startElement.getName().getLocalPart());
@@ -190,12 +163,6 @@ public class XmlRecordReader implements RecordReader {
         stringBuilder.append(">");
     }
 
-    /**
-     * Escape the xml content. Only &, " and ' need to be escaped.
-     *
-     * @param xmlToEscape the xml content to escape
-     * @return the escaped xml
-     */
     private String escape(String xmlToEscape) {
         return xmlToEscape.replaceAll("&", "&amp;")
                 .replaceAll("'", "&apos;")

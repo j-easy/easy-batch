@@ -54,43 +54,17 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
      */
     public static final boolean DEFAULT_WHITESPACE_TRIMMING = false;
 
-    /**
-     * Fields delimiter.
-     */
+
     private String delimiter = DEFAULT_DELIMITER;
-
-    /**
-     * Parameter to trim whitespaces.
-     */
     private boolean trimWhitespaces = DEFAULT_WHITESPACE_TRIMMING;
-
-    /**
-     * Data qualifier.
-     */
     private String qualifier = DEFAULT_QUALIFIER;
-
-    /**
-     * Total number of fields expected per record.
-     */
     private int recordExpectedLength;
-
-    /**
-     * Array of indexes of fields to retain.
-     */
     private List<Integer> fieldsPositions;
-
-    /**
-     * Array of field names.
-     */
     private String[] fieldNames;
-
-    /**
-     * Flag telling if field names have been retrieved from the header record.
-     */
     private boolean fieldNamesRetrievedFromHeader;
 
     /**
-     * Create a {@link DelimitedRecordMapper} instance.
+     * Create a new {@link DelimitedRecordMapper}.
      * Column names and expected record size will be calculated from the header record.
      * and set to fields with the same name of the target object.
      *
@@ -102,7 +76,7 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
     }
 
     /**
-     * Create a {@link DelimitedRecordMapper} instance.
+     * Create a new {@link DelimitedRecordMapper}.
      * Expected record size will be calculated from the header record.
      *
      * @param recordClass the target domain object class
@@ -115,7 +89,7 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
     }
 
     /**
-     * Create a {@link DelimitedRecordMapper} instance.
+     * Create a new {@link DelimitedRecordMapper}.
      *
      * @param recordClass          the target domain object class
      * @param fieldNames           a String array containing target type field names in the same order as in the delimited flat file.
@@ -127,7 +101,7 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
     }
 
     /**
-     * Create a {@link DelimitedRecordMapper} instance.
+     * Create a new {@link DelimitedRecordMapper}.
      * Expected record size will be calculated from the header record.
      *
      * @param recordClass     the target domain object class
@@ -139,7 +113,7 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
     }
 
     /**
-     * Create a {@link DelimitedRecordMapper} instance.
+     * Create a new {@link DelimitedRecordMapper}.
      * Expected record size will be calculated from the header record.
      *
      * @param recordClass     the target domain object class
@@ -153,7 +127,7 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
     }
 
     /**
-     * Create a {@link DelimitedRecordMapper} instance.
+     * Create a new {@link DelimitedRecordMapper}.
      *
      * @param recordClass          the target domain object class
      * @param fieldsPositions      array of indexes of fields to retain

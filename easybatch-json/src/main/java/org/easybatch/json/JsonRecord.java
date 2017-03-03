@@ -34,7 +34,7 @@ import org.easybatch.core.record.StringRecord;
 public class JsonRecord extends StringRecord {
 
     /**
-     * Create a {@link JsonRecord}.
+     * Create a new {@link JsonRecord}.
      *
      * @param header  the record header
      * @param payload the record payload

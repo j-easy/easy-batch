@@ -53,19 +53,11 @@ public class ObjectMapper<T> {
     private static final Logger LOGGER = Logger.getLogger(ObjectMapper.class.getName());
 
     private Class<T> objectType;
-
-    /**
-     * A map holding setter methods for each field.
-     */
     private Map<String, Method> setters;
-
-    /**
-     * Type converters map.
-     */
     private Map<Class<?>, TypeConverter<String, ?>> typeConverters;
 
     /**
-     * Create a new object mapper.
+     * Create a new {@link ObjectMapper}.
      *
      * @param objectType the target object type
      */

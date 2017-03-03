@@ -32,13 +32,10 @@ import org.easybatch.core.record.FileRecord;
  */
 public class FileExtensionFilter implements RecordFilter<FileRecord> {
 
-    /**
-     * List of extensions to filter.
-     */
     private String[] extensions;
 
     /**
-     * Create a {@link FileExtensionFilter} instance.
+     * Create a new {@link FileExtensionFilter}.
      *
      * @param extensions a list of extensions. Example: .log
      */

@@ -28,10 +28,21 @@ import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Record;
 
+/**
+ * {@link RecordMapper} that maps records to java objects using <a href="https://github.com/EsotericSoftware/yamlbeans">yamlbeans</a>.
+ *
+ * @param <P> type of target objects
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
 public class YamlRecordMapper<P> implements RecordMapper<YamlRecord, Record<P>> {
 
     private Class<P> type;
 
+    /**
+     * Create a new {@link YamlRecordMapper}.
+     *
+     * @param type of the target object
+     */
     public YamlRecordMapper(Class<P> type) {
         this.type = type;
     }

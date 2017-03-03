@@ -39,8 +39,7 @@ import java.beans.IntrospectionException;
 public class UnivocityFixedWidthRecordMarshaller<P> extends AbstractUnivocityRecordMarshaller<P, FixedWidthWriterSettings> {
 
     /**
-     * Create a new uniVocity record marshaller to marshal a POJO to fixed width format using
-     * <a href="http://www.univocity.com/">uniVocity</a>.
+     * Create a new {@link UnivocityFixedWidthRecordMarshaller}.
      *
      * @param recordClass the type of object to marshal
      * @param settings    settings used to configure the writer object

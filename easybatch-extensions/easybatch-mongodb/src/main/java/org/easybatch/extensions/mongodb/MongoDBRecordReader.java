@@ -44,23 +44,15 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 public class MongoDBRecordReader implements RecordReader {
 
     private DBCollection collection;
-
     private DBObject query;
-
     private DBCursor cursor;
-
     private int nbLimit;
-
     private int nbSkip;
-
     private DBObject orderBy;
-
     private long currentRecordNumber;
 
     /**
-     * Reader that reads documents from a MongoDB collection.
-     * <p/>
-     * This reader produces {@link MongoDBRecord} instances.
+     * Create a new {@link MongoDBRecordReader}.
      *
      * @param collection the collection to read documents from
      * @param query      the query to fetch data

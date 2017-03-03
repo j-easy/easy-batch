@@ -33,13 +33,10 @@ import org.easybatch.core.record.Record;
  */
 public class RecordNumberEqualToFilter implements RecordFilter<Record> {
 
-    /**
-     * Record numbers that causes the record to be filtered.
-     */
     private long[] numbers;
 
     /**
-     * Create a {@link RecordNumberEqualToFilter} instance.
+     * Create a new {@link RecordNumberEqualToFilter}.
      *
      * @param numbers record numbers that cause the record to be filtered.
      */

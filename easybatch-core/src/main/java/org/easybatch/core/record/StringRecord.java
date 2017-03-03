@@ -31,7 +31,7 @@ package org.easybatch.core.record;
 public class StringRecord extends GenericRecord<String> {
 
     /**
-     * Create a {@link StringRecord}.
+     * Create a new {@link StringRecord}.
      *
      * @param header  the record header
      * @param payload the record payload

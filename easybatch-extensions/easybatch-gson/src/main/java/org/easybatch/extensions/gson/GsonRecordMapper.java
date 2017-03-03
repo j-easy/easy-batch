@@ -41,15 +41,13 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 public class GsonRecordMapper<T> implements RecordMapper<JsonRecord, Record<T>> {
 
     private Gson mapper;
-
     private Class<T> type;
 
     /**
-     * Mapper that uses <a href="https://code.google.com/p/google-gson/">Google Gson</a>
-     * to map json records to domain objects.
+     * Create a new {@link GsonRecordMapper}.
      *
-     * @param mapper The Gson mapper
-     * @param type   The target type
+     * @param mapper to use
+     * @param type   of target object
      */
     public GsonRecordMapper(final Gson mapper, final Class<T> type) {
         checkNotNull(mapper, "Gson mapper");

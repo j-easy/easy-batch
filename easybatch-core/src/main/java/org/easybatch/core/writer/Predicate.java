@@ -34,6 +34,12 @@ import org.easybatch.core.record.Record;
  */
 public interface Predicate {
 
+    /**
+     * Check if the record matches a given criteria.
+     *
+     * @param record to check
+     * @return true if the record matches the predicate, false otherwise
+     */
     boolean matches(Record record);
 
 }

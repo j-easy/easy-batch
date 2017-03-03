@@ -45,7 +45,7 @@ public class JmsPoisonRecordBroadcaster implements JobListener {
     /**
      * Create a new {@link JmsPoisonRecordBroadcaster}.
      *
-     * @param queues the list of queues to which poison messages should be written
+     * @param queues to which poison messages should be written
      */
     public JmsPoisonRecordBroadcaster(List<QueueSender> queues) {
         this.broadcastJmsQueueRecordWriter = new BroadcastJmsQueueRecordWriter(queues);

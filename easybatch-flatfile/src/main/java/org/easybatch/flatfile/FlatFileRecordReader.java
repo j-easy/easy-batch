@@ -47,38 +47,38 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
     private long currentRecordNumber;
 
     /**
-     * Create a new flat file record reader.
+     * Create a new {@link FlatFileRecordReader}.
      *
-     * @param fileName the input file name
+     * @param fileName to read records from
      */
     public FlatFileRecordReader(final String fileName) {
         this(fileName, Charset.defaultCharset().name());
     }
 
     /**
-     * Create a new flat file record reader.
+     * Create a new {@link FlatFileRecordReader}.
      *
-     * @param fileName    the input file name
-     * @param charsetName the encoding to use to read the file
+     * @param fileName    to read records from
+     * @param charsetName of the input file
      */
     public FlatFileRecordReader(final String fileName, final String charsetName) {
         this(new File(fileName), charsetName);
     }
 
     /**
-     * Create a new flat file record reader.
+     * Create a new {@link FlatFileRecordReader}.
      *
-     * @param input the input file
+     * @param input to read records from
      */
     public FlatFileRecordReader(final File input) {
         this(input, Charset.defaultCharset().name());
     }
 
     /**
-     * Create a new flat file record reader.
+     * Create a new {@link FlatFileRecordReader}.
      *
-     * @param input       the input file
-     * @param charsetName the encoding to use to read the file
+     * @param input       to read records from
+     * @param charsetName of the input file
      */
     public FlatFileRecordReader(final File input, final String charsetName) {
         super(input, Charset.forName(charsetName));
@@ -86,9 +86,9 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
 
 
     /**
-     * Create a new flat file record reader.
+     * Create a new {@link FlatFileRecordReader}.
      *
-     * @param path the input file path
+     * @param path of the file to read records from
      */
     public FlatFileRecordReader(final Path path) {
         this(path, Charset.defaultCharset().name());
@@ -96,10 +96,10 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
 
 
     /**
-     * Create a new flat file record reader.
+     * Create a new {@link FlatFileRecordReader}.
      *
-     * @param path the input file path
-     * @param charsetName the encoding to use to read the file
+     * @param path of the file to read records from
+     * @param charsetName of the input file
      */
     public FlatFileRecordReader(final Path path, final String charsetName) {
         super(path.toFile(), Charset.forName(charsetName));

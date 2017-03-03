@@ -37,7 +37,7 @@ public class CompositeRecordWriter implements RecordWriter {
     private List<RecordWriter> writers;
 
     /**
-     * Create a {@link CompositeRecordWriter}.
+     * Create a new {@link CompositeRecordWriter}.
      *
      * @param writers delegates
      */

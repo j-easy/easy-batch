@@ -31,7 +31,7 @@ import java.util.Collection;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Convenient processor that writes records to a {@link java.util.Collection}.
+ * Record writer that writes records to a {@link java.util.Collection}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -40,7 +40,7 @@ public class CollectionRecordWriter implements RecordWriter {
     private Collection collection;
 
     /**
-     * Convenient processor that writes records to a {@link java.util.Collection}.
+     * Create a new {@link CollectionRecordWriter}.
      *
      * @param collection the collection to write records to
      */

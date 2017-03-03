@@ -42,9 +42,9 @@ public class MongoDBRecordWriter implements RecordWriter {
     private DBCollection collection;
 
     /**
-     * Create a MongoDB writer.
+     * Create a new {@link MongoDBRecordWriter}.
      *
-     * @param collection the collection to write documents to.
+     * @param collection to write documents to.
      */
     public MongoDBRecordWriter(final DBCollection collection) {
         checkNotNull(collection, "collection");

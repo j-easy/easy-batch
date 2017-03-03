@@ -30,18 +30,11 @@ package org.easybatch.core.record;
  */
 public class GenericRecord<P> implements Record<P> {
 
-    /**
-     * The record header.
-     */
     protected Header header;
-
-    /**
-     * The record's payload.
-     */
     protected P payload;
 
     /**
-     * Create a {@link GenericRecord}.
+     * Create a new {@link GenericRecord}.
      *
      * @param header  the record header
      * @param payload the record payload

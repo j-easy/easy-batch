@@ -39,12 +39,15 @@ public class JacksonRecordMarshaller<P> implements RecordMarshaller<Record<P>, J
 
     private ObjectMapper mapper;
 
+    /**
+     * Create a new {@link JacksonRecordMarshaller}.
+     */
     public JacksonRecordMarshaller() {
         mapper = new ObjectMapper();
     }
 
     /**
-     * Create a Json record marshaller.
+     * Create a new {@link JacksonRecordMarshaller}.
      *
      * @param mapper a pre-configured {@link ObjectMapper} instance
      */

@@ -48,7 +48,7 @@ public class StreamRecordReader<T> implements RecordReader {
     protected long currentRecordNumber;
 
     /**
-     * Create a {@link StreamRecordReader} to read records from a {@link Stream}.
+     * Create a new {@link StreamRecordReader} to read records from a {@link Stream}.
      *
      * @param dataSource to read records from
      */
@@ -56,9 +56,6 @@ public class StreamRecordReader<T> implements RecordReader {
         this.dataSource = dataSource;
     }
 
-    /**
-     * Open the reader.
-     */
     @Override
     public void open() throws Exception {
         if (dataSource == null) {
@@ -68,11 +65,6 @@ public class StreamRecordReader<T> implements RecordReader {
         iterator = dataSource.iterator();
     }
 
-    /**
-     * Read next record from the data source.
-     *
-     * @return the next record from the data source.
-     */
     @Override
     public Record<T> readRecord() throws Exception {
         if (iterator.hasNext()) {
@@ -87,9 +79,6 @@ public class StreamRecordReader<T> implements RecordReader {
         return "In-Memory Stream";
     }
 
-    /**
-     * Close the reader.
-     */
     @Override
     public void close() throws Exception {
         dataSource.close();

@@ -30,7 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Compacts a Json record payload.
+ * Compacts (flattens) a Json record payload.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

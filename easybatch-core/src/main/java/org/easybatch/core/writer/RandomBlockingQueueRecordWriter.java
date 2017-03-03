@@ -37,32 +37,20 @@ import java.util.concurrent.BlockingQueue;
  */
 public class RandomBlockingQueueRecordWriter implements RecordWriter {
 
-    /**
-     * The total number of queues this writer operates on.
-     */
     private int queuesNumber;
-
-    /**
-     * List of queues to which records should be written.
-     */
     private List<BlockingQueue<Record>> queues;
-
-    /**
-     * The random generator.
-     */
     private Random random;
 
     /**
-     * Create a {@link RandomBlockingQueueRecordWriter} instance.
+     * Create a new {@link RandomBlockingQueueRecordWriter}.
      *
-     * @param queues the list of queues to which records should be written
+     * @param queues to which records should be written
      */
     public RandomBlockingQueueRecordWriter(List<BlockingQueue<Record>> queues) {
         this.queues = queues;
         this.queuesNumber = queues.size();
         this.random = new Random();
     }
-
 
     @Override
     public void open() throws Exception {

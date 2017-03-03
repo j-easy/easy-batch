@@ -55,10 +55,10 @@ public class JmsQueueRecordReader implements RecordReader {
     private boolean stop;
 
     /**
-     * Create a Jms queue record reader.
+     * Create a new {@link JmsQueueRecordReader}.
      *
-     * @param queueConnectionFactory the queue connection factory
-     * @param queue                  the jms queue to read records from
+     * @param queueConnectionFactory to use to create connections
+     * @param queue                  to read records from
      */
     public JmsQueueRecordReader(final QueueConnectionFactory queueConnectionFactory, final Queue queue) {
         checkNotNull(queueConnectionFactory, "queue connection factory");

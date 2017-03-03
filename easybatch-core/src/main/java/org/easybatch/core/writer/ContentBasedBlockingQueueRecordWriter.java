@@ -42,11 +42,6 @@ public class ContentBasedBlockingQueueRecordWriter implements RecordWriter {
      */
     private Map<Predicate, BlockingQueue<Record>> queueMap;
 
-    /**
-     * Create a {@link ContentBasedBlockingQueueRecordWriter}.
-     *
-     * @param queueMap predicate/queue mapping
-     */
     ContentBasedBlockingQueueRecordWriter(Map<Predicate, BlockingQueue<Record>> queueMap) {
         this.queueMap = queueMap;
     }

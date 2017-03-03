@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 /**
- * A convenient {@link RecordReader} that reads data from the standard input (useful for tests)
+ * A {@link RecordReader} that reads data from the standard input (useful for tests)
  * until a termination word is read (can be specified at construction time, "quit" by default).
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
@@ -56,14 +56,14 @@ public class StandardInputRecordReader implements RecordReader {
     private String terminationInput;
 
     /**
-     * Create a {@link StandardInputRecordReader} with default termination input equal to 'quit'.
+     * Create a new {@link StandardInputRecordReader} with default termination input equal to 'quit'.
      */
     public StandardInputRecordReader() {
         this(DEFAULT_TERMINATION_WORD);
     }
 
     /**
-     * Create a {@link StandardInputRecordReader} instance with a termination word.
+     * Create a new {@link StandardInputRecordReader} instance with a termination word.
      *
      * @param terminationInput the word to type to stop reading from the standard input.
      */

@@ -29,29 +29,18 @@ import org.easybatch.core.record.Record;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * A convenient {@link RecordReader} that reads record from a {@link BlockingQueue}.
+ * A {@link RecordReader} that reads record from a {@link BlockingQueue}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class BlockingQueueRecordReader implements RecordReader {
 
-    /**
-     * The number of poison records received.
-     */
     private int poisonRecords;
-
-    /**
-     * The total number of poison records to receive to stop the queue.
-     */
     private int totalPoisonRecords;
-
-    /**
-     * The source queue.
-     */
     private BlockingQueue<Record> queue;
 
     /**
-     * Create a {@link BlockingQueueRecordReader}.
+     * Create a new {@link BlockingQueueRecordReader}.
      *
      * @param queue the queue to read records from
      */
@@ -60,7 +49,7 @@ public class BlockingQueueRecordReader implements RecordReader {
     }
 
     /**
-     * Create a {@link BlockingQueueRecordReader}.
+     * Create a new {@link BlockingQueueRecordReader}.
      *
      * @param queue              the queue to read records from
      * @param totalPoisonRecords number of poison records to receive to stop reading from the queue

@@ -43,37 +43,18 @@ import java.util.Map;
 public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<StringRecord, Record<P>> {
 
     /**
-     * Fields length array.
-     */
-    private int[] fieldsLength;
-
-    /**
-     * Fields offsets array.
-     */
-    private int[] fieldsOffsets;
-
-    /**
-     * Array of field names.
-     */
-    private String[] fieldNames;
-
-    /**
-     * Total number of characters expected based on declared fields length
-     */
-    private int recordExpectedLength;
-
-    /**
      * Default whitespace trimming value.
      */
     public static final boolean DEFAULT_WHITESPACE_TRIMMING = false;
 
-    /**
-     * Parameter to trim whitespaces.
-     */
+    private int[] fieldsLength;
+    private int[] fieldsOffsets;
+    private String[] fieldNames;
+    private int recordExpectedLength;
     private boolean trimWhitespaces = DEFAULT_WHITESPACE_TRIMMING;
 
     /**
-     * Create a {@link FixedLengthRecordMapper} instance.
+     * Create a new {@link FixedLengthRecordMapper} instance.
      *
      * @param recordClass  the target domain object class
      * @param fieldsLength an array of fields length in the same order in the FLR flat file.
@@ -124,12 +105,7 @@ public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implemen
     }
 
 
-    /**
-     * utility method to calculate field offsets used to extract fields from record.
-     *
-     * @param lengths fields length array
-     * @return offsets array
-     */
+    // utility method to calculate field offsets used to extract fields from record.
     private int[] calculateOffsets(final int[] lengths) {
         int[] offsets = new int[lengths.length + 1];
         offsets[0] = 0;

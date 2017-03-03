@@ -50,53 +50,22 @@ public class JdbcRecordReader implements RecordReader {
     private static final Logger LOGGER = Logger.getLogger(JdbcRecordReader.class.getSimpleName());
 
     private DataSource dataSource;
-
-    /**
-     * The database connection to use to read data.
-     */
     private Connection connection;
-
-    /**
-     * The statement to use to read data.
-     */
     private Statement statement;
-
-    /**
-     * The result set that will be returned.
-     */
     private ResultSet resultSet;
-
-    /**
-     * The jdbc query to use to fetch data.
-     */
     private String query;
+    private String dataSourceName;
+    private long currentRecordNumber;
 
-    /**
-     * Parameter to limit the number of fetched rows.
-     */
+    // parameters
     private int maxRows;
-
-    /**
-     * Parameter to set fetch size.
-     */
+    private int queryTimeout;
     private int fetchSize;
 
     /**
-     * Parameter to set the query timeout.
-     */
-    private int queryTimeout;
-
-    /**
-     * The current record number.
-     */
-    private long currentRecordNumber;
-
-    private String dataSourceName;
-
-    /**
-     * Create a JdbcRecordReader instance.
+     * Create a new {@link JdbcRecordReader}.
      *
-     * @param dataSource to read data
+     * @param dataSource to read data from
      * @param query      to fetch data
      */
     public JdbcRecordReader(final DataSource dataSource, final String query) {

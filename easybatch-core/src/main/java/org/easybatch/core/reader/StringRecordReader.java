@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 /**
- * A convenient {@link RecordReader} that reads data from a String.
+ * A {@link RecordReader} that reads data from a String.
  *
  * This reader produces {@link StringRecord} instances.
  *
@@ -54,7 +54,7 @@ public class StringRecordReader implements RecordReader {
     private String dataSource;
 
     /**
-     * Create a {@link StringRecordReader}.
+     * Create a new {@link StringRecordReader}.
      *
      * @param dataSource The String data source
      */

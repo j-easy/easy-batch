@@ -51,7 +51,7 @@ public enum JobStatus {
     FAILED,
 
     /**
-     * The job has completed normally.
+     * The job has completed normally without any exception.
      */
     COMPLETED
 }

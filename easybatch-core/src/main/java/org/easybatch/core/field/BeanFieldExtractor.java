@@ -39,9 +39,15 @@ import java.util.Map;
 public class BeanFieldExtractor<P> implements FieldExtractor<P> {
 
     private final String[] fields;
-
     private final Map<String, Method> getters;
 
+    /**
+     * Create a new {@link BeanFieldExtractor}.
+     *
+     * @param type of the bean
+     * @param fields to extract
+     * @throws IntrospectionException if the bean cannot be introspected
+     */
     public BeanFieldExtractor(final Class<P> type, final String... fields) throws IntrospectionException {
         this.getters = Utils.getGetters(type);
         if (fields.length == 0) {

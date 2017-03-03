@@ -32,19 +32,33 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Scanner;
 
+/**
+ * Reader for Yaml records delimited by "---".
+ *
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
 public class YamlRecordReader implements RecordReader {
 
     private Scanner scanner;
     private String charset;
-
     private InputStream inputStream;
-
     private long currentRecordNumber;
 
+    /**
+     * Create a new {@link YamlRecordReader}.
+     *
+     * @param inputStream to read records from
+     */
     public YamlRecordReader(InputStream inputStream) {
         this(inputStream, Charset.defaultCharset().name());
     }
 
+    /**
+     * Create a new {@link YamlRecordReader}.
+     *
+     * @param inputStream to read records from
+     * @param charset of the input stream
+     */
     public YamlRecordReader(InputStream inputStream, String charset) {
         this.inputStream = inputStream;
         this.charset = charset;

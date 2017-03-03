@@ -39,12 +39,6 @@ public class JmsPoisonRecordFilter implements RecordFilter<JmsRecord> {
 
     private static final Logger LOGGER = Logger.getLogger(JmsPoisonRecordFilter.class.getName());
 
-    /**
-     * Return true if the record should be filtered.
-     *
-     * @param record the record to filter
-     * @return true if the record should be filtered, false else
-     */
     @Override
     public JmsRecord processRecord(JmsRecord record) {
         boolean isPoison = false;

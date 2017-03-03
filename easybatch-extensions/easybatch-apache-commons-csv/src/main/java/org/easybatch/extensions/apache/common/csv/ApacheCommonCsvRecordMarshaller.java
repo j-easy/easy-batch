@@ -42,19 +42,23 @@ import java.io.StringWriter;
  */
 public class ApacheCommonCsvRecordMarshaller<P> implements RecordMarshaller<Record<P>, StringRecord> {
 
+    /**
+     * Default delimiter.
+     */
     public static final char DEFAULT_DELIMITER = ',';
-
+    /**
+     * Default qualifier.
+     */
     public static final char DEFAULT_QUALIFIER = '\"';
 
     private final FieldExtractor<P> fieldExtractor;
-
     private CSVFormat csvFormat;
 
     /**
-     * Create a record marshaller.
+     * Create a new {@link ApacheCommonCsvRecordMarshaller}.
      *
-     * @param type   the type of object to marshal
-     * @param fields the list of fields to marshal in order
+     * @param type   object to marshal
+     * @param fields to marshal in order
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
     public ApacheCommonCsvRecordMarshaller(final Class<P> type, final String... fields) throws IntrospectionException {
@@ -62,7 +66,7 @@ public class ApacheCommonCsvRecordMarshaller<P> implements RecordMarshaller<Reco
     }
 
     /**
-     * Create a record marshaller.
+     * Create a new {@link ApacheCommonCsvRecordMarshaller}.
      *
      * @param type      the type of object to marshal
      * @param fields    the list of fields to marshal in order
@@ -74,10 +78,10 @@ public class ApacheCommonCsvRecordMarshaller<P> implements RecordMarshaller<Reco
     }
 
     /**
-     * Create a record marshaller.
+     * Create a new {@link ApacheCommonCsvRecordMarshaller}.
      *
-     * @param type      the type of object to marshal
-     * @param fields    the list of fields to marshal in order
+     * @param type      of object to marshal
+     * @param fields    to marshal in order
      * @param delimiter the field delimiter
      * @param qualifier the field qualifier
      * @throws IntrospectionException If the object to marshal cannot be introspected
@@ -87,7 +91,7 @@ public class ApacheCommonCsvRecordMarshaller<P> implements RecordMarshaller<Reco
     }
 
     /**
-     * Create a record marshaller.
+     * Create a new {@link ApacheCommonCsvRecordMarshaller}.
      *
      * @param fieldExtractor the field extractor
      * @param delimiter      the field delimiter

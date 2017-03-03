@@ -33,7 +33,7 @@ import java.io.File;
 public class FileRecord extends GenericRecord<File> {
 
     /**
-     * Create a {@link FileRecord}.
+     * Create a new {@link FileRecord}.
      *
      * @param header  the record header
      * @param payload the record payload

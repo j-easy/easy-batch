@@ -32,13 +32,10 @@ import org.easybatch.core.record.StringRecord;
  */
 public class StartWithStringRecordFilter implements RecordFilter<StringRecord> {
 
-    /**
-     * Prefixes that causes the record to be filtered.
-     */
     private String[] prefixes;
 
     /**
-     * Create a {@link StartWithStringRecordFilter} instance.
+     * Create a new {@link StartWithStringRecordFilter}.
      *
      * @param prefixes prefixes that cause the record to be filtered.
      */

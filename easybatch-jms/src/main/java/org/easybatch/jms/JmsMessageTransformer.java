@@ -32,7 +32,7 @@ import javax.jms.TextMessage;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Convenient processor that creates a {@link JmsRecord} with {@link TextMessage} payload from a {@link StringRecord}.
+ * Processor that creates a {@link JmsRecord} with {@link TextMessage} payload from a {@link StringRecord}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -41,9 +41,9 @@ public class JmsMessageTransformer implements RecordProcessor<StringRecord, JmsR
     private QueueSession queueSession;
 
     /**
-     * Create a Jms message transformer.
+     * Create a new {@link JmsMessageTransformer}.
      *
-     * @param queueSession the queue session to create text messages
+     * @param queueSession to create text messages
      */
     public JmsMessageTransformer(final QueueSession queueSession) {
         checkNotNull(queueSession, "queue session");

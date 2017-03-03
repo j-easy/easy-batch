@@ -46,21 +46,17 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 public class HibernateRecordReader<T> implements RecordReader {
 
     private SessionFactory sessionFactory;
-
     private Session session;
-
     private String query;
-
     private ScrollableResults scrollableResults;
 
+    //parameters
     private int maxResults;
-
     private int fetchSize;
-
     private long currentRecordNumber;
 
     /**
-     * Create a hibernate record reader.
+     * Create a new {@link HibernateRecordReader}.
      *
      * @param sessionFactory a pre-configured hibernate session factory
      * @param query          the HQL query to use to fetch data

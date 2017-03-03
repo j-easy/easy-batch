@@ -28,7 +28,7 @@ import org.easybatch.core.processor.RecordCompactor;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 /**
- * Compacts a Xml record payload.
+ * Compacts (flattens) a Xml record payload.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

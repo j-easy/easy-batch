@@ -40,9 +40,6 @@ import java.util.Map;
  */
 public class JdbcRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<JdbcRecord, Record<P>> {
 
-    /**
-     * Field names used for custom column mapping.
-     */
     private String[] fields;
 
     /**

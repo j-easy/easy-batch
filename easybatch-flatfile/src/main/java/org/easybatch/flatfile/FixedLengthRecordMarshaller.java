@@ -40,10 +40,10 @@ public class FixedLengthRecordMarshaller<P> implements RecordMarshaller<Record<P
     private DelimitedRecordMarshaller<P> delimitedRecordMarshaller;
 
     /**
-     * Create a fixed length record marshaller.
+     * Create a new {@link FixedLengthRecordMarshaller}.
      *
-     * @param type   the type of object to marshal
-     * @param fields the list of fields to marshal in order
+     * @param type   of object to marshal
+     * @param fields of fields to marshal in order
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
     public FixedLengthRecordMarshaller(final Class<P> type, final String... fields) throws IntrospectionException {
@@ -51,9 +51,9 @@ public class FixedLengthRecordMarshaller<P> implements RecordMarshaller<Record<P
     }
 
     /**
-     * Create a fixed length record marshaller.
+     * Create a new {@link FixedLengthRecordMarshaller}.
      *
-     * @param fieldExtractor the field extractor
+     * @param fieldExtractor to use to extract fields
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
     public FixedLengthRecordMarshaller(FieldExtractor<P> fieldExtractor) throws IntrospectionException {

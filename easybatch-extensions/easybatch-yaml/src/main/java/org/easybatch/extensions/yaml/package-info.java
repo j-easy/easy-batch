@@ -21,44 +21,7 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.easybatch.extensions.yaml;
-
-import org.easybatch.core.reader.AbstractFileRecordReader;
-import org.easybatch.core.reader.AbstractMultiFileRecordReader;
-
-import java.io.File;
-import java.nio.charset.Charset;
-import java.util.List;
-
 /**
- * Reader for multiple yaml files in one shot.
- * Files must have the same format.
- *
- * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * This package contains Yaml format support classes.
  */
-public class MultiYamlFileRecordReader extends AbstractMultiFileRecordReader {
-
-    /**
-     * Create a new {@link MultiYamlFileRecordReader}.
-     *
-     * @param files to read
-     */
-    public MultiYamlFileRecordReader(final List<File> files) {
-        this(files, Charset.defaultCharset());
-    }
-
-    /**
-     * Create a new {@link MultiYamlFileRecordReader}.
-     *
-     * @param files to read
-     * @param charset of files
-     */
-    public MultiYamlFileRecordReader(List<File> files, Charset charset) {
-        super(files, charset);
-    }
-
-    @Override
-    protected AbstractFileRecordReader createReader() throws Exception {
-        return new YamlFileRecordReader(currentFile);
-    }
-}
+package org.easybatch.extensions.yaml;

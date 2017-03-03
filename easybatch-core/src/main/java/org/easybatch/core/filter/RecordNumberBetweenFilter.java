@@ -33,18 +33,11 @@ import org.easybatch.core.record.Record;
  */
 public class RecordNumberBetweenFilter implements RecordFilter<Record> {
 
-    /**
-     * Record number range lower bound.
-     */
     protected long lowerBound;
-
-    /**
-     * Record number range higher bound.
-     */
     protected long higherBound;
 
     /**
-     * Create a {@link RecordNumberBetweenFilter} instance.
+     * Create a new {@link RecordNumberBetweenFilter}.
      *
      * @param lowerBound  Record number range lower bound.
      * @param higherBound Record number range higher bound.

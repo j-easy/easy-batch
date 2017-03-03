@@ -40,22 +40,13 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  */
 public class IterableRecordReader implements RecordReader {
 
-    /**
-     * The current record number.
-     */
     private long currentRecordNumber;
-
-    /**
-     * The data source iterator.
-     */
     private Iterator iterator;
 
     /**
-     * Reads record from an {@link Iterable} data source.
+     * Create a new {@link IterableRecordReader}.
      *
-     * This reader produces {@link GenericRecord} instances containing original objects from the data source.
-     *
-     * @param dataSource the data source to read records from.
+     * @param dataSource to read records from.
      */
     public IterableRecordReader(final Iterable dataSource) {
         checkNotNull(dataSource, "data source");

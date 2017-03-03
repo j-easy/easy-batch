@@ -38,13 +38,10 @@ import java.util.List;
  */
 public class BroadcastJmsQueueRecordWriter implements RecordWriter {
 
-    /**
-     * List of queues to which records should be written.
-     */
     private List<QueueSender> queues;
 
     /**
-     * Create a {@link BroadcastJmsQueueRecordWriter} instance.
+     * Create a new {@link BroadcastJmsQueueRecordWriter} instance.
      *
      * @param queues the list of queues to which records should be written
      */

@@ -41,7 +41,7 @@ public class StringRecordWriter implements RecordWriter {
     private StringWriter stringWriter;
 
     /**
-     * Write records to a {@link StringWriter}.
+     * Create a new {@link StringWriter}.
      *
      * @param stringWriter to write strings to
      */

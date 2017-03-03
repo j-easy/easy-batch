@@ -36,8 +36,7 @@ import com.univocity.parsers.tsv.TsvParserSettings;
 public class UnivocityTsvRecordMapper<T> extends AbstractUnivocityRecordMapper<T, TsvParserSettings> {
 
     /**
-     * Creates a new mapper that uses <a href="http://www.univocity.com/">uniVocity parsers</a> to map TSV records
-     * to domain objects.
+     * Create a new {@link UnivocityTsvRecordMapper}.
      *
      * @param recordClass the target type
      * @param settings    the settings that is is used to configure the parser

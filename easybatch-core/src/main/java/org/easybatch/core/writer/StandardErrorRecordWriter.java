@@ -28,23 +28,23 @@ import org.easybatch.core.record.Record;
 import java.io.OutputStreamWriter;
 
 /**
- * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to the standard error.
+ * Record writer that writes the <strong>payload</strong> of a {@link Record} to the standard error.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class StandardErrorRecordWriter extends OutputStreamRecordWriter {
 
     /**
-     * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to the standard error.
+     * Create a new {@link StandardErrorRecordWriter}.
      */
     public StandardErrorRecordWriter() {
         super(new OutputStreamWriter(System.err));
     }
 
     /**
-     * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to the standard error.
+     * Create a new {@link StandardErrorRecordWriter}.
      *
-     * @param lineSeparator line separator.
+     * @param lineSeparator to use to separate records.
      */
     public StandardErrorRecordWriter(final String lineSeparator) {
         super(new OutputStreamWriter(System.err), lineSeparator);

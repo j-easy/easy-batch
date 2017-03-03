@@ -33,6 +33,7 @@ import java.util.List;
 
 /**
  * Reader for multiple json files in one shot.
+ * Files must have the same format.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -47,6 +48,12 @@ public class MultiJsonFileRecordReader extends AbstractMultiFileRecordReader {
         this(files, Charset.defaultCharset());
     }
 
+    /**
+     * Create a new {@link MultiJsonFileRecordReader}.
+     *
+     * @param files to read
+     * @param charset of the files
+     */
     public MultiJsonFileRecordReader(List<File> files, Charset charset) {
         super(files, charset);
     }

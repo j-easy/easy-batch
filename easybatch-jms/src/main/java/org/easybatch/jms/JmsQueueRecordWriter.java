@@ -39,20 +39,16 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 public class JmsQueueRecordWriter implements RecordWriter {
 
     private QueueConnectionFactory queueConnectionFactory;
-
     private QueueConnection queueConnection;
-
     private QueueSession queueSession;
-
     private QueueSender queueSender;
-
     private Queue queue;
 
     /**
-     * Create a Jms queue record writer.
+     * Create a new {@link JmsQueueRecordWriter}.
      *
-     * @param queueConnectionFactory the factory to use to create connections.
-     * @param queue                  the target queue
+     * @param queueConnectionFactory to use to create connections.
+     * @param queue                  the target queue to write records to
      * @throws JMSException if an exception occurs while sending the Jms message
      */
     public JmsQueueRecordWriter(final QueueConnectionFactory queueConnectionFactory, final Queue queue) throws JMSException {

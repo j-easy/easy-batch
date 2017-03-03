@@ -32,13 +32,10 @@ import org.easybatch.core.record.Record;
  */
 public class RecordNumberLowerThanFilter implements RecordFilter<Record> {
 
-    /**
-     * Record number under which records will be filtered.
-     */
     protected long number;
 
     /**
-     * Create a {@link RecordNumberLowerThanFilter} instance.
+     * Create a new {@link RecordNumberLowerThanFilter}.
      *
      * @param number record number under which records will be filtered.
      */

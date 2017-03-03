@@ -38,7 +38,6 @@ import java.util.Map;
 public class ContentBasedJmsQueueRecordWriterBuilder {
 
     private Predicate predicate;
-
     private Map<Predicate, QueueSender> queueMap;
 
     /**

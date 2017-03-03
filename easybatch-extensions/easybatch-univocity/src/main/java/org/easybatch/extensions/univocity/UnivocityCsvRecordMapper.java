@@ -36,8 +36,7 @@ import com.univocity.parsers.csv.CsvParserSettings;
 public class UnivocityCsvRecordMapper<T> extends AbstractUnivocityRecordMapper<T, CsvParserSettings> {
 
     /**
-     * Creates a new mapper that uses <a href="http://www.univocity.com/">uniVocity parsers</a> to map CSV records
-     * to domain objects.
+     * Create a new {@link UnivocityCsvRecordMapper}.
      *
      * @param recordClass the target type
      * @param settings    the settings that is is used to configure the parser

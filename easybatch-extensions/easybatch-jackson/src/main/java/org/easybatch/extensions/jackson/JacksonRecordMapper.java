@@ -41,15 +41,13 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 public class JacksonRecordMapper<T> implements RecordMapper<JsonRecord, Record<T>> {
 
     private ObjectMapper mapper;
-
     private Class<T> type;
 
     /**
-     * Mapper that uses <a href="http://jackson.codehaus.org/">Jackson</a>
-     * to map json records to domain objects.
+     * Create a new {@link JacksonRecordMapper}.
      *
-     * @param mapper The Jackson mapper
-     * @param type   The target type
+     * @param mapper to use
+     * @param type   of target object
      */
     public JacksonRecordMapper(final ObjectMapper mapper, final Class<T> type) {
         checkNotNull(mapper, "object mapper");

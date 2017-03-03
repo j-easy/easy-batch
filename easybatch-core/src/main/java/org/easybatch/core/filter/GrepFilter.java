@@ -39,7 +39,7 @@ public class GrepFilter implements RecordFilter<StringRecord> {
     private String pattern;
 
     /**
-     * Create a {@link GrepFilter} instance.
+     * Create a new {@link GrepFilter}.
      *
      * @param pattern the pattern to look for
      */

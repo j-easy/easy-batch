@@ -135,7 +135,7 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
      */
 
     /**
-     * Create a {@link ContentBasedBlockingQueueRecordWriterBuilder}.
+     * Create a new {@link ContentBasedBlockingQueueRecordWriterBuilder}.
      *
      * @deprecated use {@link ContentBasedBlockingQueueRecordWriterBuilder#newContentBasedBlockingQueueRecordWriterBuilder()} instead
      */
@@ -193,7 +193,7 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
     }
 
     /**
-     * Create a {@link ContentBasedBlockingQueueRecordWriter}.
+     * Create a new {@link ContentBasedBlockingQueueRecordWriter}.
      *
      * @return a new {@link ContentBasedBlockingQueueRecordWriter}
      *

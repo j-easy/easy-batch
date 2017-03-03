@@ -32,13 +32,10 @@ import org.easybatch.core.record.StringRecord;
  */
 public class EndWithStringRecordFilter implements RecordFilter<StringRecord> {
 
-    /**
-     * Suffixes that causes the record to be filtered.
-     */
     private String[] suffixes;
 
     /**
-     * Create a {@link EndWithStringRecordFilter} instance.
+     * Create a new {@link EndWithStringRecordFilter}.
      *
      * @param suffixes suffixes that cause the record to be filtered.
      */

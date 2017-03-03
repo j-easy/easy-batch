@@ -40,9 +40,7 @@ public class MongoDBRecordMarshaller<T> implements RecordMapper<Record<T>, Mongo
     private Morphia morphia;
 
     /**
-     * Create a MongoDB marshaller.
-     * <p/>
-     * This marshaller uses <a href="https://github.com/mongodb/morphia">Morphia</a> to map marshal domain objects to {@link DBObject}s.
+     * Create a new {@link MongoDBRecordMarshaller}.
      *
      * @param type the source object type
      */

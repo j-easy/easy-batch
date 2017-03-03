@@ -43,7 +43,6 @@ import static java.lang.String.format;
 public class BeanPropertiesPreparedStatementProvider implements PreparedStatementProvider {
 
     private String[] properties;
-
     private PropertyDescriptor[] propertyDescriptors;
 
     /**

@@ -36,7 +36,7 @@ import javax.jms.Message;
 public class JmsRecord extends GenericRecord<Message> {
 
     /**
-     * Create a {@link JmsRecord}.
+     * Create a new {@link JmsRecord}.
      *
      * @param header  the record header
      * @param payload the record payload

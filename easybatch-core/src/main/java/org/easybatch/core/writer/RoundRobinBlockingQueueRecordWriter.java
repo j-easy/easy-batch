@@ -36,25 +36,14 @@ import java.util.concurrent.BlockingQueue;
  */
 public class RoundRobinBlockingQueueRecordWriter implements RecordWriter {
 
-    /**
-     * The total number of queues this writer operates on.
-     */
     private int queuesNumber;
-
-    /**
-     * Next queue to which write records.
-     */
     private int nextQueue;
-
-    /**
-     * List of queues to which records should be written.
-     */
     private List<BlockingQueue<Record>> queues;
 
     /**
-     * Create a {@link RoundRobinBlockingQueueRecordWriter}.
+     * Create a new {@link RoundRobinBlockingQueueRecordWriter}.
      *
-     * @param queues the list of queues to which records should be written
+     * @param queues to which records should be written
      */
     public RoundRobinBlockingQueueRecordWriter(List<BlockingQueue<Record>> queues) {
         this.queues = queues;

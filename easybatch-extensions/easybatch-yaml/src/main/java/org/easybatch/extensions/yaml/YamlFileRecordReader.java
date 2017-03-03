@@ -24,22 +24,40 @@
 package org.easybatch.extensions.yaml;
 
 import org.easybatch.core.reader.AbstractFileRecordReader;
+import org.easybatch.core.reader.RecordReader;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
 
+/**
+ * {@link RecordReader} that reads yaml records delimited by "---" from a given file.
+ *
+ * This reader produces {@link YamlRecord} instances.
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
 public class YamlFileRecordReader extends AbstractFileRecordReader {
 
     private YamlRecordReader yamlRecordReader;
 
+    /**
+     * Create a new {@link YamlFileRecordReader}.
+     *
+     * @param yamlFile to read records from
+     */
     public YamlFileRecordReader(final File yamlFile) {
         this(yamlFile, Charset.defaultCharset().name());
     }
 
-    public YamlFileRecordReader(final File jsonFile, final String charset) {
-        super(jsonFile, Charset.forName(charset));
+    /**
+     * Create a new {@link YamlFileRecordReader}.
+     *
+     * @param yamlFile to read records from
+     * @param charset of the input file
+     */
+    public YamlFileRecordReader(final File yamlFile, final String charset) {
+        super(yamlFile, Charset.forName(charset));
     }
 
     @Override

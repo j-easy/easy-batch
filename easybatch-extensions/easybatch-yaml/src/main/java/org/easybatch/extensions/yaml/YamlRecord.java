@@ -26,11 +26,15 @@ package org.easybatch.extensions.yaml;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.StringRecord;
 
-
+/**
+ * Record repsentation of Yaml format.
+ *
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
 public class YamlRecord extends StringRecord {
 
     /**
-     * Create a {@link YamlRecord}.
+     * Create a new {@link YamlRecord}.
      *
      * @param header  the record header
      * @param payload the record payload

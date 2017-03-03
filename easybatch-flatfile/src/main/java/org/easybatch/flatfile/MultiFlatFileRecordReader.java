@@ -32,6 +32,7 @@ import java.util.List;
 
 /**
  * Reader for multiple flat files in one shot.
+ * Files must have the same format.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

@@ -43,9 +43,7 @@ public class MongoDBRecordMapper<T> implements RecordMapper<MongoDBRecord, Recor
     private Class<T> type;
 
     /**
-     * Create a MongoDB mapper.
-     * <p/>
-     * This mapper uses <a href="https://github.com/mongodb/morphia">Morphia</a> to map documents to domain objects.
+     * Create a new {@link MongoDBRecordMapper}.
      *
      * @param type the target object type
      */

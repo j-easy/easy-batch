@@ -37,7 +37,7 @@ import java.util.logging.Logger;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Write entities to a database using JPA.
+ * Write entities to a relational database using JPA.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -50,7 +50,7 @@ public class JpaRecordWriter implements RecordWriter {
     private EntityManager entityManager;
 
     /**
-     * Create a JPA record writer.
+     * Create a new {@link JpaRecordWriter}.
      *
      * @param entityManagerFactory the entity manager factory.
      */

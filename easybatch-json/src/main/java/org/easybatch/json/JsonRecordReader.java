@@ -65,58 +65,32 @@ public class JsonRecordReader implements RecordReader {
 
     private static final Logger LOGGER = Logger.getLogger(JsonRecordReader.class.getName());
 
-    /**
-     * The data source stream.
-     */
     private InputStream inputStream;
-
-    /**
-     * The json parser used to read the json stream.
-     */
     private JsonParser parser;
-
-    /**
-     * The Json generator factory.
-     */
     private JsonGeneratorFactory jsonGeneratorFactory;
-
     private String charset;
-
-    /**
-     * The current record number.
-     */
     private long currentRecordNumber;
-
     private JsonParser.Event currentEvent;
-
     private JsonParser.Event nextEvent;
-
     private int arrayDepth;
-
     private int objectDepth;
-
     private String key;
 
     /**
-     * Record reader that reads Json records from an array of Json objects:
-     * <p>
-     * <p>
-     * [
-     * {
-     * // JSON object
-     * },
-     * {
-     * // JSON object
-     * }
-     * ]
-     * </p>
-     * <p>
-     * <p>This reader produces {@link JsonRecord} instances.</p>
+     * Create a new {@link JsonRecordReader}.
+     *
+     * @param inputStream to read
      */
     public JsonRecordReader(final InputStream inputStream) {
         this(inputStream, Charset.defaultCharset().name());
     }
 
+    /**
+     * Create a new {@link JsonRecordReader}.
+     *
+     * @param inputStream to read
+     * @param charset of the json stream
+     */
     public JsonRecordReader(final InputStream inputStream, final String charset) {
         checkNotNull(inputStream, "input stream");
         checkNotNull(charset, "charset");

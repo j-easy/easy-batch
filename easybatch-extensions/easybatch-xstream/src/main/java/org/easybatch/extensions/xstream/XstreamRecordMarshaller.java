@@ -40,14 +40,14 @@ public class XstreamRecordMarshaller<P> implements RecordMarshaller<Record<P>, X
     private XStream xStream;
 
     /**
-     * Create a record marshaller.
+     * Create a new {@link XstreamRecordMarshaller}.
      */
     public XstreamRecordMarshaller() {
         this.xStream = new XStream();
     }
 
     /**
-     * Create a record marshaller.
+     * Create a new {@link XstreamRecordMarshaller}.
      *
      * @param elementName the alias of the object in the corresponding xml tag
      * @param type        the type of the object to marshal
@@ -60,7 +60,7 @@ public class XstreamRecordMarshaller<P> implements RecordMarshaller<Record<P>, X
     }
 
     /**
-     * Create a record marshaller.
+     * Create a new {@link XstreamRecordMarshaller}.
      *
      * @param xStream a pre-configured xstream instance
      */

@@ -46,11 +46,10 @@ public class HibernateRecordWriter implements RecordWriter {
     private static final Logger LOGGER = Logger.getLogger(HibernateRecordWriter.class.getSimpleName());
 
     private SessionFactory sessionFactory;
-
     private Session session;
 
     /**
-     * Create a Hibernate record writer.
+     * Create a new {@link HibernateRecordWriter}.
      *
      * @param sessionFactory to create sessions.
      */

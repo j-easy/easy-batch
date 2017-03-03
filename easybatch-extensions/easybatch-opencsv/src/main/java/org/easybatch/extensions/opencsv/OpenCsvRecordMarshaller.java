@@ -53,7 +53,7 @@ public class OpenCsvRecordMarshaller<P> implements RecordMarshaller<Record<P>, S
     private FieldExtractor<P> fieldExtractor;
 
     /**
-     * Create a open CSV record marshaller.
+     * Create a new {@link OpenCsvRecordMarshaller}.
      *
      * @param type   the type of object to marshal
      * @param fields the list of fields to marshal in order
@@ -66,7 +66,7 @@ public class OpenCsvRecordMarshaller<P> implements RecordMarshaller<Record<P>, S
     }
 
     /**
-     * Create a open CSV record marshaller.
+     * Create a new {@link OpenCsvRecordMarshaller}.
      *
      * @param fieldExtractor to use to extract fields
      * @throws IntrospectionException If the object to marshal cannot be introspected
