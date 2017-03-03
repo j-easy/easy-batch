@@ -26,9 +26,11 @@ package org.easybatch.core.reader;
 import org.easybatch.core.record.Record;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
+
+import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Template class for multi-files record readers.
@@ -45,6 +47,7 @@ public abstract class AbstractMultiFileRecordReader implements RecordReader {
     protected File currentFile;
     protected AbstractFileRecordReader delegate;
     protected Iterator<File> iterator;
+    protected Charset charset;
 
     /**
      * Create a new multi-file record reader.
@@ -52,8 +55,14 @@ public abstract class AbstractMultiFileRecordReader implements RecordReader {
      * @param files to read
      */
     public AbstractMultiFileRecordReader(List<File> files) {
-        Objects.requireNonNull(files, "files list should not be null");
+        this(files, Charset.defaultCharset());
+    }
+
+    public AbstractMultiFileRecordReader(List<File> files, Charset charset) {
+        checkNotNull(files, "files");
+        checkNotNull(charset, "charset");
         this.files = files;
+        this.charset = charset;
     }
 
     @Override

@@ -37,7 +37,7 @@ public abstract class AbstractFileRecordReader implements RecordReader {
     protected Charset charset;
 
     protected AbstractFileRecordReader(File file) {
-        this.file = file;
+        this(file, Charset.defaultCharset());
     }
 
     public AbstractFileRecordReader(File file, Charset charset) {
