@@ -27,6 +27,7 @@ import org.easybatch.core.reader.AbstractFileRecordReader;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 /**
  * Record reader that reads Json records from an Json file with the following format:
@@ -61,7 +62,7 @@ public class JsonFileRecordReader extends AbstractFileRecordReader {
 
     @Override
     public void open() throws Exception {
-        jsonRecordReader = new JsonRecordReader(new FileInputStream(file));
+        jsonRecordReader = new Reader(file);
         jsonRecordReader.open();
     }
 
@@ -73,5 +74,21 @@ public class JsonFileRecordReader extends AbstractFileRecordReader {
     @Override
     public void close() throws Exception {
         jsonRecordReader.close();
+    }
+
+    // JsonFileRecordReader should return the file name as data source instead of the inherited "Json stream"
+    private class Reader extends JsonRecordReader {
+
+        private File file;
+
+        Reader(File file) throws FileNotFoundException {
+            super(new FileInputStream(file));
+            this.file = file;
+        }
+
+        @Override
+        protected String getDataSourceName() {
+            return file.getAbsolutePath();
+        }
     }
 }

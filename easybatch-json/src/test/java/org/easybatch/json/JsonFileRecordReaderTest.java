@@ -33,27 +33,33 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class JsonFileRecordReaderTest {
 
+    private File dataSource;
     private JsonFileRecordReader jsonFileRecordReader;
 
     @Before
     public void setUp() throws Exception {
-        File tweets = new File("src/test/resources/persons.json");
-        jsonFileRecordReader = new JsonFileRecordReader(tweets);
+        dataSource = new File("src/test/resources/persons.json");
+        jsonFileRecordReader = new JsonFileRecordReader(dataSource);
         jsonFileRecordReader.open();
     }
 
     @Test
     public void testJsonRecordReading() throws Exception {
+        String expectedDataSourceName = dataSource.getAbsolutePath();
+
         JsonRecord jsonRecord = jsonFileRecordReader.readRecord();
         assertThat(jsonRecord.getHeader().getNumber()).isEqualTo(1L);
+        assertThat(jsonRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
         assertThat(jsonRecord.getPayload()).isEqualTo("{\"id\":1,\"name\":\"foo\"}");
 
         jsonRecord = jsonFileRecordReader.readRecord();
         assertThat(jsonRecord.getHeader().getNumber()).isEqualTo(2L);
+        assertThat(jsonRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
         assertThat(jsonRecord.getPayload()).isEqualTo("{\"id\":2,\"name\":\"bar\"}");
 
         jsonRecord = jsonFileRecordReader.readRecord();
         assertThat(jsonRecord.getHeader().getNumber()).isEqualTo(3L);
+        assertThat(jsonRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
         assertThat(jsonRecord.getPayload()).isEqualTo("{\"id\":3,\"name\":\"toto\"}");
 
         jsonRecord = jsonFileRecordReader.readRecord();

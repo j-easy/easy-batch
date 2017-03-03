@@ -100,7 +100,7 @@ public class XmlRecordReader implements RecordReader {
         }
     }
 
-    private String getDataSourceName() {
+    protected String getDataSourceName() {
         return "XML stream";
     }
 

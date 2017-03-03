@@ -27,6 +27,7 @@ import org.easybatch.core.reader.AbstractFileRecordReader;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class YamlFileRecordReader extends AbstractFileRecordReader {
 
@@ -38,7 +39,7 @@ public class YamlFileRecordReader extends AbstractFileRecordReader {
 
     @Override
     public void open() throws Exception {
-        yamlRecordReader = new YamlRecordReader(new FileInputStream(file));
+        yamlRecordReader = new Reader(file);
         yamlRecordReader.open();
     }
 
@@ -50,5 +51,21 @@ public class YamlFileRecordReader extends AbstractFileRecordReader {
     @Override
     public void close() throws Exception {
         yamlRecordReader.close();
+    }
+
+    // YamlFileRecordReader should return the file name as data source instead of the inherited "Yaml stream"
+    private class Reader extends YamlRecordReader {
+
+        private File file;
+
+        Reader(File file) throws FileNotFoundException {
+            super(new FileInputStream(file));
+            this.file = file;
+        }
+
+        @Override
+        protected String getDataSourceName() {
+            return file.getAbsolutePath();
+        }
     }
 }

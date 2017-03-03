@@ -33,35 +33,43 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class XmlFileRecordReaderTest {
 
+    private File dataSource;
     private XmlFileRecordReader xmlFileRecordReader;
 
     @Before
     public void setUp() throws Exception {
-        File data = new File("src/test/resources/data.xml");
-        xmlFileRecordReader = new XmlFileRecordReader(data, "data");
+        dataSource = new File("src/test/resources/data.xml");
+        xmlFileRecordReader = new XmlFileRecordReader(dataSource, "data");
         xmlFileRecordReader.open();
     }
 
     @Test
     public void testXmlRecordReading() throws Exception {
+        String expectedDataSourceName = dataSource.getAbsolutePath();
+
         XmlRecord xmlRecord = xmlFileRecordReader.readRecord();
         assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(1L);
+        assertThat(xmlRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
         assertThat(xmlRecord.getPayload()).isEqualTo("<data>1</data>");
 
         xmlRecord = xmlFileRecordReader.readRecord();
         assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(2L);
+        assertThat(xmlRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
         assertThat(xmlRecord.getPayload()).isEqualTo("<data>2</data>");
 
         xmlRecord = xmlFileRecordReader.readRecord();
         assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(3L);
+        assertThat(xmlRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
         assertThat(xmlRecord.getPayload()).isEqualTo("<data>3</data>");
 
         xmlRecord = xmlFileRecordReader.readRecord();
         assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(4L);
+        assertThat(xmlRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
         assertThat(xmlRecord.getPayload()).isEqualTo("<data>4</data>");
 
         xmlRecord = xmlFileRecordReader.readRecord();
         assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(5L);
+        assertThat(xmlRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
         assertThat(xmlRecord.getPayload()).isEqualTo("<data>5</data>");
 
         xmlRecord = xmlFileRecordReader.readRecord();

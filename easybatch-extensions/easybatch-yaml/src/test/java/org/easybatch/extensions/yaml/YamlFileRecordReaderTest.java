@@ -34,29 +34,35 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
 public class YamlFileRecordReaderTest {
 
+    private File dataSource;
     private YamlFileRecordReader yamlFileRecordReader;
 
     @Before
     public void setUp() throws Exception {
-        File data = new File("src/test/resources/contacts.yml");
-        yamlFileRecordReader = new YamlFileRecordReader(data);
+        dataSource = new File("src/test/resources/contacts.yml");
+        yamlFileRecordReader = new YamlFileRecordReader(dataSource);
         yamlFileRecordReader.open();
     }
 
     @Test
     public void testYamlRecordReading() throws Exception {
+        String expectedDataSourceName = dataSource.getAbsolutePath();
+
         YamlRecord yamlRecord = yamlFileRecordReader.readRecord();
         assertThat(yamlRecord.getHeader().getNumber()).isEqualTo(1L);
+        assertThat(yamlRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
         assertThat(yamlRecord.getPayload()).isEqualTo("name: Foo" + LINE_SEPARATOR + "age: 28" + LINE_SEPARATOR);
 
 
         yamlRecord = yamlFileRecordReader.readRecord();
         assertThat(yamlRecord.getHeader().getNumber()).isEqualTo(2L);
+        assertThat(yamlRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
         assertThat(yamlRecord.getPayload()).isEqualTo("name: Bar" + LINE_SEPARATOR + "age: 25" + LINE_SEPARATOR);
 
 
         yamlRecord = yamlFileRecordReader.readRecord();
         assertThat(yamlRecord.getHeader().getNumber()).isEqualTo(3L);
+        assertThat(yamlRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
         assertThat(yamlRecord.getPayload()).isEqualTo("name: Baz" + LINE_SEPARATOR + "age: 30" + LINE_SEPARATOR);
 
         yamlRecord = yamlFileRecordReader.readRecord();

@@ -175,7 +175,7 @@ public class JsonRecordReader implements RecordReader {
         }
     }
 
-    private String getDataSourceName() {
+    protected String getDataSourceName() {
         return "Json stream";
     }
 

@@ -79,7 +79,7 @@ public class YamlRecordReader implements RecordReader {
         }
     }
 
-    private String getDataSourceName() {
+    protected String getDataSourceName() {
         return "YAML stream";
     }
 }
