@@ -26,7 +26,7 @@ package org.easybatch.json;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
