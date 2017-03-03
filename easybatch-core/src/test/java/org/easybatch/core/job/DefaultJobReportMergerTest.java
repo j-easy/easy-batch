@@ -26,6 +26,8 @@ package org.easybatch.core.job;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Properties;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
@@ -41,6 +43,7 @@ public class DefaultJobReportMergerTest {
     @Test
     public void testReportsMerging() throws Exception {
 
+        Properties systemProperties = new Properties();
         JobMetrics metrics1 = new JobMetrics();
         JobReport jobReport1 = new JobReport();
         jobReport1.setMetrics(metrics1);
@@ -57,6 +60,7 @@ public class DefaultJobReportMergerTest {
         jobReport1.getMetrics().setEndTime(endTime1);
         jobReport1.setStatus(JobStatus.FAILED);
         jobReport1.setJobName("job1");
+        jobReport1.setSystemProperties(systemProperties);
 
         JobMetrics metrics2 = new JobMetrics();
         JobReport jobReport2 = new JobReport();
@@ -74,6 +78,8 @@ public class DefaultJobReportMergerTest {
         jobReport2.getMetrics().setEndTime(endTime2);
         jobReport2.setStatus(JobStatus.COMPLETED);
         jobReport2.setJobName("job2");
+        jobReport2.setSystemProperties(systemProperties); // assume both jobs run on the same JVMs
+
 
         JobReport finalJobReport = jobReportMerger.mergerReports(jobReport1, jobReport2);
 
@@ -89,6 +95,7 @@ public class DefaultJobReportMergerTest {
 
         // job name is the concatenation of partial job names
         assertThat(finalJobReport.getJobName()).isEqualTo("job1|job2");
+        assertThat(finalJobReport.getSystemProperties()).isEqualTo(systemProperties);
 
     }
 }

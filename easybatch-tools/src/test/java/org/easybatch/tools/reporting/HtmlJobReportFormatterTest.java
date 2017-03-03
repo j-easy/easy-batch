@@ -29,6 +29,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,6 +52,7 @@ public class HtmlJobReportFormatterTest {
 
     @Before
     public void setUp() throws Exception {
+        Properties systemProperties = new Properties();
         jobReportFormatter = new HtmlJobReportFormatter();
         JobParameters parameters = new JobParameters();
         JobMetrics metrics = new JobMetrics();
@@ -60,6 +62,7 @@ public class HtmlJobReportFormatterTest {
 
         jobReport.setJobName("end-of-day job");
         jobReport.setStatus(JobStatus.COMPLETED);
+        jobReport.setSystemProperties(systemProperties);
 
         jobReport.getParameters().setBatchSize(10);
         jobReport.getParameters().setErrorThreshold(5);
@@ -75,6 +78,9 @@ public class HtmlJobReportFormatterTest {
         jobReport.getMetrics().incrementWriteCount(1);
         jobReport.getMetrics().addMetric("nbFoos", 1);
         jobReport.getMetrics().addMetric("nbBars", 2);
+
+        jobReport.getSystemProperties().setProperty("sysprop1", "foo");
+        jobReport.getSystemProperties().setProperty("sysprop2", "bar");
     }
 
     @Test

@@ -28,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
+import java.util.Properties;
 
 import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 
@@ -49,6 +50,9 @@ public class DefaultJobReportFormatterTest {
 
     @Before
     public void setUp() throws Exception {
+        Properties systemProperties = new Properties();
+        systemProperties.setProperty("sysprop1", "foo");
+        systemProperties.setProperty("sysprop2", "bar");
         JobParameters parameters = new JobParameters();
         JobMetrics metrics = new JobMetrics();
         metrics.setStartTime(START_TIME);
@@ -59,6 +63,7 @@ public class DefaultJobReportFormatterTest {
         report.setMetrics(metrics);
         report.setJobName("job");
         report.setStatus(JobStatus.COMPLETED);
+        report.setSystemProperties(systemProperties);
         reportFormatter = new DefaultJobReportFormatter();
     }
 
@@ -81,7 +86,10 @@ public class DefaultJobReportFormatterTest {
                 "\tWrite count = 0" + LINE_SEPARATOR +
                 "\tFiltered count = 0" + LINE_SEPARATOR +
                 "\tError count = 0" + LINE_SEPARATOR +
-                "\tnbFoos = 1";
+                "\tnbFoos = 1" + LINE_SEPARATOR +
+                "System properties:" + LINE_SEPARATOR +
+                "\tsysprop1 = foo" + LINE_SEPARATOR +
+                "\tsysprop2 = bar";
 
         String formattedReport = reportFormatter.formatReport(report);
 

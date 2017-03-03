@@ -34,6 +34,7 @@ import org.easybatch.core.job.JobReportFormatter;
 
 import java.io.StringWriter;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import static org.easybatch.core.util.Utils.formatDuration;
 import static org.easybatch.core.util.Utils.formatErrorThreshold;
@@ -95,6 +96,12 @@ public class HtmlJobReportFormatter implements JobReportFormatter<String> {
         context.put("filteredCount",metrics.getFilteredCount());
         context.put("errorCount",metrics.getErrorCount());
         context.put("customMetrics",metrics.getCustomMetrics());
+
+        /*
+         * System properties
+         */
+        context.put("systemProperties", new TreeMap<>(jobReport.getSystemProperties()));
+        // properties are wrapped in a tree map for sorting purpose (repeatable tests)
 
         template.merge(context, stringWriter);
         return stringWriter.toString();

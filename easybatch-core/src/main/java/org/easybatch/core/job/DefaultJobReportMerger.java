@@ -74,6 +74,7 @@ public class DefaultJobReportMerger implements JobReportMerger {
             calculateErrorRecords(finalJobReport, jobReport);
             setStatus(finalJobReport, jobReport);
             jobNames.add(jobReport.getJobName());
+            finalJobReport.setSystemProperties(jobReport.getSystemProperties()); // works unless partial jobs are run in different JVMs..
         }
 
         //merge results

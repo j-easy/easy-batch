@@ -73,6 +73,7 @@ class BatchJob implements Job {
         report.setParameters(parameters);
         report.setMetrics(metrics);
         report.setJobName(name);
+        report.setSystemProperties(System.getProperties());
         monitor = new JobMonitor(report);
         recordReader = new NoOpRecordReader();
         recordProcessor = new CompositeRecordProcessor();

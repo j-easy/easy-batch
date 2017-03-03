@@ -23,7 +23,10 @@
  */
 package org.easybatch.core.job;
 
+import java.text.MessageFormat;
 import java.util.Map;
+import java.util.Properties;
+import java.util.TreeMap;
 
 import static org.easybatch.core.util.Utils.*;
 
@@ -34,41 +37,59 @@ import static org.easybatch.core.util.Utils.*;
  */
 public class DefaultJobReportFormatter implements JobReportFormatter<String> {
 
+    private String reportFormat =
+                        "Job Report:" + LINE_SEPARATOR +
+                        "===========" + LINE_SEPARATOR +
+                        "Name: {0}" + LINE_SEPARATOR +
+                        "Status: {1}" + LINE_SEPARATOR +
+                        "Parameters:" + LINE_SEPARATOR +
+                        "\tBatch size = {2}" + LINE_SEPARATOR +
+                        "\tError threshold = {3}" + LINE_SEPARATOR +
+                        "\tJmx monitoring = {4}" + LINE_SEPARATOR +
+                        "Metrics:" + LINE_SEPARATOR +
+                        "\tStart time = {5}" + LINE_SEPARATOR +
+                        "\tEnd time = {6}" + LINE_SEPARATOR +
+                        "\tDuration = {7}" + LINE_SEPARATOR +
+                        "\tRead count = {8}" + LINE_SEPARATOR +
+                        "\tWrite count = {9}" + LINE_SEPARATOR +
+                        "\tFiltered count = {10}" + LINE_SEPARATOR +
+                        "\tError count = {11}";
+
     @Override
     public String formatReport(JobReport jobReport) {
-        final StringBuilder sb = new StringBuilder("Job Report:");
-        sb.append(LINE_SEPARATOR).append("===========");
 
-        /*
-         * Job status
-         */
-        sb.append(LINE_SEPARATOR).append("Name: ").append(jobReport.getJobName());
-        sb.append(LINE_SEPARATOR).append("Status: ").append(jobReport.getStatus());
-
-        /*
-         * Job parameters
-         */
         JobParameters parameters = jobReport.getParameters();
-        sb.append(LINE_SEPARATOR).append("Parameters:");
-        sb.append(LINE_SEPARATOR).append("\tBatch size = ").append(parameters.getBatchSize());
-        sb.append(LINE_SEPARATOR).append("\tError threshold = ").append(formatErrorThreshold(parameters.getErrorThreshold()));
-        sb.append(LINE_SEPARATOR).append("\tJmx monitoring = ").append(parameters.isJmxMonitoring());
-
-        /*
-         * Job metrics
-         */
         JobMetrics metrics = jobReport.getMetrics();
-        sb.append(LINE_SEPARATOR).append("Metrics:");
-        sb.append(LINE_SEPARATOR).append("\tStart time = ").append(formatTime(metrics.getStartTime()));
-        sb.append(LINE_SEPARATOR).append("\tEnd time = ").append(formatTime(metrics.getEndTime()));
-        sb.append(LINE_SEPARATOR).append("\tDuration = ").append(formatDuration(metrics.getDuration()));
-        sb.append(LINE_SEPARATOR).append("\tRead count = ").append(metrics.getReadCount());
-        sb.append(LINE_SEPARATOR).append("\tWrite count = ").append(metrics.getWriteCount());
-        sb.append(LINE_SEPARATOR).append("\tFiltered count = ").append(metrics.getFilteredCount());
-        sb.append(LINE_SEPARATOR).append("\tError count = ").append(metrics.getErrorCount());
         Map<String, Object> customMetrics = metrics.getCustomMetrics();
+        Properties systemProperties = jobReport.getSystemProperties();
+
+        String baseReport = MessageFormat.format(reportFormat,
+                jobReport.getJobName(),
+                jobReport.getStatus(),
+                parameters.getBatchSize(),
+                formatErrorThreshold(parameters.getErrorThreshold()),
+                parameters.isJmxMonitoring(),
+                formatTime(metrics.getStartTime()),
+                formatTime(metrics.getEndTime()),
+                formatDuration(metrics.getDuration()),
+                metrics.getReadCount(),
+                metrics.getWriteCount(),
+                metrics.getFilteredCount(),
+                metrics.getErrorCount());
+
+        final StringBuilder sb = new StringBuilder(baseReport);
+
+        // for loops are not supported in MessageFormat (and were not designed to, unlike advanced template engines)
+
+        // add custom metrics
         for (Map.Entry<String, Object> customMetric : customMetrics.entrySet()) {
             sb.append(LINE_SEPARATOR).append("\t").append(customMetric.getKey()).append(" = ").append(customMetric.getValue());
+        }
+
+        // add system properties
+        sb.append(LINE_SEPARATOR).append("System properties:");
+        for (Map.Entry property : new TreeMap<>(systemProperties).entrySet()) { // tree map for sorting purpose (repeatable tests)
+            sb.append(LINE_SEPARATOR).append("\t").append(property.getKey()).append(" = ").append(property.getValue());
         }
 
         return sb.toString();

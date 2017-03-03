@@ -24,6 +24,7 @@
 package org.easybatch.core.job;
 
 import java.io.Serializable;
+import java.util.Properties;
 
 /**
  * Class holding job reporting data.
@@ -41,6 +42,8 @@ public class JobReport implements Serializable {
     private JobStatus status;
 
     private Throwable lastError;
+
+    private Properties systemProperties;
 
     public String getJobName() {
         return jobName;
@@ -80,6 +83,14 @@ public class JobReport implements Serializable {
 
     public void setLastError(Throwable lastError) {
         this.lastError = lastError;
+    }
+
+    public Properties getSystemProperties() {
+        return systemProperties;
+    }
+
+    public void setSystemProperties(Properties systemProperties) {
+        this.systemProperties = systemProperties;
     }
 
     @Override
