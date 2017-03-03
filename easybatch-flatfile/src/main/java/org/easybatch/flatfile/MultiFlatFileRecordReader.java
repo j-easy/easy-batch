@@ -37,31 +37,27 @@ import java.util.List;
  */
 public class MultiFlatFileRecordReader extends AbstractMultiFileRecordReader {
 
-    private String charsetName;
-
     /**
      * Create a new {@link MultiFlatFileRecordReader}.
      *
      * @param files to read
      */
     public MultiFlatFileRecordReader(final List<File> files) {
-        super(files);
-        this.charsetName = Charset.defaultCharset().name();
+        this(files, Charset.defaultCharset());
     }
 
     /**
      * Create a new {@link MultiFlatFileRecordReader}.
      *
      * @param files to read
-     * @param charsetName of the files
+     * @param charset of the files
      */
-    public MultiFlatFileRecordReader(final List<File> files, final String charsetName) {
-        super(files);
-        this.charsetName = charsetName;
+    public MultiFlatFileRecordReader(final List<File> files, final Charset charset) {
+        super(files, charset);
     }
 
     @Override
     protected AbstractFileRecordReader createReader() {
-        return new FlatFileRecordReader(currentFile, charsetName);
+        return new FlatFileRecordReader(currentFile, charset.name());
     }
 }
