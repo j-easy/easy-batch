@@ -91,6 +91,8 @@ public class JdbcRecordReader implements RecordReader {
      */
     private long currentRecordNumber;
 
+    private String dataSourceName;
+
     /**
      * Create a JdbcRecordReader instance.
      *
@@ -119,6 +121,7 @@ public class JdbcRecordReader implements RecordReader {
             statement.setQueryTimeout(queryTimeout);
         }
         resultSet = statement.executeQuery(query);
+        dataSourceName = getDataSourceName();
     }
 
     private boolean hasNextRecord() {
@@ -133,7 +136,7 @@ public class JdbcRecordReader implements RecordReader {
     @Override
     public JdbcRecord readRecord() {
         if (hasNextRecord()) {
-            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            Header header = new Header(++currentRecordNumber, dataSourceName, new Date());
             return new JdbcRecord(header, resultSet);
         } else {
             return null;
@@ -142,8 +145,7 @@ public class JdbcRecordReader implements RecordReader {
 
     private String getDataSourceName() {
         try {
-            return "Connection URL: " + connection.getMetaData().getURL() + " | " +
-                    "Query string: " + query;
+            return "Connection URL: " + connection.getMetaData().getURL() + " | Query string: " + query;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Unable to get data source name", e);
             return "N/A";
