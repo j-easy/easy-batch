@@ -27,6 +27,7 @@ import org.easybatch.core.record.Record;
 import org.easybatch.core.validator.RecordValidator;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -53,10 +54,7 @@ public class XmlRecordValidator<P> implements RecordValidator<Record<P>> {
      * @throws SAXException if the schema cannot be parsed
      */
     public XmlRecordValidator(final File xsd) throws SAXException {
-        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Schema schema = schemaFactory.newSchema(xsd);
-        validator = schema.newValidator();
-
+        this(xsd, new NoOpErrorHandler());
     }
 
     /**
@@ -67,7 +65,9 @@ public class XmlRecordValidator<P> implements RecordValidator<Record<P>> {
      * @throws SAXException if the schema cannot be parsed
      */
     public XmlRecordValidator(final File xsd, final ErrorHandler errorHandler) throws SAXException {
-        this(xsd);
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Schema schema = schemaFactory.newSchema(xsd);
+        validator = schema.newValidator();
         validator.setErrorHandler(errorHandler);
     }
 
@@ -78,5 +78,23 @@ public class XmlRecordValidator<P> implements RecordValidator<Record<P>> {
         JAXBSource source = new JAXBSource(context, payload);
         validator.validate(source);
         return record;
+    }
+
+    private static class NoOpErrorHandler implements ErrorHandler {
+
+        @Override
+        public void warning(SAXParseException exception) throws SAXException {
+            throw exception;
+        }
+
+        @Override
+        public void error(SAXParseException exception) throws SAXException {
+            throw exception;
+        }
+
+        @Override
+        public void fatalError(SAXParseException exception) throws SAXException {
+            throw exception;
+        }
     }
 }

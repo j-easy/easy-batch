@@ -91,7 +91,7 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
      * @param path the input file path
      */
     public FlatFileRecordReader(final Path path) {
-        super(path.toFile(), Charset.defaultCharset());
+        this(path, Charset.defaultCharset().name());
     }
 
 
