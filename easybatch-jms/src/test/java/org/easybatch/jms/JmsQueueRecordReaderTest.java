@@ -29,7 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.jms.*;
 
@@ -85,6 +85,16 @@ public class JmsQueueRecordReaderTest {
         verify(queueReceiver).receive();
         assertThat(record).isNotNull().isInstanceOf(JmsRecord.class);
         assertThat(record.getPayload()).isEqualTo(message);
+    }
+
+    @Test
+    public void dataSourceNameShouldBeNAWhenUnableToGetQueueName() throws Exception {
+        when(queue.getQueueName()).thenThrow(new JMSException("artificial exception for test"));
+
+        jmsQueueRecordReader.open();
+
+        Record record = jmsQueueRecordReader.readRecord();
+        assertThat(record.getHeader().getSource()).isEqualTo("N/A");
     }
 
     @After

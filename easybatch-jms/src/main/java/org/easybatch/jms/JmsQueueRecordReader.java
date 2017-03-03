@@ -28,6 +28,8 @@ import org.easybatch.core.record.Header;
 
 import javax.jms.*;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -42,18 +44,14 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  */
 public class JmsQueueRecordReader implements RecordReader {
 
+    private static final Logger LOGGER = Logger.getLogger(JmsQueueRecordReader.class.getSimpleName());
+
     private long currentRecordNumber;
-
     private QueueConnectionFactory queueConnectionFactory;
-
     private QueueConnection queueConnection;
-
     private QueueSession queueSession;
-
     private QueueReceiver queueReceiver;
-
     private Queue queue;
-
     private boolean stop;
 
     /**
@@ -98,7 +96,8 @@ public class JmsQueueRecordReader implements RecordReader {
         try {
             return "JMS queue: " + queue.getQueueName();
         } catch (JMSException e) {
-            throw new RuntimeException("Unable to get jms queue name", e);
+            LOGGER.log(Level.SEVERE, "Unable to get jms queue name", e);
+            return "N/A";
         }
     }
 
