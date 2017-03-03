@@ -33,7 +33,9 @@ import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
 import javax.json.stream.JsonParser;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -78,6 +80,8 @@ public class JsonRecordReader implements RecordReader {
      */
     private JsonGeneratorFactory jsonGeneratorFactory;
 
+    private String charset;
+
     /**
      * The current record number.
      */
@@ -110,14 +114,20 @@ public class JsonRecordReader implements RecordReader {
      * <p>This reader produces {@link JsonRecord} instances.</p>
      */
     public JsonRecordReader(final InputStream inputStream) {
+        this(inputStream, Charset.defaultCharset().name());
+    }
+
+    public JsonRecordReader(final InputStream inputStream, final String charset) {
         checkNotNull(inputStream, "input stream");
+        checkNotNull(charset, "charset");
         this.inputStream = inputStream;
+        this.charset = charset;
         this.jsonGeneratorFactory = Json.createGeneratorFactory(new HashMap<String, Object>());
     }
 
     @Override
-    public void open() {
-        parser = Json.createParser(inputStream);
+    public void open() throws Exception {
+        parser = Json.createParser(new InputStreamReader(inputStream, charset));
     }
 
     private boolean hasNextRecord() {

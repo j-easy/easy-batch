@@ -28,6 +28,7 @@ import org.easybatch.core.reader.AbstractMultiFileRecordReader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -43,7 +44,11 @@ public class MultiJsonFileRecordReader extends AbstractMultiFileRecordReader {
      * @param files to read
      */
     public MultiJsonFileRecordReader(List<File> files) {
-        super(files);
+        this(files, Charset.defaultCharset());
+    }
+
+    public MultiJsonFileRecordReader(List<File> files, Charset charset) {
+        super(files, charset);
     }
 
     @Override
