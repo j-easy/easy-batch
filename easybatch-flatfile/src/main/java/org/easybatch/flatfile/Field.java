@@ -28,7 +28,7 @@ package org.easybatch.flatfile;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class Field {
+class Field {
 
     private int index;
     private String rawContent;
@@ -39,7 +39,7 @@ public class Field {
      * @param index      of the field
      * @param rawContent read from the record
      */
-    public Field(final int index, final String rawContent) {
+    Field(final int index, final String rawContent) {
         this.index = index;
         this.rawContent = rawContent;
     }
@@ -49,7 +49,7 @@ public class Field {
      *
      * @return field index
      */
-    public int getIndex() {
+    int getIndex() {
         return index;
     }
 
@@ -58,7 +58,7 @@ public class Field {
      *
      * @return raw content
      */
-    public String getRawContent() {
+    String getRawContent() {
         return rawContent;
     }
 
