@@ -88,7 +88,6 @@ public class JmsIntegrationTest {
                 .reader(new JmsQueueRecordReader(queueConnectionFactory, queue))
                 .filter(new JmsPoisonRecordFilter())
                 .processor(recordCollector)
-                .jobListener(new JmsQueueSessionListener(queueSession))
                 .jobListener(new JmsQueueConnectionListener(queueConnection))
                 .build();
 
@@ -114,6 +113,8 @@ public class JmsIntegrationTest {
 
         TextMessage textMessage = (TextMessage) payload;
         assertThat(textMessage.getText()).isEqualTo(MESSAGE_TEXT);
+
+        queueSession.close();
 
     }
 

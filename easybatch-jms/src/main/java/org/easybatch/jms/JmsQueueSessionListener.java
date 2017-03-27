@@ -39,6 +39,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
+@Deprecated
 public class JmsQueueSessionListener implements JobListener {
 
     private static final Logger LOGGER = Logger.getLogger(JmsQueueSessionListener.class.getSimpleName());
