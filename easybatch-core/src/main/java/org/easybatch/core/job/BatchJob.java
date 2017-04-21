@@ -98,7 +98,7 @@ class BatchJob implements Job {
             openReader();
             openWriter();
             setStatus(STARTED);
-            while (moreRecords()) {
+            while (moreRecords() && !isInterrupted()) {
                 Batch batch = readAndProcessBatch();
                 writeBatch(batch);
             }
@@ -110,7 +110,7 @@ class BatchJob implements Job {
             closeReader();
             closeWriter();
         }
-        complete();
+        teardown();
         return report;
     }
 
@@ -154,6 +154,9 @@ class BatchJob implements Job {
     }
 
     private void setStatus(JobStatus status) {
+        if(isInterrupted()) {
+            LOGGER.log(Level.INFO, "Job ''{0}'' has been interrupted, aborting execution.", name);
+        }
         LOGGER.log(Level.INFO, "Job ''{0}'' " + status.name().toLowerCase(), name);
         report.setStatus(status);
     }
@@ -233,6 +236,18 @@ class BatchJob implements Job {
             recordWriterListener.onRecordWritingException(batch, e);
             batchListener.onBatchWritingException(batch, e);
             throw new BatchWritingException("Unable to write records", e);
+        }
+    }
+
+    private boolean isInterrupted() {
+        return Thread.currentThread().isInterrupted();
+    }
+
+    private void teardown() {
+        if(isInterrupted()) {
+            teardown(ABORTED);
+        } else {
+            complete();
         }
     }
 
