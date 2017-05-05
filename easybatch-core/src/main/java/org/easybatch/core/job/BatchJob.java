@@ -195,19 +195,24 @@ class BatchJob implements Job {
 
     @SuppressWarnings(value = "unchecked")
     private void processRecord(Record record, Batch batch) throws ErrorThresholdExceededException {
-        Record processedRecord;
+        Record processedRecord = null;
         try {
             LOGGER.log(Level.FINE, "Processing {0}", record);
             notifyJobUpdate();
-            pipelineListener.beforeRecordProcessing(record);
-            processedRecord = recordProcessor.processRecord(record);
-            pipelineListener.afterRecordProcessing(record, processedRecord);
-            if (processedRecord == null) {
+            Record preProcessedRecord = pipelineListener.beforeRecordProcessing(record);
+            if (preProcessedRecord == null) {
                 LOGGER.log(Level.FINE, "{0} has been filtered", record);
                 metrics.incrementFilteredCount();
             } else {
-                batch.addRecord(processedRecord);
+                processedRecord = recordProcessor.processRecord(preProcessedRecord);
+                if (processedRecord == null) {
+                    LOGGER.log(Level.FINE, "{0} has been filtered", record);
+                    metrics.incrementFilteredCount();
+                } else {
+                    batch.addRecord(processedRecord);
+                }
             }
+            pipelineListener.afterRecordProcessing(record, processedRecord);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unable to process " + record, e);
             pipelineListener.onRecordProcessingException(record, e);

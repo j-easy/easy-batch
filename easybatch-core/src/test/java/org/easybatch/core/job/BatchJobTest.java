@@ -88,6 +88,8 @@ public class BatchJobTest {
         when(firstProcessor.processRecord(record2)).thenReturn(record2);
         when(secondProcessor.processRecord(record1)).thenReturn(record1);
         when(secondProcessor.processRecord(record2)).thenReturn(record2);
+        when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
+        when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(record2);
         job = new JobBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
@@ -212,6 +214,8 @@ public class BatchJobTest {
 
     @Test
     public void whenNotAbleToWriteRecords_ThenTheJobShouldFail() throws Exception {
+        when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
+        when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(record2);
         doThrow(exception).when(writer).writeRecords(new Batch(record1, record2));
 
         JobReport jobReport = job.call();
@@ -228,6 +232,9 @@ public class BatchJobTest {
 
     @Test
     public void reportShouldBeCorrect() throws Exception {
+        when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
+        when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(record2);
+
         JobReport jobReport = job.call();
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
@@ -453,6 +460,7 @@ public class BatchJobTest {
 
     @Test
     public void whenProcessorThrowsException_thenPipelineListenerShouldBeInvoked() throws Exception {
+        when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
         when(firstProcessor.processRecord(record1)).thenThrow(exception);
 
         job = new JobBuilder()
@@ -464,6 +472,26 @@ public class BatchJobTest {
         job.call();
 
         verify(pipelineListener).onRecordProcessingException(record1, exception);
+    }
+
+    @Test
+    public void whenPreProcessorReturnsNull_thenTheRecordShouldBeSkipped() throws Exception {
+        when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
+        when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(null);
+        when(firstProcessor.processRecord(record1)).thenReturn(record1);
+
+        job = new JobBuilder()
+                .reader(reader)
+                .processor(firstProcessor)
+                .pipelineListener(pipelineListener)
+                .build();
+
+        job.call();
+
+        verify(firstProcessor, times(1)).processRecord(record1);
+        verify(firstProcessor, never()).processRecord(record2);
+        verify(pipelineListener).afterRecordProcessing(record1, record1);
+        verify(pipelineListener).afterRecordProcessing(record2, null);
     }
 
 }
