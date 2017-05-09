@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.Runtime.getRuntime;
 import static java.util.concurrent.Executors.newFixedThreadPool;
@@ -124,6 +125,17 @@ public class JobExecutor {
      */
     public void shutdown() {
         executorService.shutdown();
+    }
+
+    /**
+     * Wait for jobs to terminate.
+     */
+    public void awaitTermination(long timeout, TimeUnit unit) {
+        try {
+            executorService.awaitTermination(timeout, unit);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Job executor was interrupted while waiting");
+        }
     }
 
 }
