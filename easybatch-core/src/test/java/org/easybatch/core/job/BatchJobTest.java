@@ -25,7 +25,9 @@ package org.easybatch.core.job;
 
 import org.easybatch.core.filter.RecordFilter;
 import org.easybatch.core.listener.*;
+import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.processor.RecordProcessor;
+import org.easybatch.core.reader.IterableRecordReader;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
@@ -42,6 +44,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -492,6 +498,83 @@ public class BatchJobTest {
         verify(firstProcessor, never()).processRecord(record2);
         verify(pipelineListener).afterRecordProcessing(record1, record1);
         verify(pipelineListener).afterRecordProcessing(record2, null);
+    }
+
+    /*
+     * Job Interruption tests
+     *
+     * FIXME Is there a better way to test this ?
+     */
+
+    @Test
+    public void whenAJobIsInterrupted_thenNextBatchesShouldBeIgnored() throws Exception {
+        // Given
+        RecordCollector recordCollector = new RecordCollector();
+        List<Integer> dataSource = new ArrayList<>();
+        for (int i = 0; i < 1000000; i++) {
+            dataSource.add(i);
+        }
+
+        Job job = JobBuilder.aNewJob()
+                .reader(new IterableRecordReader(dataSource))
+                .processor(recordCollector)
+                .batchSize(500000)
+                .build();
+
+        // When
+        JobExecutor jobExecutor = new JobExecutor();
+        Future<JobReport> jobReportFuture = jobExecutor.submit(job);
+
+        Thread.sleep(50); // prevent aborting the job before even starting
+        jobReportFuture.cancel(true);
+        jobExecutor.awaitTermination(5, TimeUnit.SECONDS);
+
+        // Then
+
+        // can't assert on job report because jobReportFuture.get throws java.util.concurrent.CancellationException since it is cancelled
+        assertThat(recordCollector.getRecords()).hasSize(500000);
+    }
+
+    @Test
+    public void whenAJobIsInterrupted_thenOtherJobsShouldNotBeInterrupted() throws Exception {
+        // Given
+        RecordCollector recordCollector1 = new RecordCollector();
+        RecordCollector recordCollector2 = new RecordCollector();
+        List<Integer> dataSource = new ArrayList<>();
+        for (int i = 0; i < 1000000; i++) {
+            dataSource.add(i);
+        }
+
+        Job job1 = JobBuilder.aNewJob()
+                .named("job1")
+                .reader(new IterableRecordReader(dataSource))
+                .processor(recordCollector1)
+                .batchSize(500000)
+                .build();
+        Job job2 = JobBuilder.aNewJob()
+                .named("job2")
+                .reader(new IterableRecordReader(dataSource))
+                .processor(recordCollector2)
+                .batchSize(500000)
+                .build();
+
+        // When
+        JobExecutor jobExecutor = new JobExecutor();
+        Future<JobReport> jobReportFuture1 = jobExecutor.submit(job1);
+        Future<JobReport> jobReportFuture2 = jobExecutor.submit(job2);
+
+        Thread.sleep(50); // prevent aborting the job before even starting
+        jobReportFuture1.cancel(true);
+        jobExecutor.awaitTermination(5, TimeUnit.SECONDS);
+
+        // Then
+
+        // can't assert on job report because jobReportFuture.get throws java.util.concurrent.CancellationException since it is cancelled
+        assertThat(recordCollector1.getRecords()).hasSize(500000);
+
+        JobReport jobReport2 = jobReportFuture2.get();
+        assertThat(jobReport2.getStatus()).isEqualTo(JobStatus.COMPLETED);
+        assertThat(recordCollector2.getRecords()).hasSize(1000000);
     }
 
 }
