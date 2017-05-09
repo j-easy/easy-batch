@@ -53,5 +53,10 @@ public enum JobStatus {
     /**
      * The job has completed normally without any exception.
      */
-    COMPLETED
+    COMPLETED,
+
+    /**
+     * The job has been interrupted.
+     */
+    ABORTED
 }
