@@ -5,6 +5,7 @@ import org.easybatch.core.job.JobReport;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Composite listener that delegates processing to other listeners.
@@ -40,8 +41,10 @@ public class CompositeJobListener implements JobListener {
 
     @Override
     public void afterJobEnd(JobReport jobReport) {
-        for (JobListener listener : listeners) {
-            listener.afterJobEnd(jobReport);
+        for (ListIterator<JobListener> iterator
+                = listeners.listIterator(listeners.size());
+                iterator.hasPrevious();) {
+            iterator.previous().afterJobEnd(jobReport);
         }
     }
 

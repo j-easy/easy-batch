@@ -42,8 +42,8 @@ public class CompositeRecordReaderListenerTest {
         compositeRecordReaderListener.afterRecordReading(record);
 
         InOrder inOrder = inOrder(recordReaderListener1, recordReaderListener2);
-        inOrder.verify(recordReaderListener1).afterRecordReading(record);
         inOrder.verify(recordReaderListener2).afterRecordReading(record);
+        inOrder.verify(recordReaderListener1).afterRecordReading(record);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class CompositeRecordReaderListenerTest {
         compositeRecordReaderListener.onRecordReadingException(exception);
 
         InOrder inOrder = inOrder(recordReaderListener1, recordReaderListener2);
-        inOrder.verify(recordReaderListener1).onRecordReadingException(exception);
         inOrder.verify(recordReaderListener2).onRecordReadingException(exception);
+        inOrder.verify(recordReaderListener1).onRecordReadingException(exception);
     }
 }
