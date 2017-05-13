@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.job;
 
 import org.easybatch.core.filter.RecordFilter;
@@ -37,7 +36,6 @@ import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.retry.RetryPolicy;
-import org.easybatch.core.validator.RecordValidationException;
 import org.easybatch.core.validator.RecordValidator;
 import org.junit.Before;
 import org.junit.Test;
@@ -85,7 +83,9 @@ public class JobImplTest {
     @Mock
     private JobReport jobReport;
     @Mock
-    private JobListener jobListener;
+    private JobListener jobListener1;
+    @Mock
+    private JobListener jobListener2;
     @Mock
     private RecordReaderListener recordReaderListener;
     @Mock
@@ -96,8 +96,7 @@ public class JobImplTest {
     private RecordReaderOpeningException recordReaderOpeningException;
     @Mock
     private RecordProcessingException recordProcessingException;
-    @Mock
-    private RecordValidationException recordValidationException;
+
     @Mock
     private RuntimeException runtimeException;
 
@@ -115,14 +114,14 @@ public class JobImplTest {
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
-                .jobListener(jobListener)
+                .jobListener(jobListener1)
+                .jobListener(jobListener2)
                 .build();
     }
 
     /*
      * Core job implementation tests
      */
-
     @Test
     public void allComponentsShouldBeInvokedForEachRecordInOrder() throws Exception {
 
@@ -138,6 +137,110 @@ public class JobImplTest {
         inOrder.verify(firstProcessor).processRecord(record2);
         inOrder.verify(secondProcessor).processRecord(record2);
 
+    }
+
+    @Test
+    public void allJobListenersShouldBeInvokedForEachRecordInOrder() throws Exception {
+
+        JobReport jobReportReturned = job.call();
+
+        InOrder inOrder = Mockito.inOrder(reader, firstProcessor, secondProcessor, jobListener1, jobListener2);
+
+        inOrder.verify(jobListener1).beforeJobStart(any(JobParameters.class));
+        inOrder.verify(jobListener2).beforeJobStart(any(JobParameters.class));
+
+        inOrder.verify(reader).readNextRecord();
+        inOrder.verify(firstProcessor).processRecord(record1);
+        inOrder.verify(secondProcessor).processRecord(record1);
+        inOrder.verify(reader).readNextRecord();
+        inOrder.verify(firstProcessor).processRecord(record2);
+        inOrder.verify(secondProcessor).processRecord(record2);
+        inOrder.verify(reader).close();
+        inOrder.verify(jobListener2).afterJobEnd(jobReportReturned);
+        inOrder.verify(jobListener1).afterJobEnd(jobReportReturned);
+    }
+    
+    @Test
+    public void allRecordReaderListenersShouldBeInvokedForEachRecordInOrder() throws Exception {
+
+        RecordReaderListener readerListener1 = mock(RecordReaderListener.class);
+        RecordReaderListener readerListener2 = mock(RecordReaderListener.class);
+        new JobBuilder()
+                .reader(reader)
+                .processor(firstProcessor)
+                .processor(secondProcessor)
+                .readerListener(readerListener1)
+                .readerListener(readerListener2)
+                .build().call();
+
+        doNothing().when(readerListener1).beforeRecordReading();
+        doNothing().when(readerListener2).beforeRecordReading();
+        doNothing().when(readerListener1).afterRecordReading(record1);
+        doNothing().when(readerListener1).afterRecordReading(record2);
+        doNothing().when(readerListener2).afterRecordReading(record1);
+        doNothing().when(readerListener2).afterRecordReading(record2);
+        
+        InOrder inOrder = Mockito.inOrder(reader, firstProcessor, secondProcessor, readerListener1, readerListener2);
+
+        inOrder.verify(readerListener1).beforeRecordReading();
+        inOrder.verify(readerListener2).beforeRecordReading();
+        inOrder.verify(reader).readNextRecord();
+        inOrder.verify(readerListener2).afterRecordReading(record1);
+        inOrder.verify(readerListener1).afterRecordReading(record1);
+        inOrder.verify(firstProcessor).processRecord(record1);
+        inOrder.verify(secondProcessor).processRecord(record1);
+        inOrder.verify(readerListener1).beforeRecordReading();
+        inOrder.verify(readerListener2).beforeRecordReading();
+        inOrder.verify(reader).readNextRecord();
+        inOrder.verify(readerListener2).afterRecordReading(record2);
+        inOrder.verify(readerListener1).afterRecordReading(record2);
+        inOrder.verify(firstProcessor).processRecord(record2);
+        inOrder.verify(secondProcessor).processRecord(record2);
+        inOrder.verify(reader).close();
+    }
+
+    @Test
+    public void allPipelineListenersShouldBeInvokedForEachRecordInOrder() throws Exception {
+
+        PipelineListener pipelineListener1 = mock(PipelineListener.class);
+        PipelineListener pipelineListener2 = mock(PipelineListener.class);
+
+        doReturn(record1).when(pipelineListener1).beforeRecordProcessing(record1);
+        doReturn(record2).when(pipelineListener1).beforeRecordProcessing(record2);
+        doReturn(record1).when(pipelineListener2).beforeRecordProcessing(record1);
+        doReturn(record2).when(pipelineListener2).beforeRecordProcessing(record2);
+        doNothing().when(pipelineListener1).afterRecordProcessing(record1, record1);
+        doNothing().when(pipelineListener1).afterRecordProcessing(record2, record2);
+        doNothing().when(pipelineListener2).afterRecordProcessing(record1, record1);
+        doNothing().when(pipelineListener2).afterRecordProcessing(record2, record2);
+        
+         new JobBuilder()
+                .reader(reader)
+                .processor(firstProcessor)
+                .processor(secondProcessor)
+                .pipelineListener(pipelineListener1)
+                .pipelineListener(pipelineListener2)
+                .build().call();
+
+        InOrder inOrder = Mockito.inOrder(reader, firstProcessor, secondProcessor, pipelineListener1, pipelineListener2);
+
+        inOrder.verify(reader).readNextRecord();
+        inOrder.verify(pipelineListener1).beforeRecordProcessing(record1);
+        inOrder.verify(pipelineListener2).beforeRecordProcessing(record1);
+        inOrder.verify(firstProcessor).processRecord(record1);
+        inOrder.verify(secondProcessor).processRecord(record1);
+        inOrder.verify(pipelineListener2).afterRecordProcessing(record1, record1);
+        inOrder.verify(pipelineListener1).afterRecordProcessing(record1, record1);
+
+        inOrder.verify(reader).readNextRecord();
+        inOrder.verify(pipelineListener1).beforeRecordProcessing(record2);
+        inOrder.verify(pipelineListener2).beforeRecordProcessing(record2);
+        inOrder.verify(firstProcessor).processRecord(record2);
+        inOrder.verify(secondProcessor).processRecord(record2);
+        inOrder.verify(pipelineListener2).afterRecordProcessing(record2, record2);
+        inOrder.verify(pipelineListener1).afterRecordProcessing(record2, record2);
+
+        inOrder.verify(reader).close();
     }
 
     @Test
@@ -188,7 +291,11 @@ public class JobImplTest {
 
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
         assertThat(jobReport.getMetrics().getLastError()).isEqualTo(recordReaderOpeningException);
-        verify(jobListener).afterJobEnd(jobReport);
+
+        InOrder inOrderAfterJobEnd = inOrder(jobListener1, jobListener2);
+        inOrderAfterJobEnd.verify(jobListener2).afterJobEnd(jobReport);
+        inOrderAfterJobEnd.verify(jobListener1).afterJobEnd(jobReport);
+
     }
 
     @Test
@@ -276,11 +383,10 @@ public class JobImplTest {
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
         assertThat(jobReport.getMetrics().getLastError()).isEqualTo(runtimeException);
     }
-    
+
     /*
      * JMX tests
      */
-
     @Test
     public void whenJobNameIsNotSpecified_thenTheJmxMBeanShouldBeRegisteredWithDefaultJobName() throws Exception {
         job = new JobBuilder().jmxMode(true).build();
@@ -301,7 +407,6 @@ public class JobImplTest {
     /*
      * Skip & limit parameters tests
      */
-
     @Test
     public void testRecordSkipping() throws Exception {
         List<String> dataSource = Arrays.asList("foo", "bar");
@@ -369,7 +474,6 @@ public class JobImplTest {
     /*
      * Test retry parameter
      */
-
     @Test
     public void testRetry_whenMaxAttemptsExceeded() throws Exception {
         job = new JobBuilder()
@@ -405,7 +509,6 @@ public class JobImplTest {
     /*
      * Job/Step listeners tests
      */
-
     @Test
     public void recordReaderListenerShouldBeInvokedForEachEvent() throws Exception {
         when(reader.hasNextRecord()).thenReturn(true, false);

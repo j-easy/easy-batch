@@ -93,8 +93,8 @@ public class EventManagerTest {
 
         InOrder inOrder = inOrder(jobListener1, jobListener2);
 
-        inOrder.verify(jobListener1).afterJobEnd(jobReport);
         inOrder.verify(jobListener2).afterJobEnd(jobReport);
+        inOrder.verify(jobListener1).afterJobEnd(jobReport);        
     }
 
     @Test
@@ -113,8 +113,8 @@ public class EventManagerTest {
 
         InOrder inOrder = inOrder(recordReaderListener1, recordReaderListener2);
 
-        inOrder.verify(recordReaderListener1).afterRecordReading(record);
         inOrder.verify(recordReaderListener2).afterRecordReading(record);
+        inOrder.verify(recordReaderListener1).afterRecordReading(record);
     }
 
     @Test
@@ -122,9 +122,9 @@ public class EventManagerTest {
         eventManager.fireOnRecordReadingException(throwable);
 
         InOrder inOrder = inOrder(recordReaderListener1, recordReaderListener2);
-
-        inOrder.verify(recordReaderListener1).onRecordReadingException(throwable);
+        
         inOrder.verify(recordReaderListener2).onRecordReadingException(throwable);
+        inOrder.verify(recordReaderListener1).onRecordReadingException(throwable);
     }
 
     @Test
@@ -148,8 +148,8 @@ public class EventManagerTest {
 
         InOrder inOrder = inOrder(pipelineListener1, pipelineListener2);
 
-        inOrder.verify(pipelineListener1).afterRecordProcessing(record, processedRecord);
         inOrder.verify(pipelineListener2).afterRecordProcessing(record, processedRecord);
+        inOrder.verify(pipelineListener1).afterRecordProcessing(record, processedRecord);        
     }
 
     @Test
@@ -158,8 +158,8 @@ public class EventManagerTest {
 
         InOrder inOrder = inOrder(pipelineListener1, pipelineListener2);
 
-        inOrder.verify(pipelineListener1).onRecordProcessingException(record, throwable);
         inOrder.verify(pipelineListener2).onRecordProcessingException(record, throwable);
+        inOrder.verify(pipelineListener1).onRecordProcessingException(record, throwable);
     }
 
     /*
