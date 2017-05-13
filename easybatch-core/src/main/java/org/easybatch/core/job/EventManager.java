@@ -24,13 +24,14 @@
 
 package org.easybatch.core.job;
 
+import java.util.ArrayList;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.listener.PipelineListener;
 import org.easybatch.core.listener.RecordReaderListener;
 import org.easybatch.core.record.Record;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Manager of job/steps listeners.
@@ -39,9 +40,9 @@ import java.util.Set;
  */
 class EventManager {
 
-    private Set<JobListener> jobListeners = new LinkedHashSet<>();
-    private Set<RecordReaderListener> recordReaderListeners = new LinkedHashSet<>();
-    private Set<PipelineListener> pipelineListeners = new LinkedHashSet<>();
+    private final List<JobListener> jobListeners = new ArrayList<>();
+    private final List<RecordReaderListener> recordReaderListeners = new ArrayList<>();
+    private final List<PipelineListener> pipelineListeners = new ArrayList<>();
 
     public void addJobListener(JobListener jobListener) {
         jobListeners.add(jobListener);
@@ -62,8 +63,10 @@ class EventManager {
     }
 
     public void fireAfterJobEnd(JobReport jobReport) {
-        for (JobListener jobListener : jobListeners) {
-            jobListener.afterJobEnd(jobReport);
+        for (ListIterator<JobListener> iterator =
+                jobListeners.listIterator(jobListeners.size());
+                iterator.hasPrevious();) {
+            iterator.previous().afterJobEnd(jobReport);
         }
     }
 
@@ -74,14 +77,18 @@ class EventManager {
     }
 
     public void fireAfterRecordReading(Record record) {
-        for (RecordReaderListener recordReaderListener : recordReaderListeners) {
-            recordReaderListener.afterRecordReading(record);
+        for (ListIterator<RecordReaderListener> iterator = 
+                recordReaderListeners.listIterator(recordReaderListeners.size());
+                iterator.hasPrevious();) {
+            iterator.previous().afterRecordReading(record);
         }
     }
 
     public void fireOnRecordReadingException(Throwable throwable) {
-        for (RecordReaderListener recordReaderListener : recordReaderListeners) {
-            recordReaderListener.onRecordReadingException(throwable);
+        for (ListIterator<RecordReaderListener> iterator = 
+                recordReaderListeners.listIterator(recordReaderListeners.size());
+                iterator.hasPrevious();) {
+            iterator.previous().onRecordReadingException(throwable);
         }
     }
 
@@ -94,14 +101,18 @@ class EventManager {
     }
 
     public void fireAfterRecordProcessing(Record inputRecord, Record outputRecord) {
-        for (PipelineListener pipelineListener : pipelineListeners) {
-            pipelineListener.afterRecordProcessing(inputRecord, outputRecord);
+        for (ListIterator<PipelineListener> iterator = 
+                pipelineListeners.listIterator(pipelineListeners.size());
+                iterator.hasPrevious();) {
+            iterator.previous().afterRecordProcessing(inputRecord, outputRecord);
         }
     }
 
     public void fireOnRecordProcessingException(final Record record, final Throwable throwable) {
-        for (PipelineListener pipelineListener : pipelineListeners) {
-            pipelineListener.onRecordProcessingException(record, throwable);
+        for (ListIterator<PipelineListener> iterator = 
+                pipelineListeners.listIterator(pipelineListeners.size());
+                iterator.hasPrevious();) {
+            iterator.previous().onRecordProcessingException(record, throwable);
         }
     }
 }
