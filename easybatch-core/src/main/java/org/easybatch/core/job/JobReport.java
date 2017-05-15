@@ -42,6 +42,8 @@ public class JobReport implements Serializable {
     private JobStatus status;
 
     private Throwable lastError;
+    
+    private transient JobReportFormatter<String> formatter;
 
     private Properties systemProperties;
 
@@ -64,6 +66,17 @@ public class JobReport implements Serializable {
     public Throwable getLastError() {
         return lastError;
     }
+    
+    public JobReportFormatter<String> getFormatter(){
+    	if(this.formatter == null){
+    		synchronized (this) {
+    			if(this.formatter == null){
+    				this.formatter = new DefaultJobReportFormatter();
+    			}
+			}
+    	}
+    	return this.formatter;
+    }
 
     public void setJobName(String jobName) {
         this.jobName = jobName;
@@ -84,6 +97,10 @@ public class JobReport implements Serializable {
     public void setLastError(Throwable lastError) {
         this.lastError = lastError;
     }
+    
+    public void setFormatter(JobReportFormatter<String> formatter){
+    	this.formatter = formatter;
+    }
 
     public Properties getSystemProperties() {
         return systemProperties;
@@ -95,6 +112,6 @@ public class JobReport implements Serializable {
 
     @Override
     public String toString() {
-        return new DefaultJobReportFormatter().formatReport(this);
+        return getFormatter().formatReport(this);
     }
 }
