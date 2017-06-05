@@ -3,7 +3,7 @@
     <parent>
         <artifactId>easybatch-extensions</artifactId>
         <groupId>org.easybatch</groupId>
-        <version>5.1.0</version>
+        <version>5.1.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -29,7 +29,7 @@
         <url>git@github.com:easybatch/easybatch-framework.git</url>
         <connection>scm:git:git@github.com:easybatch/easybatch-framework.git</connection>
         <developerConnection>scm:git:git@github.com:easybatch/easybatch-framework.git</developerConnection>
-        <tag>easybatch-5.1.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
