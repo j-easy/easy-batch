@@ -76,7 +76,7 @@ $>git clone https://github.com/EasyBatch/easybatch-benchmarks.git
 $>cd easybatch-benchmarks
 $>mvn package
 $>cd target
-$>java -Dorg.easybatch.bench.count=10000 -cp "easybatch-benchmarks-4.0.0.jar:dependency/*" org.easybatch.bench.CsvBenchmark
+$>java -Dorg.easybatch.bench.count=10000 -cp "easybatch-benchmarks-5.1.0.jar:dependency/*" org.easybatch.bench.CsvBenchmark
 ```
 
 # Run the XML benchmark
@@ -85,14 +85,14 @@ $>java -Dorg.easybatch.bench.count=10000 -cp "easybatch-benchmarks-4.0.0.jar:dep
 $>cd easybatch-benchmarks
 $>mvn package
 $>cd target
-$>java -Dorg.easybatch.bench.count=10000 -cp "easybatch-benchmarks-4.0.0.jar:dependency/*" org.easybatch.bench.XmlBenchmark
+$>java -Dorg.easybatch.bench.count=10000 -cp "easybatch-benchmarks-5.1.0.jar:dependency/*" org.easybatch.bench.XmlBenchmark
 ```
 
 # Notes
 
 If you are using MS Windows, please use the `;` classpath separator in the previous commands as follows:
 
-`-cp "easybatch-benchmarks-4.0.0.jar;dependency/*"`
+`-cp "easybatch-benchmarks-5.1.0.jar;dependency/*"`
 
 Use the JVM property `-Dorg.easybatch.bench.count` to specify the number of records to generate.
 

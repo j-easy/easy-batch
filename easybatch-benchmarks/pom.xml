@@ -5,12 +5,12 @@
 
     <groupId>org.easybatch</groupId>
     <artifactId>easybatch-benchmarks</artifactId>
-    <version>4.0.0</version>
+    <version>5.1.0</version>
     <packaging>jar</packaging>
 
     <name>easybatch-benchmarks</name>
     <description>Easy Batch benchmarks module</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
