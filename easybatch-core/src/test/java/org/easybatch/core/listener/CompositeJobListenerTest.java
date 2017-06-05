@@ -66,7 +66,7 @@ public class CompositeJobListenerTest {
         compositeJobListener.afterJobEnd(report);
 
         InOrder inOrder = inOrder(jobListener1, jobListener2);
-        inOrder.verify(jobListener1).afterJobEnd(report);
         inOrder.verify(jobListener2).afterJobEnd(report);
+        inOrder.verify(jobListener1).afterJobEnd(report);
     }
 }

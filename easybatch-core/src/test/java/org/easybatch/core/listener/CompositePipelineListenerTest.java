@@ -68,8 +68,8 @@ public class CompositePipelineListenerTest {
         compositePipelineListener.afterRecordProcessing(inputRecord, outputRecord);
 
         InOrder inOrder = inOrder(pipelineListener1, pipelineListener2);
-        inOrder.verify(pipelineListener1).afterRecordProcessing(inputRecord, outputRecord);
         inOrder.verify(pipelineListener2).afterRecordProcessing(inputRecord, outputRecord);
+        inOrder.verify(pipelineListener1).afterRecordProcessing(inputRecord, outputRecord);
     }
 
     @Test
@@ -77,8 +77,8 @@ public class CompositePipelineListenerTest {
         compositePipelineListener.onRecordProcessingException(inputRecord, exception);
 
         InOrder inOrder = inOrder(pipelineListener1, pipelineListener2);
-        inOrder.verify(pipelineListener1).onRecordProcessingException(inputRecord, exception);
         inOrder.verify(pipelineListener2).onRecordProcessingException(inputRecord, exception);
+        inOrder.verify(pipelineListener1).onRecordProcessingException(inputRecord, exception);
     }
 
 }

@@ -27,6 +27,7 @@ import org.easybatch.core.record.Record;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Composite listener that delegates processing to other listeners.
@@ -64,15 +65,19 @@ public class CompositePipelineListener implements PipelineListener {
 
     @Override
     public void afterRecordProcessing(Record inputRecord, Record outputRecord) {
-        for (PipelineListener listener : listeners) {
-            listener.afterRecordProcessing(inputRecord, outputRecord);
+        for (ListIterator<PipelineListener> iterator
+                = listeners.listIterator(listeners.size());
+                iterator.hasPrevious();) {
+            iterator.previous().afterRecordProcessing(inputRecord, outputRecord);
         }
     }
 
     @Override
     public void onRecordProcessingException(Record record, Throwable throwable) {
-        for (PipelineListener listener : listeners) {
-            listener.onRecordProcessingException(record, throwable);
+        for (ListIterator<PipelineListener> iterator
+                = listeners.listIterator(listeners.size());
+                iterator.hasPrevious();) {
+            iterator.previous().onRecordProcessingException(record, throwable);
         }
     }
 
