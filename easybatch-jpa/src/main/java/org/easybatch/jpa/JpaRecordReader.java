@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jpa;
 
 import org.easybatch.core.reader.RecordReader;
@@ -51,23 +50,14 @@ public class JpaRecordReader<T> implements RecordReader {
     public static final int DEFAULT_FETCH_SIZE = 1000;
 
     private EntityManagerFactory entityManagerFactory;
-
     private EntityManager entityManager;
-
     private String query;
-
     private TypedQuery<T> typedQuery;
-
     private Class<T> type;
-
     private List<T> records;
-
     private Iterator<T> iterator;
-
     private int offset;
-
     private int fetchSize;
-
     private long currentRecordNumber;
 
     /**
@@ -131,7 +121,8 @@ public class JpaRecordReader<T> implements RecordReader {
 
     /**
      * Set the fetch size.
-     * @param fetchSize the fetch size
+     *
+     * @param fetchSize the fetch size of each chunk
      */
     public void setFetchSize(final int fetchSize) {
         checkArgument(fetchSize >= 1, "fetch size parameter must be >= 1");

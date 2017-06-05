@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.hibernate;
 
 import org.easybatch.core.reader.RecordReader;
@@ -47,21 +46,17 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 public class HibernateRecordReader<T> implements RecordReader {
 
     private SessionFactory sessionFactory;
-
     private Session session;
-
     private String query;
-
     private ScrollableResults scrollableResults;
 
+    //parameters
     private int maxResults;
-
     private int fetchSize;
-
     private long currentRecordNumber;
 
     /**
-     * Create a hibernate record reader.
+     * Create a new {@link HibernateRecordReader}.
      *
      * @param sessionFactory a pre-configured hibernate session factory
      * @param query          the HQL query to use to fetch data

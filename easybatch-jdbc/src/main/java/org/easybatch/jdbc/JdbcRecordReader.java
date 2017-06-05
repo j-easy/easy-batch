@@ -1,27 +1,26 @@
-/*
+/**
  * The MIT License
  *
- *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
  */
-
 package org.easybatch.jdbc;
 
 import org.easybatch.core.reader.RecordReader;
@@ -51,51 +50,22 @@ public class JdbcRecordReader implements RecordReader {
     private static final Logger LOGGER = Logger.getLogger(JdbcRecordReader.class.getSimpleName());
 
     private DataSource dataSource;
-
-    /**
-     * The database connection to use to read data.
-     */
     private Connection connection;
-
-    /**
-     * The statement to use to read data.
-     */
     private Statement statement;
-
-    /**
-     * The result set that will be returned.
-     */
     private ResultSet resultSet;
-
-    /**
-     * The jdbc query to use to fetch data.
-     */
     private String query;
+    private String dataSourceName;
+    private long currentRecordNumber;
 
-    /**
-     * Parameter to limit the number of fetched rows.
-     */
+    // parameters
     private int maxRows;
-
-    /**
-     * Parameter to set fetch size.
-     */
+    private int queryTimeout;
     private int fetchSize;
 
     /**
-     * Parameter to set the query timeout.
-     */
-    private int queryTimeout;
-
-    /**
-     * The current record number.
-     */
-    private long currentRecordNumber;
-
-    /**
-     * Create a JdbcRecordReader instance.
+     * Create a new {@link JdbcRecordReader}.
      *
-     * @param dataSource to read data
+     * @param dataSource to read data from
      * @param query      to fetch data
      */
     public JdbcRecordReader(final DataSource dataSource, final String query) {
@@ -120,6 +90,7 @@ public class JdbcRecordReader implements RecordReader {
             statement.setQueryTimeout(queryTimeout);
         }
         resultSet = statement.executeQuery(query);
+        dataSourceName = getDataSourceName();
     }
 
     private boolean hasNextRecord() {
@@ -134,7 +105,7 @@ public class JdbcRecordReader implements RecordReader {
     @Override
     public JdbcRecord readRecord() {
         if (hasNextRecord()) {
-            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            Header header = new Header(++currentRecordNumber, dataSourceName, new Date());
             return new JdbcRecord(header, resultSet);
         } else {
             return null;
@@ -143,8 +114,7 @@ public class JdbcRecordReader implements RecordReader {
 
     private String getDataSourceName() {
         try {
-            return "Connection URL: " + connection.getMetaData().getURL() + " | " +
-                    "Query string: " + query;
+            return "Connection URL: " + connection.getMetaData().getURL() + " | Query string: " + query;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Unable to get data source name", e);
             return "N/A";

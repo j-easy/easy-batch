@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,38 +21,44 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jms;
 
-import org.junit.Before;
+import org.easybatch.core.writer.DefaultPredicate;
+import org.easybatch.core.writer.Predicate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.jms.QueueSender;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentBasedJmsQueueRecordWriterBuilderTest {
 
     @Mock
-    private QueueSender queue;
+    private QueueSender queue, defaultQueue;
+    @Mock
+    private Predicate predicate;
 
-    private ContentBasedJmsQueueRecordWriterBuilder builder;
+    @Test
+    public void recordWriterShouldBeCorrectlyBuilt() throws Exception {
+        ContentBasedJmsQueueRecordWriter recordWriter = ContentBasedJmsQueueRecordWriterBuilder.newContentBasedJmsQueueRecordWriterBuilder()
+                .when(predicate)
+                .writeTo(queue)
+                .otherwise(defaultQueue)
+                .build();
 
-    @Before
-    public void setUp() throws Exception {
-        builder = new ContentBasedJmsQueueRecordWriterBuilder();
+        assertThat(recordWriter).isNotNull();
+        assertThatQueueMappingIsCorrect(recordWriter.getQueueMap());
+
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void whenPredicateToQueueMapIsEmpty_ThenShouldThrowIllegalStateException() throws Exception {
-        builder.build();
+    private void assertThatQueueMappingIsCorrect(Map<Predicate, QueueSender> queueMap) {
+        assertThat(queueMap).isNotNull();
+        assertThat(queueMap.get(predicate)).isEqualTo(queue);
+        assertThat(queueMap.get(new DefaultPredicate())).isEqualTo(defaultQueue);
     }
-
-    @Test(expected = IllegalStateException.class)
-    public void whenCallDispatchToWithoutCallingWhen_ThenShouldThrowIllegalStateException() throws Exception {
-        builder.writeTo(queue);
-    }
-
 }

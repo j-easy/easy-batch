@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.mongodb;
 
 import com.mongodb.BulkWriteOperation;
@@ -43,9 +42,9 @@ public class MongoDBRecordWriter implements RecordWriter {
     private DBCollection collection;
 
     /**
-     * Create a MongoDB writer.
+     * Create a new {@link MongoDBRecordWriter}.
      *
-     * @param collection the collection to write documents to.
+     * @param collection to write documents to.
      */
     public MongoDBRecordWriter(final DBCollection collection) {
         checkNotNull(collection, "collection");

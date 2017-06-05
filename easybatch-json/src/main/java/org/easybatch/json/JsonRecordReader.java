@@ -1,27 +1,26 @@
-/*
+/**
  * The MIT License
  *
- *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
  */
-
 package org.easybatch.json;
 
 import org.easybatch.core.reader.RecordReader;
@@ -34,7 +33,9 @@ import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
 import javax.json.stream.JsonParser;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -64,61 +65,43 @@ public class JsonRecordReader implements RecordReader {
 
     private static final Logger LOGGER = Logger.getLogger(JsonRecordReader.class.getName());
 
-    /**
-     * The data source stream.
-     */
     private InputStream inputStream;
-
-    /**
-     * The json parser used to read the json stream.
-     */
     private JsonParser parser;
-
-    /**
-     * The Json generator factory.
-     */
     private JsonGeneratorFactory jsonGeneratorFactory;
-
-    /**
-     * The current record number.
-     */
+    private String charset;
     private long currentRecordNumber;
-
     private JsonParser.Event currentEvent;
-
     private JsonParser.Event nextEvent;
-
     private int arrayDepth;
-
     private int objectDepth;
-
     private String key;
 
     /**
-     * Record reader that reads Json records from an array of Json objects:
-     * <p>
-     * <p>
-     * [
-     * {
-     * // JSON object
-     * },
-     * {
-     * // JSON object
-     * }
-     * ]
-     * </p>
-     * <p>
-     * <p>This reader produces {@link JsonRecord} instances.</p>
+     * Create a new {@link JsonRecordReader}.
+     *
+     * @param inputStream to read
      */
     public JsonRecordReader(final InputStream inputStream) {
+        this(inputStream, Charset.defaultCharset().name());
+    }
+
+    /**
+     * Create a new {@link JsonRecordReader}.
+     *
+     * @param inputStream to read
+     * @param charset of the json stream
+     */
+    public JsonRecordReader(final InputStream inputStream, final String charset) {
         checkNotNull(inputStream, "input stream");
+        checkNotNull(charset, "charset");
         this.inputStream = inputStream;
+        this.charset = charset;
         this.jsonGeneratorFactory = Json.createGeneratorFactory(new HashMap<String, Object>());
     }
 
     @Override
-    public void open() {
-        parser = Json.createParser(inputStream);
+    public void open() throws Exception {
+        parser = Json.createParser(new InputStreamReader(inputStream, charset));
     }
 
     private boolean hasNextRecord() {
@@ -176,7 +159,7 @@ public class JsonRecordReader implements RecordReader {
         }
     }
 
-    private String getDataSourceName() {
+    protected String getDataSourceName() {
         return "Json stream";
     }
 

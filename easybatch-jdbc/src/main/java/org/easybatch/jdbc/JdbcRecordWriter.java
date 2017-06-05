@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jdbc;
 
 import org.easybatch.core.record.Batch;
@@ -38,7 +37,7 @@ import java.util.logging.Logger;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Write records to a database using the JDBC API.
+ * Write records to a relational database using the JDBC API.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -47,11 +46,8 @@ public class JdbcRecordWriter implements RecordWriter {
     private static final Logger LOGGER = Logger.getLogger(JdbcRecordWriter.class.getSimpleName());
 
     private DataSource dataSource;
-
     private Connection connection;
-
     private String query;
-
     private PreparedStatementProvider preparedStatementProvider;
 
     /**

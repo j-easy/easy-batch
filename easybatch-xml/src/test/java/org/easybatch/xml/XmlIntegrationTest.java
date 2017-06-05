@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.xml;
 
 import org.easybatch.core.job.*;
@@ -52,7 +51,7 @@ public class XmlIntegrationTest {
         List<Record<Website>> records = recordCollector.getRecords();
         List<Website> websites = extractPayloads(records);
 
-        assertThat(websites).hasSize(3);
+        assertThat(websites).hasSize(4);
 
         Website website = websites.get(0);
         assertThat(website.getName()).isEqualTo("google");

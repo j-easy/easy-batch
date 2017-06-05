@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.writer;
 
 import org.easybatch.core.record.Record;
@@ -29,23 +28,23 @@ import org.easybatch.core.record.Record;
 import java.io.OutputStreamWriter;
 
 /**
- * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to the standard error.
+ * Record writer that writes the <strong>payload</strong> of a {@link Record} to the standard error.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class StandardErrorRecordWriter extends OutputStreamRecordWriter {
 
     /**
-     * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to the standard error.
+     * Create a new {@link StandardErrorRecordWriter}.
      */
     public StandardErrorRecordWriter() {
         super(new OutputStreamWriter(System.err));
     }
 
     /**
-     * Convenient processor that writes the <strong>payload</strong> of a {@link Record} to the standard error.
+     * Create a new {@link StandardErrorRecordWriter}.
      *
-     * @param lineSeparator line separator.
+     * @param lineSeparator to use to separate records.
      */
     public StandardErrorRecordWriter(final String lineSeparator) {
         super(new OutputStreamWriter(System.err), lineSeparator);

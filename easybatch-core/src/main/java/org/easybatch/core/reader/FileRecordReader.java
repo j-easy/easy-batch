@@ -1,27 +1,26 @@
-/*
+/**
  * The MIT License
  *
- *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
  */
-
 package org.easybatch.core.reader;
 
 import org.easybatch.core.record.FileRecord;
@@ -39,7 +38,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * A convenient {@link RecordReader} that reads files in a directory.
+ * A {@link RecordReader} that reads files in a directory.
  *
  * This reader produces {@link FileRecord} instances.
  *
@@ -53,7 +52,7 @@ public class FileRecordReader implements RecordReader {
     private boolean recursive;
 
     /**
-     * Create a {@link FileRecordReader} to read files from a given directory.
+     * Create a new {@link FileRecordReader}.
      *
      * @param directory to read files from
      */
@@ -62,10 +61,10 @@ public class FileRecordReader implements RecordReader {
     }
 
     /**
-     * Create a {@link FileRecordReader} to read files from a given directory.
+     * Create a new {@link FileRecordReader}.
      *
      * @param directory to read files from
-     * @param recursive if the reader should be recursive
+     * @param recursive if the reader should be recursive or not
      */
     public FileRecordReader(final File directory, final boolean recursive) {
         checkNotNull(directory, "directory");
@@ -74,7 +73,7 @@ public class FileRecordReader implements RecordReader {
     }
 
     /**
-     * Create a {@link FileRecordReader} to read files from a given directory.
+     * Create a new {@link FileRecordReader}.
      *
      * @param path to read files from
      */
@@ -83,10 +82,10 @@ public class FileRecordReader implements RecordReader {
     }
 
     /**
-     * Create a {@link FileRecordReader} to read files from a given directory.
+     * Create a new {@link FileRecordReader}.
      *
      * @param path to read files from
-     *  @param recursive if the reader should be recursive
+     *  @param recursive if the reader should be recursive or not
      */
     public FileRecordReader(final Path path, final boolean recursive) {
         checkNotNull(path, "path");
@@ -94,9 +93,6 @@ public class FileRecordReader implements RecordReader {
         this.recursive = recursive;
     }
 
-    /**
-     * Open the reader.
-     */
     @Override
     public void open() throws Exception {
         checkDirectory();
@@ -118,11 +114,6 @@ public class FileRecordReader implements RecordReader {
         checkArgument(directory.canRead(), format("Unable to read files from directory %s. Permission denied.", getDataSourceName()));
     }
 
-    /**
-     * Read next record from the data source.
-     *
-     * @return the next record from the data source.
-     */
     @Override
     public FileRecord readRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
@@ -133,18 +124,10 @@ public class FileRecordReader implements RecordReader {
         }
     }
 
-    /**
-     * This method returns a human readable data source name to be shown in the batch report.
-     *
-     * @return the data source name this reader is reading data from
-     */
     private String getDataSourceName() {
         return directory.getAbsolutePath();
     }
 
-    /**
-     * Close the reader.
-     */
     @Override
     public void close() {
         // no op

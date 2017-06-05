@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,16 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.job;
 
 import org.easybatch.core.util.Utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.Runtime.getRuntime;
 import static java.util.concurrent.Executors.newFixedThreadPool;
@@ -104,10 +103,18 @@ public class JobExecutor {
      * @return the list of job reports in the same order of submission
      */
     public List<Future<JobReport>> submitAll(Job... jobs) {
-        List<Job> jobList = new ArrayList<>();
-        Collections.addAll(jobList, jobs);
+        return submitAll(Arrays.asList(jobs));
+    }
+
+    /**
+     * Submit jobs for execution.
+     *
+     * @param jobs to execute
+     * @return the list of job reports in the same order of submission
+     */
+    public List<Future<JobReport>> submitAll(List<Job> jobs) {
         try {
-            return executorService.invokeAll(jobList);
+            return executorService.invokeAll(jobs);
         } catch (InterruptedException e) {
             throw new RuntimeException("Unable to execute jobs", e);
         }
@@ -118,6 +125,17 @@ public class JobExecutor {
      */
     public void shutdown() {
         executorService.shutdown();
+    }
+
+    /**
+     * Wait for jobs to terminate.
+     */
+    public void awaitTermination(long timeout, TimeUnit unit) {
+        try {
+            executorService.awaitTermination(timeout, unit);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Job executor was interrupted while waiting");
+        }
     }
 
 }

@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.mongodb;
 
 import com.mongodb.DBCollection;
@@ -45,23 +44,15 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 public class MongoDBRecordReader implements RecordReader {
 
     private DBCollection collection;
-
     private DBObject query;
-
     private DBCursor cursor;
-
     private int nbLimit;
-
     private int nbSkip;
-
     private DBObject orderBy;
-
     private long currentRecordNumber;
 
     /**
-     * Reader that reads documents from a MongoDB collection.
-     * <p/>
-     * This reader produces {@link MongoDBRecord} instances.
+     * Create a new {@link MongoDBRecordReader}.
      *
      * @param collection the collection to read documents from
      * @param query      the query to fetch data

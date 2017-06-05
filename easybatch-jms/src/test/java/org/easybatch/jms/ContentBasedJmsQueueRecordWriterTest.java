@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,25 +21,28 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jms;
 
 import org.easybatch.core.record.Batch;
+import org.easybatch.core.writer.DefaultPredicate;
 import org.easybatch.core.writer.Predicate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.jms.QueueSender;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentBasedJmsQueueRecordWriterTest {
 
-    private ContentBasedJmsQueueRecordWriter recordDispatcher;
+    private ContentBasedJmsQueueRecordWriter recordWriter;
 
     @Mock
     private QueueSender orangeQueue, defaultQueue;
@@ -50,10 +53,10 @@ public class ContentBasedJmsQueueRecordWriterTest {
 
     @Before
     public void setUp() throws Exception {
-        recordDispatcher = new ContentBasedJmsQueueRecordWriterBuilder()
-                .when(orangePredicate).writeTo(orangeQueue)
-                .otherwise(defaultQueue)
-                .build();
+        Map<Predicate, QueueSender> queueMap = new HashMap<>();
+        queueMap.put(orangePredicate, orangeQueue);
+        queueMap.put(new DefaultPredicate(), defaultQueue);
+        recordWriter = new ContentBasedJmsQueueRecordWriter(queueMap);
 
         when(orangePredicate.matches(orangeRecord)).thenReturn(true);
         when(orangePredicate.matches(appleRecord)).thenReturn(false);
@@ -61,14 +64,14 @@ public class ContentBasedJmsQueueRecordWriterTest {
 
     @Test
     public void orangeRecordShouldBeDispatchedToOrangeQueue() throws Exception {
-        recordDispatcher.writeRecords(new Batch(orangeRecord));
+        recordWriter.writeRecords(new Batch(orangeRecord));
         verify(orangeQueue).send(orangeRecord.getPayload());
         verifyZeroInteractions(defaultQueue);
     }
 
     @Test
     public void nonOrangeRecordShouldBeDispatchedToDefaultQueue() throws Exception {
-        recordDispatcher.writeRecords(new Batch(appleRecord));
+        recordWriter.writeRecords(new Batch(appleRecord));
         verify(defaultQueue).send(appleRecord.getPayload());
         verifyZeroInteractions(orangeQueue);
     }

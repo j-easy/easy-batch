@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.flatfile;
 
 import org.easybatch.core.field.BeanFieldExtractor;
@@ -42,21 +41,25 @@ import java.util.Iterator;
  */
 public class DelimitedRecordMarshaller<P> implements RecordMarshaller<Record<P>, StringRecord> {
 
+    /**
+     * Default delimiter.
+     */
     public static final String DEFAULT_DELIMITER = ",";
 
+    /**
+     * Default qualifier.
+     */
     public static final String DEFAULT_QUALIFIER = "\"";
 
     private String delimiter;
-
     private String qualifier;
-
     private FieldExtractor<P> fieldExtractor;
 
     /**
-     * Create a delimited record marshaller.
+     * Create a new {@link DelimitedRecordMarshaller}.
      *
-     * @param type   the type of object to marshal
-     * @param fields the list of fields to marshal in order
+     * @param type   of object to marshal
+     * @param fields to marshal in order
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
     public DelimitedRecordMarshaller(final Class<P> type, final String... fields) throws IntrospectionException {
@@ -64,11 +67,11 @@ public class DelimitedRecordMarshaller<P> implements RecordMarshaller<Record<P>,
     }
 
     /**
-     * Create a delimited record marshaller.
+     * Create a new {@link DelimitedRecordMarshaller}
      *
-     * @param type      the type of object to marshal
-     * @param fields    the list of fields to marshal in order
-     * @param delimiter the field delimiter
+     * @param type      of object to marshal
+     * @param fields    of fields to marshal in order
+     * @param delimiter of fields
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
     public DelimitedRecordMarshaller(final Class<P> type, final String[] fields, final String delimiter) throws IntrospectionException {
@@ -76,12 +79,12 @@ public class DelimitedRecordMarshaller<P> implements RecordMarshaller<Record<P>,
     }
 
     /**
-     * Create a delimited record marshaller.
+     * Create a new {@link DelimitedRecordMarshaller}
      *
-     * @param type      the type of object to marshal
-     * @param fields    the list of fields to marshal in order
-     * @param delimiter the field delimiter
-     * @param qualifier the field qualifier
+     * @param type      of object to marshal
+     * @param fields    to marshal in order
+     * @param delimiter of fields
+     * @param qualifier of fields
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
     public DelimitedRecordMarshaller(final Class<P> type, final String[] fields, final String delimiter, final String qualifier) throws IntrospectionException {
@@ -89,11 +92,11 @@ public class DelimitedRecordMarshaller<P> implements RecordMarshaller<Record<P>,
     }
 
     /**
-     * Create a delimited record marshaller.
+     * Create a new {@link DelimitedRecordMarshaller}
      *
-     * @param fieldExtractor the field extractor
-     * @param delimiter      the field delimiter
-     * @param qualifier      the field qualifier
+     * @param fieldExtractor extract fields
+     * @param delimiter      of fields
+     * @param qualifier      of fields
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
     public DelimitedRecordMarshaller(FieldExtractor<P> fieldExtractor, final String delimiter, final String qualifier) throws IntrospectionException {

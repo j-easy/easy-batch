@@ -28,7 +28,7 @@
     <div class="row">
         <h3>Job metrics</h3>
         <div class="col-md-6">
-            <table class="table table-bordered table-hover table-condensed">
+            <table class="table table-bordered table-hover table-condensed table-fixed">
                 <tbody>
                 <tr>
                     <td>Start Time</td>
@@ -78,11 +78,25 @@
 
     <div class="row">
         <h3>Job parameters</h3>
-        <table class="table table-bordered table-striped table-hover table-condensed">
+        <table class="table table-bordered table-striped table-hover table-condensed table-fixed">
             <tbody>
             <tr> <td>Error threshold</td> <td>$errorThreshold</td> </tr>
             <tr> <td>Batch size</td> <td>$batchSize</td> </tr>
             <tr> <td>JMX monitoring</td> <td>$jmx</td> </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <h3>System properties</h3>
+        <table class="table table-bordered table-striped table-hover table-condensed table-fixed">
+            <tbody>
+            #foreach( $entry in $systemProperties.entrySet() )
+                <tr>
+                    <td>$entry.key</td>
+                    <td>$entry.value</td>
+                </tr>
+            #end
             </tbody>
         </table>
     </div>

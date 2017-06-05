@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.flatfile;
 
 import org.easybatch.core.field.FieldExtractor;
@@ -41,10 +40,10 @@ public class FixedLengthRecordMarshaller<P> implements RecordMarshaller<Record<P
     private DelimitedRecordMarshaller<P> delimitedRecordMarshaller;
 
     /**
-     * Create a fixed length record marshaller.
+     * Create a new {@link FixedLengthRecordMarshaller}.
      *
-     * @param type   the type of object to marshal
-     * @param fields the list of fields to marshal in order
+     * @param type   of object to marshal
+     * @param fields of fields to marshal in order
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
     public FixedLengthRecordMarshaller(final Class<P> type, final String... fields) throws IntrospectionException {
@@ -52,9 +51,9 @@ public class FixedLengthRecordMarshaller<P> implements RecordMarshaller<Record<P
     }
 
     /**
-     * Create a fixed length record marshaller.
+     * Create a new {@link FixedLengthRecordMarshaller}.
      *
-     * @param fieldExtractor the field extractor
+     * @param fieldExtractor to use to extract fields
      * @throws IntrospectionException If the object to marshal cannot be introspected
      */
     public FixedLengthRecordMarshaller(FieldExtractor<P> fieldExtractor) throws IntrospectionException {

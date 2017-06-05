@@ -1,31 +1,32 @@
-/*
+/**
  * The MIT License
  *
- *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
  */
-
 package org.easybatch.core.job;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -42,6 +43,7 @@ public class DefaultJobReportMergerTest {
     @Test
     public void testReportsMerging() throws Exception {
 
+        Properties systemProperties = new Properties();
         JobMetrics metrics1 = new JobMetrics();
         JobReport jobReport1 = new JobReport();
         jobReport1.setMetrics(metrics1);
@@ -58,6 +60,7 @@ public class DefaultJobReportMergerTest {
         jobReport1.getMetrics().setEndTime(endTime1);
         jobReport1.setStatus(JobStatus.FAILED);
         jobReport1.setJobName("job1");
+        jobReport1.setSystemProperties(systemProperties);
 
         JobMetrics metrics2 = new JobMetrics();
         JobReport jobReport2 = new JobReport();
@@ -75,6 +78,8 @@ public class DefaultJobReportMergerTest {
         jobReport2.getMetrics().setEndTime(endTime2);
         jobReport2.setStatus(JobStatus.COMPLETED);
         jobReport2.setJobName("job2");
+        jobReport2.setSystemProperties(systemProperties); // assume both jobs run on the same JVMs
+
 
         JobReport finalJobReport = jobReportMerger.mergerReports(jobReport1, jobReport2);
 
@@ -90,6 +95,7 @@ public class DefaultJobReportMergerTest {
 
         // job name is the concatenation of partial job names
         assertThat(finalJobReport.getJobName()).isEqualTo("job1|job2");
+        assertThat(finalJobReport.getSystemProperties()).isEqualTo(systemProperties);
 
     }
 }

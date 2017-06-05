@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jms;
 
 import org.easybatch.core.processor.RecordProcessor;
@@ -33,7 +32,7 @@ import javax.jms.TextMessage;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Convenient processor that creates a {@link JmsRecord} with {@link TextMessage} payload from a {@link StringRecord}.
+ * Processor that creates a {@link JmsRecord} with {@link TextMessage} payload from a {@link StringRecord}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -42,9 +41,9 @@ public class JmsMessageTransformer implements RecordProcessor<StringRecord, JmsR
     private QueueSession queueSession;
 
     /**
-     * Create a Jms message transformer.
+     * Create a new {@link JmsMessageTransformer}.
      *
-     * @param queueSession the queue session to create text messages
+     * @param queueSession to create text messages
      */
     public JmsMessageTransformer(final QueueSession queueSession) {
         checkNotNull(queueSession, "queue session");

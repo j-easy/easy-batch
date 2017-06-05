@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.xml;
 
 import org.easybatch.core.marshaller.RecordMarshaller;
@@ -37,7 +36,9 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Marshals an object to XML using JAXB.
+ * The object must be annotated with JAXB annotations.
  *
+ * @param <P> type of the objects to marshal
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class XmlRecordMarshaller<P> implements RecordMarshaller<Record<P>, XmlRecord> {
@@ -45,7 +46,7 @@ public class XmlRecordMarshaller<P> implements RecordMarshaller<Record<P>, XmlRe
     private Marshaller marshaller;
 
     /**
-     * Create a record marshaller.
+     * Create a new {@link XmlRecordMarshaller}.
      *
      * @param type the type of object to marshal
      * @throws JAXBException if an exception occurs during JAXB context setup
@@ -58,7 +59,7 @@ public class XmlRecordMarshaller<P> implements RecordMarshaller<Record<P>, XmlRe
     }
 
     /**
-     * Create a record marshaller.
+     * Create a new {@link XmlRecordMarshaller}.
      *
      * @param jaxbContext a pre-configured JAXB context
      * @throws JAXBException if an exception occurs during Jaxb context setup

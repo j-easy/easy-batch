@@ -70,13 +70,13 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 #### Stable:
 
-* v5: The best, greatest and recommended one: [v5.0.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.0.0|) | [documentation](http://www.easybatch.org/v5.0.0/) | [tutorials](https://github.com/EasyBatch/easybatch-tutorials/releases/tag/v5.0.0) | [javadoc](http://www.easybatch.org/v5.0.0/api/)
-* v4: Production ready, in maintenance mode: [v4.2.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.2.0|) | [documentation](http://www.easybatch.org/v4.2.0/) | [tutorials](https://github.com/EasyBatch/easybatch-tutorials/releases/tag/v4.2.0) | [javadoc](http://www.easybatch.org/v4.2.0/api/)
+* v5: The best, greatest and recommended one: [v5.0.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.0.0|) | [documentation](http://www.easybatch.org/v5.0.0/) | [tutorials](https://github.com/EasyBatch/easybatch-tutorials) | [javadoc](http://www.easybatch.org/v5.0.0/api/)
+* v4: Production ready, in maintenance mode: [v4.2.1](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|4.2.1|) | [documentation](http://www.easybatch.org/v4.2.1/) | [tutorials](https://github.com/EasyBatch/easybatch-tutorials/releases/tag/v4.2.1) | [javadoc](http://www.easybatch.org/v4.2.1/api/)
 * v3, v2, v1 : archived versions
 
 #### Development:
 
-Current development version is 5.0.1-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)
+Current development version is 5.1.0-SNAPSHOT [![Build Status](https://travis-ci.org/EasyBatch/easybatch-framework.svg?branch=master)](https://travis-ci.org/EasyBatch/easybatch-framework)
 
 If you want to import a snapshot version, you need to use the following repository:
 
@@ -113,6 +113,7 @@ For any further question, you can use the [forum](https://groups.google.com/d/fo
 
 * [ammachado](https://github.com/ammachado)
 * [anandhi](https://github.com/anandhi)
+* [AussieGuy0](https://github.com/AussieGuy0)
 * [AymanDF](https://github.com/AymanDF)
 * [chsfleury](https://github.com/chsfleury)
 * [chellan](https://github.com/chellan)
@@ -133,7 +134,7 @@ Thank you all for your contributions!
 
 |JetBrains|YourKit|Travis CI|
 |:-:|:-:|:-:|
-|![IntelliJ IDEA](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/logo/intellijidea-logo.png)|![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)|![Travis CI](https://cdn.travis-ci.com/images/logos/TravisCI-Full-Color-7f5db09495c8b09c21cb678c4de18d21.png)|
+|![IntelliJ IDEA](https://raw.githubusercontent.com/EasyBatch/easybatch-website/master/img/logo/intellijidea-logo.png)|![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)|![Travis CI](https://cdn.travis-ci.com/images/logos/TravisCI-Full-Color-45e242791b7752b745a7ae53f265acd4.png)|
 |Many thanks to [JetBrains](https://www.jetbrains.com/) for providing a free license of [IntelliJ IDEA](https://www.jetbrains.com/idea/) to kindly support the development of Easy Batch|Many thanks to [YourKit, LLC](https://www.yourkit.com/) for providing a free license of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/index.jsp) to kindly support the development of Easy Batch.|Many thanks to [Travis CI](https://travis-ci.org) for providing a free continuous integration service for open source projects.|
 
 ## License
@@ -143,7 +144,7 @@ Easy Batch is released under the [![MIT license](http://img.shields.io/badge/lic
 ```
 The MIT License (MIT)
 
-Copyright (c) 2016 Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+Copyright (c) 2017 Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

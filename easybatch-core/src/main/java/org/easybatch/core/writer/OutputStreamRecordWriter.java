@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.writer;
 
 import org.easybatch.core.listener.JobListener;
@@ -34,18 +33,18 @@ import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
+ * Record writer to write the <strong>payload</strong> of a {@link Record} to an output stream.
+ * Users of this class is responsible for opening/closing the output stream, maybe using a {@link JobListener}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class OutputStreamRecordWriter implements RecordWriter {
 
     private String lineSeparator;
-
     private OutputStreamWriter outputStreamWriter;
 
     /**
-     * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
+     * Create a new {@link OutputStreamRecordWriter}.
      *
      * @param outputStreamWriter the output stream to write records to.
      */
@@ -54,10 +53,7 @@ public class OutputStreamRecordWriter implements RecordWriter {
     }
 
     /**
-     * Convenient processor to write the <strong>payload</strong> of a {@link Record} to an output stream.
-     * <p/>
-     * The user of this class is responsible for opening/closing the output stream, maybe using
-     * a {@link JobListener}.
+     * Create a new {@link OutputStreamRecordWriter}.
      *
      * @param outputStreamWriter the output stream to write records to.
      * @param lineSeparator      the line separator.

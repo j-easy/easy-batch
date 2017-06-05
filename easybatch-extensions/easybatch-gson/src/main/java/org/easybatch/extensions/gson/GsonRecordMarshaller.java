@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.gson;
 
 import com.google.gson.Gson;
@@ -32,7 +31,7 @@ import org.easybatch.json.JsonRecord;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Marshals a POJO to Json using Gson.
+ * Marshals a POJO to Json using <a href="https://code.google.com/p/google-gson/">Google Gson</a>.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -41,14 +40,14 @@ public class GsonRecordMarshaller<P> implements RecordMarshaller<Record<P>, Json
     private Gson gson;
 
     /**
-     * Create a {@link GsonRecordMarshaller}.
+     * Create a new {@link GsonRecordMarshaller}.
      */
     public GsonRecordMarshaller() {
         gson = new Gson();
     }
 
     /**
-     * Create a {@link GsonRecordMarshaller}.
+     * Create a new {@link GsonRecordMarshaller}.
      *
      * @param gson a pre-configured Gson instance
      */

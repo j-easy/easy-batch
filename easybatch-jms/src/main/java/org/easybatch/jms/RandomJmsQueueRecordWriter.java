@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jms;
 
 import org.easybatch.core.record.Batch;
@@ -40,25 +39,15 @@ import java.util.Random;
  */
 public class RandomJmsQueueRecordWriter implements RecordWriter {
 
-    /**
-     * The total number of queues this writer operates on.
-     */
+
     private int queuesNumber;
-
-    /**
-     * List of queues to which records should be written.
-     */
     private List<QueueSender> queues;
-
-    /**
-     * The random generator.
-     */
     private Random random;
 
     /**
-     * Create a {@link RandomJmsQueueRecordWriter} instance.
+     * Create a new {@link RandomJmsQueueRecordWriter}.
      *
-     * @param queues the list of queues to which records should be written
+     * @param queues to which records should be written
      */
     public RandomJmsQueueRecordWriter(List<QueueSender> queues) {
         this.queues = queues;

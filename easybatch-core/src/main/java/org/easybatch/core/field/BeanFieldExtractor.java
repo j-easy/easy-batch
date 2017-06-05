@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.field;
 
 import org.easybatch.core.util.Utils;
@@ -40,9 +39,15 @@ import java.util.Map;
 public class BeanFieldExtractor<P> implements FieldExtractor<P> {
 
     private final String[] fields;
-
     private final Map<String, Method> getters;
 
+    /**
+     * Create a new {@link BeanFieldExtractor}.
+     *
+     * @param type of the bean
+     * @param fields to extract
+     * @throws IntrospectionException if the bean cannot be introspected
+     */
     public BeanFieldExtractor(final Class<P> type, final String... fields) throws IntrospectionException {
         this.getters = Utils.getGetters(type);
         if (fields.length == 0) {

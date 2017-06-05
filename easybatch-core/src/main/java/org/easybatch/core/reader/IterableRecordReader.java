@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.reader;
 
 import org.easybatch.core.record.GenericRecord;
@@ -41,22 +40,13 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  */
 public class IterableRecordReader implements RecordReader {
 
-    /**
-     * The current record number.
-     */
     private long currentRecordNumber;
-
-    /**
-     * The data source iterator.
-     */
     private Iterator iterator;
 
     /**
-     * Reads record from an {@link Iterable} data source.
+     * Create a new {@link IterableRecordReader}.
      *
-     * This reader produces {@link GenericRecord} instances containing original objects from the data source.
-     *
-     * @param dataSource the data source to read records from.
+     * @param dataSource to read records from.
      */
     public IterableRecordReader(final Iterable dataSource) {
         checkNotNull(dataSource, "data source");

@@ -1,33 +1,32 @@
-/*
+/**
  * The MIT License
  *
- *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
  */
-
 package org.easybatch.flatfile;
 
+import org.easybatch.core.reader.AbstractFileRecordReader;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.StringRecord;
-import org.easybatch.core.util.Utils;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -42,75 +41,68 @@ import java.util.Scanner;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class FlatFileRecordReader implements RecordReader {
+public class FlatFileRecordReader extends AbstractFileRecordReader {
 
-    private File input;
     private Scanner scanner;
-    private String charsetName;
     private long currentRecordNumber;
 
     /**
-     * Create a new flat file record reader.
+     * Create a new {@link FlatFileRecordReader}.
      *
-     * @param fileName the input file name
+     * @param fileName to read records from
      */
     public FlatFileRecordReader(final String fileName) {
         this(fileName, Charset.defaultCharset().name());
     }
 
     /**
-     * Create a new flat file record reader.
+     * Create a new {@link FlatFileRecordReader}.
      *
-     * @param fileName    the input file name
-     * @param charsetName the encoding to use to read the file
+     * @param fileName    to read records from
+     * @param charsetName of the input file
      */
     public FlatFileRecordReader(final String fileName, final String charsetName) {
         this(new File(fileName), charsetName);
     }
 
     /**
-     * Create a new flat file record reader.
+     * Create a new {@link FlatFileRecordReader}.
      *
-     * @param input the input file
+     * @param input to read records from
      */
     public FlatFileRecordReader(final File input) {
         this(input, Charset.defaultCharset().name());
     }
 
     /**
-     * Create a new flat file record reader.
+     * Create a new {@link FlatFileRecordReader}.
      *
-     * @param input       the input file
-     * @param charsetName the encoding to use to read the file
+     * @param input       to read records from
+     * @param charsetName of the input file
      */
     public FlatFileRecordReader(final File input, final String charsetName) {
-        this.input = input;
-        this.charsetName = charsetName;
+        super(input, Charset.forName(charsetName));
     }
 
 
     /**
-     * Create a new flat file record reader.
+     * Create a new {@link FlatFileRecordReader}.
      *
-     * @param path the input file path
+     * @param path of the file to read records from
      */
     public FlatFileRecordReader(final Path path) {
-        Utils.checkNotNull(path, "path");
-        this.input = path.toFile();
-        this.charsetName = Charset.defaultCharset().name();
+        this(path, Charset.defaultCharset().name());
     }
 
 
     /**
-     * Create a new flat file record reader.
+     * Create a new {@link FlatFileRecordReader}.
      *
-     * @param path the input file path
-     * @param charsetName the encoding to use to read the file
+     * @param path of the file to read records from
+     * @param charsetName of the input file
      */
     public FlatFileRecordReader(final Path path, final String charsetName) {
-        Utils.checkNotNull(path, "path");
-        this.input = path.toFile();
-        this.charsetName = charsetName;
+        super(path.toFile(), Charset.forName(charsetName));
     }
 
     @Override
@@ -126,7 +118,7 @@ public class FlatFileRecordReader implements RecordReader {
     @Override
     public void open() throws Exception {
         currentRecordNumber = 0;
-        scanner = new Scanner(input, charsetName);
+        scanner = new Scanner(file, charset.name());
     }
 
     @Override
@@ -137,7 +129,7 @@ public class FlatFileRecordReader implements RecordReader {
     }
 
     private String getDataSourceName() {
-        return input.getAbsolutePath();
+        return file.getAbsolutePath();
     }
 
 }

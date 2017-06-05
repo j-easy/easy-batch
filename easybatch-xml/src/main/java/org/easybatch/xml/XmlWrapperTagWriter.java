@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.xml;
 
 import org.easybatch.core.job.JobParameters;
@@ -45,16 +44,17 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  */
 public class XmlWrapperTagWriter implements JobListener {
 
+    public static final String DEFAULT_VERSION = "1.0";
+    public static final String DEFAULT_ENCODING = "UTF-8";
+    public static final boolean DEFAULT_STANDALONE = true;
+
     private static final Logger LOGGER = Logger.getLogger(XmlWrapperTagWriter.class.getSimpleName());
 
-    private String version = "1.0";
 
-    private String encoding = "UTF-8";
-
-    private boolean standalone = true;
-
+    private String version;
+    private String encoding;
+    private boolean standalone;
     private String wrapperTag;
-
     private File file;
 
     /**
@@ -64,9 +64,7 @@ public class XmlWrapperTagWriter implements JobListener {
      * @param wrapperTag the wrapper tag to write around xml content
      */
     public XmlWrapperTagWriter(final File file, final String wrapperTag) {
-        checkNotNull(file, "file");
-        this.wrapperTag = wrapperTag;
-        this.file = file;
+        this(file, wrapperTag, DEFAULT_VERSION);
     }
 
     /**
@@ -77,9 +75,7 @@ public class XmlWrapperTagWriter implements JobListener {
      * @param version    the xml version
      */
     public XmlWrapperTagWriter(final File file, final String wrapperTag, final String version) {
-        this(file, wrapperTag);
-        checkNotNull(version, "version");
-        this.version = version;
+        this(file, wrapperTag, version, DEFAULT_ENCODING);
     }
 
     /**
@@ -91,9 +87,7 @@ public class XmlWrapperTagWriter implements JobListener {
      * @param encoding   the xml encoding
      */
     public XmlWrapperTagWriter(final File file, final String wrapperTag, final String version, final String encoding) {
-        this(file, wrapperTag, version);
-        checkNotNull(encoding, "encoding");
-        this.encoding = encoding;
+        this(file, wrapperTag, version, encoding, DEFAULT_STANDALONE);
     }
 
     /**
@@ -106,7 +100,14 @@ public class XmlWrapperTagWriter implements JobListener {
      * @param standalone true if the xml is standalone
      */
     public XmlWrapperTagWriter(final File file, final String wrapperTag, final String version, final String encoding, final boolean standalone) {
-        this(file, wrapperTag, version, encoding);
+        checkNotNull(file, "file");
+        checkNotNull(wrapperTag, "wrapperTag");
+        checkNotNull(version, "version");
+        checkNotNull(encoding, "encoding");
+        this.file = file;
+        this.wrapperTag = wrapperTag;
+        this.version = version;
+        this.encoding = encoding;
         this.standalone = standalone;
     }
 

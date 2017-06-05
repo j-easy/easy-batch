@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.jmx;
 
 import javax.management.*;
@@ -48,22 +47,18 @@ import static org.easybatch.core.util.Utils.JMX_MBEAN_NAME;
 public class JobMonitorProxy implements Runnable {
 
     private static final String JMX_SERVICE_URL = "service:jmx:rmi:///jndi/rmi://%s:%s/jmxrmi";
-
     private static final Logger LOGGER = Logger.getLogger(JobMonitorProxy.class.getName());
 
     private String host;
-
     private int port;
-
     private String jobName;
-
     private List<JobMonitoringListener> notificationListeners;
 
     /**
      * Create a new {@link JobMonitorProxy}.
      *
-     * @param host           the host on which the job is running
-     * @param port           the port on which JMX notification are sent
+     * @param host           on which the job is running
+     * @param port           on which JMX notification are sent
      * @param jobName        the job name
      */
     public JobMonitorProxy(final String host, final int port, final String jobName) {

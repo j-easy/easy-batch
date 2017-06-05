@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.xstream;
 
 import com.thoughtworks.xstream.XStream;
@@ -41,14 +40,14 @@ public class XstreamRecordMarshaller<P> implements RecordMarshaller<Record<P>, X
     private XStream xStream;
 
     /**
-     * Create a record marshaller.
+     * Create a new {@link XstreamRecordMarshaller}.
      */
     public XstreamRecordMarshaller() {
         this.xStream = new XStream();
     }
 
     /**
-     * Create a record marshaller.
+     * Create a new {@link XstreamRecordMarshaller}.
      *
      * @param elementName the alias of the object in the corresponding xml tag
      * @param type        the type of the object to marshal
@@ -61,7 +60,7 @@ public class XstreamRecordMarshaller<P> implements RecordMarshaller<Record<P>, X
     }
 
     /**
-     * Create a record marshaller.
+     * Create a new {@link XstreamRecordMarshaller}.
      *
      * @param xStream a pre-configured xstream instance
      */

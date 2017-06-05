@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jms;
 
 import org.easybatch.core.record.Batch;
@@ -39,13 +38,10 @@ import java.util.List;
  */
 public class BroadcastJmsQueueRecordWriter implements RecordWriter {
 
-    /**
-     * List of queues to which records should be written.
-     */
     private List<QueueSender> queues;
 
     /**
-     * Create a {@link BroadcastJmsQueueRecordWriter} instance.
+     * Create a new {@link BroadcastJmsQueueRecordWriter} instance.
      *
      * @param queues the list of queues to which records should be written
      */

@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.spring;
 
 import org.easybatch.core.mapper.RecordMapper;
@@ -45,7 +44,7 @@ public class SpringJdbcRecordMapper<P> implements RecordMapper<JdbcRecord, Recor
     private final Class<P> type;
 
     /**
-     * Create a {@link SpringJdbcRecordMapper}.
+     * Create a new {@link SpringJdbcRecordMapper}.
      *
      * @param type the type of target object
      */

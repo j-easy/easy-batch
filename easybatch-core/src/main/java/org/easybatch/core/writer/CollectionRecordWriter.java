@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.writer;
 
 import org.easybatch.core.record.Batch;
@@ -32,7 +31,7 @@ import java.util.Collection;
 import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
- * Convenient processor that writes records to a {@link java.util.Collection}.
+ * Record writer that writes records to a {@link java.util.Collection}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -41,7 +40,7 @@ public class CollectionRecordWriter implements RecordWriter {
     private Collection collection;
 
     /**
-     * Convenient processor that writes records to a {@link java.util.Collection}.
+     * Create a new {@link CollectionRecordWriter}.
      *
      * @param collection the collection to write records to
      */

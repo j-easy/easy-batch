@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.extensions.mongodb;
 
 import com.mongodb.DBObject;
@@ -41,9 +40,7 @@ public class MongoDBRecordMarshaller<T> implements RecordMapper<Record<T>, Mongo
     private Morphia morphia;
 
     /**
-     * Create a MongoDB marshaller.
-     * <p/>
-     * This marshaller uses <a href="https://github.com/mongodb/morphia">Morphia</a> to map marshal domain objects to {@link DBObject}s.
+     * Create a new {@link MongoDBRecordMarshaller}.
      *
      * @param type the source object type
      */

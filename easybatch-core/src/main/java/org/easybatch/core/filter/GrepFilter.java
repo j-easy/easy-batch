@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.core.filter;
 
 import org.easybatch.core.record.StringRecord;
@@ -40,7 +39,7 @@ public class GrepFilter implements RecordFilter<StringRecord> {
     private String pattern;
 
     /**
-     * Create a {@link GrepFilter} instance.
+     * Create a new {@link GrepFilter}.
      *
      * @param pattern the pattern to look for
      */

@@ -1,8 +1,33 @@
+/**
+ * The MIT License
+ *
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
+ *
+ *   The above copyright notice and this permission notice shall be included in
+ *   all copies or substantial portions of the Software.
+ *
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *   THE SOFTWARE.
+ */
 package org.easybatch.core.job;
 
 import org.easybatch.core.filter.RecordFilter;
 import org.easybatch.core.listener.*;
+import org.easybatch.core.processor.RecordCollector;
 import org.easybatch.core.processor.RecordProcessor;
+import org.easybatch.core.reader.IterableRecordReader;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
@@ -14,11 +39,15 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,6 +94,8 @@ public class BatchJobTest {
         when(firstProcessor.processRecord(record2)).thenReturn(record2);
         when(secondProcessor.processRecord(record1)).thenReturn(record1);
         when(secondProcessor.processRecord(record2)).thenReturn(record2);
+        when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
+        when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(record2);
         job = new JobBuilder()
                 .reader(reader)
                 .processor(firstProcessor)
@@ -189,6 +220,8 @@ public class BatchJobTest {
 
     @Test
     public void whenNotAbleToWriteRecords_ThenTheJobShouldFail() throws Exception {
+        when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
+        when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(record2);
         doThrow(exception).when(writer).writeRecords(new Batch(record1, record2));
 
         JobReport jobReport = job.call();
@@ -205,6 +238,9 @@ public class BatchJobTest {
 
     @Test
     public void reportShouldBeCorrect() throws Exception {
+        when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
+        when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(record2);
+
         JobReport jobReport = job.call();
         assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
@@ -430,6 +466,7 @@ public class BatchJobTest {
 
     @Test
     public void whenProcessorThrowsException_thenPipelineListenerShouldBeInvoked() throws Exception {
+        when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
         when(firstProcessor.processRecord(record1)).thenThrow(exception);
 
         job = new JobBuilder()
@@ -441,6 +478,103 @@ public class BatchJobTest {
         job.call();
 
         verify(pipelineListener).onRecordProcessingException(record1, exception);
+    }
+
+    @Test
+    public void whenPreProcessorReturnsNull_thenTheRecordShouldBeSkipped() throws Exception {
+        when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
+        when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(null);
+        when(firstProcessor.processRecord(record1)).thenReturn(record1);
+
+        job = new JobBuilder()
+                .reader(reader)
+                .processor(firstProcessor)
+                .pipelineListener(pipelineListener)
+                .build();
+
+        job.call();
+
+        verify(firstProcessor, times(1)).processRecord(record1);
+        verify(firstProcessor, never()).processRecord(record2);
+        verify(pipelineListener).afterRecordProcessing(record1, record1);
+        verify(pipelineListener).afterRecordProcessing(record2, null);
+    }
+
+    /*
+     * Job Interruption tests
+     *
+     * FIXME Is there a better way to test this ?
+     */
+
+    @Test
+    public void whenAJobIsInterrupted_thenNextBatchesShouldBeIgnored() throws Exception {
+        // Given
+        RecordCollector recordCollector = new RecordCollector();
+        List<Integer> dataSource = new ArrayList<>();
+        for (int i = 0; i < 1000000; i++) {
+            dataSource.add(i);
+        }
+
+        Job job = JobBuilder.aNewJob()
+                .reader(new IterableRecordReader(dataSource))
+                .processor(recordCollector)
+                .batchSize(500000)
+                .build();
+
+        // When
+        JobExecutor jobExecutor = new JobExecutor();
+        Future<JobReport> jobReportFuture = jobExecutor.submit(job);
+
+        Thread.sleep(50); // prevent aborting the job before even starting
+        jobReportFuture.cancel(true);
+        jobExecutor.awaitTermination(5, TimeUnit.SECONDS);
+
+        // Then
+
+        // can't assert on job report because jobReportFuture.get throws java.util.concurrent.CancellationException since it is cancelled
+        assertThat(recordCollector.getRecords()).hasSize(500000);
+    }
+
+    @Test
+    public void whenAJobIsInterrupted_thenOtherJobsShouldNotBeInterrupted() throws Exception {
+        // Given
+        RecordCollector recordCollector1 = new RecordCollector();
+        RecordCollector recordCollector2 = new RecordCollector();
+        List<Integer> dataSource = new ArrayList<>();
+        for (int i = 0; i < 1000000; i++) {
+            dataSource.add(i);
+        }
+
+        Job job1 = JobBuilder.aNewJob()
+                .named("job1")
+                .reader(new IterableRecordReader(dataSource))
+                .processor(recordCollector1)
+                .batchSize(500000)
+                .build();
+        Job job2 = JobBuilder.aNewJob()
+                .named("job2")
+                .reader(new IterableRecordReader(dataSource))
+                .processor(recordCollector2)
+                .batchSize(500000)
+                .build();
+
+        // When
+        JobExecutor jobExecutor = new JobExecutor();
+        Future<JobReport> jobReportFuture1 = jobExecutor.submit(job1);
+        Future<JobReport> jobReportFuture2 = jobExecutor.submit(job2);
+
+        Thread.sleep(50); // prevent aborting the job before even starting
+        jobReportFuture1.cancel(true);
+        jobExecutor.awaitTermination(5, TimeUnit.SECONDS);
+
+        // Then
+
+        // can't assert on job report because jobReportFuture.get throws java.util.concurrent.CancellationException since it is cancelled
+        assertThat(recordCollector1.getRecords()).hasSize(500000);
+
+        JobReport jobReport2 = jobReportFuture2.get();
+        assertThat(jobReport2.getStatus()).isEqualTo(JobStatus.COMPLETED);
+        assertThat(recordCollector2.getRecords()).hasSize(1000000);
     }
 
 }

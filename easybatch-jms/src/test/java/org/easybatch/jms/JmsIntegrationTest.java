@@ -1,7 +1,7 @@
-/*
- *  The MIT License
+/**
+ * The MIT License
  *
- *   Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-
 package org.easybatch.jms;
 
 import org.apache.activemq.broker.BrokerService;
@@ -89,8 +88,6 @@ public class JmsIntegrationTest {
                 .reader(new JmsQueueRecordReader(queueConnectionFactory, queue))
                 .filter(new JmsPoisonRecordFilter())
                 .processor(recordCollector)
-                .jobListener(new JmsQueueSessionListener(queueSession))
-                .jobListener(new JmsQueueConnectionListener(queueConnection))
                 .build();
 
         JobReport jobReport = new JobExecutor().execute(job);
@@ -116,6 +113,8 @@ public class JmsIntegrationTest {
         TextMessage textMessage = (TextMessage) payload;
         assertThat(textMessage.getText()).isEqualTo(MESSAGE_TEXT);
 
+        queueSession.close();
+        queueConnection.close();
     }
 
     @Test
