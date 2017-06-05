@@ -95,12 +95,11 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 #### Stable:
 
-* v5: The best, greatest and recommended one: [v5.1.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.1.0|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/easybatch-tutorials) | [javadoc](http://javadoc.io/doc/org.easybatch/easybatch-core/5.1.0)
-* v4, v3, v2, v1 : archived versions
+The current stable version is [v5.1.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.1.0|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/tree/master/easybatch-tutorials) | [javadoc](http://javadoc.io/doc/org.easybatch/easybatch-core/5.1.0)
 
 #### Development:
 
-Current development version is 5.2.0-SNAPSHOT [![Build Status](https://travis-ci.org/j-easy/easy-batch.svg?branch=master)](https://travis-ci.org/j-easy/easy-batch)
+The current development version is 5.2.0-SNAPSHOT [![Build Status](https://travis-ci.org/j-easy/easy-batch.svg?branch=master)](https://travis-ci.org/j-easy/easy-batch)
 
 If you want to import a snapshot version, you need to use the following repository:
 
@@ -115,9 +114,9 @@ If you want to import a snapshot version, you need to use the following reposito
 
 You are welcome to contribute to the project with pull requests on GitHub.
 
-If you find a bug or want to request a feature, please use the [issue tracker](https://github.com/easybatch/easybatch-framework/issues).
+If you find a bug or want to request a feature, please use the [issue tracker](https://github.com/j-easy/easy-batch/issues).
 
-For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or the [gitter channel](https://gitter.im/EasyBatch/easybatch-framework).
+For any further question, you can use the [forum](https://groups.google.com/d/forum/easy-batch) or the [gitter channel](https://gitter.im/j-easy/easy-batch).
 
 ## Awesome contributors
 
