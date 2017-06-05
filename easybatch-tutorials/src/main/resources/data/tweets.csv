@@ -1,0 +1,5 @@
+id,user,message
+1,foo,easy batch rocks! #EasyBatch
+2,bar,@foo I do confirm :-)
+3,baz,@foo @bar Is it really easy?
+4,toto,@foo @bar @baz yeah! kinda KISS framework
