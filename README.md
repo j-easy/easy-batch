@@ -74,14 +74,6 @@ At the end of execution, you get a report with statistics and metrics about the 
 All the boilerplate code of resources I/O, iterating through the data source, filtering and parsing records, mapping data to the domain object `Tweet`, writing output and reporting
  is handled by Easy Batch. Your code becomes declarative, intuitive, easy to read, understand, test and maintain.
 
-## Quick links
-
-|Item                  |Link                                                                          |
-|----------------------|------------------------------------------------------------------------------|
-|Project Home          | [https://github.com/j-easy/easy-batch/wiki](https://github.com/j-easy/easy-batch/wiki)                         |
-|Continuous integration| [Build job @ Travis CI](https://travis-ci.org/j-easy/easy-batch) |
-|Dependencies          | [![Dependencies](https://www.versioneye.com/user/projects/5589cb2e3133630061000022/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5589cb2e3133630061000022) |
-
 ## Presentations, articles & blog posts
 
 - :movie_camera: [Introduction to Easy Batch: the simple, stupid batch processing framework for Java](https://speakerdeck.com/benas/easy-batch)
