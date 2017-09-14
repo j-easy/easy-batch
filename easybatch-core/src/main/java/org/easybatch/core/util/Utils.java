@@ -56,7 +56,7 @@ public abstract class Utils {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 
-    public static final String DURATION_FORMAT = "%shr %smin %ssec %sms";
+    public static final String DURATION_FORMAT = "%sd %shr %smin %ssec %sms";
 
     public static final String NOT_APPLICABLE = "N/A";
 
@@ -92,7 +92,8 @@ public abstract class Utils {
     }
 
     public static String formatDuration(long duration) {
-        return String.format(DURATION_FORMAT, MILLISECONDS.toHours(duration) % 24, MILLISECONDS.toMinutes(duration) % 60, MILLISECONDS.toSeconds(duration) % 60, duration % 1000);
+        return String.format(DURATION_FORMAT, MILLISECONDS.toDays(duration), MILLISECONDS.toHours(duration) % 24,
+                MILLISECONDS.toMinutes(duration) % 60, MILLISECONDS.toSeconds(duration) % 60, duration % 1000);
     }
 
     public static String formatErrorThreshold(final long errorThreshold) {
