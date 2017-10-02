@@ -67,7 +67,7 @@ public class Customer {
 # Checkout source code
 
 ```
-$>git clone https://github.com/EasyBatch/easybatch-benchmarks.git
+$>git clone https://github.com/j-easy/easy-batch.git
 ```
 
 # Run the CSV benchmark
