@@ -1,0 +1,15 @@
+version: 1.0.{build}
+skip_tags: true
+max_jobs: 1
+environment:
+    matrix:
+        - JAVA_HOME: C:\Program Files\Java\jdk1.7.0
+install:
+  - ps: choco install maven
+  - mvn --version
+build_script:
+  - mvn package
+test_script:
+  - mvn test
+cache:
+  - C:\Users\appveyor\.m2
