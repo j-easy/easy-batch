@@ -52,7 +52,7 @@ public class YamlRecordMarshallerTest {
     public void processRecord() throws Exception {
         YamlRecord yamlRecord = recordMarshaller.processRecord(record);
 
-        assertThat(yamlRecord.getPayload()).isEqualTo("!org.easybatch.extensions.yaml.Contact" + LINE_SEPARATOR +
+        assertThat(yamlRecord.getPayload()).isEqualToIgnoringWhitespace("!org.easybatch.extensions.yaml.Contact" + LINE_SEPARATOR +
                 "name: foo" + LINE_SEPARATOR +
                 "age: 10" + LINE_SEPARATOR);
     }

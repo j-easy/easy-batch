@@ -103,8 +103,8 @@ public class UnivocityRecordMapperTest {
 
         TestBean foo = actual.getPayload();
         assertThat(foo).isNotNull();
-        assertThat(foo.getFirstName()).isEqualTo("foo" + LINE_SEPARATOR);
-        assertThat(foo.getLastName()).isEqualTo("bar" + LINE_SEPARATOR);
+        assertThat(foo.getFirstName()).isEqualToIgnoringWhitespace("foo" + LINE_SEPARATOR);
+        assertThat(foo.getLastName()).isEqualToIgnoringWhitespace("bar" + LINE_SEPARATOR);
     }
 
     @Test

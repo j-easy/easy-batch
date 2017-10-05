@@ -88,7 +88,7 @@ public class UnivocityRecordMarshallerTest {
         StringRecord actual = csvRecordMarshaller.processRecord(record);
 
         assertThat(actual.getHeader()).isEqualTo(header);
-        assertThat(actual.getPayload()).isEqualTo(expectedPayload);
+        assertThat(actual.getPayload()).isEqualToIgnoringWhitespace(expectedPayload);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class UnivocityRecordMarshallerTest {
         StringRecord actual = tsvRecordMarshaller.processRecord(record);
 
         assertThat(actual.getHeader()).isEqualTo(header);
-        assertThat(actual.getPayload()).isEqualTo(expectedPayload);
+        assertThat(actual.getPayload()).isEqualToIgnoringWhitespace(expectedPayload);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class UnivocityRecordMarshallerTest {
         StringRecord actual = fixedWidthRecordMarshaller.processRecord(record);
 
         assertThat(actual.getHeader()).isEqualTo(header);
-        assertThat(actual.getPayload()).isEqualTo(expectedPayload);
+        assertThat(actual.getPayload()).isEqualToIgnoringWhitespace(expectedPayload);
     }
 
 }

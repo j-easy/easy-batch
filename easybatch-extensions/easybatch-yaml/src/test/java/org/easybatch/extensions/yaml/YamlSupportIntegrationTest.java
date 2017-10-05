@@ -105,14 +105,14 @@ public class YamlSupportIntegrationTest {
         Record<String> record = records.get(0);
 
         assertThat(record).isNotNull();
-        assertThat(record.getPayload()).isEqualTo("!org.easybatch.extensions.yaml.Contact" + LINE_SEPARATOR +
+        assertThat(record.getPayload()).isEqualToIgnoringWhitespace("!org.easybatch.extensions.yaml.Contact" + LINE_SEPARATOR +
                 "name: Foo" + LINE_SEPARATOR +
                 "age: 28" + LINE_SEPARATOR);
 
         record = records.get(1);
 
         assertThat(record).isNotNull();
-        assertThat(record.getPayload()).isEqualTo("!org.easybatch.extensions.yaml.Contact" + LINE_SEPARATOR +
+        assertThat(record.getPayload()).isEqualToIgnoringWhitespace("!org.easybatch.extensions.yaml.Contact" + LINE_SEPARATOR +
                 "name: Bar" + LINE_SEPARATOR +
                 "age: 30" + LINE_SEPARATOR);
 
