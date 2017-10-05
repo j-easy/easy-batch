@@ -59,10 +59,13 @@ public class UtilsTest {
 
     @Test
     public void testFormatDuration() throws Exception {
-        assertThat(Utils.formatDuration(100)).isEqualTo("0hr 0min 0sec 100ms");
-        assertThat(Utils.formatDuration(1000)).isEqualTo("0hr 0min 1sec 0ms");
-        assertThat(Utils.formatDuration(60 * 2 * 1000)).isEqualTo("0hr 2min 0sec 0ms");
-        assertThat(Utils.formatDuration(60 * 60 * 2 * 1000)).isEqualTo("2hr 0min 0sec 0ms");
+        assertThat(Utils.formatDuration(100)).isEqualTo("0d 0hr 0min 0sec 100ms");
+        assertThat(Utils.formatDuration(1000)).isEqualTo("0d 0hr 0min 1sec 0ms");
+        assertThat(Utils.formatDuration(60 * 2 * 1000)).isEqualTo("0d 0hr 2min 0sec 0ms");
+        assertThat(Utils.formatDuration(60 * 60 * 2 * 1000)).isEqualTo("0d 2hr 0min 0sec 0ms");
+        assertThat(Utils.formatDuration((24 * 60 * 60 * 2 * 1000))).isEqualTo("2d 0hr 0min 0sec 0ms");
+        // in the extremely unlikely event that the job takes more than a year
+        assertThat(Utils.formatDuration(31622400000L)).isEqualTo("366d 0hr 0min 0sec 0ms");
     }
 
     @Test

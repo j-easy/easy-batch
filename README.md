@@ -129,6 +129,7 @@ For any further question, you can use the [forum](https://groups.google.com/d/fo
 * [PascalSchumacher](https://github.com/PascalSchumacher)
 * [Toilal](https://github.com/Toilal)
 * [xenji](https://github.com/xenji)
+* [ipropper](https://github.com/ipropper)
 
 Thank you all for your contributions!
 
