@@ -4,9 +4,9 @@
        xsi:schemaLocation=" http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <b:bean id="foo" class="java.lang.String">
+    <b:bean xsi:id="foo" xsi:class="java.lang.String">
         <b:description>foo bean</b:description>
     </b:bean>
-    <b:bean id="bar" class="java.lang.String"/>
+    <b:bean xsi:id="bar" xsi:class="java.lang.String"/>
 
 </b:beans>

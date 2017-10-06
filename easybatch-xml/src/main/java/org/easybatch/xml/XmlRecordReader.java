@@ -155,7 +155,7 @@ public class XmlRecordReader implements RecordReader {
         while (iterator.hasNext()) {
             Attribute attribute = (Attribute) iterator.next();
             stringBuilder.append(" ")
-                    .append(attribute.getName())
+                    .append(attribute.getName().getLocalPart())
                     .append("='")
                     .append(escape(attribute.getValue()))
                     .append("'");
