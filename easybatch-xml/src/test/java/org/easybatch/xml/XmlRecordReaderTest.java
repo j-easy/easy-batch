@@ -75,6 +75,9 @@ public class XmlRecordReaderTest {
         assertThat(record.getPayload()).isXmlEqualTo("<website name=\"google\">http://www.google.com?query=test&amp;sort=asc</website>");
 
         record = xmlRecordReader.readRecord();
+        assertThat(record.getPayload()).isXmlEqualTo("<website name=\"test\">&lt;test&gt;foo&lt;/test&gt;</website>");
+
+        record = xmlRecordReader.readRecord();
         assertThat(record).isNull();
 
     }

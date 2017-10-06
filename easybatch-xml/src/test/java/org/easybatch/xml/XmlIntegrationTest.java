@@ -51,7 +51,7 @@ public class XmlIntegrationTest {
         List<Record<Website>> records = recordCollector.getRecords();
         List<Website> websites = extractPayloads(records);
 
-        assertThat(websites).hasSize(4);
+        assertThat(websites).hasSize(5);
 
         Website website = websites.get(0);
         assertThat(website.getName()).isEqualTo("google");

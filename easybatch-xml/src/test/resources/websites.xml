@@ -4,4 +4,5 @@
     <website name="l&apos;equipe" url="http://www.lequipe.fr"/>
     <website name="l&quot;internaute.com" url="http://www.linternaute.com"/>
     <website name="google">http://www.google.com?query=test&amp;sort=asc</website>
+    <website name="test">&lt;test&gt;foo&lt;/test&gt;</website>
 </websites>

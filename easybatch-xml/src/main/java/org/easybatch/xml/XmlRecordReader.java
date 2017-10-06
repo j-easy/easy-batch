@@ -166,7 +166,10 @@ public class XmlRecordReader implements RecordReader {
     private String escape(String xmlToEscape) {
         return xmlToEscape.replaceAll("&", "&amp;")
                 .replaceAll("'", "&apos;")
-                .replaceAll("\"", "&quot;");
+                .replaceAll("\"", "&quot;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                ;
     }
 
 }
