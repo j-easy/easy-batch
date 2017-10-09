@@ -40,12 +40,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class XmlRecordMapperTest {
 
-    private XmlRecordMapper<Person> xmlRecordMapper;
-
-    private XmlRecord xmlRecord;
-
     @Mock
     private Header header;
+    private XmlRecord xmlRecord;
+
+    private XmlRecordMapper<Person> xmlRecordMapper;
 
     @Before
     public void setUp() throws Exception {
@@ -54,10 +53,14 @@ public class XmlRecordMapperTest {
 
     @Test
     public void testValidXmlPersonMapping() throws Exception {
+        // given
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person.xml"));
-        Record<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
-        Person person = mappedRecord.getPayload();
 
+        // when
+        Record<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
+
+        // then
+        Person person = mappedRecord.getPayload();
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(1);
         assertThat(person.getFirstName()).isEqualTo("foo");
@@ -68,10 +71,14 @@ public class XmlRecordMapperTest {
 
     @Test
     public void testEmptyXmlPersonMapping() throws Exception {
+        // given
         xmlRecord = new XmlRecord(header, "<person/>");
-        Record<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
-        Person person = mappedRecord.getPayload();
 
+        // when
+        Record<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
+
+        // then
+        Person person = mappedRecord.getPayload();
         assertThat(person.getId()).isEqualTo(0);
         assertThat(person.getFirstName()).isNull();
         assertThat(person.getLastName()).isNull();
@@ -81,10 +88,14 @@ public class XmlRecordMapperTest {
 
     @Test
     public void testPartialXmlPersonMapping() throws Exception {
+        // given
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-partial.xml"));
-        Record<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
-        Person person = mappedRecord.getPayload();
 
+        // when
+        Record<Person> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
+
+        // then
+        Person person = mappedRecord.getPayload();
         assertThat(person).isNotNull();
         assertThat(person.getId()).isEqualTo(1);
         assertThat(person.getFirstName()).isEqualTo("foo");
@@ -95,42 +106,68 @@ public class XmlRecordMapperTest {
 
     @Test
     public void testMappingWithEscapedXmlSpecialCharacter() throws Exception {
+        // given
+        xmlRecord = new XmlRecord(header, "<website name='google' url='http://www.google.com?query=test&amp;sort=asc'/>");
         XmlRecordMapper<Website> xmlRecordMapper = new XmlRecordMapper<>(Website.class);
 
-        xmlRecord = new XmlRecord(header, "<website name='google' url='http://www.google.com?query=test&amp;sort=asc'/>");
+        // when
         Record<Website> mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
+
+        // then
         Website website = mappedRecord.getPayload();
         assertThat(website).isNotNull();
         assertThat(website.getName()).isEqualTo("google");
         assertThat(website.getUrl()).isEqualTo("http://www.google.com?query=test&sort=asc");
 
+        // given
         xmlRecord = new XmlRecord(header, "<website name='l&apos;equipe' url='http://www.lequipe.fr'/>");
+
+        // when
         mappedRecord = xmlRecordMapper.processRecord(xmlRecord);
+
+        // then
         website = mappedRecord.getPayload();
         assertThat(website).isNotNull();
         assertThat(website.getName()).isEqualTo("l'equipe");
         assertThat(website.getUrl()).isEqualTo("http://www.lequipe.fr");
-
     }
 
     @Test(expected = Exception.class)
     public void testMappingWithUnescapedXmlSpecialCharacter() throws Exception {
+        // given
         xmlRecord = new XmlRecord(header, "<website name='google' url='http://www.google.com?query=test&sort=asc'/>");
         XmlRecordMapper<Website> xmlRecordMapper = new XmlRecordMapper<>(Website.class);
+
+        // when
         xmlRecordMapper.processRecord(xmlRecord);
+
+        // then
+        // expected exception
     }
 
     @Test(expected = Exception.class)
     public void testInvalidXmlPersonMapping() throws Exception {
+        // given
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-invalid.xml"));
+
+        // when
         xmlRecordMapper.processRecord(xmlRecord);
+
+        // then
+        // expected exception
     }
 
     @Test(expected = Exception.class)
     public void testMappingOfInvalidXmlAccordingToXsd() throws Exception {
-        xmlRecordMapper = new XmlRecordMapper<>(Person.class, getFile("/person.xsd"));
+        // given
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-invalid-xsd.xml"));
+        xmlRecordMapper = new XmlRecordMapper<>(Person.class, getFile("/person.xsd"));
+
+        // when
         xmlRecordMapper.processRecord(xmlRecord);
+
+        // then
+        // expected exception
     }
 
     private File getFile(String fileName) {

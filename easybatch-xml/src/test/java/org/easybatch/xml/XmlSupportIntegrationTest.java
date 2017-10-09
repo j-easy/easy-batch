@@ -34,10 +34,11 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.record.PayloadExtractor.extractPayloads;
 
-public class XmlIntegrationTest {
+public class XmlSupportIntegrationTest {
 
     @Test
     public void testWebsitesProcessing() throws Exception {
+        // given
         final InputStream xmlDataSource = getDataSource("/websites.xml");
         RecordCollector<Website> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
@@ -46,8 +47,12 @@ public class XmlIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        new JobExecutor().execute(job);
+        // when
+        JobExecutor jobExecutor = new JobExecutor();
+        jobExecutor.execute(job);
+        jobExecutor.shutdown();
 
+        // then
         List<Record<Website>> records = recordCollector.getRecords();
         List<Website> websites = extractPayloads(records);
 
@@ -68,7 +73,7 @@ public class XmlIntegrationTest {
 
     @Test
     public void testPersonsProcessing() throws Exception {
-
+        // given
         final InputStream xmlDataSource = getDataSource("/persons.xml");
 
         RecordCollector<Person> recordCollector = new RecordCollector<>();
@@ -78,8 +83,12 @@ public class XmlIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = new JobExecutor().execute(job);
+        // when
+        JobExecutor jobExecutor = new JobExecutor();
+        JobReport jobReport = jobExecutor.execute(job);
+        jobExecutor.shutdown();
 
+        // then
         assertThatReportIsCorrect(jobReport);
 
         List<Record<Person>> records = recordCollector.getRecords();
@@ -98,12 +107,11 @@ public class XmlIntegrationTest {
         assertThat(person.getFirstName()).isEqualTo("bar");
         assertThat(person.getLastName()).isEqualTo("foo");
         assertThat(person.isMarried()).isFalse();
-
     }
 
     @Test
     public void testMavenDependenciesProcessing() throws Exception {
-
+        // given
         final InputStream xmlDataSource = getDataSource("/dependencies.xml");
 
         RecordCollector<Dependency> recordCollector = new RecordCollector<>();
@@ -113,8 +121,12 @@ public class XmlIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = new JobExecutor().execute(job);
+        // when
+        JobExecutor jobExecutor = new JobExecutor();
+        JobReport jobReport = jobExecutor.execute(job);
+        jobExecutor.shutdown();
 
+        // then
         assertThatReportIsCorrect(jobReport);
 
         List<Record<Dependency>> records = recordCollector.getRecords();
@@ -157,7 +169,7 @@ public class XmlIntegrationTest {
 
     @Test
     public void testXmlProcessingWithCustomNamespace() throws Exception {
-
+        // given
         final InputStream xmlDataSource = getDataSource("/beans.xml");
 
         RecordCollector<Bean> recordCollector = new RecordCollector<>();
@@ -167,8 +179,12 @@ public class XmlIntegrationTest {
                 .processor(recordCollector)
                 .build();
 
-        JobReport jobReport = new JobExecutor().execute(job);
+        // when
+        JobExecutor jobExecutor = new JobExecutor();
+        JobReport jobReport = jobExecutor.execute(job);
+        jobExecutor.shutdown();
 
+        // then
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
 

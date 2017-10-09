@@ -24,7 +24,6 @@
 package org.easybatch.xml;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -36,44 +35,48 @@ public class XmlFileRecordReaderTest {
     private File dataSource;
     private XmlFileRecordReader xmlFileRecordReader;
 
-    @Before
-    public void setUp() throws Exception {
+    @Test
+    public void testXmlRecordReading() throws Exception {
+        // given
         dataSource = new File("src/test/resources/data.xml");
         xmlFileRecordReader = new XmlFileRecordReader(dataSource, "data");
         xmlFileRecordReader.open();
+        String expectedDataSourceName = dataSource.getAbsolutePath();
+
+        // when
+        XmlRecord xmlRecord1 = xmlFileRecordReader.readRecord();
+        XmlRecord xmlRecord2 = xmlFileRecordReader.readRecord();
+        XmlRecord xmlRecord3 = xmlFileRecordReader.readRecord();
+        XmlRecord xmlRecord4 = xmlFileRecordReader.readRecord();
+
+        // then
+        assertThat(xmlRecord1.getHeader().getNumber()).isEqualTo(1L);
+        assertThat(xmlRecord1.getHeader().getSource()).isEqualTo(expectedDataSourceName);
+        assertThat(xmlRecord1.getPayload()).isEqualTo("<data>1</data>");
+
+        assertThat(xmlRecord2.getHeader().getNumber()).isEqualTo(2L);
+        assertThat(xmlRecord2.getHeader().getSource()).isEqualTo(expectedDataSourceName);
+        assertThat(xmlRecord2.getPayload()).isEqualTo("<data>2</data>");
+
+        assertThat(xmlRecord3.getHeader().getNumber()).isEqualTo(3L);
+        assertThat(xmlRecord3.getHeader().getSource()).isEqualTo(expectedDataSourceName);
+        assertThat(xmlRecord3.getPayload()).isEqualTo("<data>3</data>");
+
+        assertThat(xmlRecord4).isNull();
     }
 
     @Test
-    public void testXmlRecordReading() throws Exception {
-        String expectedDataSourceName = dataSource.getAbsolutePath();
+    public void testReadingEmptyElement() throws Exception {
+        // given
+        dataSource = new File("src/test/resources/data-empty.xml");
+        xmlFileRecordReader = new XmlFileRecordReader(dataSource, "data");
+        xmlFileRecordReader.open();
 
-        XmlRecord xmlRecord = xmlFileRecordReader.readRecord();
-        assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(1L);
-        assertThat(xmlRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
-        assertThat(xmlRecord.getPayload()).isEqualTo("<data>1</data>");
+        // when
+        XmlRecord xmlRecord1 = xmlFileRecordReader.readRecord();
 
-        xmlRecord = xmlFileRecordReader.readRecord();
-        assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(2L);
-        assertThat(xmlRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
-        assertThat(xmlRecord.getPayload()).isEqualTo("<data>2</data>");
-
-        xmlRecord = xmlFileRecordReader.readRecord();
-        assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(3L);
-        assertThat(xmlRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
-        assertThat(xmlRecord.getPayload()).isEqualTo("<data>3</data>");
-
-        xmlRecord = xmlFileRecordReader.readRecord();
-        assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(4L);
-        assertThat(xmlRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
-        assertThat(xmlRecord.getPayload()).isEqualTo("<data>4</data>");
-
-        xmlRecord = xmlFileRecordReader.readRecord();
-        assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(5L);
-        assertThat(xmlRecord.getHeader().getSource()).isEqualTo(expectedDataSourceName);
-        assertThat(xmlRecord.getPayload()).isEqualTo("<data>5</data>");
-
-        xmlRecord = xmlFileRecordReader.readRecord();
-        assertThat(xmlRecord).isNull();
+        // then
+        assertThat(xmlRecord1).isNull();
     }
 
     @After

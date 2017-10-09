@@ -40,6 +40,7 @@ public class XmlRecordCompactorTest {
 
     @Test
     public void testFlattenXmlRecord() throws Exception {
+        // given
         String expectedPayload = "<foo><bar><baz name='baz'/></bar></foo>";
         String payload = "<foo>" + LINE_SEPARATOR +
                 "<bar>" + LINE_SEPARATOR +
@@ -47,7 +48,10 @@ public class XmlRecordCompactorTest {
                 "</bar>" + LINE_SEPARATOR +
                 "</foo>";
 
+        // when
         String compactRecord = xmlRecordCompactor.compact(payload);
+
+        // then
         assertThat(compactRecord).isNotNull().isEqualTo(expectedPayload);
     }
 

@@ -25,7 +25,6 @@ package org.easybatch.xml;
 
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -42,22 +41,19 @@ public class XmlRecordMarshallerTest {
     @Mock
     private Header header;
 
-    private XmlRecordMarshaller<Person> xmlRecordMarshaller;
-
-    @Before
-    public void setUp() throws Exception {
+    @Test
+    public void testRecordMarshalling() throws Exception {
+        // given
         Person person = new Person(1, "foo", "bar", null, false);
         when(record.getHeader()).thenReturn(header);
         when(record.getPayload()).thenReturn(person);
-        xmlRecordMarshaller = new XmlRecordMarshaller<>(Person.class);
-    }
-
-    @Test
-    public void marshal() throws Exception {
-
+        XmlRecordMarshaller<Person> xmlRecordMarshaller = new XmlRecordMarshaller<>(Person.class);
         String expected = "<person><firstName>foo</firstName><id>1</id><lastName>bar</lastName><married>false</married></person>";
+
+        // when
         XmlRecord actual = xmlRecordMarshaller.processRecord(record);
 
+        // then
         assertThat(actual.getHeader()).isEqualTo(header);
         assertThat(actual.getPayload()).isXmlEqualTo(expected);
     }

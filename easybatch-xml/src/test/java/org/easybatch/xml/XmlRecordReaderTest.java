@@ -38,64 +38,62 @@ public class XmlRecordReaderTest {
 
     private XmlRecordReader xmlRecordReader;
 
-    @Before
-    public void setUp() throws Exception {
-        xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons.xml"));
-        xmlRecordReader.open();
-    }
-
     @Test
     public void testReadRecord() throws Exception {
-        XmlRecord xmlRecord = xmlRecordReader.readRecord();
+        // given
+        xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons.xml"));
+        xmlRecordReader.open();
         String expectedPayload = getXmlFromFile("/person.xml");
-        String actualPayload = xmlRecord.getPayload();
 
+        // when
+        XmlRecord xmlRecord = xmlRecordReader.readRecord();
+
+        // then
+        String actualPayload = xmlRecord.getPayload();
         XMLUnit.setIgnoreWhitespace(true);
         Diff diff = new Diff(expectedPayload, actualPayload);
-
         assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(1);
         assertThat(diff.similar()).isTrue();
     }
 
     @Test
     public void testReadingEscapedXml() throws Exception {
-        xmlRecordReader.close();
+        // given
         xmlRecordReader = new XmlRecordReader("website", getDataSource("/websites.xml"));
         xmlRecordReader.open();
-        XmlRecord record = xmlRecordReader.readRecord();
-        assertThat(record.getPayload()).isXmlEqualTo("<website name=\"google\" url=\"http://www.google.com?query=test&amp;sort=asc\"/>");
 
-        record = xmlRecordReader.readRecord();
-        assertThat(record.getPayload()).isXmlEqualTo("<website name=\"l&apos;equipe\" url=\"http://www.lequipe.fr\"/>");
+        // when
+        XmlRecord record1 = xmlRecordReader.readRecord();
+        XmlRecord record2 = xmlRecordReader.readRecord();
+        XmlRecord record3 = xmlRecordReader.readRecord();
+        XmlRecord record4 = xmlRecordReader.readRecord();
+        XmlRecord record5 = xmlRecordReader.readRecord();
+        XmlRecord record6 = xmlRecordReader.readRecord();
 
-        record = xmlRecordReader.readRecord();
-        assertThat(record.getPayload()).isXmlEqualTo("<website name=\"l&quot;internaute.com\" url=\"http://www.linternaute.com\"/>");
-
-        record = xmlRecordReader.readRecord();
-        assertThat(record.getPayload()).isXmlEqualTo("<website name=\"google\">http://www.google.com?query=test&amp;sort=asc</website>");
-
-        record = xmlRecordReader.readRecord();
-        assertThat(record.getPayload()).isXmlEqualTo("<website name=\"test\">&lt;test&gt;foo&lt;/test&gt;</website>");
-
-        record = xmlRecordReader.readRecord();
-        assertThat(record).isNull();
-
+        // then
+        assertThat(record1.getPayload()).isXmlEqualTo("<website name=\"google\" url=\"http://www.google.com?query=test&amp;sort=asc\"/>");
+        assertThat(record2.getPayload()).isXmlEqualTo("<website name=\"l&apos;equipe\" url=\"http://www.lequipe.fr\"/>");
+        assertThat(record3.getPayload()).isXmlEqualTo("<website name=\"l&quot;internaute.com\" url=\"http://www.linternaute.com\"/>");
+        assertThat(record4.getPayload()).isXmlEqualTo("<website name=\"google\">http://www.google.com?query=test&amp;sort=asc</website>");
+        assertThat(record5.getPayload()).isXmlEqualTo("<website name=\"test\">&lt;test&gt;foo&lt;/test&gt;</website>");
+        assertThat(record6).isNull();
     }
 
     @Test
     public void testReadingXmlWithCustomNamespace() throws Exception {
-        xmlRecordReader.close();
+        // given
         xmlRecordReader = new XmlRecordReader("bean", getDataSource("/beans.xml"));
         xmlRecordReader.open();
 
-        XmlRecord record = xmlRecordReader.readRecord();
-        assertThat(record.getPayload()).isXmlEqualTo("<bean id=\"foo\" class=\"java.lang.String\"><description>foo bean</description></bean>");
+        // when
+        XmlRecord record1 = xmlRecordReader.readRecord();
+        XmlRecord record2 = xmlRecordReader.readRecord();
+        XmlRecord record3 = xmlRecordReader.readRecord();
 
-        record = xmlRecordReader.readRecord();
-        assertThat(record.getPayload()).isXmlEqualTo("<bean id=\"bar\" class=\"java.lang.String\"/>");
-
-        record = xmlRecordReader.readRecord();
-        assertThat(record).isNull();
+        // then
+        assertThat(record1.getPayload()).isXmlEqualTo("<bean id=\"foo\" class=\"java.lang.String\"><description>foo bean</description></bean>");
+        assertThat(record2.getPayload()).isXmlEqualTo("<bean id=\"bar\" class=\"java.lang.String\"/>");
+        assertThat(record3).isNull();
 
     }
 
@@ -105,18 +103,28 @@ public class XmlRecordReaderTest {
 
     @Test
     public void testHasNextRecordForEmptyPersonsFile() throws Exception {
-        xmlRecordReader.close();
+        // given
         xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons-empty.xml"));
         xmlRecordReader.open();
-        assertThat(xmlRecordReader.readRecord()).isNull();
+
+        // when
+        XmlRecord actual = xmlRecordReader.readRecord();
+
+        // then
+        assertThat(actual).isNull();
     }
 
     @Test
     public void testHasNextRecordForEmptyFile() throws Exception {
-        xmlRecordReader.close();
+        // given
         xmlRecordReader = new XmlRecordReader("person", getDataSource("/empty-file.xml"));
         xmlRecordReader.open();
-        assertThat(xmlRecordReader.readRecord()).isNull();
+
+        // when
+        XmlRecord actual = xmlRecordReader.readRecord();
+
+        // then
+        assertThat(actual).isNull();
     }
 
      /*
@@ -125,20 +133,21 @@ public class XmlRecordReaderTest {
 
     @Test
     public void testReadNextNestedRecord() throws Exception {
-        xmlRecordReader.close();
+        // given
         xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons-nested.xml"));
         xmlRecordReader.open();
-        XmlRecord xmlRecord = xmlRecordReader.readRecord();
         String expectedPayload = getXmlFromFile("/person.xml");
-        String actualPayload = xmlRecord.getPayload();
 
+        // when
+        XmlRecord xmlRecord = xmlRecordReader.readRecord();
+
+        // then
+        String actualPayload = xmlRecord.getPayload();
         XMLUnit.setIgnoreWhitespace(true);
         Diff diff = new Diff(expectedPayload, actualPayload);
-
         assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(1);
         assertThat(diff.similar()).isTrue();
     }
-
 
     @After
     public void tearDown() throws Exception {

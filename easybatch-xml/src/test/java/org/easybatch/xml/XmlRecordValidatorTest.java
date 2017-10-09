@@ -51,18 +51,27 @@ public class XmlRecordValidatorTest {
 
     @Test
     public void whenRecordIsValid_thenShouldReturnTheSameRecord() throws Exception {
+        // given
         Foo Foo = new Foo("foo"); // valid name: length = 3 chars <= expected max 5 chars
         when(record.getPayload()).thenReturn(Foo);
 
+        // when
         Record<Foo> fooRecord = xmlRecordValidator.processRecord(record);
+
+        // then
         assertThat(fooRecord).isEqualTo(record);
     }
 
     @Test(expected = SAXParseException.class)
     public void whenRecordIsNotValid_thenShouldReturnThrowAnException() throws Exception {
+        // given
         Foo Foo = new Foo("foobar"); // invalid name: length = 6 chars > expected max 5 chars
         when(record.getPayload()).thenReturn(Foo);
 
+        // when
         xmlRecordValidator.processRecord(record);
+
+        // then
+        // excepted exception
     }
 }
