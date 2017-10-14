@@ -249,11 +249,8 @@ class BatchJob implements Job {
     }
 
     private void teardown() {
-        if(isInterrupted()) {
-            teardown(ABORTED);
-        } else {
-            complete();
-        }
+        JobStatus jobStatus = isInterrupted() ? ABORTED : COMPLETED;
+        teardown(jobStatus);
     }
 
     private void teardown(JobStatus status) {
@@ -262,10 +259,6 @@ class BatchJob implements Job {
         LOGGER.log(Level.INFO, "Job ''{0}'' finished with status: {1}", new Object[]{name, report.getStatus()});
         notifyJobUpdate();
         jobListener.afterJobEnd(report);
-    }
-
-    private void complete() {
-        teardown(COMPLETED);
     }
 
     private void fail(Exception exception) {
