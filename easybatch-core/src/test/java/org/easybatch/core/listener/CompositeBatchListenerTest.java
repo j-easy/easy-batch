@@ -65,8 +65,8 @@ public class CompositeBatchListenerTest {
         compositeBatchListener.afterBatchProcessing(batch);
 
         InOrder inOrder = inOrder(batchListener1, batchListener2);
-        inOrder.verify(batchListener1).afterBatchProcessing(batch);
         inOrder.verify(batchListener2).afterBatchProcessing(batch);
+        inOrder.verify(batchListener1).afterBatchProcessing(batch);
     }
 
     @Test
@@ -74,8 +74,8 @@ public class CompositeBatchListenerTest {
         compositeBatchListener.afterBatchWriting(batch);
 
         InOrder inOrder = inOrder(batchListener1, batchListener2);
-        inOrder.verify(batchListener1).afterBatchWriting(batch);
         inOrder.verify(batchListener2).afterBatchWriting(batch);
+        inOrder.verify(batchListener1).afterBatchWriting(batch);
     }
 
     @Test
@@ -83,7 +83,7 @@ public class CompositeBatchListenerTest {
         compositeBatchListener.onBatchWritingException(batch, exception);
 
         InOrder inOrder = inOrder(batchListener1, batchListener2);
-        inOrder.verify(batchListener1).onBatchWritingException(batch, exception);
         inOrder.verify(batchListener2).onBatchWritingException(batch, exception);
+        inOrder.verify(batchListener1).onBatchWritingException(batch, exception);
     }
 }

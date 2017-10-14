@@ -27,6 +27,7 @@ import org.easybatch.core.record.Batch;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Composite listener that delegates processing to other listeners.
@@ -62,22 +63,28 @@ public class CompositeBatchListener implements BatchListener {
 
     @Override
     public void afterBatchProcessing(Batch batch) {
-        for (BatchListener listener : listeners) {
-            listener.afterBatchProcessing(batch);
+        for (ListIterator<BatchListener> iterator
+                = listeners.listIterator(listeners.size());
+                iterator.hasPrevious();) {
+            iterator.previous().afterBatchProcessing(batch);
         }
     }
 
     @Override
     public void afterBatchWriting(Batch batch) {
-        for (BatchListener listener : listeners) {
-            listener.afterBatchWriting(batch);
+        for (ListIterator<BatchListener> iterator
+                = listeners.listIterator(listeners.size());
+                iterator.hasPrevious();) {
+            iterator.previous().afterBatchWriting(batch);
         }
     }
 
     @Override
     public void onBatchWritingException(Batch batch, Throwable throwable) {
-        for (BatchListener listener : listeners) {
-            listener.onBatchWritingException(batch, throwable);
+        for (ListIterator<BatchListener> iterator
+                = listeners.listIterator(listeners.size());
+                iterator.hasPrevious();) {
+            iterator.previous().onBatchWritingException(batch, throwable);
         }
     }
 

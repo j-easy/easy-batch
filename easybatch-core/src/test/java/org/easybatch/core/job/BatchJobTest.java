@@ -76,7 +76,9 @@ public class BatchJobTest {
     @Mock
     private JobReport jobReport;
     @Mock
-    private JobListener jobListener;
+    private JobListener jobListener1;
+    @Mock
+    private JobListener jobListener2;
     @Mock
     private BatchListener batchListener;
     @Mock
@@ -102,7 +104,8 @@ public class BatchJobTest {
                 .processor(firstProcessor)
                 .processor(secondProcessor)
                 .writer(writer)
-                .jobListener(jobListener)
+                .jobListener(jobListener1)
+                .jobListener(jobListener2)
                 .batchListener(batchListener)
                 .readerListener(recordReaderListener)
                 .writerListener(recordWriterListener)
@@ -185,11 +188,14 @@ public class BatchJobTest {
     public void whenNotAbleToOpenReader_thenTheJobListenerShouldBeInvoked() throws Exception {
         doThrow(exception).when(reader).open();
 
-        JobReport jobReport = job.call();
+        JobReport jobReportInternal = job.call();
+        
+        InOrder inOrder = inOrder(jobListener1, jobListener2, reader, writer);
+        inOrder.verify(jobListener2).afterJobEnd(jobReportInternal);
+        inOrder.verify(jobListener1).afterJobEnd(jobReportInternal);
+        inOrder.verify(reader).close();
+        inOrder.verify(writer).close();
 
-        verify(jobListener).afterJobEnd(jobReport);
-        verify(reader).close();
-        verify(writer).close();
     }
 
     @Test
@@ -198,7 +204,7 @@ public class BatchJobTest {
 
         JobReport jobReport = job.call();
 
-        verify(jobListener).afterJobEnd(jobReport);
+        verify(jobListener1).afterJobEnd(jobReport);
         verify(reader).close();
         verify(writer).close();
     }
@@ -321,13 +327,13 @@ public class BatchJobTest {
     public void jobListenerShouldBeInvoked() throws Exception {
         job = new JobBuilder()
                 .reader(reader)
-                .jobListener(jobListener)
+                .jobListener(jobListener1)
                 .build();
 
         JobReport report = job.call();
 
-        verify(jobListener).beforeJobStart(any(JobParameters.class));
-        verify(jobListener).afterJobEnd(report);
+        verify(jobListener1).beforeJobStart(any(JobParameters.class));
+        verify(jobListener1).afterJobEnd(report);
     }
 
     /*
@@ -356,6 +362,40 @@ public class BatchJobTest {
         inOrder.verify(batchListener).afterBatchProcessing(batch2);
         inOrder.verify(batchListener).afterBatchWriting(batch2);
         inOrder.verify(batchListener).beforeBatchReading();
+    }
+    
+    @Test
+    public void multipleBatchListenerShouldBeInvokedForEachBatchInOrder() throws Exception {
+        BatchListener batchListener1 = mock(BatchListener.class);
+        BatchListener batchListener2 = mock(BatchListener.class);
+        when(reader.readRecord()).thenReturn(record1, record2, null);
+        job = new JobBuilder()
+                .reader(reader)
+                .writer(writer)
+                .batchListener(batchListener1)
+                .batchListener(batchListener2)
+                .batchSize(1)
+                .build();
+
+        job.call();
+
+        Batch batch1 = new Batch(singletonList(record1));
+        Batch batch2 = new Batch(singletonList(record2));
+
+        InOrder inOrder = Mockito.inOrder(batchListener1, batchListener2);
+        inOrder.verify(batchListener1).beforeBatchReading();
+        inOrder.verify(batchListener2).beforeBatchReading();
+        inOrder.verify(batchListener2).afterBatchProcessing(batch1);
+        inOrder.verify(batchListener1).afterBatchProcessing(batch1);
+        inOrder.verify(batchListener2).afterBatchWriting(batch1);
+        inOrder.verify(batchListener1).afterBatchWriting(batch1);
+        //--
+        inOrder.verify(batchListener1).beforeBatchReading();
+        inOrder.verify(batchListener2).beforeBatchReading();
+        inOrder.verify(batchListener2).afterBatchProcessing(batch2);
+        inOrder.verify(batchListener1).afterBatchProcessing(batch2);
+        inOrder.verify(batchListener2).afterBatchWriting(batch2);
+        inOrder.verify(batchListener1).afterBatchWriting(batch2);
     }
 
     @Test
@@ -479,6 +519,141 @@ public class BatchJobTest {
         job.call();
 
         verify(pipelineListener).onRecordProcessingException(record1, exception);
+    }
+    
+    @Test
+    public void allJobListenersShouldBeInvokedForEachRecordInOrder() throws Exception {
+
+        JobReport jobReportReturned = job.call();
+
+        InOrder inOrder = Mockito.inOrder(reader, firstProcessor, secondProcessor, jobListener1, jobListener2);
+
+        inOrder.verify(jobListener1).beforeJobStart(any(JobParameters.class));
+        inOrder.verify(jobListener2).beforeJobStart(any(JobParameters.class));
+
+        inOrder.verify(reader).readRecord();
+        inOrder.verify(firstProcessor).processRecord(record1);
+        inOrder.verify(secondProcessor).processRecord(record1);
+        inOrder.verify(reader).readRecord();
+        inOrder.verify(firstProcessor).processRecord(record2);
+        inOrder.verify(secondProcessor).processRecord(record2);
+        inOrder.verify(reader).close();
+        inOrder.verify(jobListener2).afterJobEnd(jobReportReturned);
+        inOrder.verify(jobListener1).afterJobEnd(jobReportReturned);
+    }
+    
+    @Test
+    public void allRecordReaderListenersShouldBeInvokedForEachRecordInOrder() throws Exception {
+
+        RecordReaderListener readerListener1 = mock(RecordReaderListener.class);
+        RecordReaderListener readerListener2 = mock(RecordReaderListener.class);
+        new JobBuilder()
+                .reader(reader)
+                .processor(firstProcessor)
+                .processor(secondProcessor)
+                .readerListener(readerListener1)
+                .readerListener(readerListener2)
+                .build().call();
+
+        InOrder inOrder = Mockito.inOrder(reader, firstProcessor, secondProcessor, readerListener1, readerListener2);
+
+        inOrder.verify(readerListener1).beforeRecordReading();
+        inOrder.verify(readerListener2).beforeRecordReading();
+        inOrder.verify(reader).readRecord();
+        inOrder.verify(readerListener2).afterRecordReading(record1);
+        inOrder.verify(readerListener1).afterRecordReading(record1);
+        inOrder.verify(firstProcessor).processRecord(record1);
+        inOrder.verify(secondProcessor).processRecord(record1);
+        inOrder.verify(readerListener1).beforeRecordReading();
+        inOrder.verify(readerListener2).beforeRecordReading();
+        inOrder.verify(reader).readRecord();
+        inOrder.verify(readerListener2).afterRecordReading(record2);
+        inOrder.verify(readerListener1).afterRecordReading(record2);
+        inOrder.verify(firstProcessor).processRecord(record2);
+        inOrder.verify(secondProcessor).processRecord(record2);
+        inOrder.verify(reader).close();
+    }
+
+    @Test
+    public void allRecordWriterListenersShouldBeInvokedForEachRecordInOrder() throws Exception {
+
+        RecordWriterListener writerListener1 = mock(RecordWriterListener.class);
+        RecordWriterListener writerListener2 = mock(RecordWriterListener.class);
+        new JobBuilder()
+                .reader(reader)
+                .processor(firstProcessor)
+                .processor(secondProcessor)
+                .writerListener(writerListener1)
+                .writerListener(writerListener2)
+                .batchSize(2)
+                .writer(writer)
+                .build().call();
+
+        Batch batch = new Batch(record1, record2);
+        InOrder inOrder = Mockito.inOrder(reader, writer, firstProcessor, secondProcessor, writerListener1, writerListener2);
+
+        
+        inOrder.verify(writer).open();
+        
+        inOrder.verify(reader).readRecord();
+        inOrder.verify(firstProcessor).processRecord(record1);
+        inOrder.verify(secondProcessor).processRecord(record1);
+        inOrder.verify(reader).readRecord();
+        inOrder.verify(firstProcessor).processRecord(record2);
+        inOrder.verify(secondProcessor).processRecord(record2);
+        
+        inOrder.verify(writerListener1).beforeRecordWriting(batch);
+        inOrder.verify(writerListener2).beforeRecordWriting(batch);
+        inOrder.verify(writer).writeRecords(batch);
+        inOrder.verify(writerListener2).afterRecordWriting(batch);
+        inOrder.verify(writerListener1).afterRecordWriting(batch);
+        inOrder.verify(reader).close();
+        inOrder.verify(writer).close();
+    }
+    
+
+    @Test
+    public void allPipelineListenersShouldBeInvokedForEachRecordInOrder() throws Exception {
+
+        PipelineListener pipelineListener1 = mock(PipelineListener.class);
+        PipelineListener pipelineListener2 = mock(PipelineListener.class);
+
+        doReturn(record1).when(pipelineListener1).beforeRecordProcessing(record1);
+        doReturn(record2).when(pipelineListener1).beforeRecordProcessing(record2);
+        doReturn(record1).when(pipelineListener2).beforeRecordProcessing(record1);
+        doReturn(record2).when(pipelineListener2).beforeRecordProcessing(record2);
+        doNothing().when(pipelineListener1).afterRecordProcessing(record1, record1);
+        doNothing().when(pipelineListener1).afterRecordProcessing(record2, record2);
+        doNothing().when(pipelineListener2).afterRecordProcessing(record1, record1);
+        doNothing().when(pipelineListener2).afterRecordProcessing(record2, record2);
+        
+         new JobBuilder()
+                .reader(reader)
+                .processor(firstProcessor)
+                .processor(secondProcessor)
+                .pipelineListener(pipelineListener1)
+                .pipelineListener(pipelineListener2)
+                .build().call();
+
+        InOrder inOrder = Mockito.inOrder(reader, firstProcessor, secondProcessor, pipelineListener1, pipelineListener2);
+
+        inOrder.verify(reader).readRecord();
+        inOrder.verify(pipelineListener1).beforeRecordProcessing(record1);
+        inOrder.verify(pipelineListener2).beforeRecordProcessing(record1);
+        inOrder.verify(firstProcessor).processRecord(record1);
+        inOrder.verify(secondProcessor).processRecord(record1);
+        inOrder.verify(pipelineListener2).afterRecordProcessing(record1, record1);
+        inOrder.verify(pipelineListener1).afterRecordProcessing(record1, record1);
+
+        inOrder.verify(reader).readRecord();
+        inOrder.verify(pipelineListener1).beforeRecordProcessing(record2);
+        inOrder.verify(pipelineListener2).beforeRecordProcessing(record2);
+        inOrder.verify(firstProcessor).processRecord(record2);
+        inOrder.verify(secondProcessor).processRecord(record2);
+        inOrder.verify(pipelineListener2).afterRecordProcessing(record2, record2);
+        inOrder.verify(pipelineListener1).afterRecordProcessing(record2, record2);
+
+        inOrder.verify(reader).close();
     }
 
     @Test

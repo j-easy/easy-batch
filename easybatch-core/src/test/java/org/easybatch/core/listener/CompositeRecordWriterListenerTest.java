@@ -66,8 +66,8 @@ public class CompositeRecordWriterListenerTest {
         compositeRecordWriterListener.afterRecordWriting(batch);
 
         InOrder inOrder = inOrder(recordWriterListener1, recordWriterListener2);
-        inOrder.verify(recordWriterListener1).afterRecordWriting(batch);
         inOrder.verify(recordWriterListener2).afterRecordWriting(batch);
+        inOrder.verify(recordWriterListener1).afterRecordWriting(batch);
     }
 
     @Test
@@ -75,7 +75,7 @@ public class CompositeRecordWriterListenerTest {
         compositeRecordWriterListener.onRecordWritingException(batch, exception);
 
         InOrder inOrder = inOrder(recordWriterListener1, recordWriterListener2);
-        inOrder.verify(recordWriterListener1).onRecordWritingException(batch, exception);
         inOrder.verify(recordWriterListener2).onRecordWritingException(batch, exception);
+        inOrder.verify(recordWriterListener1).onRecordWritingException(batch, exception);
     }
 }
