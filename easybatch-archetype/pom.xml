@@ -24,20 +24,20 @@
     </developers>
 
     <scm>
-        <url>git@github.com:easybatch/easybatch-framework.git</url>
-        <connection>scm:git:git@github.com:easybatch/easybatch-framework.git</connection>
-        <developerConnection>scm:git:git@github.com:easybatch/easybatch-framework.git</developerConnection>
+        <url>git@github.com:j-easy/easy-batch.git</url>
+        <connection>scm:git:git@github.com:j-easy/easy-batch.git</connection>
+        <developerConnection>scm:git:git@github.com:j-easy/easy-batch.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/easybatch/easybatch-framework/issues</url>
+        <url>https://github.com/j-easy/easy-batch/issues</url>
     </issueManagement>
 
     <ciManagement>
         <system>Travis CI</system>
-        <url>https://travis-ci.org/EasyBatch/easybatch-framework</url>
+        <url>https://travis-ci.org/j-easy/easy-batch</url>
     </ciManagement>
 
     <licenses>
