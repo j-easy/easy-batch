@@ -110,8 +110,8 @@ public class DefaultJobReportMerger implements JobReportMerger {
     }
 
     private void calculateFilteredRecords(JobReport finalJobReport, JobReport jobReport) {
-        for (int i = 0; i < jobReport.getMetrics().getFilteredCount(); i++) {
-            finalJobReport.getMetrics().incrementFilteredCount();
+        for (int i = 0; i < jobReport.getMetrics().getFilterCount(); i++) {
+            finalJobReport.getMetrics().incrementFilterCount();
         }
     }
 

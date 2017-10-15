@@ -65,7 +65,7 @@ public class JdbcIntegrationTest extends AbstractDatabaseTest {
         JobMetrics metrics = jobReport.getMetrics();
         assertThat(metrics.getReadCount()).isEqualTo(2);
         assertThat(metrics.getErrorCount()).isEqualTo(0);
-        assertThat(metrics.getFilteredCount()).isEqualTo(0);
+        assertThat(metrics.getFilterCount()).isEqualTo(0);
         assertThat(metrics.getWriteCount()).isEqualTo(2);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
 

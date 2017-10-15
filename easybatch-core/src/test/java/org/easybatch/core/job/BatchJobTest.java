@@ -158,7 +158,7 @@ public class BatchJobTest {
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
-        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
@@ -175,7 +175,7 @@ public class BatchJobTest {
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
-        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
@@ -215,7 +215,7 @@ public class BatchJobTest {
 
         JobReport jobReport = job.call();
 
-        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
@@ -233,7 +233,7 @@ public class BatchJobTest {
 
         JobReport jobReport = job.call();
 
-        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
@@ -249,7 +249,7 @@ public class BatchJobTest {
         when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(record2);
 
         JobReport jobReport = job.call();
-        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(2);
@@ -270,7 +270,7 @@ public class BatchJobTest {
 
         JobReport jobReport = job.call();
 
-        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
@@ -286,7 +286,7 @@ public class BatchJobTest {
 
         JobReport jobReport = job.call();
 
-        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(1);
+        assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);

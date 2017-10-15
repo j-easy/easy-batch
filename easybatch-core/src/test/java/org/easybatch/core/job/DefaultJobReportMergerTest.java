@@ -54,7 +54,7 @@ public class DefaultJobReportMergerTest {
         jobReport1.getMetrics().incrementReadCount();
         jobReport1.getMetrics().incrementReadCount();
         jobReport1.getMetrics().incrementErrorCount();
-        jobReport1.getMetrics().incrementFilteredCount();
+        jobReport1.getMetrics().incrementFilterCount();
         jobReport1.getMetrics().incrementWriteCount(2);
         jobReport1.getMetrics().setStartTime(startTime1);
         jobReport1.getMetrics().setEndTime(endTime1);
@@ -72,7 +72,7 @@ public class DefaultJobReportMergerTest {
         jobReport2.getMetrics().incrementReadCount();
         jobReport2.getMetrics().incrementReadCount();
         jobReport2.getMetrics().incrementErrorCount();
-        jobReport2.getMetrics().incrementFilteredCount();
+        jobReport2.getMetrics().incrementFilterCount();
         jobReport2.getMetrics().incrementWriteCount(2);
         jobReport2.getMetrics().setStartTime(startTime2);
         jobReport2.getMetrics().setEndTime(endTime2);
@@ -85,7 +85,7 @@ public class DefaultJobReportMergerTest {
 
         assertEquals(8, finalJobReport.getMetrics().getReadCount()); // sum of read records
         assertEquals(4, finalJobReport.getMetrics().getWriteCount());// sum of written records
-        assertEquals(2, finalJobReport.getMetrics().getFilteredCount());// sum of filtered records
+        assertEquals(2, finalJobReport.getMetrics().getFilterCount());// sum of filtered records
         assertEquals(2, finalJobReport.getMetrics().getErrorCount());// sum of error records
         assertEquals(1, finalJobReport.getMetrics().getStartTime());// min of start times
         assertEquals(11, finalJobReport.getMetrics().getEndTime());// max of end times

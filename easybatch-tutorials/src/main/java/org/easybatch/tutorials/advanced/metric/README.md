@@ -48,7 +48,7 @@ Metrics:
 	Duration = 0hr 0min 0sec 305ms
 	Read count = 2
 	Write count = 2
-	Filtered count = 0
+	Filter count = 0
 	Error count = 0
 	Record processing time average (in ms) = 147.5
 ```

@@ -83,7 +83,7 @@ public class EmptyRecordFilterTest {
 
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(4);
-        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(2);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(2);
 
         List<Record<String>> records = recordCollector.getRecords();

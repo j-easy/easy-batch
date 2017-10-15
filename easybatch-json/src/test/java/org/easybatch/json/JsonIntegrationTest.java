@@ -153,7 +153,7 @@ public class JsonIntegrationTest {
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
 
@@ -170,7 +170,7 @@ public class JsonIntegrationTest {
         assertThat(jobReport).isNotNull();
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(3);
         assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getFilteredCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(3);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
     }

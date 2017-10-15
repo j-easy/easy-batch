@@ -52,7 +52,7 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
                         "\tDuration = {7}" + LINE_SEPARATOR +
                         "\tRead count = {8}" + LINE_SEPARATOR +
                         "\tWrite count = {9}" + LINE_SEPARATOR +
-                        "\tFiltered count = {10}" + LINE_SEPARATOR +
+                        "\tFilter count = {10}" + LINE_SEPARATOR +
                         "\tError count = {11}";
 
     @Override
@@ -74,7 +74,7 @@ public class DefaultJobReportFormatter implements JobReportFormatter<String> {
                 formatDuration(metrics.getDuration()),
                 metrics.getReadCount(),
                 metrics.getWriteCount(),
-                metrics.getFilteredCount(),
+                metrics.getFilterCount(),
                 metrics.getErrorCount());
 
         final StringBuilder sb = new StringBuilder(baseReport);

@@ -93,7 +93,7 @@ public class HtmlJobReportFormatter implements JobReportFormatter<String> {
         context.put("duration",formatDuration(metrics.getDuration()));
         context.put("readCount",metrics.getReadCount());
         context.put("writeCount",metrics.getWriteCount());
-        context.put("filteredCount",metrics.getFilteredCount());
+        context.put("filterCount",metrics.getFilterCount());
         context.put("errorCount",metrics.getErrorCount());
         context.put("customMetrics",metrics.getCustomMetrics());
 

@@ -51,11 +51,11 @@
                     <td><span class="label label-primary read-count" data-total="$readCount">$readCount</span></td>
                 </tr>
                 <tr>
-                    <td>Filtered records</td>
-                    <td><span class="label label-warning filtered-count" data-total="$filteredCount">$filteredCount</span></td>
+                    <td>Filter count</td>
+                    <td><span class="label label-warning filter-count" data-total="$filterCount">$filterCount</span></td>
                 </tr>
                 <tr>
-                    <td>Error records</td>
+                    <td>Error count</td>
                     <td><span class="label label-danger error-count" data-total="$errorCount">$errorCount</span></td>
                 </tr>
                 <tr>
@@ -148,9 +148,9 @@
                         y: jQuery(".read-count").data("total")
                     },
                     {
-                        name: 'Filtered count',
+                        name: 'Filter count',
                         color: '#f0ad4e',
-                        y: jQuery(".filtered-count").data("total")
+                        y: jQuery(".filter-count").data("total")
                     },
                     {
                         name: 'Error count',

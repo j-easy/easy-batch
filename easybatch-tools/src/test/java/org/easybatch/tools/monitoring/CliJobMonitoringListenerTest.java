@@ -51,7 +51,7 @@ public class CliJobMonitoringListenerTest {
     public void setUp() throws Exception {
         cliJobMonitoringListener = new CliJobMonitoringListener();
         when(report.getMetrics().getReadCount()).thenReturn(1L);
-        when(report.getMetrics().getFilteredCount()).thenReturn(1L);
+        when(report.getMetrics().getFilterCount()).thenReturn(1L);
         when(report.getMetrics().getErrorCount()).thenReturn(1L);
         when(report.getMetrics().getWriteCount()).thenReturn(1L);
     }
@@ -60,7 +60,7 @@ public class CliJobMonitoringListenerTest {
     public void testOnJobReportUpdate() throws Exception {
         cliJobMonitoringListener.onJobReportUpdate(report);
 
-        assertThat(systemOut.getLog()).isEqualTo("\rRead count = 1 | Filtered count = 1 | Error count = 1 | Write count = 1");
+        assertThat(systemOut.getLog()).isEqualTo("\rRead count = 1 | Filter count = 1 | Error count = 1 | Write count = 1");
     }
 
 }

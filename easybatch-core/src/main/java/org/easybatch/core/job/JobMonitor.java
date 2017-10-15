@@ -72,11 +72,20 @@ class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBe
     }
 
     /**
+     * @deprecated use {@link JobMonitor#getFilterCount()}. This method will be removed in v5.3
+     */
+    @Override
+    @Deprecated
+    public long getFilteredCount() {
+        return jobReport.getMetrics().getFilterCount();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
-    public long getFilteredCount() {
-        return jobReport.getMetrics().getFilteredCount();
+    public long getFilterCount() {
+        return jobReport.getMetrics().getFilterCount();
     }
 
     /**

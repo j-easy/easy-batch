@@ -84,7 +84,7 @@ public class DefaultJobReportFormatterTest {
                 "\tDuration = 0d 0hr 0min 10sec 0ms" + LINE_SEPARATOR +
                 "\tRead count = 0" + LINE_SEPARATOR +
                 "\tWrite count = 0" + LINE_SEPARATOR +
-                "\tFiltered count = 0" + LINE_SEPARATOR +
+                "\tFilter count = 0" + LINE_SEPARATOR +
                 "\tError count = 0" + LINE_SEPARATOR +
                 "\tnbFoos = 1" + LINE_SEPARATOR +
                 "System properties:" + LINE_SEPARATOR +

@@ -205,12 +205,12 @@ class BatchJob implements Job {
             Record preProcessedRecord = pipelineListener.beforeRecordProcessing(record);
             if (preProcessedRecord == null) {
                 LOGGER.log(Level.FINE, "{0} has been filtered", record);
-                metrics.incrementFilteredCount();
+                metrics.incrementFilterCount();
             } else {
                 processedRecord = recordProcessor.processRecord(preProcessedRecord);
                 if (processedRecord == null) {
                     LOGGER.log(Level.FINE, "{0} has been filtered", record);
-                    metrics.incrementFilteredCount();
+                    metrics.incrementFilterCount();
                 } else {
                     batch.addRecord(processedRecord);
                 }
