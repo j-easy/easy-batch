@@ -35,6 +35,7 @@
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-license-plugin.version>3.0</maven-license-plugin.version>
+        <maven-bundle-plugin.version>3.3.0</maven-bundle-plugin.version>
     </properties>
 
     <modules>
@@ -255,6 +256,20 @@
                             <phase>install</phase>
                             <goals>
                                 <goal>javadoc</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>${maven-bundle-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>bundle-manifest</id>
+                            <phase>process-classes</phase>
+                            <goals>
+                                <goal>manifest</goal>
                             </goals>
                         </execution>
                     </executions>
