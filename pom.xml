@@ -36,6 +36,7 @@
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-license-plugin.version>3.0</maven-license-plugin.version>
         <maven-bundle-plugin.version>3.3.0</maven-bundle-plugin.version>
+        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
     </properties>
 
     <modules>
@@ -273,6 +274,16 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
+                    <configuration>
+                        <archive>
+                            <manifestFile>target/classes/META-INF/MANIFEST.MF</manifestFile>
+                        </archive>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
