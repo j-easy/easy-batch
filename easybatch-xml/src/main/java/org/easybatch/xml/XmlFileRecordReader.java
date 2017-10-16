@@ -45,19 +45,6 @@ public class XmlFileRecordReader extends AbstractFileRecordReader {
     /**
      * Create a new {@link XmlFileRecordReader}.
      *
-     * @param rootElementName to match records
-     * @param xmlFile         to read
-     * @deprecated Use {@link XmlFileRecordReader#XmlFileRecordReader(java.io.File, java.lang.String)} instead
-     */
-    @Deprecated
-    public XmlFileRecordReader(final String rootElementName, final File xmlFile) {
-        super(xmlFile);
-        this.rootElementName = rootElementName;
-    }
-
-    /**
-     * Create a new {@link XmlFileRecordReader}.
-     *
      * @param xmlFile         to read
      * @param rootElementName to match records
      */

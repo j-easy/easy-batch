@@ -37,7 +37,6 @@ import java.util.concurrent.BlockingQueue;
 public class ContentBasedBlockingQueueRecordWriterBuilder {
 
     private Predicate predicate;
-
     private Map<Predicate, BlockingQueue<Record>> queueMap;
 
     /**
@@ -126,85 +125,6 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
         public ContentBasedBlockingQueueRecordWriter build() {
             return new ContentBasedBlockingQueueRecordWriter(queueMap);
         }
-    }
-
-    /*
-     **************************************
-     * Deprecated APIs (to remove in v5.2)
-     **************************************
-     */
-
-    /**
-     * Create a new {@link ContentBasedBlockingQueueRecordWriterBuilder}.
-     *
-     * @deprecated use {@link ContentBasedBlockingQueueRecordWriterBuilder#newContentBasedBlockingQueueRecordWriterBuilder()} instead
-     */
-    @Deprecated
-    public ContentBasedBlockingQueueRecordWriterBuilder() {
-        queueMap = new HashMap<>();
-    }
-
-    /**
-     * Register a predicate.
-     *
-     * @param predicate to register
-     * @return the builder instance
-     *
-     * @deprecated use {@link ContentBasedBlockingQueueRecordWriterBuilder#newContentBasedBlockingQueueRecordWriterBuilder()} instead
-     */
-    @Deprecated
-    public ContentBasedBlockingQueueRecordWriterBuilder when(Predicate predicate) {
-        this.predicate = predicate;
-        return this;
-    }
-
-    /**
-     * Register a queue.
-     *
-     * @param queue to register
-     * @return the builder instance
-     *
-     * @deprecated use {@link ContentBasedBlockingQueueRecordWriterBuilder#newContentBasedBlockingQueueRecordWriterBuilder()} instead
-     */
-    @Deprecated
-    public ContentBasedBlockingQueueRecordWriterBuilder writeTo(BlockingQueue<Record> queue) {
-        if (predicate == null) {
-            throw new IllegalStateException("You should specify a predicate before mapping a queue." +
-                    " Please ensure that you call when() -> writeTo() -> otherwise()  methods in that order");
-        }
-        queueMap.put(predicate, queue);
-        predicate = null;
-        return this;
-    }
-
-    /**
-     * Register a default queue.
-     *
-     * @param queue default queue
-     * @return the builder instance
-     *
-     * @deprecated use {@link ContentBasedBlockingQueueRecordWriterBuilder#newContentBasedBlockingQueueRecordWriterBuilder()} instead
-     */
-    @Deprecated
-    public ContentBasedBlockingQueueRecordWriterBuilder otherwise(BlockingQueue<Record> queue) {
-        queueMap.put(new DefaultPredicate(), queue);
-        predicate = null;
-        return this;
-    }
-
-    /**
-     * Create a new {@link ContentBasedBlockingQueueRecordWriter}.
-     *
-     * @return a new {@link ContentBasedBlockingQueueRecordWriter}
-     *
-     * @deprecated use {@link ContentBasedBlockingQueueRecordWriterBuilder#newContentBasedBlockingQueueRecordWriterBuilder()} instead
-     */
-    @Deprecated
-    public ContentBasedBlockingQueueRecordWriter build() {
-        if (queueMap.isEmpty()) {
-            throw new IllegalStateException("You can not build a ContentBasedQueueRecordWriter with an empty <Predicate, Queue> mapping.");
-        }
-        return new ContentBasedBlockingQueueRecordWriter(queueMap);
     }
 
 }
