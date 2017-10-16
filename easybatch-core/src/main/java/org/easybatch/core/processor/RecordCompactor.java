@@ -26,7 +26,7 @@ package org.easybatch.core.processor;
 import org.easybatch.core.record.StringRecord;
 
 /**
- * Convenient processor to compacts (flattens) hierarchical data (Json, Xml, etc).
+ * Convenient processor to compact (flatten) hierarchical data (Json, Xml, etc).
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

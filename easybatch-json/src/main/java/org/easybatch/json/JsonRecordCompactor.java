@@ -63,7 +63,7 @@ public class JsonRecordCompactor extends RecordCompactor {
             }
             return flatJson;
         } catch (Exception exception) {
-            LOGGER.log(Level.WARNING, "Unable to compact record paylaod", exception);
+            LOGGER.log(Level.WARNING, "Unable to compact record payload", exception);
             return EMPTY_STRING;
         } finally {
             if (jsonRecordReader != null) {
