@@ -713,6 +713,7 @@ public class BatchJobTest {
     }
 
     @Test
+    @Ignore("This test may fail if the interruption signal is intercepted after starting the second job")
     public void whenAJobIsInterrupted_thenOtherJobsShouldNotBeInterrupted() throws Exception {
         // Given
         RecordCollector recordCollector1 = new RecordCollector();
