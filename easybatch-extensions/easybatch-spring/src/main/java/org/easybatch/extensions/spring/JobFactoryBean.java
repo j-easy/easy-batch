@@ -75,7 +75,9 @@ public class JobFactoryBean implements FactoryBean {
         }
         jobBuilder.errorThreshold(errorThreshold);
         jobBuilder.batchSize(batchSize);
-        jobBuilder.enableJmx(enableJmx);
+        if (enableJmx) {
+            jobBuilder.enableJmx();
+        }
     }
 
     private void registerMainComponents(JobBuilder jobBuilder) {
