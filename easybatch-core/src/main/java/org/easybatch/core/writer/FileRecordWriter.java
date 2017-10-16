@@ -33,6 +33,10 @@ import java.nio.file.Path;
  */
 public class FileRecordWriter extends OutputStreamRecordWriter {
 
+    /*
+     * Constructors with a String
+     */
+
     /**
      * Create a new {@link FileRecordWriter}.
      *
@@ -62,6 +66,10 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     public FileRecordWriter(final String fileName, final String lineSeparator, final String charsetName) throws IOException {
         super(new OutputStreamWriter(new FileOutputStream(fileName), charsetName), lineSeparator);
     }
+
+    /*
+     * Constructors with a File
+     */
 
     /**
      * Create a new {@link FileRecordWriter}.
@@ -93,14 +101,9 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
         super(new OutputStreamWriter(new FileOutputStream(file), charsetName), lineSeparator);
     }
 
-    /**
-     * Create a new {@link FileRecordWriter}.
-     *
-     * @param fileWriter the output file writer.
+    /*
+     * Constructors with a Path
      */
-    public FileRecordWriter(final FileWriter fileWriter) throws IOException {
-        super(fileWriter);
-    }
 
     /**
      * Create a new {@link FileRecordWriter}.
@@ -132,6 +135,19 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
         this(path.toFile(), lineSeparator, charsetName);
     }
 
+    /*
+     * Constructors with a FileWriter
+     */
+
+    /**
+     * Create a new {@link FileRecordWriter}.
+     *
+     * @param fileWriter the output file writer.
+     */
+    public FileRecordWriter(final FileWriter fileWriter) throws IOException {
+        super(fileWriter);
+    }
+
     /**
      * Create a new {@link FileRecordWriter}.
      *
@@ -141,4 +157,6 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     public FileRecordWriter(final FileWriter fileWriter, final String lineSeparator) throws IOException {
         super(fileWriter, lineSeparator);
     }
+
+    /* No constructor with a charsetName parameter because it is not applicable to FileWriter */
 }
