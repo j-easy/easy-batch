@@ -52,6 +52,7 @@ public class FileRecordReaderTest {
         fileRecordReader.open();
 
         assertThat(fileRecordReader.readRecord()).isNotNull(); // foo.txt
+        assertThat(fileRecordReader.readRecord()).isNotNull(); // lorem.txt
         assertThat(fileRecordReader.readRecord()).isNull();
     }
 
@@ -60,7 +61,8 @@ public class FileRecordReaderTest {
         fileRecordReader = new FileRecordReader(new File("src/test/resources"), true);
         fileRecordReader.open();
 
-        // should read foo.txt and bars/bar.txt
+        // should read foo.txt and bars/bar.txt and lorem.txt
+        assertThat(fileRecordReader.readRecord()).isNotNull();
         assertThat(fileRecordReader.readRecord()).isNotNull();
         assertThat(fileRecordReader.readRecord()).isNotNull();
         assertThat(fileRecordReader.readRecord()).isNull();
