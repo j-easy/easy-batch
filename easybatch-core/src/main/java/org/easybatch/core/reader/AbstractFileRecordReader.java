@@ -44,4 +44,12 @@ public abstract class AbstractFileRecordReader implements RecordReader {
         this.file = file;
         this.charset = charset;
     }
+
+    public File getFile() {
+        return file;
+    }
+
+    public Charset getCharset() {
+        return charset;
+    }
 }
