@@ -38,25 +38,25 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SaveRecordFilteredTest {
+public class FilteredRecordsSavingRecordFilterTest {
 
   @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-  private Record             record;
+  private Record                            record;
 
   @Mock
-  private StringRecord       stringRecord;
+  private StringRecord                      stringRecord;
 
   @Mock
-  private File               file;
+  private File                              file;
 
   @Mock
-  private FileRecord         fileRecord;
+  private FileRecord                        fileRecord;
 
-  private SaveRecordFiltered recordFilter;
+  private FilteredRecordsSavingRecordFilter recordFilter;
 
   @Test
   public void filterNumberEqualTo() {
-    recordFilter = new SaveRecordFiltered(new RecordNumberEqualToFilter(2, 4));
+    recordFilter = new FilteredRecordsSavingRecordFilter(new RecordNumberEqualToFilter(2, 4));
 
     when(record.getHeader().getNumber()).thenReturn(1l);
     assertThat(recordFilter.processRecord(record)).isNotNull();
@@ -77,7 +77,7 @@ public class SaveRecordFilteredTest {
 
   @Test
   public void filterStringStartWith() {
-    recordFilter = new SaveRecordFiltered(new StartWithStringRecordFilter("prefix"));
+    recordFilter = new FilteredRecordsSavingRecordFilter(new StartWithStringRecordFilter("prefix"));
 
     when(stringRecord.getPayload()).thenReturn("Lorem");
     assertThat(recordFilter.processRecord(stringRecord)).isNotNull();
@@ -98,7 +98,7 @@ public class SaveRecordFilteredTest {
 
   @Test
   public void filterFileExtension() {
-    recordFilter = new SaveRecordFiltered(new FileExtensionFilter(".txt", ".xml"));
+    recordFilter = new FilteredRecordsSavingRecordFilter(new FileExtensionFilter(".txt", ".xml"));
     when(fileRecord.getPayload()).thenReturn(file);
 
     when(file.getName()).thenReturn("test.jpg");
@@ -119,14 +119,14 @@ public class SaveRecordFilteredTest {
   }
 
   private void commonAssertFirst() {
-    assertThat(recordFilter.getRecordsFiltered()).isNotNull();
-    assertThat(recordFilter.getRecordsFiltered()).isEmpty();
+    assertThat(recordFilter.getFilteredRecords()).isNotNull();
+    assertThat(recordFilter.getFilteredRecords()).isEmpty();
   }
 
   private void commonAssertGeneric(int expected) {
-    assertThat(recordFilter.getRecordsFiltered()).isNotNull();
-    assertThat(recordFilter.getRecordsFiltered()).isNotEmpty();
-    assertThat(recordFilter.getNumberRecordsFiltered()).isEqualTo(expected);
+    assertThat(recordFilter.getFilteredRecords()).isNotNull();
+    assertThat(recordFilter.getFilteredRecords()).isNotEmpty();
+    assertThat(recordFilter.getFilteredRecordNumber()).isEqualTo(expected);
   }
 
 }

@@ -37,41 +37,41 @@ import org.easybatch.core.record.Record;
  * @param <T>
  *          the type of records the filter can handle
  */
-public class SaveRecordFiltered<T> implements RecordFilter<Record<T>> {
+public class FilteredRecordsSavingRecordFilter<T> implements RecordFilter<Record<T>> {
 
-  private List<Record>            recordsFiltered = new ArrayList<>(5);
-  private RecordFilter<Record<T>> recordFilter;
+  private List<Record>            filteredRecords = new ArrayList<>(5);
+  private RecordFilter<Record<T>> delegate;
 
   /**
-   * Create a new {@link SaveRecordFiltered}
+   * Create a new {@link FilteredRecordsSavingRecordFilter}
    * 
-   * @param recordFilter
+   * @param delegate
    *          the record filter to be use
    */
-  public SaveRecordFiltered(final RecordFilter<Record<T>> recordFilter) {
-    this.recordFilter = recordFilter;
+  public FilteredRecordsSavingRecordFilter(final RecordFilter<Record<T>> delegate) {
+    this.delegate = delegate;
   }
 
   @Override
   public Record processRecord(Record record) {
-    Record recordFiltered = recordFilter.processRecord(record);
+    Record recordFiltered = delegate.processRecord(record);
     if (null == recordFiltered) {
-      recordsFiltered.add(record);
+      filteredRecords.add(record);
     }
 
     return recordFiltered;
   }
 
-  public List<Record> getRecordsFiltered() {
-    return recordsFiltered;
+  public List<Record> getFilteredRecords() {
+    return filteredRecords;
   }
 
-  public Record getRecordFiltered(int index) {
-    return recordsFiltered.get(index);
+  public Record getFilteredRecord(int index) {
+    return filteredRecords.get(index);
   }
 
-  public int getNumberRecordsFiltered() {
-    return recordsFiltered.size();
+  public int getFilteredRecordNumber() {
+    return filteredRecords.size();
   }
 
 }
