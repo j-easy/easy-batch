@@ -14,6 +14,10 @@
     <description>Extension to support OpenCSV</description>
     <url>http://www.easybatch.org</url>
 
+    <properties>
+        <opencsv.version>4.0</opencsv.version>
+    </properties>
+
     <developers>
         <developer>
             <id>benas</id>
@@ -59,7 +63,7 @@
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>3.8</version>
+            <version>${opencsv.version}</version>
         </dependency>
 
         <dependency>

@@ -14,6 +14,12 @@
     <description>Easy Batch - JPA integration module</description>
     <url>http://www.easybatch.org</url>
 
+    <properties>
+        <javaee-api.version>6.0</javaee-api.version>
+        <javax.el.version>2.2.6</javax.el.version>
+        <javax.el-api.version>2.2.5</javax.el-api.version>
+    </properties>
+
     <developers>
         <developer>
             <id>benas</id>
@@ -78,13 +84,13 @@
         <dependency>
             <groupId>javax.el</groupId>
             <artifactId>javax.el-api</artifactId>
-            <version>2.2.5</version>
+            <version>${javax.el-api.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>javax.el</artifactId>
-            <version>2.2.6</version>
+            <version>${javax.el.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -92,7 +98,7 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
-            <version>6.0</version>
+            <version>${javaee-api.version}</version>
         </dependency>
 
         <dependency>

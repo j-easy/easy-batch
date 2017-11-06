@@ -14,6 +14,10 @@
     <description>Easy Batch json module</description>
     <url>http://www.easybatch.org</url>
 
+    <properties>
+        <javax.json.version>1.0.4</javax.json.version>
+    </properties>
+
     <developers>
         <developer>
             <id>benas</id>
@@ -60,7 +64,7 @@
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
-            <version>1.0.4</version>
+            <version>${javax.json.version}</version>
         </dependency>
 
         <dependency>

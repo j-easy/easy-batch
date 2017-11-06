@@ -14,6 +14,10 @@
     <description>Extension to support Yaml format</description>
     <url>http://www.easybatch.org</url>
 
+    <properties>
+        <yamlbeans.version>1.12</yamlbeans.version>
+    </properties>
+
     <developers>
         <developer>
             <id>benas</id>
@@ -61,7 +65,7 @@
         <dependency>
             <groupId>com.esotericsoftware.yamlbeans</groupId>
             <artifactId>yamlbeans</artifactId>
-            <version>1.12</version>
+            <version>${yamlbeans.version}</version>
         </dependency>
 
         <dependency>

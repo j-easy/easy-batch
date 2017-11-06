@@ -15,6 +15,10 @@
     <description>Extension to support uniVocity</description>
     <url>http://www.univocity.com</url>
 
+    <properties>
+        <univocity-parsers.version>2.5.8</univocity-parsers.version>
+    </properties>
+
     <developers>
         <developer>
             <id>AussieGuy0</id>
@@ -61,7 +65,7 @@
         <dependency>
             <groupId>com.univocity</groupId>
             <artifactId>univocity-parsers</artifactId>
-            <version>2.2.3</version>
+            <version>${univocity-parsers.version}</version>
         </dependency>
 
         <dependency>

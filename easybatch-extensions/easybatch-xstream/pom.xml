@@ -14,6 +14,10 @@
     <description>Extension to support XStream</description>
     <url>http://www.easybatch.org</url>
 
+    <properties>
+        <xstream.version>1.4.10</xstream.version>
+    </properties>
+
     <developers>
         <developer>
             <id>benas</id>
@@ -59,7 +63,7 @@
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
-            <version>1.4.9</version>
+            <version>${xstream.version}</version>
         </dependency>
 
         <dependency>

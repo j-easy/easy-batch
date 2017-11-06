@@ -13,6 +13,12 @@
     <description>Easy Batch tools module</description>
     <url>http://www.easybatch.org</url>
 
+    <properties>
+        <javax.mail.version>1.5.6</javax.mail.version>
+        <javax.mail-api.version>1.5.6</javax.mail-api.version>
+        <velocity.version>1.7</velocity.version>
+    </properties>
+
     <developers>
         <developer>
             <id>benas</id>
@@ -59,19 +65,19 @@
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
-            <version>1.7</version>
+            <version>${velocity.version}</version>
         </dependency>
 
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>javax.mail-api</artifactId>
-            <version>1.5.6</version>
+            <version>${javax.mail-api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
-            <version>1.5.6</version>
+            <version>${javax.mail.version}</version>
         </dependency>
 
         <dependency>
