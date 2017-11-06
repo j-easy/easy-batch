@@ -33,7 +33,6 @@ import org.easybatch.core.reader.BlockingQueueRecordReader;
 import org.easybatch.core.reader.FileRecordReader;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.writer.ContentBasedBlockingQueueRecordWriter;
-import org.easybatch.core.writer.ContentBasedBlockingQueueRecordWriterBuilder;
 
 import java.io.File;
 import java.util.concurrent.BlockingQueue;
@@ -41,6 +40,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.util.Arrays.asList;
 import static org.easybatch.core.job.JobBuilder.aNewJob;
+import static org.easybatch.core.writer.ContentBasedBlockingQueueRecordWriterBuilder.newContentBasedBlockingQueueRecordWriterBuilder;
 
 /**
 * Main class to run the content based record dispatching tutorial.
@@ -61,7 +61,7 @@ public class Launcher {
         BlockingQueue<Record> xmlQueue = new LinkedBlockingQueue<>();
 
         // Create a content based record writer to write records to work queues based on their content
-        ContentBasedBlockingQueueRecordWriter contentBasedBlockingQueueRecordWriter = new ContentBasedBlockingQueueRecordWriterBuilder()
+        ContentBasedBlockingQueueRecordWriter contentBasedBlockingQueueRecordWriter = newContentBasedBlockingQueueRecordWriterBuilder()
                 .when(new CsvFilePredicate()).writeTo(csvQueue)
                 .when(new XmlFilePredicate()).writeTo(xmlQueue)
                 .build();

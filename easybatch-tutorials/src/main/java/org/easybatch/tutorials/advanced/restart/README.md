@@ -24,7 +24,7 @@ The job in this tutorial will read records from `src/main/resources/data/tweets.
  - `tweets-out.csv` should contain the first 3 tweets from `src/main/resources/data/tweets.csv`
  - `target/checkpoint.oplog` should contain two properties: `job.status=FAILED` and `write.last=3`
 
-#### Second execution (if the job fails the first attempt)
+#### Second execution (if the job fails during the first attempt)
 
 * If you restart the job, you should see the following message in the console:
 
