@@ -36,8 +36,9 @@ import java.util.concurrent.BlockingQueue;
  */
 public class ContentBasedBlockingQueueRecordWriterBuilder {
 
-    private Predicate predicate;
-    private Map<Predicate, BlockingQueue<Record>> queueMap;
+    private ContentBasedBlockingQueueRecordWriterBuilder() {
+         // force usage of static factory method newContentBasedBlockingQueueRecordWriterBuilder
+    }
 
     /**
      * Create a new {@link ContentBasedBlockingQueueRecordWriter}.
@@ -82,6 +83,13 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
          * @return the builder instance
          */
         WriteToStep when(Predicate predicate);
+
+        /**
+         * Create a new {@link ContentBasedBlockingQueueRecordWriter}.
+         *
+         * @return a new {@link ContentBasedBlockingQueueRecordWriter}
+         */
+        ContentBasedBlockingQueueRecordWriter build();
     }
 
     public interface BuildStep {
@@ -99,7 +107,7 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
 
         private Map<Predicate, BlockingQueue<Record>> queueMap;
 
-        public Steps() {
+        Steps() {
             queueMap = new HashMap<>();
         }
 

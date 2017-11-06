@@ -37,8 +37,9 @@ import java.util.Map;
  */
 public class ContentBasedJmsQueueRecordWriterBuilder {
 
-    private Predicate predicate;
-    private Map<Predicate, QueueSender> queueMap;
+    private ContentBasedJmsQueueRecordWriterBuilder() {
+        // force usage of static factory method newContentBasedJmsQueueRecordWriterBuilder
+    }
 
     /**
      * Create a new {@link ContentBasedJmsQueueRecordWriterBuilder}.
@@ -83,6 +84,13 @@ public class ContentBasedJmsQueueRecordWriterBuilder {
          * @return the builder instance
          */
         WriteToStep when(Predicate predicate);
+
+        /**
+         * Create a new {@link ContentBasedJmsQueueRecordWriter}.
+         *
+         * @return a new {@link ContentBasedJmsQueueRecordWriter}
+         */
+        ContentBasedJmsQueueRecordWriter build();
     }
 
     public interface BuildStep {
@@ -100,7 +108,7 @@ public class ContentBasedJmsQueueRecordWriterBuilder {
 
         private Map<Predicate, QueueSender> queueMap;
 
-        public Steps() {
+        Steps() {
             queueMap = new HashMap<>();
         }
 

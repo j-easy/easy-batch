@@ -52,13 +52,24 @@ public class ContentBasedJmsQueueRecordWriterBuilderTest {
                 .build();
 
         assertThat(recordWriter).isNotNull();
-        assertThatQueueMappingIsCorrect(recordWriter.getQueueMap());
-
-    }
-
-    private void assertThatQueueMappingIsCorrect(Map<Predicate, QueueSender> queueMap) {
+        Map<Predicate, QueueSender> queueMap = recordWriter.getQueueMap();
         assertThat(queueMap).isNotNull();
         assertThat(queueMap.get(predicate)).isEqualTo(queue);
         assertThat(queueMap.get(new DefaultPredicate())).isEqualTo(defaultQueue);
     }
+
+    @Test
+    public void otherwiseMethodShouldBeOptional() throws Exception {
+        ContentBasedJmsQueueRecordWriter recordWriter = ContentBasedJmsQueueRecordWriterBuilder.newContentBasedJmsQueueRecordWriterBuilder()
+                .when(predicate)
+                .writeTo(queue)
+                .build();
+
+        assertThat(recordWriter).isNotNull();
+        Map<Predicate, QueueSender> queueMap = recordWriter.getQueueMap();
+        assertThat(queueMap).isNotNull();
+        assertThat(queueMap.get(predicate)).isEqualTo(queue);
+        assertThat(queueMap.get(new DefaultPredicate())).isNull();
+    }
+
 }

@@ -51,14 +51,24 @@ public class ContentBasedBlockingQueueRecordWriterBuilderTest {
                 .build();
 
         assertThat(recordWriter).isNotNull();
-        assertThatQueueMappingIsCorrect(recordWriter.getQueueMap());
-
-    }
-
-    private void assertThatQueueMappingIsCorrect(Map<Predicate, BlockingQueue<Record>> queueMap) {
+        Map<Predicate, BlockingQueue<Record>> queueMap = recordWriter.getQueueMap();
         assertThat(queueMap).isNotNull();
         assertThat(queueMap.get(predicate)).isEqualTo(queue);
         assertThat(queueMap.get(new DefaultPredicate())).isEqualTo(defaultQueue);
+    }
+
+    @Test
+    public void otherwiseMethodShouldBeOptional() throws Exception {
+        ContentBasedBlockingQueueRecordWriter recordWriter = ContentBasedBlockingQueueRecordWriterBuilder.newContentBasedBlockingQueueRecordWriterBuilder()
+                .when(predicate)
+                .writeTo(queue)
+                .build();
+
+        assertThat(recordWriter).isNotNull();
+        Map<Predicate, BlockingQueue<Record>> queueMap = recordWriter.getQueueMap();
+        assertThat(queueMap).isNotNull();
+        assertThat(queueMap.get(predicate)).isEqualTo(queue);
+        assertThat(queueMap.get(new DefaultPredicate())).isNull();
     }
 
 }
