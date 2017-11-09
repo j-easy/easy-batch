@@ -26,6 +26,7 @@ package org.easybatch.core.job;
 import javax.management.*;
 import java.lang.management.ManagementFactory;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,14 +45,14 @@ class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBe
     /**
      * JMX notification sequence number.
      */
-    private long sequenceNumber = 1;
+    private AtomicLong sequenceNumber = new AtomicLong(1);
 
     /**
      * The batch report holding data exposed as JMX attributes.
      */
-    private JobReport jobReport;
+    final private JobReport jobReport;
 
-    public JobMonitor(final JobReport jobReport) {
+    public JobMonitor(JobReport jobReport) {
         this.jobReport = jobReport;
     }
 
@@ -128,7 +129,7 @@ class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBe
     void notifyJobReportUpdate() {
         Notification notification = new AttributeChangeNotification(
                 this,
-                sequenceNumber++,
+                sequenceNumber.getAndAdd(1),
                 new Date().getTime(),
                 "job report updated",
                 "JobReport",

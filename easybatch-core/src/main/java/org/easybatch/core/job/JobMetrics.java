@@ -26,6 +26,8 @@ package org.easybatch.core.job;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Metrics of a job.
@@ -34,58 +36,58 @@ import java.util.Map;
  */
 public class JobMetrics implements Serializable {
 
-    private long startTime;
+    private AtomicLong startTime = new AtomicLong();
 
-    private long endTime;
+    private AtomicLong endTime = new AtomicLong();
 
-    private long readCount;
+    private AtomicLong readCount = new AtomicLong();
 
-    private long writeCount;
+    private AtomicLong writeCount = new AtomicLong();
 
-    private long filterCount;
+    private AtomicLong filterCount = new AtomicLong();
 
-    private long errorCount;
+    private AtomicLong errorCount = new AtomicLong();
 
-    private Map<String, Object> customMetrics = new HashMap<>();
+    private ConcurrentHashMap<String, Object> customMetrics = new ConcurrentHashMap<>();
 
     /**
      * @deprecated use {@link JobMetrics#incrementFilterCount()}. This method will be removed in v5.3
      */
     @Deprecated
     public void incrementFilteredCount() {
-        filterCount++;
+        filterCount.addAndGet(1);
     }
 
     public void incrementFilterCount() {
-        filterCount++;
+        filterCount.addAndGet(1);
     }
 
     public void incrementErrorCount() {
-        errorCount++;
+        errorCount.addAndGet(1);
     }
 
     public void incrementReadCount() {
-        readCount++;
+        readCount.addAndGet(1);
     }
 
     public void incrementWriteCount(long count) {
-        writeCount += count;
+        writeCount.addAndGet(count);
     }
 
     public long getStartTime() {
-        return startTime;
+        return startTime.get();
     }
 
     public void setStartTime(long startTime) {
-        this.startTime = startTime;
+        this.startTime.set(startTime);
     }
 
     public long getEndTime() {
-        return endTime;
+        return endTime.get();
     }
 
     public void setEndTime(long endTime) {
-        this.endTime = endTime;
+        this.endTime.set(endTime);
     }
 
     public long getDuration() {
@@ -97,23 +99,23 @@ public class JobMetrics implements Serializable {
      */
     @Deprecated
     public long getFilteredCount() {
-        return filterCount;
+        return filterCount.get();
     }
 
     public long getFilterCount() {
-        return filterCount;
+        return filterCount.get();
     }
 
     public long getErrorCount() {
-        return errorCount;
+        return errorCount.get();
     }
 
     public long getReadCount() {
-        return readCount;
+        return readCount.get();
     }
 
     public long getWriteCount() {
-        return writeCount;
+        return writeCount.get();
     }
 
     public void addMetric(String name, Object value) {

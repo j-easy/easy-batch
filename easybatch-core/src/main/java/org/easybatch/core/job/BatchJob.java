@@ -51,19 +51,19 @@ class BatchJob implements Job {
 
     private RecordReader recordReader;
     private RecordWriter recordWriter;
-    private RecordProcessor recordProcessor;
-    private RecordTracker recordTracker;
+    RecordProcessor recordProcessor;
+    RecordTracker recordTracker;
 
     private JobListener jobListener;
-    private BatchListener batchListener;
+    BatchListener batchListener;
     private RecordReaderListener recordReaderListener;
     private RecordWriterListener recordWriterListener;
-    private PipelineListener pipelineListener;
+    PipelineListener pipelineListener;
 
-    private JobParameters parameters;
-    private JobMetrics metrics;
-    private JobReport report;
-    private JobMonitor monitor;
+    JobParameters parameters;
+    JobMetrics metrics;
+    JobReport report;
+    JobMonitor monitor;
 
     BatchJob(JobParameters parameters) {
         this.parameters = parameters;
@@ -165,7 +165,7 @@ class BatchJob implements Job {
         return recordTracker.moreRecords();
     }
 
-    private Batch readAndProcessBatch() throws RecordReadingException, ErrorThresholdExceededException {
+    Batch readAndProcessBatch() throws RecordReadingException, ErrorThresholdExceededException {
         Batch batch = new Batch();
         batchListener.beforeBatchReading();
         for (int i = 0; i < parameters.getBatchSize(); i++) {
@@ -176,13 +176,16 @@ class BatchJob implements Job {
             } else {
                 metrics.incrementReadCount();
             }
-            processRecord(record, batch);
+            Record processedRecord = processRecord(record, parameters.isJmxMonitoring(), parameters.getErrorThreshold());
+            if(processedRecord != null){
+                batch.addRecord(processedRecord);
+            }
         }
         batchListener.afterBatchProcessing(batch);
         return batch;
     }
 
-    private Record readRecord() throws RecordReadingException {
+    Record readRecord() throws RecordReadingException {
         Record record;
         try {
             LOGGER.log(Level.FINE, "Reading next record");
@@ -197,34 +200,32 @@ class BatchJob implements Job {
     }
 
     @SuppressWarnings(value = "unchecked")
-    private void processRecord(Record record, Batch batch) throws ErrorThresholdExceededException {
-        Record processedRecord = null;
+    Record processRecord(Record record, boolean jmxMonitoring, long errorThreshold)
+            throws ErrorThresholdExceededException {
         try {
             LOGGER.log(Level.FINE, "Processing {0}", record);
-            notifyJobUpdate();
+            if(jmxMonitoring) {
+                monitor.notifyJobReportUpdate();
+            }
             Record preProcessedRecord = pipelineListener.beforeRecordProcessing(record);
-            if (preProcessedRecord == null) {
+            Record processedRecord = preProcessedRecord != null ? recordProcessor.processRecord(preProcessedRecord)
+                    : null;
+            if (processedRecord == null) {
                 LOGGER.log(Level.FINE, "{0} has been filtered", record);
                 metrics.incrementFilterCount();
-            } else {
-                processedRecord = recordProcessor.processRecord(preProcessedRecord);
-                if (processedRecord == null) {
-                    LOGGER.log(Level.FINE, "{0} has been filtered", record);
-                    metrics.incrementFilterCount();
-                } else {
-                    batch.addRecord(processedRecord);
-                }
             }
             pipelineListener.afterRecordProcessing(record, processedRecord);
+            return processedRecord;
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unable to process " + record, e);
             pipelineListener.onRecordProcessingException(record, e);
             metrics.incrementErrorCount();
             report.setLastError(e);
-            if (metrics.getErrorCount() > parameters.getErrorThreshold()) {
+            if (metrics.getErrorCount() > errorThreshold) {
                 throw new ErrorThresholdExceededException("Error threshold exceeded. Aborting execution", e);
             }
         }
+        return null;
     }
 
     private void writeBatch(Batch batch) throws BatchWritingException {
