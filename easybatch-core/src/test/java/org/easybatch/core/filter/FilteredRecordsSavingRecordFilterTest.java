@@ -23,110 +23,60 @@
  */
 package org.easybatch.core.filter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-import java.io.File;
-
-import org.easybatch.core.record.FileRecord;
+import org.easybatch.core.job.JobBuilder;
+import org.easybatch.core.reader.IterableRecordReader;
 import org.easybatch.core.record.Record;
-import org.easybatch.core.record.StringRecord;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FilteredRecordsSavingRecordFilterTest {
 
-  @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-  private Record                            record;
+    @Mock
+    private Record record;
+    @Mock
+    private RecordFilter delegate;
 
-  @Mock
-  private StringRecord                      stringRecord;
+    private FilteredRecordsSavingRecordFilter recordFilter;
 
-  @Mock
-  private File                              file;
+    @Test
+    public void whenFilteringRecords_thenDelegateFilterShouldBeCalled() throws Exception {
+        // given
+        recordFilter = new FilteredRecordsSavingRecordFilter(delegate);
 
-  @Mock
-  private FileRecord                        fileRecord;
+        // when
+        recordFilter.processRecord(record);
 
-  private FilteredRecordsSavingRecordFilter recordFilter;
+        // then
+        verify(delegate).processRecord(record);
+    }
 
-  @Test
-  public void filterNumberEqualTo() {
-    recordFilter = new FilteredRecordsSavingRecordFilter(new RecordNumberEqualToFilter(2, 4));
+    @Test
+    public void filteredRecordsShouldBeSaved() {
+        // given
+        List<Integer> dataSource = Arrays.asList(1, 2, 3, 4);
+        recordFilter = new FilteredRecordsSavingRecordFilter(new RecordNumberEqualToFilter(2, 4));
 
-    when(record.getHeader().getNumber()).thenReturn(1l);
-    assertThat(recordFilter.processRecord(record)).isNotNull();
-    commonAssertFirst();
+        // when
+        JobBuilder.aNewJob()
+                .reader(new IterableRecordReader(dataSource))
+                .filter(recordFilter)
+                .build()
+                .call();
 
-    when(record.getHeader().getNumber()).thenReturn(2l);
-    assertThat(recordFilter.processRecord(record)).isNull();
-    commonAssertGeneric(1);
-
-    when(record.getHeader().getNumber()).thenReturn(3l);
-    assertThat(recordFilter.processRecord(record)).isNotNull();
-    commonAssertGeneric(1);
-
-    when(record.getHeader().getNumber()).thenReturn(4l);
-    assertThat(recordFilter.processRecord(record)).isNull();
-    commonAssertGeneric(2);
-  }
-
-  @Test
-  public void filterStringStartWith() {
-    recordFilter = new FilteredRecordsSavingRecordFilter(new StartWithStringRecordFilter("prefix"));
-
-    when(stringRecord.getPayload()).thenReturn("Lorem");
-    assertThat(recordFilter.processRecord(stringRecord)).isNotNull();
-    commonAssertFirst();
-
-    when(stringRecord.getPayload()).thenReturn("prefix_ipsum");
-    assertThat(recordFilter.processRecord(stringRecord)).isNull();
-    commonAssertGeneric(1);
-
-    when(stringRecord.getPayload()).thenReturn("dolor");
-    assertThat(recordFilter.processRecord(stringRecord)).isNotNull();
-    commonAssertGeneric(1);
-
-    when(stringRecord.getPayload()).thenReturn("prefix_sit");
-    assertThat(recordFilter.processRecord(stringRecord)).isNull();
-    commonAssertGeneric(2);
-  }
-
-  @Test
-  public void filterFileExtension() {
-    recordFilter = new FilteredRecordsSavingRecordFilter(new FileExtensionFilter(".txt", ".xml"));
-    when(fileRecord.getPayload()).thenReturn(file);
-
-    when(file.getName()).thenReturn("test.jpg");
-    assertThat(recordFilter.processRecord(fileRecord)).isNotNull();
-    commonAssertFirst();
-
-    when(file.getName()).thenReturn("test.txt");
-    assertThat(recordFilter.processRecord(fileRecord)).isNull();
-    commonAssertGeneric(1);
-
-    when(file.getName()).thenReturn("test.gif");
-    assertThat(recordFilter.processRecord(fileRecord)).isNotNull();
-    commonAssertGeneric(1);
-
-    when(file.getName()).thenReturn("test.xml");
-    assertThat(recordFilter.processRecord(fileRecord)).isNull();
-    commonAssertGeneric(2);
-  }
-
-  private void commonAssertFirst() {
-    assertThat(recordFilter.getFilteredRecords()).isNotNull();
-    assertThat(recordFilter.getFilteredRecords()).isEmpty();
-  }
-
-  private void commonAssertGeneric(int expected) {
-    assertThat(recordFilter.getFilteredRecords()).isNotNull();
-    assertThat(recordFilter.getFilteredRecords()).isNotEmpty();
-    assertThat(recordFilter.getFilteredRecordNumber()).isEqualTo(expected);
-  }
+        // then
+        List<Record> filteredRecords = recordFilter.getFilteredRecords();
+        assertThat(filteredRecords).hasSize(2);
+        assertThat(filteredRecords.get(0).getHeader().getNumber()).isEqualTo(2);
+        assertThat(filteredRecords.get(1).getHeader().getNumber()).isEqualTo(4);
+    }
 
 }
