@@ -16,7 +16,7 @@
 
     <properties>
         <jms.version>1.1</jms.version>
-        <activemq-all.version>5.15.2</activemq-all.version>
+        <activemq-all.version>5.13.5</activemq-all.version>
         <commons-io.version>2.6</commons-io.version>
     </properties>
 
