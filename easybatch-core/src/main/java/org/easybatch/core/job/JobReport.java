@@ -53,43 +53,43 @@ public class JobReport implements Serializable {
         return parameters;
     }
 
-    public JobMetrics getMetrics() {
+    public synchronized JobMetrics getMetrics() {
         return metrics;
     }
 
-    public JobStatus getStatus() {
+    public synchronized JobStatus getStatus() {
         return status;
     }
 
-    public Throwable getLastError() {
+    public synchronized Throwable getLastError() {
         return lastError;
     }
 
-    public void setJobName(String jobName) {
+    public synchronized void setJobName(String jobName) {
         this.jobName = jobName;
     }
 
-    public void setParameters(JobParameters parameters) {
+    public synchronized void setParameters(JobParameters parameters) {
         this.parameters = parameters;
     }
 
-    public void setMetrics(JobMetrics metrics) {
+    public synchronized void setMetrics(JobMetrics metrics) {
         this.metrics = metrics;
     }
 
-    public void setStatus(JobStatus status) {
+    public synchronized void setStatus(JobStatus status) {
         this.status = status;
     }
 
-    public void setLastError(Throwable lastError) {
+    public synchronized void setLastError(Throwable lastError) {
         this.lastError = lastError;
     }
 
-    public Properties getSystemProperties() {
+    public synchronized Properties getSystemProperties() {
         return systemProperties;
     }
 
-    public void setSystemProperties(Properties systemProperties) {
+    public synchronized void setSystemProperties(Properties systemProperties) {
         this.systemProperties = systemProperties;
     }
 
