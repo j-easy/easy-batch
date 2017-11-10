@@ -29,49 +29,43 @@ import java.util.List;
 import org.easybatch.core.record.Record;
 
 /**
- * A {@link RecordFilter} that filters the record in base of filter provided and
- * save it if is discarded.
- * 
+ * A {@link RecordFilter} that saves filtered records for later use.
+ * This filter delegates record filtering to another filter.
+ *
  * @author Somma Daniele
- * 
- * @param <T>
- *          the type of records the filter can handle
  */
-public class FilteredRecordsSavingRecordFilter<T> implements RecordFilter<Record<T>> {
+public class FilteredRecordsSavingRecordFilter implements RecordFilter {
 
-  private List<Record>            filteredRecords = new ArrayList<>(5);
-  private RecordFilter<Record<T>> delegate;
+    private List<Record> filteredRecords = new ArrayList<>();
+    private RecordFilter delegate;
 
-  /**
-   * Create a new {@link FilteredRecordsSavingRecordFilter}
-   * 
-   * @param delegate
-   *          the record filter to be use
-   */
-  public FilteredRecordsSavingRecordFilter(final RecordFilter<Record<T>> delegate) {
-    this.delegate = delegate;
-  }
-
-  @Override
-  public Record processRecord(Record record) {
-    Record recordFiltered = delegate.processRecord(record);
-    if (null == recordFiltered) {
-      filteredRecords.add(record);
+    /**
+     * Create a new {@link FilteredRecordsSavingRecordFilter}
+     *
+     * @param delegate
+     *          the record filter to be used
+     */
+    public FilteredRecordsSavingRecordFilter(final RecordFilter delegate) {
+        this.delegate = delegate;
     }
 
-    return recordFiltered;
-  }
+    @Override
+    public Record processRecord(Record record) {
+        Record recordFiltered = delegate.processRecord(record);
+        if (null == recordFiltered) {
+            filteredRecords.add(record);
+        }
 
-  public List<Record> getFilteredRecords() {
-    return filteredRecords;
-  }
+        return recordFiltered;
+    }
 
-  public Record getFilteredRecord(int index) {
-    return filteredRecords.get(index);
-  }
-
-  public int getFilteredRecordNumber() {
-    return filteredRecords.size();
-  }
+    /**
+     * Get filtered records.
+     *
+     * @return filtered records
+     */
+    public List<Record> getFilteredRecords() {
+        return filteredRecords;
+    }
 
 }
