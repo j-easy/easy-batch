@@ -53,15 +53,6 @@ public interface JobMonitorMBean {
 
     /**
      * Get filtered records count.
-     * @deprecated use {@link JobMonitorMBean#getFilterCount()}. This method will be removed in v5.3
-     *
-     * @return filtered records count
-     */
-    @Deprecated
-    long getFilteredCount();
-
-    /**
-     * Get filtered records count.
      *
      * @return filtered records count
      */
