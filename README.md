@@ -11,7 +11,7 @@
 [![Coverage](https://coveralls.io/repos/j-easy/easy-batch/badge.svg?style=flat&branch=master&service=github)](https://coveralls.io/github/j-easy/easy-batch?branch=master)
 [![Build Status](https://travis-ci.org/j-easy/easy-batch.svg?branch=master)](https://travis-ci.org/j-easy/easy-batch)
 [![Build status](https://ci.appveyor.com/api/projects/status/pwpfbmmew717wtgn/branch/master?svg=true)](https://ci.appveyor.com/project/benas/easy-batch/branch/master)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.1.0|)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.2.0|)
 [![Javadoc](https://www.javadoc.io/badge/org.easybatch/easybatch-core.svg)](http://www.javadoc.io/doc/org.easybatch/easybatch-core)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/j-easy/easy-batch)
 
@@ -21,6 +21,7 @@
 
 ## Latest news
 
+* 18/11/2017: Version 5.2.0 is out with new features and bug fixes! See change log [here](https://github.com/j-easy/easy-batch/releases).
 * 05/06/2017: Version 5.1.0 is out! See what's new [here](https://github.com/j-easy/easy-batch/releases).
 
 # What is Easy Batch?
@@ -88,11 +89,11 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 #### Stable:
 
-The current stable version is [v5.1.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.1.0|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/tree/master/easybatch-tutorials) | [javadoc](http://javadoc.io/doc/org.easybatch/easybatch-core/5.1.0)
+The current stable version is [v5.2.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.2.0|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/tree/master/easybatch-tutorials) | [javadoc](http://javadoc.io/doc/org.easybatch/easybatch-core/5.2.0)
 
 #### Development:
 
-The current development version is 5.2.0-SNAPSHOT [![Build Status](https://travis-ci.org/j-easy/easy-batch.svg?branch=master)](https://travis-ci.org/j-easy/easy-batch) [![Build status](https://ci.appveyor.com/api/projects/status/pwpfbmmew717wtgn/branch/master?svg=true)](https://ci.appveyor.com/project/benas/easy-batch/branch/master)
+The current development version is 5.3.0-SNAPSHOT [![Build Status](https://travis-ci.org/j-easy/easy-batch.svg?branch=master)](https://travis-ci.org/j-easy/easy-batch) [![Build status](https://ci.appveyor.com/api/projects/status/pwpfbmmew717wtgn/branch/master?svg=true)](https://ci.appveyor.com/project/benas/easy-batch/branch/master)
 
 If you want to import a snapshot version, you need to use the following repository:
 
