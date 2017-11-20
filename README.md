@@ -80,7 +80,8 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 - :movie_camera: [Introduction to Easy Batch: the simple, stupid batch processing framework for Java](https://speakerdeck.com/benas/easy-batch)
 - :newspaper: [First batch job on Podcastpedia.org using Easy Batch](http://www.codingpedia.org/ama/first-batch-job-on-podcastpedia-org-with-easybatch/)
-- :newspaper: [Develop a Java batch application in less than 5 minutes using Easy Batch (in french) ](http://benassi.developpez.com/tutoriels/java/developper-batch-easybatch-5-minutes/)
+- :newspaper: [EasyBatch, les batchs en JAVA tout simplement (in french)](https://blog.netapsys.fr/easybatch-les-batchs-en-java-tout-simplement/)
+- :newspaper: [Tutoriel pour développer un batch Java avec Easy Batch en moins de 5 minutes (in french) ](http://benassi.developpez.com/tutoriels/java/developper-batch-easybatch-5-minutes/)
 - :memo: [How I reduced my Java batch application's code by 80% using Easy Batch](http://benas.github.io/2014/01/21/how-i-reduced-my-java-app-code-by-80-using-easy-batch.html)
 - :memo: [Easy Batch vs Spring Batch: Features comparison](http://benas.github.io/2014/03/03/spring-batch-vs-easy-batch-a-hello-world-comparison.html)
 - :memo: [Easy Batch vs Spring Batch: Performance comparison](http://benas.github.io/2015/02/15/spring-batch-vs-easy-batch-a-performance-comparison.html)
