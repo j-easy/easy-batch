@@ -78,7 +78,7 @@ $>mvn package
 $>cd target
 $>java \
     -Dorg.easybatch.bench.count=10000 \
-    -cp "easybatch-benchmarks-5.2.0-SNAPSHOT.jar:dependency/*" \
+    -cp "easybatch-benchmarks-5.2.0.jar:dependency/*" \
     org.easybatch.bench.CsvBenchmark
 ```
 
@@ -90,7 +90,7 @@ $>mvn package
 $>cd target
 $>java \
     -Dorg.easybatch.bench.count=10000 \
-    -cp "easybatch-benchmarks-5.2.0-SNAPSHOT.jar:dependency/*" \
+    -cp "easybatch-benchmarks-5.2.0.jar:dependency/*" \
     org.easybatch.bench.XmlBenchmark
 ```
 
@@ -101,12 +101,12 @@ $>java \
 ```
 $>java ^
     -Dorg.easybatch.bench.count=10000 ^
-    -cp "easybatch-benchmarks-5.2.0-SNAPSHOT.jar;dependency/*" ^
+    -cp "easybatch-benchmarks-5.2.0.jar;dependency/*" ^
     org.easybatch.bench.CsvBenchmark
 
 $>java ^
     -Dorg.easybatch.bench.count=10000 ^
-    -cp "easybatch-benchmarks-5.2.0-SNAPSHOT.jar;dependency/*" ^
+    -cp "easybatch-benchmarks-5.2.0.jar;dependency/*" ^
     org.easybatch.bench.XmlBenchmark
 ```
 
