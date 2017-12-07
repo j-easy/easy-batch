@@ -193,24 +193,12 @@ public final class JobBuilder {
 
     /**
      * Activate JMX monitoring.
-     * @deprecated use {@link JobBuilder#enableJmx()} instead. This method will be removed in v5.3
      *
      * @param jmx true to enable jmx monitoring
      * @return the job builder
      */
-    @Deprecated
     public JobBuilder enableJmx(final boolean jmx) {
         parameters.setJmxMonitoring(jmx);
-        return this;
-    }
-
-    /**
-     * Activate JMX monitoring.
-     *
-     * @return the job builder
-     */
-    public JobBuilder enableJmx() {
-        parameters.setJmxMonitoring(true);
         return this;
     }
 

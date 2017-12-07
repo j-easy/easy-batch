@@ -48,14 +48,6 @@ public class JobMetrics implements Serializable {
 
     private Map<String, Object> customMetrics = new HashMap<>();
 
-    /**
-     * @deprecated use {@link JobMetrics#incrementFilterCount()}. This method will be removed in v5.3
-     */
-    @Deprecated
-    public void incrementFilteredCount() {
-        filterCount++;
-    }
-
     public void incrementFilterCount() {
         filterCount++;
     }
@@ -90,14 +82,6 @@ public class JobMetrics implements Serializable {
 
     public long getDuration() {
         return getEndTime() - getStartTime();
-    }
-
-    /**
-     * @deprecated use {@link JobMetrics#getFilterCount()}. This method will be removed in v5.3
-     */
-    @Deprecated
-    public long getFilteredCount() {
-        return filterCount;
     }
 
     public long getFilterCount() {

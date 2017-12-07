@@ -49,7 +49,7 @@ public class JobMonitoringTutorial {
                 .reader(new FlatFileRecordReader(dataSource))
                 .processor(new TweetSlowProcessor())
                 .writer(new StandardOutputRecordWriter())
-                .enableJmx()
+                .enableJmx(true)
                 .batchSize(1)
                 .build();
 

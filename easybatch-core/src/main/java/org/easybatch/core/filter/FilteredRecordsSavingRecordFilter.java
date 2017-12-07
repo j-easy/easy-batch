@@ -21,69 +21,51 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.easybatch.core.job;
+package org.easybatch.core.filter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.easybatch.core.record.Record;
 
 /**
- * JMX MBean interface to expose monitoring attributes.
+ * A {@link RecordFilter} that saves filtered records for later use.
+ * This filter delegates record filtering to another filter.
  *
- * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @author Somma Daniele
  */
-public interface JobMonitorMBean {
+public class FilteredRecordsSavingRecordFilter implements RecordFilter {
+
+    private List<Record> filteredRecords = new ArrayList<>();
+    private RecordFilter delegate;
 
     /**
-     * Get the job name.
+     * Create a new {@link FilteredRecordsSavingRecordFilter}
      *
-     * @return the job name
+     * @param delegate
+     *          the record filter to be used
      */
-    String getJobName();
+    public FilteredRecordsSavingRecordFilter(final RecordFilter delegate) {
+        this.delegate = delegate;
+    }
+
+    @Override
+    public Record processRecord(Record record) {
+        Record recordFiltered = delegate.processRecord(record);
+        if (null == recordFiltered) {
+            filteredRecords.add(record);
+        }
+
+        return recordFiltered;
+    }
 
     /**
-     * Get read records count.
+     * Get filtered records.
      *
-     * @return read records count
+     * @return filtered records
      */
-    long getReadCount();
-
-    /**
-     * Get written records count.
-     *
-     * @return written records count
-     */
-    long getWriteCount();
-
-    /**
-     * Get filtered records count.
-     *
-     * @return filtered records count
-     */
-    long getFilterCount();
-
-    /**
-     * Get error records count.
-     *
-     * @return error records count
-     */
-    long getErrorCount();
-
-    /**
-     * Get batch execution start time.
-     *
-     * @return batch execution start time
-     */
-    String getStartTime();
-
-    /**
-     * Get batch execution end time.
-     *
-     * @return batch execution end time
-     */
-    String getEndTime();
-
-    /**
-     * Get the job {@link JobStatus}.
-     *
-     * @return the job status
-     */
-    String getJobStatus();
+    public List<Record> getFilteredRecords() {
+        return filteredRecords;
+    }
 
 }

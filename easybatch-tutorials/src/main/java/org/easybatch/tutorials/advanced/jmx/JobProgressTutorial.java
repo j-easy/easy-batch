@@ -31,7 +31,6 @@ import org.easybatch.core.job.JobExecutor;
 import org.easybatch.flatfile.FlatFileRecordReader;
 
 import java.io.File;
-import java.util.logging.LogManager;
 
 /**
  * Main class to run the job progress tutorial.
@@ -55,7 +54,7 @@ public class JobProgressTutorial {
         Job job = new JobBuilder()
                 .reader(new FlatFileRecordReader(dataSource))
                 .processor(new TweetSlowProcessor())
-                .enableJmx()
+                .enableJmx(true)
                 .build();
 
         // Submit the job the job

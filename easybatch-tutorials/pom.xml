@@ -4,7 +4,7 @@
 
     <groupId>org.easybatch</groupId>
     <artifactId>easybatch-tutorials</artifactId>
-    <version>5.2.0-SNAPSHOT</version>
+    <version>5.2.0</version>
     <packaging>jar</packaging>
 
     <name>easybatch-tutorials</name>
@@ -12,7 +12,7 @@
     <url>http://www.easybatch.org</url>
 
     <properties>
-        <hsqldb.version>2.4.0</hsqldb.version>
+        <hsqldb.version>2.3.5</hsqldb.version>
         <spring.version>4.3.12.RELEASE</spring.version>
         <hibernate-core.version>4.3.11.Final</hibernate-core.version>
         <javax.json.version>1.0.4</javax.json.version>
