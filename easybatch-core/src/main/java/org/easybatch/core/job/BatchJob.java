@@ -24,7 +24,6 @@
 package org.easybatch.core.job;
 
 import org.easybatch.core.listener.*;
-import org.easybatch.core.processor.CompositeRecordProcessor;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.record.Batch;
@@ -45,45 +44,46 @@ import static org.easybatch.core.util.Utils.formatErrorThreshold;
 class BatchJob implements Job {
 
     private static final Logger LOGGER = Logger.getLogger(BatchJob.class.getName());
-    private static final String DEFAULT_JOB_NAME = "job";
 
-    private String name;
+    private final String name;
 
-    private RecordReader recordReader;
-    private RecordWriter recordWriter;
-    private RecordProcessor recordProcessor;
-    private RecordTracker recordTracker;
+    private final RecordReader recordReader;
+    private final RecordWriter recordWriter;
+    private final RecordProcessor recordProcessor;
+    private final RecordTracker recordTracker;
 
-    private JobListener jobListener;
-    private BatchListener batchListener;
-    private RecordReaderListener recordReaderListener;
-    private RecordWriterListener recordWriterListener;
-    private PipelineListener pipelineListener;
+    private final JobListener jobListener;
+    private final BatchListener batchListener;
+    private final RecordReaderListener recordReaderListener;
+    private final RecordWriterListener recordWriterListener;
+    private final PipelineListener pipelineListener;
 
-    private JobParameters parameters;
-    private JobMetrics metrics;
-    private JobReport report;
-    private JobMonitor monitor;
+    private final JobParameters parameters;
+    private final JobMetrics metrics;
+    private final JobReport report;
+    private final JobMonitor monitor;
 
-    BatchJob(JobParameters parameters) {
-        this.parameters = parameters;
-        this.name = DEFAULT_JOB_NAME;
-        metrics = new JobMetrics();
-        report = new JobReport();
+    BatchJob(JobBuilder builder) {
+        this.recordReader = builder.recordReader;
+        this.recordWriter = builder.recordWriter;
+        this.recordProcessor = builder.recordProcessor;
+        this.jobListener = builder.jobListener;
+        this.batchListener = builder.batchListener;
+        this.recordReaderListener = builder.recordReaderListener;
+        this.recordWriterListener = builder.recordWriterListener;
+        this.pipelineListener = builder.pipelineListener;
+        this.parameters = builder.parameters;
+        this.name = builder.name;
+
+
+        this.recordTracker = new RecordTracker();
+        this.metrics = new JobMetrics();
+        this.report = new JobReport();
         report.setParameters(parameters);
         report.setMetrics(metrics);
         report.setJobName(name);
         report.setSystemProperties(System.getProperties());
-        monitor = new JobMonitor(report);
-        recordReader = new NoOpRecordReader();
-        recordProcessor = new CompositeRecordProcessor();
-        recordWriter = new NoOpRecordWriter();
-        recordReaderListener = new CompositeRecordReaderListener();
-        pipelineListener = new CompositePipelineListener();
-        recordWriterListener = new CompositeRecordWriterListener();
-        batchListener = new CompositeBatchListener();
-        jobListener = new CompositeJobListener();
-        recordTracker = new RecordTracker();
+        this.monitor = new JobMonitor(report);
     }
 
     @Override
@@ -121,7 +121,6 @@ class BatchJob implements Job {
     private void start() {
         setStatus(STARTING);
         jobListener.beforeJobStart(parameters);
-        recordTracker = new RecordTracker();
         metrics.setStartTime(System.currentTimeMillis());
         LOGGER.log(Level.INFO, "Batch size: {0}", parameters.getBatchSize());
         LOGGER.log(Level.INFO, "Error threshold: {0}", formatErrorThreshold(parameters.getErrorThreshold()));
@@ -293,46 +292,5 @@ class BatchJob implements Job {
         if (parameters.isJmxMonitoring()) {
             monitor.notifyJobReportUpdate();
         }
-    }
-
-    /*
-     * Setters for job components
-     */
-
-    public void setRecordReader(RecordReader recordReader) {
-        this.recordReader = recordReader;
-    }
-
-    public void setRecordWriter(RecordWriter recordWriter) {
-        this.recordWriter = recordWriter;
-    }
-
-    public void addRecordProcessor(RecordProcessor recordProcessor) {
-        ((CompositeRecordProcessor) this.recordProcessor).addRecordProcessor(recordProcessor);
-    }
-
-    public void addBatchListener(BatchListener batchListener) {
-        ((CompositeBatchListener) this.batchListener).addBatchListener(batchListener);
-    }
-
-    public void addJobListener(JobListener jobListener) {
-        ((CompositeJobListener) this.jobListener).addJobListener(jobListener);
-    }
-
-    public void addRecordReaderListener(RecordReaderListener recordReaderListener) {
-        ((CompositeRecordReaderListener) this.recordReaderListener).addRecordReaderListener(recordReaderListener);
-    }
-
-    public void addRecordWriterListener(RecordWriterListener recordWriterListener) {
-        ((CompositeRecordWriterListener) this.recordWriterListener).addRecordWriterListener(recordWriterListener);
-    }
-
-    public void addPipelineListener(PipelineListener pipelineListener) {
-        ((CompositePipelineListener) this.pipelineListener).addPipelineListener(pipelineListener);
-    }
-
-    public void setName(String name) {
-        this.name = name;
-        this.report.setJobName(name);
     }
 }

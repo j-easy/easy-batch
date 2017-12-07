@@ -27,6 +27,7 @@ import org.easybatch.core.filter.RecordFilter;
 import org.easybatch.core.listener.*;
 import org.easybatch.core.mapper.RecordMapper;
 import org.easybatch.core.marshaller.RecordMarshaller;
+import org.easybatch.core.processor.CompositeRecordProcessor;
 import org.easybatch.core.processor.RecordProcessor;
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.validator.RecordValidator;
@@ -48,10 +49,18 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 public final class JobBuilder {
 
     private static final Logger LOGGER = Logger.getLogger(BatchJob.class.getName());
+    private static final String DEFAULT_JOB_NAME = "job";
 
-    private BatchJob job;
-
-    private JobParameters parameters;
+    String name = DEFAULT_JOB_NAME;
+    JobParameters parameters;
+    RecordReader recordReader;
+    RecordWriter recordWriter;
+    CompositeRecordProcessor recordProcessor;
+    CompositeJobListener jobListener;
+    CompositeBatchListener batchListener;
+    CompositeRecordReaderListener recordReaderListener;
+    CompositeRecordWriterListener recordWriterListener;
+    CompositePipelineListener pipelineListener;
 
     static {
         try {
@@ -69,7 +78,14 @@ public final class JobBuilder {
      */
     public JobBuilder() {
         parameters = new JobParameters();
-        job = new BatchJob(parameters);
+        recordReader = new NoOpRecordReader();
+        recordProcessor = new CompositeRecordProcessor();
+        recordWriter = new NoOpRecordWriter();
+        recordReaderListener = new CompositeRecordReaderListener();
+        pipelineListener = new CompositePipelineListener();
+        recordWriterListener = new CompositeRecordWriterListener();
+        batchListener = new CompositeBatchListener();
+        jobListener = new CompositeJobListener();
     }
 
     /**
@@ -89,7 +105,7 @@ public final class JobBuilder {
      */
     public JobBuilder named(final String name) {
         checkNotNull(name, "job name");
-        job.setName(name);
+        this.name = name;
         return this;
     }
 
@@ -101,7 +117,7 @@ public final class JobBuilder {
      */
     public JobBuilder reader(final RecordReader recordReader) {
         checkNotNull(recordReader, "record reader");
-        job.setRecordReader(recordReader);
+        this.recordReader = recordReader;
         return this;
     }
 
@@ -113,7 +129,7 @@ public final class JobBuilder {
      */
     public JobBuilder filter(final RecordFilter recordFilter) {
         checkNotNull(recordFilter, "record filter");
-        job.addRecordProcessor(recordFilter);
+        this.recordProcessor.addRecordProcessor(recordFilter);
         return this;
     }
 
@@ -125,7 +141,7 @@ public final class JobBuilder {
      */
     public JobBuilder mapper(final RecordMapper recordMapper) {
         checkNotNull(recordMapper, "record mapper");
-        job.addRecordProcessor(recordMapper);
+        this.recordProcessor.addRecordProcessor(recordMapper);
         return this;
     }
 
@@ -137,7 +153,7 @@ public final class JobBuilder {
      */
     public JobBuilder validator(final RecordValidator recordValidator) {
         checkNotNull(recordValidator, "record validator");
-        job.addRecordProcessor(recordValidator);
+        this.recordProcessor.addRecordProcessor(recordValidator);
         return this;
     }
 
@@ -149,7 +165,7 @@ public final class JobBuilder {
      */
     public JobBuilder processor(final RecordProcessor recordProcessor) {
         checkNotNull(recordProcessor, "record processor");
-        job.addRecordProcessor(recordProcessor);
+        this.recordProcessor.addRecordProcessor(recordProcessor);
         return this;
     }
 
@@ -161,7 +177,7 @@ public final class JobBuilder {
      */
     public JobBuilder marshaller(final RecordMarshaller recordMarshaller) {
         checkNotNull(recordMarshaller, "record marshaller");
-        job.addRecordProcessor(recordMarshaller);
+        this.recordProcessor.addRecordProcessor(recordMarshaller);
         return this;
     }
 
@@ -173,7 +189,7 @@ public final class JobBuilder {
      */
     public JobBuilder writer(final RecordWriter recordWriter) {
         checkNotNull(recordWriter, "record writer");
-        job.setRecordWriter(recordWriter);
+        this.recordWriter = recordWriter;
         return this;
     }
 
@@ -225,7 +241,7 @@ public final class JobBuilder {
      */
     public JobBuilder jobListener(final JobListener jobListener) {
         checkNotNull(jobListener, "job listener");
-        job.addJobListener(jobListener);
+        this.jobListener.addJobListener(jobListener);
         return this;
     }
 
@@ -238,7 +254,7 @@ public final class JobBuilder {
      */
     public JobBuilder batchListener(final BatchListener batchListener) {
         checkNotNull(batchListener, "batch listener");
-        job.addBatchListener(batchListener);
+        this.batchListener.addBatchListener(batchListener);
         return this;
     }
 
@@ -251,7 +267,7 @@ public final class JobBuilder {
      */
     public JobBuilder readerListener(final RecordReaderListener recordReaderListener) {
         checkNotNull(recordReaderListener, "record reader listener");
-        job.addRecordReaderListener(recordReaderListener);
+        this.recordReaderListener.addRecordReaderListener(recordReaderListener);
         return this;
     }
 
@@ -264,7 +280,7 @@ public final class JobBuilder {
      */
     public JobBuilder pipelineListener(final PipelineListener pipelineListener) {
         checkNotNull(pipelineListener, "pipeline listener");
-        job.addPipelineListener(pipelineListener);
+        this.pipelineListener.addPipelineListener(pipelineListener);
         return this;
     }
 
@@ -277,7 +293,7 @@ public final class JobBuilder {
      */
     public JobBuilder writerListener(final RecordWriterListener recordWriterListener) {
         checkNotNull(recordWriterListener, "record writer listener");
-        job.addRecordWriterListener(recordWriterListener);
+        this.recordWriterListener.addRecordWriterListener(recordWriterListener);
         return this;
     }
 
@@ -287,7 +303,7 @@ public final class JobBuilder {
      * @return a batch job instance
      */
     public Job build() {
-        return job;
+        return new BatchJob(this);
     }
 
 }
