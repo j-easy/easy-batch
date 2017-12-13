@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.easybatch.extensions;
 
 import org.easybatch.core.job.JobParameters;
@@ -8,10 +5,14 @@ import org.easybatch.core.job.JobReport;
 import org.easybatch.core.listener.JobListener;
 
 /**
- * 
- * @author Somma Daniele (C307838)
+ * The base element, of {@link JobListener} family, to implement new
+ * compress/decompress components. The method
+ * {@link #beforeJobStart(JobParameters)} wrap the {@link #compress()} phase;
+ * method {@link #afterJobEnd(JobReport)} wrap the {@link #decompress()} phase.
+ *
+ * @author Somma Daniele
  */
-abstract class AbstractZipJobListener implements JobListener {
+public abstract class AbstractZipJobListener implements JobListener {
 
   @Override
   public final void beforeJobStart(JobParameters jobParameters) {

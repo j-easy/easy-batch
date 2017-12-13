@@ -1,60 +1,79 @@
-/**
- * 
- */
 package org.easybatch.extensions.zip;
 
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.easybatch.extensions.AbstractZipListenerTest;
+import org.junit.After;
 import org.junit.Test;
 
 /**
- * 
- * @author Somma Daniele (C307838)
+ *
+ * @author Somma Daniele
  */
-public class CompressZipListenerTest {
+public class CompressZipListenerTest extends AbstractZipListenerTest {
 
-  private static Path         outZip;
-  private static Path[]       inFile;
-  private CompressZipListener czl;
+  private File out;
 
-  @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
-    outZip = File.createTempFile("test", ".zip").toPath();
-    Files.deleteIfExists(outZip);
-
-    inFile = new Path[] { Paths.get("src/test/resources/bar.txt"), Paths.get("src/test/resources/empty-file.txt"), Paths.get("src/test/resources/foo.txt") };
-  }
-
-  @AfterClass
-  public static void tearDownAfterClass() throws Exception {
-    Files.deleteIfExists(outZip);
-  }
-
-  @Before
-  public void setUp() throws Exception {
-    czl = new CompressZipListener(outZip, inFile);
+  @After
+  public void tearDown() {
+    if (out != null) {
+      out.delete();
+    }
   }
 
   @Test
-  public void testCompress() throws IOException {
-    czl.compress();
+  public void compressSingleFileInSubDir() throws IOException {
+    out = getTempFile("test", ".zip");
+    File[] in = { new File(PATH_BASEFILE, "bar/bar.txt") };
 
-    assertTrue(Files.exists(outZip));
-    assertTrue(Files.size(outZip) > 0);
+    compressCommon(in);
+  }
+
+  @Test
+  public void compressSingleFolder() throws IOException {
+    out = getTempFile("test", ".zip");
+    File[] in = { new File(PATH_BASEFILE, "bar") };
+
+    compressCommon(in);
+  }
+
+  @Test
+  public void compressSingleEmptyFolder() throws IOException {
+    out = getTempFile("test", ".zip");
+    File[] in = { new File(PATH_BASEFILE, "foo") };
+
+    compressCommon(in);
+  }
+
+  @Test
+  public void compressRootFolder() throws IOException {
+    out = getTempFile("test", ".zip");
+    File[] in = { new File(PATH_BASEFILE) };
+
+    compressCommon(in);
+  }
+
+  @Test
+  public void compressSelectedElement() throws IOException {
+    out = getTempFile("test", ".zip");
+    File[] in = { new File(PATH_BASEFILE, "bar"), new File(PATH_BASEFILE, "foo"), new File(PATH_BASEFILE, "empty-file.txt"), new File(PATH_BASEFILE, "foo.txt") };
+
+    compressCommon(in);
   }
 
   @Test(expected = UnsupportedOperationException.class)
-  public void testDecompress() {
-    czl.decompress();
+  public void decompressUnsupportedOperation() {
+    new CompressZipListener(null, null).decompress();
+  }
+
+  private void compressCommon(File[] in) {
+    new CompressZipListener(in, out).compress();
+
+    assertTrue(out.exists());
+    assertTrue(out.length() > 0);
   }
 
 }

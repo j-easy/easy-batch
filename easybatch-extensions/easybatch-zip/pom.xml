@@ -11,10 +11,13 @@
 	<packaging>jar</packaging>
 
 	<name>easybatch-zip</name>
-    <description>Extension to support compression-decompression technologies </description>
+    <description>Extension to support compression-decompression technologies</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<commons-compress.version>1.5</commons-compress.version>
+		<commons-io.version>2.6</commons-io.version>
 	</properties>
 
     <developers>
@@ -56,6 +59,17 @@
             <groupId>org.easybatch</groupId>
             <artifactId>easybatch-core</artifactId>
         </dependency>
+	
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-compress</artifactId>
+		    <version>${commons-compress.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>${commons-io.version}</version>
+		</dependency>
 	
 		<dependency>
 			<groupId>junit</groupId>
