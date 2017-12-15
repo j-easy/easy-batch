@@ -21,7 +21,7 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.easybatch.extensions.zip;
+package org.easybatch.extensions.sevenz;
 
 import static org.junit.Assert.assertTrue;
 
@@ -37,9 +37,9 @@ import org.junit.Test;
  *
  * @author Somma Daniele
  */
-public class DecompressZipListenerTest extends AbstractDecompressListenerTest {
+public class DecompressSevenZListenerTest extends AbstractDecompressListenerTest {
 
-  protected static final String PATH_ZIPFILE = "src/test/resources/org/easybatch/extensions/zip";
+  protected static final String PATH_SEVENZFILE = "src/test/resources/org/easybatch/extensions/7z";
 
   @Before
   public void setup() {
@@ -50,43 +50,43 @@ public class DecompressZipListenerTest extends AbstractDecompressListenerTest {
 
   @Test
   public void decompressSingleFileInSubDir() throws IOException {
-    decompressCommon(createArchiveTestFile(PATH_ZIPFILE, "test_singlefileinsubdir.zip"));
+    decompressCommon(createArchiveTestFile(PATH_SEVENZFILE, "test_singlefileinsubdir.7z"));
   }
 
   @Test
   public void decompressSelectedElement() throws IOException {
-    decompressCommon(createArchiveTestFile(PATH_ZIPFILE, "test_selected.zip"));
+    decompressCommon(createArchiveTestFile(PATH_SEVENZFILE, "test_selected.7z"));
   }
 
   @Test
   public void decompressSingleFolder() throws IOException {
-    decompressCommon(createArchiveTestFile(PATH_ZIPFILE, "test_singlefolder.zip"));
+    decompressCommon(createArchiveTestFile(PATH_SEVENZFILE, "test_singlefolder.7z"));
   }
 
   @Test
   public void decompressSingleEmptyFolder() throws IOException {
-    decompressCommonEqualTo(createArchiveTestFile(PATH_ZIPFILE, "test_emptyfolder.zip"), 0);
+    decompressCommonEqualTo(createArchiveTestFile(PATH_SEVENZFILE, "test_emptyfolder.7z"), 0);
   }
 
   @Test
   public void decompressRootFolder() throws IOException {
-    decompressCommon(createArchiveTestFile(PATH_ZIPFILE, "test_basefile.zip"));
+    decompressCommon(createArchiveTestFile(PATH_SEVENZFILE, "test_basefile.7z"));
   }
 
   @Test(expected = UnsupportedOperationException.class)
   public void testCompressUnsupportedOperation() {
-    new DecompressZipListener(null, null).compress();
+    new DecompressSevenZListener(null, null).compress();
   }
 
   private void decompressCommon(File in) {
-    new DecompressZipListener(in, OUT_FOLDER).decompress();
+    new DecompressSevenZListener(in, OUT_FOLDER).decompress();
 
     assertTrue(OUT_FOLDER.exists());
     assertTrue(FileUtils.sizeOf(OUT_FOLDER) > 0);
   }
 
   private void decompressCommonEqualTo(File in, long size) {
-    new DecompressZipListener(in, OUT_FOLDER).decompress();
+    new DecompressSevenZListener(in, OUT_FOLDER).decompress();
 
     assertTrue(OUT_FOLDER.exists());
     assertTrue(FileUtils.sizeOf(OUT_FOLDER) == size);

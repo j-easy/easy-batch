@@ -21,23 +21,18 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.easybatch.extensions.zip;
+package org.easybatch.extensions.sevenz;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.compress.archivers.ArchiveException;
-import org.apache.commons.compress.archivers.ArchiveOutputStream;
-import org.apache.commons.compress.archivers.ArchiveStreamFactory;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry;
+import org.apache.commons.compress.archivers.sevenz.SevenZOutputFile;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.easybatch.core.listener.JobListener;
@@ -45,27 +40,24 @@ import org.easybatch.core.util.Utils;
 import org.easybatch.extensions.AbstractCompressListener;
 
 /**
- * A {@link JobListener} to compress files/folders with the ZIP archive format.
- * 
- * Implementation is inspired from article <a href=
- * "http://www.thinkcode.se/blog/2015/08/21/packaging-a-zip-file-from-java-using-apache-commons-compress">Packaging
- * a zip file from Java using Apache Commons compress</a>
+ * A {@link JobListener} to compress files/folders with the 7z archive format.
+ * https://memorynotfound.com/java-7z-seven-zip-example-compress-decompress-file/
  *
  * @author Somma Daniele
  */
-public class CompressZipListener extends AbstractCompressListener {
+public class CompressSevenZListener extends AbstractCompressListener {
 
-  private static final Logger LOGGER = Logger.getLogger(CompressZipListener.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(CompressSevenZListener.class.getName());
 
   /**
-   * Create a new {@link CompressZipListener}
+   * Create a new {@link CompressSevenZListener}
    * 
    * @param out
    *          {@link File} created as output of the compression
    * @param in
    *          {@link File}'s must to be compress
    */
-  public CompressZipListener(File out, File... in) {
+  public CompressSevenZListener(File out, File... in) {
     super(out, in);
   }
 
@@ -79,76 +71,76 @@ public class CompressZipListener extends AbstractCompressListener {
   }
 
   /**
-   * Compress files/folders into zip file.
-   * 
+   * Compress files/folders into 7z file.
+   *
    * @param out
-   *          zip output file
+   *          7z output file
    * @param in
    *          files/folders to add
    * @throws ArchiveException
    * @throws IOException
    */
   private void compress(final File out, final File... in) throws ArchiveException, IOException {
-    try (OutputStream os = new FileOutputStream(out);
-        ArchiveOutputStream archive = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.ZIP, os)) {
+    try (SevenZOutputFile sevenZOutput = new SevenZOutputFile(out)) {
       for (File file : in) {
-        compress(file, archive);
+        compress(file, sevenZOutput);
       }
-      archive.finish();
     }
   }
 
-  private void compress(final File in, final ArchiveOutputStream archive) throws ArchiveException, IOException {
+  private void compress(final File in, final SevenZOutputFile sevenZOutput) throws ArchiveException, IOException {
     if (in.isDirectory()) {
       String rootDir = in.getName();
-      addDirEntry(archive, rootDir);
+      addDirEntry(sevenZOutput, in, rootDir);
       Collection<File> fileList = FileUtils.listFilesAndDirs(in, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
       fileList.remove(in);
       for (File file : fileList) {
         if (file.isDirectory()) {
-          addDirEntry(archive, rootDir + Utils.FILE_SEPARATOR + file.getName());
+          addDirEntry(sevenZOutput, file, rootDir + Utils.FILE_SEPARATOR + file.getName());
         } else {
-          addFileEntry(archive, file, getEntryName(in, file), rootDir);
+          addFileEntry(sevenZOutput, file, getEntryName(in, file), rootDir);
         }
       }
     } else {
-      addFileEntry(archive, in);
+      addFileEntry(sevenZOutput, in);
     }
   }
 
   /**
    * Add new directory entry into archive.
    * 
-   * @param archive
+   * @param sevenZOutput
    *          where add element
+   * @param file
+   *          to add into archive
    * @param nameEntry
    *          used as name for the new entry
    * @throws IOException
    */
-  private void addDirEntry(final ArchiveOutputStream archive, final String nameEntry) throws IOException {
-    ZipArchiveEntry entry = new ZipArchiveEntry(nameEntry + Utils.FILE_SEPARATOR);
-    archive.putArchiveEntry(entry);
-    archive.closeArchiveEntry();
+  private void addDirEntry(final SevenZOutputFile sevenZOutput, final File file, final String nameEntry) throws IOException {
+    SevenZArchiveEntry entry = sevenZOutput.createArchiveEntry(file, nameEntry);
+    sevenZOutput.putArchiveEntry(entry);
+    sevenZOutput.closeArchiveEntry();
   }
 
   /**
    * Add new file entry into archive with same name of file in input and without
    * root directory.
    * 
-   * @param archive
+   * @param sevenZOutput
    *          where add element
    * @param file
    *          to add into archive
    * @throws IOException
    */
-  private void addFileEntry(final ArchiveOutputStream archive, final File file) throws IOException {
-    addFileEntry(archive, file, file.getName(), null);
+  private void addFileEntry(final SevenZOutputFile sevenZOutput, final File file) throws IOException {
+    addFileEntry(sevenZOutput, file, file.getName(), null);
   }
 
   /**
    * Add new file entry into archive.
    * 
-   * @param archive
+   * @param sevenZOutput
    *          where add element
    * @param file
    *          to add into archive
@@ -158,13 +150,17 @@ public class CompressZipListener extends AbstractCompressListener {
    *          if present combined with nameEntry
    * @throws IOException
    */
-  private void addFileEntry(final ArchiveOutputStream archive, final File file, final String nameEntry, String rootDir) throws IOException {
-    ZipArchiveEntry entry = new ZipArchiveEntry(rootDir != null ? rootDir + Utils.FILE_SEPARATOR + nameEntry : nameEntry);
-    archive.putArchiveEntry(entry);
-    try (BufferedInputStream input = new BufferedInputStream(new FileInputStream(file))) {
-      IOUtils.copy(input, archive);
+  private void addFileEntry(final SevenZOutputFile sevenZOutput, final File file, final String nameEntry, final String rootDir) throws IOException {
+    SevenZArchiveEntry entry = sevenZOutput.createArchiveEntry(file, rootDir != null ? rootDir + Utils.FILE_SEPARATOR + nameEntry : nameEntry);
+    sevenZOutput.putArchiveEntry(entry);
+    try (FileInputStream in = new FileInputStream(file)) {
+      byte[] b = new byte[1024];
+      int count = 0;
+      while ((count = in.read(b)) > 0) {
+        sevenZOutput.write(b, 0, count);
+      }
     }
-    archive.closeArchiveEntry();
+    sevenZOutput.closeArchiveEntry();
   }
 
 }

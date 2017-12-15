@@ -21,7 +21,7 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.easybatch.extensions.zip;
+package org.easybatch.extensions.sevenz;
 
 import static org.junit.Assert.assertTrue;
 
@@ -34,16 +34,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- *
+ * 
  * @author Somma Daniele
  */
-public class CompressZipListenerTest extends AbstractCompressListenerTest {
+public class CompressSevenZListenerTest extends AbstractCompressListenerTest {
 
   private File out;
 
   @Before
   public void setUp() throws IOException {
-    out = createTempFile("test", ".zip");
+    out = createTempFile("test", ".7z");
   }
 
   @After
@@ -55,12 +55,12 @@ public class CompressZipListenerTest extends AbstractCompressListenerTest {
 
   @Test(expected = UnsupportedOperationException.class)
   public void decompressUnsupportedOperation() {
-    new CompressZipListener(null, null).decompress();
+    new CompressSevenZListener(null, null).decompress();
   }
 
   @Override
   protected void compressCommon(File... in) {
-    new CompressZipListener(out, in).compress();
+    new CompressSevenZListener(out, in).compress();
 
     assertTrue(out.exists());
     assertTrue(out.length() > 0);

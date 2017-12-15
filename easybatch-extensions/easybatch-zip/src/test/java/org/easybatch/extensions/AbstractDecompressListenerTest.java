@@ -21,49 +21,23 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.easybatch.extensions.zip;
-
-import static org.junit.Assert.assertTrue;
+package org.easybatch.extensions;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.easybatch.extensions.AbstractCompressListenerTest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.easybatch.core.util.Utils;
 
 /**
+ * The base element to implement test for decompress components.
  *
  * @author Somma Daniele
  */
-public class CompressZipListenerTest extends AbstractCompressListenerTest {
+public abstract class AbstractDecompressListenerTest extends AbstractZipListenerTest {
 
-  private File out;
+  protected static final File OUT_FOLDER = new File(Utils.JAVA_IO_TMPDIR, "TEMPDECOMPRESS");
 
-  @Before
-  public void setUp() throws IOException {
-    out = createTempFile("test", ".zip");
-  }
-
-  @After
-  public void tearDown() {
-    if (out != null) {
-      out.delete();
-    }
-  }
-
-  @Test(expected = UnsupportedOperationException.class)
-  public void decompressUnsupportedOperation() {
-    new CompressZipListener(null, null).decompress();
-  }
-
-  @Override
-  protected void compressCommon(File... in) {
-    new CompressZipListener(out, in).compress();
-
-    assertTrue(out.exists());
-    assertTrue(out.length() > 0);
+  protected static File createArchiveTestFile(String parent, String child) {
+    return new File(parent, child);
   }
 
 }

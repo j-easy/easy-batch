@@ -24,6 +24,7 @@
 package org.easybatch.extensions;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * The base from where start to implement new compress components. The
@@ -44,12 +45,12 @@ public abstract class AbstractCompressListener extends AbstractZipJobListener {
   /**
    * Create a new {@link AbstractCompressListener}
    * 
-   * @param in
-   *          {@link File}'s must to be compress
    * @param out
    *          {@link File} created as output of the compression
+   * @param in
+   *          {@link File}'s must to be compress
    */
-  public AbstractCompressListener(File[] in, File out) {
+  public AbstractCompressListener(File out, File... in) {
     super();
     this.in = in;
     this.out = out;
@@ -63,6 +64,24 @@ public abstract class AbstractCompressListener extends AbstractZipJobListener {
   @Override
   public final void decompress() {
     throw new UnsupportedOperationException("Unsupported compress function. Use the right component.");
+  }
+
+  /**
+   * Remove the leading part of each entry that contains the source directory
+   * name
+   *
+   * @param source
+   *          the directory where the file entry is found
+   * @param file
+   *          the file that is about to be added
+   * @return the name of an archive entry
+   * @throws IOException
+   *           if the io fails
+   */
+  protected String getEntryName(final File source, final File file) throws IOException {
+    int index = source.getAbsolutePath().length() + 1;
+    String path = file.getCanonicalPath();
+    return path.substring(index);
   }
 
 }
