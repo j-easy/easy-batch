@@ -21,7 +21,7 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.easybatch.extensions.zip;
+package org.easybatch.extensions.tar;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,34 +34,32 @@ import java.util.logging.Logger;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.util.Utils;
 import org.easybatch.extensions.AbstractCompressListener;
+import org.easybatch.extensions.factory.ArchiveEntryFactory;
 
 /**
- * A {@link JobListener} to compress files/folders with the ZIP archive format.
- * 
- * Implementation is inspired from article <a href=
- * "http://www.thinkcode.se/blog/2015/08/21/packaging-a-zip-file-from-java-using-apache-commons-compress">Packaging
- * a zip file from Java using Apache Commons compress</a>
+ * A {@link JobListener} to compress files/folders with the TAR archive format.
  *
  * @author Somma Daniele
  */
-public class CompressZipListener extends AbstractCompressListener {
+public class CompressTarListener extends AbstractCompressListener {
 
-  private static final Logger LOGGER = Logger.getLogger(CompressZipListener.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(CompressTarListener.class.getName());
 
   /**
-   * Create a new {@link CompressZipListener}
+   * Create a new {@link CompressTarListener}
    * 
    * @param out
    *          {@link File} created as output of the compression
    * @param in
    *          {@link File}'s must to be compress
    */
-  public CompressZipListener(File out, File... in) {
+  public CompressTarListener(File out, File... in) {
     super(out, in);
   }
 
@@ -75,7 +73,7 @@ public class CompressZipListener extends AbstractCompressListener {
   }
 
   /**
-   * Compress files/folders into zip file.
+   * Compress files/folders into tar file.
    * 
    * @param out
    *          zip output file
@@ -86,7 +84,7 @@ public class CompressZipListener extends AbstractCompressListener {
    */
   private void compress(final File out, final File... in) throws ArchiveException, IOException {
     try (OutputStream os = new FileOutputStream(out);
-        ArchiveOutputStream archive = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.ZIP, os)) {
+        ArchiveOutputStream archive = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, os)) {
       for (File file : in) {
         compress(file, archive);
       }
@@ -97,18 +95,23 @@ public class CompressZipListener extends AbstractCompressListener {
   private void compress(final File in, final ArchiveOutputStream archive) throws ArchiveException, IOException {
     if (in.isDirectory()) {
       String rootDir = in.getName();
-      addDirEntry(archive, ArchiveStreamFactory.ZIP, rootDir);
+      addDirEntry(archive, ArchiveStreamFactory.TAR, rootDir);
       Collection<File> fileList = FileUtils.listFilesAndDirs(in, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
       fileList.remove(in);
       for (File file : fileList) {
         if (file.isDirectory()) {
-          addDirEntry(archive, ArchiveStreamFactory.ZIP, rootDir + Utils.FILE_SEPARATOR + file.getName());
+          addDirEntry(archive, ArchiveStreamFactory.TAR, rootDir + Utils.FILE_SEPARATOR + file.getName());
         } else {
-          addFileEntry(archive, ArchiveStreamFactory.ZIP, file, getEntryName(in, file), rootDir);
+          TarArchiveEntry entry = (TarArchiveEntry) ArchiveEntryFactory.getArchiveEntry(ArchiveStreamFactory.TAR,
+              rootDir + Utils.FILE_SEPARATOR + getEntryName(in, file));
+          entry.setSize(file.length());
+          addFileEntry(archive, entry, file);
         }
       }
     } else {
-      addFileEntry(archive, ArchiveStreamFactory.ZIP, in);
+      TarArchiveEntry entry = (TarArchiveEntry) ArchiveEntryFactory.getArchiveEntry(ArchiveStreamFactory.TAR, in.getName());
+      entry.setSize(in.length());
+      addFileEntry(archive, entry, in);
     }
   }
 

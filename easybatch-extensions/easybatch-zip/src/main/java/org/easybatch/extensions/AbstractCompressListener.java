@@ -23,8 +23,16 @@
  */
 package org.easybatch.extensions;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+
+import org.apache.commons.compress.archivers.ArchiveEntry;
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.utils.IOUtils;
+import org.easybatch.core.util.Utils;
+import org.easybatch.extensions.factory.ArchiveEntryFactory;
 
 /**
  * The base from where start to implement new compress components. The
@@ -82,6 +90,91 @@ public abstract class AbstractCompressListener extends AbstractZipJobListener {
     int index = source.getAbsolutePath().length() + 1;
     String path = file.getCanonicalPath();
     return path.substring(index);
+  }
+
+  /**
+   * Add new directory entry into archive.
+   * 
+   * @param archive
+   *          where add element
+   * @param archiverName
+   *          the archive name/type
+   * @param nameEntry
+   *          used as name for the new entry
+   * @throws IOException
+   */
+  protected void addDirEntry(final ArchiveOutputStream archive, final String archiverName, final String nameEntry) throws IOException {
+    addDirEntry(archive, ArchiveEntryFactory.getArchiveEntry(archiverName, nameEntry + Utils.FILE_SEPARATOR));
+  }
+
+  /**
+   * Add new directory entry into archive.
+   * 
+   * @param archive
+   *          where add element
+   * @param entry
+   *          to add
+   * @throws IOException
+   */
+  protected void addDirEntry(final ArchiveOutputStream archive, final ArchiveEntry entry) throws IOException {
+    archive.putArchiveEntry(entry);
+    archive.closeArchiveEntry();
+  }
+
+  /**
+   * Add new file entry into archive with same name of file in input and without
+   * root directory.
+   *
+   * @param archive
+   *          where add element
+   * @param archiverName
+   *          the archive name/type
+   * @param file
+   *          to add into archive
+   * @throws IOException
+   */
+  protected void addFileEntry(final ArchiveOutputStream archive, final String archiverName, final File file) throws IOException {
+    addFileEntry(archive, archiverName, file, file.getName(), null);
+  }
+
+  /**
+   * Add new file entry into archive.
+   *
+   * @param archive
+   *          where add element
+   * @param archiverName
+   *          the archive name/type
+   * @param file
+   *          to add into archive
+   * @param nameEntry
+   *          used as name for the new entry
+   * @param rootDir
+   *          if present combined with nameEntry
+   * @throws IOException
+   */
+  protected void addFileEntry(final ArchiveOutputStream archive, final String archiverName, final File file, final String nameEntry, String rootDir)
+      throws IOException {
+    ArchiveEntry entry = ArchiveEntryFactory.getArchiveEntry(archiverName, rootDir != null ? rootDir + Utils.FILE_SEPARATOR + nameEntry : nameEntry);
+    addFileEntry(archive, entry, file);
+  }
+
+  /**
+   * Add new file entry into archive.
+   * 
+   * @param archive
+   *          where add element
+   * @param entry
+   *          to add
+   * @param file
+   *          to add into archive
+   * @throws IOException
+   */
+  protected void addFileEntry(final ArchiveOutputStream archive, final ArchiveEntry entry, final File file) throws IOException {
+    archive.putArchiveEntry(entry);
+    try (BufferedInputStream input = new BufferedInputStream(new FileInputStream(file))) {
+      IOUtils.copy(input, archive);
+    }
+    archive.closeArchiveEntry();
   }
 
 }

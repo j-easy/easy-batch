@@ -27,10 +27,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.compress.archivers.ArchiveException;
+import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry;
 import org.apache.commons.compress.archivers.sevenz.SevenZOutputFile;
 import org.apache.commons.io.FileUtils;
@@ -38,10 +40,10 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.easybatch.core.listener.JobListener;
 import org.easybatch.core.util.Utils;
 import org.easybatch.extensions.AbstractCompressListener;
+import org.easybatch.extensions.factory.ArchiveEntryFactory;
 
 /**
  * A {@link JobListener} to compress files/folders with the 7z archive format.
- * https://memorynotfound.com/java-7z-seven-zip-example-compress-decompress-file/
  *
  * @author Somma Daniele
  */
@@ -118,7 +120,10 @@ public class CompressSevenZListener extends AbstractCompressListener {
    * @throws IOException
    */
   private void addDirEntry(final SevenZOutputFile sevenZOutput, final File file, final String nameEntry) throws IOException {
-    SevenZArchiveEntry entry = sevenZOutput.createArchiveEntry(file, nameEntry);
+    SevenZArchiveEntry entry = (SevenZArchiveEntry) ArchiveEntryFactory.getArchiveEntry(ArchiveStreamFactory.SEVEN_Z, nameEntry);
+    entry.setDirectory(file.isDirectory());
+    entry.setLastModifiedDate(new Date(file.lastModified()));
+
     sevenZOutput.putArchiveEntry(entry);
     sevenZOutput.closeArchiveEntry();
   }
@@ -151,7 +156,11 @@ public class CompressSevenZListener extends AbstractCompressListener {
    * @throws IOException
    */
   private void addFileEntry(final SevenZOutputFile sevenZOutput, final File file, final String nameEntry, final String rootDir) throws IOException {
-    SevenZArchiveEntry entry = sevenZOutput.createArchiveEntry(file, rootDir != null ? rootDir + Utils.FILE_SEPARATOR + nameEntry : nameEntry);
+    SevenZArchiveEntry entry = (SevenZArchiveEntry) ArchiveEntryFactory.getArchiveEntry(ArchiveStreamFactory.SEVEN_Z,
+        rootDir != null ? rootDir + Utils.FILE_SEPARATOR + nameEntry : nameEntry);
+    entry.setDirectory(file.isDirectory());
+    entry.setLastModifiedDate(new Date(file.lastModified()));
+
     sevenZOutput.putArchiveEntry(entry);
     try (FileInputStream in = new FileInputStream(file)) {
       byte[] b = new byte[1024];
