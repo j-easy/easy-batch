@@ -24,6 +24,8 @@
 package org.easybatch.core.mapper;
 
 import org.easybatch.core.converter.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -38,8 +40,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
@@ -50,7 +50,7 @@ import static java.lang.String.format;
  */
 public class ObjectMapper<T> {
 
-    private static final Logger LOGGER = Logger.getLogger(ObjectMapper.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ObjectMapper.class.getName());
 
     private Class<T> objectType;
     private Map<String, Method> setters;
@@ -87,26 +87,26 @@ public class ObjectMapper<T> {
 
             Method setter = setters.get(field);
             if (setter == null) {
-                LOGGER.log(Level.WARNING, "No public setter found for field {0}, this field will be set to null (if object type) or default value (if primitive type)", field);
+                LOGGER.warn("No public setter found for field {}, this field will be set to null (if object type) or default value (if primitive type)", field);
                 continue;
             }
 
             Class<?> type = setter.getParameterTypes()[0];
             TypeConverter<String, ?> typeConverter = typeConverters.get(type);
             if (typeConverter == null) {
-                LOGGER.log(Level.WARNING,
-                        "Type conversion not supported for type {0}, field {1} will be set to null (if object type) or default value (if primitive type)",
-                        new Object[]{type, field});
+                LOGGER.warn(
+                        "Type conversion not supported for type {}, field {} will be set to null (if object type) or default value (if primitive type)",
+                        type, field);
                 continue;
             }
 
             if (value == null) {
-                LOGGER.log(Level.WARNING, "Attempting to convert null to type {0} for field {1}, this field will be set to null (if object type) or default value (if primitive type)", new Object[]{type, field});
+                LOGGER.warn("Attempting to convert null to type {} for field {}, this field will be set to null (if object type) or default value (if primitive type)", type, field);
                 continue;
             }
 
             if (value.isEmpty()) {
-                LOGGER.log(Level.FINE, "Attempting to convert an empty string to type {0} for field {1}, this field will be ignored", new Object[]{type, field});
+                LOGGER.debug("Attempting to convert an empty string to type {} for field {}, this field will be ignored", type, field);
                 continue;
             }
 
@@ -190,7 +190,7 @@ public class ObjectMapper<T> {
         Type[] genericInterfaces = typeConverterClass.getGenericInterfaces();
         Type genericInterface = genericInterfaces[0];
         if (!(genericInterface instanceof ParameterizedType)) {
-            LOGGER.log(Level.WARNING, "The type converter {0} should be a parametrized type", typeConverterClass.getName());
+            LOGGER.warn("The type converter {} should be a parametrized type", typeConverterClass.getName());
             return;
         }
         ParameterizedType parameterizedType = (ParameterizedType) genericInterface;

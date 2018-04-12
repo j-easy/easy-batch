@@ -24,10 +24,10 @@
 package org.easybatch.json;
 
 import org.easybatch.core.processor.RecordCompactor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Compacts (flattens) a Json record payload.
@@ -36,7 +36,7 @@ import java.util.logging.Logger;
  */
 public class JsonRecordCompactor extends RecordCompactor {
 
-    private static final Logger LOGGER = Logger.getLogger(JsonRecordCompactor.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonRecordCompactor.class.getName());
 
     @Override
     protected String compact(final String payload) {
@@ -63,14 +63,14 @@ public class JsonRecordCompactor extends RecordCompactor {
             }
             return flatJson;
         } catch (Exception exception) {
-            LOGGER.log(Level.WARNING, "Unable to compact record payload", exception);
+            LOGGER.warn("Unable to compact record payload", exception);
             return EMPTY_STRING;
         } finally {
             if (jsonRecordReader != null) {
                 try {
                     jsonRecordReader.close();
                 } catch (Exception e) {
-                    LOGGER.log(Level.WARNING, "Unable to close json reader", e);
+                    LOGGER.warn("Unable to close json reader", e);
                 }
             }
         }

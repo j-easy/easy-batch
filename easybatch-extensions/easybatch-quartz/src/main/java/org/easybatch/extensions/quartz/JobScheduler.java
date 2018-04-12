@@ -25,10 +25,10 @@ package org.easybatch.extensions.quartz;
 
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
 import static org.easybatch.core.util.Utils.checkNotNull;
@@ -44,7 +44,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
  */
 public class JobScheduler {
 
-    private static final Logger LOGGER = Logger.getLogger(JobScheduler.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobScheduler.class.getName());
 
     private static final String JOB_NAME_PREFIX = "job-";
 
@@ -101,7 +101,7 @@ public class JobScheduler {
         JobDetail jobDetail = getJobDetail(job, jobName);
 
         try {
-            LOGGER.log(Level.INFO, "Scheduling job ''{0}'' to start at {1}", new Object[]{name, startTime});
+            LOGGER.info("Scheduling job ''{}'' to start at {}", name, startTime);
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
             throw new JobSchedulerException(format("Unable to schedule job '%s'", name), e);
@@ -157,7 +157,7 @@ public class JobScheduler {
         JobDetail jobDetail = getJobDetail(job, jobName);
 
         try {
-            LOGGER.log(Level.INFO, "Scheduling job ''{0}'' to start at {1}", new Object[]{name, startTime});
+            LOGGER.info("Scheduling job ''{}'' to start at {}", name, startTime);
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
             throw new JobSchedulerException(format("Unable to schedule job '%s'", name), e);
@@ -193,7 +193,7 @@ public class JobScheduler {
         JobDetail jobDetail = getJobDetail(job, jobName);
 
         try {
-            LOGGER.log(Level.INFO, "Scheduling job ''{0}'' to start at {1} and every {2} second(s)", new Object[]{name, startTime, interval});
+            LOGGER.info("Scheduling job ''{}'' to start at {} and every {} second(s)", name, startTime, interval);
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
             throw new JobSchedulerException(format("Unable to schedule job '%s'", name), e);
@@ -255,7 +255,7 @@ public class JobScheduler {
         JobDetail jobDetail = getJobDetail(job, jobName);
 
         try {
-            LOGGER.log(Level.INFO, "Scheduling job ''{0}'' to start at {1} and every {2} second(s)", new Object[]{name, startTime, interval});
+            LOGGER.info("Scheduling job ''{}'' to start at {} and every {} second(s)", name, startTime, interval);
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
             throw new JobSchedulerException(format("Unable to schedule job '%s'", name), e);
@@ -287,7 +287,7 @@ public class JobScheduler {
         JobDetail jobDetail = getJobDetail(job, jobName);
 
         try {
-            LOGGER.log(Level.INFO, "Scheduling job ''{0}'' with cron expression {1}", new Object[]{name, cronExpression});
+            LOGGER.info("Scheduling job ''{}'' with cron expression {}", name, cronExpression);
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
             throw new JobSchedulerException(format("Unable to schedule job '%s'", name), e);
@@ -332,7 +332,7 @@ public class JobScheduler {
         JobDetail jobDetail = getJobDetail(job, jobName);
 
         try {
-            LOGGER.log(Level.INFO, "Scheduling job ''{0}'' with cron expression {1}", new Object[]{name, cronExpression});
+            LOGGER.info("Scheduling job ''{}'' with cron expression {}", name, cronExpression);
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
             throw new JobSchedulerException(format("Unable to schedule job '%s'", name), e);
@@ -347,7 +347,7 @@ public class JobScheduler {
      */
     public void unschedule(final org.easybatch.core.job.Job job) throws JobSchedulerException {
         String jobName = job.getName();
-        LOGGER.log(Level.INFO, "Unscheduling job ''{0}'' ", jobName);
+        LOGGER.info("Unscheduling job ''{}'' ", jobName);
         try {
             scheduler.unscheduleJob(TriggerKey.triggerKey(TRIGGER_NAME_PREFIX + jobName));
         } catch (SchedulerException e) {

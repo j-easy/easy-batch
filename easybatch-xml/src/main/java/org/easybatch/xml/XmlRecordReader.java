@@ -25,6 +25,8 @@ package org.easybatch.xml;
 
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.record.Header;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -34,8 +36,6 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A record reader that reads xml records from an xml stream.
@@ -46,7 +46,7 @@ import java.util.logging.Logger;
  */
 public class XmlRecordReader implements RecordReader {
 
-    private static final Logger LOGGER = Logger.getLogger(XmlRecordReader.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlRecordReader.class.getName());
 
     private String rootElementName;
     private InputStream xmlInputStream;
@@ -126,7 +126,7 @@ public class XmlRecordReader implements RecordReader {
             }
             return true;
         } catch (Exception e) {
-            LOGGER.log(Level.FINE, "Unable to peek next xml record", e); // JUL does not have DEBUG level ..
+            LOGGER.debug("Unable to peek next xml record", e);
             return false;
         }
     }

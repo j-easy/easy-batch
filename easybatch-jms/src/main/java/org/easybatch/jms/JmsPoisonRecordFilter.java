@@ -24,11 +24,11 @@
 package org.easybatch.jms;
 
 import org.easybatch.core.filter.RecordFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Filter for {@link JmsPoisonRecord}s.
@@ -37,7 +37,7 @@ import java.util.logging.Logger;
  */
 public class JmsPoisonRecordFilter implements RecordFilter<JmsRecord> {
 
-    private static final Logger LOGGER = Logger.getLogger(JmsPoisonRecordFilter.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JmsPoisonRecordFilter.class.getName());
 
     @Override
     public JmsRecord processRecord(JmsRecord record) {
@@ -51,7 +51,7 @@ public class JmsPoisonRecordFilter implements RecordFilter<JmsRecord> {
                 }
             }
         } catch (JMSException e) {
-            LOGGER.log(Level.WARNING, "Unable to get type of JMS message " + payload, e);
+            LOGGER.warn("Unable to get type of JMS message " + payload, e);
             return null;
         }
         if (record instanceof JmsPoisonRecord || isPoison || payload instanceof JmsPoisonMessage) {
