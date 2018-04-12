@@ -141,7 +141,7 @@ public class XmlRecordReader implements RecordReader {
                 xmlEventReader.peek().asEndElement().getName().getLocalPart().equalsIgnoreCase(rootElementName);
     }
 
-    private void writeEndElement(StringBuilder stringBuilder, XMLEvent xmlEvent) throws XMLStreamException {
+    private void writeEndElement(StringBuilder stringBuilder, XMLEvent xmlEvent) {
         if (xmlEvent.isEndElement()) {
             EndElement endElement = xmlEvent.asEndElement();
             stringBuilder.append("</").append(endElement.getName().getLocalPart()).append(">");
