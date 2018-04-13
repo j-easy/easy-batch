@@ -142,7 +142,7 @@ public class XmlWrapperTagWriter implements JobListener {
             fileWriter.write("</" + wrapperTag + ">");
             fileWriter.flush();
         } catch (IOException e) {
-            LOGGER.warn("Unable to write closing wrapper tag to file " + file.getAbsolutePath(), e);
+            LOGGER.warn("Unable to write closing wrapper tag to file {}", file.getAbsolutePath(), e);
         } finally {
             if (fileWriter != null) {
                 try {
