@@ -51,7 +51,7 @@ public class JmsPoisonRecordFilter implements RecordFilter<JmsRecord> {
                 }
             }
         } catch (JMSException e) {
-            LOGGER.warn("Unable to get type of JMS message " + payload, e);
+            LOGGER.warn("Unable to get type of JMS message {}", payload, e);
             return null;
         }
         if (record instanceof JmsPoisonRecord || isPoison || payload instanceof JmsPoisonMessage) {
