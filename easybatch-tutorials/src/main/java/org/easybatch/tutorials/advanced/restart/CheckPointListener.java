@@ -104,7 +104,7 @@ public class CheckPointListener implements RecordWriterListener, PipelineListene
             properties.setProperty(key, value);
             properties.store(new FileWriter(journal), String.format("setting key '%s' to %s", key, value));
         } catch (IOException e) {
-            LOGGER.error("Unable to write property {] in journal file", key, e);
+            LOGGER.error("Unable to write property {} in journal file", key, e);
         }
     }
     
