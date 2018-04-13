@@ -156,7 +156,7 @@ class BatchJob implements Job {
         if(isInterrupted()) {
             LOGGER.info("Job ''{}'' has been interrupted, aborting execution.", name);
         }
-        LOGGER.info("Job ''{}'' " + status.name().toLowerCase(), name);
+        LOGGER.info("Job ''{}'' {}", name, status.name().toLowerCase());
         report.setStatus(status);
     }
 
