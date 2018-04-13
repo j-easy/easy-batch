@@ -227,7 +227,7 @@ class BatchJob implements Job {
     }
 
     private void writeBatch(Batch batch) throws BatchWritingException {
-        LOGGER.info("Writing {}", batch);
+        LOGGER.debug("Writing {}", batch);
         try {
             if (!batch.isEmpty()) {
                 recordWriterListener.beforeRecordWriting(batch);
