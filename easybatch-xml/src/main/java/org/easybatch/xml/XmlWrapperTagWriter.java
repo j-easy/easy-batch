@@ -122,7 +122,7 @@ public class XmlWrapperTagWriter implements JobListener {
             fileWriter.write(LINE_SEPARATOR);
             fileWriter.flush();
         } catch (IOException e) {
-            LOGGER.warn("Unable to write XML declaration and wrapper opening tag to file " + file.getAbsolutePath(), e);
+            LOGGER.warn("Unable to write XML declaration and wrapper opening tag to file ", file.getAbsolutePath(), e);
         } finally {
             if (fileWriter != null) {
                 try {
