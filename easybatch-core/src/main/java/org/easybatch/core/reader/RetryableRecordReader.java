@@ -26,10 +26,10 @@ package org.easybatch.core.reader;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.retry.RetryPolicy;
 import org.easybatch.core.retry.RetryTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Callable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Decorator that makes a {@link RecordReader} retryable whenever the data source is temporarily unavailable.
@@ -86,7 +86,7 @@ public class RetryableRecordReader implements RecordReader {
 
     private class RecordReadingTemplate extends RetryTemplate {
 
-        private final Logger LOGGER = Logger.getLogger(RecordReadingTemplate.class.getName());
+        private final Logger LOGGER = LoggerFactory.getLogger(RecordReadingTemplate.class.getName());
 
         RecordReadingTemplate(RetryPolicy retryPolicy) {
             super(retryPolicy);
@@ -104,17 +104,17 @@ public class RetryableRecordReader implements RecordReader {
 
         @Override
         protected void onException(Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to read next record", e);
+            LOGGER.error("Unable to read next record", e);
         }
 
         @Override
         protected void onMaxAttempts(Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to read next record after {0} attempt(s)", retryPolicy.getMaxAttempts());
+            LOGGER.error("Unable to read next record after {} attempt(s)", retryPolicy.getMaxAttempts());
         }
 
         @Override
         protected void beforeWait() {
-            LOGGER.log(Level.INFO, "Waiting for {0} {1} before retrying to read next record", new Object[]{retryPolicy.getDelay(), retryPolicy.getTimeUnit()});
+            LOGGER.info("Waiting for {} {} before retrying to read next record", retryPolicy.getDelay(), retryPolicy.getTimeUnit());
         }
 
         @Override

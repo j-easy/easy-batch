@@ -30,9 +30,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -43,7 +42,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  */
 public class HibernateRecordWriter implements RecordWriter {
 
-    private static final Logger LOGGER = Logger.getLogger(HibernateRecordWriter.class.getSimpleName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(HibernateRecordWriter.class.getSimpleName());
 
     private SessionFactory sessionFactory;
     private Session session;
@@ -76,7 +75,7 @@ public class HibernateRecordWriter implements RecordWriter {
             transaction.commit();
             LOGGER.info("Transaction committed");
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to commit transaction", e);
+            LOGGER.error("Unable to commit transaction", e);
             transaction.rollback();
             LOGGER.info("Transaction rolled back");
         }
@@ -90,7 +89,7 @@ public class HibernateRecordWriter implements RecordWriter {
                 session.close();
             }
         } catch (HibernateException e) {
-            LOGGER.log(Level.SEVERE, "Unable to close session", e);
+            LOGGER.error("Unable to close session", e);
         }
     }
 }

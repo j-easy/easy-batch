@@ -26,13 +26,13 @@ package org.easybatch.jdbc;
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.writer.RecordWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -43,7 +43,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  */
 public class JdbcRecordWriter implements RecordWriter {
 
-    private static final Logger LOGGER = Logger.getLogger(JdbcRecordWriter.class.getSimpleName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcRecordWriter.class.getSimpleName());
 
     private DataSource dataSource;
     private Connection connection;
@@ -85,7 +85,7 @@ public class JdbcRecordWriter implements RecordWriter {
             connection.commit();
             LOGGER.info("Transaction committed");
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Unable to commit transaction", e);
+            LOGGER.error("Unable to commit transaction", e);
             connection.rollback();
             LOGGER.info("Transaction rolled back");
         } finally {

@@ -5,8 +5,6 @@ import static java.lang.String.valueOf;
 
 import java.io.*;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.easybatch.core.job.JobParameters;
 import org.easybatch.core.job.JobReport;
 import org.easybatch.core.job.JobStatus;
@@ -16,6 +14,8 @@ import org.easybatch.core.listener.RecordWriterListener;
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.util.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Listener that saves the number of the last successfully written record in a persistent store ( a file in this example ).
@@ -33,7 +33,7 @@ public class CheckPointListener implements RecordWriterListener, PipelineListene
     public static final String JOB_STATUS_KEY = "job.status";
     public static final String WRITE_LAST_KEY = "write.last";
     
-    private static final Logger LOGGER = Logger.getLogger(CheckPointListener.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(CheckPointListener.class.getName());
 
     private long lastSuccessfullyWrittenRecordNumber;
     
@@ -104,7 +104,7 @@ public class CheckPointListener implements RecordWriterListener, PipelineListene
             properties.setProperty(key, value);
             properties.store(new FileWriter(journal), String.format("setting key '%s' to %s", key, value));
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Unable to write property " + key + " in journal file", e);
+            LOGGER.error("Unable to write property {} in journal file", key, e);
         }
     }
     

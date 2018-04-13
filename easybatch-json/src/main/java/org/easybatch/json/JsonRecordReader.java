@@ -25,6 +25,8 @@ package org.easybatch.json;
 
 import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.record.Header;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.json.Json;
 import javax.json.JsonValue;
@@ -38,8 +40,6 @@ import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.easybatch.core.util.Utils.checkNotNull;
 
@@ -63,7 +63,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  */
 public class JsonRecordReader implements RecordReader {
 
-    private static final Logger LOGGER = Logger.getLogger(JsonRecordReader.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonRecordReader.class.getName());
 
     private InputStream inputStream;
     private JsonParser parser;
@@ -208,7 +208,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.writeStartArray();
                 } catch (JsonGenerationException e) {
-                    LOGGER.log(Level.FINE, "Invalid json generator state", e); // JUL does not have DEBUG level ..
+                    LOGGER.debug("Invalid json generator state", e);
                     jsonGenerator.writeStartArray(key);
                 }
                 break;
@@ -220,7 +220,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.writeStartObject();
                 } catch (Exception e) {
-                    LOGGER.log(Level.FINE, "Invalid json generator state", e); // JUL does not have DEBUG level ..
+                    LOGGER.debug("Invalid json generator state", e);
                     jsonGenerator.writeStartObject(key);
                 }
                 break;
@@ -232,7 +232,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.write(JsonValue.FALSE);
                 } catch (Exception e) {
-                    LOGGER.log(Level.FINE, "Invalid json generator state", e); // JUL does not have DEBUG level ..
+                    LOGGER.debug("Invalid json generator state", e);
                     jsonGenerator.write(key, JsonValue.FALSE);
                 }
                 break;
@@ -240,7 +240,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.write(JsonValue.NULL);
                 } catch (Exception e) {
-                    LOGGER.log(Level.FINE, "Invalid json generator state", e); // JUL does not have DEBUG level ..
+                    LOGGER.debug("Invalid json generator state", e);
                     jsonGenerator.write(key, JsonValue.NULL);
                 }
                 break;
@@ -248,7 +248,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.write(JsonValue.TRUE);
                 } catch (Exception e) {
-                    LOGGER.log(Level.FINE, "Invalid json generator state", e); // JUL does not have DEBUG level ..
+                    LOGGER.debug("Invalid json generator state", e);
                     jsonGenerator.write(key, JsonValue.TRUE);
                 }
                 break;
@@ -259,7 +259,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.write(parser.getString());
                 } catch (Exception e) {
-                    LOGGER.log(Level.FINE, "Invalid json generator state", e); // JUL does not have DEBUG level ..
+                    LOGGER.debug("Invalid json generator state", e);
                     jsonGenerator.write(key, parser.getString());
                 }
                 break;
@@ -267,7 +267,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.write(parser.getBigDecimal());
                 } catch (Exception e) {
-                    LOGGER.log(Level.FINE, "Invalid json generator state", e); // JUL does not have DEBUG level ..
+                    LOGGER.debug("Invalid json generator state", e);
                     jsonGenerator.write(key, parser.getBigDecimal());
                 }
                 break;

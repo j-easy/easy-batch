@@ -24,9 +24,8 @@
 package org.easybatch.core.listener;
 
 import org.easybatch.core.record.Record;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Pipeline listener that calculates the processing time of a record.
@@ -35,7 +34,7 @@ import java.util.logging.Logger;
  */
 public class RecordProcessingTimeListener implements PipelineListener {
 
-    private static final Logger LOGGER = Logger.getLogger(RecordProcessingTimeListener.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(RecordProcessingTimeListener.class.getName());
 
     private long recordNumber;
 
@@ -60,6 +59,6 @@ public class RecordProcessingTimeListener implements PipelineListener {
 
     private void logProcessingTime() {
         long elapsedTime = System.currentTimeMillis() - startTime;
-        LOGGER.log(Level.INFO, "Record N° {0} processing time = {1}ms", new Object[]{recordNumber, elapsedTime});
+        LOGGER.info("Record N° {} processing time = {}ms", recordNumber, elapsedTime);
     }
 }

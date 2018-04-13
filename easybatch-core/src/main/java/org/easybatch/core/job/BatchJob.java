@@ -30,9 +30,8 @@ import org.easybatch.core.reader.RecordReader;
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.writer.RecordWriter;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.easybatch.core.job.JobStatus.*;
 import static org.easybatch.core.util.Utils.formatErrorThreshold;
@@ -44,7 +43,7 @@ import static org.easybatch.core.util.Utils.formatErrorThreshold;
  */
 class BatchJob implements Job {
 
-    private static final Logger LOGGER = Logger.getLogger(BatchJob.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(BatchJob.class);
     private static final String DEFAULT_JOB_NAME = "job";
 
     private String name;
@@ -123,9 +122,9 @@ class BatchJob implements Job {
         jobListener.beforeJobStart(parameters);
         recordTracker = new RecordTracker();
         metrics.setStartTime(System.currentTimeMillis());
-        LOGGER.log(Level.INFO, "Batch size: {0}", parameters.getBatchSize());
-        LOGGER.log(Level.INFO, "Error threshold: {0}", formatErrorThreshold(parameters.getErrorThreshold()));
-        LOGGER.log(Level.INFO, "Jmx monitoring: {0}", parameters.isJmxMonitoring());
+        LOGGER.info("Batch size: {}", parameters.getBatchSize());
+        LOGGER.info("Error threshold: {}", formatErrorThreshold(parameters.getErrorThreshold()));
+        LOGGER.info("Jmx monitoring: {}", parameters.isJmxMonitoring());
         registerJobMonitor();
     }
 
@@ -137,7 +136,7 @@ class BatchJob implements Job {
 
     private void openReader() throws RecordReaderOpeningException {
         try {
-            LOGGER.log(Level.FINE, "Opening record reader");
+            LOGGER.debug("Opening record reader");
             recordReader.open();
         } catch (Exception e) {
             throw new RecordReaderOpeningException("Unable to open record reader", e);
@@ -146,7 +145,7 @@ class BatchJob implements Job {
 
     private void openWriter() throws RecordWriterOpeningException {
         try {
-            LOGGER.log(Level.FINE, "Opening record writer");
+            LOGGER.debug("Opening record writer");
             recordWriter.open();
         } catch (Exception e) {
             throw new RecordWriterOpeningException("Unable to open record writer", e);
@@ -155,9 +154,9 @@ class BatchJob implements Job {
 
     private void setStatus(JobStatus status) {
         if(isInterrupted()) {
-            LOGGER.log(Level.INFO, "Job ''{0}'' has been interrupted, aborting execution.", name);
+            LOGGER.info("Job ''{}'' has been interrupted, aborting execution.", name);
         }
-        LOGGER.log(Level.INFO, "Job ''{0}'' " + status.name().toLowerCase(), name);
+        LOGGER.info("Job ''{}'' {}", name, status.name().toLowerCase());
         report.setStatus(status);
     }
 
@@ -185,7 +184,7 @@ class BatchJob implements Job {
     private Record readRecord() throws RecordReadingException {
         Record record;
         try {
-            LOGGER.log(Level.FINE, "Reading next record");
+            LOGGER.debug("Reading next record");
             recordReaderListener.beforeRecordReading();
             record = recordReader.readRecord();
             recordReaderListener.afterRecordReading(record);
@@ -200,16 +199,16 @@ class BatchJob implements Job {
     private void processRecord(Record record, Batch batch) throws ErrorThresholdExceededException {
         Record processedRecord = null;
         try {
-            LOGGER.log(Level.FINE, "Processing {0}", record);
+            LOGGER.debug("Processing {}", record);
             notifyJobUpdate();
             Record preProcessedRecord = pipelineListener.beforeRecordProcessing(record);
             if (preProcessedRecord == null) {
-                LOGGER.log(Level.FINE, "{0} has been filtered", record);
+                LOGGER.debug("{} has been filtered", record);
                 metrics.incrementFilterCount();
             } else {
                 processedRecord = recordProcessor.processRecord(preProcessedRecord);
                 if (processedRecord == null) {
-                    LOGGER.log(Level.FINE, "{0} has been filtered", record);
+                    LOGGER.debug("{} has been filtered", record);
                     metrics.incrementFilterCount();
                 } else {
                     batch.addRecord(processedRecord);
@@ -217,7 +216,7 @@ class BatchJob implements Job {
             }
             pipelineListener.afterRecordProcessing(record, processedRecord);
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Unable to process " + record, e);
+            LOGGER.error("Unable to process {}", record, e);
             pipelineListener.onRecordProcessingException(record, e);
             metrics.incrementErrorCount();
             report.setLastError(e);
@@ -228,7 +227,7 @@ class BatchJob implements Job {
     }
 
     private void writeBatch(Batch batch) throws BatchWritingException {
-        LOGGER.log(Level.FINE, "Writing {0}", batch);
+        LOGGER.debug("Writing {}", batch);
         try {
             if (!batch.isEmpty()) {
                 recordWriterListener.beforeRecordWriting(batch);
@@ -256,7 +255,7 @@ class BatchJob implements Job {
     private void teardown(JobStatus status) {
         report.setStatus(status);
         metrics.setEndTime(System.currentTimeMillis());
-        LOGGER.log(Level.INFO, "Job ''{0}'' finished with status: {1}", new Object[]{name, report.getStatus()});
+        LOGGER.info( "Job ''{}'' finished with status: {}", new Object[]{name, report.getStatus()});
         notifyJobUpdate();
         jobListener.afterJobEnd(report);
     }
@@ -264,27 +263,27 @@ class BatchJob implements Job {
     private void fail(Exception exception) {
         String reason = exception.getMessage();
         Throwable error = exception.getCause();
-        LOGGER.log(Level.SEVERE, reason, error);
+        LOGGER.error(reason, error);
         report.setLastError(error);
         teardown(FAILED);
     }
 
     private void closeReader() {
         try {
-            LOGGER.log(Level.FINE, "Closing record reader");
+            LOGGER.debug("Closing record reader");
             recordReader.close();
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Unable to close record reader", e);
+            LOGGER.warn("Unable to close record reader", e);
             report.setLastError(e);
         }
     }
 
     private void closeWriter() {
         try {
-            LOGGER.log(Level.FINE, "Closing record writer");
+            LOGGER.debug("Closing record writer");
             recordWriter.close();
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Unable to close record writer", e);
+            LOGGER.warn("Unable to close record writer", e);
             report.setLastError(e);
         }
     }
