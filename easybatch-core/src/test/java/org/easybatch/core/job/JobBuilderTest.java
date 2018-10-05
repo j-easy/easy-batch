@@ -33,7 +33,7 @@ public class JobBuilderTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenErrorThresholdIsLessThanOne_thenShouldThrowAnIllegalArgumentException() throws Exception {
-        JobBuilder.aNewJob().errorThreshold(0);
+    public void whenErrorThresholdIsLessThanZero_thenShouldThrowAnIllegalArgumentException() throws Exception {
+        JobBuilder.aNewJob().errorThreshold(-1);
     }
 }

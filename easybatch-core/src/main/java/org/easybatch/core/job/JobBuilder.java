@@ -166,8 +166,8 @@ public final class JobBuilder {
      * @return the job builder
      */
     public JobBuilder errorThreshold(final long errorThreshold) {
-        if (errorThreshold < 1) {
-            throw new IllegalArgumentException("error threshold must be >= 1");
+        if (errorThreshold < 0) {
+            throw new IllegalArgumentException("error threshold must be >= 0");
         }
         parameters.setErrorThreshold(errorThreshold);
         return this;
