@@ -42,7 +42,6 @@ import java.util.Map;
 public class MsExcelRecordMapper<P> implements RecordMapper<MsExcelRecord, Record<P>> {
 
     private String[] fields;
-
     private ObjectMapper<P> objectMapper;
 
     /**
