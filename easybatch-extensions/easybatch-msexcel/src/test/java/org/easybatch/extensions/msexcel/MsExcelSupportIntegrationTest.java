@@ -26,12 +26,19 @@ package org.easybatch.extensions.msexcel;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.easybatch.core.job.*;
+import org.easybatch.core.job.Job;
+import org.easybatch.core.job.JobBuilder;
+import org.easybatch.core.job.JobExecutor;
+import org.easybatch.core.job.JobReport;
+import org.easybatch.core.job.JobStatus;
+import org.easybatch.core.writer.CollectionRecordWriter;
 import org.easybatch.test.common.Tweet;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -70,6 +77,23 @@ public class MsExcelSupportIntegrationTest {
         assertThat(row.getCell(0).getNumericCellValue()).isEqualTo(2.0);
         assertThat(row.getCell(1).getStringCellValue()).isEqualTo("bar");
         assertThat(row.getCell(2).getStringCellValue()).isEqualTo("hello");
+    }
+
+    @Test
+    public void integrationTestWithEmptyColumn() throws Exception {
+        File inputTweets = new File(this.getClass().getResource("/empty-column.xlsx").toURI());
+        String[] fields = {"id", "user", "message"};
+
+        List<Tweet> output = new ArrayList<>();
+        Job job = JobBuilder.aNewJob()
+                .reader(new MsExcelRecordReader(inputTweets))
+                .mapper(new MsExcelRecordMapper<>(Tweet.class, fields))
+                .writer(new CollectionRecordWriter(output))
+                .build();
+        new JobExecutor().execute(job);
+
+        assertThat(output.get(0)).isEqualTo(new Tweet(1, null, "hi"));
+        assertThat(output.get(1)).isEqualTo(new Tweet(2, "bar", "hello"));
     }
 
 }

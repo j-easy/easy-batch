@@ -31,7 +31,6 @@ import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Record;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -42,7 +41,6 @@ import java.util.Map;
 public class MsExcelRecordMapper<P> implements RecordMapper<MsExcelRecord, Record<P>> {
 
     private String[] fields;
-    
     private ObjectMapper<P> objectMapper;
 
     /**
@@ -63,17 +61,15 @@ public class MsExcelRecordMapper<P> implements RecordMapper<MsExcelRecord, Recor
 
     private Map<String, String> toMap(final Row row) {
         Map<String, String> map = new HashMap<>();
-        Iterator<Cell> cellIterator = row.cellIterator();
-        int i = 0;
-        while (cellIterator.hasNext()) {
-            Cell cell = cellIterator.next();
-            map.put(fields[i++], getCellValue(cell));
+        for (int i = 0; i < fields.length; ++i) {
+            Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+            map.put(fields[i], getCellValue(cell));
         }
         return map;
     }
-    
+
     private String getCellValue(Cell cell) {
-        switch(cell.getCellType()) {
+        switch (cell.getCellType()) {
             case Cell.CELL_TYPE_BOOLEAN:
                 return String.valueOf(cell.getBooleanCellValue());
             case Cell.CELL_TYPE_NUMERIC:
