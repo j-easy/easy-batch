@@ -94,9 +94,7 @@ public class DefaultJobReportMerger implements JobReportMerger {
     }
 
     private void calculateReadRecords(JobReport finalJobReport, JobReport jobReport) {
-        for (int i = 0; i < jobReport.getMetrics().getReadCount(); i++) {
-            finalJobReport.getMetrics().incrementReadCount();
-        }
+        finalJobReport.getMetrics().incrementReadCount(jobReport.getMetrics().getReadCount());
     }
 
     private void calculateWrittenRecords(JobReport finalJobReport, JobReport jobReport) {
@@ -104,15 +102,11 @@ public class DefaultJobReportMerger implements JobReportMerger {
     }
 
     private void calculateErrorRecords(JobReport finalJobReport, JobReport jobReport) {
-        for (int i = 0; i < jobReport.getMetrics().getErrorCount(); i++) {
-            finalJobReport.getMetrics().incrementErrorCount();
-        }
+        finalJobReport.getMetrics().incrementErrorCount(jobReport.getMetrics().getErrorCount());
     }
 
     private void calculateFilteredRecords(JobReport finalJobReport, JobReport jobReport) {
-        for (int i = 0; i < jobReport.getMetrics().getFilterCount(); i++) {
-            finalJobReport.getMetrics().incrementFilterCount();
-        }
+        finalJobReport.getMetrics().incrementFilterCount(jobReport.getMetrics().getFilterCount());
     }
 
     private String concatenate(List<String> names) {
