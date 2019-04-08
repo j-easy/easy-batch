@@ -52,12 +52,24 @@ public class JobMetrics implements Serializable {
         filterCount++;
     }
 
+    public void incrementFilterCount(long count) {
+        filterCount += count;
+    }
+
     public void incrementErrorCount() {
         errorCount++;
     }
 
+    public void incrementErrorCount(long count) {
+        errorCount += count;
+    }
+
     public void incrementReadCount() {
         readCount++;
+    }
+
+    public void incrementReadCount(long count) {
+        readCount += count;
     }
 
     public void incrementWriteCount(long count) {
