@@ -121,8 +121,11 @@ For any further question, you can use the [forum](https://groups.google.com/d/fo
 * [AymanDF](https://github.com/AymanDF)
 * [chsfleury](https://github.com/chsfleury)
 * [chellan](https://github.com/chellan)
+* [DanieleS82](https://github.com/DanieleS82)
 * [gs-spadmanabhan](https://github.com/gs-spadmanabhan)
 * [imranrajjad](https://github.com/imranrajjad)
+* [ipropper](https://github.com/ipropper)
+* [IvanAtanasov89](https://github.com/IvanAtanasov89)
 * [jawher](https://github.com/jawher)
 * [jlcanibe](https://github.com/jlcanibe)
 * [MALPI](https://github.com/MALPI)
@@ -133,8 +136,6 @@ For any further question, you can use the [forum](https://groups.google.com/d/fo
 * [PascalSchumacher](https://github.com/PascalSchumacher)
 * [Toilal](https://github.com/Toilal)
 * [xenji](https://github.com/xenji)
-* [ipropper](https://github.com/ipropper)
-* [DanieleS82](https://github.com/DanieleS82)
 * [verdi8](https://github.com/verdi8)
 
 Thank you all for your contributions!
