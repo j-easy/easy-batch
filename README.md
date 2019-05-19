@@ -135,6 +135,7 @@ For any further question, you can use the [forum](https://groups.google.com/d/fo
 * [xenji](https://github.com/xenji)
 * [ipropper](https://github.com/ipropper)
 * [DanieleS82](https://github.com/DanieleS82)
+* [verdi8](https://github.com/verdi8)
 
 Thank you all for your contributions!
 
