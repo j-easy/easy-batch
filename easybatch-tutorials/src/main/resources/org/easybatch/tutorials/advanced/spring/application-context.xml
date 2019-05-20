@@ -46,7 +46,7 @@
     </bean>
 
     <!-- configure job executor -->
-    <bean id="jobExecutor" class="org.easybatch.core.job.JobExecutor"/>
+    <bean id="jobExecutor" class="org.easybatch.core.job.JobExecutor" destroy-method="shutdown"/>
 
     <!--utility beans to create a classpath resource for input file-->
     <bean id="resource" class="org.springframework.core.io.ClassPathResource">

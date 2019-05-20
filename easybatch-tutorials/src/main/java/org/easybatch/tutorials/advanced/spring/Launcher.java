@@ -26,7 +26,6 @@ package org.easybatch.tutorials.advanced.spring;
 
 import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobExecutor;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -36,14 +35,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class Launcher {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
-        ApplicationContext context = new ClassPathXmlApplicationContext("org/easybatch/tutorials/advanced/spring/application-context.xml");
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("org/easybatch/tutorials/advanced/spring/application-context.xml");
         Job job = (Job) context.getBean("job");
         JobExecutor jobExecutor = (JobExecutor) context.getBean("jobExecutor");
 
         jobExecutor.execute(job);
-        jobExecutor.shutdown();
+
+        context.close();
     }
 
 }
