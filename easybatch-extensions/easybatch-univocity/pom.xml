@@ -16,7 +16,7 @@
     <url>http://www.univocity.com</url>
 
     <properties>
-        <univocity-parsers.version>2.5.8</univocity-parsers.version>
+        <univocity-parsers.version>2.8.2</univocity-parsers.version>
     </properties>
 
     <developers>

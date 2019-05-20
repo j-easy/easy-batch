@@ -15,7 +15,7 @@
     <url>http://www.easybatch.org</url>
 
     <properties>
-        <opencsv.version>4.0</opencsv.version>
+        <opencsv.version>4.6</opencsv.version>
     </properties>
 
     <developers>

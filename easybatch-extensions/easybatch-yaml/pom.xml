@@ -15,7 +15,7 @@
     <url>http://www.easybatch.org</url>
 
     <properties>
-        <yamlbeans.version>1.12</yamlbeans.version>
+        <yamlbeans.version>1.13</yamlbeans.version>
     </properties>
 
     <developers>

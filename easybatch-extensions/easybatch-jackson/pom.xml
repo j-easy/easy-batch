@@ -15,7 +15,7 @@
     <url>http://www.easybatch.org</url>
 
     <properties>
-        <jackson-databind.version>2.9.2</jackson-databind.version>
+        <jackson-databind.version>2.9.9</jackson-databind.version>
     </properties>
 
     <developers>
