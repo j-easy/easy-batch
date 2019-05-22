@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
     <name>Easy Batch</name>
     <description>Easy Batch parent module</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

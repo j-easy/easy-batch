@@ -11,7 +11,7 @@
 
     <name>easybatch-validation</name>
     <description>Easy Batch JSR 303 validation module</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <javax.el.version>2.2.6</javax.el.version>

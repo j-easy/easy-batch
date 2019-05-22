@@ -12,7 +12,7 @@
 
     <name>easybatch-xstream</name>
     <description>Extension to support XStream</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <xstream.version>1.4.11.1</xstream.version>

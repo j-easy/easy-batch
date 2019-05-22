@@ -12,7 +12,7 @@
 
     <name>easybatch-jpa</name>
     <description>Easy Batch - JPA integration module</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <javaee-api.version>6.0</javaee-api.version>

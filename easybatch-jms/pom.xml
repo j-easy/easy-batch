@@ -12,7 +12,7 @@
 
     <name>easybatch-jms</name>
     <description>Easy Batch - JMS integration module</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <jms.version>1.1</jms.version>

@@ -12,7 +12,7 @@
 
     <name>easybatch-xml</name>
     <description>Easy Batch xml module</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <xmlunit.version>1.6</xmlunit.version>

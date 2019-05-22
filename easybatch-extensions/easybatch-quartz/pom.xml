@@ -12,7 +12,7 @@
 
     <name>easybatch-quartz</name>
     <description>Extension to support Quartz</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <quartz.version>2.3.1</quartz.version>

@@ -12,7 +12,7 @@
 
     <name>easybatch-yaml</name>
     <description>Extension to support Yaml format</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <yamlbeans.version>1.13</yamlbeans.version>

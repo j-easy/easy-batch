@@ -9,7 +9,7 @@
     <artifactId>easybatch-archetype</artifactId>
     <name>easybatch-archetype</name>
     <description>Easy Batch maven quick start archetype</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <developers>
         <developer>

@@ -11,7 +11,7 @@
 
     <name>easybatch-stream</name>
     <description>Extension to support java 8 streams</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <java.version>1.8</java.version>

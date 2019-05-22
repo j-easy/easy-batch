@@ -12,7 +12,7 @@
 
     <name>easybatch-json</name>
     <description>Easy Batch json module</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <javax.json.version>1.0.4</javax.json.version>

@@ -11,7 +11,7 @@
 
     <name>easybatch-tools</name>
     <description>Easy Batch tools module</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <javax.mail.version>1.5.6</javax.mail.version>

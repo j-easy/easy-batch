@@ -12,7 +12,7 @@
 
     <name>easybatch-jackson</name>
     <description>Extension to support Jackson</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <jackson-databind.version>2.9.9</jackson-databind.version>

@@ -12,7 +12,7 @@
 
     <name>easybatch-apache-commons-csv</name>
     <description>Extension to support Apache Commons CSV</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <commons-csv.version>1.5</commons-csv.version>

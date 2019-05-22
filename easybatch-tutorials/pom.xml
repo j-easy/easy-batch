@@ -9,7 +9,7 @@
 
     <name>easybatch-tutorials</name>
     <description>Easy Batch tutorials</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <hsqldb.version>2.3.6</hsqldb.version>

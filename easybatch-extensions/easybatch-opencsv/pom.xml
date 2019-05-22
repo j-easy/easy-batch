@@ -12,7 +12,7 @@
 
     <name>easybatch-opencsv</name>
     <description>Extension to support OpenCSV</description>
-    <url>http://www.easybatch.org</url>
+    <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
         <opencsv.version>4.6</opencsv.version>
