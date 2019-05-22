@@ -24,7 +24,7 @@
         <spring.version>4.3.24.RELEASE</spring.version>
         <mockito.version>2.27.0</mockito.version>
         <system-rules.version>1.19.0</system-rules.version>
-        <hsqldb.version>2.4.1</hsqldb.version>
+        <hsqldb.version>2.3.6</hsqldb.version>
         <hibernate.version>4.3.11.Final</hibernate.version>
         <hibernate-validator.version>5.4.3.Final</hibernate-validator.version>
 
