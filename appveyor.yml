@@ -8,8 +8,8 @@ install:
   - ps: choco install maven
   - mvn --version
 build_script:
-  - mvn package
+  - mvn -Dhttps.protocols=TLSv1.2 package
 test_script:
-  - mvn test
+  - mvn -Dhttps.protocols=TLSv1.2 test
 cache:
   - C:\Users\appveyor\.m2
