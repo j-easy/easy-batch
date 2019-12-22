@@ -15,7 +15,7 @@
     <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
-        <commons-csv.version>1.5</commons-csv.version>
+        <commons-csv.version>1.7</commons-csv.version>
     </properties>
 
     <developers>

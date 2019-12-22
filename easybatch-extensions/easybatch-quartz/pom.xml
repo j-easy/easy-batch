@@ -15,7 +15,7 @@
     <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
-        <quartz.version>2.3.1</quartz.version>
+        <quartz.version>2.3.2</quartz.version>
     </properties>
 
     <developers>
