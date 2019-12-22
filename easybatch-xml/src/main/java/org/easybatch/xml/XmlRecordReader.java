@@ -94,7 +94,9 @@ public class XmlRecordReader implements RecordReader {
                 } else if (xmlEvent.isEndElement()) {
                     writeEndElement(stringBuilder, xmlEvent);
                 } else {
-                    stringBuilder.append(escape(xmlEvent.asCharacters().getData()));
+                    if (xmlEvent.isCharacters()) {
+                        stringBuilder.append(escape(xmlEvent.asCharacters().getData()));
+                    }
                 }
             }
             writeEndElement(stringBuilder, xmlEventReader.nextEvent());

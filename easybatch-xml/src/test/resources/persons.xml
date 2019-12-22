@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- this is a comment-->
 <persons>
     <person>
         <id>1</id>
@@ -6,7 +7,9 @@
         <lastName>bar</lastName>
         <birthDate>2000-01-01</birthDate>
         <married>true</married>
+        <!-- this is a comment inside a record-->
     </person>
+    <!-- this is a comment in between records-->
     <person>
         <id>2</id>
         <firstName>bar</firstName>
