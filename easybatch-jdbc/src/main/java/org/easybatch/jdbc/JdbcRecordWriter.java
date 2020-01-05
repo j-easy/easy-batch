@@ -87,7 +87,7 @@ public class JdbcRecordWriter implements RecordWriter {
         } catch (SQLException e) {
             LOGGER.error("Unable to commit transaction", e);
             connection.rollback();
-            LOGGER.info("Transaction rolled back");
+            throw e;
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
