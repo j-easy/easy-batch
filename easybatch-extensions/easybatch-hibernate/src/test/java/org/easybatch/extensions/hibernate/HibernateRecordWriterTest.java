@@ -82,6 +82,29 @@ public class HibernateRecordWriterTest extends AbstractDatabaseTest {
         assertThat(nbTweetsInDatabase).isEqualTo(nbTweetsToInsert);
     }
 
+    @Test
+    public void testRecordWritingWithError() throws Exception {
+        int nbTweetsToInsert = 5;
+        int batchSize = 3; // two batches: [1,2,3] and [4,5]
+        List<Tweet> tweets = createTweets(nbTweetsToInsert);
+        // The following will make the second batch to fail
+        tweets.get(4).setUser("ThisIsAVeryLongUsernameThatWillCauseAnError");
+        Job job = aNewJob()
+                .batchSize(batchSize)
+                .reader(new IterableRecordReader(tweets))
+                .writer(hibernateRecordWriter)
+                .build();
+
+        JobReport jobReport = jobExecutor.execute(job);
+
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(nbTweetsToInsert);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(3L);
+
+        int nbTweetsInDatabase = countRowsIn("tweet");
+        assertThat(nbTweetsInDatabase).isEqualTo(3);
+    }
+
     private List<Tweet> createTweets(int nbTweetsToInsert) {
         List<Tweet> tweets = new ArrayList<>();
         for (int i = 1; i <= nbTweetsToInsert; i++) {

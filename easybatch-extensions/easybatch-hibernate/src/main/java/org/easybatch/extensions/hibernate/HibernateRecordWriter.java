@@ -77,7 +77,7 @@ public class HibernateRecordWriter implements RecordWriter {
         } catch (Exception e) {
             LOGGER.error("Unable to commit transaction", e);
             transaction.rollback();
-            LOGGER.info("Transaction rolled back");
+            throw e;
         }
     }
 
