@@ -30,8 +30,13 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.String.format;
 
@@ -44,6 +49,35 @@ public class BeanPropertiesPreparedStatementProvider implements PreparedStatemen
 
     private String[] properties;
     private PropertyDescriptor[] propertyDescriptors;
+    private final Map<Class<?>, Integer> javaTypesToSqlTypes = new HashMap<Class<?>, Integer>() {{
+        put(boolean.class, Types.BOOLEAN);
+        put(Boolean.class, Types.BOOLEAN);
+        put(byte.class, Types.TINYINT);
+        put(Byte.class, Types.TINYINT);
+        put(short.class, Types.SMALLINT);
+        put(Short.class, Types.SMALLINT);
+        put(int.class, Types.INTEGER);
+        put(Integer.class, Types.INTEGER);
+        put(long.class, Types.BIGINT);
+        put(Long.class, Types.BIGINT);
+        put(BigInteger.class, Types.BIGINT);
+        put(float.class, Types.FLOAT);
+        put(Float.class, Types.FLOAT);
+        put(double.class, Types.DOUBLE);
+        put(Double.class, Types.DOUBLE);
+        put(BigDecimal.class, Types.DECIMAL);
+        put(java.util.Date.class, Types.DATE);
+        put(java.util.Calendar.class, Types.DATE);
+        put(java.sql.Date.class, Types.DATE);
+        put(java.sql.Time.class, Types.TIME);
+        put(java.sql.Timestamp.class, Types.TIMESTAMP);
+        put(java.sql.Blob.class, Types.BLOB);
+        put(java.sql.Clob.class, Types.CLOB);
+        put(CharSequence.class, Types.VARCHAR);
+        put(String.class, Types.VARCHAR);
+        put(StringBuffer.class, Types.VARCHAR);
+        put(StringBuilder.class, Types.VARCHAR);
+    }};
 
     /**
      * Create a new {@link BeanPropertiesPreparedStatementProvider}.
@@ -71,7 +105,12 @@ public class BeanPropertiesPreparedStatementProvider implements PreparedStatemen
                 for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
                     if (propertyDescriptor.getName().equals(property)) {
                         Object value = propertyDescriptor.getReadMethod().invoke(record);
-                        preparedStatement.setObject(index++, value);
+                        Integer sqlType = javaTypesToSqlTypes.get(value.getClass());
+                        if (sqlType != null) {
+                            preparedStatement.setObject(index++, value, sqlType);
+                        } else {
+                            preparedStatement.setObject(index++, value);
+                        }
                         break;
                     }
                 }
