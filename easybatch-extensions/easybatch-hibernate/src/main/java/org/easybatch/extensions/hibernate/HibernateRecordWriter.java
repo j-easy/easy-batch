@@ -27,8 +27,8 @@ import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.writer.RecordWriter;
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +45,7 @@ public class HibernateRecordWriter implements RecordWriter {
     private static final Logger LOGGER = LoggerFactory.getLogger(HibernateRecordWriter.class.getSimpleName());
 
     private SessionFactory sessionFactory;
-    private StatelessSession session;
+    private Session session;
 
     /**
      * Create a new {@link HibernateRecordWriter}.
@@ -59,7 +59,7 @@ public class HibernateRecordWriter implements RecordWriter {
 
     @Override
     public void open() throws Exception {
-        session = sessionFactory.openStatelessSession();
+        session = sessionFactory.openSession();
     }
 
     @Override
@@ -68,8 +68,10 @@ public class HibernateRecordWriter implements RecordWriter {
         transaction.begin();
         try {
             for (Record record : batch) {
-                session.insert(record.getPayload());
+                session.saveOrUpdate(record.getPayload());
             }
+            session.flush();
+            session.clear();
             transaction.commit();
             LOGGER.info("Transaction committed");
         } catch (Exception e) {
