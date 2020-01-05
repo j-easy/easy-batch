@@ -25,7 +25,6 @@ package org.easybatch.core.writer;
 
 import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobExecutor;
-import org.easybatch.core.job.JobReport;
 import org.easybatch.core.reader.IterableRecordReader;
 import org.easybatch.core.record.Batch;
 import org.easybatch.core.record.StringRecord;

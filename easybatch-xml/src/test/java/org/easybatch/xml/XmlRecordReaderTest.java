@@ -26,7 +26,6 @@ package org.easybatch.xml;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.InputStream;

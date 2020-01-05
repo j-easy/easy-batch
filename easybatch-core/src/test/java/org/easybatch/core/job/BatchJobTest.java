@@ -53,7 +53,6 @@ import java.util.concurrent.TimeUnit;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.util.Utils.JMX_MBEAN_NAME;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)

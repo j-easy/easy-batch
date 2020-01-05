@@ -23,7 +23,6 @@
  */
 package org.easybatch.flatfile;
 
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.easybatch.core.record.StringRecord;

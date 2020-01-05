@@ -24,7 +24,6 @@
 package org.easybatch.extensions.xstream;
 
 import com.thoughtworks.xstream.XStream;
-import org.easybatch.core.record.GenericRecord;
 import org.easybatch.core.record.Header;
 import org.easybatch.core.record.Record;
 import org.easybatch.xml.XmlRecord;

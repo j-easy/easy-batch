@@ -24,7 +24,6 @@
 package org.easybatch.core.listener;
 
 import org.easybatch.core.job.JobReport;
-import org.easybatch.core.record.PoisonRecord;
 import org.easybatch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
