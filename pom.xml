@@ -13,7 +13,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
-        <junit.version>4.12</junit.version>
+        <slf4j-api.version>1.7.30</slf4j-api.version>
+        <junit.version>4.13</junit.version>
         <assertj.version>2.9.1</assertj.version>
         <spring.version>4.3.25.RELEASE</spring.version>
         <mockito.version>2.28.2</mockito.version>
@@ -22,7 +23,7 @@
         <hibernate.version>4.3.11.Final</hibernate.version>
         <hibernate-validator.version>5.4.3.Final</hibernate-validator.version>
 
-        <maven-source-plugin.version>3.2.0</maven-source-plugin.version>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
