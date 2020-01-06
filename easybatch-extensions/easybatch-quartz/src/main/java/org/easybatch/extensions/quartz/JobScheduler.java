@@ -79,7 +79,7 @@ public class JobScheduler {
     }
 
     /**
-     * Schedule a job to start at a fixed point of time.
+     * Schedule a job to start at a fixed point in time.
      *
      * @param job       the job to schedule
      * @param startTime the start time
@@ -109,7 +109,7 @@ public class JobScheduler {
     }
 
     /**
-     * Schedule a job to start at a fixed point of time.
+     * Schedule a job to start at a fixed point in time.
      *
      * @param job       the job to schedule
      * @param startTime the start time
@@ -165,7 +165,7 @@ public class JobScheduler {
     }
 
     /**
-     * Schedule a job to start at a fixed point of time and repeat with interval period.
+     * Schedule a job to start at a fixed point in time and repeat it with an interval period.
      *
      * @param job       the job to schedule
      * @param startTime the start time
@@ -201,7 +201,7 @@ public class JobScheduler {
     }
 
     /**
-     * Schedule a job to start at a fixed point of time and repeat with interval period.
+     * Schedule a job to start at a fixed point in time and repeat with an interval period.
      *
      * @param job         the job to schedule
      * @param startTime   the start time
