@@ -88,7 +88,7 @@ public class JsonFileRecordReader extends AbstractFileRecordReader {
     }
 
     // JsonFileRecordReader should return the file name as data source instead of the inherited "Json stream"
-    private class Reader extends JsonRecordReader {
+    private static class Reader extends JsonRecordReader {
 
         private File file;
 

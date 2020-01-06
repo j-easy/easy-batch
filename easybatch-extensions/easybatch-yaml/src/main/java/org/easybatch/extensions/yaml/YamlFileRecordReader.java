@@ -77,7 +77,7 @@ public class YamlFileRecordReader extends AbstractFileRecordReader {
     }
 
     // YamlFileRecordReader should return the file name as data source instead of the inherited "Yaml stream"
-    private class Reader extends YamlRecordReader {
+    private static class Reader extends YamlRecordReader {
 
         private File file;
 

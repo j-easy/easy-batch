@@ -67,7 +67,7 @@ public class RetryableRecordWriter implements RecordWriter {
         delegate.close();
     }
 
-    private class RecordWritingCallable implements Callable<Void> {
+    private static class RecordWritingCallable implements Callable<Void> {
 
         private RecordWriter recordWriter;
 
@@ -86,7 +86,7 @@ public class RetryableRecordWriter implements RecordWriter {
 
     }
 
-    private class RecordWritingTemplate extends RetryTemplate {
+    private static class RecordWritingTemplate extends RetryTemplate {
 
         private final Logger LOGGER = LoggerFactory.getLogger(RecordWritingTemplate.class.getName());
 

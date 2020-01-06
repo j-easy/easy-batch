@@ -133,7 +133,7 @@ public class FileRecordReader implements RecordReader {
         // no op
     }
 
-    private class FilesCollector implements FileVisitor<Path> {
+    private static class FilesCollector implements FileVisitor<Path> {
 
         private List<File> files = new ArrayList<>();
 

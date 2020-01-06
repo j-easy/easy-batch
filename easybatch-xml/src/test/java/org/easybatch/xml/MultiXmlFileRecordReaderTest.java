@@ -65,7 +65,7 @@ public class MultiXmlFileRecordReaderTest {
 
     }
 
-    private class XmlFileFilter implements FilenameFilter {
+    private static class XmlFileFilter implements FilenameFilter {
         @Override
         public boolean accept(File dir, String name) {
             return name.startsWith("web") && name.endsWith("xml");

@@ -66,7 +66,7 @@ public class MultiFlatFileRecordReaderTest {
 
     }
 
-    private class TxtFileFilter implements FilenameFilter {
+    private static class TxtFileFilter implements FilenameFilter {
         @Override
         public boolean accept(File dir, String name) {
             return name.endsWith("txt");

@@ -65,7 +65,7 @@ public class MultiYamlFileRecordReaderTest {
 
     }
 
-    private class YamlFileFilter implements FilenameFilter {
+    private static class YamlFileFilter implements FilenameFilter {
         @Override
         public boolean accept(File dir, String name) {
             return name.endsWith("yml");

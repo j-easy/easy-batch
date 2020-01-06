@@ -101,13 +101,13 @@ public class JobMonitorProxy implements Runnable {
         }
     }
 
-    private class ConnectionClosedNotificationFilter implements NotificationFilter {
+    private static class ConnectionClosedNotificationFilter implements NotificationFilter {
         public boolean isNotificationEnabled(Notification notification) {
             return notification.getType().equals(JMXConnectionNotification.CLOSED);
         }
     }
 
-    private class ConnectionOpenedNotificationFilter implements NotificationFilter {
+    private static class ConnectionOpenedNotificationFilter implements NotificationFilter {
         public boolean isNotificationEnabled(Notification notification) {
             return notification.getType().equals(JMXConnectionNotification.OPENED);
         }

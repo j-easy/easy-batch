@@ -81,7 +81,7 @@ public class XmlFileRecordReader extends AbstractFileRecordReader {
     }
 
     // XmlFileRecordReader should return the file name as data source instead of the inherited "Xml stream"
-    private class Reader extends XmlRecordReader {
+    private static class Reader extends XmlRecordReader {
 
         private File file;
 

@@ -69,7 +69,7 @@ public class RetryableRecordReader implements RecordReader {
         delegate.close();
     }
 
-    private class RecordReadingCallable implements Callable<Record> {
+    private static class RecordReadingCallable implements Callable<Record<?>> {
 
         private RecordReader recordReader;
 
@@ -84,7 +84,7 @@ public class RetryableRecordReader implements RecordReader {
 
     }
 
-    private class RecordReadingTemplate extends RetryTemplate {
+    private static class RecordReadingTemplate extends RetryTemplate {
 
         private final Logger LOGGER = LoggerFactory.getLogger(RecordReadingTemplate.class.getName());
 
