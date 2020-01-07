@@ -154,9 +154,9 @@ class BatchJob implements Job {
 
     private void setStatus(JobStatus status) {
         if(isInterrupted()) {
-            LOGGER.info("Job ''{}'' has been interrupted, aborting execution.", name);
+            LOGGER.info("Job '{}' has been interrupted, aborting execution.", name);
         }
-        LOGGER.info("Job ''{}'' {}", name, status.name().toLowerCase());
+        LOGGER.info("Job '{}' {}", name, status.name().toLowerCase());
         report.setStatus(status);
     }
 
@@ -255,7 +255,7 @@ class BatchJob implements Job {
     private void teardown(JobStatus status) {
         report.setStatus(status);
         metrics.setEndTime(System.currentTimeMillis());
-        LOGGER.info( "Job ''{}'' finished with status: {}", new Object[]{name, report.getStatus()});
+        LOGGER.info( "Job '{}' finished with status: {}", new Object[]{name, report.getStatus()});
         notifyJobUpdate();
         jobListener.afterJobEnd(report);
     }
