@@ -46,11 +46,11 @@ public class DatabaseUtil {
     private static EmbeddedDatabase embeddedDatabase;
     private static JdbcTemplate jdbcTemplate;
 
-    public static DataSource getDataSource() throws SQLException {
+    public static DataSource getDataSource() {
         return embeddedDatabase;
     }
 
-    public static void startEmbeddedDatabase() throws Exception {
+    public static void startEmbeddedDatabase() {
         embeddedDatabase = new EmbeddedDatabaseBuilder()
                 .setType(HSQL)
                 .addScript("db/schema.sql")
@@ -63,7 +63,7 @@ public class DatabaseUtil {
         jdbcTemplate.update("delete from tweet");
     }
 
-    public static void dumpTweetTable() throws Exception {
+    public static void dumpTweetTable() {
         System.out.println("Loading tweets from the database...");
         jdbcTemplate.query("select * from tweet", new RowCallbackHandler() {
             @Override

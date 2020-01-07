@@ -39,7 +39,7 @@ import java.util.Scanner;
  *
  * The {@link org.easybatch.extensions.quartz.JobScheduler} API lets you schedule easy batch jobs as follows :
  * <ul>
- * <li>At a fixed point of time using {@link org.easybatch.extensions.quartz.JobScheduler#scheduleAt(Job, java.util.Date)}</li>
+ * <li>At a fixed point in time using {@link org.easybatch.extensions.quartz.JobScheduler#scheduleAt(Job, java.util.Date)}</li>
  * <li>Repeatedly with predefined interval using {@link org.easybatch.extensions.quartz.JobScheduler#scheduleAtWithInterval(Job, java.util.Date, int)}</li>
  * <li>Using unix cron-like expression with {@link org.easybatch.extensions.quartz.JobScheduler#scheduleCron(Job, String)}</li>
  * </ul>

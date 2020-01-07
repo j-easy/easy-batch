@@ -34,7 +34,6 @@ import org.easybatch.flatfile.FlatFileRecordReader;
 import org.easybatch.tutorials.common.Tweet;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -70,7 +69,7 @@ public class LogicalPartitions {
 
     }
 
-    private static Job buildJob(File file, RecordFilter recordFilter, String jobName) throws FileNotFoundException {
+    private static Job buildJob(File file, RecordFilter recordFilter, String jobName) {
         return JobBuilder.aNewJob()
                 .named(jobName)
                 .reader(new FlatFileRecordReader(file))

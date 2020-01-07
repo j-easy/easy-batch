@@ -29,7 +29,6 @@ import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.node.Node;
 
 import java.io.File;
-import java.io.IOException;
 
 import static org.easybatch.core.util.Utils.FILE_SEPARATOR;
 import static org.easybatch.core.util.Utils.JAVA_IO_TMPDIR;
@@ -61,12 +60,7 @@ public class ElasticSearchUtils {
     }
 
     private static void deleteElasticSearchDataDirectory() {
-        try {
-            FileUtils.deleteDirectory(new File(ES_DATA_DIRECTORY));
-        } catch (IOException e) {
-            System.err.println("Unable to remove elastic search data directory");
-            e.printStackTrace();
-        }
+        FileUtils.deleteQuietly(new File(ES_DATA_DIRECTORY));
     }
 
 }

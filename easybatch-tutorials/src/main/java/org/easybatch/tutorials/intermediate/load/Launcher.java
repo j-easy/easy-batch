@@ -50,7 +50,7 @@ import static org.easybatch.core.job.JobBuilder.aNewJob;
  */
 public class Launcher {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         // Load tweets from tweets.csv
         File tweets = new File("src/main/resources/data/tweets.csv");
@@ -66,8 +66,8 @@ public class Launcher {
         // Build a batch job
         Job job = aNewJob()
                 .batchSize(2)
-                .filter(new HeaderRecordFilter())
                 .reader(new FlatFileRecordReader(tweets))
+                .filter(new HeaderRecordFilter())
                 .mapper(new DelimitedRecordMapper<>(Tweet.class, fields))
                 .validator(new BeanValidationRecordValidator())
                 .writer(new JdbcRecordWriter(dataSource, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, fields)))
