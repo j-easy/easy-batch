@@ -34,6 +34,8 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.commons.io.FileUtils;
+
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
 /**
@@ -78,10 +80,10 @@ public class DatabaseUtil {
 
     public static void cleanUpWorkingDirectory() {
         //delete hsqldb tmp files
-        new File("mem.log").delete();
-        new File("mem.properties").delete();
-        new File("mem.script").delete();
-        new File("mem.tmp").delete();
+        FileUtils.deleteQuietly(new File("mem.log"));
+        FileUtils.deleteQuietly(new File("mem.properties"));
+        FileUtils.deleteQuietly(new File("mem.script"));
+        FileUtils.deleteQuietly(new File("mem.tmp"));
     }
 
 }
