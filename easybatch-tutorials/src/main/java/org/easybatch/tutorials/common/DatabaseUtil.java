@@ -51,7 +51,6 @@ public class DatabaseUtil {
     }
 
     public static void startEmbeddedDatabase() throws Exception {
-        System.setProperty("hsqldb.reconfig_logging", "false");
         embeddedDatabase = new EmbeddedDatabaseBuilder()
                 .setType(HSQL)
                 .addScript("db/schema.sql")
