@@ -24,6 +24,7 @@
 package org.easybatch.tools.reporting;
 
 import org.easybatch.core.job.JobReport;
+import org.easybatch.core.job.JobReportFormatter;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -36,6 +37,7 @@ import java.util.Properties;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JobReportEmailSenderTest {
@@ -44,6 +46,8 @@ public class JobReportEmailSenderTest {
     private JobReport jobReport;
     @Mock
     private JobReportEmailSender.EmailSender emailSender;
+    @Mock
+    private JobReportFormatter<String> jobReportFormatter;
 
     private JobReportEmailSender jobReportEmailSender;
 
@@ -56,11 +60,14 @@ public class JobReportEmailSenderTest {
         properties.setProperty(JobReportEmailSender.RECIPIENT, "foo@yopmail.com");
         properties.setProperty(JobReportEmailSender.SUBJECT, "test");
         jobReportEmailSender = new JobReportEmailSender(properties, emailSender);
+        jobReportEmailSender.setJobReportFormatter(jobReportFormatter);
     }
 
     @Test
     public void afterJobEnd() throws Exception {
+        when(jobReportFormatter.formatReport(jobReport)).thenReturn("formattedJobReport");
         jobReportEmailSender.afterJobEnd(jobReport);
+        verify(jobReportFormatter).formatReport(jobReport);
         verify(emailSender).send(any(Message.class));
     }
 
