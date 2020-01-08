@@ -73,7 +73,7 @@ public class HibernateRecordWriter implements RecordWriter {
             session.flush();
             session.clear();
             transaction.commit();
-            LOGGER.info("Transaction committed");
+            LOGGER.debug("Transaction committed");
         } catch (Exception e) {
             LOGGER.error("Unable to commit transaction", e);
             transaction.rollback();

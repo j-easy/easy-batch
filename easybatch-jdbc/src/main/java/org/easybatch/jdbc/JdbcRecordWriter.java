@@ -83,7 +83,7 @@ public class JdbcRecordWriter implements RecordWriter {
             }
             preparedStatement.executeBatch();
             connection.commit();
-            LOGGER.info("Transaction committed");
+            LOGGER.debug("Transaction committed");
         } catch (SQLException e) {
             LOGGER.error("Unable to commit transaction", e);
             connection.rollback();

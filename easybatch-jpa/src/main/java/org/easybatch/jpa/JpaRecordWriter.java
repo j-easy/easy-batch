@@ -74,7 +74,7 @@ public class JpaRecordWriter implements RecordWriter {
             entityManager.flush();
             entityManager.clear();
             transaction.commit();
-            LOGGER.info("Transaction committed");
+            LOGGER.debug("Transaction committed");
         } catch (Exception e) {
             LOGGER.error("Unable to commit transaction", e);
             transaction.rollback();
