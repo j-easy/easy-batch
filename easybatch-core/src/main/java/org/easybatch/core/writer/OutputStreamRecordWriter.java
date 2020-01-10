@@ -40,8 +40,8 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  */
 public class OutputStreamRecordWriter implements RecordWriter {
 
-    private String lineSeparator;
-    private OutputStreamWriter outputStreamWriter;
+    protected String lineSeparator;
+    protected OutputStreamWriter outputStreamWriter;
 
     /**
      * Create a new {@link OutputStreamRecordWriter}.

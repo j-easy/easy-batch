@@ -33,6 +33,9 @@ import java.nio.file.Path;
  */
 public class FileRecordWriter extends OutputStreamRecordWriter {
 
+    private HeaderCallback headerCallback;
+    private FooterCallback footerCallback;
+
     /*
      * Constructors with a String
      */
@@ -159,4 +162,55 @@ public class FileRecordWriter extends OutputStreamRecordWriter {
     }
 
     /* No constructor with a charsetName parameter because it is not applicable to FileWriter */
+
+    /**
+     * Set a header callback.
+     * @param headerCallback to set
+     */
+    public void setHeaderCallback(HeaderCallback headerCallback) {
+        this.headerCallback = headerCallback;
+    }
+
+    /**
+     * Set a footer callback.
+     * @param footerCallback to set
+     */
+    public void setFooterCallback(FooterCallback footerCallback) {
+        this.footerCallback = footerCallback;
+    }
+
+    @Override
+    public void open() throws Exception {
+        if (headerCallback != null) {
+            headerCallback.writeHeader(outputStreamWriter);
+            outputStreamWriter.write(lineSeparator);
+            outputStreamWriter.flush();
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (footerCallback != null) {
+            footerCallback.writeFooter(outputStreamWriter);
+            outputStreamWriter.write(lineSeparator);
+            outputStreamWriter.flush();
+        }
+        super.close();
+    }
+
+    /**
+     * Callback to write a header to the output file.
+     * Implementations are not required to flush the writer or write a line separator.
+     */
+    public interface HeaderCallback {
+        void writeHeader(OutputStreamWriter writer) throws IOException;
+    }
+
+    /**
+     * Callback to write a footer to the output file.
+     * Implementations are not required to flush the writer or write a line separator.
+     */
+    public interface FooterCallback {
+        void writeFooter(OutputStreamWriter writer) throws IOException;
+    }
 }
