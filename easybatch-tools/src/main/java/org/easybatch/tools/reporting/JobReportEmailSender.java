@@ -39,7 +39,10 @@ import java.util.Properties;
  * Job listener that sends the job report by email to a given account.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 public class JobReportEmailSender implements JobListener {
 
     public static final String USER = "org.easybatch.tools.reporting.email.user";
