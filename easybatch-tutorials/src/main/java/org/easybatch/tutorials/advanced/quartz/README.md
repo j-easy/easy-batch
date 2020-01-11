@@ -3,7 +3,7 @@
 ## Description
 
 This tutorial is an application that schedules a batch job to run repeatedly every 10 seconds.
-The goal is to show how to use `easybatch-quartz` module APIs.
+The goal is to show how to use Quartz to schedule Easy Batch jobs.
 
 ## Run the tutorial
 

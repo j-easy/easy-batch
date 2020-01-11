@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- *  Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *  Copyright (c) 2020, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -27,22 +27,25 @@ package org.easybatch.tutorials.advanced.quartz;
 import org.easybatch.core.job.Job;
 import org.easybatch.core.job.JobBuilder;
 import org.easybatch.core.writer.StandardOutputRecordWriter;
-import org.easybatch.extensions.quartz.JobScheduler;
 import org.easybatch.flatfile.FlatFileRecordReader;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerFactory;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.impl.StdSchedulerFactory;
 
 import java.io.File;
 import java.util.Date;
 import java.util.Scanner;
 
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
+
 /**
- * Main class to run the Hello World tutorial repeatedly every 10 seconds using quartz extension module.
- *
- * The {@link org.easybatch.extensions.quartz.JobScheduler} API lets you schedule easy batch jobs as follows :
- * <ul>
- * <li>At a fixed point in time using {@link org.easybatch.extensions.quartz.JobScheduler#scheduleAt(Job, java.util.Date)}</li>
- * <li>Repeatedly with predefined interval using {@link org.easybatch.extensions.quartz.JobScheduler#scheduleAtWithInterval(Job, java.util.Date, int)}</li>
- * <li>Using unix cron-like expression with {@link org.easybatch.extensions.quartz.JobScheduler#scheduleCron(Job, String)}</li>
- * </ul>
+ * Main class to run the Hello World tutorial repeatedly every 10 seconds using Quartz.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -50,23 +53,46 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        // Create the data source
-        File dataSource = new File("src/main/resources/data/tweets.csv");
-
         // Build a batch job
         Job job = new JobBuilder()
-                .reader(new FlatFileRecordReader(dataSource))
+                .named("my-job")
+                .reader(new FlatFileRecordReader(new File("src/main/resources/data/tweets.csv")))
                 .writer(new StandardOutputRecordWriter())
                 .build();
 
+        // Create a Quartz scheduler
+        SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+        Scheduler scheduler = schedulerFactory.getScheduler();
+        scheduler.setJobFactory(new EasyBatchJobFactory());
+
         // Schedule the job to start now and run every 10 seconds
-        JobScheduler scheduler = JobScheduler.getInstance();
-        scheduler.scheduleAtWithInterval(job, new Date(), 10);
+        SimpleScheduleBuilder scheduleBuilder = simpleSchedule()
+                .withIntervalInSeconds(10)
+                .repeatForever();
+
+        Trigger trigger = newTrigger()
+                .withIdentity("my-trigger")
+                .startAt(new Date())
+                .withSchedule(scheduleBuilder)
+                .forJob(job.getName())
+                .build();
+
+        JobDetail jobDetail = getJobDetail(job);
+        scheduler.scheduleJob(jobDetail, trigger);
         scheduler.start();
 
         System.out.println("Hit enter to stop the application");
         new Scanner(System.in).nextLine();
-        scheduler.stop();
+        scheduler.shutdown();
+    }
+
+    private static JobDetail getJobDetail(org.easybatch.core.job.Job job) {
+        JobDataMap jobDataMap = new JobDataMap();
+        jobDataMap.put(EasyBatchJobFactory.JOB_KEY, job);
+        return newJob(EasyBatchJob.class)
+                .withIdentity(job.getName())
+                .usingJobData(jobDataMap)
+                .build();
     }
 
 }

@@ -30,7 +30,10 @@ import org.quartz.spi.TriggerFiredBundle;
  * Quartz Job factory implementation used to create job instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 class JobFactory implements org.quartz.spi.JobFactory {
 
     @Override

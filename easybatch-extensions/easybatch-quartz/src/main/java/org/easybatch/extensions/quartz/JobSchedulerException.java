@@ -27,7 +27,10 @@ package org.easybatch.extensions.quartz;
  * Batch scheduler exception used to signal any scheduler setup or startup failure.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 public class JobSchedulerException extends Exception {
 
     public JobSchedulerException(final String message, final Exception exception) {

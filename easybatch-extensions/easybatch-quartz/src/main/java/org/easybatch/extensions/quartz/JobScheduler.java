@@ -41,7 +41,10 @@ import static org.quartz.TriggerBuilder.newTrigger;
  * Quartz scheduler wrapper used to setup triggers.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 public class JobScheduler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobScheduler.class.getName());

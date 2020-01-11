@@ -30,7 +30,10 @@ import org.quartz.JobExecutionException;
  * Quartz Job implementation to schedule Easy Batch jobs.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 class Job implements org.quartz.Job {
 
     /**

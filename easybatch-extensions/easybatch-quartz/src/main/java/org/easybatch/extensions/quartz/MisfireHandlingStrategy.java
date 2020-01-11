@@ -27,7 +27,10 @@ package org.easybatch.extensions.quartz;
  * Enumeration of strategies to apply when a quartz scheduler misfires a job.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 public enum MisfireHandlingStrategy {
     FIRE_NOW,
     IGNORE_MISFIRES,
