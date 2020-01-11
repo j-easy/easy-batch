@@ -29,7 +29,10 @@ import org.easybatch.core.record.Header;
  * End-Of-Stream Jms record.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 public class JmsPoisonRecord extends JmsRecord {
 
     /**

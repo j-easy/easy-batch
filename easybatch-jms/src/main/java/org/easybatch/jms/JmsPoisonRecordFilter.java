@@ -34,7 +34,10 @@ import javax.jms.Message;
  * Filter for {@link JmsPoisonRecord}s.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 public class JmsPoisonRecordFilter implements RecordFilter<JmsRecord> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JmsPoisonRecordFilter.class.getName());
