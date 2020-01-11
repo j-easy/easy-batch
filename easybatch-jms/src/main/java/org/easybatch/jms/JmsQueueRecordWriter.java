@@ -74,14 +74,14 @@ public class JmsQueueRecordWriter implements RecordWriter {
 
     @Override
     public void close() throws Exception {
-        if (queueConnection != null) {
-            queueConnection.close();
+        if (queueSender != null) {
+            queueSender.close();
         }
         if (queueSession != null) {
             queueSession.close();
         }
-        if (queueSender != null) {
-            queueSender.close();
+        if (queueConnection != null) {
+            queueConnection.close();
         }
     }
 }

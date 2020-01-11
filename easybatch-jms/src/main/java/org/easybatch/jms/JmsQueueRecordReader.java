@@ -103,14 +103,14 @@ public class JmsQueueRecordReader implements RecordReader {
 
     @Override
     public void close() throws Exception {
-        if (queueConnection != null) {
-            queueConnection.close();
+        if (queueReceiver != null) {
+            queueReceiver.close();
         }
         if (queueSession != null) {
             queueSession.close();
         }
-        if (queueReceiver != null) {
-            queueReceiver.close();
+        if (queueConnection != null) {
+            queueConnection.close();
         }
     }
 
