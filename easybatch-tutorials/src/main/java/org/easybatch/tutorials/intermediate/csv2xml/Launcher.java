@@ -8,10 +8,8 @@ import org.easybatch.flatfile.DelimitedRecordMapper;
 import org.easybatch.flatfile.FlatFileRecordReader;
 import org.easybatch.tutorials.common.Tweet;
 import org.easybatch.xml.XmlRecordMarshaller;
-import org.easybatch.xml.XmlWrapperTagWriter;
 
 import java.io.File;
-import java.io.FileWriter;
 
 import static org.easybatch.core.job.JobBuilder.aNewJob;
 
@@ -27,13 +25,16 @@ public class Launcher {
         File csvTweets = new File("src/main/resources/data/tweets.csv");
         File xmlTweets = new File("target/tweets.xml");
 
+        FileRecordWriter recordWriter = new FileRecordWriter(xmlTweets);
+        recordWriter.setHeaderCallback(new HeaderWriter());
+        recordWriter.setFooterCallback(new FooterWriter());
+
         Job job = aNewJob()
                 .reader(new FlatFileRecordReader(csvTweets))
                 .filter(new HeaderRecordFilter())
                 .mapper(new DelimitedRecordMapper<>(Tweet.class, "id", "user", "message"))
                 .marshaller(new XmlRecordMarshaller<>(Tweet.class))
-                .writer(new FileRecordWriter(new FileWriter(xmlTweets, true)))
-                .jobListener(new XmlWrapperTagWriter(xmlTweets, "tweets"))
+                .writer(recordWriter)
                 .build();
 
         JobExecutor jobExecutor = new JobExecutor();

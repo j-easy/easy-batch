@@ -61,13 +61,16 @@ The following listing is the application that implements the requirement. We wil
 File csvTweets = new File("tweets.csv");
 File xmlTweets = new File("tweets.xml");
 
+FileRecordWriter recordWriter = new FileRecordWriter(xmlTweets);
+recordWriter.setHeaderCallback(new HeaderWriter());
+recordWriter.setFooterCallback(new FooterWriter());
+
 Job job = JobBuilder.aNewJob()
     .reader(new FlatFileRecordReader(csvTweets)) // Step 1
     .filter(new HeaderRecordFilter()) // Step 2
     .mapper(new DelimitedRecordMapper(Tweet.class, "id", "user", "message")) // Step 3
     .processor(new XmlRecordMarshaller(Tweet.class)) // Step 4
-    .writer(new FileRecordWriter(new FileWriter(xmlTweets, true))) // Step 5
-    .jobListener(new XmlWrapperTagWriter(xmlTweets, "tweets")) // Step 6
+    .writer(recordWriter)// Step 5
     .build();
 
 JobExecutor jobExecutor = new JobExecutor();
@@ -81,10 +84,7 @@ What do all these components do? Here are the details:
 * Step 2: The header record contains only field names and has no added value to be transformed to XML, so we can filter it with the `HeaderRecordFilter`
 * Step 3: To map each delimited record to an instance of the `Tweet` bean, we use the `DelimitedRecordMapper`. This mapper needs to be configured with the target object type and the list of field names.
 * Step 4: At this point of the pipeline, we should have an instance of the `Tweet` bean for each record, we can marshal it to XML format using the `XmlRecordMarshaller`
-* Step 5: Once tweets are marshaled to XML, we can write them to the output file with a `FileRecordWriter`
-* Step 6: Finally, we need to add a wrapper tag (<tweets>...</tweets>) around the file content.
-This is the job of the `XmlWrapperTagWriter`.
-This is a job listener that writes the XML declaration and the opening tag <tweets> in the beginning of the job and the closing tag </tweets> in the end of the job
+* Step 5: Once tweets are marshaled to XML, we can write them to the output file with a `FileRecordWriter`. Note that we used a custom `HeaderWriter` and `FooterWriter` to add wrapper tags (`<tweets>...</tweets>`) around the file content as well as the XML declaration (`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>`) to the output file.
 
 That's it. Let's run the tutorial and see the result.
 

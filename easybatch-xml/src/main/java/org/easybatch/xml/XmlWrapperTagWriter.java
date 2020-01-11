@@ -41,7 +41,12 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  * Utility class to write an Xml declaration and a configurable wrapper tag to an output stream.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
+ * Use {@link org.easybatch.core.writer.FileRecordWriter.HeaderCallback} and
+ * {@link org.easybatch.core.writer.FileRecordWriter.FooterCallback} instead.
  */
+@Deprecated
 public class XmlWrapperTagWriter implements JobListener {
 
     public static final String DEFAULT_VERSION = "1.0";
