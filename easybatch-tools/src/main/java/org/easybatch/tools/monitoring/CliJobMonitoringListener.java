@@ -32,7 +32,10 @@ import static java.lang.String.format;
  * Support class to report job progress on the standard output.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 public class CliJobMonitoringListener extends JobMonitoringListener {
 
     @Override
