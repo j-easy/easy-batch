@@ -26,15 +26,11 @@ package org.easybatch.core.filter;
 import org.easybatch.core.record.StringRecord;
 
 /**
- * Filters empty {@link org.easybatch.core.record.StringRecord}.
+ * Filters empty {@link StringRecord}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
- *
- * @deprecated This class is deprecated since v5.3 and will be removed in v6.
- * Use {@link EmptyStringRecordFilter} instead.
  */
-@Deprecated
-public class EmptyRecordFilter implements RecordFilter<StringRecord> {
+public class EmptyStringRecordFilter implements RecordFilter<StringRecord> {
 
     public StringRecord processRecord(final StringRecord record) {
         String payload = record.getPayload();
