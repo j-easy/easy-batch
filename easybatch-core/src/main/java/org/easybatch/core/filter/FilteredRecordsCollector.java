@@ -27,29 +27,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.easybatch.core.record.Record;
+import org.easybatch.core.util.Utils;
 
 /**
  * A {@link RecordFilter} that saves filtered records for later use.
  * This filter delegates record filtering to another filter.
  *
  * @author Somma Daniele
- *
- * @deprecated This filter is deprecated since v5.3 and will be removed in v6.
- * Use {@link FilteredRecordsCollector} instead.
+ * @author Mahmoud Ben Hassine
  */
-@Deprecated
-public class FilteredRecordsSavingRecordFilter implements RecordFilter {
+public class FilteredRecordsCollector implements RecordFilter {
 
     private List<Record> filteredRecords = new ArrayList<>();
     private RecordFilter delegate;
 
     /**
-     * Create a new {@link FilteredRecordsSavingRecordFilter}
+     * Create a new {@link FilteredRecordsCollector}
      *
      * @param delegate
      *          the record filter to be used
      */
-    public FilteredRecordsSavingRecordFilter(final RecordFilter delegate) {
+    public FilteredRecordsCollector(final RecordFilter delegate) {
+        Utils.checkNotNull(delegate, "delegate record filter");
         this.delegate = delegate;
     }
 
