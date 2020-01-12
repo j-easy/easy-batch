@@ -31,7 +31,10 @@ import org.slf4j.LoggerFactory;
  * Pipeline listener that calculates the processing time of a record.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 public class RecordProcessingTimeListener implements PipelineListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecordProcessingTimeListener.class.getName());
