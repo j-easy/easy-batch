@@ -32,7 +32,10 @@ import org.easybatch.core.record.Record;
  * This filter is used to filter such records.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 public class PoisonRecordFilter implements RecordFilter<Record> {
 
     @Override

@@ -37,7 +37,10 @@ import java.util.concurrent.BlockingQueue;
  * A job listener that broadcasts a {@link PoisonRecord} record to a list of queues at the end of the job.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 public class PoisonRecordBroadcaster implements JobListener {
 
     private BlockingQueueRecordWriter blockingQueueRecordWriter;

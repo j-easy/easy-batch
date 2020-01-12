@@ -31,7 +31,10 @@ import java.util.Date;
  * This is useful to mark the end of reading in a queue based record pulling system.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 public class PoisonRecord implements Record<Object>, Serializable {
 
     @Override
