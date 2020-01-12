@@ -30,7 +30,10 @@ import org.easybatch.core.record.Record;
  * if their number is inside (inclusive) a given range.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 public class RecordNumberBetweenFilter implements RecordFilter<Record> {
 
     protected long lowerBound;
