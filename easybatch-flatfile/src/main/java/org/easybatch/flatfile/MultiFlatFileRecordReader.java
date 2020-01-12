@@ -42,7 +42,10 @@ public class MultiFlatFileRecordReader extends AbstractMultiFileRecordReader {
      * Create a new {@link MultiFlatFileRecordReader}.
      *
      * @param files to read
+     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
+     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
+    @Deprecated
     public MultiFlatFileRecordReader(final List<File> files) {
         this(files, Charset.defaultCharset());
     }
@@ -52,7 +55,10 @@ public class MultiFlatFileRecordReader extends AbstractMultiFileRecordReader {
      *
      * @param files to read
      * @param charset of the files
+     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
+     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
+    @Deprecated
     public MultiFlatFileRecordReader(final List<File> files, final Charset charset) {
         super(files, charset);
     }

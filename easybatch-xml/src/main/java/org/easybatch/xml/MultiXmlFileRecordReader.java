@@ -45,7 +45,10 @@ public class MultiXmlFileRecordReader extends AbstractMultiFileRecordReader {
      *
      * @param files to read
      * @param rootElementName to match records
+     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
+     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
+    @Deprecated
     public MultiXmlFileRecordReader(List<File> files, String rootElementName) {
         this(files, rootElementName, Charset.defaultCharset());
     }
@@ -55,7 +58,10 @@ public class MultiXmlFileRecordReader extends AbstractMultiFileRecordReader {
      * @param files to read
      * @param rootElementName to match records
      * @param charset of files
+     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
+     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
+    @Deprecated
     public MultiXmlFileRecordReader(List<File> files, String rootElementName, Charset charset) {
         super(files, charset);
         this.rootElementName = rootElementName;

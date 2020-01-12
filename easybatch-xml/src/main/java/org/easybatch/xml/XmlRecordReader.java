@@ -38,7 +38,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 /**
- * A record reader that reads xml records from an xml stream.
+ * A record reader that reads xml records from an xml input stream.
  * <p/>
  * This reader produces {@link XmlRecord} instances.
  *
@@ -50,7 +50,7 @@ public class XmlRecordReader implements RecordReader {
 
     private String rootElementName;
     private InputStream xmlInputStream;
-    private String charset;
+    private Charset charset;
     private XMLEventReader xmlEventReader;
     private long currentRecordNumber;
 
@@ -59,9 +59,38 @@ public class XmlRecordReader implements RecordReader {
      *
      * @param rootElementName to extract as record
      * @param xmlInputStream to read
+     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
+     * Use {@link XmlRecordReader#XmlRecordReader(java.io.InputStream, java.lang.String)} instead
      */
+    @Deprecated
     public XmlRecordReader(final String rootElementName, final InputStream xmlInputStream) {
         this(rootElementName, xmlInputStream, Charset.defaultCharset().name());
+    }
+
+    /**
+     * Create a new {@link XmlRecordReader}.
+     *
+     * @param xmlInputStream to read
+     * @param rootElementName to extract as record
+     */
+    public XmlRecordReader(final InputStream xmlInputStream, final String rootElementName) {
+        this(xmlInputStream, rootElementName, Charset.defaultCharset());
+    }
+
+    /**
+     * Create a new {@link XmlRecordReader}.
+     *
+     * @param rootElementName to extract as record
+     * @param xmlInputStream to read
+     * @param charset of the input stream
+     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
+     * Use {@link XmlRecordReader#XmlRecordReader(java.io.InputStream, java.lang.String, java.nio.charset.Charset)} instead
+     */
+    @Deprecated
+    public XmlRecordReader(final String rootElementName, final InputStream xmlInputStream, final String charset) {
+        this.rootElementName = rootElementName;
+        this.xmlInputStream = xmlInputStream;
+        this.charset = Charset.forName(charset);
     }
 
     /**
@@ -71,7 +100,7 @@ public class XmlRecordReader implements RecordReader {
      * @param xmlInputStream to read
      * @param charset of the input stream
      */
-    public XmlRecordReader(final String rootElementName, final InputStream xmlInputStream, final String charset) {
+    public XmlRecordReader(final InputStream xmlInputStream, final String rootElementName, final Charset charset) {
         this.rootElementName = rootElementName;
         this.xmlInputStream = xmlInputStream;
         this.charset = charset;
@@ -80,7 +109,7 @@ public class XmlRecordReader implements RecordReader {
     @Override
     public void open() throws Exception {
         currentRecordNumber = 0;
-        xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream, charset);
+        xmlEventReader = XMLInputFactory.newInstance().createXMLEventReader(xmlInputStream, charset.name());
     }
 
     @Override
@@ -114,7 +143,7 @@ public class XmlRecordReader implements RecordReader {
     @Override
     public void close() throws Exception {
         if (xmlEventReader != null) {
-            xmlEventReader.close();
+            xmlEventReader.close(); // TODO should close underlying input stream (See Javadoc)
         }
     }
 

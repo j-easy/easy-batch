@@ -42,7 +42,10 @@ public class MultiYamlFileRecordReader extends AbstractMultiFileRecordReader {
      * Create a new {@link MultiYamlFileRecordReader}.
      *
      * @param files to read
+     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
+     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
+    @Deprecated
     public MultiYamlFileRecordReader(final List<File> files) {
         this(files, Charset.defaultCharset());
     }
@@ -52,7 +55,10 @@ public class MultiYamlFileRecordReader extends AbstractMultiFileRecordReader {
      *
      * @param files to read
      * @param charset of files
+     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
+     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
+    @Deprecated
     public MultiYamlFileRecordReader(List<File> files, Charset charset) {
         super(files, charset);
     }

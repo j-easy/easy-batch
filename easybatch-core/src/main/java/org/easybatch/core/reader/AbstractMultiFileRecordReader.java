@@ -43,9 +43,12 @@ import static org.easybatch.core.util.Utils.checkNotNull;
  */
 public abstract class AbstractMultiFileRecordReader implements RecordReader {
 
+    @Deprecated
     protected List<File> files;
+    @Deprecated
     protected File currentFile;
     protected AbstractFileRecordReader delegate;
+    @Deprecated
     protected Iterator<File> iterator;
     protected Charset charset;
 
@@ -53,11 +56,23 @@ public abstract class AbstractMultiFileRecordReader implements RecordReader {
      * Create a new multi-file record reader.
      *
      * @param files to read
+     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
+     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
+    @Deprecated
     public AbstractMultiFileRecordReader(List<File> files) {
         this(files, Charset.defaultCharset());
     }
 
+    /**
+     * Create a new multi-file record reader.
+     *
+     * @param files to read
+     * @param charset of the file
+     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
+     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
+     */
+    @Deprecated
     public AbstractMultiFileRecordReader(List<File> files, Charset charset) {
         checkNotNull(files, "files");
         checkNotNull(charset, "charset");

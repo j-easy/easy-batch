@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 
 /**
  * {@link RecordReader} that reads yaml records delimited by "---" from a given file.
@@ -45,7 +46,10 @@ public class YamlFileRecordReader extends AbstractFileRecordReader {
      * Create a new {@link YamlFileRecordReader}.
      *
      * @param yamlFile to read records from
+     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
+     * Use {@link YamlFileRecordReader#YamlFileRecordReader(java.nio.file.Path)} instead
      */
+    @Deprecated
     public YamlFileRecordReader(final File yamlFile) {
         this(yamlFile, Charset.defaultCharset().name());
     }
@@ -55,9 +59,31 @@ public class YamlFileRecordReader extends AbstractFileRecordReader {
      *
      * @param yamlFile to read records from
      * @param charset of the input file
+     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
+     * Use {@link YamlFileRecordReader#YamlFileRecordReader(java.nio.file.Path, java.nio.charset.Charset)} instead
      */
+    @Deprecated
     public YamlFileRecordReader(final File yamlFile, final String charset) {
         super(yamlFile, Charset.forName(charset));
+    }
+
+    /**
+     * Create a new {@link YamlFileRecordReader}.
+     *
+     * @param yamlFile to read records from
+     */
+    public YamlFileRecordReader(final Path yamlFile) {
+        this(yamlFile, Charset.defaultCharset());
+    }
+
+    /**
+     * Create a new {@link YamlFileRecordReader}.
+     *
+     * @param yamlFile to read records from
+     * @param charset of the input file
+     */
+    public YamlFileRecordReader(final Path yamlFile, final Charset charset) {
+        super(yamlFile, charset);
     }
 
     @Override
