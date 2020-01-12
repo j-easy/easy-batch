@@ -29,21 +29,17 @@ import org.easybatch.core.record.StringRecord;
  * Filter string records ending with one of the given suffixes.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
- *
- * @deprecated This class is deprecated since v5.3 and will be removed in v6.
- * Use {@link EndsWithStringRecordFilter} instead.
  */
-@Deprecated
-public class EndWithStringRecordFilter implements RecordFilter<StringRecord> {
+public class EndsWithStringRecordFilter implements RecordFilter<StringRecord> {
 
     private String[] suffixes;
 
     /**
-     * Create a new {@link EndWithStringRecordFilter}.
+     * Create a new {@link EndsWithStringRecordFilter}.
      *
      * @param suffixes suffixes that cause the record to be filtered.
      */
-    public EndWithStringRecordFilter(final String... suffixes) {
+    public EndsWithStringRecordFilter(final String... suffixes) {
         this.suffixes = suffixes;
     }
 
