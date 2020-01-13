@@ -34,7 +34,10 @@ import static org.easybatch.core.util.Utils.*;
  * Default job report formatter.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
  */
+@Deprecated
 public class DefaultJobReportFormatter implements JobReportFormatter<String> {
 
     private String reportFormat =

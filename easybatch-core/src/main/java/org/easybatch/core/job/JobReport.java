@@ -24,7 +24,15 @@
 package org.easybatch.core.job;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
+import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
+
+import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import static org.easybatch.core.util.Utils.formatDuration;
+import static org.easybatch.core.util.Utils.formatErrorThreshold;
+import static org.easybatch.core.util.Utils.formatTime;
 
 /**
  * Class holding job reporting data.
@@ -32,6 +40,24 @@ import java.util.Properties;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class JobReport implements Serializable {
+
+    private static final String REPORT_FORMAT =
+                    "Job Report:" + LINE_SEPARATOR +
+                    "===========" + LINE_SEPARATOR +
+                    "Name: {0}" + LINE_SEPARATOR +
+                    "Status: {1}" + LINE_SEPARATOR +
+                    "Parameters:" + LINE_SEPARATOR +
+                    "\tBatch size = {2}" + LINE_SEPARATOR +
+                    "\tError threshold = {3}" + LINE_SEPARATOR +
+                    "\tJmx monitoring = {4}" + LINE_SEPARATOR +
+                    "Metrics:" + LINE_SEPARATOR +
+                    "\tStart time = {5}" + LINE_SEPARATOR +
+                    "\tEnd time = {6}" + LINE_SEPARATOR +
+                    "\tDuration = {7}" + LINE_SEPARATOR +
+                    "\tRead count = {8}" + LINE_SEPARATOR +
+                    "\tWrite count = {9}" + LINE_SEPARATOR +
+                    "\tFilter count = {10}" + LINE_SEPARATOR +
+                    "\tError count = {11}";
 
     private String jobName;
 
@@ -95,6 +121,32 @@ public class JobReport implements Serializable {
 
     @Override
     public String toString() {
-        return new DefaultJobReportFormatter().formatReport(this);
+        String baseReport = MessageFormat.format(REPORT_FORMAT,
+                jobName,
+                status,
+                parameters.getBatchSize(),
+                formatErrorThreshold(parameters.getErrorThreshold()),
+                parameters.isJmxMonitoring(),
+                formatTime(metrics.getStartTime()),
+                formatTime(metrics.getEndTime()),
+                formatDuration(metrics.getDuration()),
+                metrics.getReadCount(),
+                metrics.getWriteCount(),
+                metrics.getFilterCount(),
+                metrics.getErrorCount());
+
+        final StringBuilder sb = new StringBuilder(baseReport);
+        // append custom metrics
+        for (Map.Entry<String, Object> customMetric : metrics.getCustomMetrics().entrySet()) {
+            sb.append(LINE_SEPARATOR).append("\t")
+                    .append(customMetric.getKey()).append(" = ").append(customMetric.getValue());
+        }
+        // append system properties
+        sb.append(LINE_SEPARATOR).append("System properties:");
+        for (Map.Entry property : new TreeMap<>(systemProperties).entrySet()) { // tree map for sorting purpose (repeatable tests)
+            sb.append(LINE_SEPARATOR).append("\t")
+                    .append(property.getKey()).append(" = ").append(property.getValue());
+        }
+        return sb.toString();
     }
 }
