@@ -44,6 +44,7 @@ public class Header {
      * @deprecated Starting from v6, this constructor will be replaced with a one that
      * accepts a {@code java.time.LocalDateTime}.
      */
+    @Deprecated
     public Header(Long number, String source, Date creationDate) {
         this.number = number;
         this.source = source;
