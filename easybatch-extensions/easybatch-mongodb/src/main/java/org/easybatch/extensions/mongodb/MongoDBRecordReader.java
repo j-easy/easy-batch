@@ -36,7 +36,7 @@ import static org.easybatch.core.util.Utils.checkNotNull;
 
 /**
  * Reader that reads documents from a MongoDB collection.
- * <p/>
+ *
  * This reader produces {@link MongoDBRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)

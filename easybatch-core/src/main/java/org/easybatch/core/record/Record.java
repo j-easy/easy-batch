@@ -24,8 +24,8 @@
 package org.easybatch.core.record;
 
 /**
- * Interface for input records.<br/>
- * <p/>
+ * Interface for input records.
+ *
  * A record can be:
  * <ul>
  * <li>A line in a flat file</li>

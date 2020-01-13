@@ -31,7 +31,7 @@ import java.beans.IntrospectionException;
 
 /**
  * Marshals a POJO to fixed width format using  <a href="http://www.univocity.com/">uniVocity</a>.
- * <p/>
+ *
  * <strong>This marshaller does not support recursive marshalling.</strong>
  *
  * @author Anthony Bruno (anthony.bruno196@gmail.com)

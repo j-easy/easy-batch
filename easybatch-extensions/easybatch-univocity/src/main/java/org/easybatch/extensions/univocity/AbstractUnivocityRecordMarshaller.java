@@ -38,7 +38,7 @@ import java.util.List;
 
 /**
  * Marshals a POJO to a format supported by  <a href="http://www.univocity.com/">uniVocity</a>.
- * <p/>
+ *
  * <strong>This marshaller does not support recursive marshalling.</strong>
  *
  * @param <S> The settings type that is used to configure the writer.

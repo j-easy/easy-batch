@@ -33,7 +33,7 @@ import java.nio.file.Path;
 
 /**
  * A record reader that reads xml records from an xml file.
- * <p/>
+ *
  * This reader produces {@link XmlRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)

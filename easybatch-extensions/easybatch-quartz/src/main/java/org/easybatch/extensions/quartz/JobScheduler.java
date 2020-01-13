@@ -390,7 +390,7 @@ public class JobScheduler {
 
     /**
      * Stop the scheduler.
-     * <p/>
+     *
      * <strong>Note: The scheduler cannot be re-started and no more jobs can be scheduled.</strong>
      *
      * @throws JobSchedulerException thrown if the scheduler cannot be stopped

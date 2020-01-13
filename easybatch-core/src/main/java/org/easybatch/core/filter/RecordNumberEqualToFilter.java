@@ -27,7 +27,7 @@ import org.easybatch.core.record.Record;
 
 /**
  * A {@link RecordFilter} that filters records based on their number.
- * <p/>
+ *
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *

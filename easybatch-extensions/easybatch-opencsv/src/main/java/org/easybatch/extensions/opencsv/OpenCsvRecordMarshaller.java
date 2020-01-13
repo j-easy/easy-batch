@@ -38,7 +38,7 @@ import java.util.List;
 
 /**
  * Marshals a POJO to CSV format using <a href="http://opencsv.sourceforge.net">Open CSV</a>.
- * <p/>
+ *
  * <strong>This marshaller does not support recursive marshalling.</strong>
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)

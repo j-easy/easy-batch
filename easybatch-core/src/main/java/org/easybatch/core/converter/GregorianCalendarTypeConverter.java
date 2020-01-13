@@ -30,7 +30,7 @@ import static org.easybatch.core.util.Utils.checkArgument;
 
 /**
  * {@link java.util.Calendar} type converter.
- * <p/>
+ *
  * Used to convert a raw String into a Gregorian Calendar instance.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
