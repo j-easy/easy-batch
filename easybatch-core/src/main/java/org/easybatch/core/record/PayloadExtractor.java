@@ -30,7 +30,11 @@ import java.util.List;
  * Utility class to extract payloads from records and batches.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated This class is deprecated since v5.3 and will be removed in v6.
+ * Use {@link org.easybatch.core.util.Utils#extractPayloads(java.util.List)} instead
  */
+@Deprecated
 public abstract class PayloadExtractor {
 
     PayloadExtractor() {

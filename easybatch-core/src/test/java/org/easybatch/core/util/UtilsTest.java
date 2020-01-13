@@ -24,15 +24,24 @@
 package org.easybatch.core.util;
 
 import org.easybatch.core.beans.Person;
+import org.easybatch.core.record.Record;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easybatch.core.job.JobParameters.DEFAULT_ERROR_THRESHOLD;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class UtilsTest {
 
     private static long TIME;
@@ -41,6 +50,17 @@ public class UtilsTest {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2015, Calendar.JANUARY, 1, 1, 0, 0);
         TIME = calendar.getTime().getTime();
+    }
+
+    @Mock
+    private Object payload1, payload2;
+    @Mock
+    private Record<Object> record1, record2;
+
+    @Before
+    public void setUp() throws Exception {
+        when(record1.getPayload()).thenReturn(payload1);
+        when(record2.getPayload()).thenReturn(payload2);
     }
 
     @Test
@@ -73,6 +93,12 @@ public class UtilsTest {
         assertThat(Utils.formatErrorThreshold(1)).isEqualTo("1");
         assertThat(Utils.formatErrorThreshold(5)).isEqualTo("5");
         assertThat(Utils.formatErrorThreshold(DEFAULT_ERROR_THRESHOLD)).isEqualTo("N/A");
+    }
+
+    @Test
+    public void testExtractPayloadsFromListOfRecords() throws Exception {
+        List<Object> list = Utils.extractPayloads(Arrays.asList(record1, record2));
+        assertThat(list).containsExactly(payload1, payload2);
     }
 
 }

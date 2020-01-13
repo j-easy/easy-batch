@@ -24,6 +24,7 @@
 package org.easybatch.core.util;
 
 import org.easybatch.core.job.JobParameters;
+import org.easybatch.core.record.Record;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -31,8 +32,10 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.lang.String.format;
@@ -98,6 +101,21 @@ public abstract class Utils {
 
     public static String formatErrorThreshold(final long errorThreshold) {
         return errorThreshold == JobParameters.DEFAULT_ERROR_THRESHOLD ? NOT_APPLICABLE : valueOf(errorThreshold);
+    }
+
+    /**
+     * Extract the payload form each record.
+     *
+     * @param records the list of records
+     * @param <P>     the type of payload
+     * @return the list of payloads
+     */
+    public static <P> List<P> extractPayloads(final List<? extends Record<P>> records) {
+        List<P> payloads = new ArrayList<>();
+        for (Record<P> record : records) {
+            payloads.add(record.getPayload());
+        }
+        return payloads;
     }
 
 }
