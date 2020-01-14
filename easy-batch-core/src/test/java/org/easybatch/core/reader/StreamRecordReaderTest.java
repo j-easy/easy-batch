@@ -21,7 +21,7 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.easybatch.extensions.stream;
+package org.easybatch.core.reader;
 
 import org.easybatch.core.record.Record;
 import org.junit.Test;

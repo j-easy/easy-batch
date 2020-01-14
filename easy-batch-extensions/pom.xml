@@ -64,17 +64,4 @@
         <module>easy-batch-yaml</module>
     </modules>
 
-    <!--This will build the module only if the detected jdk start with "1.8"-->
-    <profiles>
-        <profile>
-            <id>java8</id>
-            <activation>
-                <jdk>1.8</jdk>
-            </activation>
-            <modules>
-                <module>easy-batch-stream</module>
-            </modules>
-        </profile>
-    </profiles>
-
 </project>
