@@ -43,7 +43,6 @@
         <module>easy-batch-core</module>
         <module>easy-batch-validation</module>
         <module>easy-batch-flatfile</module>
-        <module>easy-batch-tools</module>
         <module>easy-batch-jdbc</module>
         <module>easy-batch-jpa</module>
         <module>easy-batch-jms</module>
