@@ -8,9 +8,9 @@
         <version>7</version>
     </parent>
 
-    <groupId>org.easybatch</groupId>
-    <artifactId>easybatch</artifactId>
-    <version>5.3.1-SNAPSHOT</version>
+    <groupId>org.jeasy</groupId>
+    <artifactId>easy-batch</artifactId>
+    <version>6.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Easy Batch</name>
     <description>Easy Batch parent module</description>
@@ -40,18 +40,18 @@
     </properties>
 
     <modules>
-        <module>easybatch-core</module>
-        <module>easybatch-validation</module>
-        <module>easybatch-flatfile</module>
-        <module>easybatch-tools</module>
-        <module>easybatch-jdbc</module>
-        <module>easybatch-jpa</module>
-        <module>easybatch-jms</module>
-        <module>easybatch-xml</module>
-        <module>easybatch-json</module>
-        <module>easybatch-extensions</module>
-        <module>easybatch-archetype</module>
-        <module>easybatch-test-common</module>
+        <module>easy-batch-core</module>
+        <module>easy-batch-validation</module>
+        <module>easy-batch-flatfile</module>
+        <module>easy-batch-tools</module>
+        <module>easy-batch-jdbc</module>
+        <module>easy-batch-jpa</module>
+        <module>easy-batch-jms</module>
+        <module>easy-batch-xml</module>
+        <module>easy-batch-json</module>
+        <module>easy-batch-extensions</module>
+        <module>easy-batch-archetype</module>
+        <module>easy-batch-test-common</module>
     </modules>
 
     <developers>
@@ -94,80 +94,80 @@
         <dependencies>
 
             <dependency>
-                <groupId>org.easybatch</groupId>
-                <artifactId>easybatch-core</artifactId>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-batch-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.easybatch</groupId>
-                <artifactId>easybatch-flatfile</artifactId>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-batch-flatfile</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.easybatch</groupId>
-                <artifactId>easybatch-xml</artifactId>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-batch-xml</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.easybatch</groupId>
-                <artifactId>easybatch-jdbc</artifactId>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-batch-jdbc</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.easybatch</groupId>
-                <artifactId>easybatch-validation</artifactId>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-batch-validation</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.easybatch</groupId>
-                <artifactId>easybatch-tools</artifactId>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-batch-tools</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.easybatch</groupId>
-                <artifactId>easybatch-spring</artifactId>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-batch-spring</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.easybatch</groupId>
-                <artifactId>easybatch-jms</artifactId>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-batch-jms</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.easybatch</groupId>
-                <artifactId>easybatch-json</artifactId>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-batch-json</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.easybatch</groupId>
-                <artifactId>easybatch-mongodb</artifactId>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-batch-mongodb</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.easybatch</groupId>
-                <artifactId>easybatch-xstream</artifactId>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-batch-xstream</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.easybatch</groupId>
-                <artifactId>easybatch-quartz</artifactId>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-batch-quartz</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.easybatch</groupId>
-                <artifactId>easybatch-test-common</artifactId>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-batch-test-common</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
             </dependency>

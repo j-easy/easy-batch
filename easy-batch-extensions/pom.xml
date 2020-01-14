@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>easy-batch</artifactId>
+        <groupId>org.jeasy</groupId>
+        <version>6.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <artifactId>easy-batch-extensions</artifactId>
+    <name>easy-batch-extensions</name>
+    <description>Extensions to support third party tools</description>
+    <url>https://github.com/j-easy/easy-batch</url>
+
+    <developers>
+        <developer>
+            <id>benas</id>
+            <name>Mahmoud Ben Hassine</name>
+            <url>http://benas.github.io</url>
+            <email>mahmoud.benhassine@icloud.com</email>
+            <roles>
+                <role>Project founder</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>git@github.com:j-easy/easy-batch.git</url>
+        <connection>scm:git:git@github.com:j-easy/easy-batch.git</connection>
+        <developerConnection>scm:git:git@github.com:j-easy/easy-batch.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/j-easy/easy-batch/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Travis CI</system>
+        <url>https://travis-ci.org/j-easy/easy-batch</url>
+    </ciManagement>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <modules>
+        <module>easy-batch-quartz</module>
+        <module>easy-batch-spring</module>
+        <module>easy-batch-opencsv</module>
+        <module>easy-batch-apache-commons-csv</module>
+        <module>easy-batch-gson</module>
+        <module>easy-batch-xstream</module>
+        <module>easy-batch-jackson</module>
+        <module>easy-batch-mongodb</module>
+        <module>easy-batch-hibernate</module>
+        <module>easy-batch-msexcel</module>
+        <module>easy-batch-univocity</module>
+        <module>easy-batch-yaml</module>
+    </modules>
+
+    <!--This will build the module only if the detected jdk start with "1.8"-->
+    <profiles>
+        <profile>
+            <id>java8</id>
+            <activation>
+                <jdk>1.8</jdk>
+            </activation>
+            <modules>
+                <module>easy-batch-stream</module>
+            </modules>
+        </profile>
+    </profiles>
+
+</project>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>easy-batch</artifactId>
+        <groupId>org.jeasy</groupId>
+        <version>6.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>easy-batch-jms</artifactId>
+    <packaging>jar</packaging>
+
+    <name>easy-batch-jms</name>
+    <description>Easy Batch - JMS integration module</description>
+    <url>https://github.com/j-easy/easy-batch</url>
+
+    <properties>
+        <jms.version>1.1</jms.version>
+        <activemq-all.version>5.13.5</activemq-all.version>
+        <commons-io.version>2.6</commons-io.version>
+    </properties>
+
+    <developers>
+        <developer>
+            <id>benas</id>
+            <name>Mahmoud Ben Hassine</name>
+            <url>http://benas.github.io</url>
+            <email>mahmoud.benhassine@icloud.com</email>
+            <roles>
+                <role>Project founder</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>git@github.com:j-easy/easy-batch.git</url>
+        <connection>scm:git:git@github.com:j-easy/easy-batch.git</connection>
+        <developerConnection>scm:git:git@github.com:j-easy/easy-batch.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/j-easy/easy-batch/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Travis CI</system>
+        <url>https://travis-ci.org/j-easy/easy-batch</url>
+    </ciManagement>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <repositories>
+        <repository>
+            <id>jboss-maven2-release-repository</id>
+            <url>http://repository.jboss.org/nexus/content/repositories/root_repository/maven2</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-batch-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>jms</artifactId>
+            <version>${jms.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-all</artifactId>
+            <version>${activemq-all.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
