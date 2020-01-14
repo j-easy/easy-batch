@@ -51,7 +51,6 @@
     </licenses>
 
     <modules>
-        <module>easy-batch-quartz</module>
         <module>easy-batch-spring</module>
         <module>easy-batch-opencsv</module>
         <module>easy-batch-apache-commons-csv</module>
