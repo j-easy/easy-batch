@@ -87,12 +87,6 @@
 
         <dependency>
             <groupId>org.jeasy</groupId>
-            <artifactId>easy-batch-tools</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jeasy</groupId>
             <artifactId>easy-batch-spring</artifactId>
             <version>${project.version}</version>
         </dependency>
