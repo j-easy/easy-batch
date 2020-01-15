@@ -5,7 +5,7 @@
 
     <groupId>org.jeasy</groupId>
     <artifactId>easy-batch-benchmarks</artifactId>
-    <version>5.2.0</version>
+    <version>6.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>easy-batch-benchmarks</name>
@@ -16,6 +16,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jmh.version>1.19</jmh.version>
         <random-beans.version>3.7.0</random-beans.version>
+        <jaxb-impl.version>2.1</jaxb-impl.version>
+        <javaee-api.version>6.0</javaee-api.version>
         <maven-dependency-plugin.version>3.0.2</maven-dependency-plugin.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
     </properties>
@@ -69,6 +71,18 @@
             <artifactId>easy-batch-xml</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>${javaee-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>${jaxb-impl.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>io.github.benas</groupId>
             <artifactId>random-beans-randomizers</artifactId>
@@ -98,8 +112,8 @@
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <verbose>true</verbose>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>

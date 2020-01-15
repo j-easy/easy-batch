@@ -73,25 +73,25 @@ $>git clone https://github.com/j-easy/easy-batch.git
 # Run the CSV benchmark
 
 ```
-$>cd easybatch-benchmarks
+$>cd easy-batch-benchmarks
 $>mvn package
 $>cd target
 $>java \
-    -Dorg.easybatch.bench.count=10000 \
-    -cp "easybatch-benchmarks-5.2.0.jar:dependency/*" \
-    org.easybatch.bench.CsvBenchmark
+    -Dorg.jeasy.batch.bench.count=10000 \
+    -cp "easy-batch-benchmarks-6.0.0-SNAPSHOT.jar:dependency/*" \
+    org.jeasy.batch.bench.CsvBenchmark
 ```
 
 # Run the XML benchmark
 
 ```
-$>cd easybatch-benchmarks
+$>cd easy-batch-benchmarks
 $>mvn package
 $>cd target
 $>java \
-    -Dorg.easybatch.bench.count=10000 \
-    -cp "easybatch-benchmarks-5.2.0.jar:dependency/*" \
-    org.easybatch.bench.XmlBenchmark
+    -Dorg.jeasy.batch.bench.count=10000 \
+    -cp "easy-batch-benchmarks-6.0.0-SNAPSHOT.jar:dependency/*" \
+    org.jeasy.batch.bench.XmlBenchmark
 ```
 
 # Notes
@@ -100,17 +100,17 @@ $>java \
 
 ```
 $>java ^
-    -Dorg.easybatch.bench.count=10000 ^
-    -cp "easybatch-benchmarks-5.2.0.jar;dependency/*" ^
-    org.easybatch.bench.CsvBenchmark
+    -Dorg.jeasy.batch.bench.count=10000 ^
+    -cp "easy-batch-benchmarks-6.0.0-SNAPSHOT.jar;dependency/*" ^
+    org.jeasy.batch.bench.CsvBenchmark
 
 $>java ^
-    -Dorg.easybatch.bench.count=10000 ^
-    -cp "easybatch-benchmarks-5.2.0.jar;dependency/*" ^
-    org.easybatch.bench.XmlBenchmark
+    -Dorg.jeasy.batch.bench.count=10000 ^
+    -cp "easy-batch-benchmarks-6.0.0-SNAPSHOT.jar;dependency/*" ^
+    org.jeasy.batch.bench.XmlBenchmark
 ```
 
-* Use the JVM property `-Dorg.easybatch.bench.count` to specify the number of records to generate.
+* Use the JVM property `-Dorg.jeasy.batch.bench.count` to specify the number of records to generate.
 
 * By default, the directory `java.io.tmpdir` is used to generate the input files (which will be deleted at the end of benchmark execution).
 You can change this default directory by setting the JVM property:

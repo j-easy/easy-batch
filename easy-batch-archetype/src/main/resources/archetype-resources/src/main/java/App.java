@@ -23,14 +23,14 @@
  */
 package ${packageName};
 
-import org.easybatch.core.job.JobExecutor;
-import org.easybatch.core.job.JobReport;
-import org.easybatch.core.job.Job;
-import org.easybatch.core.reader.StringRecordReader;
-import org.easybatch.core.writer.StandardOutputRecordWriter;
+import org.jeasy.batch.core.job.JobExecutor;
+import org.jeasy.batch.core.job.JobReport;
+import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.reader.StringRecordReader;
+import org.jeasy.batch.core.writer.StandardOutputRecordWriter;
 
-import static org.easybatch.core.job.JobBuilder.aNewJob;
-import static org.easybatch.core.util.Utils.LINE_SEPARATOR;
+import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
+import static org.jeasy.batch.core.util.Utils.LINE_SEPARATOR;
 
 public class App {
 

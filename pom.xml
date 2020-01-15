@@ -12,7 +12,7 @@
     <artifactId>easy-batch</artifactId>
     <version>6.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Easy Batch</name>
+    <name>easy-batch</name>
     <description>Easy Batch parent module</description>
     <url>https://github.com/j-easy/easy-batch</url>
 
@@ -51,6 +51,8 @@
         <module>easy-batch-extensions</module>
         <module>easy-batch-archetype</module>
         <module>easy-batch-test-common</module>
+        <module>easy-batch-tutorials</module>
+        <module>easy-batch-benchmarks</module>
     </modules>
 
     <developers>
@@ -249,7 +251,7 @@
                     <version>${maven-javadoc-plugin.version}</version>
                     <configuration>
                         <doclint>none</doclint>
-                        <excludePackageNames>org.easybatch.test.common</excludePackageNames>
+                        <excludePackageNames>org.jeasy.batch.test.common</excludePackageNames>
                     </configuration>
                     <executions>
                         <execution>

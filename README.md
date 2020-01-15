@@ -89,11 +89,11 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 #### Stable:
 
-The current stable version is [v5.3.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.3.0|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/tree/master/easybatch-tutorials) | [javadoc](http://javadoc.io/doc/org.easybatch/easybatch-core/5.3.0)
+The current stable version is [v5.3.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.3.0|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials) | [javadoc](http://javadoc.io/doc/org.easybatch/easybatch-core/5.3.0)
 
 #### Development:
 
-The current development version is 5.3.1-SNAPSHOT [![Build Status](https://travis-ci.org/j-easy/easy-batch.svg?branch=master)](https://travis-ci.org/j-easy/easy-batch) [![Build status](https://ci.appveyor.com/api/projects/status/pwpfbmmew717wtgn/branch/master?svg=true)](https://ci.appveyor.com/project/benas/easy-batch/branch/master)
+The current development version is 6.0.0-SNAPSHOT [![Build Status](https://travis-ci.org/j-easy/easy-batch.svg?branch=master)](https://travis-ci.org/j-easy/easy-batch) [![Build status](https://ci.appveyor.com/api/projects/status/pwpfbmmew717wtgn/branch/master?svg=true)](https://ci.appveyor.com/project/benas/easy-batch/branch/master)
 
 If you want to import a snapshot version, you need to use the following repository:
 

@@ -23,8 +23,8 @@
  */
 package ${packageName};
 
-import org.easybatch.core.processor.RecordProcessor;
-import org.easybatch.core.record.StringRecord;
+import org.jeasy.batch.core.processor.RecordProcessor;
+import org.jeasy.batch.core.record.StringRecord;
 
 /**
  * A processor that transforms tweets to upper case.

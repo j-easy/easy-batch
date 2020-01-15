@@ -29,15 +29,15 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- configure record reader -->
-    <bean id="reader" class="org.easybatch.core.reader.StringRecordReader">
+    <bean id="reader" class="org.jeasy.batch.core.reader.StringRecordReader">
         <constructor-arg value="hello&#10;world"/>
     </bean>
 
     <!-- configure record writer -->
-    <bean id="writer" class="org.easybatch.core.writer.StandardOutputRecordWriter"/>
+    <bean id="writer" class="org.jeasy.batch.core.writer.StandardOutputRecordWriter"/>
 
     <!-- configure Easy Batch job -->
-    <bean id="job" class="org.easybatch.extensions.spring.JobFactoryBean">
+    <bean id="job" class="org.jeasy.batch.extensions.spring.JobFactoryBean">
         
         <!-- job parameters -->
         <property name="name" value="hello world"/>
@@ -50,7 +50,7 @@
         <property name="recordWriter" ref="writer"/>
         <property name="recordProcessors">
             <list>
-                <bean class="org.easybatch.core.processor.RecordCollector"/>
+                <bean class="org.jeasy.batch.core.processor.RecordCollector"/>
             </list>
         </property>
     </bean>
