@@ -26,4 +26,4 @@ jobs: # TODO is there a way to extract common config?
         with:
           java-version: 1.8
       - name: Build with Maven
-        run: mvn -Dhttps.protocols=TLSv1.2 clean install # TODO add coveralls report
+        run: mvn clean install # TODO add coveralls report
