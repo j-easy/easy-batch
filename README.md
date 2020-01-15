@@ -92,16 +92,9 @@ The current stable version is [v5.3.0](http://search.maven.org/#artifactdetails|
 
 #### Development:
 
-The current development version is 6.0.0-SNAPSHOT [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
+The current development version is 6.0.0-SNAPSHOT: [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
 
-If you want to import a snapshot version, you need to use the following repository:
-
-```xml
-<repository>
-    <id>ossrh</id>
-    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-</repository>
-```
+If you want to import a snapshot version, please check the [Getting started](https://github.com/j-easy/easy-batch/wiki/getting-started#use-a-snapshot-version) guide.
 
 ## Contribution
 
