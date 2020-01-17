@@ -34,7 +34,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -43,22 +42,20 @@ public class BlockingQueueRecordWriterTest {
     @Mock
     private Record record1, record2;
 
-    private BlockingQueue<Record> queue1, queue2;
+    private BlockingQueue<Record> queue;
 
     private BlockingQueueRecordWriter writer;
 
     @Before
     public void setUp() {
-        queue1 = new LinkedBlockingQueue<>();
-        queue2 = new LinkedBlockingQueue<>();
-        writer = new BlockingQueueRecordWriter(asList(queue1, queue2));
+        queue = new LinkedBlockingQueue<>();
+        writer = new BlockingQueueRecordWriter(queue);
     }
 
     @Test
     public void testWriteRecords() throws Exception {
         writer.writeRecords(new Batch(record1, record2));
-        assertThat(queue1).containsExactly(record1, record2);
-        assertThat(queue2).containsExactly(record1, record2);
+        assertThat(queue).containsExactly(record1, record2);
     }
 
 }

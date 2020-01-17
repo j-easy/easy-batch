@@ -26,19 +26,20 @@ package org.jeasy.batch.core.writer;
 import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;
 
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
-
-import static java.util.Collections.singletonList;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Write records to a (list of) {@link BlockingQueue}(s).
+ * Write records to a {@link BlockingQueue}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class BlockingQueueRecordWriter implements RecordWriter {
 
-    private List<BlockingQueue<Record>> blockingQueues;
+    public static final long DEFAULT_TIMEOUT = 60000;
+
+    private BlockingQueue<Record> blockingQueue;
+    private long timeout;
 
     /**
      * Create a new {@link BlockingQueueRecordWriter}.
@@ -46,20 +47,18 @@ public class BlockingQueueRecordWriter implements RecordWriter {
      * @param blockingQueue to write records to
      */
     public BlockingQueueRecordWriter(final BlockingQueue<Record> blockingQueue) {
-        this(singletonList(blockingQueue));
+        this(blockingQueue, DEFAULT_TIMEOUT);
     }
 
     /**
      * Create a new {@link BlockingQueueRecordWriter}.
      *
-     * @param blockingQueues to write records to
-     *
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Starting from v6, the {@link BlockingQueueRecordWriter} will operate on a single queue.
+     * @param blockingQueue to write records to
+     * @param timeout in milliseconds after which the writer will throw an exception
      */
-    @Deprecated
-    public BlockingQueueRecordWriter(final List<BlockingQueue<Record>> blockingQueues) {
-        this.blockingQueues = blockingQueues;
+    public BlockingQueueRecordWriter(final BlockingQueue<Record> blockingQueue, final long timeout) {
+        this.blockingQueue = blockingQueue;
+        this.timeout = timeout;
     }
 
     @Override
@@ -70,9 +69,7 @@ public class BlockingQueueRecordWriter implements RecordWriter {
     @Override
     public void writeRecords(Batch batch) throws Exception {
         for (Record record : batch) {
-            for (BlockingQueue<Record> queue : blockingQueues) {
-                queue.put(record);
-            }
+            blockingQueue.offer(record, timeout, TimeUnit.MILLISECONDS);
         }
     }
 
