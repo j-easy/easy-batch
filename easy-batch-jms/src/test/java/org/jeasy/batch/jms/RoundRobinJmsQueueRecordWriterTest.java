@@ -46,9 +46,6 @@ public class RoundRobinJmsQueueRecordWriterTest {
     @Mock
     private JmsRecord record1, record2, record3;
 
-    @Mock
-    private JmsPoisonRecord poisonRecord;
-
     @Before
     public void setUp() throws Exception {
         roundRobinJmsQueueRecordWriter = new RoundRobinJmsQueueRecordWriter(Arrays.asList(queue1, queue2));

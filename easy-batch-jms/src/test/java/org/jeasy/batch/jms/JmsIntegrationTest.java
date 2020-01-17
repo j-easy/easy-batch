@@ -75,26 +75,21 @@ public class JmsIntegrationTest {
         QueueSender queueSender = queueSession.createSender(queue);
         queueConnection.start();
 
-        //send a regular message to the queue
+        //send a message to the queue
         TextMessage message = queueSession.createTextMessage();
         message.setText(MESSAGE_TEXT);
         queueSender.send(message);
 
-        //send a poison record to the queue
-        queueSender.send(new JmsPoisonMessage());
-
         RecordCollector recordCollector = new RecordCollector();
         Job job = aNewJob()
-                .reader(new JmsQueueRecordReader(queueConnectionFactory, queue))
-                .filter(new JmsPoisonRecordFilter())
+                .reader(new JmsQueueRecordReader(queueConnectionFactory, queue, 1000))
                 .processor(recordCollector)
                 .build();
 
         JobReport jobReport = new JobExecutor().execute(job);
 
         assertThat(jobReport).isNotNull();
-        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
-        assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(1);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(1);
 
         List<JmsRecord> records = recordCollector.getRecords();

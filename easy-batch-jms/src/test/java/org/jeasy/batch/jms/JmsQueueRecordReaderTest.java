@@ -41,6 +41,7 @@ import static org.mockito.Mockito.when;
 public class JmsQueueRecordReaderTest {
 
     private JmsQueueRecordReader jmsQueueRecordReader;
+    private long timout = 10000;
 
     @Mock
     private QueueConnectionFactory queueConnectionFactory;
@@ -57,13 +58,13 @@ public class JmsQueueRecordReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        jmsQueueRecordReader = new JmsQueueRecordReader(queueConnectionFactory, queue);
+        jmsQueueRecordReader = new JmsQueueRecordReader(queueConnectionFactory, queue, timout);
 
         when(queue.getQueueName()).thenReturn("queue");
         when(queueConnectionFactory.createQueueConnection()).thenReturn(queueConnection);
         when(queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)).thenReturn(queueSession);
         when(queueSession.createReceiver(queue)).thenReturn(queueReceiver);
-        when(queueReceiver.receive()).thenReturn(message);
+        when(queueReceiver.receive(timout)).thenReturn(message);
     }
 
     @Test
@@ -82,7 +83,7 @@ public class JmsQueueRecordReaderTest {
 
         Record record = jmsQueueRecordReader.readRecord();
 
-        verify(queueReceiver).receive();
+        verify(queueReceiver).receive(timout);
         assertThat(record).isNotNull().isInstanceOf(JmsRecord.class);
         assertThat(record.getPayload()).isEqualTo(message);
     }

@@ -47,10 +47,6 @@ public class JMSSenderLauncher {
             JMSUtil.sendStringRecord(input);
         } while (!input.equalsIgnoreCase("quit"));
 
-        //send a poison record at the end to stop the job
-        JMSUtil.sendPoisonRecord();
-
-        System.exit(0);
     }
 
 }

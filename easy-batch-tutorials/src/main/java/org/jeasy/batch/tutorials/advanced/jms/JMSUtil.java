@@ -26,8 +26,6 @@ package org.jeasy.batch.tutorials.advanced.jms;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.io.FileUtils;
-import org.jeasy.batch.core.record.StringRecord;
-import org.jeasy.batch.jms.JmsPoisonMessage;
 
 import javax.jms.*;
 import javax.naming.Context;
@@ -53,7 +51,7 @@ public class JMSUtil {
     public static void initJMSFactory() throws Exception {
 
         Properties p = new Properties();
-        p.load(JMSUtil.class.getResourceAsStream(("/org/easybatch/tutorials/advanced/jms/jndi.properties")));
+        p.load(JMSUtil.class.getResourceAsStream(("/org/jeasy/batch/tutorials/advanced/jms/jndi.properties")));
         Context jndiContext = new InitialContext(p);
 
         queueConnectionFactory = (QueueConnectionFactory) jndiContext.lookup("QueueConnectionFactory");
@@ -77,18 +75,6 @@ public class JMSUtil {
         message.setText(jmsMessage);
         queueSender.send(message);
         System.out.println("Message '" + jmsMessage + "' sent to JMS queue");
-    }
-
-    public static void sendStringRecord(StringRecord stringRecord) throws JMSException {
-        TextMessage message = queueSession.createTextMessage();
-        message.setText(stringRecord.getPayload());
-        queueSender.send(message);
-        System.out.println("Message '" + stringRecord.getPayload() + "' sent to JMS queue");
-    }
-
-    public static void sendPoisonRecord() throws JMSException {
-        queueSender.send(new JmsPoisonMessage());
-        System.out.println("Poison record sent to JMS queue");
     }
 
     public static void stopEmbeddedBroker() throws Exception {

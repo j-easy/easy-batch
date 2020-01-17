@@ -28,7 +28,6 @@ import org.jeasy.batch.core.job.Job;
 import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.job.JobReport;
-import org.jeasy.batch.jms.JmsPoisonRecordFilter;
 import org.jeasy.batch.jms.JmsQueueRecordReader;
 
 /**
@@ -46,8 +45,7 @@ public class Launcher {
 
         // Build a batch job
         Job job = new JobBuilder()
-                .reader(new JmsQueueRecordReader(JMSUtil.getQueueConnectionFactory(), JMSUtil.getQueue()))
-                .filter(new JmsPoisonRecordFilter())
+                .reader(new JmsQueueRecordReader(JMSUtil.getQueueConnectionFactory(), JMSUtil.getQueue(), 10000))
                 .processor(new JmsRecordProcessor())
                 .build();
 
