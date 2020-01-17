@@ -31,6 +31,7 @@ import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.job.JobStatus;
 import org.jeasy.batch.core.processor.RecordCollector;
 import org.jeasy.batch.core.record.Record;
+import org.jeasy.batch.core.util.Utils;
 import org.jeasy.batch.test.common.AbstractDatabaseTest;
 import org.jeasy.batch.test.common.Tweet;
 import org.junit.After;
@@ -40,7 +41,6 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jeasy.batch.core.record.PayloadExtractor.extractPayloads;
 
 public class JdbcIntegrationTest extends AbstractDatabaseTest {
 
@@ -75,7 +75,7 @@ public class JdbcIntegrationTest extends AbstractDatabaseTest {
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
 
         List<Record<Tweet>> records = recordCollector.getRecords();
-        List<Tweet> tweets = extractPayloads(records);
+        List<Tweet> tweets = Utils.extractPayloads(records);
 
         assertThat(tweets).hasSize(2);
         Tweet tweet = tweets.get(0);

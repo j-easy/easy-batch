@@ -25,8 +25,6 @@
 package org.jeasy.batch.tutorials.advanced.parallel;
 
 import org.jeasy.batch.core.filter.RecordFilter;
-import org.jeasy.batch.core.filter.RecordNumberGreaterThanFilter;
-import org.jeasy.batch.core.filter.RecordNumberLowerThanFilter;
 import org.jeasy.batch.core.job.DefaultJobReportMerger;
 import org.jeasy.batch.core.job.Job;
 import org.jeasy.batch.core.job.JobBuilder;
@@ -53,9 +51,9 @@ public class LogicalPartitions {
 
         // Build worker jobs
         // worker job 1: process records 1-3 and filters records 4+
-        Job job1 = buildJob(tweets, new RecordNumberGreaterThanFilter(3), "worker-job1");
+        Job job1 = buildJob(tweets, record -> record.getHeader().getNumber() > 3 ? null : record, "worker-job1");
         // worker job 2: process 4+ and filters records 1-3
-        Job job2 = buildJob(tweets, new RecordNumberLowerThanFilter(4), "worker-job2");
+        Job job2 = buildJob(tweets, record -> record.getHeader().getNumber() < 4 ? null : record, "worker-job2");
 
         //create a job executor with 2 worker threads call jobs in parallel
         JobExecutor jobExecutor = new JobExecutor(THREAD_POOL_SIZE);

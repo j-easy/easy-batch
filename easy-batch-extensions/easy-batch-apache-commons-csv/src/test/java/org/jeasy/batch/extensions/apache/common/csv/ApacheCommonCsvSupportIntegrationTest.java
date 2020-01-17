@@ -25,6 +25,7 @@ package org.jeasy.batch.extensions.apache.common.csv;
 
 import org.jeasy.batch.core.processor.RecordCollector;
 import org.jeasy.batch.core.reader.StringRecordReader;
+import org.jeasy.batch.core.util.Utils;
 import org.jeasy.batch.test.common.Tweet;
 import org.junit.Test;
 
@@ -32,7 +33,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
-import static org.jeasy.batch.core.record.PayloadExtractor.extractPayloads;
 import static org.jeasy.batch.core.util.Utils.LINE_SEPARATOR;
 
 public class ApacheCommonCsvSupportIntegrationTest {
@@ -50,7 +50,7 @@ public class ApacheCommonCsvSupportIntegrationTest {
                 .build().call();
 
 
-        List<String> records = extractPayloads(recordCollector.getRecords());
+        List<String> records = Utils.extractPayloads(recordCollector.getRecords());
 
         assertThat(records).containsExactly("'1';'foo';'hello'", "'2';'bar';'hey'", "'3';'baz';'hi'");
     }

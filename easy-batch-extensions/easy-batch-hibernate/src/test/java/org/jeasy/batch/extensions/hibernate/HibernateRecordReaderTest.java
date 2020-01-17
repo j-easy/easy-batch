@@ -27,6 +27,7 @@ import org.jeasy.batch.core.job.Job;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.processor.RecordCollector;
+import org.jeasy.batch.core.util.Utils;
 import org.jeasy.batch.test.common.AbstractDatabaseTest;
 import org.jeasy.batch.test.common.Tweet;
 import org.hibernate.SessionFactory;
@@ -41,7 +42,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
-import static org.jeasy.batch.core.record.PayloadExtractor.extractPayloads;
 
 public class HibernateRecordReaderTest extends AbstractDatabaseTest {
 
@@ -71,7 +71,7 @@ public class HibernateRecordReaderTest extends AbstractDatabaseTest {
         JobReport jobReport = new JobExecutor().execute(job);
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
 
-        List<Tweet> tweets = extractPayloads(recordCollector.getRecords());
+        List<Tweet> tweets = Utils.extractPayloads(recordCollector.getRecords());
         assertThat(tweets).hasSize(2);
 
         Tweet tweet = tweets.get(0);

@@ -31,13 +31,13 @@ import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.job.JobStatus;
 import org.jeasy.batch.core.processor.RecordCollector;
 import org.jeasy.batch.core.record.Record;
+import org.jeasy.batch.core.util.Utils;
 import org.junit.Test;
 
 import java.io.InputStream;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jeasy.batch.core.record.PayloadExtractor.extractPayloads;
 
 public class XmlSupportIntegrationTest {
 
@@ -59,7 +59,7 @@ public class XmlSupportIntegrationTest {
 
         // then
         List<Record<Website>> records = recordCollector.getRecords();
-        List<Website> websites = extractPayloads(records);
+        List<Website> websites = Utils.extractPayloads(records);
 
         assertThat(websites).hasSize(5);
 
@@ -97,7 +97,7 @@ public class XmlSupportIntegrationTest {
         assertThatReportIsCorrect(jobReport);
 
         List<Record<Person>> records = recordCollector.getRecords();
-        List<Person> persons = extractPayloads(records);
+        List<Person> persons = Utils.extractPayloads(records);
 
         assertThat(persons).hasSize(2);
 
@@ -135,7 +135,7 @@ public class XmlSupportIntegrationTest {
         assertThatReportIsCorrect(jobReport);
 
         List<Record<Dependency>> records = recordCollector.getRecords();
-        List<Dependency> dependencies = extractPayloads(records);
+        List<Dependency> dependencies = Utils.extractPayloads(records);
 
         assertThat(dependencies).hasSize(2);
 
@@ -194,7 +194,7 @@ public class XmlSupportIntegrationTest {
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
 
         List<Record<Bean>> records = recordCollector.getRecords();
-        List<Bean> beans = extractPayloads(records);
+        List<Bean> beans = Utils.extractPayloads(records);
 
         assertThat(beans).isNotEmpty().hasSize(2);
 

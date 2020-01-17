@@ -33,6 +33,7 @@ import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.job.JobStatus;
 import org.jeasy.batch.core.processor.RecordCollector;
 import org.jeasy.batch.core.record.Record;
+import org.jeasy.batch.core.util.Utils;
 import org.junit.Test;
 
 import java.io.File;
@@ -43,7 +44,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jeasy.batch.core.record.PayloadExtractor.extractPayloads;
 
 public class FlatFileIntegrationTest {
 
@@ -69,7 +69,7 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
 
         List<Record<Person>> records = recordCollector.getRecords();
-        assertPersons(extractPayloads(records));
+        assertPersons(Utils.extractPayloads(records));
 
     }
 
@@ -96,7 +96,7 @@ public class FlatFileIntegrationTest {
 
         List<Record<Person>> records = recordCollector.getRecords();
 
-        assertPersonsFieldSubsetMapping(extractPayloads(records));
+        assertPersonsFieldSubsetMapping(Utils.extractPayloads(records));
 
     }
 
@@ -126,7 +126,7 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(3);
 
         List<Record<Person>> records = recordCollector.getRecords();
-        assertPersons(extractPayloads(records));
+        assertPersons(Utils.extractPayloads(records));
 
     }
 
@@ -152,7 +152,7 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(3);
 
         List<Record<Person>> records = recordCollector.getRecords();
-        assertPersonsFieldSubsetMapping(extractPayloads(records));
+        assertPersonsFieldSubsetMapping(Utils.extractPayloads(records));
 
     }
 
@@ -186,7 +186,7 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport).isNotNull();
 
         List<Record<Complaint>> records = recordCollector.getRecords();
-        List<Complaint> complaints = extractPayloads(records);
+        List<Complaint> complaints = Utils.extractPayloads(records);
 
         assertThat(complaints).isNotEmpty().hasSize(10);
 
@@ -233,7 +233,7 @@ public class FlatFileIntegrationTest {
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
 
         List<Record<Person>> records = recordCollector.getRecords();
-        List<Person> persons = extractPayloads(records);
+        List<Person> persons = Utils.extractPayloads(records);
 
         assertThat(persons).hasSize(2);
 
