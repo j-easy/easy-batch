@@ -25,10 +25,8 @@
 package org.jeasy.batch.tutorials.advanced.cbrd;
 
 import org.jeasy.batch.core.filter.FileExtensionFilter;
-import org.jeasy.batch.core.filter.PoisonRecordFilter;
 import org.jeasy.batch.core.job.Job;
 import org.jeasy.batch.core.job.JobExecutor;
-import org.jeasy.batch.core.listener.PoisonRecordBroadcaster;
 import org.jeasy.batch.core.reader.BlockingQueueRecordReader;
 import org.jeasy.batch.core.reader.FileRecordReader;
 import org.jeasy.batch.core.record.Record;
@@ -38,7 +36,6 @@ import java.io.File;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static java.util.Arrays.asList;
 import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 import static org.jeasy.batch.core.writer.ContentBasedBlockingQueueRecordWriterBuilder.newContentBasedBlockingQueueRecordWriterBuilder;
 
@@ -50,6 +47,7 @@ import static org.jeasy.batch.core.writer.ContentBasedBlockingQueueRecordWriterB
 public class Launcher {
 
     private static final int THREAD_POOL_SIZE = 3;
+    private static final int QUEUE_TIMEOUT = 1000;
 
     public static void main(String[] args) throws Exception {
         
@@ -72,7 +70,6 @@ public class Launcher {
                 .reader(new FileRecordReader(directory))
                 .filter(new FileExtensionFilter(".log", ".tmp"))
                 .writer(contentBasedBlockingQueueRecordWriter)
-                .jobListener(new PoisonRecordBroadcaster(asList(csvQueue, xmlQueue)))
                 .build();
 
         // Build jobs
@@ -93,8 +90,7 @@ public class Launcher {
     private static Job buildWorkerJob(BlockingQueue<Record> workQueue, String jobName) {
         return aNewJob()
                 .named(jobName)
-                .reader(new BlockingQueueRecordReader(workQueue))
-                .filter(new PoisonRecordFilter())
+                .reader(new BlockingQueueRecordReader(workQueue, QUEUE_TIMEOUT))
                 .processor(new DummyFileProcessor())
                 .build();
     }

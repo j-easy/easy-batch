@@ -25,10 +25,8 @@
 package org.jeasy.batch.tutorials.advanced.parallel;
 
 import org.jeasy.batch.core.filter.HeaderRecordFilter;
-import org.jeasy.batch.core.filter.PoisonRecordFilter;
 import org.jeasy.batch.core.job.Job;
 import org.jeasy.batch.core.job.JobExecutor;
-import org.jeasy.batch.core.listener.PoisonRecordBroadcaster;
 import org.jeasy.batch.core.reader.BlockingQueueRecordReader;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.writer.RoundRobinBlockingQueueRecordWriter;
@@ -47,6 +45,7 @@ import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 public class RecordDispatching {
 
     private static final int THREAD_POOL_SIZE = 3;
+    private static final int QUEUE_TIMEOUT = 1000;
 
     public static void main(String[] args) throws Exception {
 
@@ -68,7 +67,6 @@ public class RecordDispatching {
                 .filter(new HeaderRecordFilter())
                 .mapper(new DelimitedRecordMapper<>(Tweet.class, "id", "user", "message"))
                 .writer(roundRobinBlockingQueueRecordWriter)
-                .jobListener(new PoisonRecordBroadcaster(asList(workQueue1, workQueue2)))
                 .build();
 
         // Build worker jobs
@@ -89,8 +87,7 @@ public class RecordDispatching {
     private static Job buildWorkerJob(BlockingQueue<Record> workQueue, String jobName) {
         return aNewJob()
                 .named(jobName)
-                .reader(new BlockingQueueRecordReader(workQueue))
-                .filter(new PoisonRecordFilter())
+                .reader(new BlockingQueueRecordReader(workQueue, QUEUE_TIMEOUT))
                 .writer(new StandardOutputRecordWriter())
                 .build();
     }

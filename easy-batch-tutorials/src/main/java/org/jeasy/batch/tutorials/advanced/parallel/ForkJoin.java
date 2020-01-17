@@ -24,10 +24,8 @@
 
 package org.jeasy.batch.tutorials.advanced.parallel;
 
-import org.jeasy.batch.core.filter.PoisonRecordFilter;
 import org.jeasy.batch.core.job.Job;
 import org.jeasy.batch.core.job.JobExecutor;
-import org.jeasy.batch.core.listener.PoisonRecordBroadcaster;
 import org.jeasy.batch.core.processor.RecordProcessor;
 import org.jeasy.batch.core.reader.BlockingQueueRecordReader;
 import org.jeasy.batch.core.record.Record;
@@ -40,7 +38,6 @@ import org.jeasy.batch.tutorials.common.DatabaseUtil;
 import org.jeasy.batch.tutorials.common.Tweet;
 
 import javax.sql.DataSource;
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -51,7 +48,7 @@ import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 public class ForkJoin {
 
     private static final int THREAD_POOL_SIZE = 4;
-    private static final int NB_WORKERS = 2;
+    private static final int QUEUE_TIMEOUT = 1000;
 
     public static void main(String[] args) throws Exception {
 
@@ -85,20 +82,19 @@ public class ForkJoin {
         DatabaseUtil.cleanUpWorkingDirectory();
     }
 
-    private static Job buildForkJob(String jobName, DataSource dataSource, List<BlockingQueue<Record>> workQueues) throws FileNotFoundException {
+    private static Job buildForkJob(String jobName, DataSource dataSource, List<BlockingQueue<Record>> workQueues) {
         return aNewJob()
                 .named(jobName)
                 .reader(new JdbcRecordReader(dataSource, "select * from tweet"))
                 .mapper(new JdbcRecordMapper<>(Tweet.class, "id", "user", "message"))
                 .writer(new RoundRobinBlockingQueueRecordWriter(workQueues))
-                .jobListener(new PoisonRecordBroadcaster(workQueues))
                 .build();
     }
 
     private static Job buildWorkerJob(String jobName, BlockingQueue<Record> workQueue, BlockingQueue<Record> joinQueue) {
         return aNewJob()
                 .named(jobName)
-                .reader(new BlockingQueueRecordReader(workQueue))
+                .reader(new BlockingQueueRecordReader(workQueue, QUEUE_TIMEOUT))
                 .processor(new TweetProcessor(jobName))
                 .writer(new BlockingQueueRecordWriter(joinQueue))
                 .build();
@@ -107,8 +103,7 @@ public class ForkJoin {
     private static Job buildJoinJob(String jobName, BlockingQueue<Record> joinQueue) {
         return aNewJob()
                 .named(jobName)
-                .reader(new BlockingQueueRecordReader(joinQueue, NB_WORKERS))
-                .filter(new PoisonRecordFilter())
+                .reader(new BlockingQueueRecordReader(joinQueue, QUEUE_TIMEOUT))
                 .writer(new StandardOutputRecordWriter())
                 .build();
     }

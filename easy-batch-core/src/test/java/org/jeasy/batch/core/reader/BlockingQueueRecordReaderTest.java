@@ -23,7 +23,9 @@
  */
 package org.jeasy.batch.core.reader;
 
-import org.jeasy.batch.core.record.PoisonRecord;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import org.jeasy.batch.core.record.Record;
 import org.junit.After;
 import org.junit.Before;
@@ -31,9 +33,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,23 +45,19 @@ public class BlockingQueueRecordReaderTest {
 
     @Mock
     private Record record;
-    @Mock
-    private PoisonRecord poisonRecord;
 
     @Before
     public void setUp() throws Exception {
         queue = new LinkedBlockingQueue<>();
         queue.put(record);
-        queue.put(poisonRecord);
 
-        blockingQueueRecordReader = new BlockingQueueRecordReader(queue);
+        blockingQueueRecordReader = new BlockingQueueRecordReader(queue, 500);
         blockingQueueRecordReader.open();
     }
 
     @Test
     public void testReadRecord() throws Exception {
         assertThat(blockingQueueRecordReader.readRecord()).isEqualTo(record);
-        assertThat(blockingQueueRecordReader.readRecord()).isEqualTo(poisonRecord);
         assertThat(blockingQueueRecordReader.readRecord()).isNull();
         assertThat(queue).isEmpty();
     }
