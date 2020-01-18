@@ -68,7 +68,7 @@ public class JsonRecordReader implements RecordReader {
     private InputStream inputStream;
     private JsonParser parser;
     private JsonGeneratorFactory jsonGeneratorFactory;
-    private String charset;
+    private Charset charset;
     private long currentRecordNumber;
     private JsonParser.Event currentEvent;
     private JsonParser.Event nextEvent;
@@ -82,7 +82,7 @@ public class JsonRecordReader implements RecordReader {
      * @param inputStream to read
      */
     public JsonRecordReader(final InputStream inputStream) {
-        this(inputStream, Charset.defaultCharset().name());
+        this(inputStream, Charset.defaultCharset());
     }
 
     /**
@@ -91,7 +91,7 @@ public class JsonRecordReader implements RecordReader {
      * @param inputStream to read
      * @param charset of the json stream
      */
-    public JsonRecordReader(final InputStream inputStream, final String charset) {
+    public JsonRecordReader(final InputStream inputStream, final Charset charset) {
         checkNotNull(inputStream, "input stream");
         checkNotNull(charset, "charset");
         this.inputStream = inputStream;

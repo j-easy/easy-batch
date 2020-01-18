@@ -40,7 +40,7 @@ import java.util.Scanner;
 public class YamlRecordReader implements RecordReader {
 
     private Scanner scanner;
-    private String charset;
+    private Charset charset;
     private InputStream inputStream;
     private long currentRecordNumber;
 
@@ -50,7 +50,7 @@ public class YamlRecordReader implements RecordReader {
      * @param inputStream to read records from
      */
     public YamlRecordReader(InputStream inputStream) {
-        this(inputStream, Charset.defaultCharset().name());
+        this(inputStream, Charset.defaultCharset());
     }
 
     /**
@@ -59,19 +59,19 @@ public class YamlRecordReader implements RecordReader {
      * @param inputStream to read records from
      * @param charset of the input stream
      */
-    public YamlRecordReader(InputStream inputStream, String charset) {
+    public YamlRecordReader(InputStream inputStream, Charset charset) {
         this.inputStream = inputStream;
         this.charset = charset;
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         this.currentRecordNumber = 0;
-        this.scanner = new Scanner(inputStream, charset);
+        this.scanner = new Scanner(inputStream, charset.name());
     }
 
     @Override
-    public YamlRecord readRecord() throws Exception {
+    public YamlRecord readRecord() {
         if (!scanner.hasNextLine()) {
             return null;
         }
