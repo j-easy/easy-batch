@@ -27,10 +27,11 @@ import org.jeasy.batch.core.record.FileRecord;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.File;
+import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -38,8 +39,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class FileExtensionFilterTest {
 
-    @Mock
-    private File file;
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private Path path;
 
     @Mock
     private FileRecord fileRecord;
@@ -49,18 +50,18 @@ public class FileExtensionFilterTest {
     @Before
     public void setUp() throws Exception {
         filter = new FileExtensionFilter(".txt", ".xml");
-        when(fileRecord.getPayload()).thenReturn(file);
+        when(fileRecord.getPayload()).thenReturn(path);
     }
 
     @Test
     public void whenTheFileNameEndsWithOneOfTheGivenExtensions_ThenItShouldBeFiltered() {
-        when(file.getName()).thenReturn("test.txt");
+        when(path.toAbsolutePath().toString()).thenReturn("test.txt");
         assertThat(filter.processRecord(fileRecord)).isNull();
     }
 
     @Test
     public void whenTheFileNameDoesNotEndWithOneOfTheGivenExtensions_ThenItShouldBeFiltered() {
-        when(file.getName()).thenReturn("test.jpeg");
+        when(path.toAbsolutePath().toString()).thenReturn("test.jpeg");
         assertThat(filter.processRecord(fileRecord)).isEqualTo(fileRecord);
     }
 

@@ -48,7 +48,7 @@ public class FileRecordReaderTest {
 
     @Test
     public void whenDirectoryIsNotEmptyAndRecursiveIsInactive_thenShouldOnlyReadFirstLevelFiles() throws Exception {
-        fileRecordReader = new FileRecordReader(new File("src/test/resources"));
+        fileRecordReader = new FileRecordReader(Paths.get("src/test/resources"));
         fileRecordReader.open();
 
         assertThat(fileRecordReader.readRecord()).isNotNull(); // foo.txt
@@ -57,7 +57,7 @@ public class FileRecordReaderTest {
 
     @Test
     public void whenDirectoryIsNotEmptyAndRecursiveIsActive_thenShouldReadAllFilesInHierarchy() throws Exception {
-        fileRecordReader = new FileRecordReader(new File("src/test/resources"), true);
+        fileRecordReader = new FileRecordReader(Paths.get("src/test/resources"), true);
         fileRecordReader.open();
 
         // should read foo.txt and bars/bar.txt

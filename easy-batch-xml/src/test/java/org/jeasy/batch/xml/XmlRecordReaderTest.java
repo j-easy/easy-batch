@@ -40,7 +40,7 @@ public class XmlRecordReaderTest {
     @Test
     public void testReadRecord() throws Exception {
         // given
-        xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons.xml"));
+        xmlRecordReader = new XmlRecordReader(getDataSource("/persons.xml"), "person");
         xmlRecordReader.open();
         String expectedPayload = getXmlFromFile("/person.xml");
 
@@ -58,7 +58,7 @@ public class XmlRecordReaderTest {
     @Test
     public void testReadingEscapedXml() throws Exception {
         // given
-        xmlRecordReader = new XmlRecordReader("website", getDataSource("/websites.xml"));
+        xmlRecordReader = new XmlRecordReader(getDataSource("/websites.xml"), "website");
         xmlRecordReader.open();
 
         // when
@@ -81,7 +81,7 @@ public class XmlRecordReaderTest {
     @Test
     public void testReadingXmlWithCustomNamespace() throws Exception {
         // given
-        xmlRecordReader = new XmlRecordReader("bean", getDataSource("/beans.xml"));
+        xmlRecordReader = new XmlRecordReader(getDataSource("/beans.xml"), "bean");
         xmlRecordReader.open();
 
         // when
@@ -103,7 +103,7 @@ public class XmlRecordReaderTest {
     @Test
     public void testHasNextRecordForEmptyPersonsFile() throws Exception {
         // given
-        xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons-empty.xml"));
+        xmlRecordReader = new XmlRecordReader(getDataSource("/persons-empty.xml"), "person");
         xmlRecordReader.open();
 
         // when
@@ -116,7 +116,7 @@ public class XmlRecordReaderTest {
     @Test
     public void testHasNextRecordForEmptyFile() throws Exception {
         // given
-        xmlRecordReader = new XmlRecordReader("person", getDataSource("/empty-file.xml"));
+        xmlRecordReader = new XmlRecordReader(getDataSource("/empty-file.xml"), "person");
         xmlRecordReader.open();
 
         // when
@@ -133,7 +133,7 @@ public class XmlRecordReaderTest {
     @Test
     public void testReadNextNestedRecord() throws Exception {
         // given
-        xmlRecordReader = new XmlRecordReader("person", getDataSource("/persons-nested.xml"));
+        xmlRecordReader = new XmlRecordReader(getDataSource("/persons-nested.xml"), "person");
         xmlRecordReader.open();
         String expectedPayload = getXmlFromFile("/person.xml");
 

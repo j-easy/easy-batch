@@ -36,7 +36,7 @@ public class DummyFileProcessor implements RecordProcessor<FileRecord, FileRecor
 
     @Override
     public FileRecord processRecord(FileRecord record) {
-        System.out.println("processing file = " + record.getPayload().getAbsolutePath());
+        System.out.println("processing file = " + record.getPayload().toAbsolutePath().toString());
         return record;
     }
 

@@ -45,7 +45,7 @@ public class FileExtensionFilter implements RecordFilter<FileRecord> {
 
     public FileRecord processRecord(final FileRecord record) {
         for (String extension : extensions) {
-            if (record.getPayload().getName().endsWith(extension)) {
+            if (record.getPayload().toAbsolutePath().toString().endsWith(extension)) {
                 return null;
             }
         }

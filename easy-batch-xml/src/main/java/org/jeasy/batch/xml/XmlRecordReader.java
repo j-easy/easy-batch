@@ -57,40 +57,11 @@ public class XmlRecordReader implements RecordReader {
     /**
      * Create a new {@link XmlRecordReader}.
      *
-     * @param rootElementName to extract as record
-     * @param xmlInputStream to read
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link XmlRecordReader#XmlRecordReader(java.io.InputStream, java.lang.String)} instead
-     */
-    @Deprecated
-    public XmlRecordReader(final String rootElementName, final InputStream xmlInputStream) {
-        this(rootElementName, xmlInputStream, Charset.defaultCharset().name());
-    }
-
-    /**
-     * Create a new {@link XmlRecordReader}.
-     *
      * @param xmlInputStream to read
      * @param rootElementName to extract as record
      */
     public XmlRecordReader(final InputStream xmlInputStream, final String rootElementName) {
         this(xmlInputStream, rootElementName, Charset.defaultCharset());
-    }
-
-    /**
-     * Create a new {@link XmlRecordReader}.
-     *
-     * @param rootElementName to extract as record
-     * @param xmlInputStream to read
-     * @param charset of the input stream
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link XmlRecordReader#XmlRecordReader(java.io.InputStream, java.lang.String, java.nio.charset.Charset)} instead
-     */
-    @Deprecated
-    public XmlRecordReader(final String rootElementName, final InputStream xmlInputStream, final String charset) {
-        this.rootElementName = rootElementName;
-        this.xmlInputStream = xmlInputStream;
-        this.charset = Charset.forName(charset);
     }
 
     /**

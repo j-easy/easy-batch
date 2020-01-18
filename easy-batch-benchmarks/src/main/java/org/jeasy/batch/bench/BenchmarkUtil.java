@@ -104,7 +104,7 @@ public class BenchmarkUtil {
 
     public static Job buildXmlJob(Path customersFile) throws Exception {
         return new JobBuilder()
-                .reader(new XmlRecordReader("customer", new FileInputStream(customersFile.toFile())))
+                .reader(new XmlRecordReader(new FileInputStream(customersFile.toFile()), "customer"))
                 .mapper(new XmlRecordMapper<>(Customer.class))
                 .build();
     }

@@ -23,26 +23,22 @@
  */
 package org.jeasy.batch.core.record;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Record representing a file in a directory.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class FileRecord extends GenericRecord<File> {
+public class FileRecord extends GenericRecord<Path> {
 
     /**
      * Create a new {@link FileRecord}.
      *
      * @param header  the record header
      * @param payload the record payload
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * It will be replaced with a constructor that accepts a {@code java.nio.file.Path}.
      */
-    // TODO update FileExtensionFilter accordingly for v6 when the payload becomes a Path
-    @Deprecated
-    public FileRecord(final Header header, final File payload) {
+    public FileRecord(final Header header, final Path payload) {
         super(header, payload);
     }
 
@@ -50,7 +46,7 @@ public class FileRecord extends GenericRecord<File> {
     public String toString() {
         return "Record: {" +
                 "header=" + header +
-                ", payload=" + payload.getAbsolutePath() +
+                ", payload=" + payload.toAbsolutePath().toString() +
                 '}';
     }
 

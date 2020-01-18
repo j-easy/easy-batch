@@ -23,35 +23,30 @@
  */
 package org.jeasy.batch.core.writer;
 
+import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;
-
-import java.io.OutputStreamWriter;
 
 /**
  * Record writer that writes the <strong>payload</strong> of a {@link Record} to the standard error.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class StandardErrorRecordWriter extends OutputStreamRecordWriter {
+public class StandardErrorRecordWriter implements RecordWriter {
 
-    /**
-     * Create a new {@link StandardErrorRecordWriter}.
-     */
-    public StandardErrorRecordWriter() {
-        super(new OutputStreamWriter(System.err));
+    @Override
+    public void open() throws Exception {
+        // no-op
     }
 
-    /**
-     * Create a new {@link StandardErrorRecordWriter}.
-     *
-     * @param lineSeparator to use to separate records.
-     */
-    public StandardErrorRecordWriter(final String lineSeparator) {
-        super(new OutputStreamWriter(System.err), lineSeparator);
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch) {
+            System.err.println(record.getPayload().toString());
+        }
     }
 
     @Override
     public void close() throws Exception {
-        // no op: don't close standard error
+        // no-op: don't close standard error
     }
 }
