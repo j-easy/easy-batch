@@ -23,6 +23,7 @@
  */
 package org.jeasy.batch.core.job;
 
+import org.jeasy.batch.core.jmx.JobMonitor;
 import org.jeasy.batch.core.listener.BatchListener;
 import org.jeasy.batch.core.listener.CompositeBatchListener;
 import org.jeasy.batch.core.listener.CompositeJobListener;

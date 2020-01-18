@@ -21,8 +21,10 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.core.job;
+package org.jeasy.batch.core.jmx;
 
+import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +38,7 @@ import java.util.Date;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBean {
+public class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobMonitor.class.getName());
 
@@ -115,7 +117,7 @@ class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBe
         return jobReport.getStatus().name();
     }
 
-    void notifyJobReportUpdate() {
+    public void notifyJobReportUpdate() {
         Notification notification = new AttributeChangeNotification(
                 this,
                 sequenceNumber++,
@@ -128,18 +130,18 @@ class JobMonitor extends NotificationBroadcasterSupport implements JobMonitorMBe
         sendNotification(notification);
     }
 
-    void registerJmxMBeanFor(Job job) {
-        LOGGER.info("Registering JMX MBean for job {}", job.getName());
+    public void registerJmxMBeanFor(Job job) {
+        LOGGER.info("Registering JMX MBean for job '{}'", job.getName());
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
         try {
             name = new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + job.getName());
             if (!mbs.isRegistered(name)) {
                 mbs.registerMBean(this, name);
-                LOGGER.info("JMX MBean registered successfully as: {0}", name.getCanonicalName());
+                LOGGER.info("JMX MBean registered successfully as: {}", name.getCanonicalName());
             }
         } catch (Exception e) {
-            LOGGER.warn("Unable to register MBean for job {}", job.getName(), e);
+            LOGGER.warn("Unable to register MBean for job '{}'", job.getName(), e);
         }
     }
 }

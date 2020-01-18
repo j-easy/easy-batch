@@ -21,7 +21,9 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.core.job;
+package org.jeasy.batch.core.jmx;
+
+import org.jeasy.batch.core.job.JobStatus;
 
 /**
  * JMX MBean interface to expose monitoring attributes.
