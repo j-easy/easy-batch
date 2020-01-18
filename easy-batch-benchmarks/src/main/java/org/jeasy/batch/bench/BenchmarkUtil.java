@@ -39,10 +39,10 @@ import org.jeasy.batch.xml.XmlRecordReader;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.StringWriter;
+import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Random;
@@ -69,8 +69,8 @@ public class BenchmarkUtil {
         return enhancedRandom.nextObject(Customer.class);
     }
 
-    public static void generateCsvCustomers(String customersFile, int customersCount) throws Exception {
-        FileWriter fileWriter = new FileWriter(customersFile);
+    public static void generateCsvCustomers(Path customersFile, int customersCount) throws Exception {
+        FileWriter fileWriter = new FileWriter(customersFile.toFile());
         for (int i = 0; i < customersCount; i++) {
             Customer customer = BenchmarkUtil.generateCustomer();
             fileWriter.write(BenchmarkUtil.toCsv(customer) + "\n");
@@ -79,8 +79,8 @@ public class BenchmarkUtil {
         fileWriter.close();
     }
 
-    public static void generateXmlCustomers(String customersFile, int customersCount) throws Exception {
-        FileWriter fileWriter = new FileWriter(customersFile);
+    public static void generateXmlCustomers(Path customersFile, int customersCount) throws Exception {
+        FileWriter fileWriter = new FileWriter(customersFile.toFile());
         fileWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
         fileWriter.write("<customers>\n");
         fileWriter.flush();
@@ -94,17 +94,17 @@ public class BenchmarkUtil {
         fileWriter.close();
     }
 
-    public static Job buildCsvJob(String customersFile) throws Exception {
+    public static Job buildCsvJob(Path customersFile) throws Exception {
         return new JobBuilder()
-                .reader(new FlatFileRecordReader(new File(customersFile)))
+                .reader(new FlatFileRecordReader(customersFile))
                 .mapper(new DelimitedRecordMapper(Customer.class,
                         "id", "firstName", "lastName", "birthDate", "email", "phone", "street", "zipCode", "city", "country"))
                 .build();
     }
 
-    public static Job buildXmlJob(String customersFile) throws Exception {
+    public static Job buildXmlJob(Path customersFile) throws Exception {
         return new JobBuilder()
-                .reader(new XmlRecordReader("customer", new FileInputStream(customersFile)))
+                .reader(new XmlRecordReader("customer", new FileInputStream(customersFile.toFile())))
                 .mapper(new XmlRecordMapper<>(Customer.class))
                 .build();
     }

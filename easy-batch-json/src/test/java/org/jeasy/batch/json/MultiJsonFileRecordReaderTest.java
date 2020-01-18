@@ -30,10 +30,11 @@ import org.jeasy.batch.core.processor.RecordCollector;
 import org.jeasy.batch.core.record.Record;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.Arrays;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,9 +43,10 @@ public class MultiJsonFileRecordReaderTest {
     @Test
     public void allResourcesShouldBeReadInOneShot() throws Exception {
         // given
-        File dir = new File("src/test/resources");
-        File[] files = dir.listFiles(new JsonFileFilter());
-        MultiJsonFileRecordReader multiFileRecordReader = new MultiJsonFileRecordReader(Arrays.asList(files));
+        List<Path> files = Files.list(Paths.get("src/test/resources"))
+                .filter(path -> path.toString().endsWith("json"))
+                .collect(Collectors.toList());
+        MultiJsonFileRecordReader multiFileRecordReader = new MultiJsonFileRecordReader(files);
 
         RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
@@ -63,12 +65,5 @@ public class MultiJsonFileRecordReaderTest {
         // there are 12 records in json files inside "src/test/resources"
         assertThat(records).hasSize(12);
 
-    }
-
-    private static class JsonFileFilter implements FilenameFilter {
-        @Override
-        public boolean accept(File dir, String name) {
-            return name.endsWith("json");
-        }
     }
 }

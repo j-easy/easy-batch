@@ -36,7 +36,8 @@ import org.jeasy.batch.flatfile.DelimitedRecordMapper;
 import org.jeasy.batch.flatfile.FlatFileRecordReader;
 import org.jeasy.batch.tutorials.common.Tweet;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -47,7 +48,7 @@ public class LogicalPartitions {
     public static void main(String[] args) throws Exception {
 
         // Input file tweets.csv
-        File tweets = new File("src/main/resources/data/tweets.csv");
+        Path tweets = Paths.get(("src/main/resources/data/tweets.csv"));
 
         // Build worker jobs
         // worker job 1: process records 1-3 and filters records 4+
@@ -72,7 +73,7 @@ public class LogicalPartitions {
 
     }
 
-    private static Job buildJob(File file, RecordFilter recordFilter, String jobName) {
+    private static Job buildJob(Path file, RecordFilter recordFilter, String jobName) {
         return JobBuilder.aNewJob()
                 .named(jobName)
                 .reader(new FlatFileRecordReader(file))

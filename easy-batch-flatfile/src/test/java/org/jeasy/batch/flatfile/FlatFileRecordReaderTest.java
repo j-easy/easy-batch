@@ -28,7 +28,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,15 +38,15 @@ public class FlatFileRecordReaderTest {
 
     private FlatFileRecordReader flatFileRecordReader;
 
-    private File dataSource;
+    private Path dataSource;
     private Path emptyDataSource;
-    private String nonExistingDataSource;
+    private Path nonExistingDataSource;
 
     @Before
     public void setUp() throws Exception {
-        dataSource = new File("src/test/resources/tweets.csv");
+        dataSource = Paths.get("src/test/resources/tweets.csv");
         emptyDataSource = Paths.get("src/test/resources/empty-file.txt");
-        nonExistingDataSource = "src/test/resources/foo.bar";
+        nonExistingDataSource = Paths.get("src/test/resources/foo.bar");
     }
 
     @Test

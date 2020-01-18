@@ -23,7 +23,6 @@
  */
 package org.jeasy.batch.core.reader;
 
-import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 
@@ -34,32 +33,8 @@ import java.nio.file.Path;
  */
 public abstract class AbstractFileRecordReader implements RecordReader {
 
-    @Deprecated
-    protected File file;
-
+    protected Path path;
     protected Charset charset;
-
-    /**
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link AbstractFileRecordReader#AbstractFileRecordReader(java.nio.file.Path)} instead.
-     * @param file to read data from
-     */
-    @Deprecated
-    protected AbstractFileRecordReader(File file) {
-        this(file, Charset.defaultCharset());
-    }
-
-    /**
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link AbstractFileRecordReader#AbstractFileRecordReader(java.nio.file.Path, java.nio.charset.Charset)}
-     * @param file to read data from
-     * @param charset of the input file
-     */
-    @Deprecated
-    public AbstractFileRecordReader(File file, Charset charset) {
-        this.file = file;
-        this.charset = charset;
-    }
 
     /**
      * @param path to read data from
@@ -73,18 +48,12 @@ public abstract class AbstractFileRecordReader implements RecordReader {
      * @param charset of the input file
      */
     public AbstractFileRecordReader(Path path, Charset charset) {
-        this.file = path.toFile();
+        this.path = path;
         this.charset = charset;
     }
 
-    /**
-     * @deprecated This getter is deprecated since v5.3 and will be removed in v6.
-     * It will be replaced by a getter that returns {@code java.nio.file.Path}
-     * @return the input file
-     */
-    @Deprecated
-    public File getFile() {
-        return file;
+    public Path getPath() {
+        return path;
     }
 
     public Charset getCharset() {

@@ -35,7 +35,8 @@ import org.jeasy.batch.flatfile.DelimitedRecordMapper;
 import org.jeasy.batch.flatfile.FlatFileRecordReader;
 import org.jeasy.batch.tutorials.common.Tweet;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -47,10 +48,10 @@ public class RecordDispatching {
     private static final int THREAD_POOL_SIZE = 3;
     private static final int QUEUE_TIMEOUT = 1000;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         // Input file tweets.csv
-        File tweets = new File("src/main/resources/data/tweets.csv");
+        Path tweets = Paths.get("src/main/resources/data/tweets.csv");
 
         // Create queues
         BlockingQueue<Record> workQueue1 = new LinkedBlockingQueue<>();

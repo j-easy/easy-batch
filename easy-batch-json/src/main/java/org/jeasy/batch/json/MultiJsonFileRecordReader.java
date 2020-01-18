@@ -26,9 +26,8 @@ package org.jeasy.batch.json;
 import org.jeasy.batch.core.reader.AbstractFileRecordReader;
 import org.jeasy.batch.core.reader.AbstractMultiFileRecordReader;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -43,11 +42,8 @@ public class MultiJsonFileRecordReader extends AbstractMultiFileRecordReader {
      * Create a new {@link MultiJsonFileRecordReader}.
      *
      * @param files to read
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
-    @Deprecated
-    public MultiJsonFileRecordReader(List<File> files) {
+    public MultiJsonFileRecordReader(List<Path> files) {
         this(files, Charset.defaultCharset());
     }
 
@@ -56,16 +52,13 @@ public class MultiJsonFileRecordReader extends AbstractMultiFileRecordReader {
      *
      * @param files to read
      * @param charset of the files
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
-    @Deprecated
-    public MultiJsonFileRecordReader(List<File> files, Charset charset) {
+    public MultiJsonFileRecordReader(List<Path> files, Charset charset) {
         super(files, charset);
     }
 
     @Override
-    protected AbstractFileRecordReader createReader() throws FileNotFoundException {
+    protected AbstractFileRecordReader createReader() {
         return new JsonFileRecordReader(currentFile);
     }
 }

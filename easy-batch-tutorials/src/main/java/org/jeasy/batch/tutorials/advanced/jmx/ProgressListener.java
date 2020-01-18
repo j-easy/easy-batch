@@ -4,15 +4,15 @@ import org.jeasy.batch.core.jmx.JobMonitoringListener;
 import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.job.JobStatus;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class ProgressListener extends JobMonitoringListener {
 
     private long totalRecords;
 
-    public ProgressListener(final File file) throws FileNotFoundException {
+    public ProgressListener(final Path file) throws IOException {
         Scanner scanner = new Scanner(file);
         while (scanner.hasNext()) {
             scanner.nextLine();

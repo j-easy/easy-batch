@@ -30,7 +30,8 @@ import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.flatfile.FlatFileRecordReader;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Main class to run the job progress tutorial.
@@ -47,7 +48,7 @@ public class JobProgressTutorial {
 
     public static void main(String[] args) throws Exception {
 
-        File dataSource = new File("src/main/resources/data/tweets.csv");
+        Path dataSource = Paths.get(("src/main/resources/data/tweets.csv"));
         ProgressListener progressListener = new ProgressListener(dataSource);
 
         // Build the batch job

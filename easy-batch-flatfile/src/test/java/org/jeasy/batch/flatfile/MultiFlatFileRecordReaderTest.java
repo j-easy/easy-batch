@@ -30,10 +30,11 @@ import org.jeasy.batch.core.processor.RecordCollector;
 import org.jeasy.batch.core.record.Record;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.Arrays;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,9 +43,10 @@ public class MultiFlatFileRecordReaderTest {
     @Test
     public void allResourcesShouldBeReadInOneShot() throws Exception {
         // given
-        File dir = new File("src/test/resources");
-        File[] files = dir.listFiles(new TxtFileFilter());
-        MultiFlatFileRecordReader multiFileRecordReader = new MultiFlatFileRecordReader(Arrays.asList(files));
+        List<Path> files = Files.list(Paths.get("src/test/resources"))
+                .filter(path -> path.toString().endsWith("txt"))
+                .collect(Collectors.toList());
+        MultiFlatFileRecordReader multiFileRecordReader = new MultiFlatFileRecordReader(files);
 
         RecordCollector recordCollector = new RecordCollector();
         Job job = JobBuilder.aNewJob()
@@ -64,12 +66,5 @@ public class MultiFlatFileRecordReaderTest {
         // Note how (middle or trailing) empty lines should be read as well
         assertThat(records).hasSize(6);
 
-    }
-
-    private static class TxtFileFilter implements FilenameFilter {
-        @Override
-        public boolean accept(File dir, String name) {
-            return name.endsWith("txt");
-        }
     }
 }

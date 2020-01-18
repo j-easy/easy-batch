@@ -31,7 +31,8 @@ import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.writer.StandardOutputRecordWriter;
 import org.jeasy.batch.flatfile.FlatFileRecordReader;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
 * Main class to run the hello world tutorial.
@@ -40,10 +41,10 @@ import java.io.File;
 */
 public class Launcher {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         // Create the data source
-        File dataSource = new File("src/main/resources/data/tweets.csv");
+        Path dataSource = Paths.get("src/main/resources/data/tweets.csv");
         
         // Build a batch job
         Job job = new JobBuilder()

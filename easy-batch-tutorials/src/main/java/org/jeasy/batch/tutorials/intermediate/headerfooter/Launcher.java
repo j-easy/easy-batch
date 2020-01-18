@@ -24,7 +24,8 @@
 
 package org.jeasy.batch.tutorials.intermediate.headerfooter;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.sql.DataSource;
 
@@ -57,7 +58,7 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         // Output file
-        File tweets = new File("target/tweets.csv");
+        Path tweets = Paths.get("target/tweets.csv");
 
         //Start embedded database server
         DatabaseUtil.startEmbeddedDatabase();

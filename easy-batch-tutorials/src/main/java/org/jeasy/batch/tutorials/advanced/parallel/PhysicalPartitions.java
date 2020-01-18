@@ -35,8 +35,8 @@ import org.jeasy.batch.flatfile.DelimitedRecordMapper;
 import org.jeasy.batch.flatfile.FlatFileRecordReader;
 import org.jeasy.batch.tutorials.common.Tweet;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -47,10 +47,10 @@ public class PhysicalPartitions {
     public static void main(String[] args) throws Exception {
 
         // Input file tweets-part1.csv
-        File tweetsPart1 = new File("src/main/resources/data/tweets-part1.csv");
+        Path tweetsPart1 = Paths.get(("src/main/resources/data/tweets-part1.csv"));
 
         // Input file tweets-part2.csv
-        File tweetsPart2 = new File("src/main/resources/data/tweets-part2.csv");
+        Path tweetsPart2 = Paths.get("src/main/resources/data/tweets-part2.csv");
 
         // Build worker jobs
         Job job1 = buildJob(tweetsPart1, "worker-job1");
@@ -73,7 +73,7 @@ public class PhysicalPartitions {
 
     }
 
-    private static Job buildJob(File file, String jobName) throws FileNotFoundException {
+    private static Job buildJob(Path file, String jobName) {
         return JobBuilder.aNewJob()
                 .named(jobName)
                 .reader(new FlatFileRecordReader(file))

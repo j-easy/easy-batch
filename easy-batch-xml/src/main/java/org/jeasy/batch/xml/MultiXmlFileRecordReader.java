@@ -26,8 +26,8 @@ package org.jeasy.batch.xml;
 import org.jeasy.batch.core.reader.AbstractFileRecordReader;
 import org.jeasy.batch.core.reader.AbstractMultiFileRecordReader;
 
-import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -45,11 +45,8 @@ public class MultiXmlFileRecordReader extends AbstractMultiFileRecordReader {
      *
      * @param files to read
      * @param rootElementName to match records
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
-    @Deprecated
-    public MultiXmlFileRecordReader(List<File> files, String rootElementName) {
+    public MultiXmlFileRecordReader(List<Path> files, String rootElementName) {
         this(files, rootElementName, Charset.defaultCharset());
     }
 
@@ -58,17 +55,14 @@ public class MultiXmlFileRecordReader extends AbstractMultiFileRecordReader {
      * @param files to read
      * @param rootElementName to match records
      * @param charset of files
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
-    @Deprecated
-    public MultiXmlFileRecordReader(List<File> files, String rootElementName, Charset charset) {
+    public MultiXmlFileRecordReader(List<Path> files, String rootElementName, Charset charset) {
         super(files, charset);
         this.rootElementName = rootElementName;
     }
 
     @Override
-    protected AbstractFileRecordReader createReader() throws Exception {
-        return new XmlFileRecordReader(currentFile, rootElementName, charset.name());
+    protected AbstractFileRecordReader createReader() {
+        return new XmlFileRecordReader(currentFile, rootElementName, charset);
     }
 }

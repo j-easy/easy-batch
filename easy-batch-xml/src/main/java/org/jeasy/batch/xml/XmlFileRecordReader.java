@@ -25,7 +25,6 @@ package org.jeasy.batch.xml;
 
 import org.jeasy.batch.core.reader.AbstractFileRecordReader;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
@@ -42,34 +41,6 @@ public class XmlFileRecordReader extends AbstractFileRecordReader {
 
     private XmlRecordReader xmlRecordReader;
     private String rootElementName;
-
-    /**
-     * Create a new {@link XmlFileRecordReader}.
-     *
-     * @param xmlFile         to read
-     * @param rootElementName to match records
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link XmlFileRecordReader#XmlFileRecordReader(java.nio.file.Path, java.lang.String)} instead
-     */
-    @Deprecated
-    public XmlFileRecordReader(final File xmlFile, final String rootElementName) {
-        this(xmlFile, rootElementName, Charset.defaultCharset().name());
-    }
-
-    /**
-     * Create a new {@link XmlFileRecordReader}.
-     *
-     * @param xmlFile         to read
-     * @param rootElementName to match records
-     * @param charset to use to read the file
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link XmlFileRecordReader#XmlFileRecordReader(java.nio.file.Path, java.lang.String, java.nio.charset.Charset)} instead
-     */
-    @Deprecated
-    public XmlFileRecordReader(final File xmlFile, final String rootElementName, final String charset) {
-        super(xmlFile, Charset.forName(charset));
-        this.rootElementName = rootElementName;
-    }
 
     /**
      * Create a new {@link XmlFileRecordReader}.
@@ -95,7 +66,7 @@ public class XmlFileRecordReader extends AbstractFileRecordReader {
 
     @Override
     public void open() throws Exception {
-        xmlRecordReader = new Reader(file, rootElementName, charset.name());
+        xmlRecordReader = new Reader(path, rootElementName, charset);
         xmlRecordReader.open();
     }
 
@@ -112,16 +83,16 @@ public class XmlFileRecordReader extends AbstractFileRecordReader {
     // XmlFileRecordReader should return the file name as data source instead of the inherited "Xml stream"
     private static class Reader extends XmlRecordReader {
 
-        private File file;
+        private Path path;
 
-        Reader(File file, String rootElementName, String encoding) throws FileNotFoundException {
-            super(rootElementName, new FileInputStream(file), encoding);
-            this.file = file;
+        Reader(Path path, String rootElementName, Charset charset) throws FileNotFoundException {
+            super(new FileInputStream(path.toFile()), rootElementName, charset);
+            this.path = path;
         }
 
         @Override
         protected String getDataSourceName() {
-            return file.getAbsolutePath();
+            return path.toAbsolutePath().toString();
         }
     }
 }

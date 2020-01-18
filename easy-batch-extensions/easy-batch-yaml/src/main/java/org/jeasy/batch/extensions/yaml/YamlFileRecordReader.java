@@ -26,7 +26,6 @@ package org.jeasy.batch.extensions.yaml;
 import org.jeasy.batch.core.reader.AbstractFileRecordReader;
 import org.jeasy.batch.core.reader.RecordReader;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
@@ -41,31 +40,6 @@ import java.nio.file.Path;
 public class YamlFileRecordReader extends AbstractFileRecordReader {
 
     private YamlRecordReader yamlRecordReader;
-
-    /**
-     * Create a new {@link YamlFileRecordReader}.
-     *
-     * @param yamlFile to read records from
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link YamlFileRecordReader#YamlFileRecordReader(java.nio.file.Path)} instead
-     */
-    @Deprecated
-    public YamlFileRecordReader(final File yamlFile) {
-        this(yamlFile, Charset.defaultCharset().name());
-    }
-
-    /**
-     * Create a new {@link YamlFileRecordReader}.
-     *
-     * @param yamlFile to read records from
-     * @param charset of the input file
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link YamlFileRecordReader#YamlFileRecordReader(java.nio.file.Path, java.nio.charset.Charset)} instead
-     */
-    @Deprecated
-    public YamlFileRecordReader(final File yamlFile, final String charset) {
-        super(yamlFile, Charset.forName(charset));
-    }
 
     /**
      * Create a new {@link YamlFileRecordReader}.
@@ -88,7 +62,7 @@ public class YamlFileRecordReader extends AbstractFileRecordReader {
 
     @Override
     public void open() throws Exception {
-        yamlRecordReader = new Reader(file, charset.name());
+        yamlRecordReader = new Reader(path, charset);
         yamlRecordReader.open();
     }
 
@@ -105,16 +79,16 @@ public class YamlFileRecordReader extends AbstractFileRecordReader {
     // YamlFileRecordReader should return the file name as data source instead of the inherited "Yaml stream"
     private static class Reader extends YamlRecordReader {
 
-        private File file;
+        private Path path;
 
-        Reader(File file, String charset) throws FileNotFoundException {
-            super(new FileInputStream(file), charset);
-            this.file = file;
+        Reader(Path path, Charset charset) throws FileNotFoundException {
+            super(new FileInputStream(path.toFile()), charset);
+            this.path = path;
         }
 
         @Override
         protected String getDataSourceName() {
-            return file.getAbsolutePath();
+            return path.toAbsolutePath().toString();
         }
     }
 }

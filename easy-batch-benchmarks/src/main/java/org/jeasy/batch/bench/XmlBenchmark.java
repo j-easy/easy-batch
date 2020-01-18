@@ -24,6 +24,8 @@
 
 package org.jeasy.batch.bench;
 
+import java.nio.file.Paths;
+
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
@@ -43,7 +45,7 @@ public class XmlBenchmark extends Benchmark {
     @Setup
     public void setup() throws Exception {
         super.setup();
-        customersFile = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + "customers.xml";
+        customersFile = Paths.get(System.getProperty("java.io.tmpdir"), "customers.xml");
         BenchmarkUtil.generateXmlCustomers(customersFile, customersCount);
     }
 

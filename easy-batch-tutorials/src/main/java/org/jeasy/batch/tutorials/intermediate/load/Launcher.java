@@ -37,7 +37,8 @@ import org.jeasy.batch.tutorials.common.Tweet;
 import org.jeasy.batch.validation.BeanValidationRecordValidator;
 
 import javax.sql.DataSource;
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
@@ -53,7 +54,7 @@ public class Launcher {
     public static void main(String[] args) {
 
         // Load tweets from tweets.csv
-        File tweets = new File("src/main/resources/data/tweets.csv");
+        Path tweets = Paths.get("src/main/resources/data/tweets.csv");
 
         // Start embedded database server
         DatabaseUtil.startEmbeddedDatabase();

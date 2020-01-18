@@ -4,6 +4,7 @@ import static java.lang.Long.parseLong;
 import static java.lang.String.valueOf;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.Properties;
 import org.jeasy.batch.core.job.JobParameters;
 import org.jeasy.batch.core.job.JobReport;
@@ -37,9 +38,9 @@ public class CheckPointListener implements RecordWriterListener, PipelineListene
 
     private long lastSuccessfullyWrittenRecordNumber;
     
-    private File journal;
+    private Path journal;
 
-    public CheckPointListener(File journal) {
+    public CheckPointListener(Path journal) {
         this.journal = journal;
         String lastStatus = readPropertyFromJournal(JOB_STATUS_KEY);
         if(lastStatus != null && JobStatus.FAILED.equals(JobStatus.valueOf(lastStatus))) {
@@ -100,9 +101,9 @@ public class CheckPointListener implements RecordWriterListener, PipelineListene
     private void writePropertyToJournal(String key, String value) {
         Properties properties = new Properties();
         try {
-            properties.load(new FileReader(journal));
+            properties.load(new FileReader(journal.toFile()));
             properties.setProperty(key, value);
-            properties.store(new FileWriter(journal), String.format("setting key '%s' to %s", key, value));
+            properties.store(new FileWriter(journal.toFile()), String.format("setting key '%s' to %s", key, value));
         } catch (IOException e) {
             LOGGER.error("Unable to write property {} in journal file", key, e);
         }
@@ -111,7 +112,7 @@ public class CheckPointListener implements RecordWriterListener, PipelineListene
     private String readPropertyFromJournal(String key) {
         Properties properties = new Properties();
         try {
-            properties.load(new FileReader(journal));
+            properties.load(new FileReader(journal.toFile()));
             return properties.getProperty(key);
         } catch (IOException e) {
             throw new RuntimeException("Unable to read property " + key + " from journal file", e);

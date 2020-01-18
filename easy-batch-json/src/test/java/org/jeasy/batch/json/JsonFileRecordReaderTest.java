@@ -27,25 +27,26 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JsonFileRecordReaderTest {
 
-    private File dataSource;
+    private Path dataSource;
     private JsonFileRecordReader jsonFileRecordReader;
 
     @Before
     public void setUp() throws Exception {
-        dataSource = new File("src/test/resources/persons.json");
+        dataSource = Paths.get("src/test/resources/persons.json");
         jsonFileRecordReader = new JsonFileRecordReader(dataSource);
         jsonFileRecordReader.open();
     }
 
     @Test
     public void testJsonRecordReading() throws Exception {
-        String expectedDataSourceName = dataSource.getAbsolutePath();
+        String expectedDataSourceName = dataSource.toAbsolutePath().toString();
 
         JsonRecord jsonRecord = jsonFileRecordReader.readRecord();
         assertThat(jsonRecord.getHeader().getNumber()).isEqualTo(1L);

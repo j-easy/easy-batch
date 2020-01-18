@@ -25,7 +25,6 @@ package org.jeasy.batch.json;
 
 import org.jeasy.batch.core.reader.AbstractFileRecordReader;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
@@ -57,31 +56,6 @@ public class JsonFileRecordReader extends AbstractFileRecordReader {
      * Create a new {@link JsonFileRecordReader}.
      *
      * @param jsonFile to read
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link JsonFileRecordReader#JsonFileRecordReader(java.nio.file.Path)} instead
-     */
-    @Deprecated
-    public JsonFileRecordReader(final File jsonFile) {
-        this(jsonFile, Charset.defaultCharset().name());
-    }
-
-    /**
-     * Create a new {@link JsonFileRecordReader}.
-     *
-     * @param jsonFile to read
-     * @param charset of the file
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link JsonFileRecordReader#JsonFileRecordReader(java.nio.file.Path, java.nio.charset.Charset)} instead
-     */
-    @Deprecated
-    public JsonFileRecordReader(final File jsonFile, final String charset) {
-        super(jsonFile, Charset.forName(charset));
-    }
-
-    /**
-     * Create a new {@link JsonFileRecordReader}.
-     *
-     * @param jsonFile to read
      */
     public JsonFileRecordReader(final Path jsonFile) {
         this(jsonFile, Charset.defaultCharset());
@@ -99,7 +73,7 @@ public class JsonFileRecordReader extends AbstractFileRecordReader {
 
     @Override
     public void open() throws Exception {
-        jsonRecordReader = new Reader(file, charset.name());
+        jsonRecordReader = new Reader(path, charset);
         jsonRecordReader.open();
     }
 
@@ -116,16 +90,16 @@ public class JsonFileRecordReader extends AbstractFileRecordReader {
     // JsonFileRecordReader should return the file name as data source instead of the inherited "Json stream"
     private static class Reader extends JsonRecordReader {
 
-        private File file;
+        private Path path;
 
-        Reader(File file, String encoding) throws FileNotFoundException {
-            super(new FileInputStream(file), encoding);
-            this.file = file;
+        Reader(Path path, Charset charset) throws FileNotFoundException {
+            super(new FileInputStream(path.toFile()), charset);
+            this.path = path;
         }
 
         @Override
         protected String getDataSourceName() {
-            return file.getAbsolutePath();
+            return path.toAbsolutePath().toString();
         }
     }
 }

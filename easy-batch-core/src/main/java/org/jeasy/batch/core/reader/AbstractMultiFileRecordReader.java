@@ -26,8 +26,8 @@ package org.jeasy.batch.core.reader;
 import org.jeasy.batch.core.util.Utils;
 import org.jeasy.batch.core.record.Record;
 
-import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,24 +42,18 @@ import java.util.List;
  */
 public abstract class AbstractMultiFileRecordReader implements RecordReader {
 
-    @Deprecated
-    protected List<File> files;
-    @Deprecated
-    protected File currentFile;
+    protected List<Path> files;
+    protected Path currentFile;
     protected AbstractFileRecordReader delegate;
-    @Deprecated
-    protected Iterator<File> iterator;
+    protected Iterator<Path> iterator;
     protected Charset charset;
 
     /**
      * Create a new multi-file record reader.
      *
      * @param files to read
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
-    @Deprecated
-    public AbstractMultiFileRecordReader(List<File> files) {
+    public AbstractMultiFileRecordReader(List<Path> files) {
         this(files, Charset.defaultCharset());
     }
 
@@ -68,11 +62,8 @@ public abstract class AbstractMultiFileRecordReader implements RecordReader {
      *
      * @param files to read
      * @param charset of the file
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
-    @Deprecated
-    public AbstractMultiFileRecordReader(List<File> files, Charset charset) {
+    public AbstractMultiFileRecordReader(List<Path> files, Charset charset) {
         Utils.checkNotNull(files, "files");
         Utils.checkNotNull(charset, "charset");
         this.files = files;

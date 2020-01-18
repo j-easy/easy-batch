@@ -9,7 +9,8 @@ import org.jeasy.batch.flatfile.FlatFileRecordReader;
 import org.jeasy.batch.tutorials.common.Tweet;
 import org.jeasy.batch.xml.XmlRecordMarshaller;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
@@ -22,8 +23,8 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        File csvTweets = new File("src/main/resources/data/tweets.csv");
-        File xmlTweets = new File("target/tweets.xml");
+        Path csvTweets = Paths.get("src/main/resources/data/tweets.csv");
+        Path xmlTweets = Paths.get("target/tweets.xml");
 
         FileRecordWriter recordWriter = new FileRecordWriter(xmlTweets);
         recordWriter.setHeaderCallback(new HeaderWriter());

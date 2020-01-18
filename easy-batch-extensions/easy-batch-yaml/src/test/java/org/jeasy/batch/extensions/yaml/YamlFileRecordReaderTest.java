@@ -27,26 +27,27 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jeasy.batch.core.util.Utils.LINE_SEPARATOR;
 
 public class YamlFileRecordReaderTest {
 
-    private File dataSource;
+    private Path dataSource;
     private YamlFileRecordReader yamlFileRecordReader;
 
     @Before
     public void setUp() throws Exception {
-        dataSource = new File("src/test/resources/contacts.yml");
+        dataSource = Paths.get("src/test/resources/contacts.yml");
         yamlFileRecordReader = new YamlFileRecordReader(dataSource);
         yamlFileRecordReader.open();
     }
 
     @Test
     public void testYamlRecordReading() throws Exception {
-        String expectedDataSourceName = dataSource.getAbsolutePath();
+        String expectedDataSourceName = dataSource.toAbsolutePath().toString();
 
         YamlRecord yamlRecord = yamlFileRecordReader.readRecord();
         assertThat(yamlRecord.getHeader().getNumber()).isEqualTo(1L);

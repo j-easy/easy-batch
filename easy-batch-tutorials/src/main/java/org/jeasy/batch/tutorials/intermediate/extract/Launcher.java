@@ -35,7 +35,8 @@ import org.jeasy.batch.tutorials.common.DatabaseUtil;
 import org.jeasy.batch.tutorials.common.Tweet;
 
 import javax.sql.DataSource;
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
@@ -51,7 +52,7 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         // Output file
-        File tweets = new File("target/tweets.csv");
+        Path tweets = Paths.get("target/tweets.csv");
 
         //Start embedded database server
         DatabaseUtil.startEmbeddedDatabase();

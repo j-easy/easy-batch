@@ -27,21 +27,23 @@ import org.junit.After;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class XmlFileRecordReaderTest {
 
-    private File dataSource;
+    private Path dataSource;
     private XmlFileRecordReader xmlFileRecordReader;
 
     @Test
     public void testXmlRecordReading() throws Exception {
         // given
-        dataSource = new File("src/test/resources/data.xml");
+        dataSource = Paths.get("src/test/resources/data.xml");
         xmlFileRecordReader = new XmlFileRecordReader(dataSource, "data");
         xmlFileRecordReader.open();
-        String expectedDataSourceName = dataSource.getAbsolutePath();
+        String expectedDataSourceName = dataSource.toAbsolutePath().toString();
 
         // when
         XmlRecord xmlRecord1 = xmlFileRecordReader.readRecord();
@@ -68,7 +70,7 @@ public class XmlFileRecordReaderTest {
     @Test
     public void testReadingEmptyElement() throws Exception {
         // given
-        dataSource = new File("src/test/resources/data-empty.xml");
+        dataSource = Paths.get("src/test/resources/data-empty.xml");
         xmlFileRecordReader = new XmlFileRecordReader(dataSource, "data");
         xmlFileRecordReader.open();
 

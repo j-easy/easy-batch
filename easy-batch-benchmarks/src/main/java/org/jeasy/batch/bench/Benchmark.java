@@ -27,7 +27,9 @@ package org.jeasy.batch.bench;
 import org.jeasy.batch.core.job.Job;
 import org.openjdk.jmh.annotations.*;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -39,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 @State(Scope.Benchmark)
 public abstract class Benchmark {
 
-    protected String customersFile;
+    protected Path customersFile;
 
     protected int customersCount;
 
@@ -61,8 +63,8 @@ public abstract class Benchmark {
     protected abstract void buildJob() throws Exception;
 
     @TearDown
-    public void tearDown() {
-        new File(customersFile).delete();
+    public void tearDown() throws IOException {
+        Files.delete(customersFile);
     }
 
 }

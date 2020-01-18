@@ -6,24 +6,27 @@ import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.writer.FileRecordWriter;
 import org.jeasy.batch.flatfile.FlatFileRecordReader;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        File journal = new File("target/checkpoint.oplog");
-        createJournal(journal.toPath());
+        Path journal = Paths.get("target/checkpoint.oplog");
+        createJournal(journal);
         CheckPointListener checkPointListener = new CheckPointListener(journal);
+
+        FlatFileRecordReader recordReader = new FlatFileRecordReader(Paths.get("src/main/resources/data/tweets.csv"));
+        FileRecordWriter recordWriter = new FileRecordWriter(Paths.get("target/tweets-out.csv"));
+        recordWriter.setAppend(true);
 
         Job job = new JobBuilder()
                 .batchSize(3)
-                .reader(new FlatFileRecordReader(new File("src/main/resources/data/tweets.csv")))
-                .writer(new BuggyWriter(new FileRecordWriter(new FileWriter("target/tweets-out.csv", true))))
+                .reader(recordReader)
+                .writer(new BuggyWriter(recordWriter))
                 .pipelineListener(checkPointListener)
                 .writerListener(checkPointListener)
                 .jobListener(checkPointListener)

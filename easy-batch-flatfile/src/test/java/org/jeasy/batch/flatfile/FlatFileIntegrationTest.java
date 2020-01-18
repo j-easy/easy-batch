@@ -36,9 +36,8 @@ import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.util.Utils;
 import org.junit.Test;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -50,7 +49,7 @@ public class FlatFileIntegrationTest {
     @Test
     public void testCsvProcessing() throws Exception {
 
-        File dataSource = new File(getFileUri("/persons.csv"));
+        Path dataSource = Paths.get("src/test/resources/persons.csv");
 
         RecordCollector<Person> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
@@ -76,7 +75,7 @@ public class FlatFileIntegrationTest {
     @Test
     public void testCsvSubRecordProcessing() throws Exception {
 
-        File dataSource = new File(getFileUri("/persons.csv"));
+        Path dataSource = Paths.get("src/test/resources/persons.csv");
 
         RecordCollector<Person> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
@@ -107,7 +106,7 @@ public class FlatFileIntegrationTest {
     @Test
     public void whenFieldNamesAreNotSpecified_thenTheyShouldBeRetrievedFromTheHeaderRecord() throws Exception {
 
-        File dataSource = new File(getFileUri("/persons_with_header.csv"));
+        Path dataSource = Paths.get("src/test/resources/persons_with_header.csv");
 
         RecordCollector<Person> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
@@ -133,7 +132,7 @@ public class FlatFileIntegrationTest {
     @Test
     public void whenOnlySubsetOfFieldsAreSpecified_thenOnlyCorrespondingFieldsShouldBeMapped() throws Exception {
 
-        File dataSource = new File(getFileUri("/persons_with_header.csv"));
+        Path dataSource = Paths.get("src/test/resources/persons_with_header.csv");
 
         RecordCollector<Person> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
@@ -160,7 +159,7 @@ public class FlatFileIntegrationTest {
     public void testComplaintsDataProcessing() throws Exception {
 
         //source: http://catalog.data.gov/dataset/consumer-complaint-database
-        File dataSource = new File(getFileUri("/complaints.csv"));
+        Path dataSource = Paths.get("src/test/resources/complaints.csv");
 
         DelimitedRecordMapper<Complaint> recordMapper = new DelimitedRecordMapper<>(Complaint.class,
                 "id", "product", "subProduct", "issue", "subIssue", "state", "zipCode", "channel",
@@ -213,7 +212,7 @@ public class FlatFileIntegrationTest {
     @Test
     public void testFlrProcessing() throws Exception {
 
-        File dataSource = new File(getFileUri("/persons.flr"));
+        Path dataSource = Paths.get("src/test/resources/persons.flr");
 
         RecordCollector<Person> recordCollector = new RecordCollector<>();
         Job job = JobBuilder.aNewJob()
@@ -292,10 +291,6 @@ public class FlatFileIntegrationTest {
         assertThat(complaint.getCompanyResponse()).isEqualTo(companyResponse);
         assertThat(complaint.isTimelyResponse()).isEqualTo(timelyResponse);
         assertThat(complaint.isConsumerDisputed()).isEqualTo(consumerDisputed);
-    }
-
-    private URI getFileUri(String fileName) throws URISyntaxException {
-        return this.getClass().getResource(fileName).toURI();
     }
 
 }

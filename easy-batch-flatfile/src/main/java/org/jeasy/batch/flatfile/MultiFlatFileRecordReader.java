@@ -26,8 +26,8 @@ package org.jeasy.batch.flatfile;
 import org.jeasy.batch.core.reader.AbstractFileRecordReader;
 import org.jeasy.batch.core.reader.AbstractMultiFileRecordReader;
 
-import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -42,11 +42,8 @@ public class MultiFlatFileRecordReader extends AbstractMultiFileRecordReader {
      * Create a new {@link MultiFlatFileRecordReader}.
      *
      * @param files to read
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
-    @Deprecated
-    public MultiFlatFileRecordReader(final List<File> files) {
+    public MultiFlatFileRecordReader(final List<Path> files) {
         this(files, Charset.defaultCharset());
     }
 
@@ -55,16 +52,13 @@ public class MultiFlatFileRecordReader extends AbstractMultiFileRecordReader {
      *
      * @param files to read
      * @param charset of the files
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
-    @Deprecated
-    public MultiFlatFileRecordReader(final List<File> files, final Charset charset) {
+    public MultiFlatFileRecordReader(final List<Path> files, final Charset charset) {
         super(files, charset);
     }
 
     @Override
     protected AbstractFileRecordReader createReader() {
-        return new FlatFileRecordReader(currentFile, charset.name());
+        return new FlatFileRecordReader(currentFile, charset);
     }
 }

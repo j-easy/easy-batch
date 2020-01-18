@@ -26,8 +26,8 @@ package org.jeasy.batch.extensions.yaml;
 import org.jeasy.batch.core.reader.AbstractFileRecordReader;
 import org.jeasy.batch.core.reader.AbstractMultiFileRecordReader;
 
-import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -42,11 +42,8 @@ public class MultiYamlFileRecordReader extends AbstractMultiFileRecordReader {
      * Create a new {@link MultiYamlFileRecordReader}.
      *
      * @param files to read
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
-    @Deprecated
-    public MultiYamlFileRecordReader(final List<File> files) {
+    public MultiYamlFileRecordReader(final List<Path> files) {
         this(files, Charset.defaultCharset());
     }
 
@@ -55,16 +52,13 @@ public class MultiYamlFileRecordReader extends AbstractMultiFileRecordReader {
      *
      * @param files to read
      * @param charset of files
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * It will be replaced with a constructor that accepts a {@code List<java.nio.file.Path>}
      */
-    @Deprecated
-    public MultiYamlFileRecordReader(List<File> files, Charset charset) {
+    public MultiYamlFileRecordReader(List<Path> files, Charset charset) {
         super(files, charset);
     }
 
     @Override
-    protected AbstractFileRecordReader createReader() throws Exception {
+    protected AbstractFileRecordReader createReader() {
         return new YamlFileRecordReader(currentFile);
     }
 }

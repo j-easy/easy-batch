@@ -29,7 +29,6 @@ import org.jeasy.batch.core.record.Header;
 import org.jeasy.batch.core.record.StringRecord;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -52,77 +51,10 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
     /**
      * Create a new {@link FlatFileRecordReader}.
      *
-     * @param fileName to read records from
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link FlatFileRecordReader#FlatFileRecordReader(java.nio.file.Path)} instead
-     */
-    @Deprecated
-    public FlatFileRecordReader(final String fileName) {
-        this(fileName, Charset.defaultCharset().name());
-    }
-
-    /**
-     * Create a new {@link FlatFileRecordReader}.
-     *
-     * @param fileName    to read records from
-     * @param charsetName of the input file
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link FlatFileRecordReader#FlatFileRecordReader(java.nio.file.Path, java.nio.charset.Charset)} instead
-     */
-    @Deprecated
-    public FlatFileRecordReader(final String fileName, final String charsetName) {
-        this(new File(fileName), charsetName);
-    }
-
-    /**
-     * Create a new {@link FlatFileRecordReader}.
-     *
-     * @param input to read records from
-     *
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link FlatFileRecordReader#FlatFileRecordReader(java.nio.file.Path)} instead
-     */
-    @Deprecated
-    public FlatFileRecordReader(final File input) {
-        this(input, Charset.defaultCharset().name());
-    }
-
-    /**
-     * Create a new {@link FlatFileRecordReader}.
-     *
-     * @param input       to read records from
-     * @param charsetName of the input file
-     *
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link FlatFileRecordReader#FlatFileRecordReader(java.nio.file.Path, java.nio.charset.Charset)} instead
-     */
-    @Deprecated
-    public FlatFileRecordReader(final File input, final String charsetName) {
-        super(input, Charset.forName(charsetName));
-    }
-
-
-    /**
-     * Create a new {@link FlatFileRecordReader}.
-     *
      * @param path of the file to read records from
      */
     public FlatFileRecordReader(final Path path) {
         this(path, Charset.defaultCharset());
-    }
-
-
-    /**
-     * Create a new {@link FlatFileRecordReader}.
-     *
-     * @param path of the file to read records from
-     * @param charsetName of the input file
-     * @deprecated This constructor is deprecated since v5.3 and will be removed in v6.
-     * Use {@link FlatFileRecordReader#FlatFileRecordReader(java.nio.file.Path, java.nio.charset.Charset)} instead
-     */
-    @Deprecated
-    public FlatFileRecordReader(final Path path, final String charsetName) {
-        super(path, Charset.forName(charsetName));
     }
 
     /**
@@ -149,7 +81,7 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
     @Override
     public void open() throws Exception {
         currentRecordNumber = 0;
-        bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), charset));
+        bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(path.toFile()), charset));
     }
 
     @Override
@@ -160,7 +92,7 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
     }
 
     private String getDataSourceName() {
-        return file.getAbsolutePath();
+        return path.toAbsolutePath().toString();
     }
 
 }
