@@ -28,11 +28,14 @@ import org.jeasy.batch.core.reader.RecordReader;
 import org.jeasy.batch.core.record.Header;
 import org.jeasy.batch.core.record.StringRecord;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.Date;
-import java.util.Scanner;
 
 /**
  * A {@link RecordReader} implementation that reads data from a flat file.
@@ -43,7 +46,7 @@ import java.util.Scanner;
  */
 public class FlatFileRecordReader extends AbstractFileRecordReader {
 
-    private Scanner scanner;
+    private BufferedReader bufferedReader;
     private long currentRecordNumber;
 
     /**
@@ -133,10 +136,11 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
     }
 
     @Override
-    public StringRecord readRecord() {
+    public StringRecord readRecord() throws IOException {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
-        if (scanner.hasNextLine()) {
-            return new StringRecord(header, scanner.nextLine());
+        String line = bufferedReader.readLine();
+        if (line != null) {
+            return new StringRecord(header, line);
         } else {
             return null;
         }
@@ -145,13 +149,13 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
     @Override
     public void open() throws Exception {
         currentRecordNumber = 0;
-        scanner = new Scanner(file, charset.name());
+        bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), charset));
     }
 
     @Override
-    public void close() {
-        if (scanner != null) {
-            scanner.close();
+    public void close() throws IOException {
+        if (bufferedReader != null) {
+            bufferedReader.close();
         }
     }
 
