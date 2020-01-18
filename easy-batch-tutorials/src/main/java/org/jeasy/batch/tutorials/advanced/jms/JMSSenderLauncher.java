@@ -47,6 +47,7 @@ public class JMSSenderLauncher {
             JMSUtil.sendStringRecord(input);
         } while (!input.equalsIgnoreCase("quit"));
 
+        System.exit(0);
     }
 
 }

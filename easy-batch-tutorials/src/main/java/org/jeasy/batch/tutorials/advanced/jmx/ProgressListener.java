@@ -18,6 +18,7 @@ public class ProgressListener extends JobMonitoringListener {
             scanner.nextLine();
             totalRecords++;
         }
+        scanner.close();
     }
 
     @Override
@@ -27,7 +28,7 @@ public class ProgressListener extends JobMonitoringListener {
             return;
         }
         long readCount = jobReport.getMetrics().getReadCount();
-        System.out.print("\rprogress = " + ( (double) readCount / (double) totalRecords) * 100 + "%");
+        System.out.println("progress = " + ( (double) readCount / (double) totalRecords) * 100 + "%");
     }
 
     @Override

@@ -31,4 +31,22 @@ Run the tutorial:
     - `-Dcom.sun.management.jmxremote.authenticate=false`
     - `-Dcom.sun.management.jmxremote.ssl=false`
 
-You should see the execution progress updated in real time in the standard output.
+You should see the execution progress updated in real time in the standard output:
+
+```
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Job 'job' starting
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Batch size: 100
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Error threshold: N/A
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Jmx monitoring: true
+[pool-1-thread-1] INFO org.jeasy.batch.core.jmx.JobMonitor - Registering JMX MBean for job 'job'
+[pool-1-thread-1] INFO org.jeasy.batch.core.jmx.JobMonitor - JMX MBean registered successfully as: org.jeasy.batch.core.monitor:name=job
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Job 'job' started
+[monitoring-thread] INFO org.jeasy.batch.core.jmx.JobMonitorProxy - Listening to notifications from service:jmx:rmi:///jndi/rmi://localhost:9999/jmxrmi
+progress = 20.0%
+progress = 40.0%
+progress = 60.0%
+progress = 80.0%
+progress = 100.0%
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Job 'job' stopping
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Job 'job' finished with status: COMPLETED
+```

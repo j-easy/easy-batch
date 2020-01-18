@@ -99,7 +99,7 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         // Output file
-        File tweets = new File("target/tweets.csv");
+        Path tweets = Paths.get("target/tweets.csv");
 
         //Start embedded database server
         DatabaseUtil.startEmbeddedDatabase();

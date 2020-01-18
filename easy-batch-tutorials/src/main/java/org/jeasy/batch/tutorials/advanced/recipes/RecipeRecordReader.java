@@ -28,7 +28,7 @@ import org.jeasy.batch.core.reader.RecordReader;
 import org.jeasy.batch.core.record.Header;
 import org.jeasy.batch.core.record.Record;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -42,7 +42,7 @@ public class RecipeRecordReader implements RecordReader {
     /**
      * Data source file.
      */
-    private File file;
+    private Path file;
 
     /**
      * Scanner to read the input file.
@@ -54,7 +54,7 @@ public class RecipeRecordReader implements RecordReader {
      */
     private long currentRecordNumber;
 
-    public RecipeRecordReader(File file) {
+    public RecipeRecordReader(Path file) {
         this.file = file;
     }
 
@@ -94,7 +94,7 @@ public class RecipeRecordReader implements RecordReader {
     }
 
     public String getDataSourceName() {
-        return file.getAbsolutePath();
+        return file.toAbsolutePath().toString();
     }
 
     @Override

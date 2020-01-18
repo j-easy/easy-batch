@@ -30,6 +30,8 @@ import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.writer.StandardOutputRecordWriter;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
 * Main class to run the recipes tutorial.
@@ -38,10 +40,10 @@ import java.io.File;
 */
 public class Launcher {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         // Initialize input file recipes.txt
-        File recipes = new File("src/main/resources/data/recipes.txt");
+        Path recipes = Paths.get("src/main/resources/data/recipes.txt");
 
         // Build a batch job
         Job job = new JobBuilder()

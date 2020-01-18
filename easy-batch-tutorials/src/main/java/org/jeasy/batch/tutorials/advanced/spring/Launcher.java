@@ -37,7 +37,7 @@ public class Launcher {
 
     public static void main(String[] args) {
 
-        String configLocation = "org/easybatch/tutorials/advanced/spring/application-context.xml";
+        String configLocation = "org/jeasy/batch/tutorials/advanced/spring/application-context.xml";
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(configLocation);
         Job job = context.getBean(Job.class);
         JobExecutor jobExecutor = context.getBean(JobExecutor.class);

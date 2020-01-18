@@ -58,8 +58,8 @@ We will see how to do that in a minute.
 The following listing is the application that implements the requirement. We will explain each step in details:
 
 ```java
-File csvTweets = new File("tweets.csv");
-File xmlTweets = new File("tweets.xml");
+        Path csvTweets = Paths.get("tweets.csv");
+        Path xmlTweets = Paths.get("tweets.xml");
 
 FileRecordWriter recordWriter = new FileRecordWriter(xmlTweets);
 recordWriter.setHeaderCallback(new HeaderWriter());

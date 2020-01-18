@@ -32,7 +32,8 @@ import org.jeasy.batch.core.reader.FileRecordReader;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.writer.ContentBasedBlockingQueueRecordWriter;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -49,10 +50,10 @@ public class Launcher {
     private static final int THREAD_POOL_SIZE = 3;
     private static final int QUEUE_TIMEOUT = 1000;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         
         String path = args.length == 0 ? "." : args[0];
-        File directory = new File(path);
+        Path directory = Paths.get(path);
 
         // Create work queues
         BlockingQueue<Record> csvQueue = new LinkedBlockingQueue<>();

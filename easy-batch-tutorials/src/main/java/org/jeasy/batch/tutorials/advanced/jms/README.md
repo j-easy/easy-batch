@@ -20,10 +20,12 @@ This will start an embedded JMS broker listening to incoming messages.
 
 Open a second terminal and run the following command:
 
-`mvn exec:java -PrunJmsSender`
+```
+$>mvn exec:java -PrunJmsSender
+```
 
 You will be able to type in tweets in the console to post them to the JMS queue and see how the job will process them as they come.
-To quit the application, type in "quit". After a timeout of 10 seconds, the job will be completed.
+To quit the application, type in "quit". After a timeout of 20 seconds, the job will be completed.
 
 ### From Your IDE
 

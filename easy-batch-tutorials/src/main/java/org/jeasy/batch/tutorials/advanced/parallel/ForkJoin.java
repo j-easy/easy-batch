@@ -50,7 +50,7 @@ public class ForkJoin {
     private static final int THREAD_POOL_SIZE = 4;
     private static final int QUEUE_TIMEOUT = 1000;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         // Start embedded database server
         DatabaseUtil.startEmbeddedDatabase();

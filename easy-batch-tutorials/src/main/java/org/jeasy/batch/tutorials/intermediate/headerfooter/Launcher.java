@@ -58,7 +58,7 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         // Output file
-        Path tweets = Paths.get("target/tweets.csv");
+        Path tweets = Paths.get("target/tweets-header-footer.csv");
 
         //Start embedded database server
         DatabaseUtil.startEmbeddedDatabase();

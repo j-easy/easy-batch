@@ -2,7 +2,7 @@
 
 ## Description
 
-This tutorial shows how to configure Easy Batch jobs using Spring framework with the `org.jeasy.batch.integration.spring.JobFactoryBean`.
+This tutorial shows how to configure Easy Batch jobs using Spring framework with the `org.jeasy.batch.extensions.spring.JobFactoryBean`.
 
 ## Run the tutorial
 

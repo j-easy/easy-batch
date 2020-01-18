@@ -12,6 +12,11 @@
         <constructor-arg ref="file"/>
     </bean>
 
+    <bean id="file" class="java.nio.file.Paths" factory-method="get">
+        <constructor-arg type="java.lang.String" value="src/main/resources/data/tweets.csv"/>
+        <constructor-arg><array /></constructor-arg>
+    </bean>
+
     <!-- configure record filter -->
     <bean id="headerRecordFilter" class="org.jeasy.batch.core.filter.HeaderRecordFilter">
 
@@ -47,17 +52,5 @@
 
     <!-- configure job executor -->
     <bean id="jobExecutor" class="org.jeasy.batch.core.job.JobExecutor" destroy-method="shutdown"/>
-
-    <!--utility beans to create a classpath resource for input file-->
-    <bean id="resource" class="org.springframework.core.io.ClassPathResource">
-        <constructor-arg value="data/tweets.csv" />
-    </bean>
-
-    <util:property-path id="uri" path="resource.URI"/>
-
-    <!-- input file bean -->
-    <bean id="file" class="java.io.File">
-        <constructor-arg type="java.net.URI" ref="uri"/>
-    </bean>
 
 </beans>

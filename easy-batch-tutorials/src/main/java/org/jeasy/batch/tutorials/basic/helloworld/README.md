@@ -31,7 +31,7 @@ This reader will read the file line by line and produce `StringRecord` instances
 Let's configure a job named `Hello world job` to use this reader:
 
 ```java
-File dataSource = new File("tweets.csv");
+Path dataSource = Paths.get("tweets.csv");
 
 Job job = JobBuilder.aNewJob()
     .named("Hello world job")
@@ -44,7 +44,7 @@ Job job = JobBuilder.aNewJob()
 To write records to the standard output, you can use the `StandardOutputRecordWriter`:
 
 ```java
-File dataSource = new File("tweets.csv");
+Path dataSource = Paths.get("tweets.csv");
 
 Job job = JobBuilder.aNewJob()
     .named("Hello world job")
@@ -63,7 +63,7 @@ public class Launcher {
     public static void main(String[] args) {
 
         // Create the data source
-        File dataSource = new File("tweets.csv");
+        Path dataSource = Paths.get("tweets.csv");
 
         // Build a batch job
         Job job = new JobBuilder()

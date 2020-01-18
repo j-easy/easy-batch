@@ -52,7 +52,8 @@ public class LogicalPartitions {
 
         // Build worker jobs
         // worker job 1: process records 1-3 and filters records 4+
-        Job job1 = buildJob(tweets, record -> record.getHeader().getNumber() > 3 ? null : record, "worker-job1");
+        RecordFilter recordFilter = record -> (record.getHeader().getNumber() > 3) || record.getPayload().toString().contains("id") ? null : record;
+        Job job1 = buildJob(tweets, recordFilter, "worker-job1");
         // worker job 2: process 4+ and filters records 1-3
         Job job2 = buildJob(tweets, record -> record.getHeader().getNumber() < 4 ? null : record, "worker-job2");
 

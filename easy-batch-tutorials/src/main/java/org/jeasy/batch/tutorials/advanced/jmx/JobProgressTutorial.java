@@ -48,7 +48,7 @@ public class JobProgressTutorial {
 
     public static void main(String[] args) throws Exception {
 
-        Path dataSource = Paths.get(("src/main/resources/data/tweets.csv"));
+        Path dataSource = Paths.get("src/main/resources/data/tweets.csv");
         ProgressListener progressListener = new ProgressListener(dataSource);
 
         // Build the batch job
@@ -66,7 +66,7 @@ public class JobProgressTutorial {
         // Create a job monitor proxy to get notified each time a progress information is sent by the running job
         JobMonitorProxy jobMonitor = new JobMonitorProxy("localhost", 9999, "job");
         jobMonitor.addMonitoringListener(progressListener);
-        Thread thread = new Thread(jobMonitor);
+        Thread thread = new Thread(jobMonitor, "monitoring-thread");
         thread.setDaemon(true);
         thread.start();
     }

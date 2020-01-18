@@ -300,6 +300,22 @@
             </build>
         </profile>
         <profile>
+            <id>runJdbcExportDataWithHeaderFooterTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin-version}</version>
+                        <configuration>
+                            <mainClass>org.jeasy.batch.tutorials.intermediate.headerfooter.Launcher</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>runElasticSearchTutorial</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>

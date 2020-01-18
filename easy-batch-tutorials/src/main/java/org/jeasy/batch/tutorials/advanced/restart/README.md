@@ -58,22 +58,22 @@ $>mvn exec:java -PrunCheckPointListenerTutorial
 
 ```shell
 ~/projects/easy-batch-tutorials $ mvn exec:java -PrunCheckPointListenerTutorial
-2016-10-14 17:30:39.489 INFO [org.easybatch.core.job.BatchJob setStatus] - Job 'job' starting
-2016-10-14 17:30:39.492 INFO [org.easybatch.core.job.BatchJob start] - Batch size: 3
-2016-10-14 17:30:39.493 INFO [org.easybatch.core.job.BatchJob start] - Error threshold: N/A
-2016-10-14 17:30:39.493 INFO [org.easybatch.core.job.BatchJob start] - Jmx monitoring: false
-2016-10-14 17:30:39.497 INFO [org.easybatch.core.job.BatchJob setStatus] - Job 'job' started
-2016-10-14 17:30:39.505 SEVERE [org.easybatch.core.job.BatchJob fail] - Unable to write records
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Job 'job' starting
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Batch size: 3
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Error threshold: N/A
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Jmx monitoring: false
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Job 'job' started
+[pool-1-thread-1] ERROR org.jeasy.batch.core.job.BatchJob - Unable to write records
 java.lang.Exception: Unable to write records
 	at org.jeasy.batch.tutorials.advanced.restart.BuggyWriter.writeRecords(BuggyWriter.java:28)
-	at org.easybatch.core.job.BatchJob.writeBatch(BatchJob.java:198)
-	at org.easybatch.core.job.BatchJob.call(BatchJob.java:79)
-	at org.easybatch.core.job.BatchJob.call(BatchJob.java:22)
+	at org.jeasy.batch.core.job.BatchJob.writeBatch(BatchJob.java:241)
+	at org.jeasy.batch.core.job.BatchJob.call(BatchJob.java:109)
+	at org.jeasy.batch.core.job.BatchJob.call(BatchJob.java:51)
 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-2016-10-14 17:30:39.507 INFO [org.easybatch.core.job.BatchJob teardown] - Job 'job' finished with status: FAILED
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Job 'job' finished with status: FAILED
 ```
 
 ### Check content of journal and output file
@@ -81,12 +81,12 @@ java.lang.Exception: Unable to write records
 ```properties
 ~/projects/easy-batch-tutorials $ cat target/checkpoint.oplog
 #setting key 'job.status' to FAILED
-#Fri Oct 14 17:30:39 CEST 2016
-job.end=2016-10-14 05\:30\:39
+#Sat Jan 18 22:47:32 CET 2020
+job.end=2020-01-18 10\:47\:32
 write.last=3
 job.name=job
 job.status=FAILED
-job.start=2016-10-14 05\:30\:39
+job.start=2020-01-18 10\:47\:32
 
 ~/projects/easy-batch-tutorials $ cat target/tweets-out.csv
 id,user,message
@@ -94,57 +94,18 @@ id,user,message
 2,bar,@foo I do confirm :-)
 ```
 
-### Second attempt (the job fails again)
+### Second attempt (the job completes)
 
 ```shell
 ~/projects/easy-batch-tutorials $ mvn exec:java -PrunCheckPointListenerTutorial
-Oct 14, 2016 5:31:22 PM org.jeasy.batch.tutorials.advanced.restart.CheckPointListener <init>
-INFO: Last run has failed, records 1..3 will be skipped
-Oct 14, 2016 5:31:22 PM org.easybatch.core.job.BatchJob setStatus
-INFO: Job 'job' starting
-Oct 14, 2016 5:31:22 PM org.easybatch.core.job.BatchJob start
-INFO: Batch size: 3
-Oct 14, 2016 5:31:22 PM org.easybatch.core.job.BatchJob start
-INFO: Error threshold: N/A
-Oct 14, 2016 5:31:22 PM org.easybatch.core.job.BatchJob start
-INFO: Jmx monitoring: false
-Oct 14, 2016 5:31:22 PM org.easybatch.core.job.BatchJob setStatus
-INFO: Job 'job' started
-Oct 14, 2016 5:31:22 PM org.easybatch.core.job.BatchJob fail
-SEVERE: Unable to write records
-java.lang.Exception: Unable to write records
-	at org.jeasy.batch.tutorials.advanced.restart.BuggyWriter.writeRecords(BuggyWriter.java:28)
-	at org.easybatch.core.job.BatchJob.writeBatch(BatchJob.java:198)
-	at org.easybatch.core.job.BatchJob.call(BatchJob.java:79)
-	at org.easybatch.core.job.BatchJob.call(BatchJob.java:22)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Oct 14, 2016 5:31:22 PM org.easybatch.core.job.BatchJob teardown
-INFO: Job 'job' finished with status: FAILED
-```
-
-### Third attempt (the job completes)
-
-```shell
-~/projects/easy-batch-tutorials $ mvn exec:java -PrunCheckPointListenerTutorial
-Oct 14, 2016 5:31:27 PM org.jeasy.batch.tutorials.advanced.restart.CheckPointListener <init>
-INFO: Last run has failed, records 1..3 will be skipped
-Oct 14, 2016 5:31:27 PM org.easybatch.core.job.BatchJob setStatus
-INFO: Job 'job' starting
-Oct 14, 2016 5:31:27 PM org.easybatch.core.job.BatchJob start
-INFO: Batch size: 3
-Oct 14, 2016 5:31:27 PM org.easybatch.core.job.BatchJob start
-INFO: Error threshold: N/A
-Oct 14, 2016 5:31:27 PM org.easybatch.core.job.BatchJob start
-INFO: Jmx monitoring: false
-Oct 14, 2016 5:31:27 PM org.easybatch.core.job.BatchJob setStatus
-INFO: Job 'job' started
-Oct 14, 2016 5:31:27 PM org.easybatch.core.job.BatchJob setStatus
-INFO: Job 'job' stopping
-Oct 14, 2016 5:31:27 PM org.easybatch.core.job.BatchJob teardown
-INFO: Job 'job' finished with status: COMPLETED
+[org.jeasy.batch.tutorials.advanced.restart.Launcher.main()] INFO org.jeasy.batch.tutorials.advanced.restart.CheckPointListener - Last run has failed, records 1..3 will be skipped
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Job 'job' starting
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Batch size: 3
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Error threshold: N/A
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Jmx monitoring: false
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Job 'job' started
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Job 'job' stopping
+[pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Job 'job' finished with status: COMPLETED
 ```
 
 ### Check content of journal and output file
@@ -152,11 +113,11 @@ INFO: Job 'job' finished with status: COMPLETED
 ```properties
 ~/projects/easy-batch-tutorials $ cat target/checkpoint.oplog
 #setting key 'job.status' to COMPLETED
-#Fri Oct 14 17:31:27 CEST 2016
-job.end=2016-10-14 05\:31\:27
+#Sat Jan 18 22:48:00 CET 2020
+job.end=2020-01-18 10\:48\:00
 job.name=job
 write.last=5
-job.start=2016-10-14 05\:31\:27
+job.start=2020-01-18 10\:48\:00
 job.status=COMPLETED
 
 ~/projects/easy-batch-tutorials $ cat target/tweets-out.csv

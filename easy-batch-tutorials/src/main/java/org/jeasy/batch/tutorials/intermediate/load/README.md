@@ -162,7 +162,7 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         // Load tweets from tweets.csv
-        File tweets = new File("tweets.csv");
+        Path tweets = Paths.get("tweets.csv");
 
         // Start embedded database server
         DatabaseUtil.startEmbeddedDatabase();
