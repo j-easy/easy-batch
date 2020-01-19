@@ -31,9 +31,7 @@ import org.jeasy.batch.core.util.Utils;
 import org.jeasy.batch.test.common.AbstractDatabaseTest;
 import org.jeasy.batch.test.common.Tweet;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,10 +51,7 @@ public class HibernateRecordReaderTest extends AbstractDatabaseTest {
         super.setUp();
         Configuration configuration = new Configuration();
         configuration.configure("/org/jeasy/batch/extensions/hibernate/hibernate.cfg.xml");
-
-        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                .applySettings(configuration.getProperties()).build();
-        SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+        SessionFactory sessionFactory = configuration.buildSessionFactory();
         hibernateRecordReader = new HibernateRecordReader<>(sessionFactory, "from Tweet");
     }
 

@@ -14,12 +14,14 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jmh.version>1.19</jmh.version>
+        <java.version>1.8</java.version>
+        <jmh.version>1.22</jmh.version>
         <random-beans.version>3.7.0</random-beans.version>
         <jaxb-impl.version>2.1</jaxb-impl.version>
         <javaee-api.version>6.0</javaee-api.version>
-        <maven-dependency-plugin.version>3.0.2</maven-dependency-plugin.version>
-        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+        <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <slf4j-simple.version>1.7.30</slf4j-simple.version>
     </properties>
 
     <developers>
@@ -73,6 +75,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j-simple.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>${javaee-api.version}</version>
@@ -112,8 +120,8 @@
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <verbose>true</verbose>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>

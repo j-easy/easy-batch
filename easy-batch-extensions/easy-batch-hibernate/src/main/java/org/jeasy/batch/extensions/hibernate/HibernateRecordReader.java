@@ -23,10 +23,14 @@
  */
 package org.jeasy.batch.extensions.hibernate;
 
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.jeasy.batch.core.reader.RecordReader;
 import org.jeasy.batch.core.record.GenericRecord;
 import org.jeasy.batch.core.record.Header;
-import org.hibernate.*;
+import org.hibernate.query.Query;
 
 import java.util.Date;
 
@@ -42,7 +46,6 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 
-@SuppressWarnings(value = "unchecked") // argh hibernate APIs that return raw types ..
 public class HibernateRecordReader<T> implements RecordReader {
 
     private SessionFactory sessionFactory;
@@ -72,7 +75,7 @@ public class HibernateRecordReader<T> implements RecordReader {
     public void open() {
         session = sessionFactory.openSession();
         currentRecordNumber = 0;
-        Query hibernateQuery = session.createQuery(query);
+        Query<T> hibernateQuery = session.createQuery(query);
         hibernateQuery.setReadOnly(true);
         if (maxResults >= 1) {
             hibernateQuery.setMaxResults(maxResults);

@@ -16,10 +16,6 @@
     <description>Extension to support (some of the) Enterprise Integration Patterns</description>
     <url>https://github.com/j-easy/easy-batch</url>
 
-    <properties>
-        <jms.version>1.1</jms.version>
-    </properties>
-
     <developers>
         <developer>
             <id>benas</id>

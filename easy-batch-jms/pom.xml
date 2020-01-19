@@ -15,9 +15,9 @@
     <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
-        <jms.version>1.1</jms.version>
-        <activemq-all.version>5.13.5</activemq-all.version>
+        <activemq-all.version>5.15.11</activemq-all.version>
         <commons-io.version>2.6</commons-io.version>
+        <jackson-databind.version>2.10.1</jackson-databind.version>
     </properties>
 
     <developers>
@@ -95,6 +95,13 @@
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-all</artifactId>
             <version>${activemq-all.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- jackson is required by activemq-all ...-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
