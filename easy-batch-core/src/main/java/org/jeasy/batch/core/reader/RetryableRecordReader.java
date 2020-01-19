@@ -114,7 +114,7 @@ public class RetryableRecordReader implements RecordReader {
 
         @Override
         protected void beforeWait() {
-            LOGGER.info("Waiting for {} {} before retrying to read next record", retryPolicy.getDelay(), retryPolicy.getTimeUnit());
+            LOGGER.debug("Waiting for {} {} before retrying to read next record", retryPolicy.getDelay(), retryPolicy.getTimeUnit());
         }
 
         @Override

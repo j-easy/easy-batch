@@ -63,14 +63,14 @@ public class JsonRecordCompactor extends RecordCompactor {
             }
             return flatJson;
         } catch (Exception exception) {
-            LOGGER.warn("Unable to compact record payload", exception);
+            LOGGER.error("Unable to compact record payload", exception);
             return EMPTY_STRING;
         } finally {
             if (jsonRecordReader != null) {
                 try {
                     jsonRecordReader.close();
                 } catch (Exception e) {
-                    LOGGER.warn("Unable to close json reader", e);
+                    LOGGER.error("Unable to close json reader", e);
                 }
             }
         }

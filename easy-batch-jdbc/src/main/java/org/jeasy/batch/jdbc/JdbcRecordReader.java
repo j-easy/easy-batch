@@ -97,7 +97,7 @@ public class JdbcRecordReader implements RecordReader {
         try {
             return resultSet.next();
         } catch (SQLException e) {
-            LOGGER.error("An exception occurred during checking the existence of next database record", e);
+            LOGGER.error("Unable to check the existence of next database record", e);
             return false;
         }
     }

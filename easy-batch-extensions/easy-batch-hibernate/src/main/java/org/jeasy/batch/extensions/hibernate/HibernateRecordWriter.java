@@ -85,7 +85,7 @@ public class HibernateRecordWriter implements RecordWriter {
     public void close() throws Exception {
         try {
             if (session != null) {
-                LOGGER.info("Closing session");
+                LOGGER.debug("Closing session");
                 session.close();
             }
         } catch (HibernateException e) {

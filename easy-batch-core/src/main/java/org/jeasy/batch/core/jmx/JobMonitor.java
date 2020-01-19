@@ -131,17 +131,17 @@ public class JobMonitor extends NotificationBroadcasterSupport implements JobMon
     }
 
     public void registerJmxMBeanFor(Job job) {
-        LOGGER.info("Registering JMX MBean for job '{}'", job.getName());
+        LOGGER.debug("Registering JMX MBean for job '{}'", job.getName());
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
         try {
             name = new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + job.getName());
             if (!mbs.isRegistered(name)) {
                 mbs.registerMBean(this, name);
-                LOGGER.info("JMX MBean registered successfully as: {}", name.getCanonicalName());
+                LOGGER.debug("JMX MBean registered successfully as: {}", name.getCanonicalName());
             }
         } catch (Exception e) {
-            LOGGER.warn("Unable to register MBean for job '{}'", job.getName(), e);
+            LOGGER.error("Unable to register MBean for job '{}'", job.getName(), e);
         }
     }
 }

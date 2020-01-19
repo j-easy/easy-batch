@@ -206,7 +206,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.writeStartArray();
                 } catch (JsonGenerationException e) {
-                    LOGGER.debug("Invalid json generator state", e);
+                    // NOSONAR e is safe to ignore here, see comment above
                     jsonGenerator.writeStartArray(key);
                 }
                 break;
@@ -218,7 +218,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.writeStartObject();
                 } catch (Exception e) {
-                    LOGGER.debug("Invalid json generator state", e);
+                    // NOSONAR e is safe to ignore here, see comment above
                     jsonGenerator.writeStartObject(key);
                 }
                 break;
@@ -230,7 +230,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.write(JsonValue.FALSE);
                 } catch (Exception e) {
-                    LOGGER.debug("Invalid json generator state", e);
+                    // NOSONAR e is safe to ignore here, see comment above
                     jsonGenerator.write(key, JsonValue.FALSE);
                 }
                 break;
@@ -238,7 +238,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.write(JsonValue.NULL);
                 } catch (Exception e) {
-                    LOGGER.debug("Invalid json generator state", e);
+                    // NOSONAR e is safe to ignore here, see comment above
                     jsonGenerator.write(key, JsonValue.NULL);
                 }
                 break;
@@ -246,7 +246,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.write(JsonValue.TRUE);
                 } catch (Exception e) {
-                    LOGGER.debug("Invalid json generator state", e);
+                    // NOSONAR e is safe to ignore here, see comment above
                     jsonGenerator.write(key, JsonValue.TRUE);
                 }
                 break;
@@ -257,7 +257,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.write(parser.getString());
                 } catch (Exception e) {
-                    LOGGER.debug("Invalid json generator state", e);
+                    // NOSONAR e is safe to ignore here, see comment above
                     jsonGenerator.write(key, parser.getString());
                 }
                 break;
@@ -265,7 +265,7 @@ public class JsonRecordReader implements RecordReader {
                 try {
                     jsonGenerator.write(parser.getBigDecimal());
                 } catch (Exception e) {
-                    LOGGER.debug("Invalid json generator state", e);
+                    // NOSONAR e is safe to ignore here, see comment above
                     jsonGenerator.write(key, parser.getBigDecimal());
                 }
                 break;

@@ -130,9 +130,9 @@ class BatchJob implements Job {
         jobListener.beforeJobStart(parameters);
         recordTracker = new RecordTracker();
         metrics.setStartTime(System.currentTimeMillis());
-        LOGGER.info("Batch size: {}", parameters.getBatchSize());
-        LOGGER.info("Error threshold: {}", Utils.formatErrorThreshold(parameters.getErrorThreshold()));
-        LOGGER.info("Jmx monitoring: {}", parameters.isJmxMonitoring());
+        LOGGER.debug("Batch size: {}", parameters.getBatchSize());
+        LOGGER.debug("Error threshold: {}", Utils.formatErrorThreshold(parameters.getErrorThreshold()));
+        LOGGER.debug("Jmx monitoring: {}", parameters.isJmxMonitoring());
         registerJobMonitor();
     }
 
@@ -207,16 +207,16 @@ class BatchJob implements Job {
     private void processRecord(Record record, Batch batch) throws ErrorThresholdExceededException {
         Record processedRecord = null;
         try {
-            LOGGER.debug("Processing {}", record);
+            LOGGER.debug("Processing record {}", record);
             notifyJobUpdate();
             Record preProcessedRecord = pipelineListener.beforeRecordProcessing(record);
             if (preProcessedRecord == null) {
-                LOGGER.debug("{} has been filtered", record);
+                LOGGER.debug("Record {} has been filtered", record);
                 metrics.incrementFilterCount();
             } else {
                 processedRecord = recordProcessor.processRecord(preProcessedRecord);
                 if (processedRecord == null) {
-                    LOGGER.debug("{} has been filtered", record);
+                    LOGGER.debug("Record {} has been filtered", record);
                     metrics.incrementFilterCount();
                 } else {
                     batch.addRecord(processedRecord);
@@ -224,7 +224,7 @@ class BatchJob implements Job {
             }
             pipelineListener.afterRecordProcessing(record, processedRecord);
         } catch (Exception e) {
-            LOGGER.error("Unable to process {}", record, e);
+            LOGGER.error("Unable to process record {}", record, e);
             pipelineListener.onRecordProcessingException(record, e);
             metrics.incrementErrorCount();
             report.setLastError(e);
@@ -235,7 +235,7 @@ class BatchJob implements Job {
     }
 
     private void writeBatch(Batch batch) throws BatchWritingException {
-        LOGGER.debug("Writing {}", batch);
+        LOGGER.debug("Writing records {}", batch);
         try {
             if (!batch.isEmpty()) {
                 recordWriterListener.beforeRecordWriting(batch);
@@ -281,7 +281,7 @@ class BatchJob implements Job {
             LOGGER.debug("Closing record reader");
             recordReader.close();
         } catch (Exception e) {
-            LOGGER.warn("Unable to close record reader", e);
+            LOGGER.error("Unable to close record reader", e);
             report.setLastError(e);
         }
     }
@@ -291,7 +291,7 @@ class BatchJob implements Job {
             LOGGER.debug("Closing record writer");
             recordWriter.close();
         } catch (Exception e) {
-            LOGGER.warn("Unable to close record writer", e);
+            LOGGER.error("Unable to close record writer", e);
             report.setLastError(e);
         }
     }

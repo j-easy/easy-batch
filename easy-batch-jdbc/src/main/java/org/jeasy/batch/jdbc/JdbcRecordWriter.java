@@ -98,7 +98,7 @@ public class JdbcRecordWriter implements RecordWriter {
     @Override
     public void close() throws Exception {
         if (connection != null) {
-            LOGGER.info("Closing connection");
+            LOGGER.debug("Closing JDBC connection");
             connection.close();
         }
     }

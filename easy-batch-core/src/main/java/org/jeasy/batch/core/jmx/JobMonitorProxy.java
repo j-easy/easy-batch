@@ -87,7 +87,7 @@ public class JobMonitorProxy implements Runnable {
             JMXConnector jmxConnector = JMXConnectorFactory.connect(url, new HashMap<String, Object>());
             MBeanServerConnection mBeanServerConnection = jmxConnector.getMBeanServerConnection();
             registerNotificationListeners(objectName, mBeanServerConnection, jmxConnector);
-            LOGGER.info("Listening to notifications from {}", serviceURL);
+            LOGGER.debug("Listening to JMX notifications from {}", serviceURL);
         } catch (MalformedObjectNameException | IOException | InstanceNotFoundException e) {
             LOGGER.error("Unable to listen to job monitoring notifications", e);
         }

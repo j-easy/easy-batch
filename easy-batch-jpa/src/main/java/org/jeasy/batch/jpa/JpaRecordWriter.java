@@ -85,7 +85,7 @@ public class JpaRecordWriter implements RecordWriter {
     @Override
     public void close() throws Exception {
         if (entityManager != null ) {
-            LOGGER.info("Closing entity manager");
+            LOGGER.debug("Closing entity manager");
             entityManager.close();
         }
     }
