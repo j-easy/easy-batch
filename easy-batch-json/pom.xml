@@ -15,7 +15,8 @@
     <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
-        <javax.json.version>1.0.4</javax.json.version>
+        <javax.json.version>1.1.4</javax.json.version>
+        <yasson.version>1.0.6</yasson.version>
     </properties>
 
     <developers>
@@ -61,10 +62,24 @@
             <artifactId>easy-batch-core</artifactId>
         </dependency>
 
+        <!-- jsonp RI -->
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
             <version>${javax.json.version}</version>
+        </dependency>
+
+        <!-- jsonb RI -->
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>yasson</artifactId>
+            <version>${yasson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-batch-test-common</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
