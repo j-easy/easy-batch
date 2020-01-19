@@ -25,13 +25,15 @@ package org.jeasy.batch.xml;
 
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.junit.After;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.io.InputStream;
 import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.verify;
 
 public class XmlRecordReaderTest {
 
@@ -40,7 +42,8 @@ public class XmlRecordReaderTest {
     @Test
     public void testReadRecord() throws Exception {
         // given
-        xmlRecordReader = new XmlRecordReader(getDataSource("/persons.xml"), "person");
+        InputStream dataSource = Mockito.spy(getDataSource("/persons.xml"));
+        xmlRecordReader = new XmlRecordReader(dataSource, "person");
         xmlRecordReader.open();
         String expectedPayload = getXmlFromFile("/person.xml");
 
@@ -53,12 +56,16 @@ public class XmlRecordReaderTest {
         Diff diff = new Diff(expectedPayload, actualPayload);
         assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(1);
         assertThat(diff.similar()).isTrue();
+
+        xmlRecordReader.close();
+        verify(dataSource).close();
     }
 
     @Test
     public void testReadingEscapedXml() throws Exception {
         // given
-        xmlRecordReader = new XmlRecordReader(getDataSource("/websites.xml"), "website");
+        InputStream dataSource = Mockito.spy(getDataSource("/websites.xml"));
+        xmlRecordReader = new XmlRecordReader(dataSource, "website");
         xmlRecordReader.open();
 
         // when
@@ -76,12 +83,16 @@ public class XmlRecordReaderTest {
         assertThat(record4.getPayload()).isXmlEqualTo("<website name=\"google\">http://www.google.com?query=test&amp;sort=asc</website>");
         assertThat(record5.getPayload()).isXmlEqualTo("<website name=\"test\">&lt;test&gt;foo&lt;/test&gt;</website>");
         assertThat(record6).isNull();
+
+        xmlRecordReader.close();
+        verify(dataSource, atLeast(1)).close();
     }
 
     @Test
     public void testReadingXmlWithCustomNamespace() throws Exception {
         // given
-        xmlRecordReader = new XmlRecordReader(getDataSource("/beans.xml"), "bean");
+        InputStream dataSource = Mockito.spy(getDataSource("/beans.xml"));
+        xmlRecordReader = new XmlRecordReader(dataSource, "bean");
         xmlRecordReader.open();
 
         // when
@@ -94,6 +105,8 @@ public class XmlRecordReaderTest {
         assertThat(record2.getPayload()).isXmlEqualTo("<bean id=\"bar\" class=\"java.lang.String\"/>");
         assertThat(record3).isNull();
 
+        xmlRecordReader.close();
+        verify(dataSource, atLeast(1)).close();
     }
 
     /*
@@ -103,7 +116,8 @@ public class XmlRecordReaderTest {
     @Test
     public void testHasNextRecordForEmptyPersonsFile() throws Exception {
         // given
-        xmlRecordReader = new XmlRecordReader(getDataSource("/persons-empty.xml"), "person");
+        InputStream dataSource = Mockito.spy(getDataSource("/persons-empty.xml"));
+        xmlRecordReader = new XmlRecordReader(dataSource, "person");
         xmlRecordReader.open();
 
         // when
@@ -111,12 +125,15 @@ public class XmlRecordReaderTest {
 
         // then
         assertThat(actual).isNull();
+        xmlRecordReader.close();
+        verify(dataSource, atLeast(1)).close();
     }
 
     @Test
     public void testHasNextRecordForEmptyFile() throws Exception {
         // given
-        xmlRecordReader = new XmlRecordReader(getDataSource("/empty-file.xml"), "person");
+        InputStream dataSource = Mockito.spy(getDataSource("/empty-file.xml"));
+        xmlRecordReader = new XmlRecordReader(dataSource, "person");
         xmlRecordReader.open();
 
         // when
@@ -124,6 +141,8 @@ public class XmlRecordReaderTest {
 
         // then
         assertThat(actual).isNull();
+        xmlRecordReader.close();
+        verify(dataSource, atLeast(1)).close();
     }
 
      /*
@@ -133,7 +152,8 @@ public class XmlRecordReaderTest {
     @Test
     public void testReadNextNestedRecord() throws Exception {
         // given
-        xmlRecordReader = new XmlRecordReader(getDataSource("/persons-nested.xml"), "person");
+        InputStream dataSource = Mockito.spy(getDataSource("/persons-nested.xml"));
+        xmlRecordReader = new XmlRecordReader(dataSource, "person");
         xmlRecordReader.open();
         String expectedPayload = getXmlFromFile("/person.xml");
 
@@ -146,11 +166,8 @@ public class XmlRecordReaderTest {
         Diff diff = new Diff(expectedPayload, actualPayload);
         assertThat(xmlRecord.getHeader().getNumber()).isEqualTo(1);
         assertThat(diff.similar()).isTrue();
-    }
-
-    @After
-    public void tearDown() throws Exception {
         xmlRecordReader.close();
+        verify(dataSource).close();
     }
 
     private String getXmlFromFile(String file) {

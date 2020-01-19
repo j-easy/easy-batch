@@ -114,7 +114,10 @@ public class XmlRecordReader implements RecordReader {
     @Override
     public void close() throws Exception {
         if (xmlEventReader != null) {
-            xmlEventReader.close(); // TODO should close underlying input stream (See Javadoc)
+            xmlEventReader.close();
+        }
+        if (xmlInputStream != null) {
+            xmlInputStream.close();
         }
     }
 
