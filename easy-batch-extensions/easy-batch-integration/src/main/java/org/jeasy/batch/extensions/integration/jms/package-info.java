@@ -21,50 +21,7 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.jms;
-
-import org.jeasy.batch.core.record.Batch;
-import org.jeasy.batch.core.record.Record;
-import org.jeasy.batch.core.writer.RecordWriter;
-
-import javax.jms.Message;
-import javax.jms.QueueSender;
-import java.util.List;
-
 /**
- * Broadcast records to a list of Jms queues.
- *
- * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * This package contains support classes to implement integration patterns with JMS.
  */
-public class BroadcastJmsQueueRecordWriter implements RecordWriter {
-
-    private List<QueueSender> queues;
-
-    /**
-     * Create a new {@link BroadcastJmsQueueRecordWriter} instance.
-     *
-     * @param queues the list of queues to which records should be written
-     */
-    public BroadcastJmsQueueRecordWriter(List<QueueSender> queues) {
-        this.queues = queues;
-    }
-
-    @Override
-    public void open() throws Exception {
-
-    }
-
-    @Override
-    public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch) {
-            for (QueueSender queue : queues) {
-                queue.send((Message) record.getPayload());
-            }
-        }
-    }
-
-    @Override
-    public void close() throws Exception {
-
-    }
-}
+package org.jeasy.batch.extensions.integration.jms;

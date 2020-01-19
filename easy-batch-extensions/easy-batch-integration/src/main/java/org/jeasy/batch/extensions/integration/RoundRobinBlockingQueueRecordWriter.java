@@ -21,25 +21,52 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.core.writer;
+package org.jeasy.batch.extensions.integration;
 
+import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;
+import org.jeasy.batch.core.writer.RecordWriter;
+
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 /**
- * Predicates are used to check if a record matches a given criteria.
+ * Write records to a list of {@link BlockingQueue}s in round-robin fashion.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
- * @see ContentBasedBlockingQueueRecordWriter
- * @see ContentBasedBlockingQueueRecordWriterBuilder
  */
-public interface Predicate {
+public class RoundRobinBlockingQueueRecordWriter implements RecordWriter {
+
+    private int queuesNumber;
+    private int nextQueue;
+    private List<BlockingQueue<Record>> queues;
 
     /**
-     * Check if the record matches a given criteria.
+     * Create a new {@link RoundRobinBlockingQueueRecordWriter}.
      *
-     * @param record to check
-     * @return true if the record matches the predicate, false otherwise
+     * @param queues to which records should be written
      */
-    boolean matches(Record record);
+    public RoundRobinBlockingQueueRecordWriter(List<BlockingQueue<Record>> queues) {
+        this.queues = queues;
+        this.queuesNumber = queues.size();
+    }
 
+    @Override
+    public void open() {
+
+    }
+
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        //write records to queues in round-robin fashion
+        for (Record record : batch) {
+            BlockingQueue<Record> queue = queues.get(nextQueue++ % queuesNumber);
+            queue.put(record);
+        }
+    }
+
+    @Override
+    public void close() {
+
+    }
 }

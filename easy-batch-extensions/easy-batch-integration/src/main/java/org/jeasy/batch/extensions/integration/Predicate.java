@@ -21,53 +21,25 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.jms;
+package org.jeasy.batch.extensions.integration;
 
-import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;
-import org.jeasy.batch.core.writer.RecordWriter;
-
-import javax.jms.Message;
-import javax.jms.QueueSender;
-import java.util.List;
 
 /**
- * Write records to a list of Jms queues in round-robin fashion.
+ * Predicates are used to check if a record matches a given criteria.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @see ContentBasedBlockingQueueRecordWriter
+ * @see ContentBasedBlockingQueueRecordWriterBuilder
  */
-public class RoundRobinJmsQueueRecordWriter implements RecordWriter {
-
-    private int queuesNumber;
-    private int next;
-    private List<QueueSender> queues;
+public interface Predicate {
 
     /**
-     * Create a new {@link RoundRobinJmsQueueRecordWriter}.
+     * Check if the record matches a given criteria.
      *
-     * @param queues to which records should be written
+     * @param record to check
+     * @return true if the record matches the predicate, false otherwise
      */
-    public RoundRobinJmsQueueRecordWriter(List<QueueSender> queues) {
-        this.queues = queues;
-        this.queuesNumber = queues.size();
-    }
+    boolean matches(Record record);
 
-    @Override
-    public void open() throws Exception {
-
-    }
-
-    @Override
-    public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch) {
-            //dispatch records to queues in round-robin fashion
-            QueueSender queue = queues.get(next++ % queuesNumber);
-            queue.send((Message) record.getPayload());
-        }
-    }
-
-    @Override
-    public void close() throws Exception {
-
-    }
 }

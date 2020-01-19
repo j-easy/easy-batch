@@ -21,53 +21,45 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.core.writer;
+package org.jeasy.batch.extensions.integration;
 
 import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * Write records randomly to a list of {@link BlockingQueue}s.
- *
- * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
- */
-public class RandomBlockingQueueRecordWriter implements RecordWriter {
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 
-    private int queuesNumber;
-    private List<BlockingQueue<Record>> queues;
-    private Random random;
+@RunWith(MockitoJUnitRunner.class)
+public class RoundRobinBlockingQueueRecordWriterTest {
 
-    /**
-     * Create a new {@link RandomBlockingQueueRecordWriter}.
-     *
-     * @param queues to which records should be written
-     */
-    public RandomBlockingQueueRecordWriter(List<BlockingQueue<Record>> queues) {
-        this.queues = queues;
-        this.queuesNumber = queues.size();
-        this.random = new Random();
+    private RoundRobinBlockingQueueRecordWriter roundRobinQueueRecordWriter;
+
+    private BlockingQueue<Record> queue1, queue2;
+
+    @Mock
+    private Record record1, record2, record3, record4;
+
+    @Before
+    public void setUp() throws Exception {
+        queue1 = new LinkedBlockingQueue<>();
+        queue2 = new LinkedBlockingQueue<>();
+        roundRobinQueueRecordWriter = new RoundRobinBlockingQueueRecordWriter(asList(queue1, queue2));
     }
 
-    @Override
-    public void open() throws Exception {
+    @Test
+    public void recordsShouldBeWrittenToQueuesInRoundRobinFashion() throws Exception {
+        roundRobinQueueRecordWriter.writeRecords(new Batch(record1, record2, record3, record4));
 
+        assertThat(queue1).containsExactly(record1, record3);
+        assertThat(queue2).containsExactly(record2, record4);
     }
 
-    @Override
-    public void writeRecords(Batch batch) throws Exception {
-        //write record randomly to one of the queues
-        for (Record record : batch) {
-            BlockingQueue<Record> queue = queues.get(random.nextInt(queuesNumber));
-            queue.put(record);
-        }
-    }
-
-    @Override
-    public void close() throws Exception {
-
-    }
 }

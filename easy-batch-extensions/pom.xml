@@ -62,6 +62,7 @@
         <module>easy-batch-msexcel</module>
         <module>easy-batch-univocity</module>
         <module>easy-batch-yaml</module>
+        <module>easy-batch-integration</module>
     </modules>
 
 </project>

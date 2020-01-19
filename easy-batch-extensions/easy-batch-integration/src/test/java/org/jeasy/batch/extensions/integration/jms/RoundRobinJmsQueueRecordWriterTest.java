@@ -21,45 +21,46 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.core.writer;
+package org.jeasy.batch.extensions.integration.jms;
 
 import org.jeasy.batch.core.record.Batch;
-import org.jeasy.batch.core.record.Record;
+import org.jeasy.batch.jms.JmsRecord;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-
-import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
+import javax.jms.QueueSender;
+import java.util.Arrays;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RoundRobinBlockingQueueRecordWriterTest {
+public class RoundRobinJmsQueueRecordWriterTest {
 
-    private RoundRobinBlockingQueueRecordWriter roundRobinQueueRecordWriter;
-
-    private BlockingQueue<Record> queue1, queue2;
+    private RoundRobinJmsQueueRecordWriter roundRobinJmsQueueRecordWriter;
 
     @Mock
-    private Record record1, record2, record3, record4;
+    private QueueSender queue1, queue2;
+
+    @Mock
+    private JmsRecord record1, record2, record3;
 
     @Before
     public void setUp() throws Exception {
-        queue1 = new LinkedBlockingQueue<>();
-        queue2 = new LinkedBlockingQueue<>();
-        roundRobinQueueRecordWriter = new RoundRobinBlockingQueueRecordWriter(asList(queue1, queue2));
+        roundRobinJmsQueueRecordWriter = new RoundRobinJmsQueueRecordWriter(Arrays.asList(queue1, queue2));
     }
 
     @Test
-    public void recordsShouldBeWrittenToQueuesInRoundRobinFashion() throws Exception {
-        roundRobinQueueRecordWriter.writeRecords(new Batch(record1, record2, record3, record4));
+    public void regularRecordsShouldBeDispatchedToQueuesInRoundRobinFashion() throws Exception {
 
-        assertThat(queue1).containsExactly(record1, record3);
-        assertThat(queue2).containsExactly(record2, record4);
+        roundRobinJmsQueueRecordWriter.writeRecords(new Batch(record1, record2, record3));
+
+        InOrder inOrder = Mockito.inOrder(queue1, queue2, record1, record2, record3);
+        inOrder.verify(queue1).send(record1.getPayload());
+        inOrder.verify(queue2).send(record2.getPayload());
+        inOrder.verify(queue1).send(record3.getPayload());
     }
 
 }

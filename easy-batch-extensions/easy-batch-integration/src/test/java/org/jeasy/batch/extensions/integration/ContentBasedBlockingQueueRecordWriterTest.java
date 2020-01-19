@@ -21,59 +21,57 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.jms;
+package org.jeasy.batch.extensions.integration;
 
 import org.jeasy.batch.core.record.Batch;
-import org.jeasy.batch.core.writer.DefaultPredicate;
-import org.jeasy.batch.core.writer.Predicate;
+import org.jeasy.batch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.jms.QueueSender;
-
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ContentBasedJmsQueueRecordWriterTest {
+public class ContentBasedBlockingQueueRecordWriterTest {
 
-    private ContentBasedJmsQueueRecordWriter recordWriter;
+    private ContentBasedBlockingQueueRecordWriter recordWriter;
+
+    private BlockingQueue<Record> orangeQueue;
+
+    private BlockingQueue<Record> defaultQueue;
 
     @Mock
-    private QueueSender orangeQueue, defaultQueue;
-    @Mock
-    private JmsRecord orangeRecord, appleRecord;
+    private Record orangeRecord, appleRecord;
+
     @Mock
     private Predicate orangePredicate;
 
     @Before
     public void setUp() throws Exception {
-        Map<Predicate, QueueSender> queueMap = new HashMap<>();
+        orangeQueue = new LinkedBlockingQueue<>();
+        defaultQueue = new LinkedBlockingQueue<>();
+        Map<Predicate, BlockingQueue<Record>> queueMap = new HashMap<>();
         queueMap.put(orangePredicate, orangeQueue);
         queueMap.put(new DefaultPredicate(), defaultQueue);
-        recordWriter = new ContentBasedJmsQueueRecordWriter(queueMap);
+        recordWriter = new ContentBasedBlockingQueueRecordWriter(queueMap);
 
         when(orangePredicate.matches(orangeRecord)).thenReturn(true);
         when(orangePredicate.matches(appleRecord)).thenReturn(false);
     }
 
     @Test
-    public void orangeRecordShouldBeDispatchedToOrangeQueue() throws Exception {
-        recordWriter.writeRecords(new Batch(orangeRecord));
-        verify(orangeQueue).send(orangeRecord.getPayload());
-        verifyZeroInteractions(defaultQueue);
-    }
-
-    @Test
-    public void nonOrangeRecordShouldBeDispatchedToDefaultQueue() throws Exception {
-        recordWriter.writeRecords(new Batch(appleRecord));
-        verify(defaultQueue).send(appleRecord.getPayload());
-        verifyZeroInteractions(orangeQueue);
+    public void orangeRecordShouldBeWrittenToOrangeQueue() throws Exception {
+        recordWriter.writeRecords(new Batch(orangeRecord, appleRecord));
+        assertThat(orangeQueue).containsOnly(orangeRecord);
+        assertThat(defaultQueue).containsOnly(appleRecord);
     }
 
 }

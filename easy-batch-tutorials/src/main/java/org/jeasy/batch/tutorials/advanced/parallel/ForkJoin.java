@@ -30,7 +30,7 @@ import org.jeasy.batch.core.processor.RecordProcessor;
 import org.jeasy.batch.core.reader.BlockingQueueRecordReader;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.writer.BlockingQueueRecordWriter;
-import org.jeasy.batch.core.writer.RoundRobinBlockingQueueRecordWriter;
+import org.jeasy.batch.extensions.integration.RoundRobinBlockingQueueRecordWriter;
 import org.jeasy.batch.core.writer.StandardOutputRecordWriter;
 import org.jeasy.batch.jdbc.JdbcRecordMapper;
 import org.jeasy.batch.jdbc.JdbcRecordReader;

@@ -30,7 +30,7 @@ import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.reader.BlockingQueueRecordReader;
 import org.jeasy.batch.core.reader.FileRecordReader;
 import org.jeasy.batch.core.record.Record;
-import org.jeasy.batch.core.writer.ContentBasedBlockingQueueRecordWriter;
+import org.jeasy.batch.extensions.integration.ContentBasedBlockingQueueRecordWriter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -38,7 +38,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
-import static org.jeasy.batch.core.writer.ContentBasedBlockingQueueRecordWriterBuilder.newContentBasedBlockingQueueRecordWriterBuilder;
+import static org.jeasy.batch.extensions.integration.ContentBasedBlockingQueueRecordWriterBuilder.newContentBasedBlockingQueueRecordWriterBuilder;
 
 /**
 * Main class to run the content based record dispatching tutorial.

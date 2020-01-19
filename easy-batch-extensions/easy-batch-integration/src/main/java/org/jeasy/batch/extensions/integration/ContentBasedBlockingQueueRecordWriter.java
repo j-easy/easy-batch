@@ -21,69 +21,66 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.jms;
+package org.jeasy.batch.extensions.integration;
 
 import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;
-import org.jeasy.batch.core.writer.DefaultPredicate;
-import org.jeasy.batch.core.writer.Predicate;
 import org.jeasy.batch.core.writer.RecordWriter;
 
-import javax.jms.Message;
-import javax.jms.QueueSender;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 /**
- * Write records to a list of Jms Queues based on their content.
+ * Write records to a list of {@link BlockingQueue} based on their content.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class ContentBasedJmsQueueRecordWriter implements RecordWriter {
+public class ContentBasedBlockingQueueRecordWriter implements RecordWriter {
 
     /**
      * Map a predicate to a queue: when the record content matches the predicate,
      * then it is written to the mapped queue.
      */
-    private Map<Predicate, QueueSender> queueMap;
+    private Map<Predicate, BlockingQueue<Record>> queueMap;
 
-    ContentBasedJmsQueueRecordWriter(Map<Predicate, QueueSender> queueMap) {
+    ContentBasedBlockingQueueRecordWriter(Map<Predicate, BlockingQueue<Record>> queueMap) {
         this.queueMap = queueMap;
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
 
     }
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        QueueSender defaultQueue = queueMap.get(new DefaultPredicate());
+        DefaultPredicate defaultPredicate = new DefaultPredicate();
+        BlockingQueue<Record> defaultQueue = queueMap.get(defaultPredicate);
         for (Record record : batch) {
             boolean matched = false;
-            Message payload = (Message) record.getPayload();
-            for (Map.Entry<Predicate, QueueSender> entry : queueMap.entrySet()) {
+            for (Map.Entry<Predicate, BlockingQueue<Record>> entry : queueMap.entrySet()) {
                 Predicate predicate = entry.getKey();
                 //check if the record meets a given predicate
                 if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
-                    //put it in the mapped queue
-                    queueMap.get(predicate).send(payload);
+                    //if so, put it in the mapped queue
+                    queueMap.get(predicate).put(record);
                     matched = true;
                     break;
                 }
             }
             //if the record does not match any predicate, then put it in the default queue
             if (!matched && defaultQueue != null) {
-                defaultQueue.send(payload);
+                defaultQueue.put(record);
             }
         }
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
     }
 
-    Map<Predicate, QueueSender> getQueueMap() {
+    Map<Predicate, BlockingQueue<Record>> getQueueMap() {
         return queueMap;
     }
 }

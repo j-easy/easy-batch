@@ -25,7 +25,7 @@
 package org.jeasy.batch.tutorials.advanced.cbrd;
 
 import org.jeasy.batch.core.record.Record;
-import org.jeasy.batch.core.writer.Predicate;
+import org.jeasy.batch.extensions.integration.Predicate;
 
 import java.io.File;
 

@@ -21,45 +21,54 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.jms;
+package org.jeasy.batch.extensions.integration;
 
 import org.jeasy.batch.core.record.Batch;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InOrder;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.jeasy.batch.core.record.Record;
+import org.jeasy.batch.core.writer.RecordWriter;
 
-import javax.jms.QueueSender;
-import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.BlockingQueue;
 
-@RunWith(MockitoJUnitRunner.class)
-public class RoundRobinJmsQueueRecordWriterTest {
+/**
+ * Write records randomly to a list of {@link BlockingQueue}s.
+ *
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
+public class RandomBlockingQueueRecordWriter implements RecordWriter {
 
-    private RoundRobinJmsQueueRecordWriter roundRobinJmsQueueRecordWriter;
+    private int queuesNumber;
+    private List<BlockingQueue<Record>> queues;
+    private Random random;
 
-    @Mock
-    private QueueSender queue1, queue2;
-
-    @Mock
-    private JmsRecord record1, record2, record3;
-
-    @Before
-    public void setUp() throws Exception {
-        roundRobinJmsQueueRecordWriter = new RoundRobinJmsQueueRecordWriter(Arrays.asList(queue1, queue2));
+    /**
+     * Create a new {@link RandomBlockingQueueRecordWriter}.
+     *
+     * @param queues to which records should be written
+     */
+    public RandomBlockingQueueRecordWriter(List<BlockingQueue<Record>> queues) {
+        this.queues = queues;
+        this.queuesNumber = queues.size();
+        this.random = new Random();
     }
 
-    @Test
-    public void regularRecordsShouldBeDispatchedToQueuesInRoundRobinFashion() throws Exception {
+    @Override
+    public void open() {
 
-        roundRobinJmsQueueRecordWriter.writeRecords(new Batch(record1, record2, record3));
-
-        InOrder inOrder = Mockito.inOrder(queue1, queue2, record1, record2, record3);
-        inOrder.verify(queue1).send(record1.getPayload());
-        inOrder.verify(queue2).send(record2.getPayload());
-        inOrder.verify(queue1).send(record3.getPayload());
     }
 
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        //write record randomly to one of the queues
+        for (Record record : batch) {
+            BlockingQueue<Record> queue = queues.get(random.nextInt(queuesNumber));
+            queue.put(record);
+        }
+    }
+
+    @Override
+    public void close() {
+
+    }
 }

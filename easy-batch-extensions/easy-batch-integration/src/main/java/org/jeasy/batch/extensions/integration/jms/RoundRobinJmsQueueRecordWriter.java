@@ -21,49 +21,53 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.core.writer;
+package org.jeasy.batch.extensions.integration.jms;
 
+import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;
+import org.jeasy.batch.core.writer.RecordWriter;
+
+import javax.jms.Message;
+import javax.jms.QueueSender;
+import java.util.List;
 
 /**
- * A default predicate used to put records in the default queue when building a {@link ContentBasedBlockingQueueRecordWriter}.
+ * Write records to a list of Jms queues in round-robin fashion.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class DefaultPredicate implements Predicate {
+public class RoundRobinJmsQueueRecordWriter implements RecordWriter {
 
-    /*
-     * needed for equals and hashcode, all instances should be equal to be able to get the default queue
-     * by calling queueMap.get(new DefaultPredicate()).put(record); in ContentBasedBlockingQueueRecordWriter#writeRecords
+    private int queuesNumber;
+    private int next;
+    private List<QueueSender> queues;
+
+    /**
+     * Create a new {@link RoundRobinJmsQueueRecordWriter}.
+     *
+     * @param queues to which records should be written
      */
-    private String id = "defaultPredicate";
-
-    @Override
-    public boolean matches(Record record) {
-        return true;
+    public RoundRobinJmsQueueRecordWriter(List<QueueSender> queues) {
+        this.queues = queues;
+        this.queuesNumber = queues.size();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof DefaultPredicate)) {
-            return false;
-        }
+    public void open() {
 
-        DefaultPredicate that = (DefaultPredicate) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) {
-            return false;
-        }
-
-        return true;
     }
 
     @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch) {
+            //dispatch records to queues in round-robin fashion
+            QueueSender queue = queues.get(next++ % queuesNumber);
+            queue.send((Message) record.getPayload());
+        }
     }
 
+    @Override
+    public void close() {
+
+    }
 }

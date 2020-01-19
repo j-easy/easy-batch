@@ -21,10 +21,10 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.jms;
+package org.jeasy.batch.extensions.integration.jms;
 
-import org.jeasy.batch.core.writer.DefaultPredicate;
-import org.jeasy.batch.core.writer.Predicate;
+import org.jeasy.batch.extensions.integration.DefaultPredicate;
+import org.jeasy.batch.extensions.integration.Predicate;
 
 import javax.jms.QueueSender;
 import java.util.HashMap;

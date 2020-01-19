@@ -21,8 +21,9 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.core.writer;
+package org.jeasy.batch.extensions.integration;
 
+import org.assertj.core.api.Assertions;
 import org.jeasy.batch.core.record.Record;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,7 +53,7 @@ public class ContentBasedBlockingQueueRecordWriterBuilderTest {
 
         assertThat(recordWriter).isNotNull();
         Map<Predicate, BlockingQueue<Record>> queueMap = recordWriter.getQueueMap();
-        assertThat(queueMap).isNotNull();
+        Assertions.assertThat(queueMap).isNotNull();
         assertThat(queueMap.get(predicate)).isEqualTo(queue);
         assertThat(queueMap.get(new DefaultPredicate())).isEqualTo(defaultQueue);
     }
@@ -66,7 +67,7 @@ public class ContentBasedBlockingQueueRecordWriterBuilderTest {
 
         assertThat(recordWriter).isNotNull();
         Map<Predicate, BlockingQueue<Record>> queueMap = recordWriter.getQueueMap();
-        assertThat(queueMap).isNotNull();
+        Assertions.assertThat(queueMap).isNotNull();
         assertThat(queueMap.get(predicate)).isEqualTo(queue);
         assertThat(queueMap.get(new DefaultPredicate())).isNull();
     }

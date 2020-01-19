@@ -21,7 +21,7 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.core.writer;
+package org.jeasy.batch.extensions.integration;
 
 import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;

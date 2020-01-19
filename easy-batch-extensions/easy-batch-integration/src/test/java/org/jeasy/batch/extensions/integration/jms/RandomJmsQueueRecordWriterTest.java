@@ -21,7 +21,7 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.core.writer;
+package org.jeasy.batch.extensions.integration.jms;
 
 import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;
@@ -31,47 +31,35 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import javax.jms.Message;
+import javax.jms.QueueSender;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ContentBasedBlockingQueueRecordWriterTest {
-
-    private ContentBasedBlockingQueueRecordWriter recordWriter;
-
-    private BlockingQueue<Record> orangeQueue;
-
-    private BlockingQueue<Record> defaultQueue;
+public class RandomJmsQueueRecordWriterTest {
 
     @Mock
-    private Record orangeRecord, appleRecord;
-
+    private QueueSender queue1, queue2;
     @Mock
-    private Predicate orangePredicate;
+    private Record record;
+    @Mock
+    private Message message;
+
+    private RandomJmsQueueRecordWriter randomJmsQueueRecordWriter;
 
     @Before
     public void setUp() throws Exception {
-        orangeQueue = new LinkedBlockingQueue<>();
-        defaultQueue = new LinkedBlockingQueue<>();
-        Map<Predicate, BlockingQueue<Record>> queueMap = new HashMap<>();
-        queueMap.put(orangePredicate, orangeQueue);
-        queueMap.put(new DefaultPredicate(), defaultQueue);
-        recordWriter = new ContentBasedBlockingQueueRecordWriter(queueMap);
-
-        when(orangePredicate.matches(orangeRecord)).thenReturn(true);
-        when(orangePredicate.matches(appleRecord)).thenReturn(false);
+        randomJmsQueueRecordWriter = new RandomJmsQueueRecordWriter(asList(queue1, queue2));
+        when(record.getPayload()).thenReturn(message);
     }
 
     @Test
-    public void orangeRecordShouldBeWrittenToOrangeQueue() throws Exception {
-        recordWriter.writeRecords(new Batch(orangeRecord, appleRecord));
-        assertThat(orangeQueue).containsOnly(orangeRecord);
-        assertThat(defaultQueue).containsOnly(appleRecord);
-    }
+    public void recordsShouldBeWrittenRandomlyToOneOfTheQueues() throws Exception {
+        randomJmsQueueRecordWriter.writeRecords(new Batch(record));
 
+        verify(queue1, atMost(1)).send(message);
+        verify(queue2, atMost(1)).send(message);
+    }
 }

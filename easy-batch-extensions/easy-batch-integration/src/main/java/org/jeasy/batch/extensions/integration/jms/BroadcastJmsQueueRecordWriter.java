@@ -21,45 +21,50 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.jms;
+package org.jeasy.batch.extensions.integration.jms;
 
 import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.jeasy.batch.core.writer.RecordWriter;
 
 import javax.jms.Message;
 import javax.jms.QueueSender;
+import java.util.List;
 
-import static java.util.Arrays.asList;
-import static org.mockito.Mockito.*;
+/**
+ * Broadcast records to a list of Jms queues.
+ *
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
+public class BroadcastJmsQueueRecordWriter implements RecordWriter {
 
-@RunWith(MockitoJUnitRunner.class)
-public class RandomJmsQueueRecordWriterTest {
+    private List<QueueSender> queues;
 
-    @Mock
-    private QueueSender queue1, queue2;
-    @Mock
-    private Record record;
-    @Mock
-    private Message message;
-
-    private RandomJmsQueueRecordWriter randomJmsQueueRecordWriter;
-
-    @Before
-    public void setUp() throws Exception {
-        randomJmsQueueRecordWriter = new RandomJmsQueueRecordWriter(asList(queue1, queue2));
-        when(record.getPayload()).thenReturn(message);
+    /**
+     * Create a new {@link BroadcastJmsQueueRecordWriter} instance.
+     *
+     * @param queues the list of queues to which records should be written
+     */
+    public BroadcastJmsQueueRecordWriter(List<QueueSender> queues) {
+        this.queues = queues;
     }
 
-    @Test
-    public void recordsShouldBeWrittenRandomlyToOneOfTheQueues() throws Exception {
-        randomJmsQueueRecordWriter.writeRecords(new Batch(record));
+    @Override
+    public void open() {
 
-        verify(queue1, atMost(1)).send(message);
-        verify(queue2, atMost(1)).send(message);
+    }
+
+    @Override
+    public void writeRecords(Batch batch) throws Exception {
+        for (Record record : batch) {
+            for (QueueSender queue : queues) {
+                queue.send((Message) record.getPayload());
+            }
+        }
+    }
+
+    @Override
+    public void close() {
+
     }
 }

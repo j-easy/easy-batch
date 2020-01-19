@@ -21,51 +21,50 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package org.jeasy.batch.core.writer;
+package org.jeasy.batch.extensions.integration;
 
-import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;
 
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-
 /**
- * Write records to a list of {@link BlockingQueue}s in round-robin fashion.
+ * A default predicate used to put records in the default queue when building a
+ * {@link ContentBasedBlockingQueueRecordWriter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RoundRobinBlockingQueueRecordWriter implements RecordWriter {
+public class DefaultPredicate implements Predicate {
 
-    private int queuesNumber;
-    private int nextQueue;
-    private List<BlockingQueue<Record>> queues;
-
-    /**
-     * Create a new {@link RoundRobinBlockingQueueRecordWriter}.
-     *
-     * @param queues to which records should be written
+    /*
+     * needed for equals and hashcode, all instances should be equal to be able to get the default queue
+     * by calling queueMap.get(new DefaultPredicate()).put(record); in ContentBasedBlockingQueueRecordWriter#writeRecords
      */
-    public RoundRobinBlockingQueueRecordWriter(List<BlockingQueue<Record>> queues) {
-        this.queues = queues;
-        this.queuesNumber = queues.size();
+    private String id = "defaultPredicate";
+
+    @Override
+    public boolean matches(Record record) {
+        return true;
     }
 
     @Override
-    public void open() throws Exception {
-
-    }
-
-    @Override
-    public void writeRecords(Batch batch) throws Exception {
-        //write records to queues in round-robin fashion
-        for (Record record : batch) {
-            BlockingQueue<Record> queue = queues.get(nextQueue++ % queuesNumber);
-            queue.put(record);
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
+        if (!(o instanceof DefaultPredicate)) {
+            return false;
+        }
+
+        DefaultPredicate that = (DefaultPredicate) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
-    public void close() throws Exception {
-
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
+
 }
