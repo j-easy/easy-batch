@@ -33,7 +33,6 @@ import java.nio.file.Path;
 /**
  * Record reader that reads Json records from an Json file with the following format:
  * <p>
- * <p>
  * [
  * {
  * // JSON object
@@ -43,7 +42,6 @@ import java.nio.file.Path;
  * }
  * ]
  * </p>
- * <p>
  * <p>This reader produces {@link JsonRecord} instances.</p>
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)

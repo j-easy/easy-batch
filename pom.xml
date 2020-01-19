@@ -250,8 +250,8 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${maven-javadoc-plugin.version}</version>
                     <configuration>
-                        <doclint>none</doclint>
                         <excludePackageNames>org.jeasy.batch.test.common</excludePackageNames>
+                        <excludePackageNames>org.jeasy.batch.tutorials</excludePackageNames>
                     </configuration>
                     <executions>
                         <execution>

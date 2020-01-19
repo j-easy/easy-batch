@@ -43,6 +43,8 @@ public class ContentBasedJmsQueueRecordWriterBuilder {
 
     /**
      * Create a new {@link ContentBasedJmsQueueRecordWriterBuilder}.
+     *
+     * @return a new {@link ContentBasedJmsQueueRecordWriterBuilder}
      */
     public static WhenStep newContentBasedJmsQueueRecordWriterBuilder() {
         return new Steps();

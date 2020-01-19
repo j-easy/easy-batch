@@ -33,6 +33,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
 /**
  * Marshals a POJO to Json using <a href="https://code.google.com/p/google-gson/">Google Gson</a>.
  *
+ * @param <P> Target domain object class.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class GsonRecordMarshaller<P> implements RecordMarshaller<Record<P>, JsonRecord> {

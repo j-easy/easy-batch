@@ -129,6 +129,8 @@ public class JobExecutor {
 
     /**
      * Wait for jobs to terminate.
+     * @param timeout to wait for
+     * @param unit of the timeout
      */
     public void awaitTermination(long timeout, TimeUnit unit) {
         try {

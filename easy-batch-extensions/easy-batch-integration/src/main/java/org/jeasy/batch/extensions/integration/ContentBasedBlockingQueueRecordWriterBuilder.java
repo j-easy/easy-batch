@@ -42,6 +42,8 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
 
     /**
      * Create a new {@link ContentBasedBlockingQueueRecordWriter}.
+     *
+     * @return a new {@link ContentBasedBlockingQueueRecordWriter}
      */
     public static WhenStep newContentBasedBlockingQueueRecordWriterBuilder() {
         return new Steps();

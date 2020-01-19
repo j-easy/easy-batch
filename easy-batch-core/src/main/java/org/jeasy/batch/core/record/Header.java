@@ -52,21 +52,21 @@ public class Header {
     }
 
     /**
-     * Return the physical record number in the data source (if defined).
+     * @return the physical record number in the data source (if defined).
      */
     public Long getNumber() {
         return number;
     }
 
     /**
-     * Return the data source name from which this record has been read.
+     * @return the data source name from which this record has been read.
      */
     public String getSource() {
         return source;
     }
 
     /**
-     * Return the date at which the record has been read.
+     * @return the date at which the record has been read.
      *
      * @deprecated Starting from v6, this method be replaced with a method that returns a {@code java.time.LocalDateTime}
      */

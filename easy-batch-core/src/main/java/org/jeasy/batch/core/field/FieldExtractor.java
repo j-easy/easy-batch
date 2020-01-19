@@ -38,6 +38,7 @@ public interface FieldExtractor<T> {
      *
      * @param payload of the record
      * @return a iterable containing fields of the record's payload
+     * @throws Exception if unable to extract fields from the record's payload
      */
     Iterable<Object> extractFields(T payload) throws Exception;
 }

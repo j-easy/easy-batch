@@ -37,6 +37,7 @@ public interface PipelineListener {
      * If you create a new record, you <strong>must</strong> keep the original header of the modified record.
      *
      * @param record The record that will be processed.
+     * @return the pre-processed record
      */
     Record beforeRecordProcessing(final Record record);
 

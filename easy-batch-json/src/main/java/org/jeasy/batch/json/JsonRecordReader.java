@@ -46,7 +46,6 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
 /**
  * Record reader that reads Json records from an array of Json objects:
  * <p>
- * <p>
  * [
  * {
  * // JSON object
@@ -56,7 +55,6 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * }
  * ]
  * </p>
- * <p>
  * <p>This reader produces {@link JsonRecord} instances.</p>
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
