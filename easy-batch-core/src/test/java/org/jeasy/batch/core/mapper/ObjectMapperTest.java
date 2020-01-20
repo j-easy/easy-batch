@@ -30,6 +30,7 @@ import org.jeasy.batch.core.converter.TypeConverter;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,6 +51,7 @@ public class ObjectMapperTest {
         values.put("age", "30");
         values.put("birthDate", "1990-12-12");
         values.put("married", "true");
+        values.put("marriageDate", "2010-12-12");
 
         Person person = mapper.mapObject(values);
 
@@ -62,6 +64,7 @@ public class ObjectMapperTest {
         assertThat(person.getAge()).isEqualTo(30);
         assertThat(new SimpleDateFormat("yyyy-MM-dd").format(person.getBirthDate())).isEqualTo("1990-12-12");
         assertThat(person.isMarried()).isTrue();
+        assertThat(person.getMarriageDate()).isEqualTo(LocalDate.of(2010, 12, 12));
     }
 
     @Test
@@ -77,6 +80,7 @@ public class ObjectMapperTest {
         values.put("birthDate", "1990-12-12");
         values.put("married", "true");
         values.put("nickName", "FB");
+        values.put("marriageDate", "2010-12-12");
 
         // map record to extended person bean
         ExtendedPerson extendedPerson = mapper.mapObject(values);
@@ -90,6 +94,7 @@ public class ObjectMapperTest {
         assertThat(extendedPerson.getAge()).isEqualTo(30);
         assertThat(new SimpleDateFormat("yyyy-MM-dd").format(extendedPerson.getBirthDate())).isEqualTo("1990-12-12");
         assertThat(extendedPerson.isMarried()).isTrue();
+        assertThat(extendedPerson.getMarriageDate()).isEqualTo(LocalDate.of(2010, 12, 12));
         assertThat(extendedPerson.getNickName()).isEqualTo("FB");
     }
 

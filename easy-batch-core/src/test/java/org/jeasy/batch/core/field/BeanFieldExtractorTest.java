@@ -28,6 +28,7 @@ import org.jeasy.batch.core.beans.Person;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,16 +48,17 @@ public class BeanFieldExtractorTest {
         person.setAge(33);
         person.setGender(Gender.FEMALE);
         person.setMarried(true);
+        person.setMarriageDate(LocalDate.of(2020, 1, 20));
     }
 
     @Test
     public void whenFieldsIsEmpty_ThenItShouldExtractAllPropertiesValues() throws Exception {
         fieldExtractor = new BeanFieldExtractor<>(Person.class);
         Iterable<Object> values = fieldExtractor.extractFields(person);
-        assertThat(values).hasSize(6);
+        assertThat(values).hasSize(7);
         assertThat(values).containsOnlyOnce(
                 person.getFirstName(), person.getLastName(), person.getBirthDate(),
-                person.getAge(), person.getGender(), person.isMarried());
+                person.getAge(), person.getGender(), person.isMarried(), person.getMarriageDate());
     }
 
     @Test

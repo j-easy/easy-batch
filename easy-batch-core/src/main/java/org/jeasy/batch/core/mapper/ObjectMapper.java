@@ -35,6 +35,9 @@ import org.jeasy.batch.core.converter.DoubleTypeConverter;
 import org.jeasy.batch.core.converter.FloatTypeConverter;
 import org.jeasy.batch.core.converter.GregorianCalendarTypeConverter;
 import org.jeasy.batch.core.converter.IntegerTypeConverter;
+import org.jeasy.batch.core.converter.LocalDateConverter;
+import org.jeasy.batch.core.converter.LocalDateTimeConverter;
+import org.jeasy.batch.core.converter.LocalTimeConverter;
 import org.jeasy.batch.core.converter.LongTypeConverter;
 import org.jeasy.batch.core.converter.ShortTypeConverter;
 import org.jeasy.batch.core.converter.SqlDateTypeConverter;
@@ -199,6 +202,9 @@ public class ObjectMapper<T> {
         typeConverters.put(java.sql.Date.class, new SqlDateTypeConverter());
         typeConverters.put(java.sql.Time.class, new SqlTimeTypeConverter());
         typeConverters.put(java.sql.Timestamp.class, new SqlTimestampTypeConverter());
+        typeConverters.put(java.time.LocalDate.class, new LocalDateConverter());
+        typeConverters.put(java.time.LocalTime.class, new LocalTimeConverter());
+        typeConverters.put(java.time.LocalDateTime.class, new LocalDateTimeConverter());
         typeConverters.put(String.class, new StringTypeConverter());
     }
 

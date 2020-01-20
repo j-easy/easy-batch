@@ -23,6 +23,7 @@
  */
 package org.jeasy.batch.core.beans;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Person {
@@ -36,6 +37,8 @@ public class Person {
     protected Date birthDate;
 
     protected boolean married;
+
+    private LocalDate marriageDate;
 
     private Gender gender;
 
@@ -87,6 +90,14 @@ public class Person {
         this.gender = gender;
     }
 
+    public LocalDate getMarriageDate() {
+        return marriageDate;
+    }
+
+    public void setMarriageDate(LocalDate marriageDate) {
+        this.marriageDate = marriageDate;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Person{");
@@ -95,6 +106,7 @@ public class Person {
         sb.append(", age=").append(age);
         sb.append(", birthDate=").append(birthDate);
         sb.append(", isMarried=").append(married);
+        sb.append(", marriageDate=").append(marriageDate);
         sb.append(", gender=").append(gender);
         sb.append('}');
         return sb.toString();

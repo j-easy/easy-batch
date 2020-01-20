@@ -68,8 +68,8 @@ public class UtilsTest {
         Map<String, Method> getters = Utils.getGetters(Person.class);
 
         assertThat(getters)
-                .hasSize(6)
-                .containsKeys("firstName", "lastName", "age", "birthDate", "married", "gender");
+                .hasSize(7)
+                .containsKeys("firstName", "lastName", "age", "birthDate", "married", "gender", "marriageDate");
     }
 
     @Test
