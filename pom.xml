@@ -254,8 +254,12 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${maven-javadoc-plugin.version}</version>
                     <configuration>
-                        <excludePackageNames>org.jeasy.batch.test.common</excludePackageNames>
-                        <excludePackageNames>org.jeasy.batch.tutorials</excludePackageNames>
+                        <excludePackageNames>
+                            org.jeasy.batch.test.common:
+                            org.jeasy.batch.tutorials.*:
+                            org.jeasy.batch.bench:
+                            org.jeasy.batch.bench.generated
+                        </excludePackageNames>
                     </configuration>
                     <executions>
                         <execution>
