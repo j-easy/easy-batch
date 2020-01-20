@@ -57,7 +57,6 @@
         <module>easy-batch-gson</module>
         <module>easy-batch-xstream</module>
         <module>easy-batch-jackson</module>
-        <module>easy-batch-mongodb</module>
         <module>easy-batch-hibernate</module>
         <module>easy-batch-msexcel</module>
         <module>easy-batch-univocity</module>
