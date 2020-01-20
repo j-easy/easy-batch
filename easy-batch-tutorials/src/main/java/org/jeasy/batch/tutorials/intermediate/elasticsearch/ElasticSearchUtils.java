@@ -24,11 +24,14 @@
 
 package org.jeasy.batch.tutorials.intermediate.elasticsearch;
 
-import org.apache.commons.io.FileUtils;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.node.Node;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.jeasy.batch.core.util.Utils.FILE_SEPARATOR;
 import static org.jeasy.batch.core.util.Utils.JAVA_IO_TMPDIR;
@@ -53,14 +56,14 @@ public class ElasticSearchUtils {
                 .node();
     }
 
-    public static void stopEmbeddedNode(Node node) {
+    public static void stopEmbeddedNode(Node node) throws IOException {
         node.close();
         deleteElasticSearchDataDirectory();
 
     }
 
-    private static void deleteElasticSearchDataDirectory() {
-        FileUtils.deleteQuietly(new File(ES_DATA_DIRECTORY));
+    private static void deleteElasticSearchDataDirectory() throws IOException {
+        Files.walk(Paths.get(ES_DATA_DIRECTORY)).map(Path::toFile).forEach(File::delete);
     }
 
 }

@@ -25,12 +25,13 @@
 package org.jeasy.batch.tutorials.advanced.jms;
 
 import org.apache.activemq.broker.BrokerService;
-import org.apache.commons.io.FileUtils;
 
 import javax.jms.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
 
 /**
@@ -80,7 +81,7 @@ public class JMSUtil {
     public static void stopEmbeddedBroker() throws Exception {
         File brokerDataDirectoryFile = broker.getDataDirectoryFile();
         broker.stop();
-        FileUtils.deleteDirectory(brokerDataDirectoryFile);
+        Files.walk(brokerDataDirectoryFile.toPath()).map(Path::toFile).forEach(File::delete);
     }
 
     public static QueueConnectionFactory getQueueConnectionFactory() {

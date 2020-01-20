@@ -51,7 +51,7 @@ import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
  */
 public class Launcher {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         // Load tweets from tweets.csv
         Path tweets = Paths.get("src/main/resources/data/tweets.csv");

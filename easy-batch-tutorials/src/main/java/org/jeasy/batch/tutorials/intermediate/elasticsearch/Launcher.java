@@ -47,7 +47,7 @@ import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
  */
 public class Launcher {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         // Start embedded database server
         DatabaseUtil.startEmbeddedDatabase();

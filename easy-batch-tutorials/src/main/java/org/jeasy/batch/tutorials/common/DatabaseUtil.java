@@ -30,11 +30,11 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import javax.sql.DataSource;
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import org.apache.commons.io.FileUtils;
 
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
@@ -77,12 +77,12 @@ public class DatabaseUtil {
         });
     }
 
-    public static void cleanUpWorkingDirectory() {
+    public static void cleanUpWorkingDirectory() throws IOException {
         //delete hsqldb tmp files
-        FileUtils.deleteQuietly(new File("mem.log"));
-        FileUtils.deleteQuietly(new File("mem.properties"));
-        FileUtils.deleteQuietly(new File("mem.script"));
-        FileUtils.deleteQuietly(new File("mem.tmp"));
+        Files.deleteIfExists(Paths.get("mem.log"));
+        Files.deleteIfExists(Paths.get("mem.properties"));
+        Files.deleteIfExists(Paths.get("mem.script"));
+        Files.deleteIfExists(Paths.get("mem.tmp"));
     }
 
 }
