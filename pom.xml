@@ -40,6 +40,7 @@
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-bundle-plugin.version>4.2.1</maven-bundle-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+        <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
     </properties>
 
     <modules>
@@ -288,6 +289,11 @@
                             <manifestFile>target/classes/META-INF/MANIFEST.MF</manifestFile>
                         </archive>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven-deploy-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
