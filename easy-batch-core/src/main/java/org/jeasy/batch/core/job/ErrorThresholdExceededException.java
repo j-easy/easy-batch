@@ -25,7 +25,7 @@ package org.jeasy.batch.core.job;
 
 class ErrorThresholdExceededException extends Exception {
 
-    ErrorThresholdExceededException(String message) {
-        super(message);
+    ErrorThresholdExceededException(String s, Exception e) {
+        super(s, e);
     }
 }
