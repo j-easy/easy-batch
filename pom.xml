@@ -56,7 +56,6 @@
         <module>easy-batch-archetype</module>
         <module>easy-batch-test-common</module>
         <module>easy-batch-tutorials</module>
-        <module>easy-batch-benchmarks</module>
     </modules>
 
     <developers>
