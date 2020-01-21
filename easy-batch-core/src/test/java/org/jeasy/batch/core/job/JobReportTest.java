@@ -83,10 +83,7 @@ public class JobReportTest {
 						"\tWrite count = 0" + LINE_SEPARATOR +
 						"\tFilter count = 0" + LINE_SEPARATOR +
 						"\tError count = 0" + LINE_SEPARATOR +
-						"\tnbFoos = 1" + LINE_SEPARATOR +
-						"System properties:" + LINE_SEPARATOR +
-						"\tsysprop1 = foo" + LINE_SEPARATOR +
-						"\tsysprop2 = bar";
+						"\tnbFoos = 1";
 
 		String formattedReport = report.toString();
 

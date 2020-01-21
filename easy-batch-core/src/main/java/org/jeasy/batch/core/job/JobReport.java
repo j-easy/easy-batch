@@ -27,7 +27,6 @@ import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Map;
 import java.util.Properties;
-import java.util.TreeMap;
 
 import org.jeasy.batch.core.util.Utils;
 
@@ -137,12 +136,6 @@ public class JobReport implements Serializable {
         for (Map.Entry<String, Object> customMetric : metrics.getCustomMetrics().entrySet()) {
             sb.append(Utils.LINE_SEPARATOR).append("\t")
                     .append(customMetric.getKey()).append(" = ").append(customMetric.getValue());
-        }
-        // append system properties
-        sb.append(Utils.LINE_SEPARATOR).append("System properties:");
-        for (Map.Entry property : new TreeMap<>(systemProperties).entrySet()) { // tree map for sorting purpose (repeatable tests)
-            sb.append(Utils.LINE_SEPARATOR).append("\t")
-                    .append(property.getKey()).append(" = ").append(property.getValue());
         }
         return sb.toString();
     }
