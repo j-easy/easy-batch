@@ -23,6 +23,7 @@
  */
 package org.jeasy.batch.core.job;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -54,8 +55,8 @@ public class DefaultJobReportMerger implements JobReportMerger {
     @Override
     public JobReport mergerReports(JobReport... jobReports) {
 
-        List<Long> startTimes = new ArrayList<>();
-        List<Long> endTimes = new ArrayList<>();
+        List<LocalDateTime> startTimes = new ArrayList<>();
+        List<LocalDateTime> endTimes = new ArrayList<>();
         List<String> jobNames = new ArrayList<>();
 
         JobParameters parameters = new JobParameters();

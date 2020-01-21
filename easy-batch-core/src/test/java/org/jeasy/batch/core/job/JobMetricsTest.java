@@ -23,6 +23,10 @@
  */
 package org.jeasy.batch.core.job;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -87,18 +91,18 @@ public class JobMetricsTest {
 
     @Test
     public void testStartEndTimesAndDuration() {
-        assertThat(jobMetrics.getStartTime()).isEqualTo(0);
-        assertThat(jobMetrics.getEndTime()).isEqualTo(0);
-        assertThat(jobMetrics.getDuration()).isEqualTo(0);
+        assertThat(jobMetrics.getStartTime()).isNull();
+        assertThat(jobMetrics.getEndTime()).isNull();
+        assertThat(jobMetrics.getDuration()).isNull();
 
-        long expectedStartTime = System.currentTimeMillis();
-        long expectedEndTime = expectedStartTime + 12543;
+        LocalDateTime expectedStartTime = LocalDateTime.of(2020, 1, 20, 10, 15, 20);
+        LocalDateTime expectedEndTime = expectedStartTime.plus(10, ChronoUnit.SECONDS);
         jobMetrics.setStartTime(expectedStartTime);
         jobMetrics.setEndTime(expectedEndTime);
 
         assertThat(jobMetrics.getStartTime()).isEqualTo(expectedStartTime);
         assertThat(jobMetrics.getEndTime()).isEqualTo(expectedEndTime);
-        assertThat(jobMetrics.getDuration()).isEqualTo(12543);
+        assertThat(jobMetrics.getDuration()).isEqualTo(Duration.of(10, ChronoUnit.SECONDS));
     }
 
     @Test

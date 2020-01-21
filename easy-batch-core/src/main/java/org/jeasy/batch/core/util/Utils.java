@@ -31,9 +31,10 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,13 +91,14 @@ public abstract class Utils {
         return getters;
     }
 
-    public static String formatTime(long time) {
-        return new SimpleDateFormat(DATE_FORMAT).format(new Date(time));
+    public static String formatTime(LocalDateTime time) {
+        return DateTimeFormatter.ofPattern(DATE_FORMAT).format(time);
     }
 
-    public static String formatDuration(long duration) {
-        return String.format(DURATION_FORMAT, MILLISECONDS.toDays(duration), MILLISECONDS.toHours(duration) % 24,
-                MILLISECONDS.toMinutes(duration) % 60, MILLISECONDS.toSeconds(duration) % 60, duration % 1000);
+    public static String formatDuration(Duration duration) {
+        long millis = duration.toMillis();
+        return String.format(DURATION_FORMAT, MILLISECONDS.toDays(millis), MILLISECONDS.toHours(millis) % 24,
+                MILLISECONDS.toMinutes(millis) % 60, MILLISECONDS.toSeconds(millis) % 60, millis % 1000);
     }
 
     public static String formatErrorThreshold(final long errorThreshold) {

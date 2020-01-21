@@ -24,6 +24,8 @@
 package org.jeasy.batch.core.job;
 
 import java.io.Serializable;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,9 +36,9 @@ import java.util.Map;
  */
 public class JobMetrics implements Serializable {
 
-    private long startTime;
+    private LocalDateTime startTime;
 
-    private long endTime;
+    private LocalDateTime endTime;
 
     private long readCount;
 
@@ -76,24 +78,27 @@ public class JobMetrics implements Serializable {
         writeCount += count;
     }
 
-    public long getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(long startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public long getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(long endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
-    public long getDuration() {
-        return getEndTime() - getStartTime();
+    public Duration getDuration() {
+        if (getStartTime() != null && getEndTime() != null) {
+            return Duration.between(getStartTime(), getEndTime());
+        }
+        return null;
     }
 
     public long getFilterCount() {

@@ -26,6 +26,8 @@ package org.jeasy.batch.core.job;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,8 +49,8 @@ public class DefaultJobReportMergerTest {
         JobMetrics metrics1 = new JobMetrics();
         JobReport jobReport1 = new JobReport();
         jobReport1.setMetrics(metrics1);
-        long startTime1 = 1L;
-        long endTime1 = 10L;
+        LocalDateTime startTime1 = LocalDateTime.now();
+        LocalDateTime endTime1 = startTime1.plus(10, ChronoUnit.SECONDS);
         jobReport1.getMetrics().incrementReadCount();
         jobReport1.getMetrics().incrementReadCount();
         jobReport1.getMetrics().incrementReadCount();
@@ -65,8 +67,8 @@ public class DefaultJobReportMergerTest {
         JobMetrics metrics2 = new JobMetrics();
         JobReport jobReport2 = new JobReport();
         jobReport2.setMetrics(metrics2);
-        long startTime2 = 2L;
-        long endTime2 = 11L;
+        LocalDateTime startTime2 = LocalDateTime.now();
+        LocalDateTime endTime2 = startTime2.plus(10, ChronoUnit.SECONDS);
         jobReport2.getMetrics().incrementReadCount();
         jobReport2.getMetrics().incrementReadCount();
         jobReport2.getMetrics().incrementReadCount();
@@ -87,8 +89,8 @@ public class DefaultJobReportMergerTest {
         assertEquals(4, finalJobReport.getMetrics().getWriteCount());// sum of written records
         assertEquals(2, finalJobReport.getMetrics().getFilterCount());// sum of filtered records
         assertEquals(2, finalJobReport.getMetrics().getErrorCount());// sum of error records
-        assertEquals(1, finalJobReport.getMetrics().getStartTime());// min of start times
-        assertEquals(11, finalJobReport.getMetrics().getEndTime());// max of end times
+        assertEquals(startTime1, finalJobReport.getMetrics().getStartTime());// min of start times
+        assertEquals(endTime2, finalJobReport.getMetrics().getEndTime());// max of end times
 
         //if one partial report has aborted, the final result should be also aborted
         assertEquals(JobStatus.FAILED, finalJobReport.getStatus());

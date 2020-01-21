@@ -23,6 +23,8 @@
  */
 package org.jeasy.batch.core.job;
 
+import java.time.LocalDateTime;
+
 import org.jeasy.batch.core.jmx.JobMonitor;
 import org.jeasy.batch.core.listener.BatchListener;
 import org.jeasy.batch.core.listener.CompositeBatchListener;
@@ -129,7 +131,7 @@ class BatchJob implements Job {
         setStatus(JobStatus.STARTING);
         jobListener.beforeJobStart(parameters);
         recordTracker = new RecordTracker();
-        metrics.setStartTime(System.currentTimeMillis());
+        metrics.setStartTime(LocalDateTime.now());
         LOGGER.debug("Batch size: {}", parameters.getBatchSize());
         LOGGER.debug("Error threshold: {}", Utils.formatErrorThreshold(parameters.getErrorThreshold()));
         LOGGER.debug("Jmx monitoring: {}", parameters.isJmxMonitoring());
@@ -262,7 +264,7 @@ class BatchJob implements Job {
 
     private void teardown(JobStatus status) {
         report.setStatus(status);
-        metrics.setEndTime(System.currentTimeMillis());
+        metrics.setEndTime(LocalDateTime.now());
         LOGGER.info( "Job '{}' finished with status: {}", new Object[]{name, report.getStatus()});
         notifyJobUpdate();
         jobListener.afterJobEnd(report);

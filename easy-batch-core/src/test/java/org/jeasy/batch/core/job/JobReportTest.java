@@ -23,7 +23,8 @@
  */
 package org.jeasy.batch.core.job;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Properties;
 
 import org.junit.Before;
@@ -34,27 +35,19 @@ import static org.jeasy.batch.core.util.Utils.LINE_SEPARATOR;
 
 public class JobReportTest {
 
-	private static long START_TIME;
-	private static long END_TIME;
-
-	static {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(2015, Calendar.JANUARY, 1, 1, 0, 0);
-		START_TIME = calendar.getTime().getTime();
-		END_TIME = START_TIME + 10 * 1000;
-	}
-
 	private JobReport report;
 
 	@Before
 	public void setUp() throws Exception {
+		LocalDateTime startTime = LocalDateTime.of(2020, 1, 20, 10, 15, 20);
+		LocalDateTime endTime = startTime.plus(10, ChronoUnit.SECONDS);
 		Properties systemProperties = new Properties();
 		systemProperties.setProperty("sysprop1", "foo");
 		systemProperties.setProperty("sysprop2", "bar");
 		JobParameters parameters = new JobParameters();
 		JobMetrics metrics = new JobMetrics();
-		metrics.setStartTime(START_TIME);
-		metrics.setEndTime(END_TIME);
+		metrics.setStartTime(startTime);
+		metrics.setEndTime(endTime);
 		metrics.addMetric("nbFoos", 1);
 		report = new JobReport();
 		report.setParameters(parameters);
@@ -76,8 +69,8 @@ public class JobReportTest {
 						"\tError threshold = N/A" + LINE_SEPARATOR +
 						"\tJmx monitoring = false" + LINE_SEPARATOR +
 						"Metrics:" + LINE_SEPARATOR +
-						"\tStart time = 2015-01-01 01:00:00" + LINE_SEPARATOR +
-						"\tEnd time = 2015-01-01 01:00:10" + LINE_SEPARATOR +
+						"\tStart time = 2020-01-20 10:15:20" + LINE_SEPARATOR +
+						"\tEnd time = 2020-01-20 10:15:30" + LINE_SEPARATOR +
 						"\tDuration = 0d 0hr 0min 10sec 0ms" + LINE_SEPARATOR +
 						"\tRead count = 0" + LINE_SEPARATOR +
 						"\tWrite count = 0" + LINE_SEPARATOR +

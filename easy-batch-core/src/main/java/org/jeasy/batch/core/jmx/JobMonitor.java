@@ -109,7 +109,7 @@ public class JobMonitor extends NotificationBroadcasterSupport implements JobMon
      */
     @Override
     public String getEndTime() {
-        return (jobReport.getMetrics().getEndTime() == 0) ? "" : Utils.formatTime(jobReport.getMetrics().getEndTime());
+        return (jobReport.getMetrics().getEndTime() == null) ? "" : Utils.formatTime(jobReport.getMetrics().getEndTime());
     }
 
     @Override
