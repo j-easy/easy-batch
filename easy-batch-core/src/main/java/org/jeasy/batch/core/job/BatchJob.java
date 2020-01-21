@@ -191,7 +191,10 @@ class BatchJob implements Job {
         return batch;
     }
 
-    private Record readRecord() throws RecordReadingException {
+    private Record readRecord() throws RecordReadingException, ErrorThresholdExceededException {
+        if (metrics.getErrorCount() >= parameters.getErrorThreshold()) {
+            throw new ErrorThresholdExceededException("Error threshold exceeded. Aborting execution");
+        }
         Record record;
         try {
             LOGGER.debug("Reading next record");
@@ -206,7 +209,7 @@ class BatchJob implements Job {
     }
 
     @SuppressWarnings(value = "unchecked")
-    private void processRecord(Record record, Batch batch) throws ErrorThresholdExceededException {
+    private void processRecord(Record record, Batch batch) {
         Record processedRecord = null;
         try {
             LOGGER.debug("Processing record {}", record);
@@ -230,9 +233,6 @@ class BatchJob implements Job {
             pipelineListener.onRecordProcessingException(record, e);
             metrics.incrementErrorCount();
             report.setLastError(e);
-            if (metrics.getErrorCount() > parameters.getErrorThreshold()) {
-                throw new ErrorThresholdExceededException("Error threshold exceeded. Aborting execution", e);
-            }
         }
     }
 

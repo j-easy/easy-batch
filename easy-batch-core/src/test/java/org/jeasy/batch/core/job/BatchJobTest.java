@@ -263,7 +263,6 @@ public class BatchJobTest {
     @Test
     public void whenErrorThresholdIsExceeded_ThenTheJobShouldBeAborted() throws Exception {
         when(firstProcessor.processRecord(record1)).thenThrow(exception);
-        when(firstProcessor.processRecord(record2)).thenThrow(exception);
         job = new JobBuilder()
                 .reader(reader)
                 .writer(writer)
@@ -274,10 +273,12 @@ public class BatchJobTest {
         JobReport jobReport = job.call();
 
         assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(0);
-        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(2);
-        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(2);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(1);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        verify(reader, times(1)).readRecord();
+        verify(firstProcessor, never()).processRecord(record2);
         verify(reader).close();
         verify(writer).close();
     }
