@@ -74,10 +74,10 @@ public class UtilsTest {
 
     @Test
     public void testFormatDuration() throws Exception {
-        assertThat(Utils.formatDuration(Duration.of(100, ChronoUnit.MILLIS))).isEqualTo("0d 0hr 0min 0sec 100ms");
-        assertThat(Utils.formatDuration(Duration.of(1, ChronoUnit.SECONDS))).isEqualTo("0d 0hr 0min 1sec 0ms");
-        assertThat(Utils.formatDuration(Duration.of(2, ChronoUnit.MINUTES))).isEqualTo("0d 0hr 2min 0sec 0ms");
-        assertThat(Utils.formatDuration(Duration.of(2, ChronoUnit.HOURS))).isEqualTo("0d 2hr 0min 0sec 0ms");
+        assertThat(Utils.formatDuration(Duration.of(100, ChronoUnit.MILLIS))).isEqualTo("100ms");
+        assertThat(Utils.formatDuration(Duration.of(1, ChronoUnit.SECONDS))).isEqualTo("1sec 0ms");
+        assertThat(Utils.formatDuration(Duration.of(2, ChronoUnit.MINUTES))).isEqualTo("2min 0sec 0ms");
+        assertThat(Utils.formatDuration(Duration.of(2, ChronoUnit.HOURS))).isEqualTo("2hr 0min 0sec 0ms");
         assertThat(Utils.formatDuration(Duration.of(2, ChronoUnit.DAYS))).isEqualTo("2d 0hr 0min 0sec 0ms");
         // in the extremely unlikely event that the job takes more than a year
         assertThat(Utils.formatDuration(Duration.of(366, ChronoUnit.DAYS))).isEqualTo("366d 0hr 0min 0sec 0ms");

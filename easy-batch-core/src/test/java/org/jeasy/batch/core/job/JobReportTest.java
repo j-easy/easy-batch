@@ -71,7 +71,7 @@ public class JobReportTest {
 						"Metrics:" + LINE_SEPARATOR +
 						"\tStart time = 2020-01-20 10:15:20" + LINE_SEPARATOR +
 						"\tEnd time = 2020-01-20 10:15:30" + LINE_SEPARATOR +
-						"\tDuration = 0d 0hr 0min 10sec 0ms" + LINE_SEPARATOR +
+						"\tDuration = 10sec 0ms" + LINE_SEPARATOR +
 						"\tRead count = 0" + LINE_SEPARATOR +
 						"\tWrite count = 0" + LINE_SEPARATOR +
 						"\tFilter count = 0" + LINE_SEPARATOR +

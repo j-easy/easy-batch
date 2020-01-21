@@ -38,10 +38,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
  * Utilities class.
@@ -59,8 +59,6 @@ public abstract class Utils {
     public static final String JMX_MBEAN_NAME = "org.jeasy.batch.core.monitor:";
 
     public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
-
-    public static final String DURATION_FORMAT = "%sd %shr %smin %ssec %sms";
 
     public static final String NOT_APPLICABLE = "N/A";
 
@@ -96,9 +94,16 @@ public abstract class Utils {
     }
 
     public static String formatDuration(Duration duration) {
-        long millis = duration.toMillis();
-        return String.format(DURATION_FORMAT, MILLISECONDS.toDays(millis), MILLISECONDS.toHours(millis) % 24,
-                MILLISECONDS.toMinutes(millis) % 60, MILLISECONDS.toSeconds(millis) % 60, millis % 1000);
+        long days = duration.toDays();
+        long hours = duration.toHours();
+        long minutes = duration.toMinutes();
+        long seconds = duration.getSeconds();
+        long milliseconds = duration.toMillis();
+        return (days > 0 ? days + "d " : "") +
+                (hours > 0 ? (hours - TimeUnit.DAYS.toHours(days)) + "hr " : "") +
+                (minutes > 0 ? (minutes - TimeUnit.HOURS.toMinutes(hours)) + "min " : "") +
+                (seconds > 0 ? (seconds - TimeUnit.MINUTES.toSeconds(minutes)) + "sec " : "") +
+                (milliseconds -TimeUnit.SECONDS.toMillis(seconds)) + "ms";
     }
 
     public static String formatErrorThreshold(final long errorThreshold) {
