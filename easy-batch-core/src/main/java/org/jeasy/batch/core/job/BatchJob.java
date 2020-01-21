@@ -265,7 +265,8 @@ class BatchJob implements Job {
     private void teardown(JobStatus status) {
         report.setStatus(status);
         metrics.setEndTime(LocalDateTime.now());
-        LOGGER.info( "Job '{}' finished with status: {}", new Object[]{name, report.getStatus()});
+        LOGGER.info( "Job '{}' finished with status {} in {}",
+                name, report.getStatus(), Utils.formatDuration(report.getMetrics().getDuration()));
         notifyJobUpdate();
         jobListener.afterJobEnd(report);
     }
