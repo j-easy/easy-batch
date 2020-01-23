@@ -32,7 +32,7 @@ import org.jeasy.batch.core.record.Header;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 
 /**
@@ -91,7 +91,7 @@ public class MsExcelRecordReader implements RecordReader {
     @Override
     public MsExcelRecord readRecord() throws Exception {
         if (rowIterator.hasNext()) {
-            Header header = new Header(recordNumber++, getDataSourceName(), new Date());
+            Header header = new Header(recordNumber++, getDataSourceName(), LocalDateTime.now());
             Row payload = rowIterator.next();
             return new MsExcelRecord(header, payload);
         } else {

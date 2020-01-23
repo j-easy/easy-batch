@@ -23,7 +23,7 @@
  */
 package org.jeasy.batch.core.record;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * The record header contains metadata about the record.
@@ -34,18 +34,14 @@ public class Header {
 
     private Long number;
     private String source;
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     /**
      * @param number       physical record number in the data source (if defined).
      * @param source       data source name from which this record has been read.
      * @param creationDate date at which the record has been read.
-     *
-     * @deprecated Starting from v6, this constructor will be replaced with a one that
-     * accepts a {@code java.time.LocalDateTime}.
      */
-    @Deprecated
-    public Header(Long number, String source, Date creationDate) {
+    public Header(Long number, String source, LocalDateTime creationDate) {
         this.number = number;
         this.source = source;
         this.creationDate = creationDate;
@@ -67,11 +63,8 @@ public class Header {
 
     /**
      * @return the date at which the record has been read.
-     *
-     * @deprecated Starting from v6, this method be replaced with a method that returns a {@code java.time.LocalDateTime}
      */
-    @Deprecated
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 

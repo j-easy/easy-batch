@@ -34,7 +34,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.*;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 
 /**
@@ -100,7 +100,7 @@ public class XmlRecordReader implements RecordReader {
                 }
             }
             writeEndElement(stringBuilder, xmlEventReader.nextEvent());
-            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), LocalDateTime.now());
             return new XmlRecord(header, stringBuilder.toString());
         } else {
             return null;

@@ -27,7 +27,7 @@ import org.jeasy.batch.core.record.Header;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class UnreliableRecordReader implements RecordReader {
 
@@ -49,7 +49,7 @@ public class UnreliableRecordReader implements RecordReader {
         }
         attempt++;
         if (attempt >= 3) {
-            return new StringRecord(new Header((long) nbRecord, DATA_SOURCE_NAME, new Date()), "r" + nbRecord);
+            return new StringRecord(new Header((long) nbRecord, DATA_SOURCE_NAME, LocalDateTime.now()), "r" + nbRecord);
         } else {
             throw new Exception("Data source has gone!");
         }

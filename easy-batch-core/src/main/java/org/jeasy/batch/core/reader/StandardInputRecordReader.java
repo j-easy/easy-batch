@@ -27,7 +27,7 @@ import org.jeasy.batch.core.record.StringRecord;
 import org.jeasy.batch.core.record.Header;
 import org.jeasy.batch.core.record.Record;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 /**
@@ -83,7 +83,7 @@ public class StandardInputRecordReader implements RecordReader {
         if (stop) {
             return null;
         }
-        Header header = new Header(++recordNumber, getDataSourceName(), new Date());
+        Header header = new Header(++recordNumber, getDataSourceName(), LocalDateTime.now());
         return new StringRecord(header, payload);
     }
 

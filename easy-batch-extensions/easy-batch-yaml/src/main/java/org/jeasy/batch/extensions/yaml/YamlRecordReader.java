@@ -29,7 +29,7 @@ import org.jeasy.batch.core.util.Utils;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 /**
@@ -85,7 +85,7 @@ public class YamlRecordReader implements RecordReader {
                 break;
             }
         }
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), LocalDateTime.now());
         return new YamlRecord(header, stringBuilder.toString());
     }
 

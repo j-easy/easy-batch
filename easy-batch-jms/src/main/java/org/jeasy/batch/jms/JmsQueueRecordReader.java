@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static org.jeasy.batch.core.util.Utils.checkArgument;
 import static org.jeasy.batch.core.util.Utils.checkNotNull;
@@ -100,7 +100,7 @@ public class JmsQueueRecordReader implements RecordReader {
         if (message == null) {
             return null;
         }
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), LocalDateTime.now());
         return new JmsRecord(header, message);
     }
 

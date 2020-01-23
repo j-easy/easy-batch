@@ -32,7 +32,7 @@ import org.jeasy.batch.core.record.GenericRecord;
 import org.jeasy.batch.core.record.Header;
 import org.hibernate.query.Query;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static org.jeasy.batch.core.util.Utils.checkArgument;
 import static org.jeasy.batch.core.util.Utils.checkNotNull;
@@ -93,7 +93,7 @@ public class HibernateRecordReader<T> implements RecordReader {
     @Override
     public GenericRecord<T> readRecord() {
         if (hasNextRecord()) {
-            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), LocalDateTime.now());
             return new GenericRecord<>(header, (T) scrollableResults.get()[0]);
         } else {
             return null;

@@ -30,7 +30,7 @@ import org.jeasy.batch.core.record.Header;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 
@@ -102,7 +102,7 @@ public class JpaRecordReader<T> implements RecordReader {
 
     @Override
     public GenericRecord<T> readRecord() {
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), LocalDateTime.now());
         if (hasNextRecord()) {
             return new GenericRecord<>(header, iterator.next());
         } else {

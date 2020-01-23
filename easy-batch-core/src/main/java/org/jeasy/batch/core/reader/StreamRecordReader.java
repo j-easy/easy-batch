@@ -27,7 +27,7 @@ import org.jeasy.batch.core.record.GenericRecord;
 import org.jeasy.batch.core.record.Header;
 import org.jeasy.batch.core.record.Record;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
@@ -67,7 +67,7 @@ public class StreamRecordReader<T> implements RecordReader {
     @Override
     public Record<T> readRecord() throws Exception {
         if (iterator.hasNext()) {
-            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), LocalDateTime.now());
             return new GenericRecord<>(header, iterator.next());
         } else {
             return null;

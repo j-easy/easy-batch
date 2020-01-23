@@ -33,7 +33,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static org.jeasy.batch.core.util.Utils.checkArgument;
 import static org.jeasy.batch.core.util.Utils.checkNotNull;
@@ -105,7 +105,7 @@ public class JdbcRecordReader implements RecordReader {
     @Override
     public JdbcRecord readRecord() {
         if (hasNextRecord()) {
-            Header header = new Header(++currentRecordNumber, dataSourceName, new Date());
+            Header header = new Header(++currentRecordNumber, dataSourceName, LocalDateTime.now());
             return new JdbcRecord(header, resultSet);
         } else {
             return null;

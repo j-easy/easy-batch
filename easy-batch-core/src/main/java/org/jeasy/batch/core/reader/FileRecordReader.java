@@ -28,6 +28,7 @@ import org.jeasy.batch.core.record.FileRecord;
 import org.jeasy.batch.core.record.Header;
 
 import java.nio.file.*;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -85,7 +86,7 @@ public class FileRecordReader implements RecordReader {
 
     @Override
     public FileRecord readRecord() {
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), LocalDateTime.now());
         if (iterator.hasNext()) {
             return new FileRecord(header, iterator.next());
         } else {

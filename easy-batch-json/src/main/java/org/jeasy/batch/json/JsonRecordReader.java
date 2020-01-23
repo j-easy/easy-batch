@@ -38,7 +38,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 import static org.jeasy.batch.core.util.Utils.checkNotNull;
@@ -150,7 +150,7 @@ public class JsonRecordReader implements RecordReader {
                 jsonGenerator.writeEnd();
             }
             jsonGenerator.close();
-            Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+            Header header = new Header(++currentRecordNumber, getDataSourceName(), LocalDateTime.now());
             return new JsonRecord(header, stringWriter.toString());
         } else {
             return null;

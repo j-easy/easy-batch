@@ -26,7 +26,7 @@ package org.jeasy.batch.core.reader;
 import org.jeasy.batch.core.record.Header;
 import org.jeasy.batch.core.record.StringRecord;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 /**
@@ -70,7 +70,7 @@ public class StringRecordReader implements RecordReader {
 
     @Override
     public StringRecord readRecord() {
-        Header header = new Header(currentRecordNumber++, getDataSourceName(), new Date());
+        Header header = new Header(currentRecordNumber++, getDataSourceName(), LocalDateTime.now());
         String payload = scanner.hasNextLine() ? scanner.nextLine() : null;
         return payload == null ? null : new StringRecord(header, payload);
     }

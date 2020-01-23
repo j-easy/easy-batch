@@ -29,7 +29,7 @@ import org.jeasy.batch.core.record.Header;
 import org.jeasy.batch.core.record.Record;
 
 import java.nio.file.Path;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 /**
@@ -89,7 +89,7 @@ public class RecipeRecordReader implements RecordReader {
                 recipe.getIngredients().add(ingredient);
             }
         }
-        Header header = new Header(currentRecordNumber, getDataSourceName(), new Date());
+        Header header = new Header(currentRecordNumber, getDataSourceName(), LocalDateTime.now());
         return new RecipeRecord(header, recipe);
     }
 

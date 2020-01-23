@@ -27,7 +27,7 @@ import org.jeasy.batch.core.util.Utils;
 import org.jeasy.batch.core.record.GenericRecord;
 import org.jeasy.batch.core.record.Header;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 
 /**
@@ -59,7 +59,7 @@ public class IterableRecordReader implements RecordReader {
 
     @Override
     public GenericRecord readRecord() throws Exception {
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), LocalDateTime.now());
         if (iterator.hasNext()) {
             return new GenericRecord<>(header, iterator.next());
         } else {

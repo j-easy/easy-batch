@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * A {@link RecordReader} implementation that reads data from a flat file.
@@ -69,7 +69,7 @@ public class FlatFileRecordReader extends AbstractFileRecordReader {
 
     @Override
     public StringRecord readRecord() throws IOException {
-        Header header = new Header(++currentRecordNumber, getDataSourceName(), new Date());
+        Header header = new Header(++currentRecordNumber, getDataSourceName(), LocalDateTime.now());
         String line = bufferedReader.readLine();
         if (line != null) {
             return new StringRecord(header, line);
