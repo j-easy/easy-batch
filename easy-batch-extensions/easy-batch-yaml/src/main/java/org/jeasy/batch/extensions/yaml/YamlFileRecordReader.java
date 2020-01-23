@@ -67,7 +67,7 @@ public class YamlFileRecordReader extends AbstractFileRecordReader {
     }
 
     @Override
-    public YamlRecord readRecord() throws Exception {
+    public YamlRecord readRecord() {
         return yamlRecordReader.readRecord();
     }
 

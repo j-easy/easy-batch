@@ -48,7 +48,7 @@ public class GsonRecordMapperTest {
     private JsonRecord record;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         Gson gson = new Gson();
         mapper = new GsonRecordMapper<>(gson, Tweet.class);
         when(record.getHeader()).thenReturn(header);

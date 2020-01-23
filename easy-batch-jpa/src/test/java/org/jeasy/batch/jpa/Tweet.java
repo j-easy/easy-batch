@@ -23,6 +23,8 @@
  */
 package org.jeasy.batch.jpa;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -89,8 +91,8 @@ public class Tweet {
         Tweet tweet = (Tweet) o;
 
         if (id != tweet.id) return false;
-        if (user != null ? !user.equals(tweet.user) : tweet.user != null) return false;
-        return message != null ? message.equals(tweet.message) : tweet.message == null;
+        if (!Objects.equals(user, tweet.user)) return false;
+        return Objects.equals(message, tweet.message);
 
     }
 

@@ -29,17 +29,17 @@ import org.jeasy.batch.core.writer.RecordWriter;
 class NoOpRecordWriter implements RecordWriter {
 
     @Override
-    public void open() throws Exception {
+    public void open() {
 
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
+    public void writeRecords(Batch batch) {
 
     }
 }

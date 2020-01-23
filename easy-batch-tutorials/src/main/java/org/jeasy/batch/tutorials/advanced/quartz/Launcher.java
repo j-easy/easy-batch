@@ -38,7 +38,6 @@ import org.quartz.impl.StdSchedulerFactory;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
 import java.util.Scanner;
 
 import static org.quartz.JobBuilder.newJob;
@@ -74,7 +73,7 @@ public class Launcher {
 
         Trigger trigger = newTrigger()
                 .withIdentity("my-trigger")
-                .startAt(new Date())
+                .startNow()
                 .withSchedule(scheduleBuilder)
                 .forJob(job.getName())
                 .build();

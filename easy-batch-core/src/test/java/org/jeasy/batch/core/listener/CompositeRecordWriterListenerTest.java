@@ -47,12 +47,12 @@ public class CompositeRecordWriterListenerTest {
     private CompositeRecordWriterListener compositeRecordWriterListener;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         compositeRecordWriterListener = new CompositeRecordWriterListener(asList(recordWriterListener1, recordWriterListener2));
     }
 
     @Test
-    public void testBeforeRecordWriting() throws Exception {
+    public void testBeforeRecordWriting() {
         compositeRecordWriterListener.beforeRecordWriting(batch);
 
         InOrder inOrder = inOrder(recordWriterListener1, recordWriterListener2);
@@ -62,7 +62,7 @@ public class CompositeRecordWriterListenerTest {
     }
 
     @Test
-    public void testAfterRecordWriting() throws Exception {
+    public void testAfterRecordWriting() {
         compositeRecordWriterListener.afterRecordWriting(batch);
 
         InOrder inOrder = inOrder(recordWriterListener1, recordWriterListener2);
@@ -71,7 +71,7 @@ public class CompositeRecordWriterListenerTest {
     }
 
     @Test
-    public void testOnRecordWritingException() throws Exception {
+    public void testOnRecordWritingException() {
         compositeRecordWriterListener.onRecordWritingException(batch, exception);
 
         InOrder inOrder = inOrder(recordWriterListener1, recordWriterListener2);

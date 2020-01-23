@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class JsonIntegrationTest {
 
     @Test
-    public void testTweetsJsonStreamProcessing() throws Exception {
+    public void testTweetsJsonStreamProcessing() {
 
         final InputStream jsonDataSource = getDataSource("/tweets.json");
 
@@ -77,7 +77,7 @@ public class JsonIntegrationTest {
     }
 
     @Test
-    public void testTreesJsonStreamProcessing() throws Exception {
+    public void testTreesJsonStreamProcessing() {
 
         //data source : http://opendata.paris.fr/explore/dataset/arbresalignementparis2010/download/?format=csv
         final InputStream jsonDataSource = getDataSource("/trees.json");
@@ -110,7 +110,7 @@ public class JsonIntegrationTest {
     }
 
     @Test
-    public void testComplaintsJsonStreamProcessing() throws Exception {
+    public void testComplaintsJsonStreamProcessing() {
 
         // data source: http://catalog.data.gov/dataset/consumer-complaint-database
         final InputStream jsonDataSource = getDataSource("/complaints.json");
@@ -143,7 +143,7 @@ public class JsonIntegrationTest {
     }
 
     @Test
-    public void testEmptyDataSourceProcessing() throws Exception {
+    public void testEmptyDataSourceProcessing() {
         final InputStream jsonDataSource = getDataSource("/empty.json");
 
         RecordCollector recordCollector = new RecordCollector();

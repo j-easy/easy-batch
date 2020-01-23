@@ -247,7 +247,7 @@ public class BatchJobTest {
     }
 
     @Test
-    public void reportShouldBeCorrect() throws Exception {
+    public void reportShouldBeCorrect() {
         when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
         when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(record2);
 
@@ -327,7 +327,7 @@ public class BatchJobTest {
      * Job listener
      */
     @Test
-    public void jobListenerShouldBeInvoked() throws Exception {
+    public void jobListenerShouldBeInvoked() {
         job = new JobBuilder()
                 .reader(reader)
                 .jobListener(jobListener1)
@@ -490,7 +490,7 @@ public class BatchJobTest {
      * Pipeline listener
      */
     @Test
-    public void pipelineListenerShouldBeInvokedForEachRecord() throws Exception {
+    public void pipelineListenerShouldBeInvokedForEachRecord() {
 
         when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
         when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(record2);

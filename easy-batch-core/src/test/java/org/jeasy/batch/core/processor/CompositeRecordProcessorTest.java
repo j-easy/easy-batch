@@ -46,7 +46,7 @@ public class CompositeRecordProcessorTest {
     private CompositeRecordProcessor compositeRecordProcessor;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         compositeRecordProcessor = new CompositeRecordProcessor(asList(recordProcessor1, recordProcessor2));
     }
 

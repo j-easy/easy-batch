@@ -48,7 +48,7 @@ public class RandomBlockingQueueRecordWriterTest {
     private Record record;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         queue1 = new LinkedBlockingQueue<>();
         queue2 = new LinkedBlockingQueue<>();
         randomQueueRecordWriter = new RandomBlockingQueueRecordWriter(asList(queue1, queue2));

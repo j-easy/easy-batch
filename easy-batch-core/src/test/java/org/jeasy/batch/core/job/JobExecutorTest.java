@@ -68,7 +68,7 @@ public class JobExecutorTest {
     }
 
     @Test
-    public void submit() throws Exception {
+    public void submit() {
         //when
         jobExecutor.submit(job);
 
@@ -86,7 +86,7 @@ public class JobExecutorTest {
     }
 
     @Test
-    public void shutdown() throws Exception {
+    public void shutdown() {
         //when
         jobExecutor.shutdown();
 

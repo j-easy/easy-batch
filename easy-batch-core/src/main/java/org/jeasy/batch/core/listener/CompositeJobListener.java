@@ -43,7 +43,7 @@ public class CompositeJobListener implements JobListener {
      * Create a new {@link CompositeJobListener}.
      */
     public CompositeJobListener() {
-        this(new ArrayList<JobListener>());
+        this(new ArrayList<>());
     }
 
     /**

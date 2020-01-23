@@ -46,7 +46,7 @@ public class RetryableRecordWriterTest {
     private RecordWriter recordWriter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         retryPolicy = new RetryPolicy(3, 500, TimeUnit.MILLISECONDS);
 
     }
@@ -76,9 +76,9 @@ public class RetryableRecordWriterTest {
         assertThat(delegate.isExecuted()).isTrue();
     }
 
-    class UnreliableDataSinkWriter implements RecordWriter {
+    static class UnreliableDataSinkWriter implements RecordWriter {
         @Override
-        public void open() throws Exception {
+        public void open() {
         }
 
         @Override
@@ -87,16 +87,16 @@ public class RetryableRecordWriterTest {
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() {
         }
     }
 
-    class BetterUnreliableDataSinkWriter implements RecordWriter {
+    static class BetterUnreliableDataSinkWriter implements RecordWriter {
         private int attempts;
         private boolean executed;
 
         @Override
-        public void open() throws Exception {
+        public void open() {
         }
 
         @Override
@@ -108,7 +108,7 @@ public class RetryableRecordWriterTest {
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() {
         }
 
         public boolean isExecuted() {

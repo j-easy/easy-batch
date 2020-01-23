@@ -43,7 +43,7 @@ public class HeaderRecordFilterTest {
     private HeaderRecordFilter headerRecordFilter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         headerRecordFilter = new HeaderRecordFilter();
     }
 

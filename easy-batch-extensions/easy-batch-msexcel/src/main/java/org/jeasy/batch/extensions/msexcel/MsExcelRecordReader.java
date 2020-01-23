@@ -83,13 +83,13 @@ public class MsExcelRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         recordNumber = 1;
         rowIterator = sheet.iterator();
     }
 
     @Override
-    public MsExcelRecord readRecord() throws Exception {
+    public MsExcelRecord readRecord() {
         if (rowIterator.hasNext()) {
             Header header = new Header(recordNumber++, getDataSourceName(), LocalDateTime.now());
             Row payload = rowIterator.next();

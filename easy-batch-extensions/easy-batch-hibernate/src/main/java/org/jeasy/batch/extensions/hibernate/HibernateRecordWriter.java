@@ -58,12 +58,12 @@ public class HibernateRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         session = sessionFactory.openSession();
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
+    public void writeRecords(Batch batch) {
         Transaction transaction = session.getTransaction();
         transaction.begin();
         try {
@@ -82,7 +82,7 @@ public class HibernateRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         try {
             if (session != null) {
                 LOGGER.debug("Closing session");

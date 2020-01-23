@@ -60,7 +60,7 @@ public class CollectionRecordWriterTest {
     private CollectionRecordWriter writer;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         when(record1.getPayload()).thenReturn(payload1);
         when(record2.getPayload()).thenReturn(payload2);
         items = new ArrayList<>();
@@ -68,13 +68,13 @@ public class CollectionRecordWriterTest {
     }
 
     @Test
-    public void testWriteRecord() throws Exception {
+    public void testWriteRecord() {
         writer.writeRecords(new Batch(record1, record2));
         assertThat(items).containsExactly(payload1, payload2);
     }
 
     @Test
-    public void integrationTest() throws Exception {
+    public void integrationTest() {
         List<Object> input = Arrays.asList(payload1, payload2);
         List<Object> output = new ArrayList<>();
 

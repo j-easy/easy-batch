@@ -45,7 +45,7 @@ public class RetryableRecordReaderTest {
     private RecordReader recordReader;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         retryPolicy = new RetryPolicy(3, 500, TimeUnit.MILLISECONDS);
 
     }
@@ -64,9 +64,9 @@ public class RetryableRecordReaderTest {
         assertThat(actual).isEqualTo(record);
     }
 
-    class UnreliableDataSourceReader implements RecordReader {
+    static class UnreliableDataSourceReader implements RecordReader {
         @Override
-        public void open() throws Exception {
+        public void open() {
         }
 
         @Override
@@ -75,7 +75,7 @@ public class RetryableRecordReaderTest {
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() {
         }
     }
 
@@ -83,7 +83,7 @@ public class RetryableRecordReaderTest {
         private int attempts;
 
         @Override
-        public void open() throws Exception {
+        public void open() {
         }
 
         @Override
@@ -95,7 +95,7 @@ public class RetryableRecordReaderTest {
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() {
         }
     }
 

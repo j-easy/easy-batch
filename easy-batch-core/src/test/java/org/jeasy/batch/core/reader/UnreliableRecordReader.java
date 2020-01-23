@@ -37,7 +37,7 @@ public class UnreliableRecordReader implements RecordReader {
     private int nbRecord;
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         attempt = 0;
         nbRecord = 0;
     }
@@ -56,7 +56,7 @@ public class UnreliableRecordReader implements RecordReader {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
     }
 }

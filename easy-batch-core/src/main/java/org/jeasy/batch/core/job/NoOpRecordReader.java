@@ -28,17 +28,17 @@ import org.jeasy.batch.core.record.Record;
 
 class NoOpRecordReader implements RecordReader {
     @Override
-    public void open() throws Exception {
+    public void open() {
 
     }
 
     @Override
-    public Record readRecord() throws Exception {
+    public Record readRecord() {
         return null;
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
     }
 }

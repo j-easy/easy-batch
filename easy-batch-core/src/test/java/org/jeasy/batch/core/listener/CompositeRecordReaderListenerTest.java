@@ -47,12 +47,12 @@ public class CompositeRecordReaderListenerTest {
     private CompositeRecordReaderListener compositeRecordReaderListener;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         compositeRecordReaderListener = new CompositeRecordReaderListener(asList(recordReaderListener1, recordReaderListener2));
     }
 
     @Test
-    public void testBeforeRecordReading() throws Exception {
+    public void testBeforeRecordReading() {
         compositeRecordReaderListener.beforeRecordReading();
 
         InOrder inOrder = inOrder(recordReaderListener1, recordReaderListener2);
@@ -61,7 +61,7 @@ public class CompositeRecordReaderListenerTest {
     }
 
     @Test
-    public void testAfterRecordReading() throws Exception {
+    public void testAfterRecordReading() {
         compositeRecordReaderListener.afterRecordReading(record);
 
         InOrder inOrder = inOrder(recordReaderListener1, recordReaderListener2);
@@ -70,7 +70,7 @@ public class CompositeRecordReaderListenerTest {
     }
 
     @Test
-    public void testOnRecordReadingException() throws Exception {
+    public void testOnRecordReadingException() {
         compositeRecordReaderListener.onRecordReadingException(exception);
 
         InOrder inOrder = inOrder(recordReaderListener1, recordReaderListener2);

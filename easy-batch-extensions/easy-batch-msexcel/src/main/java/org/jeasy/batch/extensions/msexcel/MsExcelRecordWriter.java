@@ -35,7 +35,6 @@ import org.jeasy.batch.core.writer.RecordWriter;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 /**
  * Writer that write {@link MsExcelRecord} to a file.
@@ -55,9 +54,8 @@ public class MsExcelRecordWriter implements RecordWriter {
      *
      * @param file      the output file
      * @param sheetName the sheet name
-     * @throws IOException when an error occurs during record writing
-     */
-    public MsExcelRecordWriter(final File file, final String sheetName) throws IOException {
+	 */
+    public MsExcelRecordWriter(final File file, final String sheetName) {
         this.file = file;
         workbook = new XSSFWorkbook();
         sheet = workbook.createSheet(sheetName);
@@ -85,7 +83,7 @@ public class MsExcelRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
 
     }
 

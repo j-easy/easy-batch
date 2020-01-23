@@ -39,7 +39,7 @@ public class XmlRecordCompactorTest {
     }
 
     @Test
-    public void testFlattenXmlRecord() throws Exception {
+    public void testFlattenXmlRecord() {
         // given
         String expectedPayload = "<foo><bar><baz name='baz'/></bar></foo>";
         String payload = "<foo>" + LINE_SEPARATOR +

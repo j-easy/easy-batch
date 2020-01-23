@@ -74,9 +74,7 @@ public class JdbcRecordWriter implements RecordWriter {
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(query);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             for (Record record : batch) {
                 preparedStatementProvider.prepareStatement(preparedStatement, record.getPayload());
                 preparedStatement.addBatch();
@@ -88,10 +86,6 @@ public class JdbcRecordWriter implements RecordWriter {
             LOGGER.error("Unable to commit transaction", e);
             connection.rollback();
             throw e;
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
         }
     }
 

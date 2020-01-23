@@ -49,20 +49,20 @@ public class CollectionRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
 
     }
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public void writeRecords(Batch batch) throws Exception {
+    public void writeRecords(Batch batch) {
         for (Record record : batch) {
             collection.add(record.getPayload());
         }
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
     }
 }

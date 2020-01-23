@@ -44,7 +44,7 @@ public class YamlRecordReaderTest {
     }
 
     @Test
-    public void readRecord() throws Exception {
+    public void readRecord() {
         Record record = recordReader.readRecord();
 
         assertThat(record).isNotNull().isInstanceOf(YamlRecord.class);

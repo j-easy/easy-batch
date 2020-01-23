@@ -56,7 +56,7 @@ public class StreamRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         if (dataSource == null) {
             throw new IllegalArgumentException("The stream must not be null");
         }
@@ -65,7 +65,7 @@ public class StreamRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public Record<T> readRecord() throws Exception {
+    public Record<T> readRecord() {
         if (iterator.hasNext()) {
             Header header = new Header(++currentRecordNumber, getDataSourceName(), LocalDateTime.now());
             return new GenericRecord<>(header, iterator.next());
@@ -79,7 +79,7 @@ public class StreamRecordReader<T> implements RecordReader {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         dataSource.close();
     }
 }

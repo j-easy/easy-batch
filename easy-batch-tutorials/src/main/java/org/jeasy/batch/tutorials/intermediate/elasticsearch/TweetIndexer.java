@@ -45,7 +45,7 @@ public class TweetIndexer implements RecordWriter {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
 
     }
 
@@ -63,7 +63,7 @@ public class TweetIndexer implements RecordWriter {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         client.close();
     }
 }

@@ -48,7 +48,7 @@ public class FileExtensionFilterTest {
     private FileExtensionFilter filter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         filter = new FileExtensionFilter(".txt", ".xml");
         when(fileRecord.getPayload()).thenReturn(path);
     }

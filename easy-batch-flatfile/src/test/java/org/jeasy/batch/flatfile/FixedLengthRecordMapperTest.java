@@ -44,7 +44,7 @@ public class FixedLengthRecordMapperTest {
     private StringRecord record;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         fixedLengthRecordMapper = new FixedLengthRecordMapper<>(Bean.class,
                 new int[]{4, 2, 3},
                 new String[]{"field1", "field2", "field3"});

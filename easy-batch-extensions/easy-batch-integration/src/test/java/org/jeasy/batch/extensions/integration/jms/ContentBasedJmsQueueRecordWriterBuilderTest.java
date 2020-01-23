@@ -44,7 +44,7 @@ public class ContentBasedJmsQueueRecordWriterBuilderTest {
     private Predicate predicate;
 
     @Test
-    public void recordWriterShouldBeCorrectlyBuilt() throws Exception {
+    public void recordWriterShouldBeCorrectlyBuilt() {
         ContentBasedJmsQueueRecordWriter recordWriter = ContentBasedJmsQueueRecordWriterBuilder.newContentBasedJmsQueueRecordWriterBuilder()
                 .when(predicate)
                 .writeTo(queue)
@@ -59,7 +59,7 @@ public class ContentBasedJmsQueueRecordWriterBuilderTest {
     }
 
     @Test
-    public void otherwiseMethodShouldBeOptional() throws Exception {
+    public void otherwiseMethodShouldBeOptional() {
         ContentBasedJmsQueueRecordWriter recordWriter = ContentBasedJmsQueueRecordWriterBuilder.newContentBasedJmsQueueRecordWriterBuilder()
                 .when(predicate)
                 .writeTo(queue)

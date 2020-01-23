@@ -62,7 +62,7 @@ public class BlockingQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
 
     }
 
@@ -74,7 +74,7 @@ public class BlockingQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
     }
 }

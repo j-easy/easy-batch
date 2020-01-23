@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LongTypeConverterTest extends BaseConverterTest<Long> {
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         converter = new LongTypeConverter();
     }
 

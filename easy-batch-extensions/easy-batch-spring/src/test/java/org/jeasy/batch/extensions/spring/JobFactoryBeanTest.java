@@ -75,7 +75,7 @@ public class JobFactoryBeanTest {
     private JobFactoryBean jobFactoryBean;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         jobFactoryBean = new JobFactoryBean();
 
         jobFactoryBean.setRecordReader(recordReader);
@@ -97,12 +97,12 @@ public class JobFactoryBeanTest {
     }
 
     @Test
-    public void testGetObjectType() throws Exception {
+    public void testGetObjectType() {
         assertThat(jobFactoryBean.getObjectType()).isEqualTo(Job.class);
     }
 
     @Test
-    public void testIsSingleton() throws Exception {
+    public void testIsSingleton() {
         assertThat(jobFactoryBean.isSingleton()).isTrue();
     }
 

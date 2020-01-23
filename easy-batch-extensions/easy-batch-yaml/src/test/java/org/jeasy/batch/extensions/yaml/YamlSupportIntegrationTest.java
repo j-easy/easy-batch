@@ -45,12 +45,12 @@ public class YamlSupportIntegrationTest {
     private JobExecutor jobExecutor;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         jobExecutor = new JobExecutor();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         jobExecutor.shutdown();
     }
 
@@ -86,7 +86,7 @@ public class YamlSupportIntegrationTest {
     }
 
     @Test
-    public void yamlMarshallingIntegrationTest() throws Exception {
+    public void yamlMarshallingIntegrationTest() {
         List<Contact> contacts = Arrays.asList(new Contact("Foo", 28), new Contact("Bar", 30));
 
         RecordCollector<String> recordCollector = new RecordCollector<>();

@@ -50,7 +50,7 @@ public class RandomJmsQueueRecordWriterTest {
     private RandomJmsQueueRecordWriter randomJmsQueueRecordWriter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         randomJmsQueueRecordWriter = new RandomJmsQueueRecordWriter(asList(queue1, queue2));
         when(record.getPayload()).thenReturn(message);
     }

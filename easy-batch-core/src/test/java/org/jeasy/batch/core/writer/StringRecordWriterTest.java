@@ -56,7 +56,7 @@ public class StringRecordWriterTest {
     private StringRecordWriter stringRecordWriter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         stringWriter = new StringWriter();
         stringRecordWriter = new StringRecordWriter(stringWriter);
     }
@@ -69,7 +69,7 @@ public class StringRecordWriterTest {
     }
 
     @Test
-    public void integrationTest() throws Exception {
+    public void integrationTest() {
         List<String> dataSource = Arrays.asList("foo", "bar");
 
         Job job = aNewJob()

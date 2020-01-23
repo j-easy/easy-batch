@@ -57,7 +57,7 @@ public class GsonRecordMapper<T> implements RecordMapper<JsonRecord, Record<T>> 
     }
 
     @Override
-    public Record<T> processRecord(final JsonRecord record) throws Exception {
+    public Record<T> processRecord(final JsonRecord record) {
         return new GenericRecord<>(record.getHeader(), mapper.fromJson(record.getPayload(), type));
     }
 

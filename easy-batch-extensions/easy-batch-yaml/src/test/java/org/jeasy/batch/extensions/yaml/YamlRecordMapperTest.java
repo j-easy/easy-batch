@@ -43,7 +43,7 @@ public class YamlRecordMapperTest {
     private YamlRecordMapper<Contact> recordMapper;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         recordMapper = new YamlRecordMapper<>(Contact.class);
         when(record.getPayload()).thenReturn("name: Foo" + LINE_SEPARATOR + "age: 28");
     }

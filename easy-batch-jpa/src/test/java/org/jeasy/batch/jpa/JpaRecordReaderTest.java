@@ -52,7 +52,7 @@ public class JpaRecordReaderTest extends AbstractDatabaseTest {
     }
 
     @Test
-    public void testReadRecord() throws Exception {
+    public void testReadRecord() {
         Record<Tweet> record = jpaRecordReader.readRecord();
         long recordNumber = record.getHeader().getNumber();
         Tweet tweet = record.getPayload();
@@ -71,7 +71,7 @@ public class JpaRecordReaderTest extends AbstractDatabaseTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void fetchSizeParameterMustBeAtLeastEqualToOne() throws Exception {
+    public void fetchSizeParameterMustBeAtLeastEqualToOne() {
         jpaRecordReader.setFetchSize(0);
     }
 

@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AtomicLongTypeConverterTest extends BaseConverterTest<AtomicLong> {
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         converter = new AtomicLongTypeConverter();
     }
 

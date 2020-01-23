@@ -53,7 +53,7 @@ public class ContentBasedJmsQueueRecordWriterTest {
     private Predicate orangePredicate;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         Map<Predicate, QueueSender> queueMap = new HashMap<>();
         queueMap.put(orangePredicate, orangeQueue);
         queueMap.put(new DefaultPredicate(), defaultQueue);
@@ -67,14 +67,14 @@ public class ContentBasedJmsQueueRecordWriterTest {
     public void orangeRecordShouldBeDispatchedToOrangeQueue() throws Exception {
         recordWriter.writeRecords(new Batch(orangeRecord));
         verify(orangeQueue).send(orangeRecord.getPayload());
-        verifyZeroInteractions(defaultQueue);
+        verifyNoInteractions(defaultQueue);
     }
 
     @Test
     public void nonOrangeRecordShouldBeDispatchedToDefaultQueue() throws Exception {
         recordWriter.writeRecords(new Batch(appleRecord));
         verify(defaultQueue).send(appleRecord.getPayload());
-        verifyZeroInteractions(orangeQueue);
+        verifyNoInteractions(orangeQueue);
     }
 
 }

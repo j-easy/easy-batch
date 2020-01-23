@@ -56,7 +56,7 @@ public class StandardOutputRecordWriterTest {
     private StandardOutputRecordWriter writer;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         when(record.getPayload()).thenReturn(PAYLOAD);
         writer = new StandardOutputRecordWriter();
     }

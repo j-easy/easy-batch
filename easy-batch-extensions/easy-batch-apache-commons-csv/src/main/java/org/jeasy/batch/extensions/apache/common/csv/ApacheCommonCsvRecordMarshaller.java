@@ -96,9 +96,8 @@ public class ApacheCommonCsvRecordMarshaller<P> implements RecordMarshaller<Reco
      * @param fieldExtractor the field extractor
      * @param delimiter      the field delimiter
      * @param qualifier      the field qualifier
-     * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(FieldExtractor<P> fieldExtractor, final char delimiter, final char qualifier) throws IntrospectionException {
+    public ApacheCommonCsvRecordMarshaller(FieldExtractor<P> fieldExtractor, final char delimiter, final char qualifier) {
         this.fieldExtractor = fieldExtractor;
         this.csvFormat = CSVFormat.newFormat(delimiter)
                 .withQuote(qualifier)

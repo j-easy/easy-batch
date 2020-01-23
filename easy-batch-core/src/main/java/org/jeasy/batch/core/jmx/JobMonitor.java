@@ -31,7 +31,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.management.*;
 import java.lang.management.ManagementFactory;
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * JMX MBean implementation of {@link JobMonitorMBean}.
@@ -121,7 +122,7 @@ public class JobMonitor extends NotificationBroadcasterSupport implements JobMon
         Notification notification = new AttributeChangeNotification(
                 this,
                 sequenceNumber++,
-                new Date().getTime(),
+                Timestamp.valueOf(LocalDateTime.now()).getTime(),
                 "job report updated",
                 "JobReport",
                 JobReport.class.getName(),

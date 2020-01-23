@@ -39,14 +39,14 @@ public class StringRecordReaderTest {
     private String dataSource;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         dataSource = "foo" + LINE_SEPARATOR + "bar";
         stringRecordReader = new StringRecordReader(dataSource);
         stringRecordReader.open();
     }
 
     @Test
-    public void whenTheDataSourceIsNotEmpty_ThenThereShouldBeANextRecordToRead() throws Exception {
+    public void whenTheDataSourceIsNotEmpty_ThenThereShouldBeANextRecordToRead() {
         assertThat(stringRecordReader.readRecord()).isNotNull();
     }
 
@@ -57,7 +57,7 @@ public class StringRecordReaderTest {
     }
 
     @Test
-    public void whenTheDataSourceIsNotEmpty_ThenTheNextRecordShouldBeReadCorrectly() throws Exception {
+    public void whenTheDataSourceIsNotEmpty_ThenTheNextRecordShouldBeReadCorrectly() {
         Record record = stringRecordReader.readRecord();
         assertThat(record).isInstanceOf(StringRecord.class);
         assertThat(record.getHeader()).isNotNull();
@@ -74,11 +74,11 @@ public class StringRecordReaderTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         stringRecordReader.close();
     }
 
-    private void setupEmptyDataSource() throws Exception {
+    private void setupEmptyDataSource() {
         dataSource = "";
         stringRecordReader = new StringRecordReader(dataSource);
         stringRecordReader.open();

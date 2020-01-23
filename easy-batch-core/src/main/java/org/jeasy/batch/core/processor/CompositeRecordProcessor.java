@@ -41,7 +41,7 @@ public class CompositeRecordProcessor implements RecordProcessor {
      * Create a new {@link CompositeRecordProcessor}.
      */
     public CompositeRecordProcessor() {
-        this(new ArrayList<RecordProcessor>());
+        this(new ArrayList<>());
     }
 
     /**

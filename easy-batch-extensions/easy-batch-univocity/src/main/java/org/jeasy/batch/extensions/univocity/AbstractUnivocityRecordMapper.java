@@ -59,7 +59,7 @@ abstract class AbstractUnivocityRecordMapper<T, S extends CommonParserSettings<?
 
 
     @Override
-    public Record<T> processRecord(StringRecord record) throws Exception {
+    public Record<T> processRecord(StringRecord record) {
         BeanListProcessor<T> beanListProcessor = new BeanListProcessor<>(recordClass);
         settings.setProcessor(beanListProcessor);
 

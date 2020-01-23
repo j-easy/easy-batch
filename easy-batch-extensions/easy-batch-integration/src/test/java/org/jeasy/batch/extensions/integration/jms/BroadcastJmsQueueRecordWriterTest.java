@@ -51,7 +51,7 @@ public class BroadcastJmsQueueRecordWriterTest {
     private Message message;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         when(jmsRecord.getPayload()).thenReturn(message);
 
         broadcastJmsQueueRecordWriter = new BroadcastJmsQueueRecordWriter(asList(queue1, queue2));

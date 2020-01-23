@@ -42,7 +42,7 @@ public class CompositePipelineListener implements PipelineListener {
      * Create a new {@link CompositePipelineListener}.
      */
     public CompositePipelineListener() {
-        this(new ArrayList<PipelineListener>());
+        this(new ArrayList<>());
     }
 
     /**

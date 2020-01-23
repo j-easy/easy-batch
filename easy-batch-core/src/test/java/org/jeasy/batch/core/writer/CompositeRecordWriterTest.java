@@ -45,7 +45,7 @@ public class CompositeRecordWriterTest {
     private CompositeRecordWriter compositeRecordWriter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         compositeRecordWriter = new CompositeRecordWriter(asList(recordWriter1, recordWriter2));
     }
 

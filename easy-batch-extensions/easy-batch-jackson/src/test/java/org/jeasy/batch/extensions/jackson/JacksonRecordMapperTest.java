@@ -48,7 +48,7 @@ public class JacksonRecordMapperTest {
     private JsonRecord record;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ObjectMapper objectMapper = new ObjectMapper();
         mapper = new JacksonRecordMapper<>(objectMapper, Tweet.class);
         when(record.getHeader()).thenReturn(header);

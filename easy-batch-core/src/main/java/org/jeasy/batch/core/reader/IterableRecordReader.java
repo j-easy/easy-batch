@@ -53,12 +53,12 @@ public class IterableRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         currentRecordNumber = 0;
     }
 
     @Override
-    public GenericRecord readRecord() throws Exception {
+    public GenericRecord readRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), LocalDateTime.now());
         if (iterator.hasNext()) {
             return new GenericRecord<>(header, iterator.next());

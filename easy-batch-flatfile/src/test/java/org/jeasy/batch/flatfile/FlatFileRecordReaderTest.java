@@ -43,7 +43,7 @@ public class FlatFileRecordReaderTest {
     private Path nonExistingDataSource;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         dataSource = Paths.get("src/test/resources/tweets.csv");
         emptyDataSource = Paths.get("src/test/resources/empty-file.txt");
         nonExistingDataSource = Paths.get("src/test/resources/foo.bar");

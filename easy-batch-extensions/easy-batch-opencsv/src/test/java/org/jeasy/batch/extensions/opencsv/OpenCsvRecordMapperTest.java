@@ -45,7 +45,7 @@ public class OpenCsvRecordMapperTest {
     private OpenCsvRecordMapper<Foo> openCsvRecordMapper;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         openCsvRecordMapper = new OpenCsvRecordMapper<>(Foo.class, "firstName", "lastName", "age", "married");
     }
 

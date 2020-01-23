@@ -42,7 +42,7 @@ public class CompositeBatchListener implements BatchListener {
      * Create a new {@link CompositeBatchListener}.
      */
     public CompositeBatchListener() {
-        this(new ArrayList<BatchListener>());
+        this(new ArrayList<>());
     }
 
     /**

@@ -47,7 +47,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FlatFileIntegrationTest {
 
     @Test
-    public void testCsvProcessing() throws Exception {
+    public void testCsvProcessing() {
 
         Path dataSource = Paths.get("src/test/resources/persons.csv");
 
@@ -73,7 +73,7 @@ public class FlatFileIntegrationTest {
     }
 
     @Test
-    public void testCsvSubRecordProcessing() throws Exception {
+    public void testCsvSubRecordProcessing() {
 
         Path dataSource = Paths.get("src/test/resources/persons.csv");
 
@@ -104,7 +104,7 @@ public class FlatFileIntegrationTest {
      */
 
     @Test
-    public void whenFieldNamesAreNotSpecified_thenTheyShouldBeRetrievedFromTheHeaderRecord() throws Exception {
+    public void whenFieldNamesAreNotSpecified_thenTheyShouldBeRetrievedFromTheHeaderRecord() {
 
         Path dataSource = Paths.get("src/test/resources/persons_with_header.csv");
 
@@ -130,7 +130,7 @@ public class FlatFileIntegrationTest {
     }
 
     @Test
-    public void whenOnlySubsetOfFieldsAreSpecified_thenOnlyCorrespondingFieldsShouldBeMapped() throws Exception {
+    public void whenOnlySubsetOfFieldsAreSpecified_thenOnlyCorrespondingFieldsShouldBeMapped() {
 
         Path dataSource = Paths.get("src/test/resources/persons_with_header.csv");
 
@@ -210,7 +210,7 @@ public class FlatFileIntegrationTest {
      */
 
     @Test
-    public void testFlrProcessing() throws Exception {
+    public void testFlrProcessing() {
 
         Path dataSource = Paths.get("src/test/resources/persons.flr");
 

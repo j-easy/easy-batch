@@ -28,12 +28,12 @@ import org.junit.Test;
 public class JobBuilderTest {
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenBatchSizeIsLessThanOne_thenShouldThrowAnIllegalArgumentException() throws Exception {
+    public void whenBatchSizeIsLessThanOne_thenShouldThrowAnIllegalArgumentException() {
         JobBuilder.aNewJob().batchSize(0);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenErrorThresholdIsLessThanZero_thenShouldThrowAnIllegalArgumentException() throws Exception {
+    public void whenErrorThresholdIsLessThanZero_thenShouldThrowAnIllegalArgumentException() {
         JobBuilder.aNewJob().errorThreshold(-1);
     }
 }

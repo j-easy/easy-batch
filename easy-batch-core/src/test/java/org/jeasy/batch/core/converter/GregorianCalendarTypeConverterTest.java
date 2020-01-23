@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GregorianCalendarTypeConverterTest extends BaseConverterTest<GregorianCalendar> {
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         converter = new GregorianCalendarTypeConverter();
     }
 

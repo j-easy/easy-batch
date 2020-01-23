@@ -49,7 +49,7 @@ public class XstreamRecordMapperTest {
     private Header header;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         XStream xStream = new XStream();
         xStream.alias("person", Person.class);
         when(xmlRecord.getHeader()).thenReturn(header);

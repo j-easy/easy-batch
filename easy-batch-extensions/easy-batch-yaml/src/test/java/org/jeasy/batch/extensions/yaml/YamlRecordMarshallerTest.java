@@ -43,7 +43,7 @@ public class YamlRecordMarshallerTest {
     private YamlRecordMarshaller<Contact> recordMarshaller;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         recordMarshaller = new YamlRecordMarshaller<>();
         when(record.getPayload()).thenReturn(new Contact("foo", 10));
     }

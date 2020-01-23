@@ -34,19 +34,19 @@ import org.jeasy.batch.core.record.Record;
 public class StandardErrorRecordWriter implements RecordWriter {
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         // no-op
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
+    public void writeRecords(Batch batch) {
         for (Record record : batch) {
             System.err.println(record.getPayload().toString());
         }
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         // no-op: don't close standard error
     }
 }

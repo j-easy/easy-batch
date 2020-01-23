@@ -47,12 +47,12 @@ public class CompositeBatchListenerTest {
     private CompositeBatchListener compositeBatchListener;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         compositeBatchListener = new CompositeBatchListener(asList(batchListener1, batchListener2));
     }
 
     @Test
-    public void testBeforeBatchReading() throws Exception {
+    public void testBeforeBatchReading() {
         compositeBatchListener.beforeBatchReading();
 
         InOrder inOrder = inOrder(batchListener1, batchListener2);
@@ -61,7 +61,7 @@ public class CompositeBatchListenerTest {
     }
 
     @Test
-    public void testAfterBatchProcessing() throws Exception {
+    public void testAfterBatchProcessing() {
         compositeBatchListener.afterBatchProcessing(batch);
 
         InOrder inOrder = inOrder(batchListener1, batchListener2);
@@ -70,7 +70,7 @@ public class CompositeBatchListenerTest {
     }
 
     @Test
-    public void testAfterBatchWriting() throws Exception {
+    public void testAfterBatchWriting() {
         compositeBatchListener.afterBatchWriting(batch);
 
         InOrder inOrder = inOrder(batchListener1, batchListener2);
@@ -79,7 +79,7 @@ public class CompositeBatchListenerTest {
     }
 
     @Test
-    public void testOnBatchWritingException() throws Exception {
+    public void testOnBatchWritingException() {
         compositeBatchListener.onBatchWritingException(batch, exception);
 
         InOrder inOrder = inOrder(batchListener1, batchListener2);

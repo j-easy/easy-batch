@@ -69,9 +69,8 @@ public class OpenCsvRecordMarshaller<P> implements RecordMarshaller<Record<P>, S
      * Create a new {@link OpenCsvRecordMarshaller}.
      *
      * @param fieldExtractor to use to extract fields
-     * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public OpenCsvRecordMarshaller(final FieldExtractor<P> fieldExtractor) throws IntrospectionException {
+    public OpenCsvRecordMarshaller(final FieldExtractor<P> fieldExtractor) {
         Utils.checkNotNull(fieldExtractor, "field extractor");
         this.fieldExtractor = fieldExtractor;
         this.delimiter = DEFAULT_DELIMITER;
@@ -80,24 +79,15 @@ public class OpenCsvRecordMarshaller<P> implements RecordMarshaller<Record<P>, S
 
     @Override
     public StringRecord processRecord(Record<P> record) throws Exception {
-        StringWriter stringWriter = null;
-        CSVWriter csvWriter = null;
-        try {
-            stringWriter = new StringWriter();
-            csvWriter = new CSVWriter(stringWriter, delimiter, qualifier, ""); // force lineEnd to empty string
+        try (StringWriter stringWriter = new StringWriter();
+             CSVWriter csvWriter = new CSVWriter(stringWriter, delimiter, qualifier, "")) {
+            // force lineEnd to empty string
             P payload = record.getPayload();
             List<String> fields = extractFields(payload);
             String[] items = fields.toArray(new String[fields.size()]);
             csvWriter.writeNext(items);
             csvWriter.flush();
             return new StringRecord(record.getHeader(), stringWriter.toString());
-        } finally {
-            if (csvWriter != null) {
-                csvWriter.close();
-            }
-            if (stringWriter != null) {
-                stringWriter.close();
-            }
         }
     }
 

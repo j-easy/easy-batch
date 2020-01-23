@@ -42,7 +42,7 @@ public class CompositeRecordWriterListener implements RecordWriterListener {
      * Create a new {@link CompositeRecordWriterListener}.
      */
     public CompositeRecordWriterListener() {
-        this(new ArrayList<RecordWriterListener>());
+        this(new ArrayList<>());
     }
 
     /**

@@ -61,7 +61,7 @@ public class JobFactoryBean implements FactoryBean {
     private boolean enableJmx;
 
     @Override
-    public Job getObject() throws Exception {
+    public Job getObject() {
         JobBuilder jobBuilder = new JobBuilder();
 
         registerJobParameters(jobBuilder);

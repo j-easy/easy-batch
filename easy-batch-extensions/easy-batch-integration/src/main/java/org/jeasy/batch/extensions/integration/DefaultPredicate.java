@@ -23,6 +23,8 @@
  */
 package org.jeasy.batch.extensions.integration;
 
+import java.util.Objects;
+
 import org.jeasy.batch.core.record.Record;
 
 /**
@@ -55,7 +57,7 @@ public class DefaultPredicate implements Predicate {
 
         DefaultPredicate that = (DefaultPredicate) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) {
+        if (!Objects.equals(id, that.id)) {
             return false;
         }
 

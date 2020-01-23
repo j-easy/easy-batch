@@ -38,7 +38,7 @@ public class DefaultJobReportMergerTest {
     private JobReportMerger jobReportMerger;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         jobReportMerger = new DefaultJobReportMerger();
     }
 

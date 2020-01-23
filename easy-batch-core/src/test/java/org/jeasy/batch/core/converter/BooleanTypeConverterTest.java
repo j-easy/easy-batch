@@ -33,7 +33,7 @@ public class BooleanTypeConverterTest {
     private BooleanTypeConverter booleanTypeConverter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         booleanTypeConverter = new BooleanTypeConverter();
     }
 

@@ -86,7 +86,7 @@ public class XmlRecordReader implements RecordReader {
     @Override
     public XmlRecord readRecord() throws Exception {
         if (hasNextRecord()) {
-            StringBuilder stringBuilder = new StringBuilder("");
+            StringBuilder stringBuilder = new StringBuilder();
             while (!nextTagIsRootElementEnd()) {
                 XMLEvent xmlEvent = xmlEventReader.nextEvent();
                 if (xmlEvent.isStartElement()) {

@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DoubleTypeConverterTest extends BaseConverterTest<Double> {
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         converter = new DoubleTypeConverter();
     }
 

@@ -42,7 +42,7 @@ public class JobMetricsTest {
     private JobMetrics jobMetrics;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         jobMetrics = new JobMetrics();
     }
 

@@ -84,7 +84,7 @@ public class JobMonitorProxy implements Runnable {
             String serviceURL = format(JMX_SERVICE_URL, host, port);
             JMXServiceURL url = new JMXServiceURL(serviceURL);
             ObjectName objectName = new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + jobName);
-            JMXConnector jmxConnector = JMXConnectorFactory.connect(url, new HashMap<String, Object>());
+            JMXConnector jmxConnector = JMXConnectorFactory.connect(url, new HashMap<>());
             MBeanServerConnection mBeanServerConnection = jmxConnector.getMBeanServerConnection();
             registerNotificationListeners(objectName, mBeanServerConnection, jmxConnector);
             LOGGER.debug("Listening to JMX notifications from {}", serviceURL);

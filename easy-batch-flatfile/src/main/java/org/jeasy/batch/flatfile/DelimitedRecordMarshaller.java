@@ -97,9 +97,8 @@ public class DelimitedRecordMarshaller<P> implements RecordMarshaller<Record<P>,
      * @param fieldExtractor extract fields
      * @param delimiter      of fields
      * @param qualifier      of fields
-     * @throws IntrospectionException If the object to marshal cannot be introspected
-     */
-    public DelimitedRecordMarshaller(FieldExtractor<P> fieldExtractor, final String delimiter, final String qualifier) throws IntrospectionException {
+	 */
+    public DelimitedRecordMarshaller(FieldExtractor<P> fieldExtractor, final String delimiter, final String qualifier) {
         this.fieldExtractor = fieldExtractor;
         this.delimiter = delimiter;
         this.qualifier = qualifier;

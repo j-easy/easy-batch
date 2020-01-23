@@ -44,7 +44,7 @@ public class ApacheCommonCsvRecordMapperTest {
     private ApacheCommonCsvRecordMapper<Foo> mapper;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mapper = new ApacheCommonCsvRecordMapper<>(Foo.class, "firstName", "lastName", "age", "married");
     }
 

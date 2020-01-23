@@ -38,7 +38,7 @@ public class JobReportTest {
 	private JobReport report;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		LocalDateTime startTime = LocalDateTime.of(2020, 1, 20, 10, 15, 20);
 		LocalDateTime endTime = startTime.plus(10, ChronoUnit.SECONDS);
 		Properties systemProperties = new Properties();

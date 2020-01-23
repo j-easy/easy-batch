@@ -48,7 +48,7 @@ public class RoundRobinBlockingQueueRecordWriterTest {
     private Record record1, record2, record3, record4;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         queue1 = new LinkedBlockingQueue<>();
         queue2 = new LinkedBlockingQueue<>();
         roundRobinQueueRecordWriter = new RoundRobinBlockingQueueRecordWriter(asList(queue1, queue2));

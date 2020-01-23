@@ -26,7 +26,6 @@ package org.jeasy.batch.xml;
 import org.junit.After;
 import org.junit.Test;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

@@ -48,12 +48,12 @@ public class CompositeJobListenerTest {
     private CompositeJobListener compositeJobListener;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         compositeJobListener = new CompositeJobListener(asList(jobListener1, jobListener2));
     }
 
     @Test
-    public void testBeforeJobStart() throws Exception {
+    public void testBeforeJobStart() {
         compositeJobListener.beforeJobStart(parameters);
 
         InOrder inOrder = inOrder(jobListener1, jobListener2);
@@ -62,7 +62,7 @@ public class CompositeJobListenerTest {
     }
 
     @Test
-    public void testAfterJobEnd() throws Exception {
+    public void testAfterJobEnd() {
         compositeJobListener.afterJobEnd(report);
 
         InOrder inOrder = inOrder(jobListener1, jobListener2);

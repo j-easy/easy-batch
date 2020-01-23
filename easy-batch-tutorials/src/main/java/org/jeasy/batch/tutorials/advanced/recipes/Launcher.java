@@ -29,7 +29,6 @@ import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.writer.StandardOutputRecordWriter;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

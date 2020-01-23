@@ -52,7 +52,7 @@ public class UtilsTest {
     private Record<Object> record1, record2;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         when(record1.getPayload()).thenReturn(payload1);
         when(record2.getPayload()).thenReturn(payload2);
     }
@@ -67,13 +67,13 @@ public class UtilsTest {
     }
 
     @Test
-    public void testFormatTime() throws Exception {
+    public void testFormatTime() {
         LocalDateTime time = LocalDateTime.of(2020, 1, 20, 10, 15, 20);
         assertThat(Utils.formatTime(time)).isEqualTo("2020-01-20 10:15:20");
     }
 
     @Test
-    public void testFormatDuration() throws Exception {
+    public void testFormatDuration() {
         assertThat(Utils.formatDuration(Duration.of(100, ChronoUnit.MILLIS))).isEqualTo("100ms");
         assertThat(Utils.formatDuration(Duration.of(1, ChronoUnit.SECONDS))).isEqualTo("1sec 0ms");
         assertThat(Utils.formatDuration(Duration.of(2, ChronoUnit.MINUTES))).isEqualTo("2min 0sec 0ms");
@@ -84,14 +84,14 @@ public class UtilsTest {
     }
 
     @Test
-    public void testFormatErrorThreshold() throws Exception {
+    public void testFormatErrorThreshold() {
         assertThat(Utils.formatErrorThreshold(1)).isEqualTo("1");
         assertThat(Utils.formatErrorThreshold(5)).isEqualTo("5");
         assertThat(Utils.formatErrorThreshold(DEFAULT_ERROR_THRESHOLD)).isEqualTo("N/A");
     }
 
     @Test
-    public void testExtractPayloadsFromListOfRecords() throws Exception {
+    public void testExtractPayloadsFromListOfRecords() {
         List<Object> list = Utils.extractPayloads(Arrays.asList(record1, record2));
         assertThat(list).containsExactly(payload1, payload2);
     }

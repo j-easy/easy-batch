@@ -45,12 +45,9 @@ public class UnivocityRecordMapperTest {
     private Header header;
 
     private UnivocityCsvRecordMapper<TestBean> csvRecordMapper;
-    private UnivocityTsvRecordMapper<TestBean> tsvRecordMapper;
-    private UnivocityFixedWidthRecordMapper<TestBean> fixedWidthRecordMapper;
-
 
     @Test
-    public void testUnivocityCsvMapping() throws Exception {
+    public void testUnivocityCsvMapping() {
         csvRecordMapper = new UnivocityCsvRecordMapper<>(TestBean.class, new CsvParserSettings());
         StringRecord fooRecord = new StringRecord(header, "foo,bar,15,true");
         Record<TestBean> actual = csvRecordMapper.processRecord(fooRecord);
@@ -65,7 +62,7 @@ public class UnivocityRecordMapperTest {
     }
 
     @Test
-    public void testUnivocityCsvDelimiter() throws Exception {
+    public void testUnivocityCsvDelimiter() {
         CsvParserSettings csvParserSettings = new CsvParserSettings();
         csvParserSettings.getFormat().setDelimiter(';');
         csvRecordMapper = new UnivocityCsvRecordMapper<>(TestBean.class, csvParserSettings);
@@ -80,7 +77,7 @@ public class UnivocityRecordMapperTest {
     }
 
     @Test
-    public void testUnivocityCsvQuote() throws Exception {
+    public void testUnivocityCsvQuote() {
         csvRecordMapper = new UnivocityCsvRecordMapper<>(TestBean.class, new CsvParserSettings());
         StringRecord fooRecord = new StringRecord(header, "\"foo,s\",\"bar\"");
         Record<TestBean> actual = csvRecordMapper.processRecord(fooRecord);
@@ -93,7 +90,7 @@ public class UnivocityRecordMapperTest {
     }
 
     @Test
-    public void testUnivocityCsvCarriageReturn() throws Exception {
+    public void testUnivocityCsvCarriageReturn() {
         CsvParserSettings csvParserSettings = new CsvParserSettings();
         csvParserSettings.getFormat().setQuote('\'');
         csvParserSettings.setNormalizeLineEndingsWithinQuotes(false);
@@ -109,8 +106,8 @@ public class UnivocityRecordMapperTest {
     }
 
     @Test
-    public void testUnivocityTsvMapping() throws Exception {
-        tsvRecordMapper = new UnivocityTsvRecordMapper<>(TestBean.class, new TsvParserSettings());
+    public void testUnivocityTsvMapping() {
+        UnivocityTsvRecordMapper<TestBean> tsvRecordMapper = new UnivocityTsvRecordMapper<>(TestBean.class, new TsvParserSettings());
         StringRecord fooRecord = new StringRecord(header, "foo\tbar\t15\ttrue");
         Record<TestBean> actual = tsvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
@@ -124,8 +121,8 @@ public class UnivocityRecordMapperTest {
     }
 
     @Test
-    public void testUnivocityFixedWidthMapping() throws Exception {
-        fixedWidthRecordMapper = new UnivocityFixedWidthRecordMapper<>(TestBean.class, new FixedWidthParserSettings(new FixedWidthFields(4,4,3,4)));
+    public void testUnivocityFixedWidthMapping() {
+        UnivocityFixedWidthRecordMapper<TestBean> fixedWidthRecordMapper = new UnivocityFixedWidthRecordMapper<>(TestBean.class, new FixedWidthParserSettings(new FixedWidthFields(4, 4, 3, 4)));
         StringRecord fooRecord = new StringRecord(header, "foo bar 15 true");
         Record<TestBean> actual = fixedWidthRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);

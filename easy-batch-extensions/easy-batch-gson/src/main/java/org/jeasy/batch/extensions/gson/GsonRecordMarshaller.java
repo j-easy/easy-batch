@@ -58,7 +58,7 @@ public class GsonRecordMarshaller<P> implements RecordMarshaller<Record<P>, Json
     }
 
     @Override
-    public JsonRecord processRecord(final Record<P> record) throws Exception {
+    public JsonRecord processRecord(final Record<P> record) {
         return new JsonRecord(record.getHeader(), gson.toJson(record.getPayload()));
     }
 

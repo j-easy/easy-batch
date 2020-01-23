@@ -49,12 +49,12 @@ public class StringRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         // no op
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
+    public void writeRecords(Batch batch) {
         for (Record record : batch) {
             stringWriter.write(record.getPayload().toString());
             stringWriter.write(Utils.LINE_SEPARATOR);

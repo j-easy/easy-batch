@@ -49,9 +49,8 @@ public class JmsQueueRecordWriter implements RecordWriter {
      *
      * @param queueConnectionFactory to use to create connections.
      * @param queue                  the target queue to write records to
-     * @throws JMSException if an exception occurs while sending the Jms message
      */
-    public JmsQueueRecordWriter(final QueueConnectionFactory queueConnectionFactory, final Queue queue) throws JMSException {
+    public JmsQueueRecordWriter(final QueueConnectionFactory queueConnectionFactory, final Queue queue) {
         checkNotNull(queueConnectionFactory, "queue connection factory");
         checkNotNull(queue, "queue");
         this.queueConnectionFactory = queueConnectionFactory;

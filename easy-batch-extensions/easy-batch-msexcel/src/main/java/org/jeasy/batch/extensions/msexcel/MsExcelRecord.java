@@ -70,7 +70,6 @@ public class MsExcelRecord extends GenericRecord<Row> {
                     stringBuilder.append(cell.getStringCellValue());
                     break;
                 case Cell.CELL_TYPE_BLANK:
-                    stringBuilder.append("");
                     break;
             }
             stringBuilder.append("\"");

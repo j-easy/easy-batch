@@ -77,7 +77,7 @@ public class StandardInputRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readRecord() throws Exception {
+    public Record readRecord() {
         String payload = scanner.nextLine();
         boolean stop = payload != null && !payload.isEmpty() && payload.equalsIgnoreCase(terminationInput);
         if (stop) {

@@ -27,8 +27,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
-import java.sql.SQLException;
-
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
 public abstract class AbstractDatabaseTest {
@@ -51,7 +49,7 @@ public abstract class AbstractDatabaseTest {
         embeddedDatabaseBuilder.addScript(script);
     }
 
-    protected int countRowsIn(String table) throws SQLException {
+    protected int countRowsIn(String table) {
         return jdbcTemplate.queryForObject("select count(*) from " + table, Integer.class);
     }
 

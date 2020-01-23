@@ -49,7 +49,7 @@ public class IterableRecordReaderTest {
     private IterableRecordReader iterableRecordReader;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         when(dataSource.iterator()).thenReturn(iterator);
         when(iterator.hasNext()).thenReturn(true);
         when(iterator.next()).thenReturn(RECORD);
@@ -57,7 +57,7 @@ public class IterableRecordReaderTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenDataSourceIsNull_thenShouldThrowAnIllegalArgumentException() throws Exception {
+    public void whenDataSourceIsNull_thenShouldThrowAnIllegalArgumentException() {
         iterableRecordReader = new IterableRecordReader(null);
     }
 

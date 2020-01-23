@@ -55,7 +55,7 @@ public class ContentBasedBlockingQueueRecordWriterTest {
     private Predicate orangePredicate;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         orangeQueue = new LinkedBlockingQueue<>();
         defaultQueue = new LinkedBlockingQueue<>();
         Map<Predicate, BlockingQueue<Record>> queueMap = new HashMap<>();

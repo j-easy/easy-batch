@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FloatTypeConverterTest extends BaseConverterTest<Float> {
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         converter = new FloatTypeConverter();
     }
 

@@ -25,7 +25,6 @@
 package org.jeasy.batch.tutorials.common;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
@@ -33,8 +32,6 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
@@ -65,15 +62,12 @@ public class DatabaseUtil {
 
     public static void dumpTweetTable() {
         System.out.println("Loading tweets from the database...");
-        jdbcTemplate.query("select * from tweet", new RowCallbackHandler() {
-            @Override
-            public void processRow(ResultSet resultSet) throws SQLException {
-                System.out.println(
-                        "Tweet : id= " + resultSet.getString("id") + " | " +
-                                "user= " + resultSet.getString("user") + " | " +
-                                "message= " + resultSet.getString("message")
-                );
-            }
+        jdbcTemplate.query("select * from tweet", resultSet -> {
+            System.out.println(
+                    "Tweet : id= " + resultSet.getString("id") + " | " +
+                            "user= " + resultSet.getString("user") + " | " +
+                            "message= " + resultSet.getString("message")
+            );
         });
     }
 

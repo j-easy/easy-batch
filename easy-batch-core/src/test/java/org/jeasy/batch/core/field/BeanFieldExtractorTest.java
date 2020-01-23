@@ -40,7 +40,7 @@ public class BeanFieldExtractorTest {
     private BeanFieldExtractor<Person> fieldExtractor;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         person = new Person();
         person.setFirstName("myFirstName");
         person.setLastName("myLastName");

@@ -54,7 +54,7 @@ public class SpringJdbcRecordMapperTest {
     private ResultSetMetaData metadata;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mapper = new SpringJdbcRecordMapper<>(Tweet.class);
         when(jdbcRecord.getHeader()).thenReturn(header);
         when(jdbcRecord.getPayload()).thenReturn(payload);

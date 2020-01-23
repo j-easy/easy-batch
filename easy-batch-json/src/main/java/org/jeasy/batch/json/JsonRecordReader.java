@@ -94,11 +94,11 @@ public class JsonRecordReader implements RecordReader {
         checkNotNull(charset, "charset");
         this.inputStream = inputStream;
         this.charset = charset;
-        this.jsonGeneratorFactory = Json.createGeneratorFactory(new HashMap<String, Object>());
+        this.jsonGeneratorFactory = Json.createGeneratorFactory(new HashMap<>());
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         parser = Json.createParser(new InputStreamReader(inputStream, charset));
     }
 
@@ -138,7 +138,7 @@ public class JsonRecordReader implements RecordReader {
     }
 
     @Override
-    public JsonRecord readRecord() throws Exception {
+    public JsonRecord readRecord() {
         if (hasNextRecord()) {
             StringWriter stringWriter = new StringWriter();
             JsonGenerator jsonGenerator = jsonGeneratorFactory.createGenerator(stringWriter);

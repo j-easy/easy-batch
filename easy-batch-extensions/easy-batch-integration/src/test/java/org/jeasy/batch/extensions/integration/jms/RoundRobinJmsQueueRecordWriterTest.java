@@ -48,7 +48,7 @@ public class RoundRobinJmsQueueRecordWriterTest {
     private JmsRecord record1, record2, record3;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         roundRobinJmsQueueRecordWriter = new RoundRobinJmsQueueRecordWriter(Arrays.asList(queue1, queue2));
     }
 

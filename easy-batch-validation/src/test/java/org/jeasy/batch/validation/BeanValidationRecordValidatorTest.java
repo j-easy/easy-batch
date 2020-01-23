@@ -49,7 +49,7 @@ public class BeanValidationRecordValidatorTest {
     private BeanValidationRecordValidator validator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         validator = new BeanValidationRecordValidator();
     }
 
@@ -70,7 +70,7 @@ public class BeanValidationRecordValidatorTest {
     }
 
     @Test
-    public void integrationTest() throws Exception {
+    public void integrationTest() {
         Job job = new JobBuilder()
                 .reader(new IterableRecordReader(asList(new Foo(1, "foo1"), new Foo(-2, "foo2"))))
                 .validator(new BeanValidationRecordValidator())

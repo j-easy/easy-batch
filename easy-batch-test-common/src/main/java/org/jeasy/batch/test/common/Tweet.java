@@ -23,6 +23,8 @@
  */
 package org.jeasy.batch.test.common;
 
+import java.util.Objects;
+
 public class Tweet {
 
     private int id;
@@ -82,8 +84,8 @@ public class Tweet {
         Tweet tweet = (Tweet) o;
 
         if (id != tweet.id) return false;
-        if (user != null ? !user.equals(tweet.user) : tweet.user != null) return false;
-        return message != null ? message.equals(tweet.message) : tweet.message == null;
+        if (!Objects.equals(user, tweet.user)) return false;
+        return Objects.equals(message, tweet.message);
 
     }
 

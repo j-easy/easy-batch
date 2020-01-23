@@ -59,12 +59,12 @@ public class JpaRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() throws Exception {
+    public void open() {
         entityManager = entityManagerFactory.createEntityManager();
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
+    public void writeRecords(Batch batch) {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
         try {
@@ -83,7 +83,7 @@ public class JpaRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         if (entityManager != null ) {
             LOGGER.debug("Closing entity manager");
             entityManager.close();

@@ -118,7 +118,7 @@ public class ObjectMapperTest {
     }
 
     @Test
-    public void whenASetterDoesNotExist_ThenShouldLogAWarning() throws Exception {
+    public void whenASetterDoesNotExist_ThenShouldLogAWarning() {
 
         ObjectMapper<Person> mapper = new ObjectMapper<>(Person.class);
 

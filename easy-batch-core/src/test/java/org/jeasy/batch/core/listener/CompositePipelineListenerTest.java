@@ -48,14 +48,14 @@ public class CompositePipelineListenerTest {
     private CompositePipelineListener compositePipelineListener;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         when(pipelineListener1.beforeRecordProcessing(inputRecord)).thenReturn(processedRecord);
         when(pipelineListener2.beforeRecordProcessing(processedRecord)).thenReturn(outputRecord);
         compositePipelineListener = new CompositePipelineListener(asList(pipelineListener1, pipelineListener2));
     }
 
     @Test
-    public void testBeforeRecordProcessing() throws Exception {
+    public void testBeforeRecordProcessing() {
         compositePipelineListener.beforeRecordProcessing(inputRecord);
 
         InOrder inOrder = inOrder(pipelineListener1, pipelineListener2);
@@ -64,7 +64,7 @@ public class CompositePipelineListenerTest {
     }
 
     @Test
-    public void testAfterRecordProcessing() throws Exception {
+    public void testAfterRecordProcessing() {
         compositePipelineListener.afterRecordProcessing(inputRecord, outputRecord);
 
         InOrder inOrder = inOrder(pipelineListener1, pipelineListener2);
@@ -73,7 +73,7 @@ public class CompositePipelineListenerTest {
     }
 
     @Test
-    public void testOnRecordProcessingException() throws Exception {
+    public void testOnRecordProcessingException() {
         compositePipelineListener.onRecordProcessingException(inputRecord, exception);
 
         InOrder inOrder = inOrder(pipelineListener1, pipelineListener2);

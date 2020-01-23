@@ -54,7 +54,7 @@ public class XstreamRecordMapper<P> implements RecordMapper<XmlRecord, Record<P>
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public Record<P> processRecord(final XmlRecord record) throws Exception {
+    public Record<P> processRecord(final XmlRecord record) {
         P unmarshalledObject = (P) xStream.fromXML(record.getPayload());
         return new GenericRecord<>(record.getHeader(), unmarshalledObject);
     }
