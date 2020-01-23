@@ -131,19 +131,18 @@ public class Launcher {
 
 ## Run the tutorial
 
+First, make sure you have already downloaded the source code and built the tutorials
+as described in the [quick start](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials#quick-start) section.
+
 ### From the command line
 
-Open a terminal and run the following commands:
+Open a terminal and run the following command:
 
 ```
-$>cd easy-batch-tutorials
-$>mvn install
 $>mvn exec:java -PrunJdbcExportDataTutorial
 ```
 
 ### From Your IDE
 
-* Import the `easy-batch-tutorials` project in your IDE
-* Resolve maven dependencies
 * Navigate to the `org.jeasy.batch.tutorials.intermediate.extract` package
 * Run the `org.jeasy.batch.tutorials.intermediate.extract.Launcher` class without any argument

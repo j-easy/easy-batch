@@ -51,7 +51,7 @@ public class RecordDispatching {
     public static void main(String[] args) {
 
         // Input file tweets.csv
-        Path tweets = Paths.get("src/main/resources/data/tweets.csv");
+        Path tweets = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets.csv");
 
         // Create queues
         BlockingQueue<Record> workQueue1 = new LinkedBlockingQueue<>();

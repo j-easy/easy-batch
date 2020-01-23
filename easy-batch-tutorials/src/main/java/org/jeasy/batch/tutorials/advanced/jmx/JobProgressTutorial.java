@@ -48,7 +48,7 @@ public class JobProgressTutorial {
 
     public static void main(String[] args) throws Exception {
 
-        Path dataSource = Paths.get("src/main/resources/data/tweets.csv");
+        Path dataSource = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets.csv");
         ProgressListener progressListener = new ProgressListener(dataSource);
 
         // Build the batch job

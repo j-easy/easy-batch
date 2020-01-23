@@ -43,7 +43,7 @@ public class Launcher {
     public static void main(String[] args) {
 
         // Initialize input file recipes.txt
-        Path recipes = Paths.get("src/main/resources/data/recipes.txt");
+        Path recipes = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/recipes.txt");
 
         // Build a batch job
         Job job = new JobBuilder()

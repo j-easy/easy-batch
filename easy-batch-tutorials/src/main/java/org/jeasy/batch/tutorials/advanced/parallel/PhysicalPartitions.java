@@ -47,10 +47,10 @@ public class PhysicalPartitions {
     public static void main(String[] args) throws Exception {
 
         // Input file tweets-part1.csv
-        Path tweetsPart1 = Paths.get(("src/main/resources/data/tweets-part1.csv"));
+        Path tweetsPart1 = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets-part1.csv");
 
         // Input file tweets-part2.csv
-        Path tweetsPart2 = Paths.get("src/main/resources/data/tweets-part2.csv");
+        Path tweetsPart2 = Paths.get(args.length != 0 ? args[1] : "easy-batch-tutorials/src/main/resources/data/tweets-part2.csv");
 
         // Build worker jobs
         Job job1 = buildJob(tweetsPart1, "worker-job1");

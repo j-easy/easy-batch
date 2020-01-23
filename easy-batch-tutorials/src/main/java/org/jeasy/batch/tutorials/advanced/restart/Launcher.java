@@ -15,12 +15,16 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        Path journal = Paths.get("target/checkpoint.oplog");
+        Path dataSource = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets.csv");
+        Path dataSink = Paths.get(args.length != 0 ? args[1] : "easy-batch-tutorials/target/tweets-out.csv");
+        String journalFile = args.length != 0 ? args[2] : "easy-batch-tutorials/target/checkpoint.oplog";
+
+        Path journal = Paths.get(journalFile);
         createJournal(journal);
         CheckPointListener checkPointListener = new CheckPointListener(journal);
 
-        FlatFileRecordReader recordReader = new FlatFileRecordReader(Paths.get("src/main/resources/data/tweets.csv"));
-        FileRecordWriter recordWriter = new FileRecordWriter(Paths.get("target/tweets-out.csv"));
+        FlatFileRecordReader recordReader = new FlatFileRecordReader(dataSource);
+        FileRecordWriter recordWriter = new FileRecordWriter(dataSink);
         recordWriter.setAppend(true);
 
         Job job = new JobBuilder()

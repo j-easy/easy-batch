@@ -12,19 +12,18 @@ A similar use case is synchronizing data between an operational database and a [
 
 ## Run the tutorial
 
+First, make sure you have already downloaded the source code and built the tutorials
+as described in the [quick start](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials#quick-start) section.
+
 ### From the command line
 
 Open a terminal an run the following command:
 
 ```
-$>cd easy-batch-tutorials
-$>mvn install
 $>mvn exec:java -PrunElasticSearchTutorial
 ```
 
 ### From Your IDE
 
-* Import the `easy-batch-tutorials` project in your IDE
-* Resolve maven dependencies
 * Navigate to the `org.jeasy.batch.tutorials.intermediate.elasticsearch` package
 * Run the `org.jeasy.batch.tutorials.intermediate.elasticsearch.Launcher` class without any argument

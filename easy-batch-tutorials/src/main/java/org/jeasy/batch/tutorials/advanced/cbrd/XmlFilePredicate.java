@@ -27,7 +27,7 @@ package org.jeasy.batch.tutorials.advanced.cbrd;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.extensions.integration.Predicate;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * A predicate that matches csv files.
@@ -38,8 +38,8 @@ public class XmlFilePredicate implements Predicate {
 
     @Override
     public boolean matches(Record record) {
-        File payload = (File) record.getPayload();
-        return payload.getAbsolutePath().endsWith("xml");
+        Path payload = (Path) record.getPayload();
+        return payload.toAbsolutePath().endsWith("xml");
     }
 
 }

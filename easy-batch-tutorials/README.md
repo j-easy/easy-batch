@@ -9,21 +9,27 @@ All examples use tweets data. Tweets are represented by the `org.jeasy.batch.tut
 
 ## Quick start
 
-| :information_source: Prerequisites | :arrow_down: Download   | :hash: Build | :arrow_forward: Run |
-|------------------------------------|-------------------------|--------------|---------------------|
-|Java 8+ && maven 3+ |[Get source code](https://github.com/j-easy/easy-batch/archive/master.zip)|`$>mvn install`|`$>mvn exec:java -P run[tutorial name]`|
+:information_source: Prerequisites: Java 8+ && maven 3+
+
+:arrow_down: Get the source code: `$>git clone https://github.com/j-easy/easy-batch.git`
+
+:hash: Build: `$>cd easy-batch && mvn install && cd easy-batch-tutorials`
+ 
+:arrow_forward: Run: `$>mvn exec:java -P run[tutorial name]`
+
+If you want to run tutorials from your IDE, you need to import the `easy-batch` directory as a maven project in your IDE.
 
 ## Tutorials index
 
 | :scroll: Tutorial  | :star: Level  |  :clock9: Duration  |  :link: Link  |
 |:----------|:------:|:----------:|:------:|
-|Hello world|basic|:two: minutes read|[:arrow_forward: View](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials/src/main/java/org/jeasy/batch/tutorials/basic/helloworld)|
+|Hello World|basic|:two: minutes read|[:arrow_forward: View](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials/src/main/java/org/jeasy/batch/tutorials/basic/helloworld)|
 |Word Count|basic|:two: minutes read|[:arrow_forward: View ](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials/src/main/java/org/jeasy/batch/tutorials/basic/wordcount)|
 |Transforming data from one format to another|intermediate|:five: minutes read|[:arrow_forward: View ](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials/src/main/java/org/jeasy/batch/tutorials/intermediate/csv2xml)|
 |Populating a search database|intermediate|:five: minutes read|[:arrow_forward: View ](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials/src/main/java/org/jeasy/batch/tutorials/intermediate/elasticsearch)|
 |Importing data from a flat file into a database|intermediate|:five: minutes read|[:arrow_forward: View ](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials/src/main/java/org/jeasy/batch/tutorials/intermediate/load)|
 |Exporting data from a database to a flat file|intermediate|:five: minutes read|[:arrow_forward: View ](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials/src/main/java/org/jeasy/batch/tutorials/intermediate/extract)|
-|Exporting data from a database to a flat file with a header and a footer|intermediate|:five: minutes read|[:arrow_forward: View ](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials/src/main/java/org/jeasy/batch/tutorials/intermediate/headerfooter)|
+|Writing a dynamic header/footer to an output file|intermediate|:five: minutes read|[:arrow_forward: View ](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials/src/main/java/org/jeasy/batch/tutorials/intermediate/headerfooter)|
 |Monitoring jobs with JMX|advanced|:five: minutes read|[:arrow_forward: View ](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials/src/main/java/org/jeasy/batch/tutorials/advanced/jmx)|
 |Scheduling jobs with Quartz|advanced|:five: minutes read|[:arrow_forward: View ](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials/src/main/java/org/jeasy/batch/tutorials/advanced/quartz)|
 |Configuring jobs with Spring|advanced|:five: minutes read|[:arrow_forward: View ](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials/src/main/java/org/jeasy/batch/tutorials/advanced/spring)|

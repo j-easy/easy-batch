@@ -43,7 +43,7 @@ public class JobMonitoringTutorial {
     public static void main(String[] args) {
 
         // Create the data source
-        Path dataSource = Paths.get(("src/main/resources/data/tweets.csv"));
+        Path dataSource = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets.csv");
         
         // Build the batch job
         Job job = new JobBuilder()

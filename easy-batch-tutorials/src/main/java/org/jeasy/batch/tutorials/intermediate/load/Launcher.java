@@ -54,7 +54,7 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         // Load tweets from tweets.csv
-        Path tweets = Paths.get("src/main/resources/data/tweets.csv");
+        Path tweets = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets.csv");
 
         // Start embedded database server
         DatabaseUtil.startEmbeddedDatabase();

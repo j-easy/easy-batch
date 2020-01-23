@@ -23,8 +23,8 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
 
-        Path csvTweets = Paths.get("src/main/resources/data/tweets.csv");
-        Path xmlTweets = Paths.get("target/tweets.xml");
+        Path csvTweets = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets.csv");
+        Path xmlTweets = Paths.get(args.length != 0 ? args[1] : "easy-batch-tutorials/target/tweets.xml");
 
         FileRecordWriter recordWriter = new FileRecordWriter(xmlTweets);
         recordWriter.setHeaderCallback(new HeaderWriter());

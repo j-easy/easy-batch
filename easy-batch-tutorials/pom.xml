@@ -23,7 +23,7 @@
         <elasticsearch.version>1.7.3</elasticsearch.version>
         <quartz.version>2.3.0</quartz.version>
 
-        <exec-maven-plugin-version>1.6.0</exec-maven-plugin-version>
+        <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
     </properties>
 
@@ -221,14 +221,17 @@
         <profile>
             <id>runHelloWorldTutorial</id>
             <build>
-                <defaultGoal>exec:java</defaultGoal>
+                <defaultGoal>exec:exec</defaultGoal>
                 <plugins>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.basic.helloworld.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/data/tweets.csv</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -242,7 +245,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.basic.wordcount.Launcher</mainClass>
                         </configuration>
@@ -261,9 +264,13 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.intermediate.csv2xml.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/data/tweets.csv</argument>
+                                <argument>${project.build.directory}/tweets.xml</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -277,9 +284,12 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.intermediate.load.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/data/tweets.csv</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -293,9 +303,12 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.intermediate.extract.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.build.directory}/tweets.csv</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -309,9 +322,12 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.intermediate.headerfooter.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.build.directory}/tweets-header-footer.csv</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -325,7 +341,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.intermediate.elasticsearch.Launcher</mainClass>
                         </configuration>
@@ -343,9 +359,12 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.advanced.recipes.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/data/recipes.txt</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -359,7 +378,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.advanced.metric.Launcher</mainClass>
                         </configuration>
@@ -375,9 +394,14 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.advanced.restart.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/data/tweets.csv</argument>
+                                <argument>${project.build.directory}/tweets-out.csv</argument>
+                                <argument>${project.build.directory}/checkpoint.oplog</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -391,7 +415,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.advanced.parallel.ForkJoin</mainClass>
                         </configuration>
@@ -407,9 +431,12 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.advanced.parallel.LogicalPartitions</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/data/tweets.csv</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -423,9 +450,13 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.advanced.parallel.PhysicalPartitions</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/data/tweets-part1.csv</argument>
+                                <argument>${project.basedir}/src/main/resources/data/tweets-part2.csv</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -439,7 +470,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.advanced.cbrd.Launcher</mainClass>
                         </configuration>
@@ -455,9 +486,12 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.advanced.quartz.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/data/tweets.csv</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -471,7 +505,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.advanced.spring.Launcher</mainClass>
                         </configuration>
@@ -487,9 +521,12 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.advanced.jmx.JobMonitoringTutorial</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/data/tweets.csv</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -502,7 +539,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <goals>
                             <goal>exec</goal>
                         </goals>
@@ -516,6 +553,7 @@
                                 <argument>-classpath</argument>
                                 <classpath/>
                                 <argument>org.jeasy.batch.tutorials.advanced.jmx.JobProgressTutorial</argument>
+                                <argument>${project.basedir}/src/main/resources/data/tweets.csv</argument>
                             </arguments>
                         </configuration>
                     </plugin>
@@ -530,7 +568,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.advanced.jms.Launcher</mainClass>
                         </configuration>
@@ -546,7 +584,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin-version}</version>
+                        <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>org.jeasy.batch.tutorials.advanced.jms.JMSSenderLauncher</mainClass>
                         </configuration>

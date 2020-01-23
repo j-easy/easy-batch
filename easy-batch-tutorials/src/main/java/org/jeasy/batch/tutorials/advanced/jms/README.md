@@ -6,13 +6,14 @@ This tutorial is a show case of how to implement asynchronous jobs using a JMS q
 
 ## Run the tutorial
 
+First, make sure you have already downloaded the source code and built the tutorials
+as described in the [quick start](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials#quick-start) section.
+
 ### From the command line
 
-Open a terminal and run the following commands:
+Open a terminal and run the following command:
 
 ```
-$>cd easy-batch-tutorials
-$>mvn install
 $>mvn exec:java -PrunJmsTutorial
 ```
 
@@ -29,8 +30,6 @@ To quit the application, type in "quit". After a timeout of 20 seconds, the job 
 
 ### From Your IDE
 
-* Import the `easy-batch-tutorials` project in your IDE
-* Resolve maven dependencies
 * Navigate to the `org.jeasy.batch.tutorials.advanced.jms` package
 * Run the `org.jeasy.batch.tutorials.advanced.jms.Launcher` class without any argument to launch the job
 * Run the `org.jeasy.batch.tutorials.advanced.jms.JMSSenderLauncher` class without any argument to launch the JMS message sender application

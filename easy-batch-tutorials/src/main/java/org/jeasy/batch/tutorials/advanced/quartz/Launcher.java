@@ -36,6 +36,7 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Scanner;
@@ -54,9 +55,10 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         // Build a batch job
+        Path datasource = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets.csv");
         Job job = new JobBuilder()
                 .named("my-job")
-                .reader(new FlatFileRecordReader(Paths.get("src/main/resources/data/tweets.csv")))
+                .reader(new FlatFileRecordReader(datasource))
                 .writer(new StandardOutputRecordWriter())
                 .build();
 

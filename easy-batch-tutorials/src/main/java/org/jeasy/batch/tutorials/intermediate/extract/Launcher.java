@@ -52,7 +52,7 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
 
         // Output file
-        Path tweets = Paths.get("target/tweets.csv");
+        Path tweets = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/target/tweets.csv");
 
         //Start embedded database server
         DatabaseUtil.startEmbeddedDatabase();

@@ -9,7 +9,7 @@ The `TweetSlowProcessor` simulates a long running processor.
 
 In this section, the goal is to run the application and monitor the job using a standard JMX client.
 
-* Run the tutorial with `mvn exec:java -PrunJobMonitoringTutorial` from the command line or by running the
+* Run the tutorial with `$>mvn exec:java -PrunJobMonitoringTutorial` from the command line or by running the
 `org.jeasy.batch.tutorials.advanced.jmx.JobMonitoringTutorial` class from your IDE
 
 * Using a JMX client, navigate to the `org.jeasy.batch.core.monitor:name=job` MBean
@@ -24,7 +24,7 @@ In this section, we will implement a custom listener to monitor execution progre
 
 Run the tutorial:
 
-* from the command line with `mvn exec:exec -PrunJobProgressTutorial`
+* from the command line with `$>mvn exec:exec -PrunJobProgressTutorial`
 * from your IDE by running the `org.jeasy.batch.tutorials.advanced.jmx.JobProgressTutorial` class with the following JMV parameters:
     - `-Dcom.sun.management.jmxremote.port=9999`
     - `-Dcom.sun.management.jmxremote.local.only=false`

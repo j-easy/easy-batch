@@ -48,7 +48,7 @@ public class LogicalPartitions {
     public static void main(String[] args) throws Exception {
 
         // Input file tweets.csv
-        Path tweets = Paths.get(("src/main/resources/data/tweets.csv"));
+        Path tweets = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets.csv");
 
         // Build worker jobs
         // worker job 1: process records 1-3 and filters records 4+
