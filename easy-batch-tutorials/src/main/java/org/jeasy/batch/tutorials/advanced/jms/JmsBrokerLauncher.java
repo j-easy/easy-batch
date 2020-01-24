@@ -24,30 +24,29 @@
 
 package org.jeasy.batch.tutorials.advanced.jms;
 
-import org.jeasy.batch.core.processor.RecordProcessor;
-import org.jeasy.batch.core.record.StringRecord;
-import org.jeasy.batch.jms.JmsRecord;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-import javax.jms.JMSException;
-import javax.jms.TextMessage;
+import org.apache.activemq.broker.BrokerService;
 
 /**
- * A JMS record processor that transforms the payload of a message to uppercase.
+* Main class to run the JMS Broker.
  *
- * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
- */
-public class JmsRecordProcessor implements RecordProcessor<JmsRecord, StringRecord> {
+* @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+*/
+public class JmsBrokerLauncher {
 
-    @Override
-    public StringRecord processRecord(JmsRecord record) throws Exception {
-        TextMessage jmsMessage = (TextMessage) record.getPayload();
-        String message;
-        try {
-            message = jmsMessage.getText().toUpperCase();
-            return new StringRecord(record.getHeader(), message);
-        } catch (JMSException e) {
-            throw new Exception("Unable to process JMS record " + record, e);
-        }
+    public static void main(String[] args) throws Exception {
+        BrokerService broker =  new BrokerService();
+        broker.addConnector("tcp://localhost:61616");
+        broker.start();
+        System.out.println("JMS broker started");
+        System.out.println("Press any key to stop the broker");
+        System.in.read();
+        File brokerDataDirectoryFile = broker.getDataDirectoryFile();
+        broker.stop();
+        Files.walk(brokerDataDirectoryFile.toPath()).map(Path::toFile).forEach(File::delete);
     }
 
 }

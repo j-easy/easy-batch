@@ -23,64 +23,76 @@
  */
 package org.jeasy.batch.jms;
 
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.Destination;
+import javax.jms.Message;
+import javax.jms.MessageProducer;
+import javax.jms.Session;
+
 import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.writer.RecordWriter;
-
-import javax.jms.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.jeasy.batch.core.util.Utils.checkNotNull;
 
 /**
- * Sends a Jms message to a given queue.
+ * Sends a Jms message to a given destination. This writer expects record payloads
+ * of type {@link javax.jms.Message}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JmsQueueRecordWriter implements RecordWriter {
+public class JmsRecordWriter implements RecordWriter {
 
-    private QueueConnectionFactory queueConnectionFactory;
-    private QueueConnection queueConnection;
-    private QueueSession queueSession;
-    private QueueSender queueSender;
-    private Queue queue;
+    private static final Logger LOGGER = LoggerFactory.getLogger(JmsRecordWriter.class.getSimpleName());
+
+    private ConnectionFactory connectionFactory;
+    private Connection connection;
+    private Session session;
+    private MessageProducer messageProducer;
+    private Destination destination;
 
     /**
-     * Create a new {@link JmsQueueRecordWriter}.
+     * Create a new {@link JmsRecordWriter}.
      *
-     * @param queueConnectionFactory to use to create connections.
-     * @param queue                  the target queue to write records to
+     * @param connectionFactory to use to create connections.
+     * @param destination                  the target destination to write records to
      */
-    public JmsQueueRecordWriter(final QueueConnectionFactory queueConnectionFactory, final Queue queue) {
-        checkNotNull(queueConnectionFactory, "queue connection factory");
-        checkNotNull(queue, "queue");
-        this.queueConnectionFactory = queueConnectionFactory;
-        this.queue = queue;
+    public JmsRecordWriter(final ConnectionFactory connectionFactory, final Destination destination) {
+        checkNotNull(connectionFactory, "connection factory");
+        checkNotNull(destination, "destination");
+        this.connectionFactory = connectionFactory;
+        this.destination = destination;
     }
 
     @Override
     public void open() throws Exception {
-        queueConnection = queueConnectionFactory.createQueueConnection();
-        queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-        queueSender = queueSession.createSender(queue);
+        LOGGER.debug("Opening JMS connection");
+        connection = connectionFactory.createConnection();
+        session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        messageProducer = session.createProducer(destination);
     }
 
     @Override
     public void writeRecords(Batch batch) throws Exception {
         for (Record record : batch) {
-            queueSender.send((Message) record.getPayload());
+            messageProducer.send((Message) record.getPayload());
         }
     }
 
     @Override
     public void close() throws Exception {
-        if (queueSender != null) {
-            queueSender.close();
+        if (messageProducer != null) {
+            messageProducer.close();
         }
-        if (queueSession != null) {
-            queueSession.close();
+        if (session != null) {
+            session.close();
         }
-        if (queueConnection != null) {
-            queueConnection.close();
+        if (connection != null) {
+            LOGGER.debug("Closing JMS connection");
+            connection.close();
         }
     }
 }

@@ -23,36 +23,42 @@
  */
 package org.jeasy.batch.jms;
 
+import java.time.LocalDateTime;
+
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.Destination;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.Session;
+
 import org.jeasy.batch.core.reader.RecordReader;
 import org.jeasy.batch.core.record.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jms.*;
-import java.time.LocalDateTime;
-
 import static org.jeasy.batch.core.util.Utils.checkArgument;
 import static org.jeasy.batch.core.util.Utils.checkNotNull;
 
 /**
- * A record reader that reads records from a JMS queue.
+ * A record reader that reads records from a JMS destination.
  *
- * This reader produces {@link JmsRecord} instances of type {@link javax.jms.Message}.
+ * This reader produces {@link JmsRecord} instances with a payload of type {@link Message}.
  *
  * It will stop reading records after a given timeout (defaults to {@link #DEFAULT_TIMEOUT}).
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JmsQueueRecordReader implements RecordReader {
+public class JmsRecordReader implements RecordReader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JmsQueueRecordReader.class.getSimpleName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JmsRecordReader.class.getSimpleName());
 
     private long currentRecordNumber;
-    private QueueConnectionFactory queueConnectionFactory;
-    private QueueConnection queueConnection;
-    private QueueSession queueSession;
-    private QueueReceiver queueReceiver;
-    private Queue queue;
+    private ConnectionFactory connectionFactory;
+    private Connection connection;
+    private Session session;
+    private MessageConsumer messageConsumer;
+    private Destination destination;
     private long timeout;
 
     /**
@@ -61,42 +67,43 @@ public class JmsQueueRecordReader implements RecordReader {
     public static final long DEFAULT_TIMEOUT = 60000;
 
     /**
-     * Create a new {@link JmsQueueRecordReader}.
+     * Create a new {@link JmsRecordReader}.
      *
-     * @param queueConnectionFactory to use to create connections
-     * @param queue                  to read records from
+     * @param connectionFactory to use to create connections
+     * @param destination                  to read records from
      */
-    public JmsQueueRecordReader(final QueueConnectionFactory queueConnectionFactory, final Queue queue) {
-        this(queueConnectionFactory, queue, DEFAULT_TIMEOUT);
+    public JmsRecordReader(final ConnectionFactory connectionFactory, final Destination destination) {
+        this(connectionFactory, destination, DEFAULT_TIMEOUT);
     }
 
     /**
-     * Create a new {@link JmsQueueRecordReader}.
+     * Create a new {@link JmsRecordReader}.
      *
-     * @param queueConnectionFactory to use to create connections
-     * @param queue                  to read records from
+     * @param connectionFactory to use to create connections
+     * @param destination                  to read records from
      * @param timeout                in milliseconds after which the reader will return {@code null}
      */
-    public JmsQueueRecordReader(final QueueConnectionFactory queueConnectionFactory, final Queue queue, final long timeout) {
-        checkNotNull(queueConnectionFactory, "queue connection factory");
-        checkNotNull(queue, "queue");
+    public JmsRecordReader(final ConnectionFactory connectionFactory, final Destination destination, final long timeout) {
+        checkNotNull(connectionFactory, "connection factory");
+        checkNotNull(destination, "destination");
         checkArgument(timeout > 0, "timeout must be positive");
-        this.queueConnectionFactory = queueConnectionFactory;
-        this.queue = queue;
+        this.connectionFactory = connectionFactory;
+        this.destination = destination;
         this.timeout = timeout;
     }
 
     @Override
     public void open() throws Exception {
-        queueConnection = queueConnectionFactory.createQueueConnection();
-        queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-        queueReceiver = queueSession.createReceiver(queue);
-        queueConnection.start();
+        LOGGER.debug("Opening JMS connection");
+        connection = connectionFactory.createConnection();
+        session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        messageConsumer = session.createConsumer(destination);
+        connection.start();
     }
 
     @Override
     public JmsRecord readRecord() throws Exception {
-        Message message = queueReceiver.receive(timeout); // return null when timed out (See its javadoc)
+        Message message = messageConsumer.receive(timeout); // return null when timed out (See its javadoc)
         if (message == null) {
             return null;
         }
@@ -105,24 +112,20 @@ public class JmsQueueRecordReader implements RecordReader {
     }
 
     private String getDataSourceName() {
-        try {
-            return "JMS queue: " + queue.getQueueName();
-        } catch (JMSException e) {
-            LOGGER.error("Unable to get jms queue name", e);
-            return "N/A";
-        }
+        return "JMS destination: " + destination.toString();
     }
 
     @Override
     public void close() throws Exception {
-        if (queueReceiver != null) {
-            queueReceiver.close();
+        if (messageConsumer != null) {
+            messageConsumer.close();
         }
-        if (queueSession != null) {
-            queueSession.close();
+        if (session != null) {
+            session.close();
         }
-        if (queueConnection != null) {
-            queueConnection.close();
+        if (connection != null) {
+            LOGGER.debug("Closing JMS connection");
+            connection.close();
         }
     }
 

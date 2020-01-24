@@ -24,30 +24,35 @@
 
 package org.jeasy.batch.tutorials.advanced.jms;
 
-import java.util.Scanner;
+import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobBuilder;
+import org.jeasy.batch.core.job.JobExecutor;
+import org.jeasy.batch.core.job.JobReport;
+import org.jeasy.batch.core.writer.StandardOutputRecordWriter;
+import org.jeasy.batch.jms.JmsRecordReader;
 
 /**
-* Main class to run the JMS message sender.
+* Main class to run the JMS tutorial.
  *
 * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
 */
-public class JMSSenderLauncher {
+public class JmsConsumerJobLauncher {
 
     public static void main(String[] args) throws Exception {
 
-        //init JMS factory
-        JMSUtil.initJMSFactory();
-        System.out.println("Type 'quit' to stop the application");
+        // Build a batch job
+        Job job = new JobBuilder()
+                .reader(new JmsRecordReader(JMSUtil.getQueueConnectionFactory(), JMSUtil.getQueue(), 10000))
+                .processor(new JmsRecordProcessor())
+                .writer(new StandardOutputRecordWriter())
+                .batchSize(1)
+                .build();
 
-        // Send some messages to JMS queue
-        Scanner scanner = new Scanner(System.in);
-        String input;
-        do {
-            input = scanner.nextLine();
-            JMSUtil.sendStringRecord(input);
-        } while (!input.equalsIgnoreCase("quit"));
-
-        System.exit(0);
+        // Execute the job and get report
+        JobExecutor jobExecutor = new JobExecutor();
+        JobReport report = jobExecutor.execute(job);
+        jobExecutor.shutdown();
+        System.out.println(report);
     }
 
 }

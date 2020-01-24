@@ -52,7 +52,7 @@ import static org.jeasy.batch.core.util.Utils.LINE_SEPARATOR;
 @SuppressWarnings("unchecked")
 public class JmsIntegrationTest {
 
-    public static final String EXPECTED_DATA_SOURCE_NAME = "JMS queue: q";
+    public static final String EXPECTED_DATA_SOURCE_NAME = "JMS destination: queue://q";
     public static final String MESSAGE_TEXT = "test";
 
     private BrokerService broker;
@@ -65,7 +65,7 @@ public class JmsIntegrationTest {
     }
 
     @Test
-    public void testJmsSupport() throws Exception {
+    public void testJmsRecordReader() throws Exception {
         Context jndiContext = getJndiContext();
         QueueConnectionFactory queueConnectionFactory = (QueueConnectionFactory) jndiContext.lookup("QueueConnectionFactory");
         Queue queue = (Queue) jndiContext.lookup("q");
@@ -82,7 +82,7 @@ public class JmsIntegrationTest {
 
         RecordCollector recordCollector = new RecordCollector();
         Job job = aNewJob()
-                .reader(new JmsQueueRecordReader(queueConnectionFactory, queue, 1000))
+                .reader(new JmsRecordReader(queueConnectionFactory, queue, 1000))
                 .processor(recordCollector)
                 .build();
 
@@ -126,7 +126,7 @@ public class JmsIntegrationTest {
         Job job = aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .processor(new JmsMessageTransformer(queueSession))
-                .writer(new JmsQueueRecordWriter(queueConnectionFactory, queue))
+                .writer(new JmsRecordWriter(queueConnectionFactory, queue))
                 .build();
 
         new JobExecutor().execute(job);

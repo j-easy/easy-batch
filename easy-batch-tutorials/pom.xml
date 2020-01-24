@@ -560,8 +560,9 @@
                 </plugins>
             </build>
         </profile>
+        <!-- JMS tutorial profiles -->
         <profile>
-            <id>runJmsTutorial</id>
+            <id>runJmsBroker</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
                 <plugins>
@@ -570,14 +571,14 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin.version}</version>
                         <configuration>
-                            <mainClass>org.jeasy.batch.tutorials.advanced.jms.Launcher</mainClass>
+                            <mainClass>org.jeasy.batch.tutorials.advanced.jms.JmsBrokerLauncher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
         <profile>
-            <id>runJmsSender</id>
+            <id>runJmsProducerJob</id>
             <build>
                 <defaultGoal>exec:java</defaultGoal>
                 <plugins>
@@ -586,7 +587,26 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>${exec-maven-plugin.version}</version>
                         <configuration>
-                            <mainClass>org.jeasy.batch.tutorials.advanced.jms.JMSSenderLauncher</mainClass>
+                            <mainClass>org.jeasy.batch.tutorials.advanced.jms.JmsProducerJobLauncher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/data/tweets.csv</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>runJmsConsumerJob</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin.version}</version>
+                        <configuration>
+                            <mainClass>org.jeasy.batch.tutorials.advanced.jms.JmsConsumerJobLauncher</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>

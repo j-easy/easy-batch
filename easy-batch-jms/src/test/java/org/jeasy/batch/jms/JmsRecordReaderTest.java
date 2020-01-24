@@ -38,68 +38,57 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class JmsQueueRecordReaderTest {
+public class JmsRecordReaderTest {
 
-    private JmsQueueRecordReader jmsQueueRecordReader;
+    private JmsRecordReader jmsRecordReader;
     private long timout = 10000;
 
     @Mock
-    private QueueConnectionFactory queueConnectionFactory;
+    private ConnectionFactory connectionFactory;
     @Mock
-    private Queue queue;
+    private Destination destination;
     @Mock
-    private QueueConnection queueConnection;
+    private Connection connection;
     @Mock
-    private QueueSession queueSession;
+    private Session session;
     @Mock
-    private QueueReceiver queueReceiver;
+    private MessageConsumer messageConsumer;
     @Mock
     private Message message;
 
     @Before
     public void setUp() throws Exception {
-        jmsQueueRecordReader = new JmsQueueRecordReader(queueConnectionFactory, queue, timout);
+        jmsRecordReader = new JmsRecordReader(connectionFactory, destination, timout);
 
-        when(queue.getQueueName()).thenReturn("queue");
-        when(queueConnectionFactory.createQueueConnection()).thenReturn(queueConnection);
-        when(queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)).thenReturn(queueSession);
-        when(queueSession.createReceiver(queue)).thenReturn(queueReceiver);
-        when(queueReceiver.receive(timout)).thenReturn(message);
+        when(connectionFactory.createConnection()).thenReturn(connection);
+        when(connection.createSession(false, Session.AUTO_ACKNOWLEDGE)).thenReturn(session);
+        when(session.createConsumer(destination)).thenReturn(messageConsumer);
+        when(messageConsumer.receive(timout)).thenReturn(message);
     }
 
     @Test
     public void testOpen() throws Exception {
-        jmsQueueRecordReader.open();
+        jmsRecordReader.open();
 
-        verify(queueConnectionFactory).createQueueConnection();
-        verify(queueConnection).createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-        verify(queueSession).createReceiver(queue);
-        verify(queueConnection).start();
+        verify(connectionFactory).createConnection();
+        verify(connection).createSession(false, Session.AUTO_ACKNOWLEDGE);
+        verify(session).createConsumer(destination);
+        verify(connection).start();
     }
 
     @Test
     public void testReadNextRecord() throws Exception {
-        jmsQueueRecordReader.open();
+        jmsRecordReader.open();
 
-        Record record = jmsQueueRecordReader.readRecord();
+        Record record = jmsRecordReader.readRecord();
 
-        verify(queueReceiver).receive(timout);
+        verify(messageConsumer).receive(timout);
         assertThat(record).isNotNull().isInstanceOf(JmsRecord.class);
         assertThat(record.getPayload()).isEqualTo(message);
     }
 
-    @Test
-    public void dataSourceNameShouldBeNAWhenUnableToGetQueueName() throws Exception {
-        when(queue.getQueueName()).thenThrow(new JMSException("artificial exception for test"));
-
-        jmsQueueRecordReader.open();
-
-        Record record = jmsQueueRecordReader.readRecord();
-        assertThat(record.getHeader().getSource()).isEqualTo("N/A");
-    }
-
     @After
     public void tearDown() throws Exception {
-        jmsQueueRecordReader.close();
+        jmsRecordReader.close();
     }
 }

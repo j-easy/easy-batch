@@ -35,18 +35,18 @@ import javax.jms.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class JmsQueueRecordWriterTest {
+public class JmsRecordWriterTest {
 
     @Mock
-    private QueueConnectionFactory queueConnectionFactory;
+    private ConnectionFactory connectionFactory;
     @Mock
-    private QueueConnection queueConnection;
+    private Connection connection;
     @Mock
-    private QueueSession queueSession;
+    private Session session;
     @Mock
-    private Queue queue;
+    private Destination destination;
     @Mock
-    private QueueSender queueSender;
+    private MessageProducer messageProducer;
     @Mock
     private Message message;
     @Mock
@@ -54,30 +54,30 @@ public class JmsQueueRecordWriterTest {
     @Mock
     private JMSException jmsException;
 
-    private JmsQueueRecordWriter jmsQueueRecordWriter;
+    private JmsRecordWriter jmsRecordWriter;
 
     @Before
     public void setUp() throws Exception {
-        when(queueConnectionFactory.createQueueConnection()).thenReturn(queueConnection);
-        when(queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)).thenReturn(queueSession);
-        when(queueSession.createSender(queue)).thenReturn(queueSender);
+        when(connectionFactory.createConnection()).thenReturn(connection);
+        when(connection.createSession(false, Session.AUTO_ACKNOWLEDGE)).thenReturn(session);
+        when(session.createProducer(destination)).thenReturn(messageProducer);
         when(record.getPayload()).thenReturn(message);
 
-        jmsQueueRecordWriter = new JmsQueueRecordWriter(queueConnectionFactory, queue);
-        jmsQueueRecordWriter.open();
+        jmsRecordWriter = new JmsRecordWriter(connectionFactory, destination);
+        jmsRecordWriter.open();
     }
 
     @Test
     public void testProcessRecord() throws Exception {
-        jmsQueueRecordWriter.writeRecords(new Batch(record));
+        jmsRecordWriter.writeRecords(new Batch(record));
 
-        verify(queueSender).send(message);
+        verify(messageProducer).send(message);
     }
 
     @Test(expected = Exception.class)
     public void testRecordProcessingWithError() throws Exception {
-        doThrow(jmsException).when(queueSender).send(message);
+        doThrow(jmsException).when(messageProducer).send(message);
 
-        jmsQueueRecordWriter.writeRecords(new Batch(record));
+        jmsRecordWriter.writeRecords(new Batch(record));
     }
 }

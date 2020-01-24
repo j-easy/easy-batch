@@ -2,7 +2,7 @@
 
 ## Description
 
-This tutorial is a show case of how to implement asynchronous jobs using a JMS queue.
+This tutorial shows how to implement asynchronous jobs using a JMS queue.
 
 ## Run the tutorial
 
@@ -14,22 +14,33 @@ as described in the [quick start](https://github.com/j-easy/easy-batch/tree/mast
 Open a terminal and run the following command:
 
 ```
-$>mvn exec:java -PrunJmsTutorial
+$>mvn exec:java -PrunJmsBroker
 ```
 
-This will start an embedded JMS broker listening to incoming messages.
+This will start an embedded JMS broker listening to incoming messages. You can stop
+the broker by pressing any key at the end of the tutorial.
 
 Open a second terminal and run the following command:
 
 ```
-$>mvn exec:java -PrunJmsSender
+$>mvn exec:java -PrunJmsProducerJob
 ```
 
-You will be able to type in tweets in the console to post them to the JMS queue and see how the job will process them as they come.
-To quit the application, type in "quit". After a timeout of 20 seconds, the job will be completed.
+This will launch a batch job that reads tweets from a flat file and send them to
+a JMS queue.
+
+Open a third terminal and run the following command:
+
+```
+$>mvn exec:java -PrunJmsConsumerJob
+```
+
+This will launch a batch job that reads tweets from the queue and writes them in
+uppercase to the standard output. After a timeout of 10 seconds, the job will be completed.
 
 ### From Your IDE
 
 * Navigate to the `org.jeasy.batch.tutorials.advanced.jms` package
-* Run the `org.jeasy.batch.tutorials.advanced.jms.Launcher` class without any argument to launch the job
-* Run the `org.jeasy.batch.tutorials.advanced.jms.JMSSenderLauncher` class without any argument to launch the JMS message sender application
+* Run the `org.jeasy.batch.tutorials.advanced.jms.JmsBrokerLauncher` class without any argument to start the JMS broker
+* Run the `org.jeasy.batch.tutorials.advanced.jms.JmsProducerJobLauncher` class without any argument to launch the producer job
+* Run the `org.jeasy.batch.tutorials.advanced.jms.JmsConsumerJobLauncher` class without any argument to launch the consumer job

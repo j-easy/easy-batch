@@ -24,71 +24,31 @@
 
 package org.jeasy.batch.tutorials.advanced.jms;
 
-import org.apache.activemq.broker.BrokerService;
+import java.util.Properties;
 
-import javax.jms.*;
+import javax.jms.Queue;
+import javax.jms.QueueConnectionFactory;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Properties;
 
 /**
  * JMS Utilities class.
  */
 public class JMSUtil {
 
-    public static QueueConnectionFactory queueConnectionFactory;
-
-    public static Queue queue;
-
-    private static QueueSender queueSender;
-
-    private static QueueSession queueSession;
-
-    private static BrokerService broker;
-
-    public static void initJMSFactory() throws Exception {
-
-        Properties p = new Properties();
-        p.load(JMSUtil.class.getResourceAsStream(("/org/jeasy/batch/tutorials/advanced/jms/jndi.properties")));
-        Context jndiContext = new InitialContext(p);
-
-        queueConnectionFactory = (QueueConnectionFactory) jndiContext.lookup("QueueConnectionFactory");
-        queue = (Queue) jndiContext.lookup("q");
-
-        QueueConnection queueConnection = queueConnectionFactory.createQueueConnection();
-        queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-        queueSender = queueSession.createSender(queue);
-        queueConnection.start();
-
+    public static QueueConnectionFactory getQueueConnectionFactory() throws Exception {
+        Context jndiContext = getJndiContext();
+        return (QueueConnectionFactory) jndiContext.lookup("QueueConnectionFactory");
     }
 
-    public static void startEmbeddedBroker() throws Exception {
-        broker = new BrokerService();
-        broker.addConnector("tcp://localhost:61616");
-        broker.start();
+    public static Queue getQueue() throws Exception {
+        Context jndiContext = getJndiContext();
+        return (Queue) jndiContext.lookup("q");
     }
 
-    public static void sendStringRecord(String jmsMessage) throws JMSException {
-        TextMessage message = queueSession.createTextMessage();
-        message.setText(jmsMessage);
-        queueSender.send(message);
-        System.out.println("Message '" + jmsMessage + "' sent to JMS queue");
-    }
-
-    public static void stopEmbeddedBroker() throws Exception {
-        File brokerDataDirectoryFile = broker.getDataDirectoryFile();
-        broker.stop();
-        Files.walk(brokerDataDirectoryFile.toPath()).map(Path::toFile).forEach(File::delete);
-    }
-
-    public static QueueConnectionFactory getQueueConnectionFactory() {
-        return queueConnectionFactory;
-    }
-
-    public static Queue getQueue() {
-        return queue;
+    private static Context getJndiContext() throws Exception {
+        Properties properties = new Properties();
+        properties.load(JMSUtil.class.getResourceAsStream(("/org/jeasy/batch/tutorials/advanced/jms/jndi.properties")));
+        return new InitialContext(properties);
     }
 }
