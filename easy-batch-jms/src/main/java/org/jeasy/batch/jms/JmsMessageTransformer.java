@@ -26,7 +26,7 @@ package org.jeasy.batch.jms;
 import org.jeasy.batch.core.processor.RecordProcessor;
 import org.jeasy.batch.core.record.StringRecord;
 
-import javax.jms.QueueSession;
+import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import static org.jeasy.batch.core.util.Utils.checkNotNull;
@@ -38,22 +38,21 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  */
 public class JmsMessageTransformer implements RecordProcessor<StringRecord, JmsRecord> {
 
-    private QueueSession queueSession;
+    private Session session;
 
     /**
      * Create a new {@link JmsMessageTransformer}.
      *
-     * @param queueSession to create text messages
+     * @param session to create text messages
      */
-    public JmsMessageTransformer(final QueueSession queueSession) {
-        checkNotNull(queueSession, "queue session");
-        this.queueSession = queueSession;
+    public JmsMessageTransformer(final Session session) {
+        checkNotNull(session, "session");
+        this.session = session;
     }
 
     @Override
     public JmsRecord processRecord(final StringRecord record) throws Exception {
-        TextMessage message;
-        message = queueSession.createTextMessage();
+        TextMessage message = session.createTextMessage();
         message.setText(record.getPayload());
         return new JmsRecord(record.getHeader(), message);
     }
