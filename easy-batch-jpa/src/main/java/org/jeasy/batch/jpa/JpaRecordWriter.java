@@ -60,6 +60,7 @@ public class JpaRecordWriter implements RecordWriter {
 
     @Override
     public void open() {
+        LOGGER.debug("Creating a JPA entity manager");
         entityManager = entityManagerFactory.createEntityManager();
     }
 
@@ -85,7 +86,7 @@ public class JpaRecordWriter implements RecordWriter {
     @Override
     public void close() {
         if (entityManager != null ) {
-            LOGGER.debug("Closing entity manager");
+            LOGGER.debug("Closing JPA entity manager");
             entityManager.close();
         }
     }

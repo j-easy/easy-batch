@@ -78,6 +78,7 @@ public class JdbcRecordReader implements RecordReader {
     @Override
     public void open() throws Exception {
         currentRecordNumber = 0;
+        LOGGER.debug("Opening JDBC connection");
         connection = dataSource.getConnection();
         statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         if (maxRows >= 1) {
@@ -130,6 +131,7 @@ public class JdbcRecordReader implements RecordReader {
             statement.close();
         }
         if (connection != null) {
+            LOGGER.debug("Closing JDBC connection");
             connection.close();
         }
     }

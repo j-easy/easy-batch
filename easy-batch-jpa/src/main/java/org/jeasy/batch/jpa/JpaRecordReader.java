@@ -26,6 +26,8 @@ package org.jeasy.batch.jpa;
 import org.jeasy.batch.core.reader.RecordReader;
 import org.jeasy.batch.core.record.GenericRecord;
 import org.jeasy.batch.core.record.Header;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -48,6 +50,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
 public class JpaRecordReader<T> implements RecordReader {
 
     public static final int DEFAULT_FETCH_SIZE = 1000;
+    private static final Logger LOGGER = LoggerFactory.getLogger(JpaRecordReader.class.getSimpleName());
 
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
@@ -83,6 +86,7 @@ public class JpaRecordReader<T> implements RecordReader {
     public void open() {
         currentRecordNumber = 0;
         offset = 0;
+        LOGGER.debug("Creating a JPA entity manager");
         entityManager = entityManagerFactory.createEntityManager();
         typedQuery = entityManager.createQuery(query, type);
         typedQuery.setFirstResult(offset);
@@ -116,6 +120,7 @@ public class JpaRecordReader<T> implements RecordReader {
 
     @Override
     public void close() {
+        LOGGER.debug("Closing JPA entity manager");
         entityManager.close();
     }
 

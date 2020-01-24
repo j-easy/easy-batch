@@ -68,6 +68,7 @@ public class JdbcRecordWriter implements RecordWriter {
 
     @Override
     public void open() throws Exception {
+        LOGGER.debug("Opening JDBC connection");
         connection = dataSource.getConnection();
         connection.setAutoCommit(false);
     }

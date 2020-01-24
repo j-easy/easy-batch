@@ -31,6 +31,8 @@ import org.jeasy.batch.core.reader.RecordReader;
 import org.jeasy.batch.core.record.GenericRecord;
 import org.jeasy.batch.core.record.Header;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 
@@ -47,6 +49,8 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  */
 
 public class HibernateRecordReader<T> implements RecordReader {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HibernateRecordReader.class.getSimpleName());
 
     private SessionFactory sessionFactory;
     private Session session;
@@ -73,6 +77,7 @@ public class HibernateRecordReader<T> implements RecordReader {
 
     @Override
     public void open() {
+        LOGGER.debug("Opening a Hibernate session");
         session = sessionFactory.openSession();
         currentRecordNumber = 0;
         Query<T> hibernateQuery = session.createQuery(query);
@@ -106,7 +111,10 @@ public class HibernateRecordReader<T> implements RecordReader {
 
     @Override
     public void close() {
-        session.close();
+        if (session != null) {
+            LOGGER.debug("Closing Hibernate session");
+            session.close();
+        }
     }
 
     /**

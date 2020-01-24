@@ -59,6 +59,7 @@ public class HibernateRecordWriter implements RecordWriter {
 
     @Override
     public void open() {
+        LOGGER.debug("Opening a Hibernate session");
         session = sessionFactory.openSession();
     }
 
@@ -85,11 +86,11 @@ public class HibernateRecordWriter implements RecordWriter {
     public void close() {
         try {
             if (session != null) {
-                LOGGER.debug("Closing session");
+                LOGGER.debug("Closing Hibernate session");
                 session.close();
             }
         } catch (HibernateException e) {
-            LOGGER.error("Unable to close session", e);
+            LOGGER.error("Unable to close Hibernate session", e);
         }
     }
 }
