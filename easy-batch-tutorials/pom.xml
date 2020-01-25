@@ -613,6 +613,27 @@
             </build>
         </profile>
 
+        <profile>
+            <id>runRestTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin.version}</version>
+                        <configuration>
+                            <mainClass>org.jeasy.batch.tutorials.advanced.rest.Launcher</mainClass>
+                            <arguments>
+                                <argument>14</argument> <!-- milestone ID of v6.0.0 (using milestone name does not seem to work) -->
+                                <argument>${project.build.directory}/release-notes.md</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
     </profiles>
 
 </project>
