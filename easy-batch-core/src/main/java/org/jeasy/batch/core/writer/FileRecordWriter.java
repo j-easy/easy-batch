@@ -123,7 +123,9 @@ public class FileRecordWriter implements RecordWriter {
             outputStreamWriter.write(lineSeparator);
             outputStreamWriter.flush();
         }
-        outputStreamWriter.close();
+        if (outputStreamWriter != null) {
+            outputStreamWriter.close();
+        }
     }
 
     /**
