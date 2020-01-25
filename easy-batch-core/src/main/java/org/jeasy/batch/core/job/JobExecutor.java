@@ -25,6 +25,7 @@ package org.jeasy.batch.core.job;
 
 import org.jeasy.batch.core.util.Utils;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -38,11 +39,12 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
 /**
  * Main class to execute {@link Job}s.
  *
- * <strong>Job executors must be explicitly shutdown using {@link JobExecutor#shutdown()}</strong>
+ * <strong>Job executors must be explicitly shutdown using {@link JobExecutor#shutdown()}
+ * if not used in a try-with-resources bloc</strong>
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JobExecutor {
+public class JobExecutor implements AutoCloseable {
 
     private ExecutorService executorService;
 
@@ -140,4 +142,8 @@ public class JobExecutor {
         }
     }
 
+    @Override
+    public void close() throws IOException {
+        this.shutdown();
+    }
 }
