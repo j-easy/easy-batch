@@ -23,7 +23,7 @@ as described in the [quick start](https://github.com/j-easy/easy-batch/tree/mast
 
 ### From the command line
 
-Open a terminal and run the following commands:
+Open a terminal and run the following command:
 
 ```
 $>mvn exec:java -PrunRecipesTutorial
