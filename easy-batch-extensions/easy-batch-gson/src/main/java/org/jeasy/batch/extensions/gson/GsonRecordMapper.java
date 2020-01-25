@@ -44,6 +44,15 @@ public class GsonRecordMapper<T> implements RecordMapper<JsonRecord, Record<T>> 
     private Class<T> type;
 
     /**
+     * Create a new {@link GsonRecordMapper} with a default {@link Gson} instance.
+     * @param type of the target object
+     */
+    public GsonRecordMapper(Class<T> type) {
+        this.type = type;
+        this.mapper = new Gson();
+    }
+
+    /**
      * Create a new {@link GsonRecordMapper}.
      *
      * @param mapper to use

@@ -24,6 +24,7 @@
 package org.jeasy.batch.json;
 
 import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 
 import org.jeasy.batch.core.mapper.RecordMapper;
 import org.jeasy.batch.core.record.GenericRecord;
@@ -42,6 +43,15 @@ public class JsonRecordMapper<P> implements RecordMapper<JsonRecord, Record<P>> 
 
 	private Jsonb jsonb;
 	private Class<P> type;
+
+	/**
+	 * Create a new {@link JsonRecordMapper} with a default {@link Jsonb} instance.
+	 * @param type of the target object
+	 */
+	public JsonRecordMapper(Class<P> type) {
+		this.type = type;
+		this.jsonb = JsonbBuilder.create();
+	}
 
 	/**
 	 * Create a new {@link JsonRecordMapper}.

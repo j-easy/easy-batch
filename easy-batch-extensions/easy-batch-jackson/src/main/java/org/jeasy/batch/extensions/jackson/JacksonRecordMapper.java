@@ -44,6 +44,15 @@ public class JacksonRecordMapper<T> implements RecordMapper<JsonRecord, Record<T
     private Class<T> type;
 
     /**
+     * Create a new {@link JacksonRecordMapper} with a default {@link ObjectMapper} instance.
+     * @param type of the target object
+     */
+    public JacksonRecordMapper(Class<T> type) {
+        this.type = type;
+        this.mapper = new ObjectMapper();
+    }
+
+    /**
      * Create a new {@link JacksonRecordMapper}.
      *
      * @param mapper to use
