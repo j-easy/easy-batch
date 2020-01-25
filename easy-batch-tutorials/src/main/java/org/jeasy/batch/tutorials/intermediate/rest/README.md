@@ -29,8 +29,8 @@ $>mvn exec:java -PrunRestTutorial
 
 ### From Your IDE
 
-* Navigate to the `org.jeasy.batch.tutorials.advanced.rest` package
-* Run the `org.jeasy.batch.tutorials.advanced.rest.Launcher` class without any argument
+* Navigate to the `org.jeasy.batch.tutorials.intermediate.rest` package
+* Run the `org.jeasy.batch.tutorials.intermediate.rest.Launcher` class without any argument
 
 ## Check the result
 

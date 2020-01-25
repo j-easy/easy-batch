@@ -1,4 +1,4 @@
-package org.jeasy.batch.tutorials.advanced.rest;
+package org.jeasy.batch.tutorials.intermediate.rest;
 
 import org.jeasy.batch.core.processor.RecordProcessor;
 import org.jeasy.batch.core.record.Record;
