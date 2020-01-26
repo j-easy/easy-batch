@@ -634,6 +634,27 @@
             </build>
         </profile>
 
+        <profile>
+            <id>runBatchScanningTutorial</id>
+            <build>
+                <defaultGoal>exec:java</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin.version}</version>
+                        <configuration>
+                            <mainClass>org.jeasy.batch.tutorials.advanced.scanning.Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/data/tweets-with-invalid-records.csv</argument>
+                                <argument>${project.build.directory}/skipped-tweets.csv</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
     </profiles>
 
 </project>

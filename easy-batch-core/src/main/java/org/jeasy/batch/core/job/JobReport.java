@@ -46,14 +46,15 @@ public class JobReport implements Serializable {
                     "\tBatch size = {2}" + Utils.LINE_SEPARATOR +
                     "\tError threshold = {3}" + Utils.LINE_SEPARATOR +
                     "\tJmx monitoring = {4}" + Utils.LINE_SEPARATOR +
+                    "\tBatch scanning = {5}" + Utils.LINE_SEPARATOR +
                     "Metrics:" + Utils.LINE_SEPARATOR +
-                    "\tStart time = {5}" + Utils.LINE_SEPARATOR +
-                    "\tEnd time = {6}" + Utils.LINE_SEPARATOR +
-                    "\tDuration = {7}" + Utils.LINE_SEPARATOR +
-                    "\tRead count = {8}" + Utils.LINE_SEPARATOR +
-                    "\tWrite count = {9}" + Utils.LINE_SEPARATOR +
-                    "\tFilter count = {10}" + Utils.LINE_SEPARATOR +
-                    "\tError count = {11}";
+                    "\tStart time = {6}" + Utils.LINE_SEPARATOR +
+                    "\tEnd time = {7}" + Utils.LINE_SEPARATOR +
+                    "\tDuration = {8}" + Utils.LINE_SEPARATOR +
+                    "\tRead count = {9}" + Utils.LINE_SEPARATOR +
+                    "\tWrite count = {10}" + Utils.LINE_SEPARATOR +
+                    "\tFilter count = {11}" + Utils.LINE_SEPARATOR +
+                    "\tError count = {12}";
 
     private String jobName;
 
@@ -123,6 +124,7 @@ public class JobReport implements Serializable {
                 parameters.getBatchSize(),
                 Utils.formatErrorThreshold(parameters.getErrorThreshold()),
                 parameters.isJmxMonitoring(),
+                parameters.isBatchScanningEnabled(),
                 Utils.formatTime(metrics.getStartTime()),
                 Utils.formatTime(metrics.getEndTime()),
                 Utils.formatDuration(metrics.getDuration()),

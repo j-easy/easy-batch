@@ -23,6 +23,7 @@
  */
 package org.jeasy.batch.core.job;
 
+import org.assertj.core.api.Assertions;
 import org.jeasy.batch.core.filter.RecordFilter;
 import org.jeasy.batch.core.listener.BatchListener;
 import org.jeasy.batch.core.listener.JobListener;
@@ -50,6 +51,8 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -677,6 +680,123 @@ public class BatchJobTest {
         verify(firstProcessor, never()).processRecord(record2);
         verify(pipelineListener).afterRecordProcessing(record1, record1);
         verify(pipelineListener).afterRecordProcessing(record2, null);
+    }
+
+    /*
+     * Batch scanning tests
+     */
+
+    @Test
+    public void whenWriterThrowsExceptionAndBatchScanningIsActivated_thenShouldRewriteRecordsOneByOne() {
+        class SavingRecordWriter implements RecordWriter {
+            private List<Batch> batches = new ArrayList<>();
+
+            @Override
+            public void open() {
+
+            }
+
+            @Override
+            public void writeRecords(Batch batch) throws Exception {
+                batches.add(batch);
+                if (batch.size() == 2) {
+                    throw new Exception("Expected");
+                }
+            }
+
+            @Override
+            public void close() {
+
+            }
+
+            public List<Batch> getBatches() {
+                return batches;
+            }
+        }
+
+        IterableRecordReader recordReader = new IterableRecordReader(Arrays.asList(1, 2, 3, 4));
+        SavingRecordWriter recordWriter = new SavingRecordWriter();
+        Job job = new JobBuilder()
+                .batchSize(2)
+                .enableBatchScanning(true)
+                .reader(recordReader)
+                .writer(recordWriter)
+                .build();
+
+        // when
+        job.call();
+
+        // then
+        // Expected result: 6 batches: [1,2], [1], [2], [3,4], [3], [4]
+
+        List<Batch> batches = recordWriter.getBatches();
+        Assertions.assertThat(batches).hasSize(6);
+
+        // batch 1: [1,2]
+        Batch batch = batches.get(0);
+        Iterator<Record> iterator = batch.iterator();
+        Record record = iterator.next();
+        Assertions.assertThat(record.getHeader().getNumber()).isEqualTo(1);
+        Assertions.assertThat(record.getHeader().isScanned()).isTrue();
+        Assertions.assertThat(record.getPayload()).isEqualTo(1);
+
+        record = iterator.next();
+        Assertions.assertThat(record.getHeader().getNumber()).isEqualTo(2);
+        Assertions.assertThat(record.getHeader().isScanned()).isTrue();
+        Assertions.assertThat(record.getPayload()).isEqualTo(2);
+
+        Assertions.assertThat(iterator.hasNext()).isFalse();
+
+        // batch 2: [1] (scanned record)
+        batch = batches.get(1);
+        iterator = batch.iterator();
+        record = iterator.next();
+        Assertions.assertThat(record.getHeader().getNumber()).isEqualTo(1);
+        Assertions.assertThat(record.getHeader().isScanned()).isTrue();
+        Assertions.assertThat(record.getPayload()).isEqualTo(1);
+        Assertions.assertThat(iterator.hasNext()).isFalse();
+
+        // batch 3: [2] (scanned record)
+        batch = batches.get(2);
+        iterator = batch.iterator();
+        record = iterator.next();
+        Assertions.assertThat(record.getHeader().getNumber()).isEqualTo(2);
+        Assertions.assertThat(record.getHeader().isScanned()).isTrue();
+        Assertions.assertThat(record.getPayload()).isEqualTo(2);
+        Assertions.assertThat(iterator.hasNext()).isFalse();
+
+        // batch 4: [3,4]
+        batch = batches.get(3);
+        iterator = batch.iterator();
+        record = iterator.next();
+        Assertions.assertThat(record.getHeader().getNumber()).isEqualTo(3);
+        Assertions.assertThat(record.getHeader().isScanned()).isTrue();
+        Assertions.assertThat(record.getPayload()).isEqualTo(3);
+
+        record = iterator.next();
+        Assertions.assertThat(record.getHeader().getNumber()).isEqualTo(4);
+        Assertions.assertThat(record.getHeader().isScanned()).isTrue();
+        Assertions.assertThat(record.getPayload()).isEqualTo(4);
+
+        Assertions.assertThat(iterator.hasNext()).isFalse();
+
+        // batch 5: [3] (scanned record)
+        batch = batches.get(4);
+        iterator = batch.iterator();
+        record = iterator.next();
+        Assertions.assertThat(record.getHeader().getNumber()).isEqualTo(3);
+        Assertions.assertThat(record.getHeader().isScanned()).isTrue();
+        Assertions.assertThat(record.getPayload()).isEqualTo(3);
+        Assertions.assertThat(iterator.hasNext()).isFalse();
+
+        // batch 6: [4] (scanned record)
+        batch = batches.get(5);
+        iterator = batch.iterator();
+        record = iterator.next();
+        Assertions.assertThat(record.getHeader().getNumber()).isEqualTo(4);
+        Assertions.assertThat(record.getHeader().isScanned()).isTrue();
+        Assertions.assertThat(record.getPayload()).isEqualTo(4);
+        Assertions.assertThat(iterator.hasNext()).isFalse();
     }
 
     /*

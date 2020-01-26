@@ -68,6 +68,7 @@ public class JobReportTest {
 						"\tBatch size = 100" + LINE_SEPARATOR +
 						"\tError threshold = N/A" + LINE_SEPARATOR +
 						"\tJmx monitoring = false" + LINE_SEPARATOR +
+						"\tBatch scanning = false" + LINE_SEPARATOR +
 						"Metrics:" + LINE_SEPARATOR +
 						"\tStart time = 2020-01-20 10:15:20" + LINE_SEPARATOR +
 						"\tEnd time = 2020-01-20 10:15:30" + LINE_SEPARATOR +

@@ -188,6 +188,17 @@ public final class JobBuilder {
     }
 
     /**
+     * Activate batch scanning.
+     *
+     * @param batchScanning true to enable batch scanning
+     * @return the job builder
+     */
+    public JobBuilder enableBatchScanning(final boolean batchScanning) {
+        parameters.setBatchScanningEnabled(batchScanning);
+        return this;
+    }
+
+    /**
      * Set the batch size.
      *
      * @param batchSize the batch size

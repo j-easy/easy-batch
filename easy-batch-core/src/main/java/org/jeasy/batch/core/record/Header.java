@@ -35,6 +35,7 @@ public class Header {
     private Long number;
     private String source;
     private LocalDateTime creationDate;
+    private boolean scanned;
 
     /**
      * @param number       physical record number in the data source (if defined).
@@ -68,12 +69,26 @@ public class Header {
         return creationDate;
     }
 
+    /**
+     * Return true if the record has been part of a batch scanning operation.
+     *
+     * @return true if the record has been part of a batch scanning operation.
+     */
+    public boolean isScanned() {
+        return scanned;
+    }
+
+    public void setScanned(boolean scanned) {
+        this.scanned = scanned;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("number=").append(number);
         sb.append(", source=\"").append(source).append('\"');
         sb.append(", creationDate=\"").append(creationDate).append('\"');
+        sb.append(", scanned=\"").append(scanned).append('\"');
         return sb.toString();
     }
 }

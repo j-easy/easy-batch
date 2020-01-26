@@ -135,6 +135,7 @@ class BatchJob implements Job {
         LOGGER.debug("Batch size: {}", parameters.getBatchSize());
         LOGGER.debug("Error threshold: {}", Utils.formatErrorThreshold(parameters.getErrorThreshold()));
         LOGGER.debug("Jmx monitoring: {}", parameters.isJmxMonitoring());
+        LOGGER.debug("Batch scanning: {}", parameters.isBatchScanningEnabled());
         registerJobMonitor();
     }
 
@@ -250,8 +251,32 @@ class BatchJob implements Job {
         } catch (Exception e) {
             recordWriterListener.onRecordWritingException(batch, e);
             batchListener.onBatchWritingException(batch, e);
-            throw new BatchWritingException("Unable to write records", e);
+            report.setLastError(e);
+            if (parameters.isBatchScanningEnabled()) {
+                scan(batch);
+            } else {
+                throw new BatchWritingException("Unable to write records", e);
+            }
         }
+    }
+
+    private void scan(Batch batch) {
+        LOGGER.debug("Scanning records {}", batch);
+        for (Record record : batch) {
+            record.getHeader().setScanned(true);
+            Batch scannedBatch = new Batch(record);
+            try {
+                recordWriterListener.beforeRecordWriting(scannedBatch);
+                recordWriter.writeRecords(scannedBatch);
+                recordWriterListener.afterRecordWriting(scannedBatch);
+                metrics.incrementWriteCount(scannedBatch.size());
+            } catch (Exception exception) {
+                recordWriterListener.onRecordWritingException(scannedBatch, exception);
+                metrics.incrementErrorCount();
+                report.setLastError(exception);
+            }
+        }
+        LOGGER.debug("End of records scanning");
     }
 
     private boolean isInterrupted() {

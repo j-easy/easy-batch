@@ -53,6 +53,8 @@ public class JobParameters implements Serializable {
 
     private int batchSize;
 
+    private boolean batchScanningEnabled;
+
     public JobParameters() {
         this.errorThreshold = DEFAULT_ERROR_THRESHOLD;
         this.batchSize = DEFAULT_BATCH_SIZE;
@@ -80,5 +82,13 @@ public class JobParameters implements Serializable {
 
     public void setBatchSize(int batchSize) {
         this.batchSize = batchSize;
+    }
+
+    public boolean isBatchScanningEnabled() {
+        return batchScanningEnabled;
+    }
+
+    public void setBatchScanningEnabled(boolean batchScanningEnabled) {
+        this.batchScanningEnabled = batchScanningEnabled;
     }
 }
