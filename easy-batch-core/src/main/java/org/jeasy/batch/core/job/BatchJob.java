@@ -180,6 +180,7 @@ class BatchJob implements Job {
         for (int i = 0; i < parameters.getBatchSize(); i++) {
             Record record = readRecord();
             if (record == null) {
+                LOGGER.debug("No more records");
                 recordTracker.noMoreRecords();
                 break;
             } else {
@@ -237,9 +238,9 @@ class BatchJob implements Job {
     }
 
     private void writeBatch(Batch batch) throws BatchWritingException {
-        LOGGER.debug("Writing records {}", batch);
         try {
             if (!batch.isEmpty()) {
+                LOGGER.debug("Writing records {}", batch);
                 recordWriterListener.beforeRecordWriting(batch);
                 recordWriter.writeRecords(batch);
                 recordWriterListener.afterRecordWriting(batch);
