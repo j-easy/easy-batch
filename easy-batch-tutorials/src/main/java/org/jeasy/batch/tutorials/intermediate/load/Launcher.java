@@ -43,7 +43,7 @@ import java.nio.file.Paths;
 import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
 /**
- * Main class to run the JDBC import data tutorial.
+ * Main class to run the JDBC data import tutorial.
  *
  * The goal is to read tweets from a CSV file and load them in a relational database.
  *

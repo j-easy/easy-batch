@@ -45,7 +45,7 @@ import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
  * Main class to run the header/footer tutorial.
  *
  * The goal is to read tweets from a relational database and export them to a flat file.
- * The output file needs to have:
+ * The output file should have:
  * <ul>
  *     <li>a header with column names</li>
  *     <li>a footer with the total number of records</li>

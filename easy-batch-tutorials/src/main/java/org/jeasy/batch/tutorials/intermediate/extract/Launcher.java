@@ -41,7 +41,7 @@ import java.nio.file.Paths;
 import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
 /**
- * Main class to run the JDBC export data tutorial.
+ * Main class to run the JDBC data export tutorial.
  *
  * The goal is to read tweets from a relational database and export them to a flat file.
  *

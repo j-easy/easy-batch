@@ -41,7 +41,7 @@ import javax.sql.DataSource;
 import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
 /**
- * Main class to launch Elastic search tutorial.
+ * Main class to launch the Elastic Search tutorial.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
