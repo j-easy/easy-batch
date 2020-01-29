@@ -54,19 +54,19 @@ public class CompositeJobListenerTest {
 
     @Test
     public void testBeforeJobStart() {
-        compositeJobListener.beforeJobStart(parameters);
+        compositeJobListener.beforeJob(parameters);
 
         InOrder inOrder = inOrder(jobListener1, jobListener2);
-        inOrder.verify(jobListener1).beforeJobStart(parameters);
-        inOrder.verify(jobListener2).beforeJobStart(parameters);
+        inOrder.verify(jobListener1).beforeJob(parameters);
+        inOrder.verify(jobListener2).beforeJob(parameters);
     }
 
     @Test
     public void testAfterJobEnd() {
-        compositeJobListener.afterJobEnd(report);
+        compositeJobListener.afterJob(report);
 
         InOrder inOrder = inOrder(jobListener1, jobListener2);
-        inOrder.verify(jobListener2).afterJobEnd(report);
-        inOrder.verify(jobListener1).afterJobEnd(report);
+        inOrder.verify(jobListener2).afterJob(report);
+        inOrder.verify(jobListener1).afterJob(report);
     }
 }

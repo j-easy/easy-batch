@@ -38,12 +38,12 @@ public interface JobListener {
      *
      * @param jobParameters the job parameters
      */
-    void beforeJobStart(final JobParameters jobParameters);
+    void beforeJob(final JobParameters jobParameters);
 
     /**
-     * Called after job end.
+     * Called after the job is finished (successfully or with a failure).
      *
      * @param jobReport The job execution report
      */
-    void afterJobEnd(final JobReport jobReport);
+    void afterJob(final JobReport jobReport);
 }

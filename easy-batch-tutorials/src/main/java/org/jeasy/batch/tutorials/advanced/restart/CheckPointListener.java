@@ -86,12 +86,12 @@ public class CheckPointListener implements RecordWriterListener, PipelineListene
     }
 
     @Override
-    public void beforeJobStart(JobParameters jobParameters) {
+    public void beforeJob(JobParameters jobParameters) {
         
     }
 
     @Override
-    public void afterJobEnd(JobReport jobReport) {
+    public void afterJob(JobReport jobReport) {
         writePropertyToJournal(JOB_NAME_KEY, jobReport.getJobName());
         writePropertyToJournal(JOB_START_KEY, Utils.formatTime(jobReport.getMetrics().getStartTime()));
         writePropertyToJournal(JOB_END_KEY, Utils.formatTime(jobReport.getMetrics().getEndTime()));

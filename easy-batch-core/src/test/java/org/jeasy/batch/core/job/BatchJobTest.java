@@ -194,8 +194,8 @@ public class BatchJobTest {
         JobReport jobReportInternal = job.call();
         
         InOrder inOrder = inOrder(jobListener1, jobListener2, reader, writer);
-        inOrder.verify(jobListener2).afterJobEnd(jobReportInternal);
-        inOrder.verify(jobListener1).afterJobEnd(jobReportInternal);
+        inOrder.verify(jobListener2).afterJob(jobReportInternal);
+        inOrder.verify(jobListener1).afterJob(jobReportInternal);
         inOrder.verify(reader).close();
         inOrder.verify(writer).close();
 
@@ -207,7 +207,7 @@ public class BatchJobTest {
 
         JobReport jobReport = job.call();
 
-        verify(jobListener1).afterJobEnd(jobReport);
+        verify(jobListener1).afterJob(jobReport);
         verify(reader).close();
         verify(writer).close();
     }
@@ -335,8 +335,8 @@ public class BatchJobTest {
 
         JobReport report = job.call();
 
-        verify(jobListener1).beforeJobStart(any(JobParameters.class));
-        verify(jobListener1).afterJobEnd(report);
+        verify(jobListener1).beforeJob(any(JobParameters.class));
+        verify(jobListener1).afterJob(report);
     }
 
     /*
@@ -531,8 +531,8 @@ public class BatchJobTest {
 
         InOrder inOrder = Mockito.inOrder(reader, firstProcessor, secondProcessor, jobListener1, jobListener2);
 
-        inOrder.verify(jobListener1).beforeJobStart(any(JobParameters.class));
-        inOrder.verify(jobListener2).beforeJobStart(any(JobParameters.class));
+        inOrder.verify(jobListener1).beforeJob(any(JobParameters.class));
+        inOrder.verify(jobListener2).beforeJob(any(JobParameters.class));
 
         inOrder.verify(reader).readRecord();
         inOrder.verify(firstProcessor).processRecord(record1);
@@ -541,8 +541,8 @@ public class BatchJobTest {
         inOrder.verify(firstProcessor).processRecord(record2);
         inOrder.verify(secondProcessor).processRecord(record2);
         inOrder.verify(reader).close();
-        inOrder.verify(jobListener2).afterJobEnd(jobReportReturned);
-        inOrder.verify(jobListener1).afterJobEnd(jobReportReturned);
+        inOrder.verify(jobListener2).afterJob(jobReportReturned);
+        inOrder.verify(jobListener1).afterJob(jobReportReturned);
     }
     
     @Test

@@ -13,12 +13,12 @@ public class RecordProcessingTimeCalculator implements PipelineListener, JobList
     private long recordProcessingTimesSum;
 
     @Override
-    public void beforeJobStart(JobParameters jobParameters) {
+    public void beforeJob(JobParameters jobParameters) {
 
     }
 
     @Override
-    public void afterJobEnd(JobReport jobReport) {
+    public void afterJob(JobReport jobReport) {
         jobReport.getMetrics().addMetric("Record processing time average (in ms)", (double)recordProcessingTimesSum / (double)nbRecords);
     }
 

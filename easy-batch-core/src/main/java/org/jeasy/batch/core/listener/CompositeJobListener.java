@@ -56,18 +56,18 @@ public class CompositeJobListener implements JobListener {
     }
 
     @Override
-    public void beforeJobStart(JobParameters jobParameters) {
+    public void beforeJob(JobParameters jobParameters) {
         for (JobListener listener : listeners) {
-            listener.beforeJobStart(jobParameters);
+            listener.beforeJob(jobParameters);
         }
     }
 
     @Override
-    public void afterJobEnd(JobReport jobReport) {
+    public void afterJob(JobReport jobReport) {
         for (ListIterator<JobListener> iterator
                 = listeners.listIterator(listeners.size());
                 iterator.hasPrevious();) {
-            iterator.previous().afterJobEnd(jobReport);
+            iterator.previous().afterJob(jobReport);
         }
     }
 

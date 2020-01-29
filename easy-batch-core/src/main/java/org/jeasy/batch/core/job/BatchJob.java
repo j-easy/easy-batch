@@ -129,7 +129,7 @@ class BatchJob implements Job {
 
     private void start() {
         setStatus(JobStatus.STARTING);
-        jobListener.beforeJobStart(parameters);
+        jobListener.beforeJob(parameters);
         recordTracker = new RecordTracker();
         metrics.setStartTime(LocalDateTime.now());
         LOGGER.debug("Batch size: {}", parameters.getBatchSize());
@@ -269,7 +269,7 @@ class BatchJob implements Job {
         LOGGER.info( "Job '{}' finished with status {} in {}",
                 name, report.getStatus(), Utils.formatDuration(report.getMetrics().getDuration()));
         notifyJobUpdate();
-        jobListener.afterJobEnd(report);
+        jobListener.afterJob(report);
     }
 
     private void fail(Exception exception) {
