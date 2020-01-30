@@ -47,16 +47,6 @@ public class ScannedRecordListener implements RecordWriterListener {
 	}
 
 	@Override
-	public void beforeRecordWriting(Batch batch) {
-
-	}
-
-	@Override
-	public void afterRecordWriting(Batch batch) {
-
-	}
-
-	@Override
 	public void onRecordWritingException(Batch batch, Throwable throwable) {
 		Record record = null;
 		try {

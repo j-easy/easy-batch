@@ -35,20 +35,26 @@ public interface RecordReaderListener {
     /**
      * Called before each record read operation.
      */
-    void beforeRecordReading();
+    default void beforeRecordReading() {
+        // no-op
+    }
 
     /**
      * Called after each record read operation.
      *
      * @param record The record that has been read. May be null if the reader reached the end of data source
      */
-    void afterRecordReading(final Record record);
+    default void afterRecordReading(final Record record) {
+        // no-op
+    }
 
     /**
      * Called when an exception occurs during record reading.
      *
      * @param throwable the throwable thrown during record reading
      */
-    void onRecordReadingException(final Throwable throwable);
+    default void onRecordReadingException(final Throwable throwable) {
+        // no-op
+    }
 
 }

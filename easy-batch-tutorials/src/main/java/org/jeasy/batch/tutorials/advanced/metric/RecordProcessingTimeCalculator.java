@@ -1,6 +1,5 @@
 package org.jeasy.batch.tutorials.advanced.metric;
 
-import org.jeasy.batch.core.job.JobParameters;
 import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.listener.JobListener;
 import org.jeasy.batch.core.listener.PipelineListener;
@@ -11,11 +10,6 @@ public class RecordProcessingTimeCalculator implements PipelineListener, JobList
     private long startTime;
     private long nbRecords;
     private long recordProcessingTimesSum;
-
-    @Override
-    public void beforeJob(JobParameters jobParameters) {
-
-    }
 
     @Override
     public void afterJob(JobReport jobReport) {

@@ -38,12 +38,16 @@ public interface JobListener {
      *
      * @param jobParameters the job parameters
      */
-    void beforeJob(final JobParameters jobParameters);
+    default void beforeJob(final JobParameters jobParameters) {
+        // no-op
+    }
 
     /**
      * Called after the job is finished (successfully or with a failure).
      *
      * @param jobReport The job execution report
      */
-    void afterJob(final JobReport jobReport);
+    default void afterJob(final JobReport jobReport) {
+        // no-op
+    }
 }

@@ -6,7 +6,6 @@ import static java.lang.String.valueOf;
 import java.io.*;
 import java.nio.file.Path;
 import java.util.Properties;
-import org.jeasy.batch.core.job.JobParameters;
 import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.job.JobStatus;
 import org.jeasy.batch.core.listener.JobListener;
@@ -55,21 +54,6 @@ public class CheckPointListener implements RecordWriterListener, PipelineListene
     }
 
     @Override
-    public void afterRecordProcessing(Record inputRecord, Record outputRecord) {
-
-    }
-
-    @Override
-    public void onRecordProcessingException(Record record, Throwable throwable) {
-
-    }
-
-    @Override
-    public void beforeRecordWriting(Batch batch) {
-
-    }
-
-    @Override
     public void afterRecordWriting(Batch batch) {
         Record lastRecord = null;
         for (Record record : batch) {
@@ -78,16 +62,6 @@ public class CheckPointListener implements RecordWriterListener, PipelineListene
         if (lastRecord != null) {
             writePropertyToJournal(WRITE_LAST_KEY, valueOf(lastRecord.getHeader().getNumber()));
         }
-    }
-
-    @Override
-    public void onRecordWritingException(Batch batch, Throwable throwable) {
-
-    }
-
-    @Override
-    public void beforeJob(JobParameters jobParameters) {
-        
     }
 
     @Override

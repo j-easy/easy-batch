@@ -37,14 +37,18 @@ public interface RecordWriterListener {
      *
      * @param batch to be written
      */
-    void beforeRecordWriting(Batch batch);
+    default void beforeRecordWriting(Batch batch) {
+        // no-op
+    }
 
     /**
      * Called after writing each batch of records.
      *
      * @param batch of records that have been written.
      */
-    void afterRecordWriting(Batch batch);
+    default void afterRecordWriting(Batch batch) {
+        // no-op
+    }
 
     /**
      * Called when an exception occurs during batch writing.
@@ -52,6 +56,8 @@ public interface RecordWriterListener {
      * @param batch attempted to be written
      * @param throwable the throwable thrown during record writing
      */
-    void onRecordWritingException(Batch batch, final Throwable throwable);
+    default void onRecordWritingException(Batch batch, final Throwable throwable) {
+        // no-op
+    }
 
 }
