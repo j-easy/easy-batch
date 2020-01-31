@@ -24,9 +24,9 @@
 
 # What is Easy Batch?
 
-Easy Batch is a framework that aims to simplify batch processing with Java.
+Easy Batch is a framework that aims to simplify batch processing with Java. It was specifically designed for simple ETL jobs.
 Writing batch applications requires a **lot** of boilerplate code: reading, writing, filtering, parsing and validating data, logging, reporting to name a few..
-The idea is to free you from these tedious tasks and let you focus on your application's logic.
+The idea is to free you from these tedious tasks and let you focus on your batch application's logic.
 
 # How does it work?
 
@@ -47,12 +47,14 @@ id,user,message
 and you would like to transform these tweets to XML format. Here is how you can do that with Easy Batch:
 
 ```java
+Path inputFile = Paths.get("tweets.csv");
+Path outputFile = Paths.get("tweets.xml");
 Job job = new JobBuilder()
-         .reader(new FlatFileRecordReader("tweets.csv"))
+         .reader(new FlatFileRecordReader(inputFile))
          .filter(new HeaderRecordFilter())
          .mapper(new DelimitedRecordMapper(Tweet.class, "id", "user", "message"))
          .marshaller(new XmlRecordMarshaller(Tweet.class))
-         .writer(new FileRecordWriter("tweets.xml"))
+         .writer(new FileRecordWriter(outputFile))
          .batchSize(10)
          .build();
 
@@ -78,7 +80,7 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 - :movie_camera: [Introduction to Easy Batch: the simple, stupid batch processing framework for Java](https://speakerdeck.com/benas/easy-batch)
 - :newspaper: [First batch job on Podcastpedia.org using Easy Batch](http://www.codingpedia.org/ama/first-batch-job-on-podcastpedia-org-with-easybatch/)
-- :newspaper: [EasyBatch, les batchs en JAVA tout simplement (in french)](https://blog.netapsys.fr/easybatch-les-batchs-en-java-tout-simplement/)
+- :newspaper: [EasyBatch, les batchs en JAVA tout simplement (in french)](https://blog.sodifrance.fr/easybatch-les-batchs-en-java-tout-simplement/)
 - :newspaper: [Tutoriel pour développer un batch Java avec Easy Batch en moins de 5 minutes (in french) ](http://benassi.developpez.com/tutoriels/java/developper-batch-easybatch-5-minutes/)
 - :memo: [How I reduced my Java batch application's code by 80% using Easy Batch](http://benas.github.io/2014/01/21/how-i-reduced-my-java-app-code-by-80-using-easy-batch.html)
 - :memo: [Spring Batch vs Easy Batch: Feature comparison](http://benas.github.io/2014/03/03/spring-batch-vs-easy-batch-feature-comparison.html)
@@ -130,6 +132,17 @@ For any further question, you can use the [gitter channel](https://gitter.im/j-e
 * [verdi8](https://github.com/verdi8)
 
 Thank you all for your contributions!
+
+## Who is using Easy Batch?
+
+Easy Batch has been successfully used in production in a number of companies which I (benas) am not allowed to mention.
+That said, here are some companies that publically mention that they use Easy Batch:
+
+* [Splunk](https://docs.splunk.com/Documentation/DBX/3.2.0/ReleaseNotes/easybatch)
+* [SNCF](https://jobs.oui.sncf/offer/dveloppeur-java-backend-h-f-a2cc73deb3)
+* [Leroy Merlin](https://twitter.com/BENEnsi/status/790473633168842752?s=20)
+
+You can also find some feedback from the community about the project in the [Testimonials](http://www.jeasy.org/#testimonials) section.
 
 ## Acknowledgments
 
