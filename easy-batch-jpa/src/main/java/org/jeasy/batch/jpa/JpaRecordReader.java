@@ -40,7 +40,9 @@ import static org.jeasy.batch.core.util.Utils.checkArgument;
 import static org.jeasy.batch.core.util.Utils.checkNotNull;
 
 /**
- * Read records using the Java Persistence API.
+ * Read records using the Java Persistence API. This reader reads records in
+ * pages. You can set the maximum number of records to read for each page
+ * using {@link #setMaxResults(int)}.
  *
  * This reader produces {@link GenericRecord} instances with JPA entities as payload.
  *
@@ -49,7 +51,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  */
 public class JpaRecordReader<T> implements RecordReader {
 
-    public static final int DEFAULT_FETCH_SIZE = 1000;
+    public static final int DEFAULT_MAX_RESULT = 1000;
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaRecordReader.class.getSimpleName());
 
     private EntityManagerFactory entityManagerFactory;
@@ -60,7 +62,7 @@ public class JpaRecordReader<T> implements RecordReader {
     private List<T> records;
     private Iterator<T> iterator;
     private int offset;
-    private int fetchSize;
+    private int maxResults;
     private long currentRecordNumber;
 
     /**
@@ -79,7 +81,7 @@ public class JpaRecordReader<T> implements RecordReader {
         this.entityManagerFactory = entityManagerFactory;
         this.query = query;
         this.type = type;
-        this.fetchSize = DEFAULT_FETCH_SIZE;
+        this.maxResults = DEFAULT_MAX_RESULT;
     }
 
     @Override
@@ -90,7 +92,7 @@ public class JpaRecordReader<T> implements RecordReader {
         entityManager = entityManagerFactory.createEntityManager();
         typedQuery = entityManager.createQuery(query, type);
         typedQuery.setFirstResult(offset);
-        typedQuery.setMaxResults(fetchSize);
+        typedQuery.setMaxResults(maxResults);
         records = typedQuery.getResultList();
         iterator = records.iterator();
     }
@@ -125,13 +127,13 @@ public class JpaRecordReader<T> implements RecordReader {
     }
 
     /**
-     * Set the fetch size.
+     * Set maximum number of records to fetch for each query.
      *
-     * @param fetchSize the fetch size of each chunk
+     * @param maxResults the maximum number of records to fetch for each query
      */
-    public void setFetchSize(final int fetchSize) {
-        checkArgument(fetchSize >= 1, "fetch size parameter must be >= 1");
-        this.fetchSize = fetchSize;
+    public void setMaxResults(final int maxResults) {
+        checkArgument(maxResults >= 1, "max results parameter must be >= 1");
+        this.maxResults = maxResults;
     }
 
 }

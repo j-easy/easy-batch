@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class JpaRecordReaderTest extends AbstractDatabaseTest {
 
-    private static final int FETCH_SIZE = 10;
+    private static final int MAX_RESULTS = 10;
 
     private JpaRecordReader<Tweet> jpaRecordReader;
 
@@ -47,7 +47,7 @@ public class JpaRecordReaderTest extends AbstractDatabaseTest {
         String query = "from Tweet";
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tweet");
         jpaRecordReader = new JpaRecordReader<>(entityManagerFactory, query, Tweet.class);
-        jpaRecordReader.setFetchSize(FETCH_SIZE);
+        jpaRecordReader.setMaxResults(MAX_RESULTS);
         jpaRecordReader.open();
     }
 
@@ -71,8 +71,8 @@ public class JpaRecordReaderTest extends AbstractDatabaseTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void fetchSizeParameterMustBeAtLeastEqualToOne() {
-        jpaRecordReader.setFetchSize(0);
+    public void maxResultsParameterMustBeGreaterThanOrEqualToOne() {
+        jpaRecordReader.setMaxResults(0);
     }
 
     @After
