@@ -99,6 +99,7 @@ public class MsExcelRecordWriter implements RecordWriter {
                 setValue(cell, nextCell);
             }
         }
+        // FIXME trying to use an output stream as a field does not work (See commit message that added this line)
         FileOutputStream fileOutputStream = new FileOutputStream(path.toFile());
         workbook.write(fileOutputStream);
     }
