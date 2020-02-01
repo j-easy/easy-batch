@@ -24,6 +24,7 @@
 package org.jeasy.batch.xml;
 
 import org.jeasy.batch.core.record.Record;
+import org.jeasy.batch.core.util.Utils;
 import org.jeasy.batch.core.validator.RecordValidator;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
@@ -35,7 +36,7 @@ import javax.xml.bind.util.JAXBSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * This class validates the payload of records against an xml schema.
@@ -53,7 +54,7 @@ public class XmlRecordValidator<P> implements RecordValidator<Record<P>> {
      * @param xsd schema file against which records will be validated
      * @throws SAXException if the schema cannot be parsed
      */
-    public XmlRecordValidator(final File xsd) throws SAXException {
+    public XmlRecordValidator(final Path xsd) throws SAXException {
         this(xsd, new NoOpErrorHandler());
     }
 
@@ -64,9 +65,11 @@ public class XmlRecordValidator<P> implements RecordValidator<Record<P>> {
      * @param errorHandler to invoke when a validation error occurs
      * @throws SAXException if the schema cannot be parsed
      */
-    public XmlRecordValidator(final File xsd, final ErrorHandler errorHandler) throws SAXException {
+    public XmlRecordValidator(final Path xsd, final ErrorHandler errorHandler) throws SAXException {
+        Utils.checkNotNull(xsd, "xsd");
+        Utils.checkNotNull(errorHandler, "error handler");
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Schema schema = schemaFactory.newSchema(xsd);
+        Schema schema = schemaFactory.newSchema(xsd.toFile());
         validator = schema.newValidator();
         validator.setErrorHandler(errorHandler);
     }

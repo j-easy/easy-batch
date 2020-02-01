@@ -30,8 +30,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jeasy.batch.core.reader.RecordReader;
 import org.jeasy.batch.core.record.Header;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
@@ -45,7 +45,7 @@ import java.util.Iterator;
  */
 public class MsExcelRecordReader implements RecordReader {
 
-    private File file;
+    private Path path;
     
     private XSSFSheet sheet;
 
@@ -58,24 +58,24 @@ public class MsExcelRecordReader implements RecordReader {
     /**
      * Create a new {@link MsExcelRecordReader}.
      *
-     * @param file the input file
+     * @param path to the input file
      * @throws IOException when an error occurs during file opening
      */
-    public MsExcelRecordReader(final File file) throws IOException {
-        this(file, 0);
+    public MsExcelRecordReader(final Path path) throws IOException {
+        this(path, 0);
     }
 
     /**
      * Create a new {@link MsExcelRecordReader}.
      *
-     * @param file he input file
+     * @param path to the input file
      * @param sheetIndex the sheet index
      * @throws IOException when an error occurs during file opening
      */
-    public MsExcelRecordReader(final File file, final int sheetIndex) throws IOException {
-        this.file = file;
+    public MsExcelRecordReader(final Path path, final int sheetIndex) throws IOException {
+        this.path = path;
         try {
-            workbook = new XSSFWorkbook(file);
+            workbook = new XSSFWorkbook(path.toFile());
             sheet = workbook.getSheetAt(sheetIndex);
         } catch (InvalidFormatException e) {
             throw new IOException("Invalid MsExcel file format. Only 'xlsx' is supported", e);
@@ -100,7 +100,7 @@ public class MsExcelRecordReader implements RecordReader {
     }
 
     private String getDataSourceName() {
-        return String.format("Sheet '%s' in file %s", sheet.getSheetName(), file.getAbsolutePath());
+        return String.format("Sheet '%s' in file %s", sheet.getSheetName(), path.toAbsolutePath().toString());
     }
 
     @Override

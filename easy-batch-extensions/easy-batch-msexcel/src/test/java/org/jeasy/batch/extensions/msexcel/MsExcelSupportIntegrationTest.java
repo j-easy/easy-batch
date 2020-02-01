@@ -35,8 +35,9 @@ import org.jeasy.batch.core.writer.CollectionRecordWriter;
 import org.jeasy.batch.test.common.Tweet;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.FileInputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +50,8 @@ public class MsExcelSupportIntegrationTest {
     @Test
     public void integrationTest() throws Exception {
 
-        File inputTweets = new File(this.getClass().getResource("/tweets-in.xlsx").toURI());
-        File outputTweets = new File(this.getClass().getResource("/tweets-out.xlsx").toURI());
+        Path inputTweets = Paths.get("src/test/resources/tweets-in.xlsx");
+        Path outputTweets = Paths.get("src/test/resources/tweets-out.xlsx");
 
         String[] fields = {"id", "user", "message"};
         Job job = JobBuilder.aNewJob()
@@ -67,7 +68,7 @@ public class MsExcelSupportIntegrationTest {
         assertThat(report.getMetrics().getWriteCount()).isEqualTo(2);
         assertThat(report.getStatus()).isEqualTo(JobStatus.COMPLETED);
 
-        XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(outputTweets));
+        XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(outputTweets.toFile()));
         XSSFSheet sheet = workbook.getSheet(SHEET_NAME);
         XSSFRow row = sheet.getRow(1);
         assertThat(row.getCell(0).getNumericCellValue()).isEqualTo(1.0);
@@ -81,7 +82,7 @@ public class MsExcelSupportIntegrationTest {
 
     @Test
     public void integrationTestWithEmptyColumn() throws Exception {
-        File inputTweets = new File(this.getClass().getResource("/empty-column.xlsx").toURI());
+        Path inputTweets = Paths.get("src/test/resources/empty-column.xlsx");
         String[] fields = {"id", "user", "message"};
 
         List<Tweet> output = new ArrayList<>();

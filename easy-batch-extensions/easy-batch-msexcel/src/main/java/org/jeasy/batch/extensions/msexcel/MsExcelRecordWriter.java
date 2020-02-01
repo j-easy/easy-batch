@@ -33,8 +33,8 @@ import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.writer.RecordWriter;
 
-import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.file.Path;
 
 /**
  * Writer that write {@link MsExcelRecord} to a file.
@@ -43,7 +43,7 @@ import java.io.FileOutputStream;
  */
 public class MsExcelRecordWriter implements RecordWriter {
 
-    private File file;
+    private Path path;
 
     private XSSFWorkbook workbook;
 
@@ -52,11 +52,11 @@ public class MsExcelRecordWriter implements RecordWriter {
     /**
      * Create a new {@link MsExcelRecordWriter}.
      *
-     * @param file      the output file
+     * @param path      to the output file
      * @param sheetName the sheet name
 	 */
-    public MsExcelRecordWriter(final File file, final String sheetName) {
-        this.file = file;
+    public MsExcelRecordWriter(final Path path, final String sheetName) {
+        this.path = path;
         workbook = new XSSFWorkbook();
         sheet = workbook.createSheet(sheetName);
     }
@@ -99,7 +99,7 @@ public class MsExcelRecordWriter implements RecordWriter {
                 setValue(cell, nextCell);
             }
         }
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        FileOutputStream fileOutputStream = new FileOutputStream(path.toFile());
         workbook.write(fileOutputStream);
     }
 

@@ -31,7 +31,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.xml.sax.SAXParseException;
 
-import java.io.File;
+import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -46,7 +46,7 @@ public class XmlRecordValidatorTest {
 
     @Before
     public void setUp() throws Exception {
-        xmlRecordValidator = new XmlRecordValidator<>(new File("src/test/resources/foo.xsd"));
+        xmlRecordValidator = new XmlRecordValidator<>(Paths.get("src/test/resources/foo.xsd"));
     }
 
     @Test
