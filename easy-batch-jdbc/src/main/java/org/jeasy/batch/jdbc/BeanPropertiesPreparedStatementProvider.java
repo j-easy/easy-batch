@@ -71,6 +71,11 @@ public class BeanPropertiesPreparedStatementProvider implements PreparedStatemen
         put(java.sql.Date.class, Types.DATE);
         put(java.sql.Time.class, Types.TIME);
         put(java.sql.Timestamp.class, Types.TIMESTAMP);
+        put(java.time.LocalDate.class, Types.DATE);
+        put(java.time.LocalTime.class, Types.TIME);
+        put(java.time.LocalDateTime.class, Types.TIMESTAMP);
+        put(java.time.OffsetTime.class, Types.TIME_WITH_TIMEZONE);
+        put(java.time.OffsetDateTime.class, Types.TIMESTAMP_WITH_TIMEZONE);
         put(java.sql.Blob.class, Types.BLOB);
         put(java.sql.Clob.class, Types.CLOB);
         put(CharSequence.class, Types.VARCHAR);
