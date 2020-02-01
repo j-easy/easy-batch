@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  *   Copyright (c) 2020, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
@@ -32,7 +32,7 @@ import org.jeasy.batch.core.record.StringRecord;
 public class TweetProcessor implements RecordProcessor<StringRecord, StringRecord> {
 
     @Override
-    public StringRecord processRecord(StringRecord record) throws Exception {
+    public StringRecord processRecord(StringRecord record) {
         return new StringRecord(record.getHeader(), record.getPayload().toUpperCase());
     }
 
