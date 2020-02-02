@@ -32,6 +32,8 @@ import org.jeasy.batch.core.job.JobStatus;
  */
 public interface JobMonitorMBean {
 
+    String JMX_MBEAN_NAME = "org.jeasy.batch.jmx.monitor:";
+
     /**
      * Get the job name.
      *

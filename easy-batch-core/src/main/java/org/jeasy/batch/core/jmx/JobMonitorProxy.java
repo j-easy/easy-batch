@@ -23,7 +23,6 @@
  */
 package org.jeasy.batch.core.jmx;
 
-import org.jeasy.batch.core.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,7 +82,7 @@ public class JobMonitorProxy implements Runnable {
         try {
             String serviceURL = format(JMX_SERVICE_URL, host, port);
             JMXServiceURL url = new JMXServiceURL(serviceURL);
-            ObjectName objectName = new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + jobName);
+            ObjectName objectName = new ObjectName(JobMonitorMBean.JMX_MBEAN_NAME + "name=" + jobName);
             JMXConnector jmxConnector = JMXConnectorFactory.connect(url, new HashMap<>());
             MBeanServerConnection mBeanServerConnection = jmxConnector.getMBeanServerConnection();
             registerNotificationListeners(objectName, mBeanServerConnection, jmxConnector);

@@ -25,6 +25,7 @@ package org.jeasy.batch.core.job;
 
 import org.assertj.core.api.Assertions;
 import org.jeasy.batch.core.filter.RecordFilter;
+import org.jeasy.batch.core.jmx.JobMonitorMBean;
 import org.jeasy.batch.core.listener.BatchListener;
 import org.jeasy.batch.core.listener.JobListener;
 import org.jeasy.batch.core.listener.PipelineListener;
@@ -59,7 +60,6 @@ import java.util.concurrent.TimeUnit;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jeasy.batch.core.util.Utils.JMX_MBEAN_NAME;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -308,7 +308,7 @@ public class BatchJobTest {
         job = new JobBuilder().enableJmx(true).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(JMX_MBEAN_NAME + "name=" + JobParameters.DEFAULT_JOB_NAME))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(JobMonitorMBean.JMX_MBEAN_NAME + "name=" + JobParameters.DEFAULT_JOB_NAME))).isTrue();
     }
 
     @Test
@@ -317,7 +317,7 @@ public class BatchJobTest {
         job = new JobBuilder().enableJmx(true).named(name).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        assertThat(mbs.isRegistered(new ObjectName(JMX_MBEAN_NAME + "name=" + name))).isTrue();
+        assertThat(mbs.isRegistered(new ObjectName(JobMonitorMBean.JMX_MBEAN_NAME + "name=" + name))).isTrue();
     }
 
     /*

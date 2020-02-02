@@ -136,7 +136,7 @@ public class JobMonitor extends NotificationBroadcasterSupport implements JobMon
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name;
         try {
-            name = new ObjectName(Utils.JMX_MBEAN_NAME + "name=" + job.getName());
+            name = new ObjectName(JobMonitorMBean.JMX_MBEAN_NAME + "name=" + job.getName());
             if (!mbs.isRegistered(name)) {
                 mbs.registerMBean(this, name);
                 LOGGER.debug("JMX MBean registered successfully as: {}", name.getCanonicalName());

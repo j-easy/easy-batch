@@ -12,7 +12,7 @@ In this section, the goal is to run the application and monitor the job using a 
 * Run the tutorial with `$>mvn exec:java -PrunJobMonitoringTutorial` from the command line or by running the
 `org.jeasy.batch.tutorials.advanced.jmx.JobMonitoringTutorial` class from your IDE
 
-* Using a JMX client, navigate to the `org.jeasy.batch.core.monitor:name=job` MBean
+* Using a JMX client, navigate to the `org.jeasy.batch.jmx.monitor:name=job` MBean
  and you will be able to monitor the execution progress of the application in real time.
 
 ### Part 2:
@@ -39,7 +39,7 @@ You should see the execution progress updated in real time in the standard outpu
 [pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Error threshold: N/A
 [pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Jmx monitoring: true
 [pool-1-thread-1] INFO org.jeasy.batch.core.jmx.JobMonitor - Registering JMX MBean for job 'job'
-[pool-1-thread-1] INFO org.jeasy.batch.core.jmx.JobMonitor - JMX MBean registered successfully as: org.jeasy.batch.core.monitor:name=job
+[pool-1-thread-1] INFO org.jeasy.batch.core.jmx.JobMonitor - JMX MBean registered successfully as: org.jeasy.batch.jmx.monitor:name=job
 [pool-1-thread-1] INFO org.jeasy.batch.core.job.BatchJob - Job 'job' started
 [monitoring-thread] INFO org.jeasy.batch.core.jmx.JobMonitorProxy - Listening to notifications from service:jmx:rmi:///jndi/rmi://localhost:9999/jmxrmi
 progress = 20.0%

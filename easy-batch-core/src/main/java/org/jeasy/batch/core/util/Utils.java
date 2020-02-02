@@ -56,8 +56,6 @@ public abstract class Utils {
 
     public static final String JAVA_IO_TMPDIR = System.getProperty("java.io.tmpdir");
 
-    public static final String JMX_MBEAN_NAME = "org.jeasy.batch.core.monitor:";
-
     public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 
     public static final String NOT_APPLICABLE = "N/A";
