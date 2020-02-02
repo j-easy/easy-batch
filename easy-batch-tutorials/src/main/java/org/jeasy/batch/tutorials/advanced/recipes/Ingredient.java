@@ -50,10 +50,8 @@ public class Ingredient {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Ingredient{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", quantity=").append(quantity);
-        sb.append('}');
-        return sb.toString();
+        return "Ingredient{" + "name='" + name + '\'' +
+                ", quantity=" + quantity +
+                '}';
     }
 }

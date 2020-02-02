@@ -84,7 +84,7 @@ public class OpenCsvRecordMarshaller<P> implements RecordMarshaller<Record<P>, S
             // force lineEnd to empty string
             P payload = record.getPayload();
             List<String> fields = extractFields(payload);
-            String[] items = fields.toArray(new String[fields.size()]);
+            String[] items = fields.toArray(new String[0]);
             csvWriter.writeNext(items);
             csvWriter.flush();
             return new StringRecord(record.getHeader(), stringWriter.toString());

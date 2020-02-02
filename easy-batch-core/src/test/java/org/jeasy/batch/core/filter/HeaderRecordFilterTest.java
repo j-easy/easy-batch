@@ -49,13 +49,13 @@ public class HeaderRecordFilterTest {
 
     @Test
     public void whenTheRecordNumberIsEqualToOne_ThenItShouldBeFiltered() {
-        when(record.getHeader().getNumber()).thenReturn(1l);
+        when(record.getHeader().getNumber()).thenReturn(1L);
         assertThat(headerRecordFilter.processRecord(record)).isNull();
     }
 
     @Test
     public void whenTheRecordNumberIsDifferentFromOne_ThenItShouldNotBeFiltered() {
-        when(record.getHeader().getNumber()).thenReturn(2l);
+        when(record.getHeader().getNumber()).thenReturn(2L);
         assertThat(headerRecordFilter.processRecord(record)).isEqualTo(record);
     }
 

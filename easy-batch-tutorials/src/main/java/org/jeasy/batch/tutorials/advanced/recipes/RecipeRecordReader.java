@@ -85,7 +85,7 @@ public class RecipeRecordReader implements RecordReader {
                 String[] strings = line.split(SEPARATOR);
                 Ingredient ingredient = new Ingredient();
                 ingredient.setName(strings[1]);
-                ingredient.setQuantity(Integer.valueOf(strings[2].substring(0, strings[2].length() - 1)));
+                ingredient.setQuantity(Integer.parseInt(strings[2].substring(0, strings[2].length() - 1)));
                 recipe.getIngredients().add(ingredient);
             }
         }

@@ -34,6 +34,8 @@ import java.util.Scanner;
  * A {@link RecordReader} that reads data from the standard input (useful for tests)
  * until a termination word is read (can be specified at construction time, "quit" by default).
  *
+ * This reader produces {@link StringRecord}s.
+ *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class StandardInputRecordReader implements RecordReader {
@@ -42,10 +44,10 @@ public class StandardInputRecordReader implements RecordReader {
 
     private Scanner scanner;
     private long recordNumber;
-    private String terminationInput;
+    private String terminationWord;
 
     /**
-     * Create a new {@link StandardInputRecordReader} with default termination input equal to 'quit'.
+     * Create a new {@link StandardInputRecordReader} with default termination word equal to 'quit'.
      */
     public StandardInputRecordReader() {
         this(DEFAULT_TERMINATION_WORD);
@@ -54,10 +56,10 @@ public class StandardInputRecordReader implements RecordReader {
     /**
      * Create a new {@link StandardInputRecordReader} instance with a termination word.
      *
-     * @param terminationInput the word to type to stop reading from the standard input.
+     * @param terminationWord the word to type to stop reading from the standard input.
      */
-    public StandardInputRecordReader(final String terminationInput) {
-        this.terminationInput = terminationInput;
+    public StandardInputRecordReader(final String terminationWord) {
+        this.terminationWord = terminationWord;
     }
 
     @Override
@@ -68,14 +70,13 @@ public class StandardInputRecordReader implements RecordReader {
     @Override
     public Record readRecord() {
         String payload = scanner.nextLine();
-        boolean stop = payload != null && !payload.isEmpty() && payload.equalsIgnoreCase(terminationInput);
+        boolean stop = payload != null && !payload.isEmpty() && payload.equalsIgnoreCase(terminationWord);
         if (stop) {
             return null;
         }
         Header header = new Header(++recordNumber, getDataSourceName(), LocalDateTime.now());
         return new StringRecord(header, payload);
     }
-
 
     private String getDataSourceName() {
         return "Standard Input";

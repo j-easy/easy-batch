@@ -45,10 +45,8 @@ public class Recipe {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Recipe{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", ingredients=").append(ingredients);
-        sb.append('}');
-        return sb.toString();
+        return "Recipe{" + "name='" + name + '\'' +
+                ", ingredients=" + ingredients +
+                '}';
     }
 }

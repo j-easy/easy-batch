@@ -84,11 +84,9 @@ public class Header {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("number=").append(number);
-        sb.append(", source=\"").append(source).append('\"');
-        sb.append(", creationDate=\"").append(creationDate).append('\"');
-        sb.append(", scanned=\"").append(scanned).append('\"');
-        return sb.toString();
+        return "number=" + number +
+                ", source=\"" + source + '\"' +
+                ", creationDate=\"" + creationDate + '\"' +
+                ", scanned=\"" + scanned + '\"';
     }
 }

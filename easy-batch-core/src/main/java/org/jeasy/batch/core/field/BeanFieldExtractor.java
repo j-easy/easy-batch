@@ -54,7 +54,7 @@ public class BeanFieldExtractor<P> implements FieldExtractor<P> {
             throw new IllegalArgumentException(exception);
         }
         if (fields.length == 0) {
-            this.fields = this.getters.keySet().toArray(new String[this.getters.size()]);
+            this.fields = this.getters.keySet().toArray(new String[0]);
         } else {
             this.fields = fields;
         }

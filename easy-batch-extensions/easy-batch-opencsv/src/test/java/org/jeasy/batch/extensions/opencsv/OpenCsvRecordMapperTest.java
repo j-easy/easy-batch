@@ -92,7 +92,7 @@ public class OpenCsvRecordMapperTest {
     @Test
     public void testOpenCsvStrictQualifier() throws Exception {
         openCsvRecordMapper.setStrictQualifiers(true);
-        StringRecord fooRecord = new StringRecord(header, "\'foo\'x,\'bar\'"); // characters outside quotes (x) should be ignored
+        StringRecord fooRecord = new StringRecord(header, "'foo'x,'bar'"); // characters outside quotes (x) should be ignored
         Record<Foo> actual = openCsvRecordMapper.processRecord(fooRecord);
         assertThat(actual.getHeader()).isEqualTo(header);
 

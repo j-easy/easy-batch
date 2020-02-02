@@ -48,7 +48,6 @@ public class YamlRecordMapper<P> implements RecordMapper<YamlRecord, Record<P>> 
     }
 
     @Override
-    @SuppressWarnings(value = "unchecked")
     public Record<P> processRecord(YamlRecord record) throws Exception {
         YamlReader reader = new YamlReader(record.getPayload());
         P unmarshalledObject = reader.read(type);

@@ -61,13 +61,13 @@ public class StringRecordReaderTest {
         Record record = stringRecordReader.readRecord();
         assertThat(record).isInstanceOf(StringRecord.class);
         assertThat(record.getHeader()).isNotNull();
-        assertThat(record.getHeader().getNumber()).isEqualTo(1l);
+        assertThat(record.getHeader().getNumber()).isEqualTo(1L);
         assertThat(record.getPayload()).isEqualTo("foo");
 
         record = stringRecordReader.readRecord();
         assertThat(record).isInstanceOf(StringRecord.class);
         assertThat(record.getHeader()).isNotNull();
-        assertThat(record.getHeader().getNumber()).isEqualTo(2l);
+        assertThat(record.getHeader().getNumber()).isEqualTo(2L);
         assertThat(record.getPayload()).isEqualTo("bar");
 
         assertThat(stringRecordReader.readRecord()).isNull();

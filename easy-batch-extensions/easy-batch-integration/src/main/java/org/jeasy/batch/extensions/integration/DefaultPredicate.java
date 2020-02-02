@@ -57,11 +57,7 @@ public class DefaultPredicate implements Predicate {
 
         DefaultPredicate that = (DefaultPredicate) o;
 
-        if (!Objects.equals(id, that.id)) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(id, that.id);
     }
 
     @Override

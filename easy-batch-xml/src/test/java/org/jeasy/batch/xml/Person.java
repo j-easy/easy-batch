@@ -92,13 +92,11 @@ public class Person {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Person{");
-        sb.append("id=").append(id);
-        sb.append(", firstName='").append(firstName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", birthDate=").append(birthDate);
-        sb.append(", isMarried=").append(isMarried);
-        sb.append('}');
-        return sb.toString();
+        return "Person{" + "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthDate=" + birthDate +
+                ", isMarried=" + isMarried +
+                '}';
     }
 }
