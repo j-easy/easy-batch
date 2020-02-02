@@ -46,10 +46,13 @@ public class BeanFieldExtractor<P> implements FieldExtractor<P> {
      *
      * @param type of the bean
      * @param fields to extract
-     * @throws IntrospectionException if the bean cannot be introspected
      */
-    public BeanFieldExtractor(final Class<P> type, final String... fields) throws IntrospectionException {
-        this.getters = Utils.getGetters(type);
+    public BeanFieldExtractor(final Class<P> type, final String... fields) {
+        try {
+            this.getters = Utils.getGetters(type);
+        } catch (IntrospectionException exception) {
+            throw new IllegalArgumentException(exception);
+        }
         if (fields.length == 0) {
             this.fields = this.getters.keySet().toArray(new String[this.getters.size()]);
         } else {
