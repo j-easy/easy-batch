@@ -59,17 +59,14 @@ public class JobFactoryBean implements FactoryBean {
     private long errorThreshold = JobParameters.DEFAULT_ERROR_THRESHOLD;
     private int batchSize = JobParameters.DEFAULT_BATCH_SIZE;
     private boolean enableJmx;
+    private boolean enableBatchScanning;
 
     @Override
     public Job getObject() {
         JobBuilder jobBuilder = new JobBuilder();
-
         registerJobParameters(jobBuilder);
-
         registerMainComponents(jobBuilder);
-
         registerCustomListeners(jobBuilder);
-
         return jobBuilder.build();
     }
 
@@ -80,6 +77,7 @@ public class JobFactoryBean implements FactoryBean {
         jobBuilder.errorThreshold(errorThreshold);
         jobBuilder.batchSize(batchSize);
         jobBuilder.enableJmx(enableJmx);
+        jobBuilder.enableBatchScanning(enableBatchScanning);
     }
 
     private void registerMainComponents(JobBuilder jobBuilder) {
@@ -177,5 +175,9 @@ public class JobFactoryBean implements FactoryBean {
 
     public void setEnableJmx(boolean enableJmx) {
         this.enableJmx = enableJmx;
+    }
+
+    public void setEnableBatchScanning(boolean enableBatchScanning) {
+        this.enableBatchScanning = enableBatchScanning;
     }
 }
