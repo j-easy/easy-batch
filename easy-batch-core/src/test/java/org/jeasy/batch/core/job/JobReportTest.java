@@ -70,8 +70,8 @@ public class JobReportTest {
 						"\tJmx monitoring = false" + LINE_SEPARATOR +
 						"\tBatch scanning = false" + LINE_SEPARATOR +
 						"Metrics:" + LINE_SEPARATOR +
-						"\tStart time = 2020-01-20 10:15:20" + LINE_SEPARATOR +
-						"\tEnd time = 2020-01-20 10:15:30" + LINE_SEPARATOR +
+						"\tStart time = 2020-01-20T10:15:20" + LINE_SEPARATOR +
+						"\tEnd time = 2020-01-20T10:15:30" + LINE_SEPARATOR +
 						"\tDuration = 10sec 0ms" + LINE_SEPARATOR +
 						"\tRead count = 0" + LINE_SEPARATOR +
 						"\tWrite count = 0" + LINE_SEPARATOR +

@@ -78,11 +78,11 @@ java.lang.Exception: Unable to write records
 $> cat target/checkpoint.oplog
 #setting key 'job.status' to FAILED
 #Thu Jan 23 09:45:34 CET 2020
-job.end=2020-01-23 09\:45\:34
+job.end=2020-01-23T09\:45\:34
 write.last=3
 job.name=job
 job.status=FAILED
-job.start=2020-01-23 09\:45\:34
+job.start=2020-01-23T09\:45\:34
 
 $> cat target/tweets-out.csv
 id,user,message
@@ -107,10 +107,10 @@ $> mvn exec:java -PrunCheckPointListenerTutorial
 $> cat target/checkpoint.oplog
 #setting key 'job.status' to COMPLETED
 #Thu Jan 23 09:49:10 CET 2020
-job.end=2020-01-23 09\:49\:10
+job.end=2020-01-23T09\:49\:10
 job.name=job
 write.last=5
-job.start=2020-01-23 09\:49\:10
+job.start=2020-01-23T09\:49\:10
 job.status=COMPLETED
 
 $> cat target/tweets-out.csv

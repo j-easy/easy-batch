@@ -69,7 +69,7 @@ public class UtilsTest {
     @Test
     public void testFormatTime() {
         LocalDateTime time = LocalDateTime.of(2020, 1, 20, 10, 15, 20);
-        assertThat(Utils.formatTime(time)).isEqualTo("2020-01-20 10:15:20");
+        assertThat(Utils.formatTime(time)).isEqualTo("2020-01-20T10:15:20");
     }
 
     @Test

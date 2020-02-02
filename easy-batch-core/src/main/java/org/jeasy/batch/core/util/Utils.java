@@ -56,8 +56,6 @@ public abstract class Utils {
 
     public static final String JAVA_IO_TMPDIR = System.getProperty("java.io.tmpdir");
 
-    public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
-
     public static final String NOT_APPLICABLE = "N/A";
 
     private Utils() {
@@ -88,7 +86,7 @@ public abstract class Utils {
     }
 
     public static String formatTime(LocalDateTime time) {
-        return DateTimeFormatter.ofPattern(DATE_FORMAT).format(time);
+        return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(time);
     }
 
     public static String formatDuration(Duration duration) {

@@ -38,16 +38,17 @@ Job Report:
 Name: job
 Status: COMPLETED
 Parameters:
-	Batch size = 100
+	Batch size = 1
 	Error threshold = N/A
 	Jmx monitoring = false
+	Batch scanning = false
 Metrics:
-	Start time = 2016-10-19 01:57:50
-	End time = 2016-10-19 01:57:51
-	Duration = 0hr 0min 0sec 305ms
+	Start time = 2020-02-02T18:20:08.113
+	End time = 2020-02-02T18:20:09.916
+	Duration = 1sec 803ms
 	Read count = 2
 	Write count = 2
 	Filter count = 0
 	Error count = 0
-	Record processing time average (in ms) = 147.5
+	Record processing time average (in ms) = 893.0
 ```
