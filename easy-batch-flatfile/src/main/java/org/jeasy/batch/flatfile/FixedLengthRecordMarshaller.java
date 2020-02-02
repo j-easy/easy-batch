@@ -23,46 +23,75 @@
  */
 package org.jeasy.batch.flatfile;
 
+import org.jeasy.batch.core.field.BeanFieldExtractor;
 import org.jeasy.batch.core.field.FieldExtractor;
 import org.jeasy.batch.core.marshaller.RecordMarshaller;
+import org.jeasy.batch.core.record.Header;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
+import org.jeasy.batch.core.util.Utils;
 
-import java.beans.IntrospectionException;
+import java.util.Locale;
+import java.util.stream.StreamSupport;
 
 /**
- * Marshals a POJO to fixed length format.
+ * Marshals a POJO to fixed length format using {@link String#format(Locale, String, Object...)}.
+ *
+ * <strong>This marshaller can be used to left/right pad fields with white spaces to a fixed length.
+ * However, it does NOT truncate data if a field value is longer than the specified
+ * field length.</strong>
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class FixedLengthRecordMarshaller<P> implements RecordMarshaller<Record<P>, StringRecord> {
 
-    private DelimitedRecordMarshaller<P> delimitedRecordMarshaller;
+    private FieldExtractor<P> fieldExtractor;
+    private String format;
+    private Locale locale = Locale.getDefault();
 
     /**
-     * Create a new {@link FixedLengthRecordMarshaller}.
+     * Create a new {@link FixedLengthRecordMarshaller}. This constructor will
+     * create a field extractor of type {@link BeanFieldExtractor}.
      *
-     * @param type   of object to marshal
-     * @param fields of fields to marshal in order
-     * @throws IntrospectionException If the object to marshal cannot be introspected
+     * @param type     of object to marshal
+     * @param format   to use (in {@link java.util.Formatter} syntax)
+     * @param fields   to marshal in the right order
      */
-    public FixedLengthRecordMarshaller(final Class<P> type, final String... fields) throws IntrospectionException {
-        delimitedRecordMarshaller = new DelimitedRecordMarshaller<>(type, fields, "", "");
+    public FixedLengthRecordMarshaller(final Class<P> type, String format, final String... fields) {
+        this(new BeanFieldExtractor<>(type, fields), format);
     }
 
     /**
      * Create a new {@link FixedLengthRecordMarshaller}.
      *
      * @param fieldExtractor to use to extract fields
-     * @throws IntrospectionException If the object to marshal cannot be introspected
+     * @param format         to use (in {@link java.util.Formatter} syntax)
      */
-    public FixedLengthRecordMarshaller(FieldExtractor<P> fieldExtractor) throws IntrospectionException {
-        delimitedRecordMarshaller = new DelimitedRecordMarshaller<>(fieldExtractor, "", "");
+    public FixedLengthRecordMarshaller(FieldExtractor<P> fieldExtractor, String format) {
+        Utils.checkNotNull(fieldExtractor, "field extractor");
+        Utils.checkNotNull(format, "format");
+        this.fieldExtractor = fieldExtractor;
+        this.format = format;
     }
 
     @Override
     public StringRecord processRecord(final Record<P> record) throws Exception {
-        return new StringRecord(record.getHeader(), delimitedRecordMarshaller.processRecord(record).getPayload());
+        Header header = record.getHeader();
+        Object[] fields = toArray(fieldExtractor.extractFields(record.getPayload()));
+        String payload = String.format(locale, format, fields);
+        return new StringRecord(header, payload);
     }
 
+    /**
+     * Set the locale to use to format records.
+     * @param locale to use to format records
+     */
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
+    // SDD: https://stackoverflow.com/a/51875471/5019386
+    private Object[] toArray(Iterable<Object> iterable) {
+        return StreamSupport.stream(iterable.spliterator(), false).toArray(Object[]::new);
+    }
 }

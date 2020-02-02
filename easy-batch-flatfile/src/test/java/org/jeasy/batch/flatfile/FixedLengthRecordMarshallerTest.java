@@ -48,18 +48,23 @@ public class FixedLengthRecordMarshallerTest {
     private FixedLengthRecordMarshaller<Bean> marshaller;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         when(record.getHeader()).thenReturn(header);
         when(record.getPayload()).thenReturn(payload);
         when(payload.getField1()).thenReturn("aaa");
         when(payload.getField2()).thenReturn("bb");
-        when(payload.getField3()).thenReturn("cccc");
-        marshaller = new FixedLengthRecordMarshaller<>(Bean.class, "field1", "field2", "field3");
+        when(payload.getField3()).thenReturn("cc");
+        when(payload.getField4()).thenReturn("dddd");
+        marshaller = new FixedLengthRecordMarshaller<>(Bean.class, "%3s%-3s%3s%3s", "field1", "field2", "field3", "field4");
     }
 
     @Test
     public void marshal() throws Exception {
-        String expectedPayload = "aaabbcccc";
+        String expectedPayload = "aaabb  ccdddd";
+        // field1: exact length: "aaa" -> "aaa"
+        // field2: right padded to 3 characters: "bb" -> "bb "
+        // field3: left padded to 3 characters: "cc" -> " cc"
+        // field4: longer than length => Not truncated as documented in Javadoc : "dddd" -> "dddd"
         StringRecord actual = marshaller.processRecord(record);
 
         assertThat(actual.getHeader()).isEqualTo(header);

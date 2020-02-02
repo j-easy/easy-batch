@@ -26,10 +26,9 @@ package org.jeasy.batch.flatfile;
 public class Bean {
 
     private String field1;
-
     private String field2;
-
     private String field3;
+    private String field4;
 
     public String getField1() {
         return field1;
@@ -53,5 +52,13 @@ public class Bean {
 
     public void setField3(String field3) {
         this.field3 = field3;
+    }
+
+    public String getField4() {
+        return field4;
+    }
+
+    public void setField4(String field4) {
+        this.field4 = field4;
     }
 }
