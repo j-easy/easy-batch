@@ -130,7 +130,7 @@ public class FileRecordWriter implements RecordWriter {
 
     /**
      * Callback to write a header to the output file.
-     * Implementations are not required to flush the writer or write a line separator.
+     * Implementations are not required to flush the writer or write a line separator at the end of the header.
      */
     public interface HeaderCallback {
         void writeHeader(OutputStreamWriter writer) throws IOException;
@@ -138,7 +138,7 @@ public class FileRecordWriter implements RecordWriter {
 
     /**
      * Callback to write a footer to the output file.
-     * Implementations are not required to flush the writer or write a line separator.
+     * Implementations are not required to flush the writer or write a line separator at the end of the footer.
      */
     public interface FooterCallback {
         void writeFooter(OutputStreamWriter writer) throws IOException;

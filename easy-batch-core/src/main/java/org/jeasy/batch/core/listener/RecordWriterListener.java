@@ -54,7 +54,7 @@ public interface RecordWriterListener {
      * Called when an exception occurs during batch writing.
      *
      * @param batch attempted to be written
-     * @param throwable the throwable thrown during record writing
+     * @param throwable the throwable that was thrown during record writing
      */
     default void onRecordWritingException(Batch batch, final Throwable throwable) {
         // no-op

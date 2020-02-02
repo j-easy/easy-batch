@@ -27,9 +27,9 @@ import org.jeasy.batch.core.record.Record;
 
 /**
  * A record processor performs business logic on input records and produces output records.
- * The output record may be of another type of the input record and will be piped out to the next processor if any.
- * If a record processor throws an exception during processing, the record will be reported as error.
- * If a record processor returns null, the record will be filtered and next processors in the pipeline will be skipped.
+ * The output record may be of a different type than the input record and will be piped out to the next processor if any.
+ * If a record processor throws an exception during processing, the record will be reported as an error.
+ * If a record processor returns {@code null}, the record will be filtered and next processors in the pipeline will be skipped.
  *
  * @param <I> The input record type.
  * @param <O> The output record type.
@@ -41,7 +41,7 @@ public interface RecordProcessor<I extends Record, O extends Record> {
      * Process a record.
      *
      * @param record to process.
-     * @return the processed record, may be of another type of the input record, or null to skip next processors
+     * @return the processed record, may be of a different type than the input record, or {@code null} to skip next processors
      * @throws Exception if an error occurs during record processing
      */
     O processRecord(I record) throws Exception;

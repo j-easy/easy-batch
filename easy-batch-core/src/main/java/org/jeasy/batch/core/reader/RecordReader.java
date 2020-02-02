@@ -44,7 +44,7 @@ public interface RecordReader {
     /**
      * Read next record from the data source.
      *
-     * @return the next record from the data source or null if the end of the data source is reached
+     * @return the next record from the data source or {@code null} if the end of the data source is reached
      * @throws Exception if an error occurs during reading next record
      */
     Record readRecord() throws Exception;

@@ -188,9 +188,20 @@ public final class JobBuilder {
     }
 
     /**
-     * Activate batch scanning.
+     * Activate batch scanning. When activated, batch scanning will be kicked in
+     * when an exception occurs during the batch writing. Records will be attempted
+     * to be written one by one as a singleton batch. This allows to skip faulty
+     * records and continue the job execution instead of failing the entire job
+     * at the first failed batch.
      *
-     * @param batchScanning true to enable batch scanning
+     * <p><strong>This feature works well with transactional writers where a failed write
+     * operation can be re-executed without side effects. However, a known limitation
+     * is that when used with a non-transactional writer, items might be written twice
+     * (like in the case of a file writer where the output stream is flushed before the
+     * exception occurs). To prevent this, a manual rollback action should be done in
+     * a {@link org.jeasy.batch.core.listener.BatchListener#onBatchWritingException(org.jeasy.batch.core.record.Batch, java.lang.Throwable)} method.</strong></p>
+     *
+     * @param batchScanning true to enable batch scanning. False by default.
      * @return the job builder
      */
     public JobBuilder enableBatchScanning(final boolean batchScanning) {

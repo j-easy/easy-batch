@@ -40,7 +40,7 @@ public interface Job extends Callable<JobReport> {
     String getName();
 
     /**
-     * Execute the job.
+     * Execute the job and return a job report.
      *
      * @return execution report
      */

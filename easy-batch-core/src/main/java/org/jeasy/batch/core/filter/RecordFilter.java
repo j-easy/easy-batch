@@ -38,7 +38,7 @@ public interface RecordFilter<R extends Record> extends RecordProcessor<R, R> {
      * Filter a record.
      *
      * @param record the record to filter.
-     * @return the input record if it should continue in the pipeline or null if the record should be filtered
+     * @return the input record if it should continue in the pipeline or {@code null} if the record should be filtered
      */
     @Override
     R processRecord(R record);

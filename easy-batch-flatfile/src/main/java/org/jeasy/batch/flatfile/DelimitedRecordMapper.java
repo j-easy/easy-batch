@@ -33,7 +33,10 @@ import org.jeasy.batch.core.record.StringRecord;
 import java.util.*;
 
 /**
- * DSV to Object mapper implementation.
+ * DSV to Object mapper implementation. This implementation does not support
+ * advanced features like detecting delimiters inside quotes or deep mapping,
+ * please consider using another Mapper like {@code ApacheCommonCsvRecordMapper},
+ * {@code OpenCsvRecordMapper} or {@code UnivocityCsvRecordMapper}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

@@ -27,7 +27,7 @@ import org.jeasy.batch.core.processor.RecordProcessor;
 import org.jeasy.batch.core.record.Record;
 
 /**
- * A record mapper maps the payload of a {@link Record} to domain object.
+ * A record mapper maps the payload of a {@link Record} to a domain object instance.
  *
  * @param <I> The input record type.
  * @param <O> The output record type.
@@ -36,7 +36,7 @@ import org.jeasy.batch.core.record.Record;
 public interface RecordMapper<I extends Record, O extends Record> extends RecordProcessor<I, O> {
 
     /**
-     * Map the payload of a {@link Record} to domain object.
+     * Map the payload of a {@link Record} to a domain object instance.
      *
      * @param record the record to map.
      * @return a {@link Record} having a domain object as payload

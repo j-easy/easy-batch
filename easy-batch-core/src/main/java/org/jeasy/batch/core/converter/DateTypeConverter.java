@@ -32,7 +32,7 @@ import org.jeasy.batch.core.util.Utils;
 /**
  * java.util.Date type converter.
  * Converts a String date (by default in the "yyyy-MM-dd" format) to a {@link java.util.Date} type.
- * Does not accept null or empty strings.
+ * Does not accept {@code null} or empty strings.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

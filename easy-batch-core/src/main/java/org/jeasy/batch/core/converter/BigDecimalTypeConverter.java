@@ -29,7 +29,7 @@ import org.jeasy.batch.core.util.Utils;
 
 /**
  * BigDecimal type converter.
- * Does not accept null or empty strings.
+ * Does not accept {@code null} or empty strings.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

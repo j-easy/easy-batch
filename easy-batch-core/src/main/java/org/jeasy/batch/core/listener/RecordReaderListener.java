@@ -42,7 +42,7 @@ public interface RecordReaderListener {
     /**
      * Called after each record read operation.
      *
-     * @param record The record that has been read. May be null if the reader reached the end of data source
+     * @param record The record that has been read. May be {@code null} if the reader reached the end of data source
      */
     default void afterRecordReading(final Record record) {
         // no-op
@@ -51,7 +51,7 @@ public interface RecordReaderListener {
     /**
      * Called when an exception occurs during record reading.
      *
-     * @param throwable the throwable thrown during record reading
+     * @param throwable the throwable tbat was thrown during record reading
      */
     default void onRecordReadingException(final Throwable throwable) {
         // no-op

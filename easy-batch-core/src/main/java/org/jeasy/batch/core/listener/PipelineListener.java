@@ -47,7 +47,7 @@ public interface PipelineListener {
      * Called after the record has been processed.
      *
      * @param inputRecord  The record to process.
-     * @param outputRecord The processed record. <strong>May be null if the record has been filtered</strong>
+     * @param outputRecord The processed record. <strong>May be {@code null} if the record has been filtered</strong>
      */
     default void afterRecordProcessing(final Record inputRecord, final Record outputRecord) {
         // no-op
@@ -57,7 +57,7 @@ public interface PipelineListener {
      * Called when an exception occurs during record processing
      *
      * @param record    the record attempted to be processed
-     * @param throwable the exception occurred during record processing
+     * @param throwable the throwable that was thrown during record processing
      */
     default void onRecordProcessingException(final Record record, final Throwable throwable) {
         // no-op

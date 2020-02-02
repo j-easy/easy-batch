@@ -39,7 +39,7 @@ import static org.jeasy.batch.core.util.Utils.checkArgument;
 import static org.jeasy.batch.core.util.Utils.checkNotNull;
 
 /**
- * A {@link RecordReader} that reads records from a database using JDBC API.
+ * A {@link RecordReader} that reads records from a database using the JDBC API.
  *
  * This reader produces {@link JdbcRecord} instances.
  *

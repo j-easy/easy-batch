@@ -23,11 +23,13 @@
  */
 package org.jeasy.batch.core.marshaller;
 
+import org.jeasy.batch.core.mapper.RecordMapper;
 import org.jeasy.batch.core.processor.RecordProcessor;
 import org.jeasy.batch.core.record.Record;
 
 /**
- * Marker interface for all record marshallers.
+ * Marker interface for all record marshallers. This is conceptually the opposite of
+ * a {@link RecordMapper}.
  *
  * @param <I> the type of record to marshall
  * @param <O> the type of marshalled record
