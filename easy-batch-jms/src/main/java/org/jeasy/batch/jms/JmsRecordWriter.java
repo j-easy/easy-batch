@@ -78,6 +78,8 @@ public class JmsRecordWriter implements RecordWriter {
     @Override
     public void writeRecords(Batch batch) throws Exception {
         for (Record record : batch) {
+            // FIXME there is no send with timeout? There is send(Message message, int deliveryMode, int priority, long timeToLive)
+            // but timeToLive is different than a timeout on the send operation..
             messageProducer.send((Message) record.getPayload());
         }
     }
