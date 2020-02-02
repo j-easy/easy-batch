@@ -57,15 +57,10 @@ public class JobReport implements Serializable {
                     "\tError count = {12}";
 
     private String jobName;
-
     private JobParameters parameters;
-
     private JobMetrics metrics;
-
     private JobStatus status;
-
     private Throwable lastError;
-
     private Properties systemProperties;
 
     public String getJobName() {

@@ -40,19 +40,8 @@ public class StandardInputRecordReader implements RecordReader {
 
     private static final String DEFAULT_TERMINATION_WORD = "quit";
 
-    /**
-     * The standard input scanner.
-     */
     private Scanner scanner;
-
-    /**
-     * The current record number.
-     */
     private long recordNumber;
-
-    /**
-     * The word to type to terminate reading from the standard input.
-     */
     private String terminationInput;
 
     /**

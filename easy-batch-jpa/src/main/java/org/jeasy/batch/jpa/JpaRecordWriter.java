@@ -45,7 +45,6 @@ public class JpaRecordWriter implements RecordWriter {
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaRecordWriter.class.getSimpleName());
 
     private EntityManagerFactory entityManagerFactory;
-
     private EntityManager entityManager;
 
     /**

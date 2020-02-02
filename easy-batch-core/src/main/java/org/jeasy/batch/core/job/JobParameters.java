@@ -32,27 +32,13 @@ import java.io.Serializable;
  */
 public class JobParameters implements Serializable {
 
-    /**
-     * Default job name.
-     */
     public static final String DEFAULT_JOB_NAME = "job";
-
-    /**
-     * Default error threshold.
-     */
     public static final long DEFAULT_ERROR_THRESHOLD = Long.MAX_VALUE;
-
-    /**
-     * Default batch size.
-     */
     public static final int DEFAULT_BATCH_SIZE = 100;
 
     private long errorThreshold;
-
     private boolean jmxMonitoring;
-
     private int batchSize;
-
     private boolean batchScanningEnabled;
 
     public JobParameters() {

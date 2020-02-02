@@ -63,10 +63,6 @@ public class ApacheCommonCsvRecordMapper<P> extends AbstractRecordMapper<P> impl
         return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(csvRecord.toMap()));
     }
 
-    /*
-     * Setter for parameters
-     */
-
     /**
      * Set the trim parameter.
      *

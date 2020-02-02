@@ -27,6 +27,7 @@ import org.jeasy.batch.core.reader.RecordReader;
 import org.jeasy.batch.core.record.Record;
 
 class NoOpRecordReader implements RecordReader {
+
     @Override
     public void open() {
 

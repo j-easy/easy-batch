@@ -51,11 +51,8 @@ import static java.lang.String.valueOf;
 public abstract class Utils {
 
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
-
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
-
     public static final String JAVA_IO_TMPDIR = System.getProperty("java.io.tmpdir");
-
     public static final String NOT_APPLICABLE = "N/A";
 
     private Utils() {

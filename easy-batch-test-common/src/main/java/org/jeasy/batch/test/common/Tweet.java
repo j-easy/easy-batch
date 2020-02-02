@@ -28,9 +28,7 @@ import java.util.Objects;
 public class Tweet {
 
     private int id;
-
     private String user;
-
     private String message;
 
     public Tweet() {
@@ -80,20 +78,14 @@ public class Tweet {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Tweet tweet = (Tweet) o;
-
-        if (id != tweet.id) return false;
-        if (!Objects.equals(user, tweet.user)) return false;
-        return Objects.equals(message, tweet.message);
-
+        return id == tweet.id &&
+                Objects.equals(user, tweet.user) &&
+                Objects.equals(message, tweet.message);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (message != null ? message.hashCode() : 0);
-        return result;
+        return Objects.hash(id, user, message);
     }
 }

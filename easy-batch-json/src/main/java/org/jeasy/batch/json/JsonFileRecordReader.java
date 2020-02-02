@@ -76,7 +76,7 @@ public class JsonFileRecordReader extends AbstractFileRecordReader {
     }
 
     @Override
-    public JsonRecord readRecord() throws Exception {
+    public JsonRecord readRecord() {
         return jsonRecordReader.readRecord();
     }
 

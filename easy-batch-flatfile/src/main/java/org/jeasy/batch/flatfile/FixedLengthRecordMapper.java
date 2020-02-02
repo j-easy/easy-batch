@@ -42,9 +42,6 @@ import java.util.Map;
  */
 public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<StringRecord, Record<P>> {
 
-    /**
-     * Default whitespace trimming value.
-     */
     public static final boolean DEFAULT_WHITESPACE_TRIMMING = false;
 
     private int[] fieldsLength;

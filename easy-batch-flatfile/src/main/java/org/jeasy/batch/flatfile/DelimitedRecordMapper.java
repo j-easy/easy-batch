@@ -42,21 +42,9 @@ import java.util.*;
  */
 public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<StringRecord, Record<P>> {
 
-    /**
-     * The default delimiter.
-     */
     public static final String DEFAULT_DELIMITER = ",";
-
-    /**
-     * The default data qualifier.
-     */
     public static final String DEFAULT_QUALIFIER = "";
-
-    /**
-     * Default whitespace trimming value.
-     */
     public static final boolean DEFAULT_WHITESPACE_TRIMMING = false;
-
 
     private String delimiter = DEFAULT_DELIMITER;
     private boolean trimWhitespaces = DEFAULT_WHITESPACE_TRIMMING;

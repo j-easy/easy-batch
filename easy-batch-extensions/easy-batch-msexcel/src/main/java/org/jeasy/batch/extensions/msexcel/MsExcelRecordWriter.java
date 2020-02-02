@@ -44,9 +44,7 @@ import java.nio.file.Path;
 public class MsExcelRecordWriter implements RecordWriter {
 
     private Path path;
-
     private XSSFWorkbook workbook;
-
     private XSSFSheet sheet;
 
     /**

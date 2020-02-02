@@ -173,8 +173,7 @@ public class XmlRecordReader implements RecordReader {
                 .replaceAll("'", "&apos;")
                 .replaceAll("\"", "&quot;")
                 .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
-                ;
+                .replaceAll(">", "&gt;");
     }
 
 }

@@ -46,13 +46,9 @@ import java.util.Iterator;
 public class MsExcelRecordReader implements RecordReader {
 
     private Path path;
-    
     private XSSFSheet sheet;
-
     private XSSFWorkbook workbook;
-
     private Iterator<Row> rowIterator;
-
     private long recordNumber;
 
     /**

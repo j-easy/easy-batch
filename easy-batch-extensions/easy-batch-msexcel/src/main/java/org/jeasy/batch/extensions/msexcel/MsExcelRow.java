@@ -34,7 +34,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 class MsExcelRow implements Row {
 
     private List<Cell> cells;
-
     private Iterator<Cell> iterator;
 
     public MsExcelRow() {

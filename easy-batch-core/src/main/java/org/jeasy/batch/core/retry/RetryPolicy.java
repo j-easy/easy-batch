@@ -34,9 +34,7 @@ import java.util.concurrent.TimeUnit;
 public class RetryPolicy implements Serializable {
 
     private int maxAttempts;
-
     private long delay;
-
     private TimeUnit timeUnit;
 
     /**

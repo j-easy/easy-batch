@@ -38,19 +38,8 @@ import java.util.Scanner;
  */
 public class StringRecordReader implements RecordReader {
 
-    /**
-     * The current read record number.
-     */
     private long currentRecordNumber;
-
-    /**
-     * Scanner to read input String.
-     */
     private Scanner scanner;
-
-    /**
-     * The content of the String data source.
-     */
     private String dataSource;
 
     /**

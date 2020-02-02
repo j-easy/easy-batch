@@ -30,7 +30,6 @@ package org.jeasy.batch.tutorials.advanced.recipes;
 public class Ingredient {
 
     private String name;
-
     private int quantity;
 
     public String getName() {

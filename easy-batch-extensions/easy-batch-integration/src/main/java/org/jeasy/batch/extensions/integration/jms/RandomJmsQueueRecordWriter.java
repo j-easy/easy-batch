@@ -39,7 +39,6 @@ import java.util.Random;
  */
 public class RandomJmsQueueRecordWriter implements RecordWriter {
 
-
     private int queuesNumber;
     private List<QueueSender> queues;
     private Random random;

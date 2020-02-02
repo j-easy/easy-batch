@@ -45,4 +45,5 @@ public class YamlRecordMarshaller<P> implements RecordMarshaller<Record<P>, Yaml
         yamlWriter.close();
         return new YamlRecord(record.getHeader(), stringWriter.toString());
     }
+
 }

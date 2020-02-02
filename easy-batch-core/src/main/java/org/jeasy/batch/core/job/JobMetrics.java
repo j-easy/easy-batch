@@ -37,17 +37,11 @@ import java.util.Map;
 public class JobMetrics implements Serializable {
 
     private LocalDateTime startTime;
-
     private LocalDateTime endTime;
-
     private long readCount;
-
     private long writeCount;
-
     private long filterCount;
-
     private long errorCount;
-
     private Map<String, Object> customMetrics = new HashMap<>();
 
     public void incrementFilterCount() {

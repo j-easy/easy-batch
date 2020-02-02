@@ -39,19 +39,12 @@ import org.apache.poi.ss.util.CellRangeAddress;
 class MsExcelCell implements Cell {
     
     private int columnIndex;
-    
     private Object value;
-
     private String formula;
-
     private byte errorValue;
-    
     private int type;
-
     private CellStyle style;
-
     private Comment comment;
-
     private Hyperlink hyperlink;
 
     public MsExcelCell(int columnIndex) {

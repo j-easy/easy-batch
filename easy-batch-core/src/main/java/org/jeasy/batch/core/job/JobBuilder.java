@@ -46,7 +46,6 @@ import org.jeasy.batch.core.writer.RecordWriter;
 public final class JobBuilder {
 
     private BatchJob job;
-
     private JobParameters parameters;
 
     /**

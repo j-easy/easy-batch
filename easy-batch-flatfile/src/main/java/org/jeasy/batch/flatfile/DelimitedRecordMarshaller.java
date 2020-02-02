@@ -41,14 +41,7 @@ import java.util.Iterator;
  */
 public class DelimitedRecordMarshaller<P> implements RecordMarshaller<Record<P>, StringRecord> {
 
-    /**
-     * Default delimiter.
-     */
     public static final String DEFAULT_DELIMITER = ",";
-
-    /**
-     * Default qualifier.
-     */
     public static final String DEFAULT_QUALIFIER = "\"";
 
     private String delimiter;

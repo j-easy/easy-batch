@@ -42,13 +42,7 @@ import java.io.StringWriter;
  */
 public class ApacheCommonCsvRecordMarshaller<P> implements RecordMarshaller<Record<P>, StringRecord> {
 
-    /**
-     * Default delimiter.
-     */
     public static final char DEFAULT_DELIMITER = ',';
-    /**
-     * Default qualifier.
-     */
     public static final char DEFAULT_QUALIFIER = '\"';
 
     private final FieldExtractor<P> fieldExtractor;
