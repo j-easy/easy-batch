@@ -145,21 +145,23 @@ class BatchJob implements Job {
         }
     }
 
-    private void openReader() throws RecordReaderOpeningException {
+    private void openReader() throws Exception {
         try {
             LOGGER.debug("Opening record reader");
             recordReader.open();
         } catch (Exception e) {
-            throw new RecordReaderOpeningException("Unable to open record reader", e);
+            LOGGER.error("Unable to open record reader", e);
+            throw e;
         }
     }
 
-    private void openWriter() throws RecordWriterOpeningException {
+    private void openWriter() throws Exception {
         try {
             LOGGER.debug("Opening record writer");
             recordWriter.open();
         } catch (Exception e) {
-            throw new RecordWriterOpeningException("Unable to open record writer", e);
+            LOGGER.error("Unable to open record writer", e);
+            throw e;
         }
     }
 
@@ -175,7 +177,7 @@ class BatchJob implements Job {
         return recordTracker.moreRecords();
     }
 
-    private Batch readAndProcessBatch() throws RecordReadingException, ErrorThresholdExceededException {
+    private Batch readAndProcessBatch() throws Exception {
         Batch batch = new Batch();
         batchListener.beforeBatchReading();
         for (int i = 0; i < parameters.getBatchSize(); i++) {
@@ -193,7 +195,7 @@ class BatchJob implements Job {
         return batch;
     }
 
-    private Record readRecord() throws RecordReadingException {
+    private Record readRecord() throws Exception {
         Record record;
         try {
             LOGGER.debug("Reading next record");
@@ -203,7 +205,8 @@ class BatchJob implements Job {
             return record;
         } catch (Exception e) {
             recordReaderListener.onRecordReadingException(e);
-            throw new RecordReadingException("Unable to read next record", e);
+            LOGGER.error("Unable to read next record", e);
+            throw e;
         }
     }
 
@@ -233,12 +236,14 @@ class BatchJob implements Job {
             metrics.incrementErrorCount();
             report.setLastError(e);
             if (metrics.getErrorCount() > parameters.getErrorThreshold()) {
-                throw new ErrorThresholdExceededException("Error threshold exceeded. Aborting execution", e);
+                String errorMessage = "Error threshold exceeded. Aborting execution";
+                LOGGER.error(errorMessage, e);
+                throw new ErrorThresholdExceededException(errorMessage, e);
             }
         }
     }
 
-    private void writeBatch(Batch batch) throws BatchWritingException {
+    private void writeBatch(Batch batch) throws Exception {
         try {
             if (!batch.isEmpty()) {
                 LOGGER.debug("Writing records {}", batch);
@@ -255,7 +260,8 @@ class BatchJob implements Job {
             if (parameters.isBatchScanningEnabled()) {
                 scan(batch);
             } else {
-                throw new BatchWritingException("Unable to write records", e);
+                LOGGER.error("Unable to write records", e);
+                throw e;
             }
         }
     }
@@ -298,10 +304,7 @@ class BatchJob implements Job {
     }
 
     private void fail(Exception exception) {
-        String reason = exception.getMessage();
-        Throwable error = exception.getCause();
-        LOGGER.error(reason, error);
-        report.setLastError(error);
+        report.setLastError(exception);
         teardown(JobStatus.FAILED);
     }
 
