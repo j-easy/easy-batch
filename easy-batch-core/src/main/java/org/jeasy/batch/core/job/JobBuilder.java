@@ -168,9 +168,7 @@ public final class JobBuilder {
      * @return the job builder
      */
     public JobBuilder errorThreshold(final long errorThreshold) {
-        if (errorThreshold < 0) {
-            throw new IllegalArgumentException("error threshold must be >= 0");
-        }
+        Utils.checkArgument(errorThreshold >= 0, "error threshold must be >= 0");
         parameters.setErrorThreshold(errorThreshold);
         return this;
     }
@@ -215,9 +213,7 @@ public final class JobBuilder {
      * @return the job builder
      */
     public JobBuilder batchSize(final int batchSize) {
-        if (batchSize < 1) {
-            throw new IllegalArgumentException("Batch size must be >= 1");
-        }
+        Utils.checkArgument(batchSize >= 1, "Batch size must be >= 1");
         parameters.setBatchSize(batchSize);
         return this;
     }
