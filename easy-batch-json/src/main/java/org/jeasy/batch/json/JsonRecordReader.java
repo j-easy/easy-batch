@@ -25,8 +25,6 @@ package org.jeasy.batch.json;
 
 import org.jeasy.batch.core.reader.RecordReader;
 import org.jeasy.batch.core.record.Header;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.json.Json;
 import javax.json.JsonValue;
@@ -60,8 +58,6 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class JsonRecordReader implements RecordReader {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsonRecordReader.class.getName());
 
     private InputStream inputStream;
     private JsonParser parser;
