@@ -31,7 +31,6 @@ import org.jeasy.batch.core.marshaller.RecordMarshaller;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
 
-import java.beans.IntrospectionException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +56,8 @@ abstract class AbstractUnivocityRecordMarshaller<P, S extends CommonWriterSettin
      * @param recordClass the type of object to marshal
      * @param settings    settings used to configure the writer object
      * @param fields      the list of fields to marshal in order
-     * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    AbstractUnivocityRecordMarshaller(Class<P> recordClass, S settings, String... fields) throws IntrospectionException {
+    AbstractUnivocityRecordMarshaller(Class<P> recordClass, S settings, String... fields) {
         this.fieldExtractor = new BeanFieldExtractor<>(recordClass, fields);
         this.settings = settings;
     }

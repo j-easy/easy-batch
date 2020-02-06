@@ -31,7 +31,6 @@ import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
 import org.jeasy.batch.core.util.Utils;
 
-import java.beans.IntrospectionException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,12 +56,9 @@ public class OpenCsvRecordMarshaller<P> implements RecordMarshaller<Record<P>, S
      *
      * @param type   the type of object to marshal
      * @param fields the list of fields to marshal in order
-     * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public OpenCsvRecordMarshaller(final Class<P> type, final String... fields) throws IntrospectionException {
-        this.delimiter = DEFAULT_DELIMITER;
-        this.qualifier = DEFAULT_QUALIFIER;
-        this.fieldExtractor = new BeanFieldExtractor<>(type, fields);
+    public OpenCsvRecordMarshaller(final Class<P> type, final String... fields) {
+        this(new BeanFieldExtractor<>(type, fields));
     }
 
     /**

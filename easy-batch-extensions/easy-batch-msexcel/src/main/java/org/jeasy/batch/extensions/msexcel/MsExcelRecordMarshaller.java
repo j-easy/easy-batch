@@ -30,7 +30,6 @@ import org.jeasy.batch.core.field.FieldExtractor;
 import org.jeasy.batch.core.marshaller.RecordMarshaller;
 import org.jeasy.batch.core.record.Record;
 
-import java.beans.IntrospectionException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -48,9 +47,8 @@ public class MsExcelRecordMarshaller<P> implements RecordMarshaller<Record<P>, M
      *
      * @param type the POJO type
      * @param fields the fields to marshal
-     * @throws IntrospectionException when an error occurs during bean introspection
      */
-    public MsExcelRecordMarshaller(Class<P> type, String... fields) throws IntrospectionException {
+    public MsExcelRecordMarshaller(Class<P> type, String... fields) {
         this.fieldExtractor = new BeanFieldExtractor<>(type, fields);
     }
 
