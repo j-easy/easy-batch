@@ -118,7 +118,7 @@ public class FileRecordWriter implements RecordWriter {
 
     @Override
     public void close() throws Exception {
-        if (footerCallback != null) {
+        if (footerCallback != null && outputStreamWriter != null) {
             footerCallback.writeFooter(outputStreamWriter);
             outputStreamWriter.write(lineSeparator);
             outputStreamWriter.flush();
