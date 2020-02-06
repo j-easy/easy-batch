@@ -214,8 +214,7 @@ public class ObjectMapper<T> {
         Type[] genericInterfaces = typeConverterClass.getGenericInterfaces();
         Type genericInterface = genericInterfaces[0];
         if (!(genericInterface instanceof ParameterizedType)) {
-            LOGGER.warn("The type converter {} should be a parametrized type", typeConverterClass.getName());
-            return;
+            throw new TypeConverterRegistrationException("The type converter" + typeConverterClass.getName() + " should be a parametrized type");
         }
         ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
         Type type = parameterizedType.getActualTypeArguments()[1];
