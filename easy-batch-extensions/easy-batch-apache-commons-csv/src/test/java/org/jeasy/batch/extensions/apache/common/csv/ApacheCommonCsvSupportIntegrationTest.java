@@ -38,14 +38,17 @@ import static org.jeasy.batch.core.util.Utils.LINE_SEPARATOR;
 public class ApacheCommonCsvSupportIntegrationTest {
 
     @Test
-    public void testAllComponentsTogether() throws Exception {
+    public void testAllComponentsTogether() {
         String dataSource = "1,foo,hello" + LINE_SEPARATOR + "2,bar,hey" + LINE_SEPARATOR + "3,baz,hi";
 
         RecordCollector<String> recordCollector = new RecordCollector<>();
+        ApacheCommonCsvRecordMarshaller<Tweet> recordMarshaller = new ApacheCommonCsvRecordMarshaller<>(Tweet.class, "id", "user", "message");
+        recordMarshaller.setDelimiter(';');
+        recordMarshaller.setQualifier('\'');
         aNewJob()
                 .reader(new StringRecordReader(dataSource))
                 .mapper(new ApacheCommonCsvRecordMapper<>(Tweet.class, "id", "user", "message"))
-                .marshaller(new ApacheCommonCsvRecordMarshaller<>(Tweet.class, new String[]{"id", "user", "message"}, ';', '\''))
+                .marshaller(recordMarshaller)
                 .processor(recordCollector)
                 .build().call();
 

@@ -28,8 +28,8 @@ import org.jeasy.batch.core.field.FieldExtractor;
 import org.jeasy.batch.core.marshaller.RecordMarshaller;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
+import org.jeasy.batch.core.util.Utils;
 
-import java.beans.IntrospectionException;
 import java.util.Iterator;
 
 /**
@@ -53,48 +53,21 @@ public class DelimitedRecordMarshaller<P> implements RecordMarshaller<Record<P>,
      *
      * @param type   of object to marshal
      * @param fields to marshal in order
-     * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public DelimitedRecordMarshaller(final Class<P> type, final String... fields) throws IntrospectionException {
-        this(type, fields, DEFAULT_DELIMITER, DEFAULT_QUALIFIER);
+    public DelimitedRecordMarshaller(final Class<P> type, final String... fields) {
+        this(new BeanFieldExtractor<>(type, fields));
     }
 
     /**
-     * Create a new {@link DelimitedRecordMarshaller}
+     * Create a new {@link DelimitedRecordMarshaller}.
      *
-     * @param type      of object to marshal
-     * @param fields    of fields to marshal in order
-     * @param delimiter of fields
-     * @throws IntrospectionException If the object to marshal cannot be introspected
-     */
-    public DelimitedRecordMarshaller(final Class<P> type, final String[] fields, final String delimiter) throws IntrospectionException {
-        this(type, fields, delimiter, DEFAULT_QUALIFIER);
-    }
-
-    /**
-     * Create a new {@link DelimitedRecordMarshaller}
-     *
-     * @param type      of object to marshal
-     * @param fields    to marshal in order
-     * @param delimiter of fields
-     * @param qualifier of fields
-     * @throws IntrospectionException If the object to marshal cannot be introspected
-     */
-    public DelimitedRecordMarshaller(final Class<P> type, final String[] fields, final String delimiter, final String qualifier) throws IntrospectionException {
-        this(new BeanFieldExtractor<>(type, fields), delimiter, qualifier);
-    }
-
-    /**
-     * Create a new {@link DelimitedRecordMarshaller}
-     *
-     * @param fieldExtractor extract fields
-     * @param delimiter      of fields
-     * @param qualifier      of fields
+     * @param fieldExtractor to use to extract fields
 	 */
-    public DelimitedRecordMarshaller(FieldExtractor<P> fieldExtractor, final String delimiter, final String qualifier) {
+    public DelimitedRecordMarshaller(FieldExtractor<P> fieldExtractor) {
+        Utils.checkNotNull(fieldExtractor, "field extractor");
         this.fieldExtractor = fieldExtractor;
-        this.delimiter = delimiter;
-        this.qualifier = qualifier;
+        this.delimiter = DEFAULT_DELIMITER;
+        this.qualifier = DEFAULT_QUALIFIER;
     }
 
     @Override
@@ -113,4 +86,23 @@ public class DelimitedRecordMarshaller<P> implements RecordMarshaller<Record<P>,
         }
         return new StringRecord(record.getHeader(), stringBuilder.toString());
     }
+
+    /**
+     * Set the delimiter to use.
+     *
+     * @param delimiter the delimiter to use
+     */
+    public void setDelimiter(final String delimiter) {
+        this.delimiter = delimiter;
+    }
+
+    /**
+     * Set the data qualifier to use.
+     *
+     * @param qualifier the data qualifier to use.
+     */
+    public void setQualifier(final String qualifier) {
+        this.qualifier = qualifier;
+    }
+
 }

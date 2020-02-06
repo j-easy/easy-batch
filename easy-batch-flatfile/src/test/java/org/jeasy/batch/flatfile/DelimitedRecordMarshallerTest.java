@@ -48,7 +48,7 @@ public class DelimitedRecordMarshallerTest {
     private DelimitedRecordMarshaller<Person> marshaller;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         when(record.getHeader()).thenReturn(header);
         when(record.getPayload()).thenReturn(payload);
         when(payload.getFirstName()).thenReturn("foo");
@@ -59,6 +59,17 @@ public class DelimitedRecordMarshallerTest {
     @Test
     public void marshal() throws Exception {
         String expectedPayload = "\"foo\",\"bar\",\"false\"";
+        StringRecord actual = marshaller.processRecord(record);
+
+        assertThat(actual.getHeader()).isEqualTo(header);
+        assertThat(actual.getPayload()).isEqualTo(expectedPayload);
+    }
+
+    @Test
+    public void marshalWithCustomDelimiterAndQualifier() throws Exception {
+        marshaller.setDelimiter(";");
+        marshaller.setQualifier("#");
+        String expectedPayload = "#foo#;#bar#;#false#";
         StringRecord actual = marshaller.processRecord(record);
 
         assertThat(actual.getHeader()).isEqualTo(header);

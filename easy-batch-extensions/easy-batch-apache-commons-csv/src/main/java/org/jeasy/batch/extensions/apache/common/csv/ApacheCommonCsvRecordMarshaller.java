@@ -31,8 +31,8 @@ import org.jeasy.batch.core.field.FieldExtractor;
 import org.jeasy.batch.core.marshaller.RecordMarshaller;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
+import org.jeasy.batch.core.util.Utils;
 
-import java.beans.IntrospectionException;
 import java.io.StringWriter;
 
 /**
@@ -53,48 +53,21 @@ public class ApacheCommonCsvRecordMarshaller<P> implements RecordMarshaller<Reco
      *
      * @param type   object to marshal
      * @param fields to marshal in order
-     * @throws IntrospectionException If the object to marshal cannot be introspected
      */
-    public ApacheCommonCsvRecordMarshaller(final Class<P> type, final String... fields) throws IntrospectionException {
-        this(type, fields, DEFAULT_DELIMITER, DEFAULT_QUALIFIER);
-    }
-
-    /**
-     * Create a new {@link ApacheCommonCsvRecordMarshaller}.
-     *
-     * @param type      the type of object to marshal
-     * @param fields    the list of fields to marshal in order
-     * @param delimiter the field delimiter
-     * @throws IntrospectionException If the object to marshal cannot be introspected
-     */
-    public ApacheCommonCsvRecordMarshaller(final Class<P> type, final String[] fields, final char delimiter) throws IntrospectionException {
-        this(type, fields, delimiter, DEFAULT_QUALIFIER);
-    }
-
-    /**
-     * Create a new {@link ApacheCommonCsvRecordMarshaller}.
-     *
-     * @param type      of object to marshal
-     * @param fields    to marshal in order
-     * @param delimiter the field delimiter
-     * @param qualifier the field qualifier
-     * @throws IntrospectionException If the object to marshal cannot be introspected
-     */
-    public ApacheCommonCsvRecordMarshaller(final Class<P> type, final String[] fields, final char delimiter, final char qualifier) throws IntrospectionException {
-        this(new BeanFieldExtractor<>(type, fields), delimiter, qualifier);
+    public ApacheCommonCsvRecordMarshaller(final Class<P> type, final String... fields) {
+        this(new BeanFieldExtractor<>(type, fields));
     }
 
     /**
      * Create a new {@link ApacheCommonCsvRecordMarshaller}.
      *
      * @param fieldExtractor the field extractor
-     * @param delimiter      the field delimiter
-     * @param qualifier      the field qualifier
      */
-    public ApacheCommonCsvRecordMarshaller(FieldExtractor<P> fieldExtractor, final char delimiter, final char qualifier) {
+    public ApacheCommonCsvRecordMarshaller(FieldExtractor<P> fieldExtractor) {
+        Utils.checkNotNull(fieldExtractor, "field extractor");
         this.fieldExtractor = fieldExtractor;
-        this.csvFormat = CSVFormat.newFormat(delimiter)
-                .withQuote(qualifier)
+        this.csvFormat = CSVFormat.newFormat(DEFAULT_DELIMITER)
+                .withQuote(DEFAULT_QUALIFIER)
                 .withQuoteMode(QuoteMode.ALL)
                 .withRecordSeparator(null);// recordSeparator is forced to null to avoid CSVPrinter to print new lines. New lines are written later by EasyBatch RecordWriter
     }
@@ -108,6 +81,24 @@ public class ApacheCommonCsvRecordMarshaller<P> implements RecordMarshaller<Reco
         csvPrinter.flush();
         csvPrinter.close();
         return new StringRecord(record.getHeader(), stringWriter.toString());
+    }
+
+    /**
+     * Set the delimiter.
+     *
+     * @param delimiter to use
+     */
+    public void setDelimiter(char delimiter) {
+        this.csvFormat = this.csvFormat.withDelimiter(delimiter);
+    }
+
+    /**
+     * Set the qualifier.
+     *
+     * @param qualifier to use
+     */
+    public void setQualifier(char qualifier) {
+        this.csvFormat = this.csvFormat.withQuote(qualifier);
     }
 
 }

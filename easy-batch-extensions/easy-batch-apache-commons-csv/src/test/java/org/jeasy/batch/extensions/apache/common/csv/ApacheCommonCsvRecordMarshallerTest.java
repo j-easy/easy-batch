@@ -42,8 +42,10 @@ public class ApacheCommonCsvRecordMarshallerTest {
     private ApacheCommonCsvRecordMarshaller<Foo> marshaller;
 
     @Before
-    public void setUp() throws Exception {
-        marshaller = new ApacheCommonCsvRecordMarshaller<>(Foo.class, new String[]{"firstName", "lastName", "married"}, ';', '\'');
+    public void setUp() {
+        marshaller = new ApacheCommonCsvRecordMarshaller<>(Foo.class, "firstName", "lastName", "married");
+        marshaller.setDelimiter(';');
+        marshaller.setQualifier('\'');
     }
 
     @Test
