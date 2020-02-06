@@ -25,10 +25,12 @@ package org.jeasy.batch.core.field;
 
 import org.jeasy.batch.core.beans.Gender;
 import org.jeasy.batch.core.beans.Person;
+import org.jeasy.batch.core.converter.TypeConverter;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,6 +68,20 @@ public class BeanFieldExtractorTest {
         fieldExtractor = new BeanFieldExtractor<>(Person.class, "lastName", "age", "married");
         Iterable<Object> values = fieldExtractor.extractFields(person);
         assertThat(values).containsExactly(person.getLastName(), person.getAge(), person.isMarried());
+    }
+
+    @Test
+    public void whenCustomConverterIsRegistered_thenItShouldBeUsedToFormatField() throws Exception {
+        fieldExtractor = new BeanFieldExtractor<>(Person.class);
+        fieldExtractor.registerTypeConverter(new TypeConverter<LocalDate, String>() {
+            @Override
+            public String convert(LocalDate value) {
+                return DateTimeFormatter.ofPattern("yyyyMMdd").format(value);
+            }
+        });
+        Iterable<Object> values = fieldExtractor.extractFields(person);
+        assertThat(values).hasSize(7);
+        assertThat(values).contains("20200120");
     }
 
 }

@@ -23,23 +23,32 @@
  */
 package org.jeasy.batch.core.field;
 
+import org.jeasy.batch.core.converter.TypeConverter;
+import org.jeasy.batch.core.mapper.TypeConverterRegistrationException;
 import org.jeasy.batch.core.util.Utils;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Use JavaBean convention with {@link java.beans.Introspector} to extract properties values from the payload of a record.
+ * Use JavaBean convention with {@link java.beans.Introspector} to extract
+ * properties values from the payload of a record with optional formatting
+ * by registering a custom {@link TypeConverter}.
  *
  * @author Rémi Alvergnat (toilal.dev@gmail.com)
+ * @author Mahmoud Ben Hassine
  */
 public class BeanFieldExtractor<P> implements FieldExtractor<P> {
 
     private final String[] fields;
     private final Map<String, Method> getters;
+    private final Map<Class<?>, TypeConverter<?, String>> typeConverters;
 
     /**
      * Create a new {@link BeanFieldExtractor}.
@@ -58,18 +67,62 @@ public class BeanFieldExtractor<P> implements FieldExtractor<P> {
         } else {
             this.fields = fields;
         }
+        typeConverters = new HashMap<>();
     }
 
     @Override
     public Iterable<Object> extractFields(final P payload) throws Exception {
         Object[] values = new Object[fields.length];
         for (int i = 0; i < fields.length; i++) {
-                values[i] = getValue(fields[i], payload);
+            Object value = getValue(fields[i], payload);
+            values[i] = format(value);
         }
         return Arrays.asList(values);
     }
 
     protected Object getValue(final String field, final P object) throws InvocationTargetException, IllegalAccessException {
         return getters.get(field).invoke(object);
+    }
+
+    private Object format(Object value) {
+        if (value == null) {
+            return null;
+        }
+        TypeConverter typeConverter = typeConverters.get(value.getClass());
+        if (typeConverter != null) {
+            return typeConverter.convert(value);
+        }
+        return value;
+    }
+
+    /**
+     * Register a {@link TypeConverter} used to format fields.
+     *
+     * @param typeConverter to register
+     */
+    public void registerTypeConverter(final TypeConverter<?, String> typeConverter) {
+        //retrieve the target class name of the converter
+        // FIXME : find a clean way for this + make it work with lambdas
+        Class<? extends TypeConverter> typeConverterClass = typeConverter.getClass();
+        Type[] genericInterfaces = typeConverterClass.getGenericInterfaces();
+        Type genericInterface = genericInterfaces[0];
+        if (!(genericInterface instanceof ParameterizedType)) {
+            throw new TypeConverterRegistrationException("The type converter" + typeConverterClass.getName() + " should be a parametrized type");
+        }
+        ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
+        Type type = parameterizedType.getActualTypeArguments()[0];
+
+        // register the converter
+        try {
+            Class<?> clazz = Class.forName(getClassName(type));
+            typeConverters.put(clazz, typeConverter);
+        } catch (ClassNotFoundException e) {
+            throw new TypeConverterRegistrationException("Unable to register custom type converter " + typeConverterClass.getName(), e);
+        }
+    }
+
+    private String getClassName(Type actualTypeArgument) {
+        // FIXME : find a clean way for this
+        return actualTypeArgument.toString().substring(6);
     }
 }

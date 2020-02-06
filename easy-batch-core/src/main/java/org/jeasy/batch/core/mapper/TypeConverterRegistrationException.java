@@ -31,6 +31,14 @@ package org.jeasy.batch.core.mapper;
 public class TypeConverterRegistrationException extends RuntimeException {
 
     /**
+     * Create a new {@link TypeConverterRegistrationException}
+     * @param message of the exception
+     */
+    public TypeConverterRegistrationException(String message) {
+        super(message);
+    }
+
+    /**
      * Create a new {@link TypeConverterRegistrationException}.
      *
      * @param message of the exception
