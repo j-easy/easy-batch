@@ -24,6 +24,7 @@
 package org.jeasy.batch.core.util;
 
 import org.jeasy.batch.core.beans.Person;
+import org.jeasy.batch.core.converter.TypeConverter;
 import org.jeasy.batch.core.record.Record;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
@@ -94,6 +97,20 @@ public class UtilsTest {
     public void testExtractPayloadsFromListOfRecords() {
         List<Object> list = Utils.extractPayloads(Arrays.asList(record1, record2));
         assertThat(list).containsExactly(payload1, payload2);
+    }
+
+    @Test
+    public void testGettingGenericTypeFromTypeConverter() throws Exception {
+        TypeConverter<LocalDate, String> typeConverter = new TypeConverter<LocalDate, String>() {
+            @Override
+            public String convert(LocalDate value) {
+                return DateTimeFormatter.ISO_LOCAL_DATE.format(value);
+            }
+        };
+        Class<?> firstGenericType = Utils.getGenericTypeNameFromTypeConverter(typeConverter, 0);
+        Class<?> secondGenericType = Utils.getGenericTypeNameFromTypeConverter(typeConverter, 1);
+        assertThat(firstGenericType).isEqualTo(LocalDate.class);
+        assertThat(secondGenericType).isEqualTo(String.class);
     }
 
 }

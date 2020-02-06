@@ -45,6 +45,7 @@ import org.jeasy.batch.core.converter.SqlTimeTypeConverter;
 import org.jeasy.batch.core.converter.SqlTimestampTypeConverter;
 import org.jeasy.batch.core.converter.StringTypeConverter;
 import org.jeasy.batch.core.converter.TypeConverter;
+import org.jeasy.batch.core.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,8 +54,6 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -208,29 +207,19 @@ public class ObjectMapper<T> {
         typeConverters.put(String.class, new StringTypeConverter());
     }
 
+    /**
+     * Register a {@link TypeConverter} used to parse fields.
+     *
+     * @param typeConverter to register
+     */
     public void registerTypeConverter(final TypeConverter<String, ?> typeConverter) {
-        //retrieve the target class name of the converter
-        Class<? extends TypeConverter> typeConverterClass = typeConverter.getClass();
-        Type[] genericInterfaces = typeConverterClass.getGenericInterfaces();
-        Type genericInterface = genericInterfaces[0];
-        if (!(genericInterface instanceof ParameterizedType)) {
-            throw new TypeConverterRegistrationException("The type converter" + typeConverterClass.getName() + " should be a parametrized type");
-        }
-        ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
-        Type type = parameterizedType.getActualTypeArguments()[1];
-
-        // register the converter
+        Class<?> clazz;
         try {
-            Class clazz = Class.forName(getClassName(type));
-            typeConverters.put(clazz, typeConverter);
-        } catch (ClassNotFoundException e) {
-            throw new TypeConverterRegistrationException("Unable to register custom type converter " + typeConverterClass.getName(), e);
+            clazz = Utils.getGenericTypeNameFromTypeConverter(typeConverter, 1);
+        } catch (Exception e) {
+            throw new TypeConverterRegistrationException("Unable to register custom type converter " + typeConverter.getClass().getName(), e);
         }
-    }
-
-    private String getClassName(Type actualTypeArgument) {
-        // FIXME : find a clean way for this
-        return actualTypeArgument.toString().substring(6);
+        typeConverters.put(clazz, typeConverter);
     }
 
 }

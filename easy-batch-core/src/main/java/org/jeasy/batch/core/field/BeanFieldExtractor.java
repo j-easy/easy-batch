@@ -30,8 +30,6 @@ import org.jeasy.batch.core.util.Utils;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -101,28 +99,13 @@ public class BeanFieldExtractor<P> implements FieldExtractor<P> {
      * @param typeConverter to register
      */
     public void registerTypeConverter(final TypeConverter<?, String> typeConverter) {
-        //retrieve the target class name of the converter
-        // FIXME : find a clean way for this + make it work with lambdas
-        Class<? extends TypeConverter> typeConverterClass = typeConverter.getClass();
-        Type[] genericInterfaces = typeConverterClass.getGenericInterfaces();
-        Type genericInterface = genericInterfaces[0];
-        if (!(genericInterface instanceof ParameterizedType)) {
-            throw new TypeConverterRegistrationException("The type converter" + typeConverterClass.getName() + " should be a parametrized type");
-        }
-        ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
-        Type type = parameterizedType.getActualTypeArguments()[0];
-
-        // register the converter
+        Class<?> clazz;
         try {
-            Class<?> clazz = Class.forName(getClassName(type));
-            typeConverters.put(clazz, typeConverter);
-        } catch (ClassNotFoundException e) {
-            throw new TypeConverterRegistrationException("Unable to register custom type converter " + typeConverterClass.getName(), e);
+            clazz = Utils.getGenericTypeNameFromTypeConverter(typeConverter, 0);
+        } catch (Exception e) {
+            throw new TypeConverterRegistrationException("Unable to register custom type converter " + typeConverter.getClass().getName(), e);
         }
+        typeConverters.put(clazz, typeConverter);
     }
 
-    private String getClassName(Type actualTypeArgument) {
-        // FIXME : find a clean way for this
-        return actualTypeArgument.toString().substring(6);
-    }
 }

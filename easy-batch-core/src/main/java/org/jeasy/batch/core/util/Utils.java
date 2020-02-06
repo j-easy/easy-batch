@@ -23,6 +23,7 @@
  */
 package org.jeasy.batch.core.util;
 
+import org.jeasy.batch.core.converter.TypeConverter;
 import org.jeasy.batch.core.job.JobParameters;
 import org.jeasy.batch.core.record.Record;
 
@@ -31,6 +32,8 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -116,6 +119,38 @@ public abstract class Utils {
             payloads.add(record.getPayload());
         }
         return payloads;
+    }
+
+    /**
+     * This method is used to get the generic parameter type (source or target) from a {@link TypeConverter}.
+     * This is used in:
+     * <ul>
+     *     <li>ObjectMapper: when registering TypeConverter from String to ? (for parsing)</li>
+     *     <li>BeanFieldExtractor: when registering TypeConverter from ? to String (for formatting)</li>
+     * </ul>
+     *
+     * @param typeConverter to introspect
+     * @param genericTypeIndex 0 or 1 depending on what we are looking for (source or target type)
+     * @return The class name of the generic parameter type
+     * @throws Exception when unable to get generic parameter type
+     */
+    public static Class<?> getGenericTypeNameFromTypeConverter(TypeConverter<?, ?> typeConverter, int genericTypeIndex) throws Exception {
+        // FIXME looks like the following does not work with lambdas
+        Class<? extends TypeConverter> typeConverterClass = typeConverter.getClass();
+        Type[] genericInterfaces = typeConverterClass.getGenericInterfaces();
+        Type genericInterface = genericInterfaces[0];
+        if (!(genericInterface instanceof ParameterizedType)) {
+            throw new Exception("The type converter" + typeConverterClass.getName() + " should be a parametrized type");
+        }
+        ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
+        Type type = parameterizedType.getActualTypeArguments()[genericTypeIndex];
+        String className = getClassName(type);
+        return Class.forName(className);
+    }
+
+    private static String getClassName(Type actualTypeArgument) {
+        // FIXME : find a clean way for this
+        return actualTypeArgument.toString().substring(6);
     }
 
 }
