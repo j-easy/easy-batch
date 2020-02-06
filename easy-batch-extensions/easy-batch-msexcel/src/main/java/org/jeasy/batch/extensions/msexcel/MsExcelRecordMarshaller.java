@@ -29,6 +29,7 @@ import org.jeasy.batch.core.field.BeanFieldExtractor;
 import org.jeasy.batch.core.field.FieldExtractor;
 import org.jeasy.batch.core.marshaller.RecordMarshaller;
 import org.jeasy.batch.core.record.Record;
+import org.jeasy.batch.core.util.Utils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -49,7 +50,17 @@ public class MsExcelRecordMarshaller<P> implements RecordMarshaller<Record<P>, M
      * @param fields the fields to marshal
      */
     public MsExcelRecordMarshaller(Class<P> type, String... fields) {
-        this.fieldExtractor = new BeanFieldExtractor<>(type, fields);
+        this(new BeanFieldExtractor<>(type, fields));
+    }
+
+    /**
+     * Create a new {@link MsExcelRecordMarshaller}.
+     *
+     * @param fieldExtractor to use to extract fields
+     */
+    public MsExcelRecordMarshaller(FieldExtractor<P> fieldExtractor) {
+        Utils.checkNotNull(fieldExtractor, "field extractor");
+        this.fieldExtractor = fieldExtractor;
     }
 
     /**

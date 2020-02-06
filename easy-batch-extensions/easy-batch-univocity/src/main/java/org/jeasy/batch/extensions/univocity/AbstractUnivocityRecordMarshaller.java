@@ -30,6 +30,7 @@ import org.jeasy.batch.core.field.FieldExtractor;
 import org.jeasy.batch.core.marshaller.RecordMarshaller;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
+import org.jeasy.batch.core.util.Utils;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import java.util.List;
  *
  * @param <S> The settings type that is used to configure the writer.
  * @author Anthony Bruno (anthony.bruno196@gmail.com)
+ * @author Mahmoud Ben Hassine
  */
 abstract class AbstractUnivocityRecordMarshaller<P, S extends CommonWriterSettings<?>> implements RecordMarshaller<Record<P>, StringRecord> {
 
@@ -50,7 +52,7 @@ abstract class AbstractUnivocityRecordMarshaller<P, S extends CommonWriterSettin
     StringWriter stringWriter;
 
     /**
-     * Create a new univocty record marshaller to marshal a POJO to a format supported by
+     * Create a new univocity record marshaller to marshal a POJO to a format supported by
      * <a href="http://www.univocity.com/">uniVocity</a>.
      *
      * @param recordClass the type of object to marshal
@@ -58,7 +60,20 @@ abstract class AbstractUnivocityRecordMarshaller<P, S extends CommonWriterSettin
      * @param fields      the list of fields to marshal in order
      */
     AbstractUnivocityRecordMarshaller(Class<P> recordClass, S settings, String... fields) {
-        this.fieldExtractor = new BeanFieldExtractor<>(recordClass, fields);
+        this(new BeanFieldExtractor<>(recordClass, fields), settings);
+    }
+
+    /**
+     * Create a new univocity record marshaller to marshal a POJO to a format supported by
+     * <a href="http://www.univocity.com/">uniVocity</a>.
+     *
+     * @param fieldExtractor the type of object to marshal
+     * @param settings    settings used to configure the writer object
+     */
+    AbstractUnivocityRecordMarshaller(FieldExtractor<P> fieldExtractor, S settings) {
+        Utils.checkNotNull(fieldExtractor, "field extractor");
+        Utils.checkNotNull(settings, "settings");
+        this.fieldExtractor = fieldExtractor;
         this.settings = settings;
     }
 
