@@ -153,12 +153,6 @@
 
             <dependency>
                 <groupId>org.jeasy</groupId>
-                <artifactId>easy-batch-mongodb</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.jeasy</groupId>
                 <artifactId>easy-batch-xstream</artifactId>
                 <version>${project.version}</version>
             </dependency>
