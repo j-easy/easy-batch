@@ -10,8 +10,8 @@
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Coverage](https://coveralls.io/repos/j-easy/easy-batch/badge.svg?style=flat&branch=master&service=github)](https://coveralls.io/github/j-easy/easy-batch?branch=master)
 [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.easybatch/easybatch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.3.0|)
-[![Javadoc](https://www.javadoc.io/badge/org.easybatch/easybatch-core.svg)](http://www.javadoc.io/doc/org.easybatch/easybatch-core)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-batch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|6.0.0|)
+[![Javadoc](https://www.javadoc.io/badge/org.jeasy/easy-batch-core.svg)](http://www.javadoc.io/doc/org.jeasy/easy-batch-core)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/j-easy/easy-batch)
 
 </div>
@@ -20,11 +20,12 @@
 
 ## Latest news
 
+* 07/02/2020: Version 6.0.0 is now released! This is definitely the best release ever and comes with a number of significant improvements! See the change log [here](https://github.com/j-easy/easy-batch/releases).
 * 14/01/2020: Version 5.3.0 is finally out! See the change log [here](https://github.com/j-easy/easy-batch/releases).
 
 # What is Easy Batch?
 
-Easy Batch is a framework that aims to simplify batch processing with Java. It was specifically designed for simple ETL jobs.
+Easy Batch is a framework that aims to simplify batch processing with Java. It was **specifically** designed for simple ETL jobs.
 Writing batch applications requires a **lot** of boilerplate code: reading, writing, filtering, parsing and validating data, logging, reporting to name a few..
 The idea is to free you from these tedious tasks and let you focus on your batch application's logic.
 
@@ -34,7 +35,7 @@ Easy Batch jobs are simple processing pipelines. Records are read in sequence fr
 
 ![batch processing](https://raw.githubusercontent.com/wiki/j-easy/easy-batch/images/batch-processing.png)
 
-The framework provides `Record` and `Batch` APIs to abstract data format and process records in a consistent way regardless of the data source type.
+The framework provides the `Record` and `Batch` APIs to abstract data format and process records in a consistent way regardless of the data source type.
 
 Let's see a quick example. Suppose you have the following `tweets.csv` file:
 
@@ -44,7 +45,7 @@ id,user,message
 2,bar,@foo hi!
 ```
 
-and you would like to transform these tweets to XML format. Here is how you can do that with Easy Batch:
+and you want to transform these tweets to XML format. Here is how you can do that with Easy Batch:
 
 ```java
 Path inputFile = Paths.get("tweets.csv");
@@ -74,7 +75,30 @@ This example creates a job that:
 At the end of execution, you get a report with statistics and metrics about the job run (Execution time, number of errors, etc).
 
 All the boilerplate code of resources I/O, iterating through the data source, filtering and parsing records, mapping data to the domain object `Tweet`, writing output and reporting
- is handled by Easy Batch. Your code becomes declarative, intuitive, easy to read, understand, test and maintain.
+is handled by Easy Batch. Your code becomes declarative, intuitive, easy to read, understand, test and maintain.
+ 
+ ## Quick start
+ 
+Add the following dependency to your project and you are ready to go:
+ 
+ ```xml
+ <dependency>
+     <groupId>org.jeasy</groupId>
+     <artifactId>easy-batch-core</artifactId>
+     <version>6.0.0</version>
+ </dependency>
+```
+
+You can also generate a quick start project with the following command:
+
+```
+$>mvn archetype:generate \
+      -DarchetypeGroupId=org.jeasy \
+      -DarchetypeArtifactId=easy-batch-archetype \
+      -DarchetypeVersion=6.0.0
+```
+
+For more details, please check the [Getting started](https://github.com/j-easy/easy-batch/wiki/getting-started) guide.
 
 ## Presentations, articles & blog posts
 
@@ -90,11 +114,11 @@ All the boilerplate code of resources I/O, iterating through the data source, fi
 
 #### Stable:
 
-The current stable version is [v5.3.0](http://search.maven.org/#artifactdetails|org.easybatch|easybatch-core|5.3.0|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials) | [javadoc](http://javadoc.io/doc/org.easybatch/easybatch-core/5.3.0)
+The current stable version is [v6.0.0](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|6.0.0|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials) | [javadoc](http://javadoc.io/doc/org.jeasy/easy-batch-core/6.0.0)
 
 #### Development:
 
-The current development version is 6.0.0-SNAPSHOT: [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
+The current development version is 6.0.1-SNAPSHOT: [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
 
 If you want to import a snapshot version, please check the [Getting started](https://github.com/j-easy/easy-batch/wiki/getting-started#use-a-snapshot-version) guide.
 
@@ -135,7 +159,7 @@ Thank you all for your contributions!
 
 ## Who is using Easy Batch?
 
-Easy Batch has been successfully used in production in a number of companies which I (benas) am not allowed to mention.
+Easy Batch has been successfully used in production in a number of companies which I ([@benas](https://github.com/benas)) am not allowed to mention.
 That said, here are some companies that publically mention that they use Easy Batch:
 
 * [Splunk](https://docs.splunk.com/Documentation/DBX/3.2.0/ReleaseNotes/easybatch)
