@@ -43,11 +43,11 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JobFactoryBean implements FactoryBean {
+public class JobFactoryBean implements FactoryBean<Job> {
 
     private RecordReader recordReader;
     private RecordWriter recordWriter;
-    private List<RecordProcessor> recordProcessors;
+    private List<RecordProcessor<?, ?>> recordProcessors;
 
     private JobListener jobListener;
     private BatchListener batchListener;
@@ -88,7 +88,7 @@ public class JobFactoryBean implements FactoryBean {
             jobBuilder.writer(recordWriter);
         }
         if (recordProcessors != null) {
-            for (RecordProcessor recordProcessor : recordProcessors) {
+            for (RecordProcessor<?, ?> recordProcessor : recordProcessors) {
                 jobBuilder.processor(recordProcessor);
             }
         }
@@ -137,7 +137,7 @@ public class JobFactoryBean implements FactoryBean {
         this.recordWriter = recordWriter;
     }
 
-    public void setRecordProcessors(List<RecordProcessor> recordProcessors) {
+    public void setRecordProcessors(List<RecordProcessor<?, ?>> recordProcessors) {
         this.recordProcessors = recordProcessors;
     }
 

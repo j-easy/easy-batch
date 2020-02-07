@@ -36,10 +36,10 @@ import org.jeasy.batch.core.util.Utils;
  * @author Somma Daniele
  * @author Mahmoud Ben Hassine
  */
-public class FilteredRecordsCollector implements RecordFilter {
+public class FilteredRecordsCollector<R extends Record> implements RecordFilter<R> {
 
-    private List<Record> filteredRecords = new ArrayList<>();
-    private RecordFilter delegate;
+    private List<R> filteredRecords = new ArrayList<>();
+    private RecordFilter<R> delegate;
 
     /**
      * Create a new {@link FilteredRecordsCollector}
@@ -47,19 +47,18 @@ public class FilteredRecordsCollector implements RecordFilter {
      * @param delegate
      *          the record filter to be used
      */
-    public FilteredRecordsCollector(final RecordFilter delegate) {
+    public FilteredRecordsCollector(final RecordFilter<R> delegate) {
         Utils.checkNotNull(delegate, "delegate record filter");
         this.delegate = delegate;
     }
 
     @Override
-    public Record processRecord(Record record) {
-        Record recordFiltered = delegate.processRecord(record);
-        if (null == recordFiltered) {
+    public R processRecord(R record) {
+        R filteredRecord = delegate.processRecord(record);
+        if (null == filteredRecord) {
             filteredRecords.add(record);
         }
-
-        return recordFiltered;
+        return filteredRecord;
     }
 
     /**
@@ -67,7 +66,7 @@ public class FilteredRecordsCollector implements RecordFilter {
      *
      * @return filtered records
      */
-    public List<Record> getFilteredRecords() {
+    public List<R> getFilteredRecords() {
         return filteredRecords;
     }
 

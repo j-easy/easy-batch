@@ -52,7 +52,7 @@ public class XstreamRecordMarshaller<P> implements RecordMarshaller<Record<P>, X
      * @param elementName the alias of the object in the corresponding xml tag
      * @param type        the type of the object to marshal
      */
-    public XstreamRecordMarshaller(final String elementName, final Class type) {
+    public XstreamRecordMarshaller(final String elementName, final Class<?> type) {
         this();
         checkNotNull(elementName, "element name");
         checkNotNull(type, "target type");
