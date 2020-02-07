@@ -5,11 +5,11 @@
     <parent>
         <groupId>org.jeasy</groupId>
         <artifactId>easy-batch</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.0</version>
     </parent>
 
     <artifactId>easy-batch-tutorials</artifactId>
-    <version>6.0.0-SNAPSHOT</version>
+    <version>6.0.0</version>
     <packaging>jar</packaging>
 
     <name>easy-batch-tutorials</name>
@@ -538,7 +538,7 @@
                                 <argument>-Dcom.sun.management.jmxremote.authenticate=false</argument>
                                 <argument>-Dcom.sun.management.jmxremote.ssl=false</argument>
                                 <argument>-classpath</argument>
-                                <classpath/>
+                                <classpath />
                                 <argument>org.jeasy.batch.tutorials.advanced.jmx.JobProgressTutorial</argument>
                                 <argument>${project.basedir}/src/main/resources/data/tweets.csv</argument>
                             </arguments>
