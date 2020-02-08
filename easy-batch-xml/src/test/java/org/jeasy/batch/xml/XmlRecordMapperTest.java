@@ -31,7 +31,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.File;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
@@ -161,17 +161,13 @@ public class XmlRecordMapperTest {
     public void testMappingOfInvalidXmlAccordingToXsd() throws Exception {
         // given
         xmlRecord = new XmlRecord(header, getXmlFromFile("/person-invalid-xsd.xml"));
-        xmlRecordMapper = new XmlRecordMapper<>(Person.class, getFile("/person.xsd"));
+        xmlRecordMapper = new XmlRecordMapper<>(Person.class, Paths.get("src/test/resources/person.xsd"));
 
         // when
         xmlRecordMapper.processRecord(xmlRecord);
 
         // then
         // expected exception
-    }
-
-    private File getFile(String fileName) {
-        return new File(this.getClass().getResource(fileName).getFile());
     }
 
     private String getXmlFromFile(String file) {

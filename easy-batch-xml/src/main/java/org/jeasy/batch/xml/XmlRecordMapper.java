@@ -36,6 +36,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.nio.file.Path;
 
 /**
  * A record mapper that maps xml records to domain objects annotated with JAXB annotations.
@@ -66,12 +67,30 @@ public class XmlRecordMapper<P> implements RecordMapper<XmlRecord, Record<P>> {
      * @param xsd  file against which xml records will be validated
      * @throws JAXBException thrown if an error occurs during the creation of Jaxb context.
      * @throws SAXException  thrown if an error occurs during the schema parsing.
+     * @deprecated Use {@link XmlRecordMapper#XmlRecordMapper(java.lang.Class, java.nio.file.Path)} instead. This constructor will be removed in a future release
      */
+    @Deprecated
     public XmlRecordMapper(final Class<P> type, final File xsd) throws JAXBException, SAXException {
         jaxbContext = JAXBContext.newInstance(type);
         jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema schema = schemaFactory.newSchema(xsd);
+        jaxbUnmarshaller.setSchema(schema);
+    }
+
+    /**
+     * Create a new {@link XmlRecordMapper}.
+     *
+     * @param type of target domain object.
+     * @param xsd  file against which xml records will be validated
+     * @throws JAXBException thrown if an error occurs during the creation of Jaxb context.
+     * @throws SAXException  thrown if an error occurs during the schema parsing.
+     */
+    public XmlRecordMapper(final Class<P> type, final Path xsd) throws JAXBException, SAXException {
+        jaxbContext = JAXBContext.newInstance(type);
+        jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Schema schema = schemaFactory.newSchema(xsd.toFile());
         jaxbUnmarshaller.setSchema(schema);
     }
 
