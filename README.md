@@ -73,7 +73,6 @@ This example creates a job that:
 * and finally write XML records in batches of 10 to the output file `tweets.xml`
 
 At the end of execution, you get a report with statistics and metrics about the job run (Execution time, number of errors, etc).
-
 All the boilerplate code of resources I/O, iterating through the data source, filtering and parsing records, mapping data to the domain object `Tweet`, writing output and reporting
 is handled by Easy Batch. Your code becomes declarative, intuitive, easy to read, understand, test and maintain.
  
@@ -105,7 +104,6 @@ For more details, please check the [Getting started](https://github.com/j-easy/e
 - :movie_camera: [Introduction to Easy Batch: the simple, stupid batch processing framework for Java](https://speakerdeck.com/benas/easy-batch)
 - :newspaper: [First batch job on Podcastpedia.org using Easy Batch](http://www.codingpedia.org/ama/first-batch-job-on-podcastpedia-org-with-easybatch/)
 - :newspaper: [EasyBatch, les batchs en JAVA tout simplement (in french)](https://blog.sodifrance.fr/easybatch-les-batchs-en-java-tout-simplement/)
-- :newspaper: [Tutoriel pour développer un batch Java avec Easy Batch en moins de 5 minutes (in french) ](http://benassi.developpez.com/tutoriels/java/developper-batch-easybatch-5-minutes/)
 - :memo: [How I reduced my Java batch application's code by 80% using Easy Batch](http://benas.github.io/2014/01/21/how-i-reduced-my-java-app-code-by-80-using-easy-batch.html)
 - :memo: [Spring Batch vs Easy Batch: Feature comparison](http://benas.github.io/2014/03/03/spring-batch-vs-easy-batch-feature-comparison.html)
 - :memo: [Spring Batch vs Easy Batch: Performance comparison](http://benas.github.io/2015/02/15/spring-batch-vs-easy-batch-performance-comparison.html)
@@ -164,7 +162,6 @@ That said, here are some companies that publically mention that they use Easy Ba
 
 * [Splunk](https://docs.splunk.com/Documentation/DBX/3.2.0/ReleaseNotes/easybatch)
 * [SNCF](https://jobs.oui.sncf/offer/dveloppeur-java-backend-h-f-a2cc73deb3)
-* [Leroy Merlin](https://twitter.com/BENEnsi/status/790473633168842752?s=20)
 
 You can also find some feedback from the community about the project in the [Testimonials](http://www.jeasy.org/#testimonials) section.
 
