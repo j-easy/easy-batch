@@ -44,7 +44,7 @@ public class RetryableRecordWriter implements RecordWriter {
     /**
      * Create a new {@link RetryableRecordWriter}.
      *
-     * @param delegate record reader
+     * @param delegate record writer
      * @param retryPolicy to apply
      */
     public RetryableRecordWriter(RecordWriter delegate, RetryPolicy retryPolicy) {
