@@ -165,12 +165,11 @@ That said, here are some companies that publically mention that they use Easy Ba
 
 You can also find some feedback from the community about the project in the [Testimonials](http://www.jeasy.org/#testimonials) section.
 
-## Acknowledgments
+## Credits
 
-|JetBrains|YourKit|
-|:-:|:-:|
-|![IntelliJ IDEA](https://raw.githubusercontent.com/wiki/j-easy/easy-batch/images/logo/intellijidea-logo.png)|![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)|
-|Many thanks to [JetBrains](https://www.jetbrains.com/) for providing a free license of [IntelliJ IDEA](https://www.jetbrains.com/idea/) to kindly support the development of Easy Batch|Many thanks to [YourKit, LLC](https://www.yourkit.com/) for providing a free license of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/index.jsp) to kindly support the development of Easy Batch.|
+![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)
+
+Many thanks to [YourKit, LLC](https://www.yourkit.com/) for providing a free license of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/index.jsp) to support the development of Easy Rules.
 
 ## License
 
