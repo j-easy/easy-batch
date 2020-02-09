@@ -29,7 +29,7 @@ import org.jeasy.batch.core.job.Job;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.reader.BlockingQueueRecordReader;
 import org.jeasy.batch.core.record.Record;
-import org.jeasy.batch.extensions.integration.RoundRobinBlockingQueueRecordWriter;
+import org.jeasy.batch.core.writer.BlockingQueueRecordWriter;
 import org.jeasy.batch.core.writer.StandardOutputRecordWriter;
 import org.jeasy.batch.flatfile.DelimitedRecordMapper;
 import org.jeasy.batch.flatfile.FlatFileRecordReader;
@@ -40,10 +40,9 @@ import java.nio.file.Paths;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static java.util.Arrays.asList;
 import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
-public class RecordDispatching {
+public class WorkQueue {
 
     private static final int THREAD_POOL_SIZE = 3;
     private static final int QUEUE_TIMEOUT = 1000;
@@ -54,12 +53,7 @@ public class RecordDispatching {
         Path tweets = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets.csv");
 
         // Create queues
-        BlockingQueue<Record> workQueue1 = new LinkedBlockingQueue<>();
-        BlockingQueue<Record> workQueue2 = new LinkedBlockingQueue<>();
-
-        // Create a round robin record writer to distribute records to worker jobs
-        RoundRobinBlockingQueueRecordWriter roundRobinBlockingQueueRecordWriter =
-                                        new RoundRobinBlockingQueueRecordWriter(asList(workQueue1, workQueue2));
+        BlockingQueue<Record> workQueue = new LinkedBlockingQueue<>();
 
         // Build a master job to read records from the data source and dispatch them to worker jobs
         Job masterJob = aNewJob()
@@ -67,12 +61,12 @@ public class RecordDispatching {
                 .reader(new FlatFileRecordReader(tweets))
                 .filter(new HeaderRecordFilter())
                 .mapper(new DelimitedRecordMapper<>(Tweet.class, "id", "user", "message"))
-                .writer(roundRobinBlockingQueueRecordWriter)
+                .writer(new BlockingQueueRecordWriter(workQueue, QUEUE_TIMEOUT))
                 .build();
 
         // Build worker jobs
-        Job workerJob1 = buildWorkerJob(workQueue1, "worker-job1");
-        Job workerJob2 = buildWorkerJob(workQueue2, "worker-job2");
+        Job workerJob1 = buildWorkerJob(workQueue, "worker-job1");
+        Job workerJob2 = buildWorkerJob(workQueue, "worker-job2");
 
         // Create a job executor with 3 worker threads
         JobExecutor jobExecutor = new JobExecutor(THREAD_POOL_SIZE);
@@ -82,7 +76,6 @@ public class RecordDispatching {
 
         // Shutdown job executor
         jobExecutor.shutdown();
-
     }
 
     private static Job buildWorkerJob(BlockingQueue<Record> workQueue, String jobName) {
