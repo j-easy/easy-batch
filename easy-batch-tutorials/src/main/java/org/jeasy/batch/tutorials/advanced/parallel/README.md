@@ -80,11 +80,11 @@ Each job will send a poison record to signal that it has finished its task.
 
 This example is implemented in the `ForkJoin` class.
 
-Sometimes, there is no need to write data to a data sink, only processing records in parallel is required:
+It is also possible to distribute the work among multiple worker jobs using a work queue:
 
-![record-dispatching](record-dispatching.jpg)
+![work-queue](work-queue.png)
 
-You can find an example of this use case in the `RecordDispatching` class.
+You can find an example of this use case in the `WorkQueue` class.
 
 ## Run the tutorials
 
