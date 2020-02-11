@@ -59,7 +59,7 @@
     <repositories>
         <repository>
             <id>jboss-maven2-release-repository</id>
-            <url>http://repository.jboss.org/nexus/content/repositories/root_repository/maven2</url>
+            <url>https://repository.jboss.org/nexus/content/repositories/root_repository/maven2</url>
         </repository>
     </repositories>
 
