@@ -104,9 +104,8 @@ For more details, please check the [Getting started](https://github.com/j-easy/e
 - :movie_camera: [Introduction to Easy Batch: the simple, stupid batch processing framework for Java](https://speakerdeck.com/benas/easy-batch)
 - :newspaper: [First batch job on Podcastpedia.org using Easy Batch](http://www.codingpedia.org/ama/first-batch-job-on-podcastpedia-org-with-easybatch/)
 - :newspaper: [EasyBatch, les batchs en JAVA tout simplement (in french)](https://blog.sodifrance.fr/easybatch-les-batchs-en-java-tout-simplement/)
-- :memo: [How I reduced my Java batch application's code by 80% using Easy Batch](http://benas.github.io/2014/01/21/how-i-reduced-my-java-app-code-by-80-using-easy-batch.html)
-- :memo: [Spring Batch vs Easy Batch: Feature comparison](http://benas.github.io/2014/03/03/spring-batch-vs-easy-batch-feature-comparison.html)
-- :memo: [Spring Batch vs Easy Batch: Performance comparison](http://benas.github.io/2015/02/15/spring-batch-vs-easy-batch-performance-comparison.html)
+- :memo: [Spring Batch vs Easy Batch: Feature comparison](https://github.com/benas/easy-batch-vs-spring-batch/issues/1)
+- :memo: [Spring Batch vs Easy Batch: Performance comparison](https://github.com/benas/easy-batch-vs-spring-batch/issues/2)
 
 ## Current versions
 
@@ -158,7 +157,7 @@ Thank you all for your contributions!
 ## Who is using Easy Batch?
 
 Easy Batch has been successfully used in production in a number of companies which I ([@benas](https://github.com/benas)) am not allowed to mention.
-That said, here are some companies that publically mention that they use Easy Batch:
+That said, here are some companies who publicly mention that they use Easy Batch:
 
 * [Splunk](https://docs.splunk.com/Documentation/DBX/3.2.0/ReleaseNotes/easybatch)
 * [SNCF](https://jobs.oui.sncf/offer/dveloppeur-java-backend-h-f-a2cc73deb3)
