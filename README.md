@@ -160,7 +160,7 @@ Easy Batch has been successfully used in production in a number of companies whi
 That said, here are some companies who publicly mention that they use Easy Batch:
 
 * [Splunk](https://docs.splunk.com/Documentation/DBX/3.2.0/ReleaseNotes/easybatch)
-* [SNCF](https://jobs.oui.sncf/offer/dveloppeur-java-backend-h-f-a2cc73deb3)
+* [DeepData](https://deepdata-ltd.github.io/tenderbase/#/ted-xml-importer?id=implementation)
 
 You can also find some feedback from the community about the project in the [Testimonials](http://www.jeasy.org/#testimonials) section.
 
