@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.String.format;
+import java.lang.reflect.Method;
 
 /**
  * A prepared statement provider that prepares a statement by introspecting record fields.
@@ -109,8 +110,9 @@ public class BeanPropertiesPreparedStatementProvider implements PreparedStatemen
             try {
                 for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
                     if (propertyDescriptor.getName().equals(property)) {
-                        Object value = propertyDescriptor.getReadMethod().invoke(record);
-                        Integer sqlType = javaTypesToSqlTypes.get(value.getClass());
+                        Method readMethod = propertyDescriptor.getReadMethod();
+                        Integer sqlType = javaTypesToSqlTypes.get(readMethod.getReturnType());
+                        Object value = readMethod.invoke(record);
                         if (sqlType != null) {
                             preparedStatement.setObject(index++, value, sqlType);
                         } else {
