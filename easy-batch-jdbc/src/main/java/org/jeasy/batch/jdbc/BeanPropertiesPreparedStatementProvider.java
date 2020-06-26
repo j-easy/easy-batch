@@ -110,6 +110,10 @@ public class BeanPropertiesPreparedStatementProvider implements PreparedStatemen
                 for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
                     if (propertyDescriptor.getName().equals(property)) {
                         Object value = propertyDescriptor.getReadMethod().invoke(record);
+						if(value == null) {
+							preparedStatement.setObject(index++, value);
+							break;
+						}
                         Integer sqlType = javaTypesToSqlTypes.get(value.getClass());
                         if (sqlType != null) {
                             preparedStatement.setObject(index++, value, sqlType);
