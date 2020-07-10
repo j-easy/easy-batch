@@ -51,7 +51,7 @@ public interface RecordReaderListener {
     /**
      * Called when an exception occurs during record reading.
      *
-     * @param throwable the throwable tbat was thrown during record reading
+     * @param throwable the throwable that was thrown during record reading
      */
     default void onRecordReadingException(final Throwable throwable) {
         // no-op

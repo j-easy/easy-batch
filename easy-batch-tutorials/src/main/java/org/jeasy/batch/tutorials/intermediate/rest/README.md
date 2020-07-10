@@ -3,7 +3,7 @@
 ## Description
 
 Easy Batch does not provide a REST API reader or writer (See [issue 286](https://github.com/j-easy/easy-batch/issues/286))
-because REST APIs differs significantly in terms of how they manage pagination, authentication, content type, etc.
+because REST APIs differ significantly in terms of how they manage pagination, authentication, content type, etc.
 
 That said, it is always possible to get/post data from/to a REST endpoint using the input/output stream of a `java.net.URL`
 and use Easy Batch components to read/write data.

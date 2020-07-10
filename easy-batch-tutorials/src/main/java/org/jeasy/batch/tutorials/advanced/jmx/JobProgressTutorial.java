@@ -58,7 +58,7 @@ public class JobProgressTutorial {
                 .enableJmx(true)
                 .build();
 
-        // Submit the job the job
+        // Submit the job
         JobExecutor jobExecutor = new JobExecutor();
         jobExecutor.submit(job);
         jobExecutor.shutdown();

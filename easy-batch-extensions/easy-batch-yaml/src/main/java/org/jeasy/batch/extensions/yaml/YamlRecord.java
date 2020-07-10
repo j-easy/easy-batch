@@ -27,7 +27,7 @@ import org.jeasy.batch.core.record.Header;
 import org.jeasy.batch.core.record.StringRecord;
 
 /**
- * Record repsentation of Yaml format.
+ * Record representation of Yaml format.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */

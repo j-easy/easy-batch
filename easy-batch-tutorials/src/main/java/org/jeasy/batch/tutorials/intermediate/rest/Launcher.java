@@ -15,7 +15,7 @@ import org.jeasy.batch.json.JsonRecordReader;
 /**
  *
  * Easy Batch does not provide a REST API reader or writer (See https://github.com/j-easy/easy-batch/issues/286)
- * because REST APIs differs significantly in terms of how they manage pagination,
+ * because REST APIs differ significantly in terms of how they manage pagination,
  * authentication, content type, etc.
  *
  * That said, it is always possible to get data from the REST endpoint using
