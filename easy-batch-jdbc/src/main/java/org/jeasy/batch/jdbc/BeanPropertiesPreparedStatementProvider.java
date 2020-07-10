@@ -43,6 +43,8 @@ import java.lang.reflect.Method;
 
 /**
  * A prepared statement provider that prepares a statement by introspecting record fields.
+ * The record's payload is expected to be a JavaBean as this prepared statement provider
+ * uses JavaBean naming conventions to introspect fields.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
