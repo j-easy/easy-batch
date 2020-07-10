@@ -148,6 +148,7 @@ For any further question, you can use the [gitter channel](https://gitter.im/j-e
 * [nicopatch](https://github.com/nicopatch)
 * [nihed](https://github.com/nihed)
 * [PascalSchumacher](https://github.com/PascalSchumacher)
+* [seseso](https://github.com/seseso)
 * [Toilal](https://github.com/Toilal)
 * [xenji](https://github.com/xenji)
 * [verdi8](https://github.com/verdi8)
