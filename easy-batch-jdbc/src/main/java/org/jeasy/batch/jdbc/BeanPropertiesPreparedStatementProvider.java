@@ -48,9 +48,9 @@ import java.lang.reflect.Method;
  */
 public class BeanPropertiesPreparedStatementProvider implements PreparedStatementProvider {
 
-    private String[] properties;
-    private PropertyDescriptor[] propertyDescriptors;
-    private final Map<Class<?>, Integer> javaTypesToSqlTypes = new HashMap<Class<?>, Integer>() {{
+    protected String[] properties;
+    protected PropertyDescriptor[] propertyDescriptors;
+    protected final Map<Class<?>, Integer> javaTypesToSqlTypes = new HashMap<Class<?>, Integer>() {{
         put(boolean.class, Types.BOOLEAN);
         put(Boolean.class, Types.BOOLEAN);
         put(byte.class, Types.TINYINT);
