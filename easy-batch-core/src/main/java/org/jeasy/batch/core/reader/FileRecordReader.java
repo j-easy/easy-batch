@@ -42,7 +42,7 @@ import static java.nio.file.Files.isRegularFile;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class FileRecordReader implements RecordReader {
+public class FileRecordReader implements RecordReader<Path> {
 
     private Path directory;
     private Iterator<Path> iterator;

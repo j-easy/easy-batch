@@ -44,7 +44,7 @@ import java.util.Iterator;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class XmlRecordReader implements RecordReader {
+public class XmlRecordReader implements RecordReader<String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XmlRecordReader.class.getName());
 

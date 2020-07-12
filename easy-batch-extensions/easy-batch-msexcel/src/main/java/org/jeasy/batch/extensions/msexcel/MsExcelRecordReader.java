@@ -43,7 +43,7 @@ import java.util.Iterator;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MsExcelRecordReader implements RecordReader {
+public class MsExcelRecordReader implements RecordReader<Row> {
 
     private Path path;
     private XSSFSheet sheet;

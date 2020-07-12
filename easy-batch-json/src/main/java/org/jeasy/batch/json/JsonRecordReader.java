@@ -57,7 +57,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JsonRecordReader implements RecordReader {
+public class JsonRecordReader implements RecordReader<String> {
 
     private InputStream inputStream;
     private JsonParser parser;

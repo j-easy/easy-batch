@@ -37,7 +37,7 @@ import java.nio.file.Path;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class XmlFileRecordReader extends AbstractFileRecordReader {
+public class XmlFileRecordReader extends AbstractFileRecordReader<String> {
 
     private XmlRecordReader xmlRecordReader;
     private String rootElementName;

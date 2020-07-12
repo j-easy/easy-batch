@@ -49,7 +49,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JmsRecordReader implements RecordReader {
+public class JmsRecordReader implements RecordReader<Message> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JmsRecordReader.class.getSimpleName());
 

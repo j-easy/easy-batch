@@ -37,17 +37,17 @@ import java.util.Iterator;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class IterableRecordReader implements RecordReader {
+public class IterableRecordReader<P> implements RecordReader<P> {
 
     private long currentRecordNumber;
-    private Iterator iterator;
+    private Iterator<P> iterator;
 
     /**
      * Create a new {@link IterableRecordReader}.
      *
      * @param dataSource to read records from.
      */
-    public IterableRecordReader(final Iterable dataSource) {
+    public IterableRecordReader(final Iterable<P> dataSource) {
         Utils.checkNotNull(dataSource, "data source");
         this.iterator = dataSource.iterator();
     }
@@ -58,7 +58,7 @@ public class IterableRecordReader implements RecordReader {
     }
 
     @Override
-    public GenericRecord readRecord() {
+    public GenericRecord<P> readRecord() {
         Header header = new Header(++currentRecordNumber, getDataSourceName(), LocalDateTime.now());
         if (iterator.hasNext()) {
             return new GenericRecord<>(header, iterator.next());

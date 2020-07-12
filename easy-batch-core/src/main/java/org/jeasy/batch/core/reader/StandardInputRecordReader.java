@@ -38,7 +38,7 @@ import java.util.Scanner;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class StandardInputRecordReader implements RecordReader {
+public class StandardInputRecordReader implements RecordReader<String> {
 
     private static final String DEFAULT_TERMINATION_WORD = "quit";
 
@@ -68,7 +68,7 @@ public class StandardInputRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readRecord() {
+    public StringRecord readRecord() {
         String payload = scanner.nextLine();
         boolean stop = payload != null && !payload.isEmpty() && payload.equalsIgnoreCase(terminationWord);
         if (stop) {

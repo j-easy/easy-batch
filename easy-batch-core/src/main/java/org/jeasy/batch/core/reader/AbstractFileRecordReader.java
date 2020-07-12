@@ -31,7 +31,7 @@ import java.nio.file.Path;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public abstract class AbstractFileRecordReader implements RecordReader {
+public abstract class AbstractFileRecordReader<P> implements RecordReader<P> {
 
     protected Path path;
     protected Charset charset;

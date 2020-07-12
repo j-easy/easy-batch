@@ -49,7 +49,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * @param <T> the type of objects this reader will read.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JpaRecordReader<T> implements RecordReader {
+public class JpaRecordReader<T> implements RecordReader<T> {
 
     public static final int DEFAULT_MAX_RESULT = 1000;
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaRecordReader.class.getSimpleName());

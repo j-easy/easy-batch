@@ -34,9 +34,9 @@ import java.util.ListIterator;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class CompositeRecordReaderListener implements RecordReaderListener {
+public class CompositeRecordReaderListener<P> implements RecordReaderListener<P> {
 
-    private List<RecordReaderListener> listeners;
+    private List<RecordReaderListener<P>> listeners;
 
     /**
      * Create a new {@link CompositeRecordReaderListener}.
@@ -50,20 +50,20 @@ public class CompositeRecordReaderListener implements RecordReaderListener {
      *
      * @param listeners delegates
      */
-    public CompositeRecordReaderListener(List<RecordReaderListener> listeners) {
+    public CompositeRecordReaderListener(List<RecordReaderListener<P>> listeners) {
         this.listeners = listeners;
     }
 
     @Override
     public void beforeRecordReading() {
-        for (RecordReaderListener listener : listeners) {
+        for (RecordReaderListener<P> listener : listeners) {
             listener.beforeRecordReading();
         }
     }
 
     @Override
-    public void afterRecordReading(Record record) {
-        for (ListIterator<RecordReaderListener> iterator
+    public void afterRecordReading(Record<P> record) {
+        for (ListIterator<RecordReaderListener<P>> iterator
                 = listeners.listIterator(listeners.size());
                 iterator.hasPrevious();) {
             iterator.previous().afterRecordReading(record);
@@ -72,7 +72,7 @@ public class CompositeRecordReaderListener implements RecordReaderListener {
 
     @Override
     public void onRecordReadingException(Throwable throwable) {
-        for (ListIterator<RecordReaderListener> iterator
+        for (ListIterator<RecordReaderListener<P>> iterator
                 = listeners.listIterator(listeners.size());
                 iterator.hasPrevious();) {
             iterator.previous().onRecordReadingException(throwable);
@@ -84,7 +84,7 @@ public class CompositeRecordReaderListener implements RecordReaderListener {
      *
      * @param recordReaderListener to add
      */
-    public void addRecordReaderListener(RecordReaderListener recordReaderListener) {
+    public void addRecordReaderListener(RecordReaderListener<P> recordReaderListener) {
         listeners.add(recordReaderListener);
     }
 }

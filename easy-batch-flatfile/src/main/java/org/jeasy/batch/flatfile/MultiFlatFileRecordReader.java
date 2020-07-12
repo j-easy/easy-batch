@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MultiFlatFileRecordReader extends AbstractMultiFileRecordReader {
+public class MultiFlatFileRecordReader extends AbstractMultiFileRecordReader<String> {
 
     /**
      * Create a new {@link MultiFlatFileRecordReader}.
@@ -58,7 +58,7 @@ public class MultiFlatFileRecordReader extends AbstractMultiFileRecordReader {
     }
 
     @Override
-    protected AbstractFileRecordReader createReader() {
+    protected AbstractFileRecordReader<String> createReader() {
         return new FlatFileRecordReader(currentFile, charset);
     }
 }

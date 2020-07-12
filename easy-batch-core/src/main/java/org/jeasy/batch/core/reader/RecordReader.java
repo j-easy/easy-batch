@@ -32,7 +32,7 @@ import org.jeasy.batch.core.record.Record;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public interface RecordReader {
+public interface RecordReader<P> {
 
     /**
      * Open the reader.
@@ -49,7 +49,7 @@ public interface RecordReader {
      * @return the next record from the data source or {@code null} if the end of the data source is reached
      * @throws Exception if an error occurs during reading next record
      */
-    Record readRecord() throws Exception;
+    Record<P> readRecord() throws Exception;
 
     /**
      * Close the reader.

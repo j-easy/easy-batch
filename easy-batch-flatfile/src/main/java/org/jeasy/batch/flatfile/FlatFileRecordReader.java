@@ -43,7 +43,7 @@ import java.time.LocalDateTime;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class FlatFileRecordReader extends AbstractFileRecordReader {
+public class FlatFileRecordReader extends AbstractFileRecordReader<String> {
 
     private BufferedReader bufferedReader;
     private long currentRecordNumber;

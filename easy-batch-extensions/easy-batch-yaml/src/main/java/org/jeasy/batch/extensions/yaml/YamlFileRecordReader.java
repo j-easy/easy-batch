@@ -37,7 +37,7 @@ import java.nio.file.Path;
  * This reader produces {@link YamlRecord} instances.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class YamlFileRecordReader extends AbstractFileRecordReader {
+public class YamlFileRecordReader extends AbstractFileRecordReader<String> {
 
     private YamlRecordReader yamlRecordReader;
 

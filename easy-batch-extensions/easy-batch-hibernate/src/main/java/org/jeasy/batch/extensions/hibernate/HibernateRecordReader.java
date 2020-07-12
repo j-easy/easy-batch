@@ -48,7 +48,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 
-public class HibernateRecordReader<T> implements RecordReader {
+public class HibernateRecordReader<T> implements RecordReader<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HibernateRecordReader.class.getSimpleName());
 

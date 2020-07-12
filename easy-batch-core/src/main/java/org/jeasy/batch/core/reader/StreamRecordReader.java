@@ -40,7 +40,7 @@ import java.util.stream.Stream;
  * @author Charles Fleury
  * @since 5.0
  */
-public class StreamRecordReader<T> implements RecordReader {
+public class StreamRecordReader<T> implements RecordReader<T> {
 
     protected Stream<T> dataSource;
     protected Iterator<T> iterator;

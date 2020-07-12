@@ -30,7 +30,7 @@ import org.jeasy.batch.core.record.Record;
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordReaderListener {
+public interface RecordReaderListener<P> {
 
     /**
      * Called before each record read operation.
@@ -44,7 +44,7 @@ public interface RecordReaderListener {
      *
      * @param record The record that has been read. May be {@code null} if the reader reached the end of data source
      */
-    default void afterRecordReading(final Record record) {
+    default void afterRecordReading(final Record<P> record) {
         // no-op
     }
 

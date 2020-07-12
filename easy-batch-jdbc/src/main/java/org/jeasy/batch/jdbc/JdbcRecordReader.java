@@ -45,7 +45,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JdbcRecordReader implements RecordReader {
+public class JdbcRecordReader implements RecordReader<ResultSet> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcRecordReader.class.getSimpleName());
 

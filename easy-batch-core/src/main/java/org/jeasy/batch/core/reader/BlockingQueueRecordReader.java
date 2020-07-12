@@ -33,11 +33,11 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class BlockingQueueRecordReader implements RecordReader {
+public class BlockingQueueRecordReader<P> implements RecordReader<P> {
 
     public static final long DEFAULT_TIMEOUT = 60000;
 
-    private BlockingQueue<Record> queue;
+    private BlockingQueue<Record<P>> queue;
     private long timeout;
 
     /**
@@ -45,7 +45,7 @@ public class BlockingQueueRecordReader implements RecordReader {
      *
      * @param queue the queue to read records from
      */
-    public BlockingQueueRecordReader(final BlockingQueue<Record> queue) {
+    public BlockingQueueRecordReader(final BlockingQueue<Record<P>> queue) {
         this(queue, DEFAULT_TIMEOUT);
     }
 
@@ -55,13 +55,13 @@ public class BlockingQueueRecordReader implements RecordReader {
      * @param queue the queue to read records from
      * @param timeout in milliseconds after which the reader will return {@code null}
      */
-    public BlockingQueueRecordReader(final BlockingQueue<Record> queue, final long timeout) {
+    public BlockingQueueRecordReader(final BlockingQueue<Record<P>> queue, final long timeout) {
         this.queue = queue;
         this.timeout = timeout;
     }
 
     @Override
-    public Record readRecord() throws Exception {
+    public Record<P> readRecord() throws Exception {
         return queue.poll(timeout, TimeUnit.MILLISECONDS); // returns null after timeout (See javadoc)
     }
 

@@ -36,10 +36,10 @@ import java.util.concurrent.Callable;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RetryableRecordReader implements RecordReader {
+public class RetryableRecordReader<P> implements RecordReader<P> {
 
-    private RecordReader delegate;
-    private RecordReadingCallable recordReadingCallable;
+    private RecordReader<P> delegate;
+    private RecordReadingCallable<P> recordReadingCallable;
     private RecordReadingTemplate recordReadingTemplate;
 
     /**
@@ -48,7 +48,7 @@ public class RetryableRecordReader implements RecordReader {
      * @param delegate record reader
      * @param retryPolicy to apply
      */
-    public RetryableRecordReader(RecordReader delegate, RetryPolicy retryPolicy) {
+    public RetryableRecordReader(RecordReader<P> delegate, RetryPolicy retryPolicy) {
         this.delegate = delegate;
         this.recordReadingCallable = new RecordReadingCallable(delegate);
         this.recordReadingTemplate = new RecordReadingTemplate(retryPolicy);
@@ -60,7 +60,7 @@ public class RetryableRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readRecord() throws Exception {
+    public Record<P> readRecord() throws Exception {
         return recordReadingTemplate.execute(recordReadingCallable);
     }
 
@@ -69,16 +69,16 @@ public class RetryableRecordReader implements RecordReader {
         delegate.close();
     }
 
-    private static class RecordReadingCallable implements Callable<Record<?>> {
+    private static class RecordReadingCallable<P> implements Callable<Record<P>> {
 
-        private RecordReader recordReader;
+        private RecordReader<P> recordReader;
 
-        RecordReadingCallable(RecordReader recordReader) {
+        RecordReadingCallable(RecordReader<P> recordReader) {
             this.recordReader = recordReader;
         }
 
         @Override
-        public Record call() throws Exception {
+        public Record<P> call() throws Exception {
             return recordReader.readRecord();
         }
 

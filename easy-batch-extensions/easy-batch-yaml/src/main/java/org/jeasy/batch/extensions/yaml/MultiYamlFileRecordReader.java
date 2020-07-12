@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MultiYamlFileRecordReader extends AbstractMultiFileRecordReader {
+public class MultiYamlFileRecordReader extends AbstractMultiFileRecordReader<String> {
 
     /**
      * Create a new {@link MultiYamlFileRecordReader}.
@@ -58,7 +58,7 @@ public class MultiYamlFileRecordReader extends AbstractMultiFileRecordReader {
     }
 
     @Override
-    protected AbstractFileRecordReader createReader() {
+    protected AbstractFileRecordReader<String> createReader() {
         return new YamlFileRecordReader(currentFile);
     }
 }

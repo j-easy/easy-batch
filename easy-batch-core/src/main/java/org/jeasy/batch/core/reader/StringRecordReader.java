@@ -36,7 +36,7 @@ import java.util.Scanner;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class StringRecordReader implements RecordReader {
+public class StringRecordReader implements RecordReader<String> {
 
     private long currentRecordNumber;
     private Scanner scanner;

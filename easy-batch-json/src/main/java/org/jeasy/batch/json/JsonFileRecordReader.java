@@ -46,7 +46,7 @@ import java.nio.file.Path;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JsonFileRecordReader extends AbstractFileRecordReader {
+public class JsonFileRecordReader extends AbstractFileRecordReader<String> {
 
     private JsonRecordReader jsonRecordReader;
 

@@ -34,10 +34,12 @@ import java.util.Scanner;
 
 /**
  * Reader for Yaml records delimited by "---".
+ * 
+ * This reader produces {@link YamlRecord} instances.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class YamlRecordReader implements RecordReader {
+public class YamlRecordReader implements RecordReader<String> {
 
     private Scanner scanner;
     private Charset charset;

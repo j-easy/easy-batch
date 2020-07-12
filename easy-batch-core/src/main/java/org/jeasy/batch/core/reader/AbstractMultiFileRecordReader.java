@@ -40,11 +40,11 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public abstract class AbstractMultiFileRecordReader implements RecordReader {
+public abstract class AbstractMultiFileRecordReader<P> implements RecordReader<P> {
 
     protected List<Path> files;
     protected Path currentFile;
-    protected AbstractFileRecordReader delegate;
+    protected AbstractFileRecordReader<P> delegate;
     protected Iterator<Path> iterator;
     protected Charset charset;
 
@@ -81,11 +81,11 @@ public abstract class AbstractMultiFileRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readRecord() throws Exception {
+    public Record<P> readRecord() throws Exception {
         if (delegate == null) {
             return null;
         }
-        Record record = delegate.readRecord();
+        Record<P> record = delegate.readRecord();
         if (record == null) { // finished reading the current file, jump to next file
             delegate.close();
             if (iterator.hasNext()) {
@@ -105,5 +105,5 @@ public abstract class AbstractMultiFileRecordReader implements RecordReader {
         }
     }
 
-    protected abstract AbstractFileRecordReader createReader() throws Exception;
+    protected abstract AbstractFileRecordReader<P> createReader() throws Exception;
 }

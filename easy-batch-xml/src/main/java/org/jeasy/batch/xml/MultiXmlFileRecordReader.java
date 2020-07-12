@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MultiXmlFileRecordReader extends AbstractMultiFileRecordReader {
+public class MultiXmlFileRecordReader extends AbstractMultiFileRecordReader<String> {
 
     private String rootElementName;
 
@@ -62,7 +62,7 @@ public class MultiXmlFileRecordReader extends AbstractMultiFileRecordReader {
     }
 
     @Override
-    protected AbstractFileRecordReader createReader() {
+    protected AbstractFileRecordReader<String> createReader() {
         return new XmlFileRecordReader(currentFile, rootElementName, charset);
     }
 }
