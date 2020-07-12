@@ -44,18 +44,4 @@ public class FooterWriter implements FileRecordWriter.FooterCallback, BatchListe
 		writeCount += batch.size();
 	}
 
-	@Override
-	public void beforeBatchReading() {
-		// no-op
-	}
-
-	@Override
-	public void afterBatchProcessing(Batch batch) {
-		// no-op
-	}
-
-	@Override
-	public void onBatchWritingException(Batch batch, Throwable throwable) {
-		// no-op
-	}
 }
