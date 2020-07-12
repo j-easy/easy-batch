@@ -32,36 +32,36 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class CompositeRecordWriter implements RecordWriter {
+public class CompositeRecordWriter<P> implements RecordWriter<P> {
 
-    private List<RecordWriter> writers;
+    private List<RecordWriter<P>> writers;
 
     /**
      * Create a new {@link CompositeRecordWriter}.
      *
      * @param writers delegates
      */
-    public CompositeRecordWriter(List<RecordWriter> writers) {
+    public CompositeRecordWriter(List<RecordWriter<P>> writers) {
         this.writers = writers;
     }
 
     @Override
     public void open() throws Exception {
-        for (RecordWriter writer : writers) {
+        for (RecordWriter<P> writer : writers) {
             writer.open();
         }
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
-        for (RecordWriter writer : writers) {
+    public void writeRecords(Batch<P> batch) throws Exception {
+        for (RecordWriter<P> writer : writers) {
             writer.writeRecords(batch);
         }
     }
 
     @Override
     public void close() throws Exception {
-        for (RecordWriter writer : writers) {
+        for (RecordWriter<P> writer : writers) {
             writer.close();
         }
     }

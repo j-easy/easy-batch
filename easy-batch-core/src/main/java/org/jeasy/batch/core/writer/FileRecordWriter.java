@@ -38,7 +38,7 @@ import org.jeasy.batch.core.util.Utils;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class FileRecordWriter implements RecordWriter {
+public class FileRecordWriter implements RecordWriter<String> {
 
     private HeaderCallback headerCallback;
     private FooterCallback footerCallback;
@@ -108,9 +108,9 @@ public class FileRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch) {
-            outputStreamWriter.write(record.getPayload().toString());
+    public void writeRecords(Batch<String> batch) throws Exception {
+        for (Record<String> record : batch) {
+            outputStreamWriter.write(record.getPayload());
             outputStreamWriter.write(lineSeparator);
         }
         outputStreamWriter.flush();

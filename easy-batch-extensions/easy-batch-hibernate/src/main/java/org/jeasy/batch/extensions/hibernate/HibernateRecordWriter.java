@@ -40,7 +40,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class HibernateRecordWriter implements RecordWriter {
+public class HibernateRecordWriter<P> implements RecordWriter<P> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HibernateRecordWriter.class.getSimpleName());
 
@@ -64,11 +64,11 @@ public class HibernateRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) {
+    public void writeRecords(Batch<P> batch) {
         Transaction transaction = session.getTransaction();
         transaction.begin();
         try {
-            for (Record record : batch) {
+            for (Record<P> record : batch) {
                 session.saveOrUpdate(record.getPayload());
             }
             session.flush();

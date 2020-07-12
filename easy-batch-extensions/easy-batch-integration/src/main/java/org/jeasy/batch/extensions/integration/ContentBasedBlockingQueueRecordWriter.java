@@ -35,34 +35,35 @@ import java.util.concurrent.BlockingQueue;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class ContentBasedBlockingQueueRecordWriter implements RecordWriter {
+public class ContentBasedBlockingQueueRecordWriter<P> implements RecordWriter<P> {
 
     /**
      * Map a predicate to a queue: when the record content matches the predicate,
      * then it is written to the mapped queue.
      */
-    private Map<Predicate, BlockingQueue<Record>> queueMap;
+    private Map<Predicate<P>, BlockingQueue<Record<P>>> queueMap;
 
     /**
-     * Create a new {ContentBasedBlockingQueueRecordWriter}.
-     * @param queueMap predicate to queue mapping
+     * Create a new content based blocking queue writer.
+     * @param queueMap mapping between predicates and queues
      */
-    public ContentBasedBlockingQueueRecordWriter(Map<Predicate, BlockingQueue<Record>> queueMap) {
+    public ContentBasedBlockingQueueRecordWriter(Map<Predicate<P>, BlockingQueue<Record<P>>> queueMap) {
         this.queueMap = queueMap;
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
-        DefaultPredicate defaultPredicate = new DefaultPredicate();
-        BlockingQueue<Record> defaultQueue = queueMap.get(defaultPredicate);
-        for (Record record : batch) {
+    public void writeRecords(Batch<P> batch) throws Exception {
+        DefaultPredicate<P> defaultPredicate = new DefaultPredicate<>();
+        BlockingQueue<Record<P>> defaultQueue = queueMap.get(defaultPredicate);
+        for (Record<P> record : batch) {
             boolean matched = false;
-            for (Map.Entry<Predicate, BlockingQueue<Record>> entry : queueMap.entrySet()) {
-                Predicate predicate = entry.getKey();
+            for (Map.Entry<Predicate<P>, BlockingQueue<Record<P>>> entry : queueMap.entrySet()) {
+                Predicate<P> predicate = entry.getKey();
+                BlockingQueue<Record<P>> queue = entry.getValue();
                 //check if the record meets a given predicate
                 if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
                     //if so, put it in the mapped queue
-                    queueMap.get(predicate).put(record);
+                    queue.put(record);
                     matched = true;
                     break;
                 }
@@ -74,7 +75,7 @@ public class ContentBasedBlockingQueueRecordWriter implements RecordWriter {
         }
     }
 
-    Map<Predicate, BlockingQueue<Record>> getQueueMap() {
+    public Map<Predicate<P>, BlockingQueue<Record<P>>> getQueueMap() {
         return queueMap;
     }
 }

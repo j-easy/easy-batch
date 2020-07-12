@@ -37,7 +37,7 @@ import java.util.Random;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RandomJmsQueueRecordWriter implements RecordWriter {
+public class RandomJmsQueueRecordWriter<P> implements RecordWriter<P> {
 
     private int queuesNumber;
     private List<QueueSender> queues;
@@ -55,8 +55,8 @@ public class RandomJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch) {
+    public void writeRecords(Batch<P> batch) throws Exception {
+        for (Record<P> record : batch) {
             //dispatch record randomly to one of the queues
             QueueSender queue = queues.get(random.nextInt(queuesNumber));
             queue.send((Message) record.getPayload());

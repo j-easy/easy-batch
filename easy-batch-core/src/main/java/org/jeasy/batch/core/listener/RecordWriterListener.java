@@ -30,14 +30,14 @@ import org.jeasy.batch.core.record.Batch;
  *
  * @author Mario Mueller (mario@xenji.com)
  */
-public interface RecordWriterListener {
+public interface RecordWriterListener<P> {
 
     /**
      * Called before writing each batch of records.
      *
      * @param batch to be written
      */
-    default void beforeRecordWriting(Batch batch) {
+    default void beforeRecordWriting(Batch<P> batch) {
         // no-op
     }
 
@@ -46,7 +46,7 @@ public interface RecordWriterListener {
      *
      * @param batch of records that have been written.
      */
-    default void afterRecordWriting(Batch batch) {
+    default void afterRecordWriting(Batch<P> batch) {
         // no-op
     }
 
@@ -56,7 +56,7 @@ public interface RecordWriterListener {
      * @param batch attempted to be written
      * @param throwable the throwable that was thrown during record writing
      */
-    default void onRecordWritingException(Batch batch, final Throwable throwable) {
+    default void onRecordWritingException(Batch<P> batch, final Throwable throwable) {
         // no-op
     }
 

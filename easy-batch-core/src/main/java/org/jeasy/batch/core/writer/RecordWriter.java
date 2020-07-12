@@ -30,7 +30,7 @@ import org.jeasy.batch.core.record.Batch;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public interface RecordWriter {
+public interface RecordWriter<P> {
 
     /**
      * Open the writer.
@@ -47,7 +47,7 @@ public interface RecordWriter {
      * @param batch of records to write.
      * @throws Exception if an error occurs during record writing
      */
-    void writeRecords(Batch batch) throws Exception;
+    void writeRecords(Batch<P> batch) throws Exception;
 
     /**
      * Close the writer

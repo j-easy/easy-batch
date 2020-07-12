@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class BroadcastJmsQueueRecordWriter implements RecordWriter {
+public class BroadcastJmsQueueRecordWriter<P> implements RecordWriter<P> {
 
     private List<QueueSender> queues;
 
@@ -50,8 +50,8 @@ public class BroadcastJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch) {
+    public void writeRecords(Batch<P> batch) throws Exception {
+        for (Record<P> record : batch) {
             for (QueueSender queue : queues) {
                 queue.send((Message) record.getPayload());
             }

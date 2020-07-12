@@ -41,7 +41,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JdbcRecordWriter implements RecordWriter {
+public class JdbcRecordWriter<P> implements RecordWriter<P> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcRecordWriter.class.getSimpleName());
 
@@ -74,9 +74,9 @@ public class JdbcRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
+    public void writeRecords(Batch<P> batch) throws Exception {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            for (Record record : batch) {
+            for (Record<P> record : batch) {
                 preparedStatementProvider.prepareStatement(preparedStatement, record.getPayload());
                 preparedStatement.addBatch();
             }

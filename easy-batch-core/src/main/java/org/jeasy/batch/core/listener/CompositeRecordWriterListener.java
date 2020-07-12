@@ -34,9 +34,9 @@ import java.util.ListIterator;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class CompositeRecordWriterListener implements RecordWriterListener {
+public class CompositeRecordWriterListener<P> implements RecordWriterListener<P> {
 
-    private List<RecordWriterListener> listeners;
+    private List<RecordWriterListener<P>> listeners;
 
     /**
      * Create a new {@link CompositeRecordWriterListener}.
@@ -50,20 +50,20 @@ public class CompositeRecordWriterListener implements RecordWriterListener {
      *
      * @param listeners delegates
      */
-    public CompositeRecordWriterListener(List<RecordWriterListener> listeners) {
+    public CompositeRecordWriterListener(List<RecordWriterListener<P>> listeners) {
         this.listeners = listeners;
     }
 
     @Override
-    public void beforeRecordWriting(Batch batch) {
-        for (RecordWriterListener listener : listeners) {
+    public void beforeRecordWriting(Batch<P> batch) {
+        for (RecordWriterListener<P> listener : listeners) {
             listener.beforeRecordWriting(batch);
         }
     }
 
     @Override
-    public void afterRecordWriting(Batch batch) {
-        for (ListIterator<RecordWriterListener> iterator
+    public void afterRecordWriting(Batch<P> batch) {
+        for (ListIterator<RecordWriterListener<P>> iterator
                 = listeners.listIterator(listeners.size());
                 iterator.hasPrevious();) {
             iterator.previous().afterRecordWriting(batch);
@@ -71,8 +71,8 @@ public class CompositeRecordWriterListener implements RecordWriterListener {
     }
 
     @Override
-    public void onRecordWritingException(Batch batch, Throwable throwable) {
-        for (ListIterator<RecordWriterListener> iterator
+    public void onRecordWritingException(Batch<P> batch, Throwable throwable) {
+        for (ListIterator<RecordWriterListener<P>> iterator
                 = listeners.listIterator(listeners.size());
                 iterator.hasPrevious();) {
             iterator.previous().onRecordWritingException(batch, throwable);
@@ -84,7 +84,7 @@ public class CompositeRecordWriterListener implements RecordWriterListener {
      *
      * @param recordWriterListener to add
      */
-    public void addRecordWriterListener(RecordWriterListener recordWriterListener) {
+    public void addRecordWriterListener(RecordWriterListener<P> recordWriterListener) {
         listeners.add(recordWriterListener);
     }
 }

@@ -34,11 +34,11 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class BlockingQueueRecordWriter implements RecordWriter {
+public class BlockingQueueRecordWriter<P> implements RecordWriter<P> {
 
     public static final long DEFAULT_TIMEOUT = 60000;
 
-    private BlockingQueue<Record> blockingQueue;
+    private BlockingQueue<Record<P>> blockingQueue;
     private long timeout;
 
     /**
@@ -46,7 +46,7 @@ public class BlockingQueueRecordWriter implements RecordWriter {
      *
      * @param blockingQueue to write records to
      */
-    public BlockingQueueRecordWriter(final BlockingQueue<Record> blockingQueue) {
+    public BlockingQueueRecordWriter(final BlockingQueue<Record<P>> blockingQueue) {
         this(blockingQueue, DEFAULT_TIMEOUT);
     }
 
@@ -56,14 +56,14 @@ public class BlockingQueueRecordWriter implements RecordWriter {
      * @param blockingQueue to write records to
      * @param timeout in milliseconds after which the writer will throw an exception
      */
-    public BlockingQueueRecordWriter(final BlockingQueue<Record> blockingQueue, final long timeout) {
+    public BlockingQueueRecordWriter(final BlockingQueue<Record<P>> blockingQueue, final long timeout) {
         this.blockingQueue = blockingQueue;
         this.timeout = timeout;
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch) {
+    public void writeRecords(Batch<P> batch) throws Exception {
+        for (Record<P> record : batch) {
             blockingQueue.offer(record, timeout, TimeUnit.MILLISECONDS);
         }
     }

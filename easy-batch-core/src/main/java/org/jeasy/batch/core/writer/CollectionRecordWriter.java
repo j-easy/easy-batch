@@ -34,24 +34,24 @@ import java.util.Collection;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class CollectionRecordWriter implements RecordWriter {
+public class CollectionRecordWriter<P> implements RecordWriter<P> {
 
-    private Collection collection;
+    private Collection<P> collection;
 
     /**
      * Create a new {@link CollectionRecordWriter}.
      *
      * @param collection the collection to write records to
      */
-    public CollectionRecordWriter(final Collection collection) {
+    public CollectionRecordWriter(final Collection<P> collection) {
         Utils.checkNotNull(collection, "collection");
         this.collection = collection;
     }
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public void writeRecords(Batch batch) {
-        for (Record record : batch) {
+    public void writeRecords(Batch<P> batch) {
+        for (Record<P> record : batch) {
             collection.add(record.getPayload());
         }
     }

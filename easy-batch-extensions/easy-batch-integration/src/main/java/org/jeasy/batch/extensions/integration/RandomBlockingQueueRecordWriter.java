@@ -36,10 +36,10 @@ import java.util.concurrent.BlockingQueue;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RandomBlockingQueueRecordWriter implements RecordWriter {
+public class RandomBlockingQueueRecordWriter<P> implements RecordWriter<P> {
 
     private int queuesNumber;
-    private List<BlockingQueue<Record>> queues;
+    private List<BlockingQueue<Record<P>>> queues;
     private Random random;
 
     /**
@@ -47,17 +47,17 @@ public class RandomBlockingQueueRecordWriter implements RecordWriter {
      *
      * @param queues to which records should be written
      */
-    public RandomBlockingQueueRecordWriter(List<BlockingQueue<Record>> queues) {
+    public RandomBlockingQueueRecordWriter(List<BlockingQueue<Record<P>>> queues) {
         this.queues = queues;
         this.queuesNumber = queues.size();
         this.random = new Random();
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
+    public void writeRecords(Batch<P> batch) throws Exception {
         //write record randomly to one of the queues
-        for (Record record : batch) {
-            BlockingQueue<Record> queue = queues.get(random.nextInt(queuesNumber));
+        for (Record<P> record : batch) {
+            BlockingQueue<Record<P>> queue = queues.get(random.nextInt(queuesNumber));
             queue.put(record);
         }
     }

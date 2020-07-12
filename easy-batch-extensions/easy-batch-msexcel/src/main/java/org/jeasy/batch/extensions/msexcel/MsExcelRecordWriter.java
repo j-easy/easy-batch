@@ -41,7 +41,7 @@ import java.nio.file.Path;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MsExcelRecordWriter implements RecordWriter {
+public class MsExcelRecordWriter implements RecordWriter<Row> {
 
     private Path path;
     private XSSFWorkbook workbook;
@@ -81,13 +81,13 @@ public class MsExcelRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch) {
+    public void writeRecords(Batch<Row> batch) throws Exception {
+        for (Record<Row> record : batch) {
             XSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
             int i = 0;
-            int lastCellNum = ((Row) record.getPayload()).getLastCellNum();
+            int lastCellNum = record.getPayload().getLastCellNum();
             for (int index = 0; index < lastCellNum; index++) {
-                Cell nextCell = ((Row) record.getPayload()).getCell(index);
+                Cell nextCell = record.getPayload().getCell(index);
                 XSSFCell cell = row.createCell(i++);
                 setValue(cell, nextCell);
             }

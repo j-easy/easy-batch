@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RoundRobinJmsQueueRecordWriter implements RecordWriter {
+public class RoundRobinJmsQueueRecordWriter<P> implements RecordWriter<P> {
 
     private int queuesNumber;
     private int next;
@@ -53,8 +53,8 @@ public class RoundRobinJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch) {
+    public void writeRecords(Batch<P> batch) throws Exception {
+        for (Record<P> record : batch) {
             //dispatch records to queues in round-robin fashion
             QueueSender queue = queues.get(next++ % queuesNumber);
             queue.send((Message) record.getPayload());

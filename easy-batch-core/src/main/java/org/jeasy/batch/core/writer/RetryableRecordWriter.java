@@ -36,9 +36,9 @@ import java.util.concurrent.Callable;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RetryableRecordWriter implements RecordWriter {
+public class RetryableRecordWriter<P> implements RecordWriter<P> {
 
-    private RecordWriter delegate;
+    private RecordWriter<P> delegate;
     private RecordWritingTemplate recordWritingTemplate;
 
     /**
@@ -47,7 +47,7 @@ public class RetryableRecordWriter implements RecordWriter {
      * @param delegate record writer
      * @param retryPolicy to apply
      */
-    public RetryableRecordWriter(RecordWriter delegate, RetryPolicy retryPolicy) {
+    public RetryableRecordWriter(RecordWriter<P> delegate, RetryPolicy retryPolicy) {
         this.delegate = delegate;
         this.recordWritingTemplate = new RecordWritingTemplate(retryPolicy);
     }
@@ -58,7 +58,7 @@ public class RetryableRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
+    public void writeRecords(Batch<P> batch) throws Exception {
         recordWritingTemplate.execute(new RecordWritingCallable(delegate, batch));
     }
 

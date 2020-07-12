@@ -40,7 +40,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JpaRecordWriter implements RecordWriter {
+public class JpaRecordWriter<P> implements RecordWriter<P> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaRecordWriter.class.getSimpleName());
 
@@ -64,11 +64,11 @@ public class JpaRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) {
+    public void writeRecords(Batch<P> batch) {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
         try {
-            for (Record record : batch) {
+            for (Record<P> record : batch) {
                 entityManager.persist(record.getPayload());
             }
             entityManager.flush();

@@ -34,7 +34,7 @@ import java.io.StringWriter;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class StringRecordWriter implements RecordWriter {
+public class StringRecordWriter<P> implements RecordWriter<P> {
 
     private StringWriter stringWriter;
 
@@ -49,8 +49,8 @@ public class StringRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) {
-        for (Record record : batch) {
+    public void writeRecords(Batch<P> batch) {
+        for (Record<P> record : batch) {
             stringWriter.write(record.getPayload().toString());
             stringWriter.write(Utils.LINE_SEPARATOR);
         }

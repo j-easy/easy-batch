@@ -44,7 +44,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JmsRecordWriter implements RecordWriter {
+public class JmsRecordWriter<P> implements RecordWriter<P> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JmsRecordWriter.class.getSimpleName());
 
@@ -76,8 +76,8 @@ public class JmsRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
-        for (Record record : batch) {
+    public void writeRecords(Batch<P> batch) throws Exception {
+        for (Record<P> record : batch) {
             // FIXME there is no send with timeout? There is send(Message message, int deliveryMode, int priority, long timeToLive)
             // but timeToLive is different than a timeout on the send operation..
             messageProducer.send((Message) record.getPayload());

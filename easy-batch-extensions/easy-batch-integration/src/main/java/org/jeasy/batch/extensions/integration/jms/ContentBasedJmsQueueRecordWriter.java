@@ -38,7 +38,7 @@ import java.util.Map;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class ContentBasedJmsQueueRecordWriter implements RecordWriter {
+public class ContentBasedJmsQueueRecordWriter<P> implements RecordWriter<P> {
 
     /**
      * Map a predicate to a queue: when the record content matches the predicate,
@@ -51,9 +51,9 @@ public class ContentBasedJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
+    public void writeRecords(Batch<P> batch) throws Exception {
         QueueSender defaultQueue = queueMap.get(new DefaultPredicate());
-        for (Record record : batch) {
+        for (Record<P> record : batch) {
             boolean matched = false;
             Message payload = (Message) record.getPayload();
             for (Map.Entry<Predicate, QueueSender> entry : queueMap.entrySet()) {
