@@ -51,22 +51,22 @@ import org.slf4j.LoggerFactory;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-class BatchJob implements Job {
+class BatchJob<I , O> implements Job {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BatchJob.class);
     private static final String DEFAULT_JOB_NAME = "job";
 
     private String name;
 
-    private RecordReader recordReader;
-    private RecordWriter recordWriter;
-    private RecordProcessor recordProcessor;
+    private RecordReader<I> recordReader;
+    private RecordWriter<O> recordWriter;
+    private RecordProcessor<I, O> recordProcessor;
     private RecordTracker recordTracker;
 
     private JobListener jobListener;
-    private BatchListener batchListener;
-    private RecordReaderListener recordReaderListener;
-    private RecordWriterListener recordWriterListener;
+    private BatchListener<O> batchListener;
+    private RecordReaderListener<I> recordReaderListener;
+    private RecordWriterListener<O> recordWriterListener;
     private PipelineListener pipelineListener;
 
     private JobParameters parameters;
@@ -84,13 +84,13 @@ class BatchJob implements Job {
         report.setJobName(name);
         report.setSystemProperties(System.getProperties());
         monitor = new JobMonitor(report);
-        recordReader = new NoOpRecordReader();
-        recordProcessor = new CompositeRecordProcessor();
-        recordWriter = new NoOpRecordWriter();
-        recordReaderListener = new CompositeRecordReaderListener();
+        recordReader = new NoOpRecordReader<>();
+        recordProcessor = new CompositeRecordProcessor<>();
+        recordWriter = new NoOpRecordWriter<>();
+        recordReaderListener = new CompositeRecordReaderListener<>();
         pipelineListener = new CompositePipelineListener();
-        recordWriterListener = new CompositeRecordWriterListener();
-        batchListener = new CompositeBatchListener();
+        recordWriterListener = new CompositeRecordWriterListener<>();
+        batchListener = new CompositeBatchListener<>();
         jobListener = new CompositeJobListener();
         recordTracker = new RecordTracker();
     }
@@ -108,7 +108,7 @@ class BatchJob implements Job {
             openWriter();
             setStatus(JobStatus.STARTED);
             while (moreRecords() && !isInterrupted()) {
-                Batch batch = readAndProcessBatch();
+                Batch<O> batch = readAndProcessBatch();
                 writeBatch(batch);
             }
             setStatus(JobStatus.STOPPING);
@@ -177,11 +177,11 @@ class BatchJob implements Job {
         return recordTracker.moreRecords();
     }
 
-    private Batch readAndProcessBatch() throws Exception {
-        Batch batch = new Batch();
+    private Batch<O> readAndProcessBatch() throws Exception {
+        Batch<O> batch = new Batch<>();
         batchListener.beforeBatchReading();
         for (int i = 0; i < parameters.getBatchSize(); i++) {
-            Record record = readRecord();
+            Record<I> record = readRecord();
             if (record == null) {
                 LOGGER.debug("No more records");
                 recordTracker.noMoreRecords();
@@ -195,8 +195,8 @@ class BatchJob implements Job {
         return batch;
     }
 
-    private Record readRecord() throws Exception {
-        Record record;
+    private Record<I> readRecord() throws Exception {
+        Record<I> record;
         try {
             LOGGER.debug("Reading next record");
             recordReaderListener.beforeRecordReading();
@@ -210,8 +210,8 @@ class BatchJob implements Job {
         }
     }
 
-    @SuppressWarnings(value = "unchecked")
-    private void processRecord(Record record, Batch batch) throws ErrorThresholdExceededException {
+    @SuppressWarnings(value = "unchecked,rawtypes")
+    private void processRecord(Record<I> record, Batch<O> batch) throws ErrorThresholdExceededException {
         Record processedRecord = null;
         try {
             LOGGER.debug("Processing record {}", record);
@@ -243,7 +243,7 @@ class BatchJob implements Job {
         }
     }
 
-    private void writeBatch(Batch batch) throws Exception {
+    private void writeBatch(Batch<O> batch) throws Exception {
         try {
             if (!batch.isEmpty()) {
                 LOGGER.debug("Writing records {}", batch);
@@ -266,11 +266,11 @@ class BatchJob implements Job {
         }
     }
 
-    private void scan(Batch batch) {
+    private void scan(Batch<O> batch) {
         LOGGER.debug("Scanning records {}", batch);
-        for (Record record : batch) {
+        for (Record<O> record : batch) {
             record.getHeader().setScanned(true);
-            Batch scannedBatch = new Batch(record);
+            Batch<O> scannedBatch = new Batch<>(record);
             try {
                 recordWriterListener.beforeRecordWriting(scannedBatch);
                 recordWriter.writeRecords(scannedBatch);
@@ -338,19 +338,19 @@ class BatchJob implements Job {
      * Setters for job components
      */
 
-    public void setRecordReader(RecordReader recordReader) {
+    public void setRecordReader(RecordReader<I> recordReader) {
         this.recordReader = recordReader;
     }
 
-    public void setRecordWriter(RecordWriter recordWriter) {
+    public void setRecordWriter(RecordWriter<O> recordWriter) {
         this.recordWriter = recordWriter;
     }
 
-    public void addRecordProcessor(RecordProcessor recordProcessor) {
+    public void addRecordProcessor(RecordProcessor<?, ?> recordProcessor) {
         ((CompositeRecordProcessor) this.recordProcessor).addRecordProcessor(recordProcessor);
     }
 
-    public void addBatchListener(BatchListener batchListener) {
+    public void addBatchListener(BatchListener<O> batchListener) {
         ((CompositeBatchListener) this.batchListener).addBatchListener(batchListener);
     }
 
@@ -358,11 +358,11 @@ class BatchJob implements Job {
         ((CompositeJobListener) this.jobListener).addJobListener(jobListener);
     }
 
-    public void addRecordReaderListener(RecordReaderListener recordReaderListener) {
+    public void addRecordReaderListener(RecordReaderListener<I> recordReaderListener) {
         ((CompositeRecordReaderListener) this.recordReaderListener).addRecordReaderListener(recordReaderListener);
     }
 
-    public void addRecordWriterListener(RecordWriterListener recordWriterListener) {
+    public void addRecordWriterListener(RecordWriterListener<O> recordWriterListener) {
         ((CompositeRecordWriterListener) this.recordWriterListener).addRecordWriterListener(recordWriterListener);
     }
 
@@ -378,19 +378,19 @@ class BatchJob implements Job {
     /*
      * Private inner classes that does not make sense to be public in other packages (reader/writer)
      */
-    private static class NoOpRecordReader implements RecordReader {
+    private static class NoOpRecordReader<P> implements RecordReader<P> {
 
         @Override
-        public Record readRecord() {
+        public Record<P> readRecord() {
             return null;
         }
 
     }
 
-    private static class NoOpRecordWriter implements RecordWriter {
+    private static class NoOpRecordWriter<P> implements RecordWriter<P> {
 
         @Override
-        public void writeRecords(Batch batch) {
+        public void writeRecords(Batch<P> batch) {
 
         }
 

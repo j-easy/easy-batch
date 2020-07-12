@@ -43,9 +43,9 @@ import org.jeasy.batch.core.writer.RecordWriter;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public final class JobBuilder {
+public final class JobBuilder<I, O> {
 
-    private BatchJob job;
+    private BatchJob<I, O> job;
     private JobParameters parameters;
 
     /**
@@ -53,7 +53,7 @@ public final class JobBuilder {
      */
     public JobBuilder() {
         parameters = new JobParameters();
-        job = new BatchJob(parameters);
+        job = new BatchJob<>(parameters);
     }
 
     /**
@@ -62,7 +62,7 @@ public final class JobBuilder {
      * @param name the job name
      * @return the job builder
      */
-    public JobBuilder named(final String name) {
+    public JobBuilder<I, O> named(final String name) {
         Utils.checkNotNull(name, "job name");
         job.setName(name);
         return this;
@@ -74,7 +74,7 @@ public final class JobBuilder {
      * @param recordReader the record reader to register
      * @return the job builder
      */
-    public JobBuilder reader(final RecordReader recordReader) {
+    public JobBuilder<I, O> reader(final RecordReader<I> recordReader) {
         Utils.checkNotNull(recordReader, "record reader");
         job.setRecordReader(recordReader);
         return this;
@@ -86,7 +86,7 @@ public final class JobBuilder {
      * @param recordFilter the record filter to register
      * @return the job builder
      */
-    public JobBuilder filter(final RecordFilter recordFilter) {
+    public JobBuilder<I, O> filter(final RecordFilter<?> recordFilter) {
         Utils.checkNotNull(recordFilter, "record filter");
         job.addRecordProcessor(recordFilter);
         return this;
@@ -98,7 +98,7 @@ public final class JobBuilder {
      * @param recordMapper the record mapper to register
      * @return the job builder
      */
-    public JobBuilder mapper(final RecordMapper recordMapper) {
+    public JobBuilder<I, O> mapper(final RecordMapper<?, ?> recordMapper) {
         Utils.checkNotNull(recordMapper, "record mapper");
         job.addRecordProcessor(recordMapper);
         return this;
@@ -110,7 +110,7 @@ public final class JobBuilder {
      * @param recordValidator the record validator to register
      * @return the job builder
      */
-    public JobBuilder validator(final RecordValidator recordValidator) {
+    public JobBuilder<I, O> validator(final RecordValidator<?> recordValidator) {
         Utils.checkNotNull(recordValidator, "record validator");
         job.addRecordProcessor(recordValidator);
         return this;
@@ -122,7 +122,7 @@ public final class JobBuilder {
      * @param recordProcessor the record processor to register
      * @return the job builder
      */
-    public JobBuilder processor(final RecordProcessor recordProcessor) {
+    public JobBuilder<I, O> processor(final RecordProcessor<?, ?> recordProcessor) {
         Utils.checkNotNull(recordProcessor, "record processor");
         job.addRecordProcessor(recordProcessor);
         return this;
@@ -134,7 +134,7 @@ public final class JobBuilder {
      * @param recordMarshaller the record marshaller to register
      * @return the job builder
      */
-    public JobBuilder marshaller(final RecordMarshaller recordMarshaller) {
+    public JobBuilder<I, O> marshaller(final RecordMarshaller<?, ?> recordMarshaller) {
         Utils.checkNotNull(recordMarshaller, "record marshaller");
         job.addRecordProcessor(recordMarshaller);
         return this;
@@ -146,7 +146,7 @@ public final class JobBuilder {
      * @param recordWriter the record writer to register
      * @return the job builder
      */
-    public JobBuilder writer(final RecordWriter recordWriter) {
+    public JobBuilder<I, O> writer(final RecordWriter<O> recordWriter) {
         Utils.checkNotNull(recordWriter, "record writer");
         job.setRecordWriter(recordWriter);
         return this;
@@ -158,7 +158,7 @@ public final class JobBuilder {
      * @param errorThreshold the error threshold
      * @return the job builder
      */
-    public JobBuilder errorThreshold(final long errorThreshold) {
+    public JobBuilder<I, O> errorThreshold(final long errorThreshold) {
         Utils.checkArgument(errorThreshold >= 0, "error threshold must be >= 0");
         parameters.setErrorThreshold(errorThreshold);
         return this;
@@ -170,7 +170,7 @@ public final class JobBuilder {
      * @param jmx true to enable jmx monitoring
      * @return the job builder
      */
-    public JobBuilder enableJmx(final boolean jmx) {
+    public JobBuilder<I, O> enableJmx(final boolean jmx) {
         parameters.setJmxMonitoring(jmx);
         return this;
     }
@@ -192,7 +192,7 @@ public final class JobBuilder {
      * @param batchScanning true to enable batch scanning. False by default.
      * @return the job builder
      */
-    public JobBuilder enableBatchScanning(final boolean batchScanning) {
+    public JobBuilder<I, O> enableBatchScanning(final boolean batchScanning) {
         parameters.setBatchScanningEnabled(batchScanning);
         return this;
     }
@@ -203,7 +203,7 @@ public final class JobBuilder {
      * @param batchSize the batch size
      * @return the job builder
      */
-    public JobBuilder batchSize(final int batchSize) {
+    public JobBuilder<I, O> batchSize(final int batchSize) {
         Utils.checkArgument(batchSize >= 1, "Batch size must be >= 1");
         parameters.setBatchSize(batchSize);
         return this;
@@ -216,7 +216,7 @@ public final class JobBuilder {
      * @param jobListener The job listener to add.
      * @return the job builder
      */
-    public JobBuilder jobListener(final JobListener jobListener) {
+    public JobBuilder<I, O> jobListener(final JobListener jobListener) {
         Utils.checkNotNull(jobListener, "job listener");
         job.addJobListener(jobListener);
         return this;
@@ -229,7 +229,7 @@ public final class JobBuilder {
      * @param batchListener The batch listener to add.
      * @return the job builder
      */
-    public JobBuilder batchListener(final BatchListener batchListener) {
+    public JobBuilder<I, O> batchListener(final BatchListener<O> batchListener) {
         Utils.checkNotNull(batchListener, "batch listener");
         job.addBatchListener(batchListener);
         return this;
@@ -242,7 +242,7 @@ public final class JobBuilder {
      * @param recordReaderListener The record reader listener to add.
      * @return the job builder
      */
-    public JobBuilder readerListener(final RecordReaderListener recordReaderListener) {
+    public JobBuilder<I, O> readerListener(final RecordReaderListener<I> recordReaderListener) {
         Utils.checkNotNull(recordReaderListener, "record reader listener");
         job.addRecordReaderListener(recordReaderListener);
         return this;
@@ -255,7 +255,7 @@ public final class JobBuilder {
      * @param pipelineListener The pipeline listener to add.
      * @return the job builder
      */
-    public JobBuilder pipelineListener(final PipelineListener pipelineListener) {
+    public JobBuilder<I, O> pipelineListener(final PipelineListener pipelineListener) {
         Utils.checkNotNull(pipelineListener, "pipeline listener");
         job.addPipelineListener(pipelineListener);
         return this;
@@ -268,7 +268,7 @@ public final class JobBuilder {
      * @param recordWriterListener The record writer listener to register.
      * @return the job builder
      */
-    public JobBuilder writerListener(final RecordWriterListener recordWriterListener) {
+    public JobBuilder<I, O> writerListener(final RecordWriterListener<O> recordWriterListener) {
         Utils.checkNotNull(recordWriterListener, "record writer listener");
         job.addRecordWriterListener(recordWriterListener);
         return this;

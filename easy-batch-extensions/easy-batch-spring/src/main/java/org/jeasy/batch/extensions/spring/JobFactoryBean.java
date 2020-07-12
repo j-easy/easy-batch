@@ -45,14 +45,14 @@ import java.util.List;
  */
 public class JobFactoryBean implements FactoryBean<Job> {
 
-    private RecordReader recordReader;
-    private RecordWriter recordWriter;
+    private RecordReader<?> recordReader;
+    private RecordWriter<?> recordWriter;
     private List<RecordProcessor<?, ?>> recordProcessors;
 
     private JobListener jobListener;
-    private BatchListener batchListener;
-    private RecordReaderListener recordReaderListener;
-    private RecordWriterListener recordWriterListener;
+    private BatchListener<?> batchListener;
+    private RecordReaderListener<?> recordReaderListener;
+    private RecordWriterListener<?> recordWriterListener;
     private PipelineListener pipelineListener;
 
     private String name = JobParameters.DEFAULT_JOB_NAME;
