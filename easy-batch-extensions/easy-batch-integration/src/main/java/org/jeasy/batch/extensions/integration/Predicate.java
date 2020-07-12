@@ -31,7 +31,7 @@ import org.jeasy.batch.core.record.Record;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  * @see ContentBasedBlockingQueueRecordWriter
  */
-public interface Predicate {
+public interface Predicate<P> {
 
     /**
      * Check if the record matches a given criteria.
@@ -39,6 +39,6 @@ public interface Predicate {
      * @param record to check
      * @return true if the record matches the predicate, false otherwise
      */
-    boolean matches(Record record);
+    boolean matches(Record<P> record);
 
 }

@@ -33,7 +33,7 @@ import org.jeasy.batch.core.record.Record;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class DefaultPredicate implements Predicate {
+public class DefaultPredicate<P> implements Predicate<P> {
 
     /*
      * needed for equals and hashcode, all instances should be equal to be able to get the default queue
@@ -42,7 +42,7 @@ public class DefaultPredicate implements Predicate {
     private String id = "defaultPredicate";
 
     @Override
-    public boolean matches(Record record) {
+    public boolean matches(Record<P> record) {
         return true;
     }
 
@@ -55,7 +55,7 @@ public class DefaultPredicate implements Predicate {
             return false;
         }
 
-        DefaultPredicate that = (DefaultPredicate) o;
+        DefaultPredicate<?> that = (DefaultPredicate<?>) o;
 
         return Objects.equals(id, that.id);
     }
