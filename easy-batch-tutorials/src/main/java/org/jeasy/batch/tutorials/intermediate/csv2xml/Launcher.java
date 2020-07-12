@@ -29,9 +29,9 @@ public class Launcher {
         recordWriter.setHeaderCallback(new HeaderWriter());
         recordWriter.setFooterCallback(new FooterWriter());
 
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, String>()
                 .reader(new FlatFileRecordReader(csvTweets))
-                .filter(new HeaderRecordFilter())
+                .filter(new HeaderRecordFilter<>())
                 .mapper(new DelimitedRecordMapper<>(Tweet.class, "id", "user", "message"))
                 .marshaller(new XmlRecordMarshaller<>(Tweet.class))
                 .writer(recordWriter)

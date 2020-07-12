@@ -38,6 +38,7 @@ import org.jeasy.batch.tutorials.common.Tweet;
 import javax.sql.DataSource;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.ResultSet;
 
 /**
  * Main class to run the JDBC data export tutorial.
@@ -61,7 +62,7 @@ public class Launcher {
 
         // Build a batch job
         String[] fields = {"id", "user", "message"};
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<ResultSet, String>()
                 .reader(new JdbcRecordReader(dataSource, "select * from tweet"))
                 .mapper(new JdbcRecordMapper<>(Tweet.class, fields))
                 .marshaller(new DelimitedRecordMarshaller<>(Tweet.class, fields))

@@ -55,10 +55,10 @@ public class Launcher {
 
         // Build a batch job
         Path datasource = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets.csv");
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, String>()
                 .named("my-job")
                 .reader(new FlatFileRecordReader(datasource))
-                .writer(new StandardOutputRecordWriter())
+                .writer(new StandardOutputRecordWriter<>())
                 .build();
 
         // Create a Quartz scheduler

@@ -39,6 +39,8 @@ import org.jeasy.batch.tutorials.common.DatabaseUtil;
 import org.jeasy.batch.tutorials.common.Tweet;
 
 import javax.sql.DataSource;
+
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -59,9 +61,9 @@ public class ForkJoin {
         DataSource dataSource = DatabaseUtil.getDataSource();
 
         // Create queues
-        BlockingQueue<Record> workQueue1 = new LinkedBlockingQueue<>();
-        BlockingQueue<Record> workQueue2 = new LinkedBlockingQueue<>();
-        BlockingQueue<Record> joinQueue = new LinkedBlockingQueue<>();
+        BlockingQueue<Record<Tweet>> workQueue1 = new LinkedBlockingQueue<>();
+        BlockingQueue<Record<Tweet>> workQueue2 = new LinkedBlockingQueue<>();
+        BlockingQueue<Record<Tweet>> joinQueue = new LinkedBlockingQueue<>();
 
         // Build jobs
         Job forkJob = buildForkJob("fork-job", dataSource, asList(workQueue1, workQueue2));
@@ -82,33 +84,33 @@ public class ForkJoin {
         DatabaseUtil.cleanUpWorkingDirectory();
     }
 
-    private static Job buildForkJob(String jobName, DataSource dataSource, List<BlockingQueue<Record>> workQueues) {
-        return new JobBuilder()
+    private static Job buildForkJob(String jobName, DataSource dataSource, List<BlockingQueue<Record<Tweet>>> workQueues) {
+        return new JobBuilder<ResultSet, Tweet >()
                 .named(jobName)
                 .reader(new JdbcRecordReader(dataSource, "select * from tweet"))
                 .mapper(new JdbcRecordMapper<>(Tweet.class, "id", "user", "message"))
-                .writer(new RoundRobinBlockingQueueRecordWriter(workQueues))
+                .writer(new RoundRobinBlockingQueueRecordWriter<>(workQueues))
                 .build();
     }
 
-    private static Job buildWorkerJob(String jobName, BlockingQueue<Record> workQueue, BlockingQueue<Record> joinQueue) {
-        return new JobBuilder()
+    private static Job buildWorkerJob(String jobName, BlockingQueue<Record<Tweet>> workQueue, BlockingQueue<Record<Tweet>> joinQueue) {
+        return new JobBuilder<Tweet, Tweet>()
                 .named(jobName)
-                .reader(new BlockingQueueRecordReader(workQueue, QUEUE_TIMEOUT))
+                .reader(new BlockingQueueRecordReader<>(workQueue, QUEUE_TIMEOUT))
                 .processor(new TweetProcessor(jobName))
-                .writer(new BlockingQueueRecordWriter(joinQueue))
+                .writer(new BlockingQueueRecordWriter<>(joinQueue))
                 .build();
     }
 
-    private static Job buildJoinJob(String jobName, BlockingQueue<Record> joinQueue) {
-        return new JobBuilder()
+    private static Job buildJoinJob(String jobName, BlockingQueue<Record<Tweet>> joinQueue) {
+        return new JobBuilder<Tweet, Tweet>()
                 .named(jobName)
-                .reader(new BlockingQueueRecordReader(joinQueue, QUEUE_TIMEOUT))
-                .writer(new StandardOutputRecordWriter())
+                .reader(new BlockingQueueRecordReader<>(joinQueue, QUEUE_TIMEOUT))
+                .writer(new StandardOutputRecordWriter<>())
                 .build();
     }
 
-    private static class TweetProcessor implements RecordProcessor<Record, Record> {
+    private static class TweetProcessor implements RecordProcessor<Tweet, Tweet> {
 
         private String workerName;
 
@@ -117,7 +119,7 @@ public class ForkJoin {
         }
 
         @Override
-        public Record processRecord(Record record) {
+        public Record<Tweet> processRecord(Record<Tweet> record) {
             System.out.println(workerName + ": processing tweet " + record.getPayload());
             return record;
         }

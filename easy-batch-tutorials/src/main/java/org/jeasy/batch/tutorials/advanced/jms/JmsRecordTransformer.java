@@ -1,8 +1,10 @@
 package org.jeasy.batch.tutorials.advanced.jms;
 
+import javax.jms.Message;
+
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.jeasy.batch.core.processor.RecordProcessor;
-import org.jeasy.batch.core.record.StringRecord;
+import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.jms.JmsMessageTransformer;
 import org.jeasy.batch.jms.JmsRecord;
 
@@ -14,10 +16,10 @@ import org.jeasy.batch.jms.JmsRecord;
  * creates JMS records with {@link ActiveMQTextMessage}s as payload as those messages can
  * be created without requiring a JMS session.
  */
-public class JmsRecordTransformer implements RecordProcessor<StringRecord, JmsRecord> {
+public class JmsRecordTransformer implements RecordProcessor<String, Message> {
 
     @Override
-    public JmsRecord processRecord(StringRecord record) throws Exception {
+    public JmsRecord processRecord(Record<String> record) throws Exception {
         ActiveMQTextMessage activeMQTextMessage = new ActiveMQTextMessage();
         activeMQTextMessage.setText(record.getPayload());
         return new JmsRecord(record.getHeader(), activeMQTextMessage);

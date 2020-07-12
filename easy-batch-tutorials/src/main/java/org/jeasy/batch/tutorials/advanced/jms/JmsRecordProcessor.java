@@ -25,8 +25,8 @@
 package org.jeasy.batch.tutorials.advanced.jms;
 
 import org.jeasy.batch.core.processor.RecordProcessor;
+import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
-import org.jeasy.batch.jms.JmsRecord;
 
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
@@ -36,11 +36,11 @@ import javax.jms.TextMessage;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JmsRecordProcessor implements RecordProcessor<JmsRecord, StringRecord> {
+public class JmsRecordProcessor implements RecordProcessor<TextMessage, String> {
 
     @Override
-    public StringRecord processRecord(JmsRecord record) throws Exception {
-        TextMessage jmsMessage = (TextMessage) record.getPayload();
+    public StringRecord processRecord(Record<TextMessage> record) throws Exception {
+        TextMessage jmsMessage = record.getPayload();
         String message;
         try {
             message = jmsMessage.getText().toUpperCase();

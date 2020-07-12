@@ -24,6 +24,8 @@
 
 package org.jeasy.batch.tutorials.intermediate.elasticsearch;
 
+import java.sql.ResultSet;
+
 import org.jeasy.batch.core.job.Job;
 import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
@@ -59,7 +61,7 @@ public class Launcher {
         DataSource dataSource = DatabaseUtil.getDataSource();
 
         // Build and run the batch job
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<ResultSet, String>()
                 .reader(new JdbcRecordReader(dataSource, "select * from tweet"))
                 .mapper(new JdbcRecordMapper<>(Tweet.class, "id", "user", "message"))
                 .processor(new TweetTransformer())

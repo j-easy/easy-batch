@@ -25,9 +25,9 @@ So let's get started!
 The `FlatFileRecordReader` is used to read records from a flat file. So let's use this reader:
 
 ```java
-Job job = new JobBuilder()
+Job job = new JobBuilder<String, Tweet>()
     .reader(new FlatFileRecordReader("tweets.csv"))
-    .filter(new HeaderRecordFilter())
+    .filter(new HeaderRecordFilter<>())
     .build();
 ```
 
@@ -58,10 +58,10 @@ public class Tweet {
 Let's register the `DelimitedRecordMapper`:
 
 ```java
-Job job = new JobBuilder()
+Job job = new JobBuilder<String, Tweet>()
     .reader(new FlatFileRecordReader("tweets.csv"))
-    .filter(new HeaderRecordFilter())
-    .mapper(new DelimitedRecordMapper(Tweet.class, "id", "name", "message"))
+    .filter(new HeaderRecordFilter<>())
+    .mapper(new DelimitedRecordMapper<>(Tweet.class, "id", "name", "message"))
     .build();
 ```
 
@@ -73,7 +73,7 @@ Note that the mapper also converts raw textual data to typed data in the `Tweet`
 
 ## Validating tweets
 
-We all know that tweets can have at most 140 characters, and we would like to save only valid tweets in the database.
+We all know that tweets can have at most 280 characters, and we would like to save only valid tweets in the database.
 
 How to declare this constraint on our `Tweet` bean? The Bean Validation API is the way to go since it provides
  an elegant solution to declare validation constraints on domain objects using annotations.
@@ -87,7 +87,7 @@ public class Tweet {
  @NotNull
  private String user;
 
- @Size(min=0, max=140)
+ @Size(min=0, max=280)
  private String message;
 
  // Getters, Setters and toString omitted
@@ -97,10 +97,10 @@ public class Tweet {
 Now that you placed validation constraints on the `Tweet` bean, let's configure a job to validate records according to these constraints:
 
 ```java
-Job job = new JobBuilder()
+Job job = new JobBuilder<String, Tweet>()
     .reader(new FlatFileRecordReader("tweets.csv"))
-    .filter(new HeaderRecordFilter())
-    .mapper(new DelimitedRecordMapper(Tweet.class, "id", "name", "message"))
+    .filter(new HeaderRecordFilter<>())
+    .mapper(new DelimitedRecordMapper<>(Tweet.class, "id", "name", "message"))
     .validator(new BeanValidationRecordValidator<Tweet>())
     .build();
 ```
@@ -118,7 +118,7 @@ There are 3 record writers to write data in a relational database:
 
 In this tutorial, we will use the `JdbcRecordWriter`.
 
-To keep the tutorial simple, a in-memory database will be used.
+To keep the tutorial simple, an in-memory database will be used.
 
 Tweets will be inserted in the tweet table:
 
@@ -126,7 +126,7 @@ Tweets will be inserted in the tweet table:
 |---------|--------------|
 | id      | integer      |
 | user    | varchar(32)  |
-| message | varchar(140) |
+| message | varchar(280) |
 
 To use the `JdbcRecordWriter`, we need to supply 3 artifacts:
 
@@ -174,13 +174,13 @@ public class Launcher {
                     new BeanPropertiesPreparedStatementProvider(Tweet.class, fields);
 
         // Build a batch job
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Tweet>()
                     .batchSize(2)
-                    .filter(new HeaderRecordFilter())
                     .reader(new FlatFileRecordReader(tweets))
-                    .mapper(new DelimitedRecordMapper(Tweet.class, fields))
-                    .validator(new BeanValidationRecordValidator())
-                    .writer(new JdbcRecordWriter(dataSource, query, psp))
+                    .filter(new HeaderRecordFilter<>())
+                    .mapper(new DelimitedRecordMapper<>(Tweet.class, fields))
+                    .validator(new BeanValidationRecordValidator<Tweet>())
+                    .writer(new JdbcRecordWriter<>(dataSource, query, psp))
                     .build();
 
         // Execute the job

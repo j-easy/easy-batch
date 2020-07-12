@@ -52,8 +52,7 @@ public class LogicalPartitions {
 
         // Build worker jobs
         // worker job 1: process records 1-3 and filters records 4+
-        RecordFilter recordFilter = record -> (record.getHeader().getNumber() > 3) || record.getPayload().toString().contains("id") ? null : record;
-        Job job1 = buildJob(tweets, recordFilter, "worker-job1");
+        Job job1 = buildJob(tweets, record -> (record.getHeader().getNumber() > 3) || record.getPayload().contains("id") ? null : record, "worker-job1");
         // worker job 2: process 4+ and filters records 1-3
         Job job2 = buildJob(tweets, record -> record.getHeader().getNumber() < 4 ? null : record, "worker-job2");
 
@@ -74,13 +73,13 @@ public class LogicalPartitions {
 
     }
 
-    private static Job buildJob(Path file, RecordFilter recordFilter, String jobName) {
-        return new JobBuilder()
+    private static Job buildJob(Path file, RecordFilter<String> recordFilter, String jobName) {
+        return new JobBuilder<String, Tweet>()
                 .named(jobName)
                 .reader(new FlatFileRecordReader(file))
                 .filter(recordFilter)
                 .mapper(new DelimitedRecordMapper<>(Tweet.class, "id", "user", "message"))
-                .writer(new StandardOutputRecordWriter())
+                .writer(new StandardOutputRecordWriter<>())
                 .build();
     }
 

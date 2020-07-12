@@ -25,10 +25,10 @@ public class Launcher {
         RecordProcessingTimeCalculator recordProcessingTimeCalculator = new RecordProcessingTimeCalculator();
 
         // Create a job
-        Job job = new JobBuilder()
-                .reader(new IterableRecordReader(asList("foo", "bar")))
+        Job job = new JobBuilder<String, String>()
+                .reader(new IterableRecordReader<>(asList("foo", "bar")))
                 .processor(new RandomTimeProcessor())
-                .writer(new StandardOutputRecordWriter())
+                .writer(new StandardOutputRecordWriter<>())
                 .batchSize(1)
                 .pipelineListener(recordProcessingTimeCalculator)
                 .jobListener(recordProcessingTimeCalculator)
@@ -43,10 +43,10 @@ public class Launcher {
         System.out.println(report);
     }
 
-    private static class RandomTimeProcessor implements RecordProcessor {
+    private static class RandomTimeProcessor implements RecordProcessor<String, String> {
         private final Random random = new Random();
         @Override
-        public Record processRecord(Record record) throws Exception {
+        public Record<String> processRecord(Record<String> record) throws Exception {
             Thread.sleep(random.nextInt(1000));
             return record;
         }

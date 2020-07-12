@@ -36,7 +36,7 @@ import org.elasticsearch.client.Client;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class TweetIndexer implements RecordWriter {
+public class TweetIndexer implements RecordWriter<String> {
 
     private Client client;
 
@@ -45,10 +45,10 @@ public class TweetIndexer implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
+    public void writeRecords(Batch<String> batch) throws Exception {
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        for (Record record : batch) {
-            String tweet = (String) record.getPayload();
+        for (Record<String> record : batch) {
+            String tweet = record.getPayload();
             bulkRequest.add(client.prepareIndex("twitter", "tweet").setSource(tweet));
         }
         BulkResponse bulkResponse = bulkRequest.get();

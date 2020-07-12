@@ -47,10 +47,10 @@ public class Launcher {
         Path dataSource = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets.csv");
         
         // Build a batch job
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, String>()
                 .named("hello world job")
                 .reader(new FlatFileRecordReader(dataSource))
-                .writer(new StandardOutputRecordWriter())
+                .writer(new StandardOutputRecordWriter<>())
                 .build();
 
         // Execute the job

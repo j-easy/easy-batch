@@ -25,17 +25,17 @@
 package org.jeasy.batch.tutorials.advanced.jmx;
 
 import org.jeasy.batch.core.processor.RecordProcessor;
-import org.jeasy.batch.core.record.StringRecord;
+import org.jeasy.batch.core.record.Record;
 
 /**
  * A processor that processes tweets sloooooowly :-).
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class TweetSlowProcessor implements RecordProcessor<StringRecord, StringRecord> {
+public class TweetSlowProcessor implements RecordProcessor<String, String> {
 
     @Override
-    public StringRecord processRecord(StringRecord record) throws Exception {
+    public Record<String> processRecord(Record<String> record) throws Exception {
         //slow down the processor for demonstration purpose
         Thread.sleep(10000);
         return record;

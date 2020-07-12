@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-class WordCounter implements RecordProcessor<Record, Record> {
+class WordCounter implements RecordProcessor<List<String>, List<String>> {
 
     private Map<String, Integer> words = new HashMap<>();
 
@@ -20,9 +20,8 @@ class WordCounter implements RecordProcessor<Record, Record> {
         return words;
     }
 
-    @SuppressWarnings("unchecked")
-    public Record processRecord(Record record) {
-        List<String> tokens = (List<String>) record.getPayload();
+    public Record<List<String>> processRecord(Record<List<String>> record) {
+        List<String> tokens = record.getPayload();
         for (String token : tokens) {
             Integer count = words.get(token);
             count = (count == null) ? 1 : count + 1;

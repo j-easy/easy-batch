@@ -57,17 +57,18 @@ public class Launcher {
         Path directory = Paths.get(path);
 
         // Create work queues
-        BlockingQueue<Record> csvQueue = new LinkedBlockingQueue<>();
-        BlockingQueue<Record> xmlQueue = new LinkedBlockingQueue<>();
+        BlockingQueue<Record<Path>> csvQueue = new LinkedBlockingQueue<>();
+        BlockingQueue<Record<Path>> xmlQueue = new LinkedBlockingQueue<>();
 
-        // Create a content based record writer to write records to work queues based on their content
-        Map<Predicate, BlockingQueue<Record>> queueMap = new HashMap<>();
+        Map<Predicate<Path>, BlockingQueue<Record<Path>>> queueMap = new HashMap<>();
         queueMap.put(new CsvFilePredicate(), csvQueue);
         queueMap.put(new XmlFilePredicate(), xmlQueue);
-        ContentBasedBlockingQueueRecordWriter contentBasedBlockingQueueRecordWriter = new ContentBasedBlockingQueueRecordWriter(queueMap);
+        // Create a content based record writer to write records to work queues based on their content
+        ContentBasedBlockingQueueRecordWriter<Path> contentBasedBlockingQueueRecordWriter =
+                new ContentBasedBlockingQueueRecordWriter<>(queueMap);
 
         // Build a master job that will read files from the directory and dispatch them to worker jobs
-        Job masterJob = new JobBuilder()
+        Job masterJob = new JobBuilder<Path, Path>()
                 .named("master-job")
                 .reader(new FileRecordReader(directory))
                 .filter(new FileExtensionFilter(".log", ".tmp"))
@@ -75,8 +76,8 @@ public class Launcher {
                 .build();
 
         // Build jobs
-        Job workerJob1 = buildWorkerJob(csvQueue, "csv-worker-job");
-        Job workerJob2 = buildWorkerJob(xmlQueue, "xml-worker-job");
+        Job workerJob1 = buildWorkerJob("csv-worker-job", csvQueue);
+        Job workerJob2 = buildWorkerJob("xml-worker-job", xmlQueue);
 
         // Create a Job executor with 3 worker threads
         JobExecutor jobExecutor = new JobExecutor(THREAD_POOL_SIZE);
@@ -89,10 +90,10 @@ public class Launcher {
 
     }
 
-    private static Job buildWorkerJob(BlockingQueue<Record> workQueue, String jobName) {
-        return new JobBuilder()
+    private static Job buildWorkerJob(String jobName, BlockingQueue<Record<Path>> workQueue) {
+        return new JobBuilder<Path, Path>()
                 .named(jobName)
-                .reader(new BlockingQueueRecordReader(workQueue, QUEUE_TIMEOUT))
+                .reader(new BlockingQueueRecordReader<>(workQueue, QUEUE_TIMEOUT))
                 .processor(new DummyFileProcessor())
                 .build();
     }

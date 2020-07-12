@@ -26,6 +26,7 @@ package org.jeasy.batch.tutorials.intermediate.headerfooter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.ResultSet;
 
 import javax.sql.DataSource;
 
@@ -74,7 +75,7 @@ public class Launcher {
         recordWriter.setFooterCallback(footerCallback);
 
         final String[] fields = {"id", "user", "message"};
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<ResultSet, String>()
                 .reader(new JdbcRecordReader(dataSource, "select * from tweet"))
                 .mapper(new JdbcRecordMapper<>(Tweet.class, fields))
                 .marshaller(new DelimitedRecordMarshaller<>(Tweet.class, fields))

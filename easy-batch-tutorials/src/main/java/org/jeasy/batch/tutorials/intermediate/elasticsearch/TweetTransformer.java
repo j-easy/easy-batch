@@ -37,13 +37,12 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class TweetTransformer implements RecordProcessor<Record<Tweet>, StringRecord> {
+public class TweetTransformer implements RecordProcessor<Tweet, String> {
 
     @Override
     public StringRecord processRecord(Record<Tweet> record) throws Exception {
         Tweet tweet = record.getPayload();
-        XContentBuilder builder;
-        builder = jsonBuilder()
+        XContentBuilder builder = jsonBuilder()
                 .startObject()
                 .field("id", tweet.getId())
                 .field("user", tweet.getUser())

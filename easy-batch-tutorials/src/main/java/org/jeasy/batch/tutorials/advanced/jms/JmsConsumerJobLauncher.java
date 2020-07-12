@@ -24,6 +24,8 @@
 
 package org.jeasy.batch.tutorials.advanced.jms;
 
+import javax.jms.Message;
+
 import org.jeasy.batch.core.job.Job;
 import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
@@ -41,10 +43,10 @@ public class JmsConsumerJobLauncher {
     public static void main(String[] args) throws Exception {
 
         // Build a batch job
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<Message, String>()
                 .reader(new JmsRecordReader(JMSUtil.getQueueConnectionFactory(), JMSUtil.getQueue(), 10000))
                 .processor(new JmsRecordProcessor())
-                .writer(new StandardOutputRecordWriter())
+                .writer(new StandardOutputRecordWriter<>())
                 .batchSize(1)
                 .build();
 

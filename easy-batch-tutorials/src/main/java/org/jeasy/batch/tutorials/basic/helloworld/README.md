@@ -33,7 +33,7 @@ Let's configure a job named `Hello world job` to use this reader:
 ```java
 Path dataSource = Paths.get("tweets.csv");
 
-Job job = new JobBuilder()
+Job job = new JobBuilder<String, String>()
     .named("Hello world job")
     .reader(new FlatFileRecordReader(dataSource))
     .build();
@@ -46,10 +46,10 @@ To write records to the standard output, you can use the `StandardOutputRecordWr
 ```java
 Path dataSource = Paths.get("tweets.csv");
 
-Job job = new JobBuilder()
+Job job = new JobBuilder<String, String>()
     .named("Hello world job")
     .reader(new FlatFileRecordReader(dataSource))
-    .writer(new StandardOutputRecordWriter())
+    .writer(new StandardOutputRecordWriter<>())
     .build();
 ```
 
@@ -66,10 +66,10 @@ public class Launcher {
         Path dataSource = Paths.get("tweets.csv");
 
         // Build a batch job
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, String>()
             .named("hello world job")
             .reader(new FlatFileRecordReader(dataSource))
-            .writer(new StandardOutputRecordWriter())
+            .writer(new StandardOutputRecordWriter<>())
             .build();
 
         // Execute the job

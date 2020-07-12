@@ -4,7 +4,7 @@ import org.jeasy.batch.core.processor.RecordProcessor;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
 
-public class IssueFormatter implements RecordProcessor<Record<Issue>, StringRecord> {
+public class IssueFormatter implements RecordProcessor<Issue, String> {
 
     @Override
     public StringRecord processRecord(Record<Issue> record) {

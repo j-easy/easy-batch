@@ -45,9 +45,9 @@ public class Launcher {
         Path recipes = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/recipes.txt");
 
         // Build a batch job
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<Recipe, Recipe>()
                 .reader(new RecipeRecordReader(recipes))
-                .writer(new StandardOutputRecordWriter())
+                .writer(new StandardOutputRecordWriter<>())
                 .build();
 
         // Execute the batch job

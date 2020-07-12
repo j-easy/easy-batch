@@ -26,7 +26,6 @@ package org.jeasy.batch.tutorials.advanced.recipes;
 
 import org.jeasy.batch.core.reader.RecordReader;
 import org.jeasy.batch.core.record.Header;
-import org.jeasy.batch.core.record.Record;
 
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -35,7 +34,7 @@ import java.util.Scanner;
 /**
  * Recipe reader.
  */
-public class RecipeRecordReader implements RecordReader {
+public class RecipeRecordReader implements RecordReader<Recipe> {
 
     public static final String SEPARATOR = ",";
 
@@ -68,7 +67,7 @@ public class RecipeRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readRecord() {
+    public RecipeRecord readRecord() {
         if (!hasNextRecord()) {
             return null;
         }

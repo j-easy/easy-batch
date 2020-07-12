@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class CheckPointListener implements RecordWriterListener, PipelineListener, JobListener {
+public class CheckPointListener implements RecordWriterListener<String>, PipelineListener, JobListener {
 
     public static final String JOB_NAME_KEY = "job.name";
     public static final String JOB_START_KEY = "job.start";
@@ -49,14 +49,14 @@ public class CheckPointListener implements RecordWriterListener, PipelineListene
     }
 
     @Override
-    public Record beforeRecordProcessing(Record record) {
+    public <P> Record<P> beforeRecordProcessing(Record<P> record) {
         return record.getHeader().getNumber() <= lastSuccessfullyWrittenRecordNumber ? null : record;
     }
 
     @Override
-    public void afterRecordWriting(Batch batch) {
-        Record lastRecord = null;
-        for (Record record : batch) {
+    public void afterRecordWriting(Batch<String> batch) {
+        Record<String> lastRecord = null;
+        for (Record<String> record : batch) {
             lastRecord = record;
         }
         if (lastRecord != null) {

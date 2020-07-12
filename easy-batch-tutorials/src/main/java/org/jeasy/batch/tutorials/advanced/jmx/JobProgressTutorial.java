@@ -29,6 +29,7 @@ import org.jeasy.batch.core.job.Job;
 import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.flatfile.FlatFileRecordReader;
+import org.jeasy.batch.tutorials.common.Tweet;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -52,7 +53,7 @@ public class JobProgressTutorial {
         ProgressListener progressListener = new ProgressListener(dataSource);
 
         // Build the batch job
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, String>()
                 .reader(new FlatFileRecordReader(dataSource))
                 .processor(new TweetSlowProcessor())
                 .enableJmx(true)

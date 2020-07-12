@@ -24,18 +24,20 @@
 
 package org.jeasy.batch.tutorials.advanced.cbrd;
 
+import java.nio.file.Path;
+
 import org.jeasy.batch.core.processor.RecordProcessor;
-import org.jeasy.batch.core.record.FileRecord;
+import org.jeasy.batch.core.record.Record;
 
 /**
  * Dummy file processor.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class DummyFileProcessor implements RecordProcessor<FileRecord, FileRecord> {
+public class DummyFileProcessor implements RecordProcessor<Path, Path> {
 
     @Override
-    public FileRecord processRecord(FileRecord record) {
+    public Record<Path> processRecord(Record<Path> record) {
         System.out.println("processing file = " + record.getPayload().toAbsolutePath().toString());
         return record;
     }

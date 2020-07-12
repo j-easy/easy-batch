@@ -29,6 +29,7 @@ import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.writer.StandardOutputRecordWriter;
 import org.jeasy.batch.flatfile.FlatFileRecordReader;
+import org.jeasy.batch.tutorials.common.Tweet;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -46,10 +47,10 @@ public class JobMonitoringTutorial {
         Path dataSource = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets.csv");
         
         // Build the batch job
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, String>()
                 .reader(new FlatFileRecordReader(dataSource))
                 .processor(new TweetSlowProcessor())
-                .writer(new StandardOutputRecordWriter())
+                .writer(new StandardOutputRecordWriter<>())
                 .enableJmx(true)
                 .batchSize(1)
                 .build();

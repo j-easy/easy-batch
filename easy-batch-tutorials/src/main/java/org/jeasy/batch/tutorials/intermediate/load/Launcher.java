@@ -64,13 +64,13 @@ public class Launcher {
         String[] fields = {"id", "user", "message"};
 
         // Build a batch job
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Tweet>()
                 .batchSize(2)
                 .reader(new FlatFileRecordReader(tweets))
-                .filter(new HeaderRecordFilter())
+                .filter(new HeaderRecordFilter<>())
                 .mapper(new DelimitedRecordMapper<>(Tweet.class, fields))
-                .validator(new BeanValidationRecordValidator())
-                .writer(new JdbcRecordWriter(dataSource, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, fields)))
+                .validator(new BeanValidationRecordValidator<Tweet>())
+                .writer(new JdbcRecordWriter<>(dataSource, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, fields)))
                 .build();
         
         // Execute the job

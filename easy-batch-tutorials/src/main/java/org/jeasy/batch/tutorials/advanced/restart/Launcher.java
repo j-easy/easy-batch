@@ -27,10 +27,10 @@ public class Launcher {
         FileRecordWriter recordWriter = new FileRecordWriter(dataSink);
         recordWriter.setAppend(true);
 
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, String>()
                 .batchSize(3)
                 .reader(recordReader)
-                .writer(new BuggyWriter(recordWriter))
+                .writer(new BuggyWriter<>(recordWriter))
                 .pipelineListener(checkPointListener)
                 .writerListener(checkPointListener)
                 .jobListener(checkPointListener)

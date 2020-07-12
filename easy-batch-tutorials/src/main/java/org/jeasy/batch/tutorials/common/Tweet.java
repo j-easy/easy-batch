@@ -41,7 +41,7 @@ public class Tweet {
     @NotNull
     private String user;
 
-    @Size(min = 0, max = 140)
+    @Size(min = 0, max = 280)
     private String message;
 
     public Tweet() {

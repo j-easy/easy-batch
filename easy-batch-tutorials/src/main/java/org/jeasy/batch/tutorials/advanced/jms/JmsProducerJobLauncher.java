@@ -27,6 +27,8 @@ package org.jeasy.batch.tutorials.advanced.jms;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.jms.Message;
+
 import org.jeasy.batch.core.job.Job;
 import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
@@ -47,10 +49,10 @@ public class JmsProducerJobLauncher {
         Path dataSource = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets.csv");
 
         // Build a batch job
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Message>()
                 .reader(new FlatFileRecordReader(dataSource))
                 .processor(new JmsRecordTransformer())
-                .writer(new JmsRecordWriter(JMSUtil.getQueueConnectionFactory(), JMSUtil.getQueue()))
+                .writer(new JmsRecordWriter<>(JMSUtil.getQueueConnectionFactory(), JMSUtil.getQueue()))
                 .batchSize(1)
                 .build();
 

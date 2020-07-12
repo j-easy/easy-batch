@@ -30,7 +30,7 @@ import org.jeasy.batch.core.listener.BatchListener;
 import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.writer.FileRecordWriter;
 
-public class FooterWriter implements FileRecordWriter.FooterCallback, BatchListener {
+public class FooterWriter implements FileRecordWriter.FooterCallback, BatchListener<String> {
 
 	private int writeCount;
 
@@ -40,7 +40,7 @@ public class FooterWriter implements FileRecordWriter.FooterCallback, BatchListe
 	}
 
 	@Override
-	public void afterBatchWriting(Batch batch) {
+	public void afterBatchWriting(Batch<String> batch) {
 		writeCount += batch.size();
 	}
 

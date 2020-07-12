@@ -31,10 +31,11 @@ import org.jeasy.batch.core.listener.RecordWriterListener;
 import org.jeasy.batch.core.record.Batch;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.util.Utils;
+import org.jeasy.batch.tutorials.common.Tweet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ScannedRecordListener implements RecordWriterListener {
+public class ScannedRecordListener implements RecordWriterListener<Tweet> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScannedRecordListener.class);
 
@@ -47,8 +48,8 @@ public class ScannedRecordListener implements RecordWriterListener {
 	}
 
 	@Override
-	public void onRecordWritingException(Batch batch, Throwable throwable) {
-		Record record = null;
+	public void onRecordWritingException(Batch<Tweet> batch, Throwable throwable) {
+		Record<Tweet> record = null;
 		try {
 			record = batch.iterator().next();
 			if (record.getHeader().isScanned()) {

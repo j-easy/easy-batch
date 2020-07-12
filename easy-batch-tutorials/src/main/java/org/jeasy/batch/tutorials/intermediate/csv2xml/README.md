@@ -58,18 +58,18 @@ We will see how to do that in a minute.
 The following listing is the application that implements the requirement. We will explain each step in details:
 
 ```java
-        Path csvTweets = Paths.get("tweets.csv");
-        Path xmlTweets = Paths.get("tweets.xml");
+Path csvTweets = Paths.get("tweets.csv");
+Path xmlTweets = Paths.get("tweets.xml");
 
 FileRecordWriter recordWriter = new FileRecordWriter(xmlTweets);
 recordWriter.setHeaderCallback(new HeaderWriter());
 recordWriter.setFooterCallback(new FooterWriter());
 
-Job job = new JobBuilder()
+Job job = new JobBuilder<String, String>()
     .reader(new FlatFileRecordReader(csvTweets)) // Step 1
-    .filter(new HeaderRecordFilter()) // Step 2
-    .mapper(new DelimitedRecordMapper(Tweet.class, "id", "user", "message")) // Step 3
-    .processor(new XmlRecordMarshaller(Tweet.class)) // Step 4
+    .filter(new HeaderRecordFilter<>()) // Step 2
+    .mapper(new DelimitedRecordMapper<>(Tweet.class, "id", "user", "message")) // Step 3
+    .processor(new XmlRecordMarshaller<>(Tweet.class)) // Step 4
     .writer(recordWriter)// Step 5
     .build();
 

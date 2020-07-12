@@ -6,11 +6,11 @@ import org.jeasy.batch.core.writer.RecordWriter;
 
 import java.util.Random;
 
-public class BuggyWriter implements RecordWriter {
+public class BuggyWriter<P> implements RecordWriter<P> {
 
-    private RecordWriter recordWriter;
+    private RecordWriter<P> recordWriter;
 
-    public BuggyWriter(RecordWriter recordWriter) {
+    public BuggyWriter(RecordWriter<P> recordWriter) {
         this.recordWriter = recordWriter;
     }
 
@@ -20,10 +20,10 @@ public class BuggyWriter implements RecordWriter {
     }
 
     @Override
-    public void writeRecords(Batch batch) throws Exception {
+    public void writeRecords(Batch<P> batch) throws Exception {
         boolean crash = new Random().nextBoolean();
         if (crash) {
-            for (Record record : batch) {
+            for (Record<P> record : batch) {
                 if (record.getHeader().getNumber().equals(4L)) {
                     throw new Exception("Unable to write records");
                 }

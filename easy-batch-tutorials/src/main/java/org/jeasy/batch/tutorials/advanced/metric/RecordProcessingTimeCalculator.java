@@ -17,19 +17,19 @@ public class RecordProcessingTimeCalculator implements PipelineListener, JobList
     }
 
     @Override
-    public Record beforeRecordProcessing(Record record) {
+    public <P> Record<P> beforeRecordProcessing(Record<P> record) {
         nbRecords++;
         startTime = System.currentTimeMillis();
         return record;
     }
 
     @Override
-    public void afterRecordProcessing(Record input, Record output) {
+    public <P> void afterRecordProcessing(Record<P> input, Record<P> output) {
         recordProcessingTimesSum +=  System.currentTimeMillis() - startTime;
     }
 
     @Override
-    public void onRecordProcessingException(Record record, Throwable throwable) {
+    public <P> void onRecordProcessingException(Record<P> record, Throwable throwable) {
         recordProcessingTimesSum += System.currentTimeMillis() - startTime;
     }
 }

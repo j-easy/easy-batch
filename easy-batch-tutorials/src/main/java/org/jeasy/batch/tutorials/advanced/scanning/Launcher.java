@@ -59,12 +59,12 @@ public class Launcher {
         // Build a batch job
         Path tweets = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets-with-invalid-records.csv");
         Path skippedTweets = Paths.get(args.length != 0 ? args[1] : "easy-batch-tutorials/target/skipped-tweets.csv");
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Tweet>()
                 .batchSize(5)
                 .enableBatchScanning(true)
                 .reader(new FlatFileRecordReader(tweets))
                 .mapper(new DelimitedRecordMapper<>(Tweet.class, fields))
-                .writer(new JdbcRecordWriter(dataSource, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, fields)))
+                .writer(new JdbcRecordWriter<>(dataSource, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, fields)))
                 .writerListener(new ScannedRecordListener(skippedTweets))
                 .build();
         

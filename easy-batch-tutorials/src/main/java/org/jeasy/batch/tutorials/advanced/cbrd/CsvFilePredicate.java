@@ -34,11 +34,11 @@ import java.nio.file.Path;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class CsvFilePredicate implements Predicate {
+public class CsvFilePredicate implements Predicate<Path> {
 
     @Override
-    public boolean matches(Record record) {
-        Path payload = (Path) record.getPayload();
+    public boolean matches(Record<Path> record) {
+        Path payload = record.getPayload();
         return payload.toAbsolutePath().endsWith("csv");
     }
 
