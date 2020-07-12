@@ -39,7 +39,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * @param <P> Target domain object class.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JsonRecordMapper<P> implements RecordMapper<JsonRecord, Record<P>> {
+public class JsonRecordMapper<P> implements RecordMapper<String, P> {
 
 	private Jsonb jsonb;
 	private Class<P> type;
@@ -67,7 +67,7 @@ public class JsonRecordMapper<P> implements RecordMapper<JsonRecord, Record<P>> 
 	}
 
 	@Override
-	public Record<P> processRecord(final JsonRecord record) {
+	public Record<P> processRecord(final Record<String> record) {
 		P mappedObject = jsonb.fromJson(record.getPayload(), type);
 		return new GenericRecord<>(record.getHeader(), mappedObject);
 	}

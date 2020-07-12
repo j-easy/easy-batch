@@ -43,7 +43,7 @@ import java.util.stream.StreamSupport;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class FixedLengthRecordMarshaller<P> implements RecordMarshaller<Record<P>, StringRecord> {
+public class FixedLengthRecordMarshaller<P> implements RecordMarshaller<P, String> {
 
     private FieldExtractor<P> fieldExtractor;
     private String format;

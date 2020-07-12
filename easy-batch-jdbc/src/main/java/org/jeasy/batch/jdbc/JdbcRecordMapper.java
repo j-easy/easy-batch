@@ -38,7 +38,7 @@ import java.util.Map;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JdbcRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<JdbcRecord, Record<P>> {
+public class JdbcRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<ResultSet, P> {
 
     private String[] fields;
 
@@ -64,7 +64,7 @@ public class JdbcRecordMapper<P> extends AbstractRecordMapper<P> implements Reco
     }
 
     @Override
-    public Record<P> processRecord(final JdbcRecord record) throws Exception {
+    public Record<P> processRecord(final Record<ResultSet> record) throws Exception {
         ResultSet resultSet = record.getPayload();
         initFieldNames(resultSet);
         Map<String, String> values = new HashMap<>();

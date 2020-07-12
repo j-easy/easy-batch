@@ -23,6 +23,7 @@
  */
 package org.jeasy.batch.core.filter;
 
+import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
 
 /**
@@ -30,7 +31,7 @@ import org.jeasy.batch.core.record.StringRecord;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class EndsWithStringRecordFilter implements RecordFilter<StringRecord> {
+public class EndsWithStringRecordFilter implements RecordFilter<String> {
 
     private String[] suffixes;
 
@@ -43,7 +44,8 @@ public class EndsWithStringRecordFilter implements RecordFilter<StringRecord> {
         this.suffixes = suffixes;
     }
 
-    public StringRecord processRecord(final StringRecord record) {
+    @Override
+    public Record<String> processRecord(Record<String> record) {
         String payload = record.getPayload();
         for (String prefix : suffixes) {
             if (payload.endsWith(prefix)) {

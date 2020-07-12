@@ -23,6 +23,7 @@
  */
 package org.jeasy.batch.core.filter;
 
+import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
 
 /**
@@ -30,7 +31,7 @@ import org.jeasy.batch.core.record.StringRecord;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class StartsWithStringRecordFilter implements RecordFilter<StringRecord> {
+public class StartsWithStringRecordFilter implements RecordFilter<String> {
 
     private String[] prefixes;
 
@@ -43,7 +44,7 @@ public class StartsWithStringRecordFilter implements RecordFilter<StringRecord> 
         this.prefixes = prefixes;
     }
 
-    public StringRecord processRecord(final StringRecord record) {
+    public Record<String> processRecord(final Record<String> record) {
         String payload = record.getPayload();
         for (String prefix : prefixes) {
             if (payload.startsWith(prefix)) {

@@ -30,10 +30,10 @@ import org.jeasy.batch.core.record.Record;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class HeaderRecordFilter implements RecordFilter<Record> {
+public class HeaderRecordFilter<P> implements RecordFilter<P> {
 
     @Override
-    public Record processRecord(final Record record) {
+    public Record<P> processRecord(final Record<P> record) {
         if (record.getHeader().getNumber() == 1) {
             return null;
         }

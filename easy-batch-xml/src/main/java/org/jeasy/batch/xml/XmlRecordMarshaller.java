@@ -41,7 +41,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * @param <P> type of the objects to marshal
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class XmlRecordMarshaller<P> implements RecordMarshaller<Record<P>, XmlRecord> {
+public class XmlRecordMarshaller<P> implements RecordMarshaller<P, String> {
 
     private Marshaller marshaller;
 

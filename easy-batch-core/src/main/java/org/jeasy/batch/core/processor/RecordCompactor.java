@@ -23,6 +23,7 @@
  */
 package org.jeasy.batch.core.processor;
 
+import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
 
 /**
@@ -30,14 +31,14 @@ import org.jeasy.batch.core.record.StringRecord;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public abstract class RecordCompactor implements RecordProcessor<StringRecord, StringRecord> {
+public abstract class RecordCompactor implements RecordProcessor<String, String> {
 
     protected static final String EMPTY_STRING = "";
 
     protected abstract String compact(final String payload);
 
     @Override
-    public StringRecord processRecord(final StringRecord record) throws Exception {
+    public Record<String> processRecord(final Record<String> record) throws Exception {
         return new StringRecord(record.getHeader(), compact(record.getPayload()));
     }
 

@@ -39,7 +39,7 @@ import java.io.StringReader;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class ApacheCommonCsvRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<StringRecord, Record<P>> {
+public class ApacheCommonCsvRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<String, P> {
 
     private CSVFormat csvFormat = CSVFormat.newFormat(',');
 
@@ -55,7 +55,7 @@ public class ApacheCommonCsvRecordMapper<P> extends AbstractRecordMapper<P> impl
     }
 
     @Override
-    public Record<P> processRecord(final StringRecord record) throws Exception {
+    public Record<P> processRecord(final Record<String> record) throws Exception {
         String payload = record.getPayload();
         CSVParser csvParser = csvFormat.parse(new StringReader(payload));
         CSVRecord csvRecord = csvParser.iterator().next();

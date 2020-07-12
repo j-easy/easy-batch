@@ -44,7 +44,7 @@ import java.nio.file.Path;
  * @param <P> the target domain object type
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class XmlRecordMapper<P> implements RecordMapper<XmlRecord, Record<P>> {
+public class XmlRecordMapper<P> implements RecordMapper<String, P> {
 
     private JAXBContext jaxbContext;
     private Unmarshaller jaxbUnmarshaller;
@@ -87,7 +87,7 @@ public class XmlRecordMapper<P> implements RecordMapper<XmlRecord, Record<P>> {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public Record<P> processRecord(final XmlRecord record) throws Exception {
+    public Record<P> processRecord(final Record<String> record) throws Exception {
         P unmarshalledObject = (P) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(record.getPayload().getBytes()));
         return new GenericRecord<>(record.getHeader(), unmarshalledObject);
     }

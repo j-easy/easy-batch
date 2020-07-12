@@ -24,7 +24,6 @@
 package org.jeasy.batch.core.validator;
 
 import org.jeasy.batch.core.processor.RecordProcessor;
-import org.jeasy.batch.core.record.Record;
 
 /**
  * Interface for record validator.
@@ -33,15 +32,6 @@ import org.jeasy.batch.core.record.Record;
  * @param <R> The record type this validator can validate.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public interface RecordValidator<R extends Record> extends RecordProcessor<R, R> {
+public interface RecordValidator<R> extends RecordProcessor<R, R> {
 
-    /**
-     * Validate a record.
-     *
-     * @param record the record to validate.
-     * @return the record if it should continue in the pipeline
-     * @throws Exception if the record is not valid and should be rejected
-     */
-    @Override
-    R processRecord(R record) throws Exception;
 }

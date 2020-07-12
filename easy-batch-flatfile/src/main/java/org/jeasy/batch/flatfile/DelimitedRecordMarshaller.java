@@ -39,7 +39,7 @@ import java.util.Iterator;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class DelimitedRecordMarshaller<P> implements RecordMarshaller<Record<P>, StringRecord> {
+public class DelimitedRecordMarshaller<P> implements RecordMarshaller<P, String> {
 
     public static final String DEFAULT_DELIMITER = ",";
     public static final String DEFAULT_QUALIFIER = "\"";

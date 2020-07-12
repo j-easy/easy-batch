@@ -38,7 +38,7 @@ import java.util.Map;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MsExcelRecordMapper<P> implements RecordMapper<MsExcelRecord, Record<P>> {
+public class MsExcelRecordMapper<P> implements RecordMapper<Row, P> {
 
     private String[] fields;
     private ObjectMapper<P> objectMapper;
@@ -54,7 +54,7 @@ public class MsExcelRecordMapper<P> implements RecordMapper<MsExcelRecord, Recor
         objectMapper = new ObjectMapper<>(type);
     }
 
-    public Record<P> processRecord(MsExcelRecord msExcelRecord) throws Exception {
+    public Record<P> processRecord(Record<Row> msExcelRecord) throws Exception {
         P unmarshalledObject = objectMapper.mapObject(toMap(msExcelRecord.getPayload()));
         return new GenericRecord<>(msExcelRecord.getHeader(), unmarshalledObject);
     }

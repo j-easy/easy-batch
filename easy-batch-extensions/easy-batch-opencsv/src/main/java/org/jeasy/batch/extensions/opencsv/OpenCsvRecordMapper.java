@@ -39,7 +39,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Record<T>> {
+public class OpenCsvRecordMapper<T> implements RecordMapper<String, T> {
 
     private char delimiter = ',';
     private char qualifier = '\'';
@@ -61,7 +61,7 @@ public class OpenCsvRecordMapper<T> implements RecordMapper<StringRecord, Record
     }
 
     @Override
-    public Record<T> processRecord(final StringRecord record) throws Exception {
+    public Record<T> processRecord(final Record<String> record) throws Exception {
         String payload = record.getPayload();
         CSVReader openCsvReader = new CSVReader(
                 new StringReader(payload),

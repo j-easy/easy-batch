@@ -39,7 +39,7 @@ import java.util.Set;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class BeanValidationRecordValidator implements RecordValidator {
+public class BeanValidationRecordValidator<P> implements RecordValidator<P> {
 
     private Validator validator;
 
@@ -52,7 +52,7 @@ public class BeanValidationRecordValidator implements RecordValidator {
     }
 
     @Override
-    public Record processRecord(Record record) throws Exception {
+    public Record<P> processRecord(Record<P> record) throws Exception {
         Set<ConstraintViolation<Object>> constraintViolationSet = validator.validate(record.getPayload());
         if (!constraintViolationSet.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();

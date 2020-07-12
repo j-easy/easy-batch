@@ -37,7 +37,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * @param <P> Target domain object class.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JsonRecordMarshaller<P> implements RecordMarshaller<Record<P>, JsonRecord> {
+public class JsonRecordMarshaller<P> implements RecordMarshaller<P, String> {
 
 	private Jsonb jsonb;
 

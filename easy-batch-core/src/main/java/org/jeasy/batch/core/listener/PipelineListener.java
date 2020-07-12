@@ -30,6 +30,7 @@ import org.jeasy.batch.core.record.Record;
  *
  * @author Mario Mueller (mario@xenji.com)
  */
+// This interface is not generic (that is PipelineListener<P>) because the record type can change in pipeline
 public interface PipelineListener {
 
     /**
@@ -39,7 +40,7 @@ public interface PipelineListener {
      * @param record The record that will be processed.
      * @return the pre-processed record
      */
-    default Record beforeRecordProcessing(final Record record) {
+    default <P> Record<P> beforeRecordProcessing(final Record<P> record) {
         return record;
     }
 
@@ -49,7 +50,7 @@ public interface PipelineListener {
      * @param inputRecord  The record to process.
      * @param outputRecord The processed record. <strong>May be {@code null} if the record has been filtered</strong>
      */
-    default void afterRecordProcessing(final Record inputRecord, final Record outputRecord) {
+    default <P> void afterRecordProcessing(final Record<P> inputRecord, final Record<P> outputRecord) {
         // no-op
     }
 
@@ -59,7 +60,7 @@ public interface PipelineListener {
      * @param record    the record attempted to be processed
      * @param throwable the throwable that was thrown during record processing
      */
-    default void onRecordProcessingException(final Record record, final Throwable throwable) {
+    default <P> void onRecordProcessingException(final Record<P> record, final Throwable throwable) {
         // no-op
     }
 

@@ -31,11 +31,11 @@ import org.jeasy.batch.core.record.Record;
  * If a record processor throws an exception during processing, the record will be reported as an error.
  * If a record processor returns {@code null}, the record will be filtered and next processors in the pipeline will be skipped.
  *
- * @param <I> The input record type.
- * @param <O> The output record type.
+ * @param <I> The payload's type of input records
+ * @param <O> The payload's type of output records
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public interface RecordProcessor<I extends Record, O extends Record> {
+public interface RecordProcessor<I, O> {
 
     /**
      * Process a record.
@@ -44,6 +44,6 @@ public interface RecordProcessor<I extends Record, O extends Record> {
      * @return the processed record, may be of a different type than the input record, or {@code null} to skip next processors
      * @throws Exception if an error occurs during record processing
      */
-    O processRecord(I record) throws Exception;
+    Record<O> processRecord(Record<I> record) throws Exception;
 
 }

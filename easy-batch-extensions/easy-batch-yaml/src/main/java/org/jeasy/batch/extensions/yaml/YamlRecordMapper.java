@@ -34,7 +34,7 @@ import org.jeasy.batch.core.record.Record;
  * @param <P> type of target objects
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class YamlRecordMapper<P> implements RecordMapper<YamlRecord, Record<P>> {
+public class YamlRecordMapper<P> implements RecordMapper<String, P> {
 
     private Class<P> type;
 
@@ -48,7 +48,7 @@ public class YamlRecordMapper<P> implements RecordMapper<YamlRecord, Record<P>> 
     }
 
     @Override
-    public Record<P> processRecord(YamlRecord record) throws Exception {
+    public Record<P> processRecord(Record<String> record) throws Exception {
         YamlReader reader = new YamlReader(record.getPayload());
         P unmarshalledObject = reader.read(type);
         reader.close();

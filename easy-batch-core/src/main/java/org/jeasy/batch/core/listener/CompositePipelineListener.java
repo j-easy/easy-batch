@@ -55,8 +55,8 @@ public class CompositePipelineListener implements PipelineListener {
     }
 
     @Override
-    public Record beforeRecordProcessing(Record record) {
-        Record recordToProcess = record;
+    public <P> Record<P> beforeRecordProcessing(Record<P> record) {
+        Record<P> recordToProcess = record;
         for (PipelineListener listener : listeners) {
             recordToProcess = listener.beforeRecordProcessing(recordToProcess);
         }
@@ -64,7 +64,7 @@ public class CompositePipelineListener implements PipelineListener {
     }
 
     @Override
-    public void afterRecordProcessing(Record inputRecord, Record outputRecord) {
+    public <P> void afterRecordProcessing(Record<P> inputRecord, Record<P> outputRecord) {
         for (ListIterator<PipelineListener> iterator
                 = listeners.listIterator(listeners.size());
                 iterator.hasPrevious();) {
@@ -73,7 +73,7 @@ public class CompositePipelineListener implements PipelineListener {
     }
 
     @Override
-    public void onRecordProcessingException(Record record, Throwable throwable) {
+    public <P> void onRecordProcessingException(Record<P> record, Throwable throwable) {
         for (ListIterator<PipelineListener> iterator
                 = listeners.listIterator(listeners.size());
                 iterator.hasPrevious();) {

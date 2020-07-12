@@ -40,7 +40,7 @@ import java.util.*;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<StringRecord, Record<P>> {
+public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<String, P> {
 
     public static final String DEFAULT_DELIMITER = ",";
     public static final String DEFAULT_QUALIFIER = "";
@@ -131,7 +131,7 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
     }
 
     @Override
-    public Record<P> processRecord(final StringRecord record) throws Exception {
+    public Record<P> processRecord(final Record<String> record) throws Exception {
         List<Field> fields = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<>();
         int index = 0;
@@ -148,7 +148,7 @@ public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements
         return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(fieldsContents));
     }
 
-    protected List<Field> parseRecord(final StringRecord record) throws Exception {
+    protected List<Field> parseRecord(final Record<String> record) throws Exception {
 
         String payload = record.getPayload();
         String[] tokens = payload.split(delimiter, -1);

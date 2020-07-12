@@ -23,6 +23,7 @@
  */
 package org.jeasy.batch.core.filter;
 
+import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.util.Utils;
 import org.jeasy.batch.core.record.StringRecord;
 
@@ -35,7 +36,7 @@ import org.jeasy.batch.core.record.StringRecord;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class GrepFilter implements RecordFilter<StringRecord> {
+public class GrepFilter implements RecordFilter<String> {
 
     private String pattern;
 
@@ -49,7 +50,8 @@ public class GrepFilter implements RecordFilter<StringRecord> {
         this.pattern = pattern;
     }
 
-    public StringRecord processRecord(final StringRecord record) {
+    @Override
+    public Record<String> processRecord(Record<String> record) {
         String payload = record.getPayload();
         if (!payload.contains(pattern)) {
             return null;

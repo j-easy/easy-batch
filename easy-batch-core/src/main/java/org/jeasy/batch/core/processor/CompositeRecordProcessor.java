@@ -33,9 +33,9 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class CompositeRecordProcessor implements RecordProcessor {
+public class CompositeRecordProcessor<I, O> implements RecordProcessor<I, O> {
 
-    private List<RecordProcessor> processors;
+    private List<RecordProcessor<I, O>> processors;
 
     /**
      * Create a new {@link CompositeRecordProcessor}.
@@ -49,13 +49,13 @@ public class CompositeRecordProcessor implements RecordProcessor {
      *
      * @param processors delegates
      */
-    public CompositeRecordProcessor(List<RecordProcessor> processors) {
+    public CompositeRecordProcessor(List<RecordProcessor<I, O>> processors) {
         this.processors = processors;
     }
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public Record processRecord(Record record) throws Exception {
+    public Record<O> processRecord(Record<I> record) throws Exception {
         Record processedRecord = record;
         for (RecordProcessor processor : processors) {
             processedRecord = processor.processRecord(processedRecord);
@@ -71,7 +71,7 @@ public class CompositeRecordProcessor implements RecordProcessor {
      *
      * @param recordProcessor to add
      */
-    public void addRecordProcessor(RecordProcessor recordProcessor) {
+    public void addRecordProcessor(RecordProcessor<I, O> recordProcessor) {
         processors.add(recordProcessor);
     }
 }

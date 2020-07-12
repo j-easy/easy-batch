@@ -35,7 +35,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class XstreamRecordMarshaller<P> implements RecordMarshaller<Record<P>, XmlRecord> {
+public class XstreamRecordMarshaller<P> implements RecordMarshaller<P, String> {
 
     private XStream xStream;
 

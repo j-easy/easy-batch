@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class OpenCsvRecordMarshaller<P> implements RecordMarshaller<Record<P>, StringRecord> {
+public class OpenCsvRecordMarshaller<P> implements RecordMarshaller<P, String> {
 
     public static final char DEFAULT_DELIMITER = ',';
     public static final char DEFAULT_QUALIFIER = '\"';

@@ -45,7 +45,7 @@ import java.util.List;
  * @author Anthony Bruno (anthony.bruno196@gmail.com)
  * @author Mahmoud Ben Hassine
  */
-abstract class AbstractUnivocityRecordMarshaller<P, S extends CommonWriterSettings<?>> implements RecordMarshaller<Record<P>, StringRecord> {
+abstract class AbstractUnivocityRecordMarshaller<P, S extends CommonWriterSettings<?>> implements RecordMarshaller<P, String> {
 
     private final FieldExtractor<P> fieldExtractor;
     final S settings;

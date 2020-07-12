@@ -44,7 +44,7 @@ import java.nio.file.Path;
  * @param <P> the type of record's payload
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class XmlRecordValidator<P> implements RecordValidator<Record<P>> {
+public class XmlRecordValidator<P> implements RecordValidator<P> {
 
     private Validator validator;
 

@@ -40,7 +40,7 @@ import java.io.StringReader;
  * @param <S> The settings type that is used to configure the parser.
  * @author Anthony Bruno (anthony.bruno196@gmail.com)
  */
-abstract class AbstractUnivocityRecordMapper<T, S extends CommonParserSettings<?>> implements RecordMapper<StringRecord, Record<T>> {
+abstract class AbstractUnivocityRecordMapper<T, S extends CommonParserSettings<?>> implements RecordMapper<String, T> {
 
     S settings;
     private Class<T> recordClass;
@@ -59,7 +59,7 @@ abstract class AbstractUnivocityRecordMapper<T, S extends CommonParserSettings<?
 
 
     @Override
-    public Record<T> processRecord(StringRecord record) {
+    public Record<T> processRecord(Record<String> record) {
         BeanListProcessor<T> beanListProcessor = new BeanListProcessor<>(recordClass);
         settings.setProcessor(beanListProcessor);
 

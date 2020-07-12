@@ -26,6 +26,7 @@ package org.jeasy.batch.core.filter;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
+import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,11 +40,11 @@ import static org.mockito.Mockito.when;
 public class FilteredRecordsCollectorTest {
 
 	@Mock
-	private RecordFilter<StringRecord> delegate;
+	private RecordFilter<String> delegate;
 	@Mock
 	private StringRecord record1, record2, record3, record4;
 
-	private FilteredRecordsCollector<StringRecord> collector;
+	private FilteredRecordsCollector<String> collector;
 
 	@Before
 	public void setUp() throws Exception {
@@ -62,7 +63,7 @@ public class FilteredRecordsCollectorTest {
 		collector.processRecord(record3);
 		collector.processRecord(record4);
 
-		List<StringRecord> filteredRecords = collector.getFilteredRecords();
+		List<Record<String>> filteredRecords = collector.getFilteredRecords();
 		Assertions.assertThat(filteredRecords).containsExactly(record2, record4);
 	}
 

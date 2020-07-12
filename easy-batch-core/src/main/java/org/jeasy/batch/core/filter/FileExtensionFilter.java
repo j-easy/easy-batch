@@ -23,14 +23,18 @@
  */
 package org.jeasy.batch.core.filter;
 
+import java.io.File;
+import java.nio.file.Path;
+
 import org.jeasy.batch.core.record.FileRecord;
+import org.jeasy.batch.core.record.Record;
 
 /**
  * Filter {@link FileRecord} having a payload file name ending with a given extension.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class FileExtensionFilter implements RecordFilter<FileRecord> {
+public class FileExtensionFilter implements RecordFilter<Path> {
 
     private String[] extensions;
 
@@ -43,7 +47,7 @@ public class FileExtensionFilter implements RecordFilter<FileRecord> {
         this.extensions = extensions;
     }
 
-    public FileRecord processRecord(final FileRecord record) {
+    public Record<Path> processRecord(Record<Path> record) {
         for (String extension : extensions) {
             if (record.getPayload().toAbsolutePath().toString().endsWith(extension)) {
                 return null;

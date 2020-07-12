@@ -33,16 +33,7 @@ import org.jeasy.batch.core.record.Record;
  * @param <O> The output record type.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public interface RecordMapper<I extends Record, O extends Record> extends RecordProcessor<I, O> {
+public interface RecordMapper<I , O> extends RecordProcessor<I, O> {
 
-    /**
-     * Map the payload of a {@link Record} to a domain object instance.
-     *
-     * @param record the record to map.
-     * @return a {@link Record} having a domain object as payload
-     * @throws Exception if an error occurs during record mapping
-     */
-    @Override
-    O processRecord(I record) throws Exception;
 
 }

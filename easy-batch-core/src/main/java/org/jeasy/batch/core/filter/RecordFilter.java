@@ -32,7 +32,7 @@ import org.jeasy.batch.core.record.Record;
  * @param <R> the type of records the filter can handle
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public interface RecordFilter<R extends Record> extends RecordProcessor<R, R> {
+public interface RecordFilter<R> extends RecordProcessor<R, R> {
 
     /**
      * Filter a record.
@@ -41,5 +41,5 @@ public interface RecordFilter<R extends Record> extends RecordProcessor<R, R> {
      * @return the input record if it should continue in the pipeline or {@code null} if the record should be filtered
      */
     @Override
-    R processRecord(R record);
+	Record<R> processRecord(Record<R> record);
 }

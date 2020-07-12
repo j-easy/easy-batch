@@ -40,7 +40,7 @@ import java.util.Map;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<StringRecord, Record<P>> {
+public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<String, P> {
 
     public static final boolean DEFAULT_WHITESPACE_TRIMMING = false;
 
@@ -69,7 +69,7 @@ public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implemen
     }
 
     @Override
-    public Record<P> processRecord(final StringRecord record) throws Exception {
+    public Record<P> processRecord(final Record<String> record) throws Exception {
 
         List<Field> fields = parseRecord(record);
         Map<String, String> fieldsContents = new HashMap<>();
@@ -81,7 +81,7 @@ public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implemen
         return new GenericRecord<>(record.getHeader(), objectMapper.mapObject(fieldsContents));
     }
 
-    protected List<Field> parseRecord(final StringRecord record) throws Exception {
+    protected List<Field> parseRecord(final Record<String> record) throws Exception {
 
         String payload = record.getPayload();
         int recordLength = payload.length();

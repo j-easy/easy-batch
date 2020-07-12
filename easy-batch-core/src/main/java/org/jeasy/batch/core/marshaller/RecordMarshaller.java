@@ -25,7 +25,6 @@ package org.jeasy.batch.core.marshaller;
 
 import org.jeasy.batch.core.mapper.RecordMapper;
 import org.jeasy.batch.core.processor.RecordProcessor;
-import org.jeasy.batch.core.record.Record;
 
 /**
  * Marker interface for all record marshallers. This is conceptually the opposite of
@@ -35,15 +34,6 @@ import org.jeasy.batch.core.record.Record;
  * @param <O> the type of marshalled record
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public interface RecordMarshaller<I extends Record, O extends Record> extends RecordProcessor<I, O> {
+public interface RecordMarshaller<I, O> extends RecordProcessor<I, O> {
 
-    /**
-     * Marshal a record to a specific format.
-     *
-     * @param record the record to marshal.
-     * @return the marshalled record
-     * @throws Exception if an error occurs during record marshalling
-     */
-    @Override
-    O processRecord(I record) throws Exception;
 }

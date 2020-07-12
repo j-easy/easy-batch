@@ -23,6 +23,7 @@
  */
 package org.jeasy.batch.core.filter;
 
+import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
 
 /**
@@ -30,9 +31,10 @@ import org.jeasy.batch.core.record.StringRecord;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class EmptyStringRecordFilter implements RecordFilter<StringRecord> {
+public class EmptyStringRecordFilter implements RecordFilter<String> {
 
-    public StringRecord processRecord(final StringRecord record) {
+    @Override
+    public Record<String> processRecord(Record<String> record) {
         String payload = record.getPayload();
         if (payload.isEmpty()) {
             return null;

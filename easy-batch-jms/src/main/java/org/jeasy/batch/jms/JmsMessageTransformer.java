@@ -24,8 +24,10 @@
 package org.jeasy.batch.jms;
 
 import org.jeasy.batch.core.processor.RecordProcessor;
+import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
 
+import javax.jms.Message;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
@@ -36,7 +38,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JmsMessageTransformer implements RecordProcessor<StringRecord, JmsRecord> {
+public class JmsMessageTransformer implements RecordProcessor<String, Message> {
 
     private Session session;
 
@@ -51,7 +53,7 @@ public class JmsMessageTransformer implements RecordProcessor<StringRecord, JmsR
     }
 
     @Override
-    public JmsRecord processRecord(final StringRecord record) throws Exception {
+    public JmsRecord processRecord(final Record<String> record) throws Exception {
         TextMessage message = session.createTextMessage();
         message.setText(record.getPayload());
         return new JmsRecord(record.getHeader(), message);

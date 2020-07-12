@@ -35,7 +35,7 @@ import java.io.StringWriter;
  * @param <P> type of objects to marshal.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class YamlRecordMarshaller<P> implements RecordMarshaller<Record<P>, YamlRecord> {
+public class YamlRecordMarshaller<P> implements RecordMarshaller<P, String> {
 
     @Override
     public YamlRecord processRecord(Record<P> record) throws Exception {

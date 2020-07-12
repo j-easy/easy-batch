@@ -34,7 +34,7 @@ import java.util.List;
  * @param <P> The type of the record's payload.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RecordCollector<P> implements RecordProcessor<Record<P>, Record<P>> {
+public class RecordCollector<P> implements RecordProcessor<P, P> {
 
     private List<Record<P>> records = new ArrayList<>();
 

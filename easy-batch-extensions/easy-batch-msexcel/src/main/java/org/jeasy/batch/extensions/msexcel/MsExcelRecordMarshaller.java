@@ -39,7 +39,7 @@ import java.util.Date;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class MsExcelRecordMarshaller<P> implements RecordMarshaller<Record<P>, MsExcelRecord> {
+public class MsExcelRecordMarshaller<P> implements RecordMarshaller<P, Row> {
 
     private FieldExtractor<P> fieldExtractor;
 
