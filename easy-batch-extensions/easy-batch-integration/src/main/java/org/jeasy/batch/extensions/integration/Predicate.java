@@ -30,7 +30,6 @@ import org.jeasy.batch.core.record.Record;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  * @see ContentBasedBlockingQueueRecordWriter
- * @see ContentBasedBlockingQueueRecordWriterBuilder
  */
 public interface Predicate {
 

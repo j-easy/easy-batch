@@ -32,13 +32,14 @@ import org.jeasy.batch.core.reader.BlockingQueueRecordReader;
 import org.jeasy.batch.core.reader.FileRecordReader;
 import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.extensions.integration.ContentBasedBlockingQueueRecordWriter;
+import org.jeasy.batch.extensions.integration.Predicate;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import static org.jeasy.batch.extensions.integration.ContentBasedBlockingQueueRecordWriterBuilder.newContentBasedBlockingQueueRecordWriterBuilder;
 
 /**
 * Main class to run the content based record dispatching tutorial.
@@ -60,10 +61,10 @@ public class Launcher {
         BlockingQueue<Record> xmlQueue = new LinkedBlockingQueue<>();
 
         // Create a content based record writer to write records to work queues based on their content
-        ContentBasedBlockingQueueRecordWriter contentBasedBlockingQueueRecordWriter = newContentBasedBlockingQueueRecordWriterBuilder()
-                .when(new CsvFilePredicate()).writeTo(csvQueue)
-                .when(new XmlFilePredicate()).writeTo(xmlQueue)
-                .build();
+        Map<Predicate, BlockingQueue<Record>> queueMap = new HashMap<>();
+        queueMap.put(new CsvFilePredicate(), csvQueue);
+        queueMap.put(new XmlFilePredicate(), xmlQueue);
+        ContentBasedBlockingQueueRecordWriter contentBasedBlockingQueueRecordWriter = new ContentBasedBlockingQueueRecordWriter(queueMap);
 
         // Build a master job that will read files from the directory and dispatch them to worker jobs
         Job masterJob = new JobBuilder()

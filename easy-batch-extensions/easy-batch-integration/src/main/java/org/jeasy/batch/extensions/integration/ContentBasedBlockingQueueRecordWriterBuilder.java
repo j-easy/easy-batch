@@ -33,7 +33,11 @@ import java.util.concurrent.BlockingQueue;
  * Builder for {@link ContentBasedBlockingQueueRecordWriter}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @deprecated since v6.1 and will be removed in v6.2 or later.
+ * Use {@link ContentBasedBlockingQueueRecordWriter#ContentBasedBlockingQueueRecordWriter(java.util.Map)}
+ * instead.
  */
+@Deprecated
 public class ContentBasedBlockingQueueRecordWriterBuilder {
 
     private ContentBasedBlockingQueueRecordWriterBuilder() {
@@ -45,6 +49,7 @@ public class ContentBasedBlockingQueueRecordWriterBuilder {
      *
      * @return a new {@link ContentBasedBlockingQueueRecordWriter}
      */
+    @Deprecated
     public static WhenStep newContentBasedBlockingQueueRecordWriterBuilder() {
         return new Steps();
     }
