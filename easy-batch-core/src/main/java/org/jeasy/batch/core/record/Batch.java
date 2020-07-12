@@ -36,9 +36,9 @@ import static java.util.Collections.addAll;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class Batch implements Iterable<Record> {
+public class Batch<P> implements Iterable<Record<P>> {
 
-    private List<Record> records = new ArrayList<>();
+    private List<Record<P>> records = new ArrayList<>();
 
     /**
      * Create a new {@link Batch}.
@@ -51,7 +51,7 @@ public class Batch implements Iterable<Record> {
      *
      * @param records to put in the batch
      */
-    public Batch(Record... records) {
+    public Batch(Record<P>... records) {
         addAll(this.records, records);
     }
 
@@ -60,7 +60,7 @@ public class Batch implements Iterable<Record> {
      *
      * @param records to put in the batch
      */
-    public Batch(List<Record> records) {
+    public Batch(List<Record<P>> records) {
         this.records = records;
     }
 
@@ -69,7 +69,7 @@ public class Batch implements Iterable<Record> {
      *
      * @param record to add
      */
-    public void addRecord(final Record record) {
+    public void addRecord(final Record<P> record) {
         records.add(record);
     }
 
@@ -78,7 +78,7 @@ public class Batch implements Iterable<Record> {
      *
      * @param record to remove
      */
-    public void removeRecord(final Record record) {
+    public void removeRecord(final Record<P> record) {
         records.remove(record);
     }
 
@@ -119,7 +119,7 @@ public class Batch implements Iterable<Record> {
 
 
     @Override
-    public Iterator<Record> iterator() {
+    public Iterator<Record<P>> iterator() {
         return records.iterator();
     }
 
@@ -128,7 +128,7 @@ public class Batch implements Iterable<Record> {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Batch: {");
         stringBuilder.append(Utils.LINE_SEPARATOR);
-        for (Record record : records) {
+        for (Record<P> record : records) {
             stringBuilder.append('\t');
             stringBuilder.append(record);
             stringBuilder.append(Utils.LINE_SEPARATOR);

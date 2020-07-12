@@ -31,7 +31,7 @@ import org.jeasy.batch.core.record.Batch;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public interface BatchListener {
+public interface BatchListener<P> {
 
     /**
      * Executed before reading each batch.
@@ -45,7 +45,7 @@ public interface BatchListener {
      *
      * @param batch the batch of records that has been processed
      */
-    default void afterBatchProcessing(final Batch batch) {
+    default void afterBatchProcessing(final Batch<P> batch) {
         // no-op
     }
 
@@ -54,7 +54,7 @@ public interface BatchListener {
      *
      * @param batch the batch of records that has been written
      */
-    default void afterBatchWriting(final Batch batch) {
+    default void afterBatchWriting(final Batch<P> batch) {
         // no-op
     }
 
@@ -64,7 +64,7 @@ public interface BatchListener {
      * @param batch   the batch attempted to be written
      * @param throwable the error occurred
      */
-    default void onBatchWritingException(final Batch batch, Throwable throwable) {
+    default void onBatchWritingException(final Batch<P> batch, Throwable throwable) {
         // no-op
     }
 

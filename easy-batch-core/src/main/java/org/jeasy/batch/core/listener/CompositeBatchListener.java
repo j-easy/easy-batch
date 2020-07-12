@@ -34,9 +34,9 @@ import java.util.ListIterator;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class CompositeBatchListener implements BatchListener {
+public class CompositeBatchListener<P> implements BatchListener<P> {
 
-    private List<BatchListener> listeners;
+    private List<BatchListener<P>> listeners;
 
     /**
      * Create a new {@link CompositeBatchListener}.
@@ -50,20 +50,20 @@ public class CompositeBatchListener implements BatchListener {
      *
      * @param listeners delegates
      */
-    public CompositeBatchListener(List<BatchListener> listeners) {
+    public CompositeBatchListener(List<BatchListener<P>> listeners) {
         this.listeners = listeners;
     }
 
     @Override
     public void beforeBatchReading() {
-        for (BatchListener listener : listeners) {
+        for (BatchListener<P> listener : listeners) {
             listener.beforeBatchReading();
         }
     }
 
     @Override
-    public void afterBatchProcessing(Batch batch) {
-        for (ListIterator<BatchListener> iterator
+    public void afterBatchProcessing(Batch<P> batch) {
+        for (ListIterator<BatchListener<P>> iterator
                 = listeners.listIterator(listeners.size());
                 iterator.hasPrevious();) {
             iterator.previous().afterBatchProcessing(batch);
@@ -71,8 +71,8 @@ public class CompositeBatchListener implements BatchListener {
     }
 
     @Override
-    public void afterBatchWriting(Batch batch) {
-        for (ListIterator<BatchListener> iterator
+    public void afterBatchWriting(Batch<P> batch) {
+        for (ListIterator<BatchListener<P>> iterator
                 = listeners.listIterator(listeners.size());
                 iterator.hasPrevious();) {
             iterator.previous().afterBatchWriting(batch);
@@ -80,8 +80,8 @@ public class CompositeBatchListener implements BatchListener {
     }
 
     @Override
-    public void onBatchWritingException(Batch batch, Throwable throwable) {
-        for (ListIterator<BatchListener> iterator
+    public void onBatchWritingException(Batch<P> batch, Throwable throwable) {
+        for (ListIterator<BatchListener<P>> iterator
                 = listeners.listIterator(listeners.size());
                 iterator.hasPrevious();) {
             iterator.previous().onBatchWritingException(batch, throwable);
@@ -93,7 +93,7 @@ public class CompositeBatchListener implements BatchListener {
      *
      * @param batchListener to add
      */
-    public void addBatchListener(final BatchListener batchListener) {
+    public void addBatchListener(final BatchListener<P> batchListener) {
         listeners.add(batchListener);
     }
 }
