@@ -381,35 +381,16 @@ class BatchJob implements Job {
     private static class NoOpRecordReader implements RecordReader {
 
         @Override
-        public void open() {
-
-        }
-
-        @Override
         public Record readRecord() {
             return null;
         }
 
-        @Override
-        public void close() {
-
-        }
     }
 
     private static class NoOpRecordWriter implements RecordWriter {
 
         @Override
-        public void open() {
-
-        }
-
-        @Override
         public void writeRecords(Batch batch) {
-
-        }
-
-        @Override
-        public void close() {
 
         }
 

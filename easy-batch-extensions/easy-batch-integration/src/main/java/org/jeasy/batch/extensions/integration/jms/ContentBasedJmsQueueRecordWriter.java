@@ -51,11 +51,6 @@ public class ContentBasedJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() {
-
-    }
-
-    @Override
     public void writeRecords(Batch batch) throws Exception {
         QueueSender defaultQueue = queueMap.get(new DefaultPredicate());
         for (Record record : batch) {
@@ -76,11 +71,6 @@ public class ContentBasedJmsQueueRecordWriter implements RecordWriter {
                 defaultQueue.send(payload);
             }
         }
-    }
-
-    @Override
-    public void close() {
-
     }
 
     Map<Predicate, QueueSender> getQueueMap() {

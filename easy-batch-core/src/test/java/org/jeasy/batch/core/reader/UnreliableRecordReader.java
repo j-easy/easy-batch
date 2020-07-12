@@ -55,8 +55,4 @@ public class UnreliableRecordReader implements RecordReader {
         }
     }
 
-    @Override
-    public void close() {
-
-    }
 }

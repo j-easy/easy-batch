@@ -62,19 +62,10 @@ public class BlockingQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() {
-
-    }
-
-    @Override
     public void writeRecords(Batch batch) throws Exception {
         for (Record record : batch) {
             blockingQueue.offer(record, timeout, TimeUnit.MILLISECONDS);
         }
     }
 
-    @Override
-    public void close() {
-
-    }
 }

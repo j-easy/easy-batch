@@ -49,11 +49,6 @@ public class CollectionRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() {
-
-    }
-
-    @Override
     @SuppressWarnings(value = "unchecked")
     public void writeRecords(Batch batch) {
         for (Record record : batch) {
@@ -61,8 +56,4 @@ public class CollectionRecordWriter implements RecordWriter {
         }
     }
 
-    @Override
-    public void close() {
-
-    }
 }

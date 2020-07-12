@@ -34,19 +34,10 @@ import org.jeasy.batch.core.record.Record;
 public class StandardOutputRecordWriter implements RecordWriter {
 
     @Override
-    public void open() {
-        // no-op
-    }
-
-    @Override
     public void writeRecords(Batch batch) {
         for (Record record : batch) {
             System.out.println(record.getPayload().toString());
         }
     }
 
-    @Override
-    public void close() {
-        // no-op: don't close standard output
-    }
 }

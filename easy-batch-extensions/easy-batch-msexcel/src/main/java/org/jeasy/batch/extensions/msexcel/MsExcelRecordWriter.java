@@ -81,11 +81,6 @@ public class MsExcelRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() {
-
-    }
-
-    @Override
     public void writeRecords(Batch batch) throws Exception {
         for (Record record : batch) {
             XSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);

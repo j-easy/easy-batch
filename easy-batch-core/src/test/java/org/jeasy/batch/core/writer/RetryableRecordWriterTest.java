@@ -77,18 +77,12 @@ public class RetryableRecordWriterTest {
     }
 
     static class UnreliableDataSinkWriter implements RecordWriter {
-        @Override
-        public void open() {
-        }
 
         @Override
         public void writeRecords(Batch batch) throws Exception {
             throw new Exception("Data source temporarily down");
         }
 
-        @Override
-        public void close() {
-        }
     }
 
     static class BetterUnreliableDataSinkWriter implements RecordWriter {
@@ -96,19 +90,11 @@ public class RetryableRecordWriterTest {
         private boolean executed;
 
         @Override
-        public void open() {
-        }
-
-        @Override
         public void writeRecords(Batch batch) throws Exception {
             if (++attempts <= 2) {
                 throw new Exception("Data sink temporarily down");
             }
             executed = true;
-        }
-
-        @Override
-        public void close() {
         }
 
         public boolean isExecuted() {

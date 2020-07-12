@@ -52,11 +52,6 @@ public class ContentBasedBlockingQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() {
-
-    }
-
-    @Override
     public void writeRecords(Batch batch) throws Exception {
         DefaultPredicate defaultPredicate = new DefaultPredicate();
         BlockingQueue<Record> defaultQueue = queueMap.get(defaultPredicate);
@@ -77,11 +72,6 @@ public class ContentBasedBlockingQueueRecordWriter implements RecordWriter {
                 defaultQueue.put(record);
             }
         }
-    }
-
-    @Override
-    public void close() {
-
     }
 
     Map<Predicate, BlockingQueue<Record>> getQueueMap() {

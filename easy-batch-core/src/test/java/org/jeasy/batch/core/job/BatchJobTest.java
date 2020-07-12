@@ -692,21 +692,11 @@ public class BatchJobTest {
             private List<Batch> batches = new ArrayList<>();
 
             @Override
-            public void open() {
-
-            }
-
-            @Override
             public void writeRecords(Batch batch) throws Exception {
                 batches.add(batch);
                 if (batch.size() == 2) {
                     throw new Exception("Expected");
                 }
-            }
-
-            @Override
-            public void close() {
-
             }
 
             public List<Batch> getBatches() {

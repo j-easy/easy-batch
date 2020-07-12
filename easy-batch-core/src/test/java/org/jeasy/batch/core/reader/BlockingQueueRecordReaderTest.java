@@ -27,7 +27,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.jeasy.batch.core.record.Record;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,8 +61,4 @@ public class BlockingQueueRecordReaderTest {
         assertThat(queue).isEmpty();
     }
 
-    @After
-    public void tearDown() {
-        blockingQueueRecordReader.close();
-    }
 }

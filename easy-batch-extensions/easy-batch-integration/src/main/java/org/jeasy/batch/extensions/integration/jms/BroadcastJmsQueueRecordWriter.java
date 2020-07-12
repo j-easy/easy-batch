@@ -50,11 +50,6 @@ public class BroadcastJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() {
-
-    }
-
-    @Override
     public void writeRecords(Batch batch) throws Exception {
         for (Record record : batch) {
             for (QueueSender queue : queues) {
@@ -63,8 +58,4 @@ public class BroadcastJmsQueueRecordWriter implements RecordWriter {
         }
     }
 
-    @Override
-    public void close() {
-
-    }
 }

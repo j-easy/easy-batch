@@ -39,7 +39,9 @@ public interface RecordReader {
      *
      * @throws Exception if an error occurs during reader opening
      */
-    void open() throws Exception;
+    default void open() throws Exception {
+        // no-op
+    }
 
     /**
      * Read next record from the data source.
@@ -54,6 +56,8 @@ public interface RecordReader {
      *
      * @throws Exception if an error occurs during reader closing
      */
-    void close() throws Exception;
+    default void close() throws Exception {
+        // no-op
+    }
 
 }

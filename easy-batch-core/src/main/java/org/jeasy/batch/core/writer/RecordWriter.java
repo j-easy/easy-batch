@@ -37,7 +37,9 @@ public interface RecordWriter {
      *
      * @throws Exception if an error occurs during opening the writer
      */
-    void open() throws Exception;
+    default void open() throws Exception {
+        // no-op
+    }
 
     /**
      * Write a batch of records to a data sink.
@@ -52,5 +54,7 @@ public interface RecordWriter {
      *
      * @throws Exception if an error occurs during closing the writer
      */
-    void close() throws Exception;
+    default void close() throws Exception {
+        // no-op
+    }
 }

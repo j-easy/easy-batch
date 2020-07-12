@@ -52,11 +52,6 @@ public class RoundRobinBlockingQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() {
-
-    }
-
-    @Override
     public void writeRecords(Batch batch) throws Exception {
         //write records to queues in round-robin fashion
         for (Record record : batch) {
@@ -65,8 +60,4 @@ public class RoundRobinBlockingQueueRecordWriter implements RecordWriter {
         }
     }
 
-    @Override
-    public void close() {
-
-    }
 }

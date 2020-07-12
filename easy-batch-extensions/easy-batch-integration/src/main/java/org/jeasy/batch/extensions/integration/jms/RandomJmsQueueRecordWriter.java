@@ -55,11 +55,6 @@ public class RandomJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() {
-
-    }
-
-    @Override
     public void writeRecords(Batch batch) throws Exception {
         for (Record record : batch) {
             //dispatch record randomly to one of the queues
@@ -68,8 +63,4 @@ public class RandomJmsQueueRecordWriter implements RecordWriter {
         }
     }
 
-    @Override
-    public void close() {
-
-    }
 }

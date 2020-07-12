@@ -49,11 +49,6 @@ public class StringRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() {
-        // no op
-    }
-
-    @Override
     public void writeRecords(Batch batch) {
         for (Record record : batch) {
             stringWriter.write(record.getPayload().toString());

@@ -65,26 +65,16 @@ public class RetryableRecordReaderTest {
     }
 
     static class UnreliableDataSourceReader implements RecordReader {
-        @Override
-        public void open() {
-        }
 
         @Override
         public Record readRecord() throws Exception {
             throw new Exception("Data source temporarily down");
         }
 
-        @Override
-        public void close() {
-        }
     }
 
     class BetterUnreliableDataSourceReader implements RecordReader {
         private int attempts;
-
-        @Override
-        public void open() {
-        }
 
         @Override
         public Record readRecord() throws Exception {
@@ -94,9 +84,6 @@ public class RetryableRecordReaderTest {
             throw new Exception("Data source temporarily down");
         }
 
-        @Override
-        public void close() {
-        }
     }
 
 }

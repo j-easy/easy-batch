@@ -61,18 +61,8 @@ public class BlockingQueueRecordReader implements RecordReader {
     }
 
     @Override
-    public void open() {
-
-    }
-
-    @Override
     public Record readRecord() throws Exception {
         return queue.poll(timeout, TimeUnit.MILLISECONDS); // returns null after timeout (See javadoc)
-    }
-
-    @Override
-    public void close() {
-        // no op
     }
 
 }

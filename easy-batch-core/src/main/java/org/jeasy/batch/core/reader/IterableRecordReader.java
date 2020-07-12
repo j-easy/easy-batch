@@ -71,8 +71,4 @@ public class IterableRecordReader implements RecordReader {
         return "In-Memory Iterable";
     }
 
-    @Override
-    public void close() {
-        // no op
-    }
 }

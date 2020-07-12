@@ -54,11 +54,6 @@ public class RandomBlockingQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() {
-
-    }
-
-    @Override
     public void writeRecords(Batch batch) throws Exception {
         //write record randomly to one of the queues
         for (Record record : batch) {
@@ -67,8 +62,4 @@ public class RandomBlockingQueueRecordWriter implements RecordWriter {
         }
     }
 
-    @Override
-    public void close() {
-
-    }
 }

@@ -53,11 +53,6 @@ public class RoundRobinJmsQueueRecordWriter implements RecordWriter {
     }
 
     @Override
-    public void open() {
-
-    }
-
-    @Override
     public void writeRecords(Batch batch) throws Exception {
         for (Record record : batch) {
             //dispatch records to queues in round-robin fashion
@@ -66,8 +61,4 @@ public class RoundRobinJmsQueueRecordWriter implements RecordWriter {
         }
     }
 
-    @Override
-    public void close() {
-
-    }
 }

@@ -45,11 +45,6 @@ public class TweetIndexer implements RecordWriter {
     }
 
     @Override
-    public void open() {
-
-    }
-
-    @Override
     public void writeRecords(Batch batch) throws Exception {
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (Record record : batch) {

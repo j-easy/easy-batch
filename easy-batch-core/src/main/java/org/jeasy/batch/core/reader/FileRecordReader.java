@@ -98,9 +98,4 @@ public class FileRecordReader implements RecordReader {
         return directory.toAbsolutePath().toString();
     }
 
-    @Override
-    public void close() {
-        // no op
-    }
-
 }
