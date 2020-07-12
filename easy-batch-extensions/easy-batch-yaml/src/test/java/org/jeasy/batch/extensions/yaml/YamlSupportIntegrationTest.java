@@ -58,7 +58,7 @@ public class YamlSupportIntegrationTest {
     public void yamlReadingAndMappingIntegrationTest() throws Exception {
         RecordCollector<Contact> recordCollector = new RecordCollector<>();
 
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                 .reader(new YamlRecordReader(new FileInputStream("src/test/resources/contacts.yml")))
                 .mapper(new YamlRecordMapper<>(Contact.class))
                 .processor(recordCollector)
@@ -91,7 +91,7 @@ public class YamlSupportIntegrationTest {
 
         RecordCollector<String> recordCollector = new RecordCollector<>();
 
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                 .reader(new IterableRecordReader(contacts))
                 .marshaller(new YamlRecordMarshaller<Contact>())
                 .processor(recordCollector)

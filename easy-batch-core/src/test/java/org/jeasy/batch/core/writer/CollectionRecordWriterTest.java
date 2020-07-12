@@ -24,6 +24,7 @@
 package org.jeasy.batch.core.writer;
 
 import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.reader.IterableRecordReader;
 import org.jeasy.batch.core.record.Batch;
@@ -39,7 +40,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 import static org.mockito.Mockito.when;
 
 /**
@@ -78,7 +78,7 @@ public class CollectionRecordWriterTest {
         List<Object> input = Arrays.asList(payload1, payload2);
         List<Object> output = new ArrayList<>();
 
-        Job job = aNewJob()
+        Job job = new JobBuilder()
                 .reader(new IterableRecordReader(input))
                 .writer(new CollectionRecordWriter(output))
                 .build();

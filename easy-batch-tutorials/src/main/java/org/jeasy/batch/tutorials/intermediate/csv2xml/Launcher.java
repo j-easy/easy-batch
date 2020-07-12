@@ -2,6 +2,7 @@ package org.jeasy.batch.tutorials.intermediate.csv2xml;
 
 import org.jeasy.batch.core.filter.HeaderRecordFilter;
 import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.writer.FileRecordWriter;
 import org.jeasy.batch.flatfile.DelimitedRecordMapper;
@@ -11,8 +12,6 @@ import org.jeasy.batch.xml.XmlRecordMarshaller;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
 /**
  * Main class to launch the CSV to XML tutorial.
@@ -30,7 +29,7 @@ public class Launcher {
         recordWriter.setHeaderCallback(new HeaderWriter());
         recordWriter.setFooterCallback(new FooterWriter());
 
-        Job job = aNewJob()
+        Job job = new JobBuilder()
                 .reader(new FlatFileRecordReader(csvTweets))
                 .filter(new HeaderRecordFilter())
                 .mapper(new DelimitedRecordMapper<>(Tweet.class, "id", "user", "message"))

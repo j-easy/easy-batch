@@ -26,6 +26,7 @@ package org.jeasy.batch.jms;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.io.FileUtils;
 import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.processor.RecordCollector;
@@ -46,7 +47,6 @@ import java.util.List;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 import static org.jeasy.batch.core.util.Utils.LINE_SEPARATOR;
 
 @SuppressWarnings("unchecked")
@@ -81,7 +81,7 @@ public class JmsIntegrationTest {
         queueSender.send(message);
 
         RecordCollector recordCollector = new RecordCollector();
-        Job job = aNewJob()
+        Job job = new JobBuilder()
                 .reader(new JmsRecordReader(queueConnectionFactory, queue, 1000))
                 .processor(recordCollector)
                 .build();
@@ -123,7 +123,7 @@ public class JmsIntegrationTest {
 
         String dataSource = "foo" + LINE_SEPARATOR + "bar";
 
-        Job job = aNewJob()
+        Job job = new JobBuilder()
                 .reader(new StringRecordReader(dataSource))
                 .processor(new JmsMessageTransformer(queueSession))
                 .writer(new JmsRecordWriter(queueConnectionFactory, queue))

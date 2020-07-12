@@ -29,11 +29,11 @@ public class JobBuilderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void whenBatchSizeIsLessThanOne_thenShouldThrowAnIllegalArgumentException() {
-        JobBuilder.aNewJob().batchSize(0);
+        new JobBuilder().batchSize(0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void whenErrorThresholdIsLessThanZero_thenShouldThrowAnIllegalArgumentException() {
-        JobBuilder.aNewJob().errorThreshold(-1);
+        new JobBuilder().errorThreshold(-1);
     }
 }

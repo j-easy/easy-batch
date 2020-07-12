@@ -30,6 +30,7 @@ import java.nio.file.Paths;
 import javax.sql.DataSource;
 
 import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.writer.FileRecordWriter;
@@ -38,8 +39,6 @@ import org.jeasy.batch.jdbc.JdbcRecordMapper;
 import org.jeasy.batch.jdbc.JdbcRecordReader;
 import org.jeasy.batch.tutorials.common.DatabaseUtil;
 import org.jeasy.batch.tutorials.common.Tweet;
-
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
 /**
  * Main class to run the header/footer tutorial.
@@ -75,7 +74,7 @@ public class Launcher {
         recordWriter.setFooterCallback(footerCallback);
 
         final String[] fields = {"id", "user", "message"};
-        Job job = aNewJob()
+        Job job = new JobBuilder()
                 .reader(new JdbcRecordReader(dataSource, "select * from tweet"))
                 .mapper(new JdbcRecordMapper<>(Tweet.class, fields))
                 .marshaller(new DelimitedRecordMarshaller<>(Tweet.class, fields))

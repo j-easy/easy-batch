@@ -26,6 +26,7 @@ package org.jeasy.batch.tutorials.advanced.parallel;
 
 import org.jeasy.batch.core.filter.HeaderRecordFilter;
 import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.reader.BlockingQueueRecordReader;
 import org.jeasy.batch.core.record.Record;
@@ -39,8 +40,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
 public class WorkQueue {
 
@@ -56,7 +55,7 @@ public class WorkQueue {
         BlockingQueue<Record> workQueue = new LinkedBlockingQueue<>();
 
         // Build a master job to read records from the data source and dispatch them to worker jobs
-        Job masterJob = aNewJob()
+        Job masterJob = new JobBuilder()
                 .named("master-job")
                 .reader(new FlatFileRecordReader(tweets))
                 .filter(new HeaderRecordFilter())
@@ -79,7 +78,7 @@ public class WorkQueue {
     }
 
     private static Job buildWorkerJob(BlockingQueue<Record> workQueue, String jobName) {
-        return aNewJob()
+        return new JobBuilder()
                 .named(jobName)
                 .reader(new BlockingQueueRecordReader(workQueue, QUEUE_TIMEOUT))
                 .writer(new StandardOutputRecordWriter())

@@ -49,7 +49,7 @@ public class MultiYamlFileRecordReaderTest {
         MultiYamlFileRecordReader multiFileRecordReader = new MultiYamlFileRecordReader(files);
 
         RecordCollector recordCollector = new RecordCollector();
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                 .reader(multiFileRecordReader)
                 .processor(recordCollector)
                 .build();

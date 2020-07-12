@@ -49,7 +49,7 @@ public class MultiXmlFileRecordReaderTest {
         MultiXmlFileRecordReader multiFileRecordReader = new MultiXmlFileRecordReader(files, "website");
 
         RecordCollector recordCollector = new RecordCollector();
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                 .reader(multiFileRecordReader)
                 .processor(recordCollector)
                 .build();

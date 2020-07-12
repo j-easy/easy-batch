@@ -54,7 +54,7 @@ public class MsExcelSupportIntegrationTest {
         Path outputTweets = Paths.get("src/test/resources/tweets-out.xlsx");
 
         String[] fields = {"id", "user", "message"};
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                 .reader(new MsExcelRecordReader(inputTweets))
                 .mapper(new MsExcelRecordMapper<>(Tweet.class, fields))
                 .marshaller(new MsExcelRecordMarshaller<>(Tweet.class, fields))
@@ -86,7 +86,7 @@ public class MsExcelSupportIntegrationTest {
         String[] fields = {"id", "user", "message"};
 
         List<Tweet> output = new ArrayList<>();
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                 .reader(new MsExcelRecordReader(inputTweets))
                 .mapper(new MsExcelRecordMapper<>(Tweet.class, fields))
                 .writer(new CollectionRecordWriter(output))

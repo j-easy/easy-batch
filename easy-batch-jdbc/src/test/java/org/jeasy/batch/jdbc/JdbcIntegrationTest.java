@@ -58,7 +58,7 @@ public class JdbcIntegrationTest extends AbstractDatabaseTest {
     @Test
     public void testDatabaseProcessingWithJdbc() {
         RecordCollector<Tweet> recordCollector = new RecordCollector<>();
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                 .reader(new JdbcRecordReader(embeddedDatabase, query))
                 .mapper(new JdbcRecordMapper<>(Tweet.class, "id", "user", "message"))
                 .processor(recordCollector)

@@ -24,6 +24,7 @@
 package org.jeasy.batch.core.writer;
 
 import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.reader.IterableRecordReader;
 import org.jeasy.batch.core.record.Batch;
@@ -38,7 +39,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 import static org.jeasy.batch.core.util.Utils.LINE_SEPARATOR;
 
 /**
@@ -72,7 +72,7 @@ public class StringRecordWriterTest {
     public void integrationTest() {
         List<String> dataSource = Arrays.asList("foo", "bar");
 
-        Job job = aNewJob()
+        Job job = new JobBuilder()
                 .reader(new IterableRecordReader(dataSource))
                 .writer(stringRecordWriter)
                 .build();

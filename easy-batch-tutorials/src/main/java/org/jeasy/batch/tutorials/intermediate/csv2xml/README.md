@@ -65,7 +65,7 @@ FileRecordWriter recordWriter = new FileRecordWriter(xmlTweets);
 recordWriter.setHeaderCallback(new HeaderWriter());
 recordWriter.setFooterCallback(new FooterWriter());
 
-Job job = JobBuilder.aNewJob()
+Job job = new JobBuilder()
     .reader(new FlatFileRecordReader(csvTweets)) // Step 1
     .filter(new HeaderRecordFilter()) // Step 2
     .mapper(new DelimitedRecordMapper(Tweet.class, "id", "user", "message")) // Step 3

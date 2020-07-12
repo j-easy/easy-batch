@@ -42,7 +42,7 @@ public class App {
                         "2,bar,@foo I do confirm :-)";
 
         // Define a job
-        Job job = aNewJob()
+        Job job = new JobBuilder()
                 .reader(new StringRecordReader(dataSource))
                 .processor(new TweetProcessor())
                 .writer(new StandardOutputRecordWriter())

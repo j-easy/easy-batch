@@ -23,6 +23,7 @@
  */
 package org.jeasy.batch.extensions.apache.common.csv;
 
+import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.processor.RecordCollector;
 import org.jeasy.batch.core.reader.StringRecordReader;
 import org.jeasy.batch.core.util.Utils;
@@ -32,7 +33,6 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 import static org.jeasy.batch.core.util.Utils.LINE_SEPARATOR;
 
 public class ApacheCommonCsvSupportIntegrationTest {
@@ -45,7 +45,7 @@ public class ApacheCommonCsvSupportIntegrationTest {
         ApacheCommonCsvRecordMarshaller<Tweet> recordMarshaller = new ApacheCommonCsvRecordMarshaller<>(Tweet.class, "id", "user", "message");
         recordMarshaller.setDelimiter(';');
         recordMarshaller.setQualifier('\'');
-        aNewJob()
+        new JobBuilder()
                 .reader(new StringRecordReader(dataSource))
                 .mapper(new ApacheCommonCsvRecordMapper<>(Tweet.class, "id", "user", "message"))
                 .marshaller(recordMarshaller)

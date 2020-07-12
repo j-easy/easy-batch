@@ -24,6 +24,7 @@
 package org.jeasy.batch.extensions.hibernate;
 
 import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.processor.RecordCollector;
@@ -39,7 +40,6 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
 public class HibernateRecordReaderTest extends AbstractDatabaseTest {
 
@@ -58,7 +58,7 @@ public class HibernateRecordReaderTest extends AbstractDatabaseTest {
     @Test
     public void testRecordReading() {
         RecordCollector<Tweet> recordCollector = new RecordCollector<>();
-        Job job = aNewJob()
+        Job job = new JobBuilder()
                 .reader(hibernateRecordReader)
                 .processor(recordCollector)
                 .build();

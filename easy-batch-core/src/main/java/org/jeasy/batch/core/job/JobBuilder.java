@@ -60,7 +60,11 @@ public final class JobBuilder {
      * Create a new {@link JobBuilder}.
      *
      * @return a new job builder.
+     * @deprecated since v6.1 and will be removed in v6.2 or later.
+     * Use {@link JobBuilder#JobBuilder()} instead
+     * 
      */
+    @Deprecated
     public static JobBuilder aNewJob() {
         return new JobBuilder();
     }

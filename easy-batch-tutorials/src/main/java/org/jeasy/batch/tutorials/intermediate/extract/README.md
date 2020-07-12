@@ -22,7 +22,7 @@ In this tutorial, we will use the `JdbcRecordReader`:
 
 ```java
 DataSource dataSource = DatabaseUtil.getDataSource();
-Job job = JobBuilder.aNewJob()
+Job job = new JobBuilder()
     .reader(new JdbcRecordReader(dataSource, "select * from tweet"))
     .build();
 ```
@@ -50,7 +50,7 @@ The `JdbcRecordMapper` can map Jdbc records to instances of the domain object `T
 
 ```java
 DataSource dataSource = DatabaseUtil.getDataSource();
-Job job = JobBuilder.aNewJob()
+Job job = new JobBuilder()
     .reader(new JdbcRecordReader(dataSource, "select * from tweet"))
     .mapper(new JdbcRecordMapper(Tweet.class, "id", "user", "message"))
     .build();
@@ -65,7 +65,7 @@ The `DelimitedRecordMarshaller` is designed to marshal a Java object to CSV form
 
 ```java
 DataSource dataSource = DatabaseUtil.getDataSource();
-Job job = JobBuilder.aNewJob()
+Job job = new JobBuilder()
     .reader(new JdbcRecordReader(dataSource, "select * from tweet"))
     .mapper(new JdbcRecordMapper(Tweet.class, "id", "user", "message"))
     .marshaller(new DelimitedRecordMarshaller(Tweet.class, "id", "user", "message"))
@@ -81,7 +81,7 @@ Now that we read records from the database, mapped them to domain objects and ma
 
 ```java
 DataSource dataSource = DatabaseUtil.getDataSource();
-Job job = JobBuilder.aNewJob()
+Job job = new JobBuilder()
     .reader(new JdbcRecordReader(dataSource, "select * from tweet"))
     .mapper(new JdbcRecordMapper(Tweet.class, "id", "user", "message"))
     .marshaller(new DelimitedRecordMarshaller(Tweet.class, "id", "user", "message"))
@@ -110,7 +110,7 @@ public class Launcher {
 
         // Build a batch job
         String[] fields = {"id", "user", "message"};
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                     .reader(new JdbcRecordReader(dataSource, "select * from tweet"))
                     .mapper(new JdbcRecordMapper(Tweet.class, fields))
                     .marshaller(new DelimitedRecordMarshaller(Tweet.class, fields))

@@ -30,6 +30,7 @@ import java.nio.file.Paths;
 import javax.sql.DataSource;
 
 import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.flatfile.DelimitedRecordMapper;
@@ -38,8 +39,6 @@ import org.jeasy.batch.jdbc.BeanPropertiesPreparedStatementProvider;
 import org.jeasy.batch.jdbc.JdbcRecordWriter;
 import org.jeasy.batch.tutorials.common.DatabaseUtil;
 import org.jeasy.batch.tutorials.common.Tweet;
-
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
 /**
  * Main class to run the batch scanning tutorial.
@@ -60,7 +59,7 @@ public class Launcher {
         // Build a batch job
         Path tweets = Paths.get(args.length != 0 ? args[0] : "easy-batch-tutorials/src/main/resources/data/tweets-with-invalid-records.csv");
         Path skippedTweets = Paths.get(args.length != 0 ? args[1] : "easy-batch-tutorials/target/skipped-tweets.csv");
-        Job job = aNewJob()
+        Job job = new JobBuilder()
                 .batchSize(5)
                 .enableBatchScanning(true)
                 .reader(new FlatFileRecordReader(tweets))

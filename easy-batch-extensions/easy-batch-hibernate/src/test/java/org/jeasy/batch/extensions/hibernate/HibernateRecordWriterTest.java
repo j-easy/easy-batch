@@ -24,6 +24,7 @@
 package org.jeasy.batch.extensions.hibernate;
 
 import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.reader.IterableRecordReader;
@@ -39,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
 public class HibernateRecordWriterTest extends AbstractDatabaseTest {
 
@@ -62,7 +62,7 @@ public class HibernateRecordWriterTest extends AbstractDatabaseTest {
         int nbTweetsToInsert = 5;
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        Job job = aNewJob()
+        Job job = new JobBuilder()
                 .batchSize(2)
                 .reader(new IterableRecordReader(tweets))
                 .writer(hibernateRecordWriter)
@@ -85,7 +85,7 @@ public class HibernateRecordWriterTest extends AbstractDatabaseTest {
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
         // The following will make the second batch to fail
         tweets.get(4).setUser("ThisIsAVeryLongUsernameThatWillCauseAnError");
-        Job job = aNewJob()
+        Job job = new JobBuilder()
                 .batchSize(batchSize)
                 .reader(new IterableRecordReader(tweets))
                 .writer(hibernateRecordWriter)

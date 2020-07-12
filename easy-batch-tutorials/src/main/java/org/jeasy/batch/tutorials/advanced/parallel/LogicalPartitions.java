@@ -75,7 +75,7 @@ public class LogicalPartitions {
     }
 
     private static Job buildJob(Path file, RecordFilter recordFilter, String jobName) {
-        return JobBuilder.aNewJob()
+        return new JobBuilder()
                 .named(jobName)
                 .reader(new FlatFileRecordReader(file))
                 .filter(recordFilter)

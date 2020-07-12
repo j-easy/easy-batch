@@ -26,6 +26,7 @@ package org.jeasy.batch.tutorials.advanced.cbrd;
 
 import org.jeasy.batch.core.filter.FileExtensionFilter;
 import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.reader.BlockingQueueRecordReader;
 import org.jeasy.batch.core.reader.FileRecordReader;
@@ -37,7 +38,6 @@ import java.nio.file.Paths;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 import static org.jeasy.batch.extensions.integration.ContentBasedBlockingQueueRecordWriterBuilder.newContentBasedBlockingQueueRecordWriterBuilder;
 
 /**
@@ -66,7 +66,7 @@ public class Launcher {
                 .build();
 
         // Build a master job that will read files from the directory and dispatch them to worker jobs
-        Job masterJob = aNewJob()
+        Job masterJob = new JobBuilder()
                 .named("master-job")
                 .reader(new FileRecordReader(directory))
                 .filter(new FileExtensionFilter(".log", ".tmp"))
@@ -89,7 +89,7 @@ public class Launcher {
     }
 
     private static Job buildWorkerJob(BlockingQueue<Record> workQueue, String jobName) {
-        return aNewJob()
+        return new JobBuilder()
                 .named(jobName)
                 .reader(new BlockingQueueRecordReader(workQueue, QUEUE_TIMEOUT))
                 .processor(new DummyFileProcessor())

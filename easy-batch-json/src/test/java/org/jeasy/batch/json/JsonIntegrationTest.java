@@ -46,7 +46,7 @@ public class JsonIntegrationTest {
         final InputStream jsonDataSource = getDataSource("/tweets.json");
 
         RecordCollector recordCollector = new RecordCollector();
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                 .reader(new JsonRecordReader(jsonDataSource))
                 .processor(recordCollector)
                 .build();
@@ -83,7 +83,7 @@ public class JsonIntegrationTest {
         final InputStream jsonDataSource = getDataSource("/trees.json");
 
         RecordCollector recordCollector = new RecordCollector();
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                 .reader(new JsonRecordReader(jsonDataSource))
                 .processor(recordCollector)
                 .build();
@@ -116,7 +116,7 @@ public class JsonIntegrationTest {
         final InputStream jsonDataSource = getDataSource("/complaints.json");
 
         RecordCollector recordCollector = new RecordCollector();
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                 .reader(new JsonRecordReader(jsonDataSource))
                 .processor(recordCollector)
                 .build();
@@ -147,7 +147,7 @@ public class JsonIntegrationTest {
         final InputStream jsonDataSource = getDataSource("/empty.json");
 
         RecordCollector recordCollector = new RecordCollector();
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                 .reader(new JsonRecordReader(jsonDataSource))
                 .processor(recordCollector)
                 .build();

@@ -41,7 +41,7 @@ public class Launcher {
 
         try (InputStream inputStream = url.openStream();
              JobExecutor jobExecutor = new JobExecutor()) {
-            Job job = JobBuilder.aNewJob()
+            Job job = new JobBuilder()
                     .named("generate release notes job")
                     .reader(new JsonRecordReader(inputStream))
                     .mapper(new JsonRecordMapper<>(Issue.class))

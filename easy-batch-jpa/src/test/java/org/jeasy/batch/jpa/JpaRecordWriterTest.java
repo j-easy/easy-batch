@@ -24,6 +24,7 @@
 package org.jeasy.batch.jpa;
 
 import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.reader.IterableRecordReader;
@@ -38,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
 public class JpaRecordWriterTest extends AbstractDatabaseTest {
 
@@ -56,7 +56,7 @@ public class JpaRecordWriterTest extends AbstractDatabaseTest {
     public void testRecordWriting() throws Exception {
         int nbTweetsToInsert = 5;
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
-        Job job = aNewJob()
+        Job job = new JobBuilder()
                 .batchSize(2)
                 .reader(new IterableRecordReader(tweets))
                 .writer(new JpaRecordWriter(entityManagerFactory))
@@ -81,7 +81,7 @@ public class JpaRecordWriterTest extends AbstractDatabaseTest {
         // The following will make the second batch to fail
         tweets.get(4).setUser("ThisIsAVeryLongUsernameThatWillCauseAnError");
 
-        Job job = aNewJob()
+        Job job = new JobBuilder()
                 .batchSize(batchSize)
                 .reader(new IterableRecordReader(tweets))
                 .writer(new JpaRecordWriter(entityManagerFactory))

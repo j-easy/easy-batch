@@ -815,7 +815,7 @@ public class BatchJobTest {
             dataSource.add(i);
         }
 
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                 .reader(new IterableRecordReader(dataSource))
                 .processor(recordCollector)
                 .batchSize(500000)
@@ -846,13 +846,13 @@ public class BatchJobTest {
             dataSource.add(i);
         }
 
-        Job job1 = JobBuilder.aNewJob()
+        Job job1 = new JobBuilder()
                 .named("job1")
                 .reader(new IterableRecordReader(dataSource))
                 .processor(recordCollector1)
                 .batchSize(500000)
                 .build();
-        Job job2 = JobBuilder.aNewJob()
+        Job job2 = new JobBuilder()
                 .named("job2")
                 .reader(new IterableRecordReader(dataSource))
                 .processor(recordCollector2)

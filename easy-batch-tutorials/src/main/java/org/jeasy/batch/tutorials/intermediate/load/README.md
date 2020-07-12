@@ -174,7 +174,7 @@ public class Launcher {
                     new BeanPropertiesPreparedStatementProvider(Tweet.class, fields);
 
         // Build a batch job
-        Job job = JobBuilder.aNewJob()
+        Job job = new JobBuilder()
                     .batchSize(2)
                     .filter(new HeaderRecordFilter())
                     .reader(new FlatFileRecordReader(tweets))

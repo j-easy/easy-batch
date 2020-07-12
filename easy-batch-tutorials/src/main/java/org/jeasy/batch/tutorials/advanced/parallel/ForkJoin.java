@@ -25,6 +25,7 @@
 package org.jeasy.batch.tutorials.advanced.parallel;
 
 import org.jeasy.batch.core.job.Job;
+import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.core.processor.RecordProcessor;
 import org.jeasy.batch.core.reader.BlockingQueueRecordReader;
@@ -43,7 +44,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.util.Arrays.asList;
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 
 public class ForkJoin {
 
@@ -83,7 +83,7 @@ public class ForkJoin {
     }
 
     private static Job buildForkJob(String jobName, DataSource dataSource, List<BlockingQueue<Record>> workQueues) {
-        return aNewJob()
+        return new JobBuilder()
                 .named(jobName)
                 .reader(new JdbcRecordReader(dataSource, "select * from tweet"))
                 .mapper(new JdbcRecordMapper<>(Tweet.class, "id", "user", "message"))
@@ -92,7 +92,7 @@ public class ForkJoin {
     }
 
     private static Job buildWorkerJob(String jobName, BlockingQueue<Record> workQueue, BlockingQueue<Record> joinQueue) {
-        return aNewJob()
+        return new JobBuilder()
                 .named(jobName)
                 .reader(new BlockingQueueRecordReader(workQueue, QUEUE_TIMEOUT))
                 .processor(new TweetProcessor(jobName))
@@ -101,7 +101,7 @@ public class ForkJoin {
     }
 
     private static Job buildJoinJob(String jobName, BlockingQueue<Record> joinQueue) {
-        return aNewJob()
+        return new JobBuilder()
                 .named(jobName)
                 .reader(new BlockingQueueRecordReader(joinQueue, QUEUE_TIMEOUT))
                 .writer(new StandardOutputRecordWriter())
