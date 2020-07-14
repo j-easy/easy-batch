@@ -15,7 +15,7 @@ jobs: # TODO is there a way to extract common config?
       - name: Build with Maven
         env:
           COVERALLS_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
-        run: mvn -DrepoToken=$COVERALLS_TOKEN clean package cobertura:cobertura coveralls:report
+        run: mvn -DrepoToken=$COVERALLS_TOKEN clean package org.jacoco:jacoco-maven-plugin:report coveralls:report
   build-on-windows:
     runs-on: windows-latest
     steps:
