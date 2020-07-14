@@ -10,7 +10,7 @@
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Coverage](https://coveralls.io/repos/j-easy/easy-batch/badge.svg?style=flat&branch=master&service=github)](https://coveralls.io/github/j-easy/easy-batch?branch=master)
 [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-batch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|6.0.0|)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-batch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|6.1.0|)
 [![Javadoc](https://www.javadoc.io/badge/org.jeasy/easy-batch-core.svg)](http://www.javadoc.io/doc/org.jeasy/easy-batch-core)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/j-easy/easy-batch)
 
@@ -20,8 +20,7 @@
 
 ## Latest news
 
-* 07/02/2020: Version 6.0.0 is now released! This is definitely the best release ever and comes with a number of significant improvements! See the change log [here](https://github.com/j-easy/easy-batch/releases).
-* 14/01/2020: Version 5.3.0 is finally out! See the change log [here](https://github.com/j-easy/easy-batch/releases).
+* 14/07/2020: Version 6.1.0 is out with a couple of enhancements and bug fixes. See the change log [here](https://github.com/j-easy/easy-batch/releases).
 
 # What is Easy Batch?
 
@@ -67,10 +66,10 @@ jobExecutor.shutdown();
 This example creates a job that:
 
 * reads records one by one from the input file `tweets.csv`
-* filter the header record
-* map each record to an instance of the `Tweet` bean
-* marshal the tweet to XML format
-* and finally write XML records in batches of 10 to the output file `tweets.xml`
+* filters the header record
+* maps each record to an instance of the `Tweet` bean
+* marshals the tweet to XML format
+* and finally writes XML records in batches of 10 to the output file `tweets.xml`
 
 At the end of execution, you get a report with statistics and metrics about the job run (Execution time, number of errors, etc).
 All the boilerplate code of resources I/O, iterating through the data source, filtering and parsing records, mapping data to the domain object `Tweet`, writing output and reporting
@@ -84,7 +83,7 @@ Add the following dependency to your project and you are ready to go:
  <dependency>
      <groupId>org.jeasy</groupId>
      <artifactId>easy-batch-core</artifactId>
-     <version>6.0.0</version>
+     <version>6.1.0</version>
  </dependency>
 ```
 
@@ -94,7 +93,7 @@ You can also generate a quick start project with the following command:
 $>mvn archetype:generate \
       -DarchetypeGroupId=org.jeasy \
       -DarchetypeArtifactId=easy-batch-archetype \
-      -DarchetypeVersion=6.0.0
+      -DarchetypeVersion=6.1.0
 ```
 
 For more details, please check the [Getting started](https://github.com/j-easy/easy-batch/wiki/getting-started) guide.
@@ -111,11 +110,11 @@ For more details, please check the [Getting started](https://github.com/j-easy/e
 
 #### Stable:
 
-The current stable version is [v6.0.0](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|6.0.0|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/tree/master/easy-batch-tutorials) | [javadoc](http://javadoc.io/doc/org.jeasy/easy-batch-core/6.0.0)
+The current stable version is [v6.1.0](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|6.1.0|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/tree/easy-batch-6.1.0/easy-batch-tutorials) | [javadoc](http://javadoc.io/doc/org.jeasy/easy-batch-core/6.1.0)
 
 #### Development:
 
-The current development version is 6.1.0-SNAPSHOT: [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
+The current development version is 7.0.0-SNAPSHOT: [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
 
 If you want to import a snapshot version, please check the [Getting started](https://github.com/j-easy/easy-batch/wiki/getting-started#use-a-snapshot-version) guide.
 
