@@ -18,7 +18,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <junit.version>4.13</junit.version>
         <assertj.version>3.14.0</assertj.version>
@@ -220,8 +220,7 @@
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
                         <verbose>true</verbose>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
+                        <release>${java.version}</release>
                         <showWarnings>true</showWarnings>
                     </configuration>
                 </plugin>
