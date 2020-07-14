@@ -39,8 +39,6 @@ import org.elasticsearch.search.SearchHit;
 
 import javax.sql.DataSource;
 
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
-
 /**
  * Main class to launch the Elastic Search tutorial.
  *
