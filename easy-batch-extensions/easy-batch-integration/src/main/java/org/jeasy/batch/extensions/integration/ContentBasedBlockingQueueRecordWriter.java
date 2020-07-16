@@ -34,6 +34,7 @@ import java.util.concurrent.BlockingQueue;
  * Write records to a list of {@link BlockingQueue} based on their content.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class ContentBasedBlockingQueueRecordWriter<P> implements RecordWriter<P> {
 

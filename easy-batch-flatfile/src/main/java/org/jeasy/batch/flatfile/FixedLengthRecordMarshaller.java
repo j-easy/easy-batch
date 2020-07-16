@@ -42,6 +42,7 @@ import java.util.stream.StreamSupport;
  * field length.</strong>
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class FixedLengthRecordMarshaller<P> implements RecordMarshaller<P, String> {
 

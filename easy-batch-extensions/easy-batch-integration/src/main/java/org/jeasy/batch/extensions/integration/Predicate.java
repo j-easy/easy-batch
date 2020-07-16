@@ -30,6 +30,7 @@ import org.jeasy.batch.core.record.Record;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  * @see ContentBasedBlockingQueueRecordWriter
+ * @param <P> type of the record's payload
  */
 public interface Predicate<P> {
 

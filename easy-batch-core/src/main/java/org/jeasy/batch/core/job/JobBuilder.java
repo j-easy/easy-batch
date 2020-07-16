@@ -42,6 +42,8 @@ import org.jeasy.batch.core.writer.RecordWriter;
  * This is the main entry point to configure batch jobs.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <I> type of input records payload
+ * @param <O> type of output records payload
  */
 public final class JobBuilder<I, O> {
 

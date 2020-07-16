@@ -35,6 +35,7 @@ import static java.util.Collections.addAll;
  * Class representing a batch of records.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class Batch<P> implements Iterable<Record<P>> {
 

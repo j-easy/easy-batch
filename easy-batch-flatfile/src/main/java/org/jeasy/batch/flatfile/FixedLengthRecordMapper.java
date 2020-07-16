@@ -39,6 +39,7 @@ import java.util.Map;
  * Fixed Length Record to Object mapper implementation.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class FixedLengthRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<String, P> {
 

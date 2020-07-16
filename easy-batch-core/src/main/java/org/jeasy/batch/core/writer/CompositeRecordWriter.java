@@ -31,6 +31,7 @@ import java.util.List;
  * Composite writer that delegates record writing to a list of writers.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class CompositeRecordWriter<P> implements RecordWriter<P> {
 

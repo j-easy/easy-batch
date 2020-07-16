@@ -38,6 +38,7 @@ import java.util.Set;
  * Records must be annotated with JSR 303 annotations.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class BeanValidationRecordValidator<P> implements RecordValidator<P> {
 

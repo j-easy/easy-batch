@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
  * A {@link RecordReader} that reads record from a {@link BlockingQueue}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class BlockingQueueRecordReader<P> implements RecordReader<P> {
 

@@ -37,6 +37,7 @@ import java.util.Map;
  * Write records to a list of Jms Queues based on their content.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class ContentBasedJmsQueueRecordWriter<P> implements RecordWriter<P> {
 

@@ -30,6 +30,7 @@ import org.jeasy.batch.core.record.Batch;
  * Exception handling is done by the implementing class.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public interface BatchListener<P> {
 

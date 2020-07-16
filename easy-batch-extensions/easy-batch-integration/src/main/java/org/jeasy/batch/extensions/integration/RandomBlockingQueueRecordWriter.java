@@ -35,6 +35,7 @@ import java.util.concurrent.BlockingQueue;
  * Write records randomly to a list of {@link BlockingQueue}s.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class RandomBlockingQueueRecordWriter<P> implements RecordWriter<P> {
 

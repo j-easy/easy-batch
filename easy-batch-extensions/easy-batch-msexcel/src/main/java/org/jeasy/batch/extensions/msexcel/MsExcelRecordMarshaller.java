@@ -38,6 +38,7 @@ import java.util.Date;
  * Marshaller of Java objects to {@link MsExcelRecord}s.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class MsExcelRecordMarshaller<P> implements RecordMarshaller<P, Row> {
 

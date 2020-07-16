@@ -33,6 +33,7 @@ import java.util.ListIterator;
  * Composite listener that delegates processing to other listeners.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class CompositeRecordWriterListener<P> implements RecordWriterListener<P> {
 

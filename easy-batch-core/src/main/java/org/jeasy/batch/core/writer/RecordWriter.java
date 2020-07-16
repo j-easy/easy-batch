@@ -29,6 +29,7 @@ import org.jeasy.batch.core.record.Batch;
  * Interface for all record writers.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public interface RecordWriter<P> {
 

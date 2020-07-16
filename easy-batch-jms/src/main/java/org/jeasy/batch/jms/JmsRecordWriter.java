@@ -43,6 +43,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * of type {@link javax.jms.Message}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class JmsRecordWriter<P> implements RecordWriter<P> {
 

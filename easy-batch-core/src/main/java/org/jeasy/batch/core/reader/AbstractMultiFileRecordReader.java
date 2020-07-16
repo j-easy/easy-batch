@@ -39,6 +39,7 @@ import java.util.List;
  * Using multi-files readers assumes <strong>all files have the same format</strong>.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public abstract class AbstractMultiFileRecordReader<P> implements RecordReader<P> {
 

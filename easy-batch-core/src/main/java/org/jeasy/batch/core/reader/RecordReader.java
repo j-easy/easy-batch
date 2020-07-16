@@ -31,6 +31,7 @@ import org.jeasy.batch.core.record.Record;
  * This will be used to read records <strong>sequentially</strong> from a data source.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public interface RecordReader<P> {
 

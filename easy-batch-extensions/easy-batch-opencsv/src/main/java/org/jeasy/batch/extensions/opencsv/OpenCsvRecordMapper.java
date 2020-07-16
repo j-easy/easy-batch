@@ -38,6 +38,7 @@ import java.util.List;
  * A record mapper that uses <a href="http://opencsv.sourceforge.net">Open CSV</a> to map a delimited record to domain object.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <T> type of the record's payload
  */
 public class OpenCsvRecordMapper<T> implements RecordMapper<String, T> {
 

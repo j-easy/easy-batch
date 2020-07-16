@@ -35,6 +35,7 @@ import java.util.concurrent.Callable;
  * Decorator that makes a {@link RecordWriter} retryable whenever the data sink is temporarily unavailable.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class RetryableRecordWriter<P> implements RecordWriter<P> {
 

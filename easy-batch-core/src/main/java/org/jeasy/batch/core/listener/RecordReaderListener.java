@@ -29,6 +29,7 @@ import org.jeasy.batch.core.record.Record;
  * Enables the implementing class to get notified before/after reading a record.
  *
  * @author Mario Mueller (mario@xenji.com)
+ * @param <P> type of the record's payload
  */
 public interface RecordReaderListener<P> {
 

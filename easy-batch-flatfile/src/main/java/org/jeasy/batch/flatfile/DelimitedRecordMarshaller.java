@@ -38,6 +38,7 @@ import java.util.Iterator;
  * <strong>This marshaller does not support recursive marshalling.</strong>
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class DelimitedRecordMarshaller<P> implements RecordMarshaller<P, String> {
 

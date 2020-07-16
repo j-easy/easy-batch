@@ -31,6 +31,7 @@ import org.jeasy.batch.core.record.Record;
  * the standard output by calling its <code>toString</code> method.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class StandardOutputRecordWriter<P> implements RecordWriter<P> {
 

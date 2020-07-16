@@ -35,6 +35,7 @@ import java.util.List;
  * Write records to a list of Jms queues in round-robin fashion.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class RoundRobinJmsQueueRecordWriter<P> implements RecordWriter<P> {
 

@@ -39,6 +39,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * Write entities to a relational database using JPA.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class JpaRecordWriter<P> implements RecordWriter<P> {
 

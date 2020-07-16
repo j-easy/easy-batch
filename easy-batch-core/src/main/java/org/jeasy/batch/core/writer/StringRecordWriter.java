@@ -30,9 +30,11 @@ import org.jeasy.batch.core.util.Utils;
 import java.io.StringWriter;
 
 /**
- * Writes record to a {@link StringWriter}.
+ * Writes the payload of record to a {@link StringWriter}
+ * by calling its <code>toString</code> method.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class StringRecordWriter<P> implements RecordWriter<P> {
 

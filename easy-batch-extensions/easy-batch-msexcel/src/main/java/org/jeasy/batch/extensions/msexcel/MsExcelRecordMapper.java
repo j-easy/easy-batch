@@ -37,6 +37,7 @@ import java.util.Map;
  * Mapper that unmarshal MS Excel records to Java objects.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class MsExcelRecordMapper<P> implements RecordMapper<Row, P> {
 

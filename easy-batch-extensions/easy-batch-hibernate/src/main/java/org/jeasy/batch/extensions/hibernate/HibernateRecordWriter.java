@@ -39,6 +39,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * Writes entities to a database using Hibernate.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class HibernateRecordWriter<P> implements RecordWriter<P> {
 

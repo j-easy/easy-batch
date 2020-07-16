@@ -34,6 +34,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * Marshals an object to XML using <a href="http://xstream.codehaus.org/">XStream</a>.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class XstreamRecordMarshaller<P> implements RecordMarshaller<P, String> {
 

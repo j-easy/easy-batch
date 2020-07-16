@@ -39,6 +39,7 @@ import java.util.*;
  * {@code OpenCsvRecordMapper} or {@code UnivocityCsvRecordMapper}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class DelimitedRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<String, P> {
 

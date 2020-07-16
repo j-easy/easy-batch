@@ -41,6 +41,7 @@ import java.util.List;
  * <strong>This marshaller does not support recursive marshalling.</strong>
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class OpenCsvRecordMarshaller<P> implements RecordMarshaller<P, String> {
 

@@ -37,6 +37,7 @@ import java.util.Map;
  * A {@link RecordMapper} that maps database rows to domain objects.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class JdbcRecordMapper<P> extends AbstractRecordMapper<P> implements RecordMapper<ResultSet, P> {
 

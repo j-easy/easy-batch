@@ -36,6 +36,7 @@ import java.util.Random;
  * Write records randomly to a list of Jms queues.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class RandomJmsQueueRecordWriter<P> implements RecordWriter<P> {
 

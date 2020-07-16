@@ -40,6 +40,7 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * Write records to a relational database using the JDBC API.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class JdbcRecordWriter<P> implements RecordWriter<P> {
 

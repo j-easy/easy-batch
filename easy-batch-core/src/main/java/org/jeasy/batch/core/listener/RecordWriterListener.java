@@ -29,6 +29,7 @@ import org.jeasy.batch.core.record.Batch;
  * Enables the implementing class to get notified before/after writing a batch of records.
  *
  * @author Mario Mueller (mario@xenji.com)
+ * @param <P> type of the record's payload
  */
 public interface RecordWriterListener<P> {
 

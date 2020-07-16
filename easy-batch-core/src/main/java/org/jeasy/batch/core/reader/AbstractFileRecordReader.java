@@ -30,6 +30,7 @@ import java.nio.file.Path;
  * Abstract class for all file readers.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public abstract class AbstractFileRecordReader<P> implements RecordReader<P> {
 

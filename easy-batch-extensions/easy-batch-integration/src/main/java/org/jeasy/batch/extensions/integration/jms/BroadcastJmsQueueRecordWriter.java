@@ -35,6 +35,7 @@ import java.util.List;
  * Broadcast records to a list of Jms queues.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class BroadcastJmsQueueRecordWriter<P> implements RecordWriter<P> {
 

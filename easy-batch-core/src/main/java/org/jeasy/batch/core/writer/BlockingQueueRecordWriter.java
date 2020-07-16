@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
  * Write records to a {@link BlockingQueue}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ * @param <P> type of the record's payload
  */
 public class BlockingQueueRecordWriter<P> implements RecordWriter<P> {
 
