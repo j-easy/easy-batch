@@ -52,7 +52,7 @@ public class JmsProducerJobLauncher {
         Job job = new JobBuilder<String, Message>()
                 .reader(new FlatFileRecordReader(dataSource))
                 .processor(new JmsRecordTransformer())
-                .writer(new JmsRecordWriter<>(JMSUtil.getQueueConnectionFactory(), JMSUtil.getQueue()))
+                .writer(new JmsRecordWriter(JMSUtil.getQueueConnectionFactory(), JMSUtil.getQueue()))
                 .batchSize(1)
                 .build();
 

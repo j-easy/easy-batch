@@ -43,9 +43,8 @@ import static org.jeasy.batch.core.util.Utils.checkNotNull;
  * of type {@link javax.jms.Message}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
- * @param <P> type of the record's payload
  */
-public class JmsRecordWriter<P> implements RecordWriter<P> {
+public class JmsRecordWriter implements RecordWriter<Message> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JmsRecordWriter.class.getSimpleName());
 
@@ -77,11 +76,11 @@ public class JmsRecordWriter<P> implements RecordWriter<P> {
     }
 
     @Override
-    public void writeRecords(Batch<P> batch) throws Exception {
-        for (Record<P> record : batch) {
+    public void writeRecords(Batch<Message> batch) throws Exception {
+        for (Record<Message> record : batch) {
             // FIXME there is no send with timeout? There is send(Message message, int deliveryMode, int priority, long timeToLive)
             // but timeToLive is different than a timeout on the send operation..
-            messageProducer.send((Message) record.getPayload());
+            messageProducer.send(record.getPayload());
         }
     }
 
