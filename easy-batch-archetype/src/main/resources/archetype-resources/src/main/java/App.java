@@ -29,7 +29,6 @@ import org.jeasy.batch.core.job.Job;
 import org.jeasy.batch.core.reader.StringRecordReader;
 import org.jeasy.batch.core.writer.StandardOutputRecordWriter;
 
-import static org.jeasy.batch.core.job.JobBuilder.aNewJob;
 import static org.jeasy.batch.core.util.Utils.LINE_SEPARATOR;
 
 public class App {
@@ -42,10 +41,10 @@ public class App {
                         "2,bar,@foo I do confirm :-)";
 
         // Define a job
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, String>()
                 .reader(new StringRecordReader(dataSource))
                 .processor(new TweetProcessor())
-                .writer(new StandardOutputRecordWriter())
+                .writer(new StandardOutputRecordWriter<>())
                 .build();
 
         // Execute the job

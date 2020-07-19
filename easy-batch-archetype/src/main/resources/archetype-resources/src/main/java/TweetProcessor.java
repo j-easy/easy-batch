@@ -29,10 +29,10 @@ import org.jeasy.batch.core.record.StringRecord;
 /**
  * A processor that transforms tweets to upper case.
  */
-public class TweetProcessor implements RecordProcessor<StringRecord, StringRecord> {
+public class TweetProcessor implements RecordProcessor<String, String> {
 
     @Override
-    public StringRecord processRecord(StringRecord record) {
+    public Record<String> processRecord(Record<String> record) {
         return new StringRecord(record.getHeader(), record.getPayload().toUpperCase());
     }
 
