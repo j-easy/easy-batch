@@ -41,14 +41,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class JdbcRecordWriterTest extends AbstractDatabaseTest {
 
-    private JdbcRecordWriter jdbcRecordWriter;
+    private JdbcRecordWriter<Tweet> jdbcRecordWriter;
     private JobExecutor jobExecutor;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
         String query = "INSERT INTO tweet VALUES (?,?,?);";
-        jdbcRecordWriter = new JdbcRecordWriter(embeddedDatabase, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, "id", "user", "message"));
+        jdbcRecordWriter = new JdbcRecordWriter<>(embeddedDatabase, query, new BeanPropertiesPreparedStatementProvider(Tweet.class, "id", "user", "message"));
         jobExecutor = new JobExecutor();
     }
 
@@ -57,9 +57,9 @@ public class JdbcRecordWriterTest extends AbstractDatabaseTest {
         int nbTweetsToInsert = 5;
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<Tweet, Tweet>()
                 .batchSize(2)
-                .reader(new IterableRecordReader(tweets))
+                .reader(new IterableRecordReader<>(tweets))
                 .writer(jdbcRecordWriter)
                 .build();
 
@@ -82,9 +82,9 @@ public class JdbcRecordWriterTest extends AbstractDatabaseTest {
         // The following will make the second batch to fail
         tweets.get(4).setUser("ThisIsAVeryLongUsernameThatWillCauseAnError");
 
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<Tweet, Tweet>()
                 .batchSize(batchSize)
-                .reader(new IterableRecordReader(tweets))
+                .reader(new IterableRecordReader<>(tweets))
                 .writer(jdbcRecordWriter)
                 .build();
 

@@ -45,8 +45,8 @@ public class JsonIntegrationTest {
 
         final InputStream jsonDataSource = getDataSource("/tweets.json");
 
-        RecordCollector recordCollector = new RecordCollector();
-        Job job = new JobBuilder()
+        RecordCollector<String> recordCollector = new RecordCollector<>();
+        Job job = new JobBuilder<String, String>()
                 .reader(new JsonRecordReader(jsonDataSource))
                 .processor(recordCollector)
                 .build();
@@ -55,11 +55,11 @@ public class JsonIntegrationTest {
 
         assertThatReportIsValid(jobReport);
 
-        List<JsonRecord> tweets = recordCollector.getRecords();
+        List<Record<String>> tweets = recordCollector.getRecords();
 
         assertThat(tweets).isNotEmpty().hasSize(3);
 
-        Record tweet = tweets.get(0);
+        Record<String> tweet = tweets.get(0);
         assertThat(tweet.getHeader()).isNotNull();
         assertThat(tweet.getHeader().getNumber()).isEqualTo(1);
         assertThat(tweet.getPayload()).isEqualTo("{\"id\":1,\"user\":\"foo\",\"message\":\"Hello\"}");
@@ -82,8 +82,8 @@ public class JsonIntegrationTest {
         //data source : http://opendata.paris.fr/explore/dataset/arbresalignementparis2010/download/?format=csv
         final InputStream jsonDataSource = getDataSource("/trees.json");
 
-        RecordCollector recordCollector = new RecordCollector();
-        Job job = new JobBuilder()
+        RecordCollector<String> recordCollector = new RecordCollector<>();
+        Job job = new JobBuilder<String, String>()
                 .reader(new JsonRecordReader(jsonDataSource))
                 .processor(recordCollector)
                 .build();
@@ -92,10 +92,10 @@ public class JsonIntegrationTest {
 
         assertThatReportIsValid(jobReport);
 
-        List<JsonRecord> trees = recordCollector.getRecords();
+        List<Record<String>> trees = recordCollector.getRecords();
         assertThat(trees).hasSize(3);
 
-        JsonRecord record = trees.get(0);
+        Record<String> record = trees.get(0);
         assertThat(record.getHeader().getNumber()).isEqualTo(1);
         assertThat(record.getPayload()).isEqualTo("{\"datasetid\":\"arbresalignementparis2010\",\"recordid\":\"0e6cfe03082224225c54690e5a700987ffb1310f\",\"fields\":{\"adresse\":\"AVENUE GAMBETTA\",\"hauteurenm\":0.0,\"espece\":\"Tilia tomentosa\",\"circonfere\":78.0,\"geom_x_y\":[48.8691944661,2.40210336054],\"dateplanta\":\"1971-02-27\"},\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.40210336054,48.8691944661]},\"record_timestamp\":\"2014-09-11T14:39:16.131843\"}");
 
@@ -115,8 +115,8 @@ public class JsonIntegrationTest {
         // data source: http://catalog.data.gov/dataset/consumer-complaint-database
         final InputStream jsonDataSource = getDataSource("/complaints.json");
 
-        RecordCollector recordCollector = new RecordCollector();
-        Job job = new JobBuilder()
+        RecordCollector<String> recordCollector = new RecordCollector<>();
+        Job job = new JobBuilder<String, String>()
                 .reader(new JsonRecordReader(jsonDataSource))
                 .processor(recordCollector)
                 .build();
@@ -125,10 +125,10 @@ public class JsonIntegrationTest {
 
         assertThatReportIsValid(jobReport);
 
-        List<JsonRecord> complaints = recordCollector.getRecords();
+        List<Record<String>> complaints = recordCollector.getRecords();
         assertThat(complaints).hasSize(3);
 
-        JsonRecord record = complaints.get(0);
+        Record<String> record = complaints.get(0);
         assertThat(record.getHeader().getNumber()).isEqualTo(1);
         assertThat(record.getPayload()).isEqualTo("{\"id\":\"25ei-6bcr\",\"name\":\"Credit Card Complaints\",\"averageRating\":0,\"createdAt\":1337199939,\"displayType\":\"table\",\"downloadCount\":5011,\"indexUpdatedAt\":1414647847,\"newBackend\":false,\"numberOfComments\":0,\"oid\":2956892,\"publicationAppendEnabled\":false,\"publicationDate\":1364274981,\"publicationGroup\":342069,\"publicationStage\":\"published\",\"rowIdentifierColumnId\":53173967,\"rowsUpdatedAt\":1364274443,\"rowsUpdatedBy\":\"dfzt-mv86\",\"tableId\":756116,\"totalTimesRated\":0,\"viewCount\":68124,\"viewLastModified\":1364274981,\"viewType\":\"tabular\",\"grants\":[{\"inherited\":true,\"type\":\"viewer\",\"flags\":[\"public\"]}],\"metadata\":{\"custom_fields\":{\"TEST\":{\"CFPB1\":\"\"}},\"renderTypeConfig\":{\"visible\":{\"table\":true}},\"availableDisplayTypes\":[\"table\",\"fatrow\",\"page\"],\"rdfSubject\":\"0\",\"rowIdentifier\":53173967},\"owner\":{\"id\":\"dfzt-mv86\",\"displayName\":\"CFPB Administrator\",\"roleName\":\"publisher\",\"screenName\":\"CFPB Administrator\",\"rights\":[\"create_datasets\",\"edit_others_datasets\",\"edit_nominations\",\"approve_nominations\",\"moderate_comments\",\"manage_stories\",\"feature_items\",\"change_configurations\",\"view_domain\",\"view_others_datasets\",\"create_pages\",\"edit_pages\",\"view_goals\",\"view_dashboards\",\"edit_goals\",\"edit_dashboards\"]},\"rights\":[\"read\"],\"tableAuthor\":{\"id\":\"dfzt-mv86\",\"displayName\":\"CFPB Administrator\",\"roleName\":\"publisher\",\"screenName\":\"CFPB Administrator\",\"rights\":[\"create_datasets\",\"edit_others_datasets\",\"edit_nominations\",\"approve_nominations\",\"moderate_comments\",\"manage_stories\",\"feature_items\",\"change_configurations\",\"view_domain\",\"view_others_datasets\",\"create_pages\",\"edit_pages\",\"view_goals\",\"view_dashboards\",\"edit_goals\",\"edit_dashboards\"]},\"flags\":[\"default\"]}");
 
@@ -146,8 +146,8 @@ public class JsonIntegrationTest {
     public void testEmptyDataSourceProcessing() {
         final InputStream jsonDataSource = getDataSource("/empty.json");
 
-        RecordCollector recordCollector = new RecordCollector();
-        Job job = new JobBuilder()
+        RecordCollector<String> recordCollector = new RecordCollector<>();
+        Job job = new JobBuilder<String, String>()
                 .reader(new JsonRecordReader(jsonDataSource))
                 .processor(recordCollector)
                 .build();
@@ -161,7 +161,7 @@ public class JsonIntegrationTest {
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
         assertThat(jobReport.getStatus()).isEqualTo(JobStatus.COMPLETED);
 
-        List<JsonRecord> records = recordCollector.getRecords();
+        List<Record<String>> records = recordCollector.getRecords();
         assertThat(records).isNotNull().isEmpty();
 
     }

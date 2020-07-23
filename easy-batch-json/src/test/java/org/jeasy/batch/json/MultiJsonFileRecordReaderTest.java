@@ -48,8 +48,8 @@ public class MultiJsonFileRecordReaderTest {
                 .collect(Collectors.toList());
         MultiJsonFileRecordReader multiFileRecordReader = new MultiJsonFileRecordReader(files);
 
-        RecordCollector recordCollector = new RecordCollector();
-        Job job = new JobBuilder()
+        RecordCollector<String> recordCollector = new RecordCollector<>();
+        Job job = new JobBuilder<String, String>()
                 .reader(multiFileRecordReader)
                 .processor(recordCollector)
                 .build();
@@ -60,7 +60,7 @@ public class MultiJsonFileRecordReaderTest {
         jobExecutor.shutdown();
 
         // then
-        List<Record> records = recordCollector.getRecords();
+        List<Record<String>> records = recordCollector.getRecords();
 
         // there are 12 records in json files inside "src/test/resources"
         assertThat(records).hasSize(12);

@@ -29,7 +29,7 @@ import org.jeasy.batch.core.record.StringRecord;
 
 import java.time.LocalDateTime;
 
-public class UnreliableRecordReader implements RecordReader {
+public class UnreliableRecordReader implements RecordReader<String> {
 
     public static final String DATA_SOURCE_NAME = "dummy source";
     public static final int TOTAL_RECORDS = 3;
@@ -43,7 +43,7 @@ public class UnreliableRecordReader implements RecordReader {
     }
 
     @Override
-    public Record readRecord() throws Exception {
+    public Record<String> readRecord() throws Exception {
         if (++nbRecord > TOTAL_RECORDS) {
             return null;
         }

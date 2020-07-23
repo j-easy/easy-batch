@@ -69,7 +69,7 @@ public class JmsRecordWriterTest {
 
     @Test
     public void testProcessRecord() throws Exception {
-        jmsRecordWriter.writeRecords(new Batch(record));
+        jmsRecordWriter.writeRecords(new Batch<>(record));
 
         verify(messageProducer).send(message);
     }
@@ -78,6 +78,6 @@ public class JmsRecordWriterTest {
     public void testRecordProcessingWithError() throws Exception {
         doThrow(jmsException).when(messageProducer).send(message);
 
-        jmsRecordWriter.writeRecords(new Batch(record));
+        jmsRecordWriter.writeRecords(new Batch<>(record));
     }
 }

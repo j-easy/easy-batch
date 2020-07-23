@@ -80,7 +80,7 @@ public class JmsRecordReaderTest {
     public void testReadNextRecord() throws Exception {
         jmsRecordReader.open();
 
-        Record record = jmsRecordReader.readRecord();
+        Record<Message> record = jmsRecordReader.readRecord();
 
         verify(messageConsumer).receive(timout);
         assertThat(record).isNotNull().isInstanceOf(JmsRecord.class);

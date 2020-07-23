@@ -58,7 +58,7 @@ public class HibernateRecordReaderTest extends AbstractDatabaseTest {
     @Test
     public void testRecordReading() {
         RecordCollector<Tweet> recordCollector = new RecordCollector<>();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<Tweet, Tweet>()
                 .reader(hibernateRecordReader)
                 .processor(recordCollector)
                 .build();

@@ -48,8 +48,8 @@ public class MultiYamlFileRecordReaderTest {
                 .collect(Collectors.toList());
         MultiYamlFileRecordReader multiFileRecordReader = new MultiYamlFileRecordReader(files);
 
-        RecordCollector recordCollector = new RecordCollector();
-        Job job = new JobBuilder()
+        RecordCollector<String> recordCollector = new RecordCollector<>();
+        Job job = new JobBuilder<String, String>()
                 .reader(multiFileRecordReader)
                 .processor(recordCollector)
                 .build();
@@ -60,7 +60,7 @@ public class MultiYamlFileRecordReaderTest {
         jobExecutor.shutdown();
 
         // then
-        List<Record> records = recordCollector.getRecords();
+        List<Record<String>> records = recordCollector.getRecords();
 
         // there are 4 records in yaml files inside "src/test/resources"
         assertThat(records).hasSize(4);

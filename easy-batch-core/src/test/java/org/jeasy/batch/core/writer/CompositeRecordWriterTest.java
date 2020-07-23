@@ -38,15 +38,15 @@ import static org.mockito.Mockito.inOrder;
 public class CompositeRecordWriterTest {
 
     @Mock
-    private Batch batch;
+    private Batch<String> batch;
     @Mock
-    private RecordWriter recordWriter1, recordWriter2;
+    private RecordWriter<String> recordWriter1, recordWriter2;
 
-    private CompositeRecordWriter compositeRecordWriter;
+    private CompositeRecordWriter<String> compositeRecordWriter;
 
     @Before
     public void setUp() {
-        compositeRecordWriter = new CompositeRecordWriter(asList(recordWriter1, recordWriter2));
+        compositeRecordWriter = new CompositeRecordWriter<>(asList(recordWriter1, recordWriter2));
     }
 
     @Test

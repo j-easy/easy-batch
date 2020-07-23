@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 public class CompositePipelineListenerTest {
 
     @Mock
-    private Record inputRecord, processedRecord, outputRecord;
+    private Record<String> inputRecord, processedRecord, outputRecord;
     @Mock
     private Throwable exception;
     @Mock

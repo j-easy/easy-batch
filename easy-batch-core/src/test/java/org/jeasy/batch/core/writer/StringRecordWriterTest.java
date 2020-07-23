@@ -53,17 +53,17 @@ public class StringRecordWriterTest {
 
     private StringWriter stringWriter;
 
-    private StringRecordWriter stringRecordWriter;
+    private StringRecordWriter<String> stringRecordWriter;
 
     @Before
     public void setUp() {
         stringWriter = new StringWriter();
-        stringRecordWriter = new StringRecordWriter(stringWriter);
+        stringRecordWriter = new StringRecordWriter<>(stringWriter);
     }
 
     @Test
     public void testWriteRecord() throws Exception {
-        stringRecordWriter.writeRecords(new Batch(new StringRecord(null, PAYLOAD)));
+        stringRecordWriter.writeRecords(new Batch<>(new StringRecord(null, PAYLOAD)));
 
         assertThat(stringWriter.toString()).isEqualTo(PAYLOAD + LINE_SEPARATOR);
     }
@@ -72,8 +72,8 @@ public class StringRecordWriterTest {
     public void integrationTest() {
         List<String> dataSource = Arrays.asList("foo", "bar");
 
-        Job job = new JobBuilder()
-                .reader(new IterableRecordReader(dataSource))
+        Job job = new JobBuilder<String, String>()
+                .reader(new IterableRecordReader<>(dataSource))
                 .writer(stringRecordWriter)
                 .build();
 

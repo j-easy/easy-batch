@@ -68,17 +68,17 @@ public class BatchJobTest {
     private Job job;
 
     @Mock
-    private Record record1, record2;
+    private Record<String> record1, record2;
     @Mock
-    private RecordReader reader;
+    private RecordReader<String> reader;
     @Mock
-    private RecordFilter filter;
+    private RecordFilter<String> filter;
     @Mock
-    private RecordValidator validator;
+    private RecordValidator<String> validator;
     @Mock
-    private RecordProcessor<Record, Record> firstProcessor, secondProcessor;
+    private RecordProcessor<String, String> firstProcessor, secondProcessor;
     @Mock
-    private RecordWriter writer;
+    private RecordWriter<String> writer;
     @Mock
     private JobReport jobReport;
     @Mock
@@ -86,11 +86,11 @@ public class BatchJobTest {
     @Mock
     private JobListener jobListener2;
     @Mock
-    private BatchListener batchListener;
+    private BatchListener<String> batchListener;
     @Mock
-    private RecordReaderListener recordReaderListener;
+    private RecordReaderListener<String> recordReaderListener;
     @Mock
-    private RecordWriterListener recordWriterListener;
+    private RecordWriterListener<String> recordWriterListener;
     @Mock
     private PipelineListener pipelineListener;
     @Mock
@@ -105,7 +105,7 @@ public class BatchJobTest {
         when(secondProcessor.processRecord(record2)).thenReturn(record2);
         when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
         when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(record2);
-        job = new JobBuilder()
+        job = new JobBuilder<String, String>()
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
@@ -139,7 +139,7 @@ public class BatchJobTest {
         inOrder.verify(firstProcessor).processRecord(record2);
         inOrder.verify(secondProcessor).processRecord(record2);
 
-        inOrder.verify(writer).writeRecords(new Batch(record1, record2));
+        inOrder.verify(writer).writeRecords(new Batch<>(record1, record2));
     }
 
     @Test
@@ -267,7 +267,7 @@ public class BatchJobTest {
     public void whenErrorThresholdIsExceeded_ThenTheJobShouldBeAborted() throws Exception {
         when(firstProcessor.processRecord(record1)).thenThrow(exception);
         when(firstProcessor.processRecord(record2)).thenThrow(exception);
-        job = new JobBuilder()
+        job = new JobBuilder<String, String>()
                 .reader(reader)
                 .writer(writer)
                 .processor(firstProcessor)
@@ -305,7 +305,7 @@ public class BatchJobTest {
 
     @Test
     public void whenJobNameIsNotSpecified_thenTheJmxMBeanShouldBeRegisteredWithDefaultJobName() throws Exception {
-        job = new JobBuilder().enableJmx(true).build();
+        job = new JobBuilder<String, String>().enableJmx(true).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         assertThat(mbs.isRegistered(new ObjectName(JobMonitorMBean.JMX_MBEAN_NAME + "name=" + JobParameters.DEFAULT_JOB_NAME))).isTrue();
@@ -314,7 +314,7 @@ public class BatchJobTest {
     @Test
     public void whenJobNameIsSpecified_thenTheJmxMBeanShouldBeRegisteredWithTheGivenJobName() throws Exception {
         String name = "master";
-        job = new JobBuilder().enableJmx(true).named(name).build();
+        job = new JobBuilder<String, String>().enableJmx(true).named(name).build();
         job.call();
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         assertThat(mbs.isRegistered(new ObjectName(JobMonitorMBean.JMX_MBEAN_NAME + "name=" + name))).isTrue();
@@ -331,7 +331,7 @@ public class BatchJobTest {
      */
     @Test
     public void jobListenerShouldBeInvoked() {
-        job = new JobBuilder()
+        job = new JobBuilder<String, String>()
                 .reader(reader)
                 .jobListener(jobListener1)
                 .build();
@@ -348,7 +348,7 @@ public class BatchJobTest {
     @Test
     public void batchListenerShouldBeInvokedForEachBatch() throws Exception {
         when(reader.readRecord()).thenReturn(record1, record2, null);
-        job = new JobBuilder()
+        job = new JobBuilder<String, String>()
                 .reader(reader)
                 .writer(writer)
                 .batchListener(batchListener)
@@ -357,8 +357,8 @@ public class BatchJobTest {
 
         job.call();
 
-        Batch batch1 = new Batch(singletonList(record1));
-        Batch batch2 = new Batch(singletonList(record2));
+        Batch<String> batch1 = new Batch<>(singletonList(record1));
+        Batch<String> batch2 = new Batch<>(singletonList(record2));
 
         InOrder inOrder = Mockito.inOrder(batchListener);
         inOrder.verify(batchListener).beforeBatchReading();
@@ -372,10 +372,10 @@ public class BatchJobTest {
     
     @Test
     public void multipleBatchListenerShouldBeInvokedForEachBatchInOrder() throws Exception {
-        BatchListener batchListener1 = mock(BatchListener.class);
-        BatchListener batchListener2 = mock(BatchListener.class);
+        BatchListener<String> batchListener1 = mock(BatchListener.class);
+        BatchListener<String> batchListener2 = mock(BatchListener.class);
         when(reader.readRecord()).thenReturn(record1, record2, null);
-        job = new JobBuilder()
+        job = new JobBuilder<String, String>()
                 .reader(reader)
                 .writer(writer)
                 .batchListener(batchListener1)
@@ -385,8 +385,8 @@ public class BatchJobTest {
 
         job.call();
 
-        Batch batch1 = new Batch(singletonList(record1));
-        Batch batch2 = new Batch(singletonList(record2));
+        Batch<String> batch1 = new Batch<>(singletonList(record1));
+        Batch<String> batch2 = new Batch<>(singletonList(record2));
 
         InOrder inOrder = Mockito.inOrder(batchListener1, batchListener2);
         inOrder.verify(batchListener1).beforeBatchReading();
@@ -407,9 +407,9 @@ public class BatchJobTest {
     @Test
     public void whenWriterThrowsException_thenBatchListenerShouldBeInvoked() throws Exception {
         when(reader.readRecord()).thenReturn(record1, record2, null);
-        doThrow(exception).when(writer).writeRecords(new Batch(record1, record2));
+        doThrow(exception).when(writer).writeRecords(new Batch<>(record1, record2));
 
-        job = new JobBuilder()
+        job = new JobBuilder<String, String>()
                 .reader(reader)
                 .writer(writer)
                 .batchListener(batchListener)
@@ -418,7 +418,7 @@ public class BatchJobTest {
 
         job.call();
 
-        Batch batch = new Batch(record1, record2);
+        Batch<String> batch = new Batch<>(record1, record2);
         verify(batchListener, times(1)).beforeBatchReading();
         verify(batchListener).onBatchWritingException(batch, exception);
     }
@@ -429,7 +429,7 @@ public class BatchJobTest {
     @Test
     public void recordReaderListenerShouldBeInvokedForEachRecord() throws Exception {
         when(reader.readRecord()).thenReturn(record1, record2, null);
-        job = new JobBuilder()
+        job = new JobBuilder<String, String>()
                 .reader(reader)
                 .readerListener(recordReaderListener)
                 .build();
@@ -444,7 +444,7 @@ public class BatchJobTest {
     @Test
     public void whenRecordReaderThrowException_thenReaderListenerShouldBeInvoked() throws Exception {
         when(reader.readRecord()).thenThrow(exception);
-        job = new JobBuilder()
+        job = new JobBuilder<String, String>()
                 .reader(reader)
                 .readerListener(recordReaderListener)
                 .build();
@@ -460,7 +460,7 @@ public class BatchJobTest {
     @Test
     public void recordWriterListenerShouldBeInvokedForEachBatch() throws Exception {
         when(reader.readRecord()).thenReturn(record1, record2, null);
-        job = new JobBuilder()
+        job = new JobBuilder<String, String>()
                 .reader(reader)
                 .writer(writer)
                 .writerListener(recordWriterListener)
@@ -469,16 +469,16 @@ public class BatchJobTest {
 
         job.call();
 
-        Batch batch = new Batch(record1, record2);
+        Batch<String> batch = new Batch<>(record1, record2);
         verify(recordWriterListener).beforeRecordWriting(batch);
         verify(recordWriterListener).afterRecordWriting(batch);
     }
 
     @Test
     public void whenRecordWriterThrowException_thenWriterListenerShouldBeInvoked() throws Exception {
-        Batch batch = new Batch(record1, record2);
+        Batch<String> batch = new Batch<>(record1, record2);
         doThrow(exception).when(writer).writeRecords(batch);
-        job = new JobBuilder()
+        job = new JobBuilder<String, String>()
                 .reader(reader)
                 .writer(writer)
                 .writerListener(recordWriterListener)
@@ -498,7 +498,7 @@ public class BatchJobTest {
         when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
         when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(record2);
 
-        job = new JobBuilder()
+        job = new JobBuilder<String, String>()
                 .reader(reader)
                 .pipelineListener(pipelineListener)
                 .build();
@@ -516,7 +516,7 @@ public class BatchJobTest {
         when(pipelineListener.beforeRecordProcessing(record1)).thenReturn(record1);
         when(firstProcessor.processRecord(record1)).thenThrow(exception);
 
-        job = new JobBuilder()
+        job = new JobBuilder<String, String>()
                 .reader(reader)
                 .processor(firstProcessor)
                 .pipelineListener(pipelineListener)
@@ -551,9 +551,9 @@ public class BatchJobTest {
     @Test
     public void allRecordReaderListenersShouldBeInvokedForEachRecordInOrder() throws Exception {
 
-        RecordReaderListener readerListener1 = mock(RecordReaderListener.class);
-        RecordReaderListener readerListener2 = mock(RecordReaderListener.class);
-        new JobBuilder()
+        RecordReaderListener<String> readerListener1 = mock(RecordReaderListener.class);
+        RecordReaderListener<String> readerListener2 = mock(RecordReaderListener.class);
+        new JobBuilder<String, String>()
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
@@ -583,9 +583,9 @@ public class BatchJobTest {
     @Test
     public void allRecordWriterListenersShouldBeInvokedForEachRecordInOrder() throws Exception {
 
-        RecordWriterListener writerListener1 = mock(RecordWriterListener.class);
-        RecordWriterListener writerListener2 = mock(RecordWriterListener.class);
-        new JobBuilder()
+        RecordWriterListener<String> writerListener1 = mock(RecordWriterListener.class);
+        RecordWriterListener<String> writerListener2 = mock(RecordWriterListener.class);
+        new JobBuilder<String, String>()
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
@@ -595,7 +595,7 @@ public class BatchJobTest {
                 .writer(writer)
                 .build().call();
 
-        Batch batch = new Batch(record1, record2);
+        Batch<String> batch = new Batch<>(record1, record2);
         InOrder inOrder = Mockito.inOrder(reader, writer, firstProcessor, secondProcessor, writerListener1, writerListener2);
 
         
@@ -633,7 +633,7 @@ public class BatchJobTest {
         doNothing().when(pipelineListener2).afterRecordProcessing(record1, record1);
         doNothing().when(pipelineListener2).afterRecordProcessing(record2, record2);
         
-         new JobBuilder()
+         new JobBuilder<String, String>()
                 .reader(reader)
                 .processor(firstProcessor)
                 .processor(secondProcessor)
@@ -668,7 +668,7 @@ public class BatchJobTest {
         when(pipelineListener.beforeRecordProcessing(record2)).thenReturn(null);
         when(firstProcessor.processRecord(record1)).thenReturn(record1);
 
-        job = new JobBuilder()
+        job = new JobBuilder<String, String>()
                 .reader(reader)
                 .processor(firstProcessor)
                 .pipelineListener(pipelineListener)
@@ -688,25 +688,25 @@ public class BatchJobTest {
 
     @Test
     public void whenWriterThrowsExceptionAndBatchScanningIsActivated_thenShouldRewriteRecordsOneByOne() {
-        class SavingRecordWriter implements RecordWriter {
-            private List<Batch> batches = new ArrayList<>();
+        class SavingRecordWriter implements RecordWriter<Integer> {
+            private List<Batch<Integer>> batches = new ArrayList<>();
 
             @Override
-            public void writeRecords(Batch batch) throws Exception {
+            public void writeRecords(Batch<Integer> batch) throws Exception {
                 batches.add(batch);
                 if (batch.size() == 2) {
                     throw new Exception("Expected");
                 }
             }
 
-            public List<Batch> getBatches() {
+            public List<Batch<Integer>> getBatches() {
                 return batches;
             }
         }
 
-        IterableRecordReader recordReader = new IterableRecordReader(Arrays.asList(1, 2, 3, 4));
+        IterableRecordReader<Integer> recordReader = new IterableRecordReader<>(Arrays.asList(1, 2, 3, 4));
         SavingRecordWriter recordWriter = new SavingRecordWriter();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<Integer, Integer>()
                 .batchSize(2)
                 .enableBatchScanning(true)
                 .reader(recordReader)
@@ -719,13 +719,13 @@ public class BatchJobTest {
         // then
         // Expected result: 6 batches: [1,2], [1], [2], [3,4], [3], [4]
 
-        List<Batch> batches = recordWriter.getBatches();
+        List<Batch<Integer>> batches = recordWriter.getBatches();
         Assertions.assertThat(batches).hasSize(6);
 
         // batch 1: [1,2]
-        Batch batch = batches.get(0);
-        Iterator<Record> iterator = batch.iterator();
-        Record record = iterator.next();
+        Batch<Integer> batch = batches.get(0);
+        Iterator<Record<Integer>> iterator = batch.iterator();
+        Record<Integer> record = iterator.next();
         Assertions.assertThat(record.getHeader().getNumber()).isEqualTo(1);
         Assertions.assertThat(record.getHeader().isScanned()).isTrue();
         Assertions.assertThat(record.getPayload()).isEqualTo(1);
@@ -799,14 +799,14 @@ public class BatchJobTest {
     @Ignore("This test may fail if the interruption signal is intercepted after starting the second batch")
     public void whenAJobIsInterrupted_thenNextBatchesShouldBeIgnored() throws Exception {
         // Given
-        RecordCollector recordCollector = new RecordCollector();
+        RecordCollector<Integer> recordCollector = new RecordCollector<>();
         List<Integer> dataSource = new ArrayList<>();
         for (int i = 0; i < 1000000; i++) {
             dataSource.add(i);
         }
 
-        Job job = new JobBuilder()
-                .reader(new IterableRecordReader(dataSource))
+        Job job = new JobBuilder<Integer, Integer>()
+                .reader(new IterableRecordReader<>(dataSource))
                 .processor(recordCollector)
                 .batchSize(500000)
                 .build();
@@ -829,22 +829,22 @@ public class BatchJobTest {
     @Ignore("This test may fail if the interruption signal is intercepted after starting the second job")
     public void whenAJobIsInterrupted_thenOtherJobsShouldNotBeInterrupted() throws Exception {
         // Given
-        RecordCollector recordCollector1 = new RecordCollector();
-        RecordCollector recordCollector2 = new RecordCollector();
+        RecordCollector<Integer> recordCollector1 = new RecordCollector<>();
+        RecordCollector<Integer> recordCollector2 = new RecordCollector<>();
         List<Integer> dataSource = new ArrayList<>();
         for (int i = 0; i < 1000000; i++) {
             dataSource.add(i);
         }
 
-        Job job1 = new JobBuilder()
+        Job job1 = new JobBuilder<Integer, Integer>()
                 .named("job1")
-                .reader(new IterableRecordReader(dataSource))
+                .reader(new IterableRecordReader<>(dataSource))
                 .processor(recordCollector1)
                 .batchSize(500000)
                 .build();
-        Job job2 = new JobBuilder()
+        Job job2 = new JobBuilder<Integer, Integer>()
                 .named("job2")
-                .reader(new IterableRecordReader(dataSource))
+                .reader(new IterableRecordReader<>(dataSource))
                 .processor(recordCollector2)
                 .batchSize(500000)
                 .build();

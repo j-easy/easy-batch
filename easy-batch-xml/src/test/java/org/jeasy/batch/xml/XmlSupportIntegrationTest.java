@@ -46,7 +46,7 @@ public class XmlSupportIntegrationTest {
         // given
         final InputStream xmlDataSource = getDataSource("/websites.xml");
         RecordCollector<Website> recordCollector = new RecordCollector<>();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Website>()
                 .reader(new XmlRecordReader(xmlDataSource, "website"))
                 .mapper(new XmlRecordMapper<>(Website.class))
                 .processor(recordCollector)
@@ -82,7 +82,7 @@ public class XmlSupportIntegrationTest {
         final InputStream xmlDataSource = getDataSource("/persons.xml");
 
         RecordCollector<Person> recordCollector = new RecordCollector<>();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Person>()
                 .reader(new XmlRecordReader(xmlDataSource, "person"))
                 .mapper(new XmlRecordMapper<>(Person.class))
                 .processor(recordCollector)
@@ -120,7 +120,7 @@ public class XmlSupportIntegrationTest {
         final InputStream xmlDataSource = getDataSource("/dependencies.xml");
 
         RecordCollector<Dependency> recordCollector = new RecordCollector<>();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Dependency>()
                 .reader(new XmlRecordReader(xmlDataSource, "dependency"))
                 .mapper(new XmlRecordMapper<>(Dependency.class))
                 .processor(recordCollector)
@@ -178,7 +178,7 @@ public class XmlSupportIntegrationTest {
         final InputStream xmlDataSource = getDataSource("/beans.xml");
 
         RecordCollector<Bean> recordCollector = new RecordCollector<>();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Bean>()
                 .reader(new XmlRecordReader(xmlDataSource, "bean"))
                 .mapper(new XmlRecordMapper<>(Bean.class))
                 .processor(recordCollector)

@@ -39,15 +39,15 @@ import static org.mockito.Mockito.when;
 public class CompositeRecordProcessorTest {
 
     @Mock
-    private Record record, processedRecord;
+    private Record<String> record, processedRecord;
     @Mock
-    private RecordProcessor recordProcessor1, recordProcessor2;
+    private RecordProcessor<String, String> recordProcessor1, recordProcessor2;
 
-    private CompositeRecordProcessor compositeRecordProcessor;
+    private CompositeRecordProcessor<String, String> compositeRecordProcessor;
 
     @Before
     public void setUp() {
-        compositeRecordProcessor = new CompositeRecordProcessor(asList(recordProcessor1, recordProcessor2));
+        compositeRecordProcessor = new CompositeRecordProcessor<>(asList(recordProcessor1, recordProcessor2));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class CompositeRecordProcessorTest {
         when(recordProcessor2.processRecord(processedRecord)).thenReturn(processedRecord);
 
         //when
-        Record actual = compositeRecordProcessor.processRecord(record);
+        Record<String> actual = compositeRecordProcessor.processRecord(record);
 
         //then
         assertThat(actual).isEqualTo(processedRecord);
@@ -69,7 +69,7 @@ public class CompositeRecordProcessorTest {
         when(recordProcessor1.processRecord(record)).thenReturn(null);
 
         //when
-        Record actual = compositeRecordProcessor.processRecord(record);
+        Record<String> actual = compositeRecordProcessor.processRecord(record);
 
         //then
         assertThat(actual).isNull();

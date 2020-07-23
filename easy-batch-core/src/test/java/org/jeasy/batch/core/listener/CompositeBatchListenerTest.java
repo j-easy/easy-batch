@@ -38,17 +38,17 @@ import static org.mockito.Mockito.inOrder;
 public class CompositeBatchListenerTest {
 
     @Mock
-    private Batch batch;
+    private Batch<String> batch;
     @Mock
     private Throwable exception;
     @Mock
-    private BatchListener batchListener1, batchListener2;
+    private BatchListener<String> batchListener1, batchListener2;
 
-    private CompositeBatchListener compositeBatchListener;
+    private CompositeBatchListener<String> compositeBatchListener;
 
     @Before
     public void setUp() {
-        compositeBatchListener = new CompositeBatchListener(asList(batchListener1, batchListener2));
+        compositeBatchListener = new CompositeBatchListener<>(asList(batchListener1, batchListener2));
     }
 
     @Test

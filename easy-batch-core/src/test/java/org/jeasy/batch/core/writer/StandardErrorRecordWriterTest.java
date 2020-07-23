@@ -51,19 +51,19 @@ public class StandardErrorRecordWriterTest {
     public final SystemErrRule systemErr = new SystemErrRule().enableLog();
 
     @Mock
-    private Record record;
+    private Record<String> record;
 
-    private StandardErrorRecordWriter writer;
+    private StandardErrorRecordWriter<String> writer;
 
     @Before
     public void setUp() {
         when(record.getPayload()).thenReturn(PAYLOAD);
-        writer = new StandardErrorRecordWriter();
+        writer = new StandardErrorRecordWriter<>();
     }
 
     @Test
     public void testRecordPayloadWriting() throws Exception {
-        writer.writeRecords(new Batch(record));
+        writer.writeRecords(new Batch<>(record));
 
         assertThat(systemErr.getLog()).isEqualTo(PAYLOAD + LINE_SEPARATOR);
     }

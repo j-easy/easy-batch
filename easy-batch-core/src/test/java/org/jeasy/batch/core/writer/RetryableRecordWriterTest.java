@@ -40,10 +40,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RetryableRecordWriterTest {
 
     @Mock
-    private Record record;
+    private Record<String> record;
 
     private RetryPolicy retryPolicy;
-    private RecordWriter recordWriter;
+    private RecordWriter<String> recordWriter;
 
     @Before
     public void setUp() {
@@ -54,10 +54,10 @@ public class RetryableRecordWriterTest {
     @Test(expected = Exception.class)
     public void writeRecords_whenMaxAttemptsExceeded() throws Exception {
         // Given
-        recordWriter = new RetryableRecordWriter(new UnreliableDataSinkWriter(), retryPolicy);
+        recordWriter = new RetryableRecordWriter<>(new UnreliableDataSinkWriter(), retryPolicy);
 
         // When
-        recordWriter.writeRecords(new Batch(record));
+        recordWriter.writeRecords(new Batch<>(record));
 
         // Then
         // Expecting exception
@@ -67,30 +67,30 @@ public class RetryableRecordWriterTest {
     public void writeRecords_whenMaxAttemptsNotExceeded() throws Exception {
         // Given
         BetterUnreliableDataSinkWriter delegate = new BetterUnreliableDataSinkWriter();
-        recordWriter = new RetryableRecordWriter(delegate, retryPolicy);
+        recordWriter = new RetryableRecordWriter<>(delegate, retryPolicy);
 
         // When
-        recordWriter.writeRecords(new Batch(record));
+        recordWriter.writeRecords(new Batch<>(record));
 
         // Then
         assertThat(delegate.isExecuted()).isTrue();
     }
 
-    static class UnreliableDataSinkWriter implements RecordWriter {
+    static class UnreliableDataSinkWriter implements RecordWriter<String> {
 
         @Override
-        public void writeRecords(Batch batch) throws Exception {
+        public void writeRecords(Batch<String> batch) throws Exception {
             throw new Exception("Data source temporarily down");
         }
 
     }
 
-    static class BetterUnreliableDataSinkWriter implements RecordWriter {
+    static class BetterUnreliableDataSinkWriter implements RecordWriter<String> {
         private int attempts;
         private boolean executed;
 
         @Override
-        public void writeRecords(Batch batch) throws Exception {
+        public void writeRecords(Batch<String> batch) throws Exception {
             if (++attempts <= 2) {
                 throw new Exception("Data sink temporarily down");
             }

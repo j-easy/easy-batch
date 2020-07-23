@@ -40,21 +40,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BlockingQueueRecordWriterTest {
 
     @Mock
-    private Record record1, record2;
+    private Record<String> record1, record2;
 
-    private BlockingQueue<Record> queue;
+    private BlockingQueue<Record<String>> queue;
 
-    private BlockingQueueRecordWriter writer;
+    private BlockingQueueRecordWriter<String> writer;
 
     @Before
     public void setUp() {
         queue = new LinkedBlockingQueue<>();
-        writer = new BlockingQueueRecordWriter(queue);
+        writer = new BlockingQueueRecordWriter<>(queue);
     }
 
     @Test
     public void testWriteRecords() throws Exception {
-        writer.writeRecords(new Batch(record1, record2));
+        writer.writeRecords(new Batch<>(record1, record2));
         assertThat(queue).containsExactly(record1, record2);
     }
 

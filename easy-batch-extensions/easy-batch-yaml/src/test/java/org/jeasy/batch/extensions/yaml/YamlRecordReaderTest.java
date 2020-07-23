@@ -45,7 +45,7 @@ public class YamlRecordReaderTest {
 
     @Test
     public void readRecord() {
-        Record record = recordReader.readRecord();
+        Record<String> record = recordReader.readRecord();
 
         assertThat(record).isNotNull().isInstanceOf(YamlRecord.class);
         assertThat(record.getPayload()).isEqualTo("name: Foo" + LINE_SEPARATOR + "age: 28" + LINE_SEPARATOR);

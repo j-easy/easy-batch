@@ -32,6 +32,7 @@ import org.jeasy.batch.core.job.JobReport;
 import org.jeasy.batch.core.processor.RecordCollector;
 import org.jeasy.batch.core.reader.StringRecordReader;
 import org.jeasy.batch.core.record.Header;
+import org.jeasy.batch.core.record.Record;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -80,8 +81,8 @@ public class JmsIntegrationTest {
         message.setText(MESSAGE_TEXT);
         queueSender.send(message);
 
-        RecordCollector recordCollector = new RecordCollector();
-        Job job = new JobBuilder()
+        RecordCollector<Message> recordCollector = new RecordCollector<>();
+        Job job = new JobBuilder<Message, Message>()
                 .reader(new JmsRecordReader(queueConnectionFactory, queue, 1000))
                 .processor(recordCollector)
                 .build();
@@ -92,11 +93,11 @@ public class JmsIntegrationTest {
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(1);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(1);
 
-        List<JmsRecord> records = recordCollector.getRecords();
+        List<Record<Message>> records = recordCollector.getRecords();
 
         assertThat(records).isNotNull().isNotEmpty().hasSize(1);
 
-        JmsRecord jmsRecord = records.get(0);
+        Record<Message> jmsRecord = records.get(0);
         Header header = jmsRecord.getHeader();
         assertThat(header).isNotNull();
         assertThat(header.getNumber()).isEqualTo(1);
@@ -123,7 +124,7 @@ public class JmsIntegrationTest {
 
         String dataSource = "foo" + LINE_SEPARATOR + "bar";
 
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Message>()
                 .reader(new StringRecordReader(dataSource))
                 .processor(new JmsMessageTransformer(queueSession))
                 .writer(new JmsRecordWriter(queueConnectionFactory, queue))

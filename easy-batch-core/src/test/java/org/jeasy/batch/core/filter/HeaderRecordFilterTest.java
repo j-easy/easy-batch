@@ -38,13 +38,13 @@ import static org.mockito.Mockito.when;
 public class HeaderRecordFilterTest {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-    private Record record;
+    private Record<String> record;
 
-    private HeaderRecordFilter headerRecordFilter;
+    private HeaderRecordFilter<String> headerRecordFilter;
 
     @Before
     public void setUp() {
-        headerRecordFilter = new HeaderRecordFilter();
+        headerRecordFilter = new HeaderRecordFilter<>();
     }
 
     @Test

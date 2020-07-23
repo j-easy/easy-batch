@@ -44,13 +44,13 @@ import static org.mockito.Mockito.when;
 public class BeanValidationRecordValidatorTest {
 
     @Mock
-    private Record record;
+    private Record<Foo> record;
 
-    private BeanValidationRecordValidator validator;
+    private BeanValidationRecordValidator<Foo> validator;
 
     @Before
     public void setUp() {
-        validator = new BeanValidationRecordValidator();
+        validator = new BeanValidationRecordValidator<>();
     }
 
     @Test(expected = Exception.class)
@@ -71,9 +71,9 @@ public class BeanValidationRecordValidatorTest {
 
     @Test
     public void integrationTest() {
-        Job job = new JobBuilder()
-                .reader(new IterableRecordReader(asList(new Foo(1, "foo1"), new Foo(-2, "foo2"))))
-                .validator(new BeanValidationRecordValidator())
+        Job job = new JobBuilder<Foo, Foo>()
+                .reader(new IterableRecordReader<>(asList(new Foo(1, "foo1"), new Foo(-2, "foo2"))))
+                .validator(new BeanValidationRecordValidator<>())
                 .build();
 
         JobReport report = new JobExecutor().execute(job);

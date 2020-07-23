@@ -45,20 +45,21 @@ public class ContentBasedJmsQueueRecordWriter<P> implements RecordWriter<P> {
      * Map a predicate to a queue: when the record content matches the predicate,
      * then it is written to the mapped queue.
      */
-    private Map<Predicate, QueueSender> queueMap;
+    private Map<Predicate<P>, QueueSender> queueMap;
 
-    ContentBasedJmsQueueRecordWriter(Map<Predicate, QueueSender> queueMap) {
+    ContentBasedJmsQueueRecordWriter(Map<Predicate<P>, QueueSender> queueMap) {
         this.queueMap = queueMap;
     }
 
     @Override
     public void writeRecords(Batch<P> batch) throws Exception {
-        QueueSender defaultQueue = queueMap.get(new DefaultPredicate());
+        DefaultPredicate<P> defaultPredicate = new DefaultPredicate<>();
+        QueueSender defaultQueue = queueMap.get(defaultPredicate);
         for (Record<P> record : batch) {
             boolean matched = false;
             Message payload = (Message) record.getPayload();
-            for (Map.Entry<Predicate, QueueSender> entry : queueMap.entrySet()) {
-                Predicate predicate = entry.getKey();
+            for (Map.Entry<Predicate<P>, QueueSender> entry : queueMap.entrySet()) {
+                Predicate<P> predicate = entry.getKey();
                 //check if the record meets a given predicate
                 if (!(predicate instanceof DefaultPredicate) && predicate.matches(record)) {
                     //put it in the mapped queue
@@ -74,7 +75,7 @@ public class ContentBasedJmsQueueRecordWriter<P> implements RecordWriter<P> {
         }
     }
 
-    Map<Predicate, QueueSender> getQueueMap() {
+    Map<Predicate<P>, QueueSender> getQueueMap() {
         return queueMap;
     }
 }

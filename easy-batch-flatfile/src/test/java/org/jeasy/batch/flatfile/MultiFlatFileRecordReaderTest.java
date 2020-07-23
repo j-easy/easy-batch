@@ -48,8 +48,8 @@ public class MultiFlatFileRecordReaderTest {
                 .collect(Collectors.toList());
         MultiFlatFileRecordReader multiFileRecordReader = new MultiFlatFileRecordReader(files);
 
-        RecordCollector recordCollector = new RecordCollector();
-        Job job = new JobBuilder()
+        RecordCollector<String> recordCollector = new RecordCollector<>();
+        Job job = new JobBuilder<String, String>()
                 .reader(multiFileRecordReader)
                 .processor(recordCollector)
                 .build();
@@ -60,7 +60,7 @@ public class MultiFlatFileRecordReaderTest {
         jobExecutor.shutdown();
 
         // then
-        List<Record> records = recordCollector.getRecords();
+        List<Record<String>> records = recordCollector.getRecords();
 
         // there are 6 records in foo.txt, bar.txt and empty.txt
         // Note how (middle or trailing) empty lines should be read as well

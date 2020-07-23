@@ -45,7 +45,7 @@ public class ApacheCommonCsvSupportIntegrationTest {
         ApacheCommonCsvRecordMarshaller<Tweet> recordMarshaller = new ApacheCommonCsvRecordMarshaller<>(Tweet.class, "id", "user", "message");
         recordMarshaller.setDelimiter(';');
         recordMarshaller.setQualifier('\'');
-        new JobBuilder()
+        new JobBuilder<String, Tweet>()
                 .reader(new StringRecordReader(dataSource))
                 .mapper(new ApacheCommonCsvRecordMapper<>(Tweet.class, "id", "user", "message"))
                 .marshaller(recordMarshaller)

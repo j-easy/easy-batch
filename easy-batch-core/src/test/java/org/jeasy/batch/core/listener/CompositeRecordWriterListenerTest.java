@@ -38,17 +38,17 @@ import static org.mockito.Mockito.inOrder;
 public class CompositeRecordWriterListenerTest {
 
     @Mock
-    private Batch batch;
+    private Batch<String> batch;
     @Mock
     private Throwable exception;
     @Mock
-    private RecordWriterListener recordWriterListener1, recordWriterListener2;
+    private RecordWriterListener<String> recordWriterListener1, recordWriterListener2;
 
-    private CompositeRecordWriterListener compositeRecordWriterListener;
+    private CompositeRecordWriterListener<String> compositeRecordWriterListener;
 
     @Before
     public void setUp() {
-        compositeRecordWriterListener = new CompositeRecordWriterListener(asList(recordWriterListener1, recordWriterListener2));
+        compositeRecordWriterListener = new CompositeRecordWriterListener<>(asList(recordWriterListener1, recordWriterListener2));
     }
 
     @Test

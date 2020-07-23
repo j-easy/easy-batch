@@ -38,17 +38,17 @@ import static org.mockito.Mockito.inOrder;
 public class CompositeRecordReaderListenerTest {
 
     @Mock
-    private Record record;
+    private Record<String> record;
     @Mock
     private Throwable exception;
     @Mock
-    private RecordReaderListener recordReaderListener1, recordReaderListener2;
+    private RecordReaderListener<String> recordReaderListener1, recordReaderListener2;
 
-    private CompositeRecordReaderListener compositeRecordReaderListener;
+    private CompositeRecordReaderListener<String> compositeRecordReaderListener;
 
     @Before
     public void setUp() {
-        compositeRecordReaderListener = new CompositeRecordReaderListener(asList(recordReaderListener1, recordReaderListener2));
+        compositeRecordReaderListener = new CompositeRecordReaderListener<>(asList(recordReaderListener1, recordReaderListener2));
     }
 
     @Test

@@ -52,7 +52,7 @@ public class FlatFileIntegrationTest {
         Path dataSource = Paths.get("src/test/resources/persons.csv");
 
         RecordCollector<Person> recordCollector = new RecordCollector<>();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Person>()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper<>(Person.class, "firstName", "lastName", "age", "birthDate", "married"))
                 .processor(recordCollector)
@@ -78,7 +78,7 @@ public class FlatFileIntegrationTest {
         Path dataSource = Paths.get("src/test/resources/persons.csv");
 
         RecordCollector<Person> recordCollector = new RecordCollector<>();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Person>()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper<>(Person.class, new Integer[]{2, 4}, new String[]{"age", "married"}))
                 .processor(recordCollector)
@@ -109,7 +109,7 @@ public class FlatFileIntegrationTest {
         Path dataSource = Paths.get("src/test/resources/persons_with_header.csv");
 
         RecordCollector<Person> recordCollector = new RecordCollector<>();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Person>()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper<>(Person.class))
                 .processor(recordCollector)
@@ -135,7 +135,7 @@ public class FlatFileIntegrationTest {
         Path dataSource = Paths.get("src/test/resources/persons_with_header.csv");
 
         RecordCollector<Person> recordCollector = new RecordCollector<>();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Person>()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new DelimitedRecordMapper<>(Person.class, 2, 4))
                 .processor(recordCollector)
@@ -173,9 +173,9 @@ public class FlatFileIntegrationTest {
         recordMapper.registerTypeConverter(new DateTypeConverter("MM/dd/yyyy"));
 
         RecordCollector<Complaint> recordCollector = new RecordCollector<>();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Person>()
                 .reader(new FlatFileRecordReader(dataSource))
-                .filter(new HeaderRecordFilter())
+                .filter(new HeaderRecordFilter<>())
                 .mapper(recordMapper)
                 .processor(recordCollector)
                 .build();
@@ -215,7 +215,7 @@ public class FlatFileIntegrationTest {
         Path dataSource = Paths.get("src/test/resources/persons.flr");
 
         RecordCollector<Person> recordCollector = new RecordCollector<>();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<String, Person>()
                 .reader(new FlatFileRecordReader(dataSource))
                 .mapper(new FixedLengthRecordMapper<>(Person.class, new int[]{4, 4, 2, 10, 1},
                         new String[]{"firstName", "lastName", "age", "birthDate", "married"}))

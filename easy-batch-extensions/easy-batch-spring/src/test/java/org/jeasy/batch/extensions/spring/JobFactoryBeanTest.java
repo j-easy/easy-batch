@@ -56,21 +56,21 @@ public class JobFactoryBeanTest {
     public final SystemOutRule systemOut = new SystemOutRule().enableLog();
 
     @Mock
-    private RecordReader recordReader;
+    private RecordReader<Object> recordReader;
     @Mock
-    private RecordProcessor recordProcessor;
+    private RecordProcessor<Object, Object> recordProcessor;
     @Mock
-    private RecordWriter recordWriter;
+    private RecordWriter<Object> recordWriter;
     @Mock
     private JobListener jobListener;
     @Mock
-    private BatchListener batchListener;
+    private BatchListener<Object> batchListener;
     @Mock
-    private RecordReaderListener recordReaderListener;
+    private RecordReaderListener<Object> recordReaderListener;
     @Mock
     private PipelineListener pipelineListener;
     @Mock
-    private RecordWriterListener recordWriterListener;
+    private RecordWriterListener<Object> recordWriterListener;
 
     private JobFactoryBean jobFactoryBean;
 

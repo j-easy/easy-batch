@@ -44,7 +44,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class HibernateRecordWriterTest extends AbstractDatabaseTest {
 
     private JobExecutor jobExecutor;
-    private HibernateRecordWriter hibernateRecordWriter;
+    private HibernateRecordWriter<Tweet> hibernateRecordWriter;
 
     @Before
     public void setUp() throws Exception {
@@ -54,7 +54,7 @@ public class HibernateRecordWriterTest extends AbstractDatabaseTest {
         Configuration configuration = new Configuration();
         configuration.configure("/org/jeasy/batch/extensions/hibernate/hibernate.cfg.xml");
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        hibernateRecordWriter = new HibernateRecordWriter(sessionFactory);
+        hibernateRecordWriter = new HibernateRecordWriter<>(sessionFactory);
     }
 
     @Test
@@ -62,9 +62,9 @@ public class HibernateRecordWriterTest extends AbstractDatabaseTest {
         int nbTweetsToInsert = 5;
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<Tweet, Tweet>()
                 .batchSize(2)
-                .reader(new IterableRecordReader(tweets))
+                .reader(new IterableRecordReader<>(tweets))
                 .writer(hibernateRecordWriter)
                 .build();
 
@@ -85,9 +85,9 @@ public class HibernateRecordWriterTest extends AbstractDatabaseTest {
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
         // The following will make the second batch to fail
         tweets.get(4).setUser("ThisIsAVeryLongUsernameThatWillCauseAnError");
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<Tweet, Tweet>()
                 .batchSize(batchSize)
-                .reader(new IterableRecordReader(tweets))
+                .reader(new IterableRecordReader<>(tweets))
                 .writer(hibernateRecordWriter)
                 .build();
 

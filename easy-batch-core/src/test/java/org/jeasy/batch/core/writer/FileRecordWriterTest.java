@@ -54,7 +54,7 @@ public class FileRecordWriterTest {
     @Mock
     private Header header;
 
-    private Record record1, record2;
+    private Record<String> record1, record2;
 
     private FileRecordWriter writer;
 
@@ -69,7 +69,7 @@ public class FileRecordWriterTest {
 
     @Test
     public void testFileWriting() throws Exception {
-        writer.writeRecords(new Batch(record1, record2));
+        writer.writeRecords(new Batch<>(record1, record2));
 
         assertThat(path).hasContent("foo" + LINE_SEPARATOR + "bar" + LINE_SEPARATOR);
     }

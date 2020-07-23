@@ -46,24 +46,24 @@ public class IterableRecordReaderTest {
     @Mock
     private Iterator<String> iterator;
 
-    private IterableRecordReader iterableRecordReader;
+    private IterableRecordReader<String> iterableRecordReader;
 
     @Before
     public void setUp() {
         when(dataSource.iterator()).thenReturn(iterator);
         when(iterator.hasNext()).thenReturn(true);
         when(iterator.next()).thenReturn(RECORD);
-        iterableRecordReader = new IterableRecordReader(dataSource);
+        iterableRecordReader = new IterableRecordReader<>(dataSource);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void whenDataSourceIsNull_thenShouldThrowAnIllegalArgumentException() {
-        iterableRecordReader = new IterableRecordReader(null);
+        iterableRecordReader = new IterableRecordReader<>(null);
     }
 
     @Test
     public void testReadRecord() throws Exception {
-        GenericRecord genericRecord = iterableRecordReader.readRecord();
+        GenericRecord<String> genericRecord = iterableRecordReader.readRecord();
         assertThat(genericRecord).isNotNull();
         assertThat(genericRecord.getPayload()).isEqualTo(RECORD);
     }

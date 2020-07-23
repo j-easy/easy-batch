@@ -51,25 +51,25 @@ import static org.mockito.Mockito.when;
 public class CollectionRecordWriterTest {
 
     @Mock
-    private Record record1, record2;
+    private Record<Object> record1, record2;
     @Mock
     private Object payload1, payload2;
 
     private List<Object> items;
 
-    private CollectionRecordWriter writer;
+    private CollectionRecordWriter<Object> writer;
 
     @Before
     public void setUp() {
         when(record1.getPayload()).thenReturn(payload1);
         when(record2.getPayload()).thenReturn(payload2);
         items = new ArrayList<>();
-        writer = new CollectionRecordWriter(items);
+        writer = new CollectionRecordWriter<>(items);
     }
 
     @Test
     public void testWriteRecord() {
-        writer.writeRecords(new Batch(record1, record2));
+        writer.writeRecords(new Batch<>(record1, record2));
         assertThat(items).containsExactly(payload1, payload2);
     }
 
@@ -78,9 +78,9 @@ public class CollectionRecordWriterTest {
         List<Object> input = Arrays.asList(payload1, payload2);
         List<Object> output = new ArrayList<>();
 
-        Job job = new JobBuilder()
-                .reader(new IterableRecordReader(input))
-                .writer(new CollectionRecordWriter(output))
+        Job job = new JobBuilder<>()
+                .reader(new IterableRecordReader<>(input))
+                .writer(new CollectionRecordWriter<>(output))
                 .build();
 
         new JobExecutor().execute(job);

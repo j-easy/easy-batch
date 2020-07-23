@@ -48,8 +48,8 @@ public class MultiXmlFileRecordReaderTest {
                 .collect(Collectors.toList());
         MultiXmlFileRecordReader multiFileRecordReader = new MultiXmlFileRecordReader(files, "website");
 
-        RecordCollector recordCollector = new RecordCollector();
-        Job job = new JobBuilder()
+        RecordCollector<String> recordCollector = new RecordCollector<>();
+        Job job = new JobBuilder<String, String>()
                 .reader(multiFileRecordReader)
                 .processor(recordCollector)
                 .build();
@@ -59,7 +59,7 @@ public class MultiXmlFileRecordReaderTest {
         jobExecutor.execute(job);
         jobExecutor.shutdown();
 
-        List<Record> records = recordCollector.getRecords();
+        List<Record<String>> records = recordCollector.getRecords();
 
         // then
         // there are 6 records in xml files starting with "web" inside "src/test/resources"

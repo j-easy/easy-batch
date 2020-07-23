@@ -56,10 +56,10 @@ public class JpaRecordWriterTest extends AbstractDatabaseTest {
     public void testRecordWriting() throws Exception {
         int nbTweetsToInsert = 5;
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<Tweet, Tweet>()
                 .batchSize(2)
-                .reader(new IterableRecordReader(tweets))
-                .writer(new JpaRecordWriter(entityManagerFactory))
+                .reader(new IterableRecordReader<>(tweets))
+                .writer(new JpaRecordWriter<>(entityManagerFactory))
                 .build();
 
         JobReport jobReport = jobExecutor.execute(job);
@@ -81,10 +81,10 @@ public class JpaRecordWriterTest extends AbstractDatabaseTest {
         // The following will make the second batch to fail
         tweets.get(4).setUser("ThisIsAVeryLongUsernameThatWillCauseAnError");
 
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<Tweet, Tweet>()
                 .batchSize(batchSize)
-                .reader(new IterableRecordReader(tweets))
-                .writer(new JpaRecordWriter(entityManagerFactory))
+                .reader(new IterableRecordReader<>(tweets))
+                .writer(new JpaRecordWriter<>(entityManagerFactory))
                 .build();
 
         JobReport jobReport = jobExecutor.execute(job);

@@ -38,6 +38,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,7 +59,7 @@ public class JdbcIntegrationTest extends AbstractDatabaseTest {
     @Test
     public void testDatabaseProcessingWithJdbc() {
         RecordCollector<Tweet> recordCollector = new RecordCollector<>();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<ResultSet, Tweet>()
                 .reader(new JdbcRecordReader(embeddedDatabase, query))
                 .mapper(new JdbcRecordMapper<>(Tweet.class, "id", "user", "message"))
                 .processor(recordCollector)

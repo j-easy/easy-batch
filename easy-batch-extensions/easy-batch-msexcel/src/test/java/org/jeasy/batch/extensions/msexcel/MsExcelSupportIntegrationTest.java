@@ -23,6 +23,7 @@
  */
 package org.jeasy.batch.extensions.msexcel;
 
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -54,7 +55,7 @@ public class MsExcelSupportIntegrationTest {
         Path outputTweets = Paths.get("src/test/resources/tweets-out.xlsx");
 
         String[] fields = {"id", "user", "message"};
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<Row, Row>()
                 .reader(new MsExcelRecordReader(inputTweets))
                 .mapper(new MsExcelRecordMapper<>(Tweet.class, fields))
                 .marshaller(new MsExcelRecordMarshaller<>(Tweet.class, fields))
@@ -86,10 +87,10 @@ public class MsExcelSupportIntegrationTest {
         String[] fields = {"id", "user", "message"};
 
         List<Tweet> output = new ArrayList<>();
-        Job job = new JobBuilder()
+        Job job = new JobBuilder<Row, Tweet>()
                 .reader(new MsExcelRecordReader(inputTweets))
                 .mapper(new MsExcelRecordMapper<>(Tweet.class, fields))
-                .writer(new CollectionRecordWriter(output))
+                .writer(new CollectionRecordWriter<>(output))
                 .build();
         new JobExecutor().execute(job);
 

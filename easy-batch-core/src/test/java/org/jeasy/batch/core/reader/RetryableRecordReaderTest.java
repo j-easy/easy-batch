@@ -39,10 +39,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RetryableRecordReaderTest {
 
     @Mock
-    private Record record;
+    private Record<String> record;
 
     private RetryPolicy retryPolicy;
-    private RecordReader recordReader;
+    private RecordReader<String> recordReader;
 
     @Before
     public void setUp() {
@@ -52,32 +52,32 @@ public class RetryableRecordReaderTest {
 
     @Test(expected = Exception.class)
     public void readRecord_whenMaxAttemptsExceeded() throws Exception {
-        recordReader = new RetryableRecordReader(new UnreliableDataSourceReader(), retryPolicy);
+        recordReader = new RetryableRecordReader<>(new UnreliableDataSourceReader(), retryPolicy);
         recordReader.readRecord();
     }
 
     @Test
     public void readRecord_whenMaxAttemptsNotExceeded() throws Exception {
-        recordReader = new RetryableRecordReader(new BetterUnreliableDataSourceReader(), retryPolicy);
+        recordReader = new RetryableRecordReader<>(new BetterUnreliableDataSourceReader(), retryPolicy);
 
         Record actual = recordReader.readRecord();
         assertThat(actual).isEqualTo(record);
     }
 
-    static class UnreliableDataSourceReader implements RecordReader {
+    static class UnreliableDataSourceReader implements RecordReader<String> {
 
         @Override
-        public Record readRecord() throws Exception {
+        public Record<String> readRecord() throws Exception {
             throw new Exception("Data source temporarily down");
         }
 
     }
 
-    class BetterUnreliableDataSourceReader implements RecordReader {
+    class BetterUnreliableDataSourceReader implements RecordReader<String> {
         private int attempts;
 
         @Override
-        public Record readRecord() throws Exception {
+        public Record<String> readRecord() throws Exception {
             if (++attempts > 2) {
                 return record;
             }
