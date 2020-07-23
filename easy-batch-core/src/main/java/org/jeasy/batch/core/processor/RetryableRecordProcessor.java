@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class RetryableRecordProcessor<I extends Record, O extends Record> implements RecordProcessor<I, O> {
+public class RetryableRecordProcessor<I, O> implements RecordProcessor<I, O> {
 
     private RecordProcessor<I, O> delegate;
     private RecordProcessingTemplate recordProcessingTemplate;
@@ -49,29 +49,29 @@ public class RetryableRecordProcessor<I extends Record, O extends Record> implem
      * @param delegate record processor
      * @param retryPolicy to apply
      */
-    public RetryableRecordProcessor(RecordProcessor delegate, RetryPolicy retryPolicy) {
+    public RetryableRecordProcessor(RecordProcessor<I, O> delegate, RetryPolicy retryPolicy) {
         this.delegate = delegate;
         this.recordProcessingTemplate = new RecordProcessingTemplate(retryPolicy);
     }
 
     @Override
-    public Record processRecord(Record record) throws Exception {
-        return recordProcessingTemplate.execute(new RecordProcessingCallable(delegate, record));
+    public Record<O> processRecord(Record<I> record) throws Exception {
+        return recordProcessingTemplate.execute(new RecordProcessingCallable<>(delegate, record));
     }
 
-    private static class RecordProcessingCallable implements Callable<Record> {
+    private static class RecordProcessingCallable<I, O> implements Callable<Record<O>> {
 
-        private RecordProcessor recordProcessor;
+        private RecordProcessor<I, O> recordProcessor;
 
-        private Record record;
+        private Record<I> record;
 
-        RecordProcessingCallable(RecordProcessor recordProcessor, Record record) {
+        RecordProcessingCallable(RecordProcessor<I, O> recordProcessor, Record<I> record) {
             this.recordProcessor = recordProcessor;
             this.record = record;
         }
 
         @Override
-        public Record call() throws Exception {
+        public Record<O> call() throws Exception {
             return recordProcessor.processRecord(record);
         }
 

@@ -39,10 +39,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RetryableRecordProcessorTest {
 
     @Mock
-    private Record record;
+    private Record<String> record;
 
     private RetryPolicy retryPolicy;
-    private RecordProcessor recordProcessor;
+    private RecordProcessor<String, String> recordProcessor;
 
     @Before
     public void setUp() {
@@ -52,7 +52,7 @@ public class RetryableRecordProcessorTest {
     @Test(expected = Exception.class)
     public void processRecord_whenMaxAttemptsExceeded() throws Exception {
         // Given
-        recordProcessor = new RetryableRecordProcessor(new UnreliableRecordProcessor(), retryPolicy);
+        recordProcessor = new RetryableRecordProcessor<>(new UnreliableRecordProcessor(), retryPolicy);
 
         // When
         recordProcessor.processRecord(record);
@@ -65,7 +65,7 @@ public class RetryableRecordProcessorTest {
     public void processRecord_whenMaxAttemptsNotExceeded() throws Exception {
         // Given
         BetterUnreliableRecordProcessor delegate = new BetterUnreliableRecordProcessor();
-        recordProcessor = new RetryableRecordProcessor(delegate, retryPolicy);
+        recordProcessor = new RetryableRecordProcessor<>(delegate, retryPolicy);
 
         // When
         recordProcessor.processRecord(record);
@@ -74,20 +74,20 @@ public class RetryableRecordProcessorTest {
         assertThat(delegate.isExecuted()).isTrue();
     }
 
-    static class UnreliableRecordProcessor implements RecordProcessor {
+    static class UnreliableRecordProcessor implements RecordProcessor<String, String> {
 
         @Override
-        public Record processRecord(Record record) throws Exception {
+        public Record<String> processRecord(Record<String> record) throws Exception {
             throw new Exception("Unable to process record");
         }
     }
 
-    static class BetterUnreliableRecordProcessor implements RecordProcessor {
+    static class BetterUnreliableRecordProcessor implements RecordProcessor<String, String> {
         private int attempts;
         private boolean executed;
 
         @Override
-        public Record processRecord(Record record) throws Exception {
+        public Record<String> processRecord(Record<String> record) throws Exception {
             if (++attempts <= 2) {
                 throw new Exception("Unable to process record");
             }
