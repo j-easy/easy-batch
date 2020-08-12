@@ -16,7 +16,7 @@
 
     <properties>
         <javax.json.version>1.1.4</javax.json.version>
-        <yasson.version>1.0.6</yasson.version>
+        <yasson.version>1.0.7</yasson.version>
     </properties>
 
     <developers>

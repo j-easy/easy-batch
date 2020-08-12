@@ -15,9 +15,9 @@
     <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
-        <activemq-all.version>5.15.11</activemq-all.version>
-        <commons-io.version>2.6</commons-io.version>
-        <jackson-databind.version>2.10.1</jackson-databind.version>
+        <activemq-all.version>5.16.0</activemq-all.version>
+        <commons-io.version>2.7</commons-io.version>
+        <jackson-databind.version>2.11.2</jackson-databind.version>
     </properties>
 
     <developers>

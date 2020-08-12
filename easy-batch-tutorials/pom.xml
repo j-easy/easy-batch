@@ -23,8 +23,8 @@
         <elasticsearch.version>1.7.3</elasticsearch.version>
         <quartz.version>2.3.2</quartz.version>
 
-        <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
-        <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
+        <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
+        <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
     </properties>
 
     <developers>

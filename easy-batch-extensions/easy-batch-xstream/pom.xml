@@ -15,7 +15,7 @@
     <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
-        <xstream.version>1.4.11.1</xstream.version>
+        <xstream.version>1.4.12</xstream.version>
     </properties>
 
     <developers>
