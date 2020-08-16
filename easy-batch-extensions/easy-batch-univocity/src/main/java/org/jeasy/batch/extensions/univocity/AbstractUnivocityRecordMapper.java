@@ -29,7 +29,6 @@ import com.univocity.parsers.common.processor.BeanListProcessor;
 import org.jeasy.batch.core.mapper.RecordMapper;
 import org.jeasy.batch.core.record.GenericRecord;
 import org.jeasy.batch.core.record.Record;
-import org.jeasy.batch.core.record.StringRecord;
 
 import java.io.StringReader;
 
@@ -43,7 +42,8 @@ import java.io.StringReader;
 abstract class AbstractUnivocityRecordMapper<T, S extends CommonParserSettings<?>> implements RecordMapper<String, T> {
 
     S settings;
-    private Class<T> recordClass;
+    private AbstractParser<S> parser;
+    private BeanListProcessor<T> beanListProcessor;
 
     /**
      * Creates a new mapper that uses <a href="http://www.univocity.com/">uniVocity parsers</a> to map delimited records
@@ -53,17 +53,15 @@ abstract class AbstractUnivocityRecordMapper<T, S extends CommonParserSettings<?
      * @param settings    the settings that is is used to configure the parser
      */
     AbstractUnivocityRecordMapper(Class<T> recordClass, S settings) {
-        this.recordClass = recordClass;
         this.settings = settings;
+        this.beanListProcessor = new BeanListProcessor<>(recordClass);
+        this.settings.setProcessor(this.beanListProcessor);
+        this.parser = getParser();
     }
 
 
     @Override
     public Record<T> processRecord(Record<String> record) {
-        BeanListProcessor<T> beanListProcessor = new BeanListProcessor<>(recordClass);
-        settings.setProcessor(beanListProcessor);
-
-        AbstractParser<S> parser = getParser();
         String payload = record.getPayload();
         parser.parse(new StringReader(payload));
 
