@@ -90,7 +90,7 @@ public class JobFactoryBeanTest {
     }
 
     @Test
-    public void testGetObject() throws Exception {
+    public void testGetObject() {
         Job job = jobFactoryBean.getObject();
         assertThat(job).isNotNull();
         // TODO assert that fields are correctly set through reflection

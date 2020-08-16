@@ -46,7 +46,7 @@ public class OpenCsvRecordMarshallerTest {
     private OpenCsvRecordMarshaller<Foo> marshaller;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         marshaller = new OpenCsvRecordMarshaller<>(Foo.class, "firstName", "lastName", "age", "married");
         Foo foo = new Foo("foo", "bar", 30, true);
         when(record.getHeader()).thenReturn(header);

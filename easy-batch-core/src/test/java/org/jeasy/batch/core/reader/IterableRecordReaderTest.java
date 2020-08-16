@@ -62,7 +62,7 @@ public class IterableRecordReaderTest {
     }
 
     @Test
-    public void testReadRecord() throws Exception {
+    public void testReadRecord() {
         GenericRecord<String> genericRecord = iterableRecordReader.readRecord();
         assertThat(genericRecord).isNotNull();
         assertThat(genericRecord.getPayload()).isEqualTo(RECORD);

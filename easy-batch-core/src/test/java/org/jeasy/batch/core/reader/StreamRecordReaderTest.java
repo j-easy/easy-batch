@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class StreamRecordReaderTest {
 
     @Test
-    public void whenStreamIsNotEmpty_thenThereShouldBeANextRecordToRead() throws Exception {
+    public void whenStreamIsNotEmpty_thenThereShouldBeANextRecordToRead() {
         Stream<String> stream = Stream.of("a", "b");
         StreamRecordReader<String> streamRecordReader = new StreamRecordReader<>(stream);
         streamRecordReader.open();
@@ -59,7 +59,7 @@ public class StreamRecordReaderTest {
     }
 
     @Test
-    public void whenStreamIsEmpty_thenThereShouldBeNoNextRecordToRead() throws Exception {
+    public void whenStreamIsEmpty_thenThereShouldBeNoNextRecordToRead() {
         Stream<String> stream = Stream.empty();
         StreamRecordReader<String> streamRecordReader = new StreamRecordReader<>(stream);
         streamRecordReader.open();

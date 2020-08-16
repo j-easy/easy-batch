@@ -62,7 +62,7 @@ public class StandardErrorRecordWriterTest {
     }
 
     @Test
-    public void testRecordPayloadWriting() throws Exception {
+    public void testRecordPayloadWriting() {
         writer.writeRecords(new Batch<>(record));
 
         assertThat(systemErr.getLog()).isEqualTo(PAYLOAD + LINE_SEPARATOR);

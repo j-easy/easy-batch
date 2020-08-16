@@ -45,7 +45,7 @@ public class JsonFileRecordReaderTest {
     }
 
     @Test
-    public void testJsonRecordReading() throws Exception {
+    public void testJsonRecordReading() {
         String expectedDataSourceName = dataSource.toAbsolutePath().toString();
 
         JsonRecord jsonRecord = jsonFileRecordReader.readRecord();

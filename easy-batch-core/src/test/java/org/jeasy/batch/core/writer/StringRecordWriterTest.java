@@ -62,7 +62,7 @@ public class StringRecordWriterTest {
     }
 
     @Test
-    public void testWriteRecord() throws Exception {
+    public void testWriteRecord() {
         stringRecordWriter.writeRecords(new Batch<>(new StringRecord(null, PAYLOAD)));
 
         assertThat(stringWriter.toString()).isEqualTo(PAYLOAD + LINE_SEPARATOR);

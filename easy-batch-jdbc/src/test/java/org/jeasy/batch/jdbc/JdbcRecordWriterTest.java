@@ -53,7 +53,7 @@ public class JdbcRecordWriterTest extends AbstractDatabaseTest {
     }
 
     @Test
-    public void testRecordWriting() throws Exception {
+    public void testRecordWriting() {
         int nbTweetsToInsert = 5;
         List<Tweet> tweets = createTweets(nbTweetsToInsert);
 
@@ -74,7 +74,7 @@ public class JdbcRecordWriterTest extends AbstractDatabaseTest {
     }
 
     @Test
-    public void testRecordWritingWhenError() throws Exception {
+    public void testRecordWritingWhenError() {
         int nbTweetsToInsert = 5;
         int batchSize = 3; // two batches: [1,2,3] and [4,5]
         List<Tweet> tweets = createTweets(nbTweetsToInsert);

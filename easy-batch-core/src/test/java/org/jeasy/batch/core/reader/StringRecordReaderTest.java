@@ -51,7 +51,7 @@ public class StringRecordReaderTest {
     }
 
     @Test
-    public void whenTheDataSourceIsEmpty_ThenThereShouldBeNoNextRecordToRead() throws Exception {
+    public void whenTheDataSourceIsEmpty_ThenThereShouldBeNoNextRecordToRead() {
         setupEmptyDataSource();
         assertThat(stringRecordReader.readRecord()).isNull();
     }
