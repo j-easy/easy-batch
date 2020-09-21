@@ -21,12 +21,12 @@
         <java.version>11</java.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <junit.version>4.13</junit.version>
-        <assertj.version>3.16.1</assertj.version>
-        <spring.version>5.2.8.RELEASE</spring.version>
-        <mockito.version>3.4.6</mockito.version>
+        <assertj.version>3.17.2</assertj.version>
+        <spring.version>5.2.9.RELEASE</spring.version>
+        <mockito.version>3.5.11</mockito.version>
         <system-rules.version>1.19.0</system-rules.version>
         <hsqldb.version>2.5.1</hsqldb.version>
-        <hibernate.version>5.4.20.Final</hibernate.version>
+        <hibernate.version>5.4.21.Final</hibernate.version>
         <javax.el.version>3.0.0</javax.el.version>
         <javax.el-api.version>3.0.0</javax.el-api.version>
         <jms.version>1.1</jms.version>
