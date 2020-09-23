@@ -51,7 +51,7 @@ public class RetryableRecordReader<P> implements RecordReader<P> {
      */
     public RetryableRecordReader(RecordReader<P> delegate, RetryPolicy retryPolicy) {
         this.delegate = delegate;
-        this.recordReadingCallable = new RecordReadingCallable(delegate);
+        this.recordReadingCallable = new RecordReadingCallable<>(delegate);
         this.recordReadingTemplate = new RecordReadingTemplate(retryPolicy);
     }
 

@@ -29,7 +29,6 @@ import com.opencsv.bean.CsvToBean;
 import org.jeasy.batch.core.mapper.RecordMapper;
 import org.jeasy.batch.core.record.GenericRecord;
 import org.jeasy.batch.core.record.Record;
-import org.jeasy.batch.core.record.StringRecord;
 
 import java.io.StringReader;
 import java.util.List;

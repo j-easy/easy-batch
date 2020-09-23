@@ -27,7 +27,6 @@ import com.google.gson.Gson;
 import org.jeasy.batch.core.mapper.RecordMapper;
 import org.jeasy.batch.core.record.GenericRecord;
 import org.jeasy.batch.core.record.Record;
-import org.jeasy.batch.json.JsonRecord;
 
 import static org.jeasy.batch.core.util.Utils.checkNotNull;
 

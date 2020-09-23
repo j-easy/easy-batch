@@ -50,7 +50,6 @@ public class CollectionRecordWriter<P> implements RecordWriter<P> {
     }
 
     @Override
-    @SuppressWarnings(value = "unchecked")
     public void writeRecords(Batch<P> batch) {
         for (Record<P> record : batch) {
             collection.add(record.getPayload());

@@ -25,7 +25,6 @@ package org.jeasy.batch.core.reader;
 
 import org.jeasy.batch.core.record.StringRecord;
 import org.jeasy.batch.core.record.Header;
-import org.jeasy.batch.core.record.Record;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;

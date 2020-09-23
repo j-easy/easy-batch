@@ -74,7 +74,7 @@ public class FileRecordReader implements RecordReader<Path> {
     public void open() throws Exception {
         checkDirectory();
         Stream<Path> pathStream = recursive ? Files.walk(directory) : Files.list(directory);
-        iterator = pathStream.filter(path -> isRegularFile(path)).iterator();
+        iterator = pathStream.filter(Files::isRegularFile).iterator();
         currentRecordNumber = 0;
     }
 

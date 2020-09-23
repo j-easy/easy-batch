@@ -29,7 +29,6 @@ import org.jeasy.batch.core.job.Job;
 import org.jeasy.batch.core.job.JobBuilder;
 import org.jeasy.batch.core.job.JobExecutor;
 import org.jeasy.batch.flatfile.FlatFileRecordReader;
-import org.jeasy.batch.tutorials.common.Tweet;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

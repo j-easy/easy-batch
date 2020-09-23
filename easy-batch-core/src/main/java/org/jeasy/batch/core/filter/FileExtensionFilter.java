@@ -23,7 +23,6 @@
  */
 package org.jeasy.batch.core.filter;
 
-import java.io.File;
 import java.nio.file.Path;
 
 import org.jeasy.batch.core.record.FileRecord;

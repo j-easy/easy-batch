@@ -24,7 +24,6 @@
 package org.jeasy.batch.core.filter;
 
 import org.jeasy.batch.core.record.Record;
-import org.jeasy.batch.core.record.StringRecord;
 
 /**
  * Filter string records ending with one of the given suffixes.

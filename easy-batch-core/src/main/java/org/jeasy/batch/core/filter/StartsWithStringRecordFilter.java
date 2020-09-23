@@ -24,7 +24,6 @@
 package org.jeasy.batch.core.filter;
 
 import org.jeasy.batch.core.record.Record;
-import org.jeasy.batch.core.record.StringRecord;
 
 /**
  * A {@link RecordFilter} that filters string records starting with one of the given prefixes.
