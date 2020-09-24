@@ -24,6 +24,7 @@
 package ${packageName};
 
 import org.jeasy.batch.core.processor.RecordProcessor;
+import org.jeasy.batch.core.record.Record;
 import org.jeasy.batch.core.record.StringRecord;
 
 /**
