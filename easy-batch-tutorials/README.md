@@ -9,7 +9,7 @@ All examples use tweets data. Tweets are represented by the `org.jeasy.batch.tut
 
 ## Quick start
 
-:information_source: Prerequisites: Java 8+ && maven 3+
+:information_source: Prerequisites: Java 11+ && maven 3+
 
 :arrow_down: Get the source code: `$>git clone https://github.com/j-easy/easy-batch.git`
 
