@@ -112,7 +112,7 @@ class BatchJob<I , O> implements Job {
                 writeBatch(batch);
             }
             setStatus(JobStatus.STOPPING);
-        } catch (Exception exception) {
+        } catch (Throwable exception) {
             fail(exception);
             return report;
         } finally {
@@ -149,7 +149,7 @@ class BatchJob<I , O> implements Job {
         try {
             LOGGER.debug("Opening record reader");
             recordReader.open();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOGGER.error("Unable to open record reader", e);
             throw e;
         }
@@ -159,7 +159,7 @@ class BatchJob<I , O> implements Job {
         try {
             LOGGER.debug("Opening record writer");
             recordWriter.open();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOGGER.error("Unable to open record writer", e);
             throw e;
         }
@@ -303,7 +303,7 @@ class BatchJob<I , O> implements Job {
         jobListener.afterJob(report);
     }
 
-    private void fail(Exception exception) {
+    private void fail(Throwable exception) {
         report.setLastError(exception);
         teardown(JobStatus.FAILED);
     }
@@ -312,7 +312,7 @@ class BatchJob<I , O> implements Job {
         try {
             LOGGER.debug("Closing record reader");
             recordReader.close();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOGGER.error("Unable to close record reader", e);
             report.setLastError(e);
         }
@@ -322,7 +322,7 @@ class BatchJob<I , O> implements Job {
         try {
             LOGGER.debug("Closing record writer");
             recordWriter.close();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOGGER.error("Unable to close record writer", e);
             report.setLastError(e);
         }

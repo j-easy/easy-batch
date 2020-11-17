@@ -95,6 +95,8 @@ public class BatchJobTest {
     private PipelineListener pipelineListener;
     @Mock
     private Exception exception;
+    @Mock
+    private Error error;
 
     @Before
     public void setUp() throws Exception {
@@ -174,6 +176,23 @@ public class BatchJobTest {
     }
 
     @Test
+    public void whenNotAbleToOpenReaderDueToError_ThenTheJobShouldFail() throws Exception {
+        doThrow(error).when(reader).open();
+
+        JobReport jobReport = job.call();
+
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
+        assertThat(jobReport.getLastError()).isEqualTo(error);
+        verify(reader).close();
+        verify(writer).close();
+    }
+
+    @Test
     public void whenNotAbleToOpenWriter_ThenTheJobShouldFail() throws Exception {
         doThrow(exception).when(writer).open();
 
@@ -186,6 +205,23 @@ public class BatchJobTest {
         assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(0);
         assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
         assertThat(jobReport.getLastError()).isEqualTo(exception);
+        verify(reader).close();
+        verify(writer).close();
+    }
+
+    @Test
+    public void whenNotAbleToOpenWriterDueToError_ThenTheJobShouldFail() throws Exception {
+        doThrow(error).when(writer).open();
+
+        JobReport jobReport = job.call();
+
+        assertThat(jobReport).isNotNull();
+        assertThat(jobReport.getStatus()).isEqualTo(JobStatus.FAILED);
+        assertThat(jobReport.getMetrics().getFilterCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getErrorCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getReadCount()).isEqualTo(0);
+        assertThat(jobReport.getMetrics().getWriteCount()).isEqualTo(0);
+        assertThat(jobReport.getLastError()).isEqualTo(error);
         verify(reader).close();
         verify(writer).close();
     }
@@ -205,8 +241,33 @@ public class BatchJobTest {
     }
 
     @Test
+    public void whenNotAbleToOpenReaderDueToError_thenTheJobListenerShouldBeInvoked() throws Exception {
+        doThrow(error).when(reader).open();
+
+        JobReport jobReportInternal = job.call();
+
+        InOrder inOrder = inOrder(jobListener1, jobListener2, reader, writer);
+        inOrder.verify(jobListener2).afterJob(jobReportInternal);
+        inOrder.verify(jobListener1).afterJob(jobReportInternal);
+        inOrder.verify(reader).close();
+        inOrder.verify(writer).close();
+
+    }
+
+    @Test
     public void whenNotAbleToOpenWriter_thenTheJobListenerShouldBeInvoked() throws Exception {
         doThrow(exception).when(writer).open();
+
+        JobReport jobReport = job.call();
+
+        verify(jobListener1).afterJob(jobReport);
+        verify(reader).close();
+        verify(writer).close();
+    }
+
+    @Test
+    public void whenNotAbleToOpenWriterDueToError_thenTheJobListenerShouldBeInvoked() throws Exception {
+        doThrow(error).when(writer).open();
 
         JobReport jobReport = job.call();
 
