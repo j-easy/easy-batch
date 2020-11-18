@@ -11,11 +11,16 @@
 [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-batch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|7.0.0|)
 [![Javadoc](https://www.javadoc.io/badge/org.jeasy/easy-batch-core.svg)](http://www.javadoc.io/doc/org.jeasy/easy-batch-core)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/j-easy/easy-batch)
+[![Project status](https://img.shields.io/badge/Project%20status-Maintenance-orange.svg)](https://img.shields.io/badge/Project%20status-Maintenance-orange.svg)
 
 </div>
 
 ***
+
+## Project status
+
+As of November 18, 2020, Easy Batch is in maintenance mode. This means only bug fixes will be addressed from now on.
+Version 7.0.x is the only supported version.
 
 ## Latest news
 
@@ -102,8 +107,8 @@ For more details, please check the [Getting started](https://github.com/j-easy/e
 - :movie_camera: [Introduction to Easy Batch: the simple, stupid batch processing framework for Java](https://speakerdeck.com/benas/easy-batch)
 - :newspaper: [First batch job on Podcastpedia.org using Easy Batch](http://www.codingpedia.org/ama/first-batch-job-on-podcastpedia-org-with-easybatch/)
 - :newspaper: [EasyBatch, les batchs en JAVA tout simplement (in french)](https://blog.sodifrance.fr/easybatch-les-batchs-en-java-tout-simplement/)
-- :memo: [Spring Batch vs Easy Batch: Feature comparison](https://github.com/benas/easy-batch-vs-spring-batch/issues/1)
-- :memo: [Spring Batch vs Easy Batch: Performance comparison](https://github.com/benas/easy-batch-vs-spring-batch/issues/2)
+- :memo: [Easy Batch vs Spring Batch: Feature comparison](https://github.com/benas/easy-batch-vs-spring-batch/issues/1)
+- :memo: [Easy Batch vs Spring Batch: Performance comparison](https://github.com/benas/easy-batch-vs-spring-batch/issues/2)
 
 ## Current versions
 
@@ -120,10 +125,10 @@ If you want to import a snapshot version, please check the [Getting started](htt
 ## Contribution
 
 You are welcome to contribute to the project with pull requests on GitHub.
+Please note that Easy Batch is in [maintenance mode](https://github.com/j-easy/easy-batch#project-status),
+which means only pull requests for bug fixes will be considered.
 
-If you find a bug or want to request a feature, please use the [issue tracker](https://github.com/j-easy/easy-batch/issues).
-
-For any further question, you can use the [gitter channel](https://gitter.im/j-easy/easy-batch) of the project.
+If you believe you found a bug or have any question, please use the [issue tracker](https://github.com/j-easy/easy-batch/issues).
 
 ## Awesome contributors
 
@@ -156,7 +161,7 @@ Thank you all for your contributions!
 ## Who is using Easy Batch?
 
 Easy Batch has been successfully used in production in a number of companies which I ([@benas](https://github.com/benas)) am not allowed to mention.
-That said, here are some companies who publicly mention that they use Easy Batch:
+That said, there are some companies which publicly mention that they use Easy Batch:
 
 * [Splunk](https://docs.splunk.com/Documentation/DBX/3.2.0/ReleaseNotes/easybatch)
 * [DeepData](https://deepdata-ltd.github.io/tenderbase/#/ted-xml-importer?id=implementation)
@@ -167,11 +172,11 @@ You can also find some feedback from the community about the project in the [Tes
 
 ![YourKit Java Profiler](https://www.yourkit.com/images/yklogo.png)
 
-Many thanks to [YourKit, LLC](https://www.yourkit.com/) for providing a free license of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/index.jsp) to support the development of Easy Rules.
+Many thanks to [YourKit, LLC](https://www.yourkit.com/) for providing a free license of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/index.jsp) to support the development of Easy Batch.
 
 ## License
 
-Easy Batch is released under the [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT).
+Easy Batch is released under the terms of the [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT).
 
 ```
 The MIT License (MIT)
