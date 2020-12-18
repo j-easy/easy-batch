@@ -9,7 +9,7 @@
 
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-batch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|7.0.0|)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-batch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|7.0.1|)
 [![Javadoc](https://www.javadoc.io/badge/org.jeasy/easy-batch-core.svg)](http://www.javadoc.io/doc/org.jeasy/easy-batch-core)
 [![Project status](https://img.shields.io/badge/Project%20status-Maintenance-orange.svg)](https://img.shields.io/badge/Project%20status-Maintenance-orange.svg)
 
@@ -24,6 +24,7 @@ Version 7.0.x is the only supported version.
 
 ## Latest news
 
+* 18/12/2020: Version 7.0.1 is out with a minor bug fix and some dependency updates. Check the release notes [here](https://github.com/j-easy/easy-batch/releases).
 * 24/09/2020: Version 7.0.0 is out with several enhancements towards type safe APIs. See the change log [here](https://github.com/j-easy/easy-batch/releases).
 
 # What is Easy Batch?
@@ -87,7 +88,7 @@ Add the following dependency to your project and you are ready to go:
  <dependency>
      <groupId>org.jeasy</groupId>
      <artifactId>easy-batch-core</artifactId>
-     <version>7.0.0</version>
+     <version>7.0.1</version>
  </dependency>
 ```
 
@@ -97,7 +98,7 @@ You can also generate a quick start project with the following command:
 $>mvn archetype:generate \
       -DarchetypeGroupId=org.jeasy \
       -DarchetypeArtifactId=easy-batch-archetype \
-      -DarchetypeVersion=7.0.0
+      -DarchetypeVersion=7.0.1
 ```
 
 For more details, please check the [Getting started](https://github.com/j-easy/easy-batch/wiki/getting-started) guide.
@@ -114,11 +115,11 @@ For more details, please check the [Getting started](https://github.com/j-easy/e
 
 #### Stable:
 
-The current stable version is [v7.0.0](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|7.0.0|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/tree/easy-batch-7.0.0/easy-batch-tutorials) | [javadoc](http://javadoc.io/doc/org.jeasy/easy-batch-core/7.0.0)
+The current stable version is [v7.0.1](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|7.0.1|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/tree/easy-batch-7.0.1/easy-batch-tutorials) | [javadoc](http://javadoc.io/doc/org.jeasy/easy-batch-core/7.0.1)
 
 #### Development:
 
-The current development version is 7.0.1-SNAPSHOT: [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
+The current development version is 7.0.2-SNAPSHOT: [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
 
 If you want to import a snapshot version, please check the [Getting started](https://github.com/j-easy/easy-batch/wiki/getting-started#use-a-snapshot-version) guide.
 
