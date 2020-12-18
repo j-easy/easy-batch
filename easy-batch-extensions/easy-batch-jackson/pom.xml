@@ -15,7 +15,7 @@
     <url>https://github.com/j-easy/easy-batch</url>
 
     <properties>
-        <jackson-databind.version>2.11.2</jackson-databind.version>
+        <jackson-databind.version>2.12.0</jackson-databind.version>
     </properties>
 
     <developers>
