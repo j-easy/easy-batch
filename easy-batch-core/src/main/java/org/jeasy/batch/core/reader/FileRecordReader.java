@@ -48,6 +48,7 @@ public class FileRecordReader implements RecordReader<Path> {
     private Iterator<Path> iterator;
     private long currentRecordNumber;
     private boolean recursive;
+    private Stream<Path> pathStream;
 
     /**
      * Create a new {@link FileRecordReader}.
@@ -73,9 +74,16 @@ public class FileRecordReader implements RecordReader<Path> {
     @Override
     public void open() throws Exception {
         checkDirectory();
-        Stream<Path> pathStream = recursive ? Files.walk(directory) : Files.list(directory);
+        pathStream = recursive ? Files.walk(directory) : Files.list(directory);
         iterator = pathStream.filter(Files::isRegularFile).iterator();
         currentRecordNumber = 0;
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (pathStream != null) {
+            pathStream.close();
+        }
     }
 
     private void checkDirectory() {
