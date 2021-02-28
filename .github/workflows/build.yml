@@ -43,5 +43,8 @@ jobs: # TODO is there a way to extract common config and share artifacts between
         with:
           java-version: 11
       - name: deploy snapshots to sonatype
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
         run: |
-          mvn -Dmaven.test.skip=true deploy
+          mvn -s .mvn/settings.xml -Dmaven.test.skip=true deploy
