@@ -232,8 +232,6 @@
                         <excludePackageNames>
                             org.jeasy.batch.test.common:
                             org.jeasy.batch.tutorials.*:
-                            org.jeasy.batch.bench:
-                            org.jeasy.batch.bench.generated
                         </excludePackageNames>
                     </configuration>
                     <executions>
