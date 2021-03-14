@@ -9,7 +9,7 @@
 
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Build Status](https://github.com/j-easy/easy-batch/actions/workflows/build.yml/badge.svg)](https://github.com/j-easy/easy-batch/actions)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-batch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|7.0.1|)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-batch-core/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|7.0.2|)
 [![Javadoc](https://www.javadoc.io/badge/org.jeasy/easy-batch-core.svg)](http://www.javadoc.io/doc/org.jeasy/easy-batch-core)
 [![Project status](https://img.shields.io/badge/Project%20status-Maintenance-orange.svg)](https://img.shields.io/badge/Project%20status-Maintenance-orange.svg)
 
@@ -24,12 +24,11 @@ Version 7.0.x is the only supported version.
 
 ## Latest news
 
-* 18/12/2020: Version 7.0.1 is out with a minor bug fix and some dependency updates. Check the release notes [here](https://github.com/j-easy/easy-batch/releases).
-* 24/09/2020: Version 7.0.0 is out with several enhancements towards type safe APIs. See the change log [here](https://github.com/j-easy/easy-batch/releases).
+* 2020-03-14: [Version 7.0.2 is out](https://github.com/j-easy/easy-batch/releases) with a minor bug fix and a number of dependency updates.
 
 # What is Easy Batch?
 
-Easy Batch is a framework that aims to simplify batch processing with Java. It was **specifically** designed for simple ETL jobs.
+Easy Batch is a framework that aims at simplifying batch processing with Java. It was **specifically** designed for simple, single-task ETL jobs.
 Writing batch applications requires a **lot** of boilerplate code: reading, writing, filtering, parsing and validating data, logging, reporting to name a few..
 The idea is to free you from these tedious tasks and let you focus on your batch application's logic.
 
@@ -39,7 +38,7 @@ Easy Batch jobs are simple processing pipelines. Records are read in sequence fr
 
 ![batch processing](https://raw.githubusercontent.com/wiki/j-easy/easy-batch/images/batch-processing.png)
 
-The framework provides the `Record` and `Batch` APIs to abstract data format and process records in a consistent way regardless of the data source type.
+The framework provides the `Record` and `Batch` APIs to abstract data format and process records in a consistent way regardless of the data source/sink type.
 
 Let's see a quick example. Suppose you have the following `tweets.csv` file:
 
@@ -88,7 +87,7 @@ Add the following dependency to your project and you are ready to go:
  <dependency>
      <groupId>org.jeasy</groupId>
      <artifactId>easy-batch-core</artifactId>
-     <version>7.0.1</version>
+     <version>7.0.2</version>
  </dependency>
 ```
 
@@ -98,7 +97,7 @@ You can also generate a quick start project with the following command:
 $>mvn archetype:generate \
       -DarchetypeGroupId=org.jeasy \
       -DarchetypeArtifactId=easy-batch-archetype \
-      -DarchetypeVersion=7.0.1
+      -DarchetypeVersion=7.0.2
 ```
 
 For more details, please check the [Getting started](https://github.com/j-easy/easy-batch/wiki/getting-started) guide.
@@ -115,11 +114,11 @@ For more details, please check the [Getting started](https://github.com/j-easy/e
 
 #### Stable:
 
-The current stable version is [v7.0.1](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|7.0.1|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/tree/easy-batch-7.0.1/easy-batch-tutorials) | [javadoc](http://javadoc.io/doc/org.jeasy/easy-batch-core/7.0.1)
+The current stable version is [v7.0.2](http://search.maven.org/#artifactdetails|org.jeasy|easy-batch-core|7.0.2|) | [documentation](https://github.com/j-easy/easy-batch/wiki) | [tutorials](https://github.com/j-easy/easy-batch/tree/easy-batch-7.0.2/easy-batch-tutorials) | [javadoc](http://javadoc.io/doc/org.jeasy/easy-batch-core/7.0.2)
 
 #### Development:
 
-The current development version is 7.0.2-SNAPSHOT: [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
+The current development version is 7.0.3-SNAPSHOT: [![Build Status](https://github.com/j-easy/easy-batch/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-batch/actions)
 
 If you want to import a snapshot version, please check the [Getting started](https://github.com/j-easy/easy-batch/wiki/getting-started#use-a-snapshot-version) guide.
 
