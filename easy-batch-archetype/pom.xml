@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jeasy</groupId>
         <artifactId>easy-batch</artifactId>
-        <version>7.0.2</version>
+        <version>7.0.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>easy-batch-archetype</artifactId>
@@ -28,7 +28,7 @@
         <url>git@github.com:j-easy/easy-batch.git</url>
         <connection>scm:git:git@github.com:j-easy/easy-batch.git</connection>
         <developerConnection>scm:git:git@github.com:j-easy/easy-batch.git</developerConnection>
-        <tag>easy-batch-7.0.2</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
