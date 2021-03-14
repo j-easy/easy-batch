@@ -20,13 +20,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>11</java.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
-        <junit.version>4.13.1</junit.version>
-        <assertj.version>3.18.1</assertj.version>
-        <spring.version>5.3.2</spring.version>
-        <mockito.version>3.6.28</mockito.version>
+        <junit.version>4.13.2</junit.version>
+        <assertj.version>3.19.0</assertj.version>
+        <spring.version>5.3.4</spring.version>
+        <mockito.version>3.8.0</mockito.version>
         <system-rules.version>1.19.0</system-rules.version>
         <hsqldb.version>2.5.1</hsqldb.version>
-        <hibernate.version>5.4.26.Final</hibernate.version>
+        <hibernate.version>5.4.29.Final</hibernate.version>
         <javax.el.version>3.0.0</javax.el.version>
         <javax.el-api.version>3.0.0</javax.el-api.version>
         <jms.version>1.1</jms.version>
