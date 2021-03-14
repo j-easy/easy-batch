@@ -35,7 +35,9 @@ import javax.jms.Message;
 import javax.jms.QueueSender;
 
 import static java.util.Arrays.asList;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RandomJmsQueueRecordWriterTest {

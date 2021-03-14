@@ -27,13 +27,13 @@ import org.jeasy.batch.core.util.Utils;
 import org.jeasy.batch.core.record.FileRecord;
 import org.jeasy.batch.core.record.Header;
 
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Iterator;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
-import static java.nio.file.Files.isRegularFile;
 
 /**
  * A {@link RecordReader} that reads files in a directory.
