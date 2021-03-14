@@ -23,4 +23,4 @@ jobs:
           export GPG_TTY=$(tty)
           echo "${{ secrets.GPG_SECRET }}" | gpg --batch --import
           echo "${{ secrets.GPG_PUBLIC }}" | gpg --batch --import
-          mvn -B -s .mvn/settings.xml release:prepare release:perform -Dmaven.test.skip=true -Dgpg.keyname=${{ secrets.GPG_KEYNAME }} -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}
+          mvn -B -s .mvn/settings.xml release:prepare release:perform -Dmaven.test.skip=true -Darguments=-Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}
