@@ -79,8 +79,12 @@ public class DefaultJobReportMerger implements JobReportMerger {
         }
 
         //merge results
-        finalJobReport.getMetrics().setStartTime(Collections.min(startTimes));
-        finalJobReport.getMetrics().setEndTime(Collections.max(endTimes));
+        if (!startTimes.isEmpty()) {
+            finalJobReport.getMetrics().setStartTime(Collections.min(startTimes));
+        }
+        if (!endTimes.isEmpty()) {
+            finalJobReport.getMetrics().setEndTime(Collections.max(endTimes));
+        }
 
         // set name
         finalJobReport.setJobName(concatenate(jobNames));
