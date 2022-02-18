@@ -92,7 +92,7 @@ public class OpenCsvRecordMarshaller<P> implements RecordMarshaller<P, String> {
         List<String> tokens = new ArrayList<>();
         Iterable<Object> objects = fieldExtractor.extractFields(payload);
         for (Object object : objects) {
-            tokens.add(String.valueOf(object);
+            tokens.add(String.valueOf(object));
         }
         return tokens;
     }
