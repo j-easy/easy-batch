@@ -20,6 +20,7 @@ class WordCounter implements RecordProcessor<List<String>, List<String>> {
         return words;
     }
 
+    @Override
     public Record<List<String>> processRecord(Record<List<String>> record) {
         List<String> tokens = record.getPayload();
         for (String token : tokens) {
